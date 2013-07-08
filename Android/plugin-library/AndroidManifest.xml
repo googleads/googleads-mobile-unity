@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.google.unity"
+    android:versionName="1.0"
+    android:versionCode="1">
+  <uses-sdk android:minSdkVersion="3"
+      android:targetSdkVersion="17" />
+  <!-- AdMob Permissions -->
+  <uses-permission android:name="android.permission.INTERNET"/>
+  <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+  <application>
+    <!-- AdMob Activity -->
+    <activity android:name="com.google.ads.AdActivity"
+        android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"/>
+  </application>
+</manifest>
+
