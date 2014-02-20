@@ -16,7 +16,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 
 Features
---------=
+--------
 This is the AdMob Unity Plugin for Android.  It provides a way to request
 AdMob ads from a Unity project.  This plugin was written and tested with
 the Google AdMob SDK version 6.4.1 for Android, and Unity 4.1.5.
@@ -125,9 +125,9 @@ The plugin's .unitypackage only includes the compiled Android library project
 with AdMob implementation. If you want to make changes to the library or see
 the source code, you can find the project in the examples-android repository.
 
-Additional Resources:
+Additional Resources
 ---------------------
-https://developers.google.com/mobile-ads-sdk/docs
-https://groups.google.com/group/google-admob-ads-sdk
-https://plus.google.com/+GoogleAdsDevelopers
+* https://developers.google.com/mobile-ads-sdk/docs
+* https://groups.google.com/group/google-admob-ads-sdk
+* https://plus.google.com/+GoogleAdsDevelopers
 

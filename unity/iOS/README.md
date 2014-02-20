@@ -23,14 +23,14 @@ the Google AdMob SDK version 6.4.1 for iOS, and Unity 4.1.2.
 The AdMob Unity plugin contains a .unitypackage file for those that want to
 easily import the plugin, as well as the source code.
 
-Requirements:
+Requirements
 --------------
 * Unity Pro 4.1.2
 * Google AdMob Ads SDK for iOS
 * iOS version 4.3 or later as well as XCode 4.5 or later
 * AdMob publisher ID
 
-How to import AdMobUnityPlugin.unitypackage:
+How to import AdMobUnityPlugin.unitypackage
 ---------------------------------------------
 1. Open your project in the Unity editor.
 2. On the top toolbar, select "Assets" -> "Import Package" -> "Custom Package".
@@ -44,7 +44,7 @@ The plugin also comes with an example script. Simply attach
 AdMobPluginDemoScript (found in Plugins/AdMobPlugin/) to your MainCamera as a
 Component and build your project to see AdMob working.
 
-iOS - Building project:
+iOS - Building project
 ------------------------
 1. Open up AdMobMobilePlugin.cs and make sure that the AdMobMobilePlugin
    is set to AdMobPluginiOS.
@@ -54,7 +54,7 @@ iOS - Building project:
 5. Set "Target iOS Version" to at least iOS 4.3 or above.
 6. Select "Build" on the "Build Settings" menu to build a XCode project.
 
-iOS - Running project:
+iOS - Running project
 ----------------------
 Before running your compiled XCode project, you will need to add some
 framework references as well as modify linker flags. You can find a detailed
@@ -62,7 +62,7 @@ set of instructions on how to do this at:
 
 https://developers.google.com/mobile-ads-sdk/docs/
 
-Implementation:
+Implementation
 ------------------
 The plugin provides the following AdMob methods:
 
@@ -123,8 +123,8 @@ You can unregister using the -= operator as is shown below:
     // Assume HandleReceivedAd is your function.
     AdMobPlugin.ReceivedAd -= HandleDidReceiveAd;
 
-Additional Resources:
+Additional Resources
 -----------------------
-https://developers.google.com/mobile-ads-sdk/docs
-https://groups.google.com/group/google-admob-ads-sdk
-https://plus.google.com/+GoogleAdsDevelopers
+* https://developers.google.com/mobile-ads-sdk/docs
+* https://groups.google.com/group/google-admob-ads-sdk
+* https://plus.google.com/+GoogleAdsDevelopers

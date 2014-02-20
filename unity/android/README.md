@@ -13,7 +13,6 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
-=====
 
 Features
 --------
@@ -25,14 +24,14 @@ tested with Google Play Services 4.1 for Android, and Unity 4.3.0f4.
 The plugin contains a .unitypackage file for those that want to easily import
 the plugin, as well as the source code for those that want to iterate on it.
 
-Requirements:
+Requirements
 -------------
 
 * Unity 4.3 (untested on previous versions)
 * Google Play services library, revision 13 or higher
 * An ad unit ID
 
-Directions for importing the plugin:
+Directions for importing the plugin
 ------------------------------------
 
 1. Open your project in the Unity editor.
@@ -141,7 +140,7 @@ on Windows.
 
 Additional Resources
 --------------------
-https://developers.google.com/mobile-ads-sdk/docs
-https://groups.google.com/group/google-admob-ads-sdk
-https://plus.google.com/+GoogleAdsDevelopers
+* https://developers.google.com/mobile-ads-sdk/docs
+* https://groups.google.com/group/google-admob-ads-sdk
+* https://plus.google.com/+GoogleAdsDevelopers
 
