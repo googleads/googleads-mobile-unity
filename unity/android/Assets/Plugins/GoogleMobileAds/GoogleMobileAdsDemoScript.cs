@@ -6,7 +6,8 @@ public class GoogleMobileAdsDemoScript : MonoBehaviour {
     void Start()
     {
         print("Started");
-        GoogleMobileAdsPlugin.CreateBannerView("ca-app-pub-9380760713574559/3453176828",
+        #error Replace with your own ad unit ID and then remove this error.
+        GoogleMobileAdsPlugin.CreateBannerView("INSERT_YOUR_AD_UNIT_ID_HERE",
                                                GoogleMobileAdsPlugin.AdSize.SmartBanner,
                                                true);
         print("Created Banner View");
