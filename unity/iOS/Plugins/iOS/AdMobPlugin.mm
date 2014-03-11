@@ -138,6 +138,17 @@ extern UIViewController *UnityGetGLViewController();
   self.bannerView.adUnitID = pubId;
   self.bannerView.delegate = self;
   self.bannerView.rootViewController = UnityGetGLViewController();
+  if (positionAdAtTop_ == false) {
+    CGFloat bannerHeightDP = 50.0f;
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+      bannerHeightDP = 90.0f;
+    }
+    CGRect screenRect = [UIScreen mainScreen].bounds;
+    self.bannerView.frame = CGRectMake(screenRect.origin.x,
+                                       screenRect.size.height - bannerHeightDP,
+                                       screenRect.size.width,
+                                       bannerHeightDP);
+  }
 }
 
 - (void)requestAdWithTesting:(BOOL)isTesting
