@@ -69,13 +69,16 @@ extern UIViewController *UnityGetGLViewController();
   }
   // Turn the incoming JSON string into a NSDictionary.
   NSError *error = nil;
-  NSData *extrasJsonData =
-      [extrasString dataUsingEncoding:NSUTF8StringEncoding];
-  NSDictionary *extrasJsonDictionary =
-      [NSJSONSerialization JSONObjectWithData:extrasJsonData
-                                      options:NSJSONReadingMutableContainers
-                                        error:&error];
-  if (extrasJsonDictionary) {
+  NSDictionary *extrasJsonDictionary = nil;
+  if (extrasString) {
+    NSData *extrasJsonData = [extrasString dataUsingEncoding:NSUTF8StringEncoding];
+    extrasJsonDictionary = [NSJSONSerialization JSONObjectWithData:extrasJsonData
+                                                           options:NSJSONReadingMutableContainers
+                                                             error:&error];
+  }
+  if (error) {
+    NSLog(@"AdMobPlugin: Error parsing JSON for extras: %@", error);
+  } else if (extrasJsonDictionary) {
     // Add a flag to denote that this request is coming from the unity plugin.
     NSMutableDictionary *modifiedExtrasDict =
         [[NSMutableDictionary alloc] initWithDictionary:extrasJsonDictionary];
@@ -84,7 +87,7 @@ extern UIViewController *UnityGetGLViewController();
     [self requestAdWithTesting:isTesting
                         extras:modifiedExtrasDict];
   } else {
-    NSLog(@"AdMobPlugin: Error parsing JSON for extras: %@", error);
+    [self requestAdWithTesting:isTesting extras:nil];
   }
 }
 
@@ -236,8 +239,13 @@ extern "C" {
 
   void _RequestBannerAd(bool isTesting, const char *extras) {
     AdMobPlugin *adMobPlugin = [AdMobPlugin pluginSharedInstance];
-    [adMobPlugin requestAdWithTesting:(BOOL)isTesting
-                         extrasString:CreateNSString(extras)];
+    if (extras) {
+      [adMobPlugin requestAdWithTesting:(BOOL)isTesting
+                           extrasString:CreateNSString(extras)];
+    } else {
+      [adMobPlugin requestAdWithTesting:(BOOL)isTesting
+                           extrasString:nil];
+    }
   }
 
   void _SetCallbackHandlerName(const char *callbackHandlerName) {
