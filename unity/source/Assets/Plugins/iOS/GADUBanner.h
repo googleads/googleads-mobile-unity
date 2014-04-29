@@ -10,8 +10,12 @@
 
 /// Positions to place a banner.
 typedef NS_ENUM(NSUInteger, GADAdPosition) {
-  kGADAdPositionTopOfScreen = 0,    ///< Ad positioned at top of screen.
-  kGADAdPositionBottomOfScreen = 1  ///< Ad positioned at bottom of screen.
+  kGADAdPositionTopLeftOfScreen = 0,
+  kGADAdPositionTopOfScreen = 1,         ///< Ad positioned at top of screen.
+  kGADAdPositionTopRightOfScreen = 2,
+  kGADAdPositionBottomLeftOfScreen = 3,  ///< Ad positioned at bottom of screen.
+  kGADAdPositionBottomOfScreen = 4,
+  kGADAdPositionBottomRightOfScreen = 5
 };
 
 /// A wrapper around GADBannerView. Includes the ability to create GADBannerView objects, load them
