@@ -6,8 +6,7 @@ This repository contains plugins for AdMob projects on multiple platforms.
 
 Plugins
 -------
-* [Unity for iOS](https://github.com/googleads/googleads-mobile-plugins/tree/master/unity/iOS)
-* [Unity for Android](https://github.com/googleads/googleads-mobile-plugins/tree/master/unity/android-legacy) (Legacy AdMob SDK)
+* [Unity for iOS and Google Play services](https://github.com/googleads/googleads-mobile-plugins/tree/master/unity)
 
 Downloads
 ----------
