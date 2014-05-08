@@ -7,11 +7,9 @@ namespace GoogleMobileAds.Android
 {
     internal class AdListener : AndroidJavaProxy
     {
-        private const string UnityAdListenerClass = "com.google.unity.ads.UnityAdListener";
-
         private IAdListener listener;
-        internal AdListener(IAdListener listener) :
-            base(UnityAdListenerClass)
+        internal AdListener(IAdListener listener)
+            : base(Utils.UnityAdListenerClassName)
         {
             this.listener = listener;
         }

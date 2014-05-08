@@ -60,22 +60,21 @@
                          adPosition:(GADAdPosition)adPosition {
   self = [super init];
   if (self) {
-    self.bannerClient = bannerClient;
-    self.adPosition = adPosition;
-    self.bannerView = [[[GADBannerView alloc] initWithAdSize:size] autorelease];
-    self.bannerView.adUnitID = adUnitID;
-    self.bannerView.delegate = self;
+    _bannerClient = bannerClient;
+    _adPosition = adPosition;
+    _bannerView = [[GADBannerView alloc] initWithAdSize:size];
+    _bannerView.adUnitID = adUnitID;
+    _bannerView.delegate = self;
     UIViewController *unityController = [GADUBanner unityGLViewController];
-    self.bannerView.rootViewController = unityController;
-    [unityController.view addSubview:self.bannerView];
+    _bannerView.rootViewController = unityController;
+    [unityController.view addSubview:_bannerView];
   }
   return self;
 }
 
 - (void)loadRequest:(GADRequest *)request {
   if (!self.bannerView) {
-    NSLog(@"GoogleMobileAdsPlugin: BannerView is nil. Aborting ad request. Call CreateBannerView()"
-          @"before RequestBannerAd().");
+    NSLog(@"GoogleMobileAdsPlugin: BannerView is nil. Ignoring ad request.");
     return;
   }
   [self.bannerView loadRequest:request];
@@ -83,8 +82,7 @@
 
 - (void)hideBannerView {
   if (!self.bannerView) {
-    NSLog(@"GoogleMobileAdsPlugin: BannerView is nil. Call CreateBannerView() before"
-          @"HideBannerView().");
+    NSLog(@"GoogleMobileAdsPlugin: BannerView is nil. Ignoring call to hideBannerView");
     return;
   }
   self.bannerView.hidden = YES;
@@ -92,11 +90,18 @@
 
 - (void)showBannerView {
   if (!self.bannerView) {
-    NSLog(@"GoogleMobileAdsPlugin: BannerView is nil. Call CreateBannerView() before"
-          @"ShowBannerView().");
+    NSLog(@"GoogleMobileAdsPlugin: BannerView is nil. Ignoring call to showBannerView");
     return;
   }
   self.bannerView.hidden = NO;
+}
+
+- (void)removeBannerView {
+  if (!self.bannerView) {
+    NSLog(@"GoogleMobileAdsPlugin: BannerView is nil. Ignoring call to removeBannerView");
+    return;
+  }
+  [self.bannerView removeFromSuperview];
 }
 
 #pragma mark GADBannerViewDelegate implementation

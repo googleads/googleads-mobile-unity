@@ -3,9 +3,9 @@ using GoogleMobileAds.Common;
 
 namespace GoogleMobileAds.Api
 {
-    public class BannerView : IAdListener
+    public class InterstitialAd : IAdListener
     {
-        private IGoogleMobileAdsBannerClient client;
+        private IGoogleMobileAdsInterstitialClient client;
 
         // These are the ad callback events that can be hooked into.
         public event EventHandler<EventArgs> AdLoaded = delegate {};
@@ -15,41 +15,41 @@ namespace GoogleMobileAds.Api
         public event EventHandler<EventArgs> AdClosed = delegate {};
         public event EventHandler<EventArgs> AdLeftApplication = delegate {};
 
-        // Create a BannerView and add it into the view hierarchy.
-        public BannerView(string adUnitId, AdSize adSize, AdPosition position)
+        // Creates an InsterstitialAd.
+        public InterstitialAd(string adUnitId)
         {
-            client = GoogleMobileAdsClientFactory.GetGoogleMobileAdsBannerClient(this);
-            client.CreateBannerView(adUnitId, adSize, position);
+            client = GoogleMobileAdsClientFactory.GetGoogleMobileAdsInterstitialClient(this);
+            client.CreateInterstitialAd(adUnitId);
         }
 
-        // Load an ad into the BannerView.
+        // Loads a new interstitial request
         public void LoadAd(AdRequest request)
         {
             client.LoadAd(request);
         }
 
-        // Hide the BannerView from the screen.
-        public void Hide()
+        // Determines whether the InterstitialAd has loaded.
+        public bool IsLoaded()
         {
-            client.HideBannerView();
+            return client.IsLoaded();
         }
 
-        // Show the BannerView on the screen.
+        // Show the InterstitialAd.
         public void Show()
         {
-            client.ShowBannerView();
+            client.ShowInterstitial();
         }
 
-        // Destroy the BannerView.
+        // Destroy the InterstitialAd.
         public void Destroy()
         {
-            client.DestroyBannerView();
+            client.DestroyInterstitial();
         }
 
         #region IAdListener implementation
 
-        // The following methods are invoked from an IGoogleMobileAdsClient. Forward these calls
-        // to the developer.
+        // The following methods are invoked from an IGoogleMobileAdsInterstitialClient. Forward
+        // these calls to the developer.
         void IAdListener.FireAdLoaded()
         {
             AdLoaded(this, EventArgs.Empty);
@@ -57,8 +57,9 @@ namespace GoogleMobileAds.Api
 
         void IAdListener.FireAdFailedToLoad(string message)
         {
-            AdFailedToLoadEventArgs args = new AdFailedToLoadEventArgs();
-            args.Message = message;
+            AdFailedToLoadEventArgs args = new AdFailedToLoadEventArgs() {
+                Message = message
+            };
             AdFailedToLoad(this, args);
         }
 

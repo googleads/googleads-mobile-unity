@@ -11,9 +11,9 @@
 - (id)init {
   self = [super init];
   if (self) {
-    self.testDevices = [[[NSMutableArray alloc] init] autorelease];
-    self.keywords = [[[NSMutableArray alloc] init] autorelease];
-    self.extras = [[[NSMutableDictionary alloc] init] autorelease];
+    _testDevices = [[NSMutableArray alloc] init];
+    _keywords = [[NSMutableArray alloc] init];
+    _extras = [[NSMutableDictionary alloc] init];
   }
   return self;
 }

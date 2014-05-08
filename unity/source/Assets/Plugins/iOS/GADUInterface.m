@@ -1,16 +1,18 @@
 // Copyright 2014 Google Inc. All Rights Reserved.
 
 #import "GADUBanner.h"
+#import "GADUInterstitial.h"
 #import "GADUObjectCache.h"
 #import "GADURequest.h"
 #import "GADUTypes.h"
 
-/// Helper method used to convert C-style strings into NSStrings.
-NSString *GADUStringFromUTF8String(const char *bytes) {
+/// Returns an NSString copying the characters from |bytes|, a C array of UTF8-encoded bytes.
+/// Returns nil if |bytes| is NULL.
+static NSString *GADUStringFromUTF8String(const char *bytes) {
   if (bytes) {
     return @(bytes);
   } else {
-    return @"";
+    return nil;
   }
 }
 
@@ -43,13 +45,25 @@ GADUTypeBannerRef GADUCreateSmartBannerView(GADUTypeBannerClientRef *bannerClien
   return banner;
 }
 
-/// Sets the callback methods to be invoked during ad events.
-void GADUSetCallbacks(GADUTypeBannerRef banner, GADUAdViewDidReceiveAdCallback adReceivedCallback,
-                      GADUAdViewDidFailToReceiveAdWithErrorCallback adFailedCallback,
-                      GADUAdViewWillPresentScreenCallback willPresentCallback,
-                      GADUAdViewWillDismissScreenCallback willDismissCallback,
-                      GADUAdViewDidDismissScreenCallback didDismissCallback,
-                      GADUAdViewWillLeaveApplicationCallback willLeaveCallback) {
+/// Creates a GADUInterstitial and returns its reference.
+GADUTypeBannerRef GADUCreateInterstitial(GADUTypeInterstitialClientRef *interstitialClient,
+                                         const char *adUnitID) {
+  GADUInterstitial *interstitial = [[[GADUInterstitial alloc]
+      initWithInterstitialClientReference:interstitialClient
+                                 adUnitID:GADUStringFromUTF8String(adUnitID)] autorelease];
+  GADUObjectCache *cache = [GADUObjectCache sharedInstance];
+  [cache.references setObject:interstitial forKey:[interstitial gadu_referenceKey]];
+  return interstitial;
+}
+
+/// Sets the banner callback methods to be invoked during banner ad events.
+void GADUSetBannerCallbacks(GADUTypeBannerRef banner,
+                            GADUAdViewDidReceiveAdCallback adReceivedCallback,
+                            GADUAdViewDidFailToReceiveAdWithErrorCallback adFailedCallback,
+                            GADUAdViewWillPresentScreenCallback willPresentCallback,
+                            GADUAdViewWillDismissScreenCallback willDismissCallback,
+                            GADUAdViewDidDismissScreenCallback didDismissCallback,
+                            GADUAdViewWillLeaveApplicationCallback willLeaveCallback) {
   GADUBanner *internalBanner = (GADUBanner *)banner;
   internalBanner.adReceivedCallback = adReceivedCallback;
   internalBanner.adFailedCallback = adFailedCallback;
@@ -57,6 +71,23 @@ void GADUSetCallbacks(GADUTypeBannerRef banner, GADUAdViewDidReceiveAdCallback a
   internalBanner.willDismissCallback = willDismissCallback;
   internalBanner.didDismissCallback = didDismissCallback;
   internalBanner.willLeaveCallback = willLeaveCallback;
+}
+
+/// Sets the interstitial callback methods to be invoked during interstitial ad events.
+void GADUSetInterstitialCallbacks(
+    GADUTypeInterstitialRef interstitial, GADUInterstitialDidReceiveAdCallback adReceivedCallback,
+    GADUInterstitialDidFailToReceiveAdWithErrorCallback adFailedCallback,
+    GADUInterstitialWillPresentScreenCallback willPresentCallback,
+    GADUInterstitialWillDismissScreenCallback willDismissCallback,
+    GADUInterstitialDidDismissScreenCallback didDismissCallback,
+    GADUInterstitialWillLeaveApplicationCallback willLeaveCallback) {
+  GADUInterstitial *internalInterstitial = (GADUInterstitial *)interstitial;
+  internalInterstitial.adReceivedCallback = adReceivedCallback;
+  internalInterstitial.adFailedCallback = adFailedCallback;
+  internalInterstitial.willPresentCallback = willPresentCallback;
+  internalInterstitial.willDismissCallback = willDismissCallback;
+  internalInterstitial.didDismissCallback = didDismissCallback;
+  internalInterstitial.willLeaveCallback = willLeaveCallback;
 }
 
 /// Sets the GADBannerView's hidden property to YES.
@@ -69,6 +100,24 @@ void GADUHideBannerView(GADUTypeBannerRef banner) {
 void GADUShowBannerView(GADUTypeBannerRef banner) {
   GADUBanner *internalBanner = (GADUBanner *)banner;
   [internalBanner showBannerView];
+}
+
+/// Removes the GADURemoveBannerView from the view hierarchy.
+void GADURemoveBannerView(GADUTypeBannerRef banner) {
+  GADUBanner *internalBanner = (GADUBanner *)banner;
+  [internalBanner removeBannerView];
+}
+
+/// Returns YES if the GADInterstitial is ready to be shown.
+BOOL GADUInterstitialReady(GADUTypeInterstitialRef interstitial) {
+  GADUInterstitial *internalInterstitial = (GADUInterstitial *)interstitial;
+  return [internalInterstitial isReady];
+}
+
+/// Shows the GADInterstitial.
+void GADUShowInterstitial(GADUTypeInterstitialRef interstitial) {
+  GADUInterstitial *internalInterstitial = (GADUInterstitial *)interstitial;
+  [internalInterstitial show];
 }
 
 /// Creates an empty GADRequest and returns its reference.
@@ -118,16 +167,22 @@ void GADUSetExtra(GADUTypeRequestRef request, const char *key, const char *value
                              value:GADUStringFromUTF8String(value)];
 }
 
-/// Makes an ad request.
+/// Makes a banner ad request.
 void GADURequestBannerAd(GADUTypeBannerRef banner, GADUTypeRequestRef request) {
   GADUBanner *internalBanner = (GADUBanner *)banner;
   GADURequest *internalRequest = (GADURequest *)request;
   [internalBanner loadRequest:[internalRequest request]];
 }
 
+/// Makes an interstitial ad request.
+void GADURequestInterstitial(GADUTypeInterstitialRef interstitial, GADUTypeRequestRef request) {
+  GADUInterstitial *internalInterstitial = (GADUInterstitial *)interstitial;
+  GADURequest *internalRequest = (GADURequest *)request;
+  [internalInterstitial loadRequest:[internalRequest request]];
+}
+
 /// Removes an object from the cache.
 void GADURelease(GADUTypeRef ref) {
-  NSLog(@"Invoking Release");
   if (ref) {
     GADUObjectCache *cache = [GADUObjectCache sharedInstance];
     [cache.references removeObjectForKey:[(NSObject *)ref gadu_referenceKey]];

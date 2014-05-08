@@ -3,7 +3,7 @@ using GoogleMobileAds.Api;
 
 namespace GoogleMobileAds.Common
 {
-    internal class DummyClient : IGoogleMobileAdsBannerClient
+    internal class DummyClient : IGoogleMobileAdsBannerClient, IGoogleMobileAdsInterstitialClient
     {
         public DummyClient(IAdListener listener)
         {
@@ -33,6 +33,23 @@ namespace GoogleMobileAds.Common
         public void DestroyBannerView()
         {
             Debug.Log("Dummy DestroyBannerView");
+        }
+
+        public void CreateInterstitialAd(string adUnitId) {
+            Debug.Log("Dummy CreateIntersitialAd");
+        }
+
+        public bool IsLoaded() {
+            Debug.Log("Dummy IsLoaded");
+            return true;
+        }
+
+        public void ShowInterstitial() {
+            Debug.Log("Dummy ShowInterstitial");
+        }
+
+        public void DestroyInterstitial() {
+            Debug.Log("Dummy DestroyInterstitial");
         }
     }
 }

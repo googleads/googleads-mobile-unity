@@ -64,4 +64,7 @@ typedef NS_ENUM(NSUInteger, GADAdPosition) {
 /// Makes the GADBannerView visible on the screen.
 - (void)showBannerView;
 
+/// Removes the GADBannerView from the view hierarchy.
+- (void)removeBannerView;
+
 @end

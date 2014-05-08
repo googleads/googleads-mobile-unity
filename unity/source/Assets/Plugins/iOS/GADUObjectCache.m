@@ -16,7 +16,7 @@
 - (id)init {
   self = [super init];
   if (self) {
-    self.references = [[[NSMutableDictionary alloc] init] autorelease];
+    _references = [[NSMutableDictionary alloc] init];
   }
   return self;
 }
