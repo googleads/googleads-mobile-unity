@@ -125,7 +125,7 @@ Unlike banners, interstitials need to be explicitly shown. At an appropriate
 stopping point in your app, check that the interstitail is ready before
 showing it:
 
-    if (interstitial.isLoaded()) {
+    if (interstitial.IsLoaded()) {
       interstitial.Show();
     }
 
