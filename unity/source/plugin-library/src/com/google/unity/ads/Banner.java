@@ -20,11 +20,15 @@ import android.widget.FrameLayout;
  * Play services. The Google Play services library is a dependency for this plugin.
  */
 public class Banner {
-  /** Banner position constant for the top of the screen. */
-  private static final int POSITION_TOP = 0;
+  /** Banner position constant for the top_left/top/top_right of the screen. */
+  private static final int POSITION_TOP_LEFT = 0;
+  private static final int POSITION_TOP = 1;
+  private static final int POSITION_TOP_RIGHT = 2;
 
-  /** Banner position constant for the bottom of the screen. */
-  private static final int POSITION_BOTTOM = 1;
+  /** Banner position constant for the bottom_left/bottom/bottom_right of the screen. */
+  private static final int POSITION_BOTTOM_LEFT = 3;
+  private static final int POSITION_BOTTOM = 4;
+  private static final int POSITION_BOTTOM_RIGHT = 5;
 
   /** The {@link AdView} to display to the user. */
   private AdView adView;
@@ -101,11 +105,23 @@ public class Banner {
         FrameLayout.LayoutParams adParams = new FrameLayout.LayoutParams(
             FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.WRAP_CONTENT);
         switch(positionCode) {
+          case POSITION_TOP_LEFT:
+            adParams.addRule(RelativeLayout.LayoutParams.ALIGN_PARENT_TOP | RelativeLayout.LayoutParams.ALIGN_PARENT_LEFT);
+            break;
           case POSITION_TOP:
             adParams.gravity = Gravity.TOP;
             break;
+          case POSITION_TOP_RIGHT:
+            adParams.addRule(RelativeLayout.LayoutParams.ALIGN_PARENT_TOP | RelativeLayout.LayoutParams.ALIGN_PARENT_RIGHT);
+            break;
+          case POSITION_BOTTOM_LEFT:
+            adParams.addRule(RelativeLayout.LayoutParams.ALIGN_PARENT_BOTTOM | RelativeLayout.LayoutParams.ALIGN_PARENT_LEFT);
+            break;
           case POSITION_BOTTOM:
             adParams.gravity = Gravity.BOTTOM;
+            break;
+          case POSITION_BOTTOM_RIGHT:
+            adParams.addRule(RelativeLayout.LayoutParams.ALIGN_PARENT_BOTTOM | RelativeLayout.LayoutParams.ALIGN_PARENT_RIGHT);
             break;
         }
         activity.addContentView(adView, adParams);

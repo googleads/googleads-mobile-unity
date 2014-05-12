@@ -108,18 +108,39 @@
 
 - (void)adViewDidReceiveAd:(GADBannerView *)adView {
   UIView *unityView = [[GADUBanner unityGLViewController] view];
+  CGRect frame = adView.frame;
   CGPoint center;
   // Position the GADBannerView.
   switch (self.adPosition) {
+    case kGADAdPositionTopLeftOfScreen:
+      frame.origin.x = 0;
+      frame.origin.y = 0;
+      adView.frame = frame;
+      break;
     case kGADAdPositionTopOfScreen:
       center = CGPointMake(CGRectGetMidX(unityView.bounds), CGRectGetMidY(adView.bounds));
+      adView.center = center;
       break;
+    case kGADAdPositionTopRightOfScreen:
+      frame.origin.x = CGRectGetMaxX(unityView.bounds) - CGRectGetWidth(adView.bounds);
+      frame.origin.y = 0;
+      adView.frame = frame;
+      break;
+    case kGADAdPositionBottomLeftOfScreen:
+      frame.origin.x = 0;
+      frame.origin.y = CGRectGetMaxY(unityView.bounds) - CGRectGetHeight(adView.bounds);
+      adView.frame = frame;
     case kGADAdPositionBottomOfScreen:
       center = CGPointMake(CGRectGetMidX(unityView.bounds),
                            CGRectGetMaxY(unityView.bounds) - CGRectGetMidY(adView.bounds));
+      adView.center = center;
+      break;
+    case kGADAdPositionBottomRightOfScreen:
+      frame.origin.x = CGRectGetMaxX(unityView.bounds) - CGRectGetWidth(adView.bounds);
+      frame.origin.y = CGRectGetMaxY(unityView.bounds) - CGRectGetHeight(adView.bounds);
+      adView.frame = frame;
       break;
   }
-  adView.center = center;
   if (self.adReceivedCallback) {
     self.adReceivedCallback(self.bannerClient);
   }
