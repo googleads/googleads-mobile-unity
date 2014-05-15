@@ -14,8 +14,8 @@ applications. Plugin features include:
 * AdRequest targeting methods
 * A sample project to demonstrate plugin integration
 
-The plugin contains a .unitypackage file for those that want to easily import
-the plugin, as well as the source code for those that want to iterate on it.
+The plugin contains a [.unitypackage](https://github.com/googleads/googleads-mobile-plugins/releases/latest) for those that want to easily import
+the plugin, as well as the [source code](https://github.com/googleads/googleads-mobile-plugins/tree/master/unity/source) for those that want to iterate on it.
 
 Requirements
 ------------
