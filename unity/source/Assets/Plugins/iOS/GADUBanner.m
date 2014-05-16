@@ -58,8 +58,7 @@
                            adUnitID:(NSString *)adUnitID
                              adSize:(GADAdSize)size
                          adPosition:(GADAdPosition)adPosition {
-  self = [super init];
-  if (self) {
+  if (self = [super init]) {
     _bannerClient = bannerClient;
     _adPosition = adPosition;
     _bannerView = [[GADBannerView alloc] initWithAdSize:size];
@@ -68,6 +67,9 @@
     UIViewController *unityController = [GADUBanner unityGLViewController];
     _bannerView.rootViewController = unityController;
     [unityController.view addSubview:_bannerView];
+        
+    [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationDidChange) name:UIDeviceOrientationDidChangeNotification object:nil];
   }
   return self;
 }
@@ -104,22 +106,46 @@
   [self.bannerView removeFromSuperview];
 }
 
+- (void) calculatePosition
+{
+    GADBannerView *adView = _bannerView;
+    if (adView) {
+        UIView *unityView = [[GADUBanner unityGLViewController] view];
+        CGPoint center;
+        // Position the GADBannerView.
+        switch (self.adPosition) {
+            case kGADAdPositionTopOfScreen:
+                center = CGPointMake(CGRectGetMidX(unityView.bounds), CGRectGetMidY(adView.bounds));
+                break;
+            case kGADAdPositionBottomOfScreen:
+                center = CGPointMake(CGRectGetMidX(unityView.bounds),
+                                     CGRectGetMaxY(unityView.bounds) - CGRectGetMidY(adView.bounds));
+                break;
+        }
+        adView.center = center;
+    }
+}
+
+- (void) orientationDidChange
+{
+    GADBannerView *adView = _bannerView;
+    
+    UIDeviceOrientation currentOrientation = [[UIDevice currentDevice] orientation];
+    GADAdSize adSize;
+    if (UIInterfaceOrientationIsPortrait(currentOrientation)) {
+        adSize = kGADAdSizeSmartBannerPortrait;
+    } else {
+        adSize = kGADAdSizeSmartBannerLandscape;
+    }
+    adView.adSize = adSize;
+    
+    [self calculatePosition];
+}
+
 #pragma mark GADBannerViewDelegate implementation
 
 - (void)adViewDidReceiveAd:(GADBannerView *)adView {
-  UIView *unityView = [[GADUBanner unityGLViewController] view];
-  CGPoint center;
-  // Position the GADBannerView.
-  switch (self.adPosition) {
-    case kGADAdPositionTopOfScreen:
-      center = CGPointMake(CGRectGetMidX(unityView.bounds), CGRectGetMidY(adView.bounds));
-      break;
-    case kGADAdPositionBottomOfScreen:
-      center = CGPointMake(CGRectGetMidX(unityView.bounds),
-                           CGRectGetMaxY(unityView.bounds) - CGRectGetMidY(adView.bounds));
-      break;
-  }
-  adView.center = center;
+  [self calculatePosition];
   if (self.adReceivedCallback) {
     self.adReceivedCallback(self.bannerClient);
   }
@@ -158,6 +184,7 @@
 #pragma mark Cleanup
 
 - (void)dealloc {
+  [[NSNotificationCenter defaultCenter] removeObserver:self];
   _bannerView.delegate = nil;
   [_bannerView release];
   [super dealloc];
