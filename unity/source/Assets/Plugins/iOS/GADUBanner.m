@@ -69,7 +69,7 @@
     [unityController.view addSubview:_bannerView];
         
     [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(calculatePosition) name:UIDeviceOrientationDidChangeNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationDidChange) name:UIDeviceOrientationDidChangeNotification object:nil];
   }
   return self;
 }
@@ -124,6 +124,22 @@
         }
         adView.center = center;
     }
+}
+
+- (void) orientationDidChange
+{
+    GADBannerView *adView = _bannerView;
+    
+    UIDeviceOrientation currentOrientation = [[UIDevice currentDevice] orientation];
+    GADAdSize adSize;
+    if (UIInterfaceOrientationIsPortrait(currentOrientation)) {
+        adSize = kGADAdSizeSmartBannerPortrait;
+    } else {
+        adSize = kGADAdSizeSmartBannerLandscape;
+    }
+    adView.adSize = adSize;
+    
+    [self calculatePosition];
 }
 
 #pragma mark GADBannerViewDelegate implementation
