@@ -1,10 +1,13 @@
 // Copyright 2014 Google Inc. All Rights Reserved.
 
+#import <UIKit/UIKit.h>
+
 #import "GADUBanner.h"
 #import "GADUInterstitial.h"
 #import "GADUObjectCache.h"
 #import "GADURequest.h"
 #import "GADUTypes.h"
+#import "UnityAppController.h"
 
 /// Returns an NSString copying the characters from |bytes|, a C array of UTF8-encoded bytes.
 /// Returns nil if |bytes| is NULL.
@@ -16,8 +19,13 @@ static NSString *GADUStringFromUTF8String(const char *bytes) {
   }
 }
 
-/// Creates a GADBannerView with the specified width, height, and position. Returns a reference to
-/// the GADUBannerView.
+/// Gets the Unity view controller.
+UIViewController *GADUUnityGLViewController() {
+  return ((UnityAppController *)[UIApplication sharedApplication].delegate).rootViewController;
+}
+
+/// Creates a GADBannerView with the specified width, height, and position, and adds it to the Unity
+/// view controller. Returns a reference to the GADUBannerView.
 GADUTypeBannerRef GADUCreateBannerView(GADUTypeBannerClientRef *bannerClient, const char *adUnitID,
                                        NSInteger width, NSInteger height,
                                        GADAdPosition adPosition) {
@@ -27,19 +35,24 @@ GADUTypeBannerRef GADUCreateBannerView(GADUTypeBannerClientRef *bannerClient, co
                                                    width:width
                                                   height:height
                                               adPosition:adPosition] autorelease];
+  UIViewController *unityController = GADUUnityGLViewController();
+  [unityController.view addSubview:(UIView *)banner.bannerView];
   GADUObjectCache *cache = [GADUObjectCache sharedInstance];
+
   [cache.references setObject:banner forKey:[banner gadu_referenceKey]];
   return banner;
 }
 
-/// Creates a full-width GADBannerView in the current orientation and returns a reference to the
-/// GADUBannerView.
+/// Creates a full-width GADBannerView in the current orientation and adds it to the Unity view
+/// controller. Returns a reference to the GADUBannerView.
 GADUTypeBannerRef GADUCreateSmartBannerView(GADUTypeBannerClientRef *bannerClient,
                                             const char *adUnitID, GADAdPosition adPosition) {
   GADUBanner *banner = [[[GADUBanner alloc]
       initWithSmartBannerSizeAndBannerClientReference:bannerClient
                                              adUnitID:GADUStringFromUTF8String(adUnitID)
                                            adPosition:adPosition] autorelease];
+  UIViewController *unityController = GADUUnityGLViewController();
+  [unityController.view addSubview:(UIView *)banner.bannerView];
   GADUObjectCache *cache = [GADUObjectCache sharedInstance];
   [cache.references setObject:banner forKey:[banner gadu_referenceKey]];
   return banner;

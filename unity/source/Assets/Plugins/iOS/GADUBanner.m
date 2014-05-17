@@ -14,16 +14,9 @@
 
 @interface GADUBanner ()<GADBannerViewDelegate>
 
-/// Defines where the ad should be positioned on the screen.
-@property(nonatomic, assign) GADAdPosition adPosition;
-
 @end
 
 @implementation GADUBanner
-
-+ (UIViewController *)unityGLViewController {
-  return ((UnityAppController *)[UIApplication sharedApplication].delegate).rootViewController;
-}
 
 - (id)initWithBannerClientReference:(GADUTypeBannerClientRef *)bannerClient
                            adUnitID:(NSString *)adUnitID
@@ -61,13 +54,27 @@
   self = [super init];
   if (self) {
     _bannerClient = bannerClient;
-    _adPosition = adPosition;
     _bannerView = [[GADBannerView alloc] initWithAdSize:size];
     _bannerView.adUnitID = adUnitID;
     _bannerView.delegate = self;
-    UIViewController *unityController = [GADUBanner unityGLViewController];
+    UIViewController *unityController =
+        ((UnityAppController *)[UIApplication sharedApplication].delegate).rootViewController;
     _bannerView.rootViewController = unityController;
-    [unityController.view addSubview:_bannerView];
+
+    // Position the GADBannerView.
+    UIView *unityView = [unityController view];
+    CGPoint center =
+        CGPointMake(CGRectGetMidX(unityView.bounds), CGRectGetMidY(_bannerView.bounds));
+    switch (adPosition) {
+      case kGADAdPositionTopOfScreen:
+        center = CGPointMake(CGRectGetMidX(unityView.bounds), CGRectGetMidY(_bannerView.bounds));
+        break;
+      case kGADAdPositionBottomOfScreen:
+        center = CGPointMake(CGRectGetMidX(unityView.bounds),
+                             CGRectGetMaxY(unityView.bounds) - CGRectGetMidY(_bannerView.bounds));
+        break;
+    }
+    _bannerView.center = center;
   }
   return self;
 }
@@ -107,28 +114,17 @@
 #pragma mark GADBannerViewDelegate implementation
 
 - (void)adViewDidReceiveAd:(GADBannerView *)adView {
-  UIView *unityView = [[GADUBanner unityGLViewController] view];
-  CGPoint center;
-  // Position the GADBannerView.
-  switch (self.adPosition) {
-    case kGADAdPositionTopOfScreen:
-      center = CGPointMake(CGRectGetMidX(unityView.bounds), CGRectGetMidY(adView.bounds));
-      break;
-    case kGADAdPositionBottomOfScreen:
-      center = CGPointMake(CGRectGetMidX(unityView.bounds),
-                           CGRectGetMaxY(unityView.bounds) - CGRectGetMidY(adView.bounds));
-      break;
-  }
-  adView.center = center;
   if (self.adReceivedCallback) {
     self.adReceivedCallback(self.bannerClient);
   }
 }
 
 - (void)adView:(GADBannerView *)view didFailToReceiveAdWithError:(GADRequestError *)error {
-  NSString *errorMsg = [NSString
-      stringWithFormat:@"Failed to receive ad with error: %@", [error localizedFailureReason]];
-  self.adFailedCallback(self.bannerClient, [errorMsg cStringUsingEncoding:NSUTF8StringEncoding]);
+  if (self.adFailedCallback) {
+    NSString *errorMsg = [NSString
+        stringWithFormat:@"Failed to receive ad with error: %@", [error localizedFailureReason]];
+    self.adFailedCallback(self.bannerClient, [errorMsg cStringUsingEncoding:NSUTF8StringEncoding]);
+  }
 }
 
 - (void)adViewWillPresentScreen:(GADBannerView *)adView {
