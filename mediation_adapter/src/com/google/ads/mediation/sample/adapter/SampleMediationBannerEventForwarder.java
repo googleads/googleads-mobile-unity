@@ -3,24 +3,24 @@ package com.google.ads.mediation.sample.adapter;
 import com.google.ads.mediation.sample.sdk.SampleAdListener;
 import com.google.ads.mediation.sample.sdk.SampleErrorCode;
 import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.mediation.MediationInterstitialListener;
+import com.google.android.gms.ads.mediation.MediationBannerListener;
 
 /**
  * A {@link SampleAdListener} that forwards events to AdMob Mediation's
- * {@link MediationInterstitialListener}.
+ * {@link MediationBannerListener}.
  */
-public class SampleInterstitialEventForwarder extends SampleAdListener {
-  private MediationInterstitialListener mediationListener;
+public class SampleMediationBannerEventForwarder extends SampleAdListener {
+  private MediationBannerListener mediationListener;
   private SampleAdapter adapter;
 
   /**
-   * Creates a new {@code SampleInterstitialEventForwarder}.
-   * @param listener An AdMob Mediation {@link MediationInterstitialListener} that should receive
+   * Creates a new {@code SampleBannerEventForwarder}.
+   * @param listener An AdMob Mediation {@link MediationBannerListener} that should receive
    *     forwarded events.
    * @param adapter A {@link SampleAdapter} mediation adapter.
    */
-  public SampleInterstitialEventForwarder(
-      MediationInterstitialListener listener, SampleAdapter adapter) {
+  public SampleMediationBannerEventForwarder(
+      MediationBannerListener listener, SampleAdapter adapter) {
     this.mediationListener = listener;
     this.adapter = adapter;
   }
@@ -50,6 +50,7 @@ public class SampleInterstitialEventForwarder extends SampleAdListener {
 
   @Override
   public void onAdFullScreen() {
+    mediationListener.onAdClicked(adapter);
     mediationListener.onAdOpened(adapter);
     // Only call onAdLeftApplication if your ad network actually exits the developer's app.
     mediationListener.onAdLeftApplication(adapter);

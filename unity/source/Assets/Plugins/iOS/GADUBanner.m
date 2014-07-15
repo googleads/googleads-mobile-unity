@@ -14,9 +14,17 @@
 
 @interface GADUBanner ()<GADBannerViewDelegate>
 
+/// Defines where the ad should be positioned on the screen.
+@property(nonatomic, assign) GADAdPosition adPosition;
+
 @end
 
 @implementation GADUBanner
+
+/// Returns the Unity view controller.
++ (UIViewController *)unityGLViewController {
+  return ((UnityAppController *)[UIApplication sharedApplication].delegate).rootViewController;
+}
 
 - (id)initWithBannerClientReference:(GADUTypeBannerClientRef *)bannerClient
                            adUnitID:(NSString *)adUnitID
@@ -54,27 +62,11 @@
   self = [super init];
   if (self) {
     _bannerClient = bannerClient;
+    _adPosition = adPosition;
     _bannerView = [[GADBannerView alloc] initWithAdSize:size];
     _bannerView.adUnitID = adUnitID;
     _bannerView.delegate = self;
-    UIViewController *unityController =
-        ((UnityAppController *)[UIApplication sharedApplication].delegate).rootViewController;
-    _bannerView.rootViewController = unityController;
-
-    // Position the GADBannerView.
-    UIView *unityView = [unityController view];
-    CGPoint center =
-        CGPointMake(CGRectGetMidX(unityView.bounds), CGRectGetMidY(_bannerView.bounds));
-    switch (adPosition) {
-      case kGADAdPositionTopOfScreen:
-        center = CGPointMake(CGRectGetMidX(unityView.bounds), CGRectGetMidY(_bannerView.bounds));
-        break;
-      case kGADAdPositionBottomOfScreen:
-        center = CGPointMake(CGRectGetMidX(unityView.bounds),
-                             CGRectGetMaxY(unityView.bounds) - CGRectGetMidY(_bannerView.bounds));
-        break;
-    }
-    _bannerView.center = center;
+    _bannerView.rootViewController = [GADUBanner unityGLViewController];
   }
   return self;
 }
@@ -114,6 +106,27 @@
 #pragma mark GADBannerViewDelegate implementation
 
 - (void)adViewDidReceiveAd:(GADBannerView *)adView {
+  UIView *unityView = [[GADUBanner unityGLViewController] view];
+  CGPoint center = CGPointMake(CGRectGetMidX(unityView.bounds), CGRectGetMidY(_bannerView.bounds));
+  // Position the GADBannerView.
+  switch (self.adPosition) {
+    case kGADAdPositionTopOfScreen:
+      center = CGPointMake(CGRectGetMidX(unityView.bounds), CGRectGetMidY(_bannerView.bounds));
+      break;
+    case kGADAdPositionBottomOfScreen:
+      center = CGPointMake(CGRectGetMidX(unityView.bounds),
+                           CGRectGetMaxY(unityView.bounds) - CGRectGetMidY(_bannerView.bounds));
+      break;
+  }
+
+  // Remove existing banner view from superview.
+  [self.bannerView removeFromSuperview];
+
+  // Add the new banner view.
+  self.bannerView = adView;
+  self.bannerView.center = center;
+  [unityView addSubview:self.bannerView];
+
   if (self.adReceivedCallback) {
     self.adReceivedCallback(self.bannerClient);
   }

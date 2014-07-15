@@ -8,14 +8,15 @@ applications. Plugin features include:
 * A single package with cross platform (Android/iOS) support
 * Mock ad calls when running inside Unity editor
 * Support for Banner Ads
-* Support for Interstitial Ads
 * Custom banner sizes
 * Banner ad events listeners
 * AdRequest targeting methods
 * A sample project to demonstrate plugin integration
 
-The plugin contains a [.unitypackage](https://github.com/googleads/googleads-mobile-plugins/releases/latest) for those that want to easily import
-the plugin, as well as the [source code](https://github.com/googleads/googleads-mobile-plugins/tree/master/unity/source) for those that want to iterate on it.
+Interstitial support coming soon.
+
+The plugin contains a .unitypackage file for those that want to easily import
+the plugin, as well as the source code for those that want to iterate on it.
 
 Requirements
 ------------
@@ -108,27 +109,6 @@ Here is the minimal code needed to create a banner.
 
 The _AdPosition_ enum specifies where to place the banner.
 
-Basic Interstitial Flow
------------------------
-Here is the minimal banner code to create an interstitial.
-
-    using GoogleMobileAds.Api;
-    ...
-    // Initialize an InterstitialAd.
-    InterstitialAd interstitial = new InterstitialAd("MY_AD_UNIT_ID");
-    // Create an empty ad request.
-    AdRequest request = new AdRequest.Builder().Build();
-    // Load the interstitial with the request.
-    interstitial.LoadAd(request);
-
-Unlike banners, interstitials need to be explicitly shown. At an appropriate
-stopping point in your app, check that the interstitail is ready before
-showing it:
-
-    if (interstitial.IsLoaded()) {
-      interstitial.Show();
-    }
-
 Custom Ad Sizes
 ---------------
 In addition to constants on _AdSize_, you can also create a custom size:
@@ -181,10 +161,7 @@ also want to get test ads on the simulator. Here is how to set up the request:
 
 Ad Events
 ---------
-Both _BannerView_ and _InterstitialAd_ contain the same ad events that you can
-register for. These events are of type
-[EventHandler](http://msdn.microsoft.com/en-us/library/db0etb8x%28v=vs.110%29.aspx).
-Here we'll demonstrate setting ad events on a banner:
+_BannerView_ contains ad events that you can register for:
 
     using GoogleMobileAds.Api;
     ...
@@ -205,20 +182,11 @@ Here we'll demonstrate setting ad events on a banner:
     bannerView.AdLeftApplication += HandleAdLeftApplication;
     ...
 
-    public void HandleAdLoaded(object sender, EventArgs args)
+    public void HandleAdLoaded()
     {
         print("HandleAdLoaded event received.");
         // Handle the ad loaded event.
     }
-
-The only event with special event args is _AdFailedToLoad_. It passes an
-instance of _AdFailedToLoadEventArgs_ with a _Message_ describing the error.
-
-    public void HandleAdFailedToLoad(object sender, AdFailedToLoadEventArgs args)
-    {
-      print("Interstitial Failed to load: " + args.Message);
-      // Handle the ad failed to load event.
-    };
 
 You only need to register for the events you care about.
 
@@ -239,15 +207,6 @@ your reference to it:
 
 This lets the plugin know you no longer need the object, and can do any
 necessary cleanup on your behalf.
-
-Interstitial Lifecycle
-----------------------
-Similar to banners, interstitials also have a destroy method:
-
-    interstitial.Destroy();
-
-It is important to explicitly destroy the interstitial before letting it go
-out of scope so that it can be properly released by the plugin.
 
 Additional Resources
 ====================

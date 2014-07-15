@@ -111,7 +111,7 @@ public class SampleAdapter implements MediationBannerAdapter, MediationInterstit
 
     // Implement a SampleAdListener and forward callbacks to mediation. The callback forwarding is
     // handled by SampleBannerEventFowarder.
-    sampleAdView.setAdListener(new SampleBannerEventForwarder(listener, this));
+    sampleAdView.setAdListener(new SampleMediationBannerEventForwarder(listener, this));
 
     // Make an ad request.
     sampleAdView.fetchAd(createSampleRequest(mediationAdRequest));
@@ -172,7 +172,7 @@ public class SampleAdapter implements MediationBannerAdapter, MediationInterstit
 
     // Implement a SampleAdListener and forward callbacks to mediation. The callback forwarding is
     // handled by SampleInterstitialEventFowarder.
-    sampleInterstitial.setAdListener(new SampleInterstitialEventForwarder(listener, this));
+    sampleInterstitial.setAdListener(new SampleMediationInterstitialEventForwarder(listener, this));
 
     // Make an ad request.
     sampleInterstitial.fetchAd(createSampleRequest(mediationAdRequest));
@@ -183,4 +183,5 @@ public class SampleAdapter implements MediationBannerAdapter, MediationInterstit
     // Show your interstitial ad.
     sampleInterstitial.show();
   }
+
 }
