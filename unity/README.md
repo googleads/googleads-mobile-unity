@@ -43,7 +43,7 @@ Integrate the Plugin into your Game
 Android Setup
 -------------
 If you already had an AndroidManifest.xml in Plugins/Android/, keep your current
-version and [add the necessary activities and permissions](https://developers.google.com/mobile-ads-sdk/docs#play)
+version and [add the necessary activities and permissions](https://developers.google.com/mobile-ads-sdk/docs/admob/android/quick-start#androidmanifestxml)
 required by the Google Mobile Ads SDK.
 
 Additional dependencies:
@@ -83,8 +83,8 @@ XCode project. You'll need to do the following before you can run it:
 3. Add the **-ObjC** linker flag to your **Other Linker Flags** in
    **Build Settings**.
 
-See the [developer docs](https://developers.google.com/mobile-ads-sdk/docs/#ios)
-for more information on integrating the Google Mobile Ads iOS library.
+See the [developer docs](https://developers.google.com/mobile-ads-sdk/docs/admob/ios/quick-start#manually_using_the_sdk_download)
+for more information on referencing the Google Mobile Ads iOS library.
 
 Google Mobile Ads Unity API
 ===========================
