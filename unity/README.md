@@ -251,7 +251,7 @@ out of scope so that it can be properly released by the plugin.
 
 Additional Resources
 ====================
-* [Developer documentation](https://developers.google.com/mobile-ads-sdk/docs)
+* [Developer documentation](https://developers.google.com/mobile-ads-sdk)
 * [Developer forum](https://groups.google.com/group/google-admob-ads-sdk)
 * [Google Ads +Page](https://plus.google.com/+GoogleAdsDevelopers)
 
