@@ -77,6 +77,8 @@ XCode project. You'll need to do the following before you can run it:
    * AVFoundation
    * CoreGraphics
    * CoreTelephony
+   * EventKit
+   * EventKitUI
    * MessageUI
    * StoreKit
    * SystemConfiguration
