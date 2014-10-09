@@ -83,8 +83,8 @@ XCode project. You'll need to do the following before you can run it:
 3. Add the **-ObjC** linker flag to your **Other Linker Flags** in
    **Build Settings**.
 
-See the [developer docs](https://developers.google.com/mobile-ads-sdk/docs/admob/ios/quick-start#manually_using_the_sdk_download)
-for more information on referencing the Google Mobile Ads iOS library.
+If these steps didn't work, the [developer docs](https://developers.google.com/mobile-ads-sdk/docs/admob/ios/quick-start#manually_using_the_sdk_download)
+always has the most up-to-date information on how to reference the Google Mobile Ads iOS library.
 
 Google Mobile Ads Unity API
 ===========================
