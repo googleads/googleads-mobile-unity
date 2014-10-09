@@ -42,15 +42,13 @@ Integrate the Plugin into your Game
 
 Android Setup
 -------------
-If you already had an AndroidManifest.xml in Plugins/Android/, keep your current
-version and [add the necessary activities and permissions](https://developers.google.com/mobile-ads-sdk/docs/admob/android/quick-start#androidmanifestxml)
-required by the Google Mobile Ads SDK.
-
-Additional dependencies:
 
 1. Add the google-play-services_lib folder,
-   located at <android-sdk>/extras/google/google_play_services/libproject,
+   located at ANDROID_SDK_LOCATION/extras/google/google_play_services/libproject,
    into the Plugins/Android folder of your project.
+2. If you already had an AndroidManifest.xml in Plugins/Android/, keep your current
+   version and [add the necessary activities and permissions](https://developers.google.com/mobile-ads-sdk/docs/admob/android/quick-start#androidmanifestxml)
+   required by the Google Mobile Ads SDK.
 
 iOS Setup
 ---------
