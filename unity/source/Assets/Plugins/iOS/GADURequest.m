@@ -1,9 +1,8 @@
 // Copyright 2014 Google Inc. All Rights Reserved.
 
-#import <Foundation/Foundation.h>
+@import Foundation;
+@import GoogleMobileAds;
 
-#import "GADAdMobExtras.h"
-#import "GADRequest.h"
 #import "GADURequest.h"
 
 @implementation GADURequest
@@ -18,12 +17,15 @@
   return self;
 }
 
+- (void)dealloc {
+  [_testDevices release];
+  [_keywords release];
+  [_extras release];
+  [super dealloc];
+}
+
 - (void)addTestDevice:(NSString *)deviceID {
-  if ([deviceID isEqualToString:GADU_SIMULATOR_ID]) {
-    [self.testDevices addObject:GAD_SIMULATOR_ID];
-  } else {
-    [self.testDevices addObject:deviceID];
-  }
+  [self.testDevices addObject:deviceID];
 }
 
 - (void)addKeyword:(NSString *)keyword {
@@ -64,10 +66,11 @@
   request.gender = self.gender;
   [request tagForChildDirectedTreatment:self.tagForChildDirectedTreatment];
   [self.extras setValue:@"1" forKey:@"unity"];
-  GADAdMobExtras *extras = [[[GADAdMobExtras alloc] init] autorelease];
+  GADExtras *extras = [[[GADExtras alloc] init] autorelease];
   extras.additionalParameters = self.extras;
   [request registerAdNetworkExtras:extras];
   return request;
 }
+
 
 @end

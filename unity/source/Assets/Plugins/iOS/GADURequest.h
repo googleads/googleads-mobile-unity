@@ -1,11 +1,7 @@
 // Copyright 2014 Google Inc. All Rights Reserved.
 
-#import <Foundation/Foundation.h>
-
-#import "GADRequest.h"
-
-/// Constant to pass to the addTestDevice method to getting test ads on the simulator.
-#define GADU_SIMULATOR_ID @"SIMULATOR"
+@import Foundation;
+@import GoogleMobileAds;
 
 /// Genders to help deliver more relevant ads.
 typedef NS_ENUM(NSInteger, GADUGender) {

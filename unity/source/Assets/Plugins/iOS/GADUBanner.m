@@ -1,15 +1,12 @@
 // Copyright 2014 Google Inc. All Rights Reserved.
 
-#import <CoreGraphics/CoreGraphics.h>
-#import <Foundation/Foundation.h>
-#import <UIKit/UIKit.h>
+@import CoreGraphics;
+@import Foundation;
+@import GoogleMobileAds;
+@import UIKit;
 
 #import "GADUBanner.h"
 
-#import "GADAdMobExtras.h"
-#import "GADAdSize.h"
-#import "GADBannerView.h"
-#import "GADBannerViewDelegate.h"
 #import "UnityAppController.h"
 
 @interface GADUBanner ()<GADBannerViewDelegate>
