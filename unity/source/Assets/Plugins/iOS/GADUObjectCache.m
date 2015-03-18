@@ -1,6 +1,6 @@
 // Copyright 2014 Google Inc. All Rights Reserved.
 
-@import Foundation;
+#import <Foundation/Foundation.h>
 
 #import "GADUObjectCache.h"
 
