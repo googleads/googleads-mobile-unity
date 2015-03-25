@@ -22,38 +22,38 @@ GADUTypeBannerRef GADUCreateBannerView(GADUTypeBannerClientRef *bannerClient, co
                                        NSInteger width, NSInteger height,
                                        GADAdPosition adPosition) {
   GADUBanner *banner =
-      [[[GADUBanner alloc] initWithBannerClientReference:bannerClient
-                                                adUnitID:GADUStringFromUTF8String(adUnitID)
-                                                   width:width
-                                                  height:height
-                                              adPosition:adPosition] autorelease];
+      [[GADUBanner alloc] initWithBannerClientReference:bannerClient
+                                               adUnitID:GADUStringFromUTF8String(adUnitID)
+                                                  width:width
+                                                 height:height
+                                             adPosition:adPosition];
   GADUObjectCache *cache = [GADUObjectCache sharedInstance];
   [cache.references setObject:banner forKey:[banner gadu_referenceKey]];
-  return banner;
+  return (__bridge GADUTypeBannerRef)banner;
 }
 
 /// Creates a full-width GADBannerView in the current orientation. Returns a reference to the
 /// GADUBannerView.
 GADUTypeBannerRef GADUCreateSmartBannerView(GADUTypeBannerClientRef *bannerClient,
                                             const char *adUnitID, GADAdPosition adPosition) {
-  GADUBanner *banner = [[[GADUBanner alloc]
+  GADUBanner *banner = [[GADUBanner alloc]
       initWithSmartBannerSizeAndBannerClientReference:bannerClient
                                              adUnitID:GADUStringFromUTF8String(adUnitID)
-                                           adPosition:adPosition] autorelease];
+                                           adPosition:adPosition];
   GADUObjectCache *cache = [GADUObjectCache sharedInstance];
   [cache.references setObject:banner forKey:[banner gadu_referenceKey]];
-  return banner;
+  return (__bridge GADUTypeBannerRef)banner;
 }
 
 /// Creates a GADUInterstitial and returns its reference.
 GADUTypeBannerRef GADUCreateInterstitial(GADUTypeInterstitialClientRef *interstitialClient,
                                          const char *adUnitID) {
-  GADUInterstitial *interstitial = [[[GADUInterstitial alloc]
+  GADUInterstitial *interstitial = [[GADUInterstitial alloc]
       initWithInterstitialClientReference:interstitialClient
-                                 adUnitID:GADUStringFromUTF8String(adUnitID)] autorelease];
+                                 adUnitID:GADUStringFromUTF8String(adUnitID)];
   GADUObjectCache *cache = [GADUObjectCache sharedInstance];
   [cache.references setObject:interstitial forKey:[interstitial gadu_referenceKey]];
-  return interstitial;
+  return (__bridge GADUTypeBannerRef)interstitial;
 }
 
 /// Sets the banner callback methods to be invoked during banner ad events.
@@ -64,7 +64,7 @@ void GADUSetBannerCallbacks(GADUTypeBannerRef banner,
                             GADUAdViewWillDismissScreenCallback willDismissCallback,
                             GADUAdViewDidDismissScreenCallback didDismissCallback,
                             GADUAdViewWillLeaveApplicationCallback willLeaveCallback) {
-  GADUBanner *internalBanner = (GADUBanner *)banner;
+  GADUBanner *internalBanner = (__bridge GADUBanner *)banner;
   internalBanner.adReceivedCallback = adReceivedCallback;
   internalBanner.adFailedCallback = adFailedCallback;
   internalBanner.willPresentCallback = willPresentCallback;
@@ -81,7 +81,7 @@ void GADUSetInterstitialCallbacks(
     GADUInterstitialWillDismissScreenCallback willDismissCallback,
     GADUInterstitialDidDismissScreenCallback didDismissCallback,
     GADUInterstitialWillLeaveApplicationCallback willLeaveCallback) {
-  GADUInterstitial *internalInterstitial = (GADUInterstitial *)interstitial;
+  GADUInterstitial *internalInterstitial = (__bridge GADUInterstitial *)interstitial;
   internalInterstitial.adReceivedCallback = adReceivedCallback;
   internalInterstitial.adFailedCallback = adFailedCallback;
   internalInterstitial.willPresentCallback = willPresentCallback;
@@ -92,63 +92,63 @@ void GADUSetInterstitialCallbacks(
 
 /// Sets the GADBannerView's hidden property to YES.
 void GADUHideBannerView(GADUTypeBannerRef banner) {
-  GADUBanner *internalBanner = (GADUBanner *)banner;
+  GADUBanner *internalBanner = (__bridge GADUBanner *)banner;
   [internalBanner hideBannerView];
 }
 
 /// Sets the GADBannerView's hidden property to NO.
 void GADUShowBannerView(GADUTypeBannerRef banner) {
-  GADUBanner *internalBanner = (GADUBanner *)banner;
+  GADUBanner *internalBanner = (__bridge GADUBanner *)banner;
   [internalBanner showBannerView];
 }
 
 /// Removes the GADURemoveBannerView from the view hierarchy.
 void GADURemoveBannerView(GADUTypeBannerRef banner) {
-  GADUBanner *internalBanner = (GADUBanner *)banner;
+  GADUBanner *internalBanner = (__bridge GADUBanner *)banner;
   [internalBanner removeBannerView];
 }
 
 /// Returns YES if the GADInterstitial is ready to be shown.
 BOOL GADUInterstitialReady(GADUTypeInterstitialRef interstitial) {
-  GADUInterstitial *internalInterstitial = (GADUInterstitial *)interstitial;
+  GADUInterstitial *internalInterstitial = (__bridge GADUInterstitial *)interstitial;
   return [internalInterstitial isReady];
 }
 
 /// Shows the GADInterstitial.
 void GADUShowInterstitial(GADUTypeInterstitialRef interstitial) {
-  GADUInterstitial *internalInterstitial = (GADUInterstitial *)interstitial;
+  GADUInterstitial *internalInterstitial = (__bridge GADUInterstitial *)interstitial;
   [internalInterstitial show];
 }
 
 /// Creates an empty GADRequest and returns its reference.
 GADUTypeRequestRef GADUCreateRequest() {
-  GADURequest *request = [[[GADURequest alloc] init] autorelease];
+  GADURequest *request = [[GADURequest alloc] init];
   GADUObjectCache *cache = [GADUObjectCache sharedInstance];
   [cache.references setObject:request forKey:[request gadu_referenceKey]];
-  return request;
+  return (__bridge GADUTypeRequestRef)(request);
 }
 
 /// Adds a test device to the GADRequest.
 void GADUAddTestDevice(GADUTypeRequestRef request, const char *deviceID) {
-  GADURequest *internalRequest = (GADURequest *)request;
+  GADURequest *internalRequest = (__bridge GADURequest *)request;
   [internalRequest addTestDevice:GADUStringFromUTF8String(deviceID)];
 }
 
 /// Adds a keyword to the GADRequest.
 void GADUAddKeyword(GADUTypeRequestRef request, const char *keyword) {
-  GADURequest *internalRequest = (GADURequest *)request;
+  GADURequest *internalRequest = (__bridge GADURequest *)request;
   [internalRequest addKeyword:GADUStringFromUTF8String(keyword)];
 }
 
 /// Sets the user's birthday on the GADRequest.
 void GADUSetBirthday(GADUTypeRequestRef request, NSInteger year, NSInteger month, NSInteger day) {
-  GADURequest *internalRequest = (GADURequest *)request;
+  GADURequest *internalRequest = (__bridge GADURequest *)request;
   [internalRequest setBirthdayWithMonth:month day:day year:year];
 }
 
 /// Sets the user's gender on the GADRequest.
 void GADUSetGender(GADUTypeRequestRef request, NSInteger genderCode) {
-  GADURequest *internalRequest = (GADURequest *)request;
+  GADURequest *internalRequest = (__bridge GADURequest *)request;
   [internalRequest setGenderWithCode:genderCode];
 }
 
@@ -156,28 +156,28 @@ void GADUSetGender(GADUTypeRequestRef request, NSInteger genderCode) {
 /// Children’s Online Privacy Protection Act (COPPA) -
 /// http://business.ftc.gov/privacy-and-security/childrens-privacy.
 void GADUTagForChildDirectedTreatment(GADUTypeRequestRef request, BOOL childDirectedTreatment) {
-  GADURequest *internalRequest = (GADURequest *)request;
+  GADURequest *internalRequest = (__bridge GADURequest *)request;
   internalRequest.tagForChildDirectedTreatment = childDirectedTreatment;
 }
 
 /// Sets an extra parameter to be included in the ad request.
 void GADUSetExtra(GADUTypeRequestRef request, const char *key, const char *value) {
-  GADURequest *internalRequest = (GADURequest *)request;
+  GADURequest *internalRequest = (__bridge GADURequest *)request;
   [internalRequest setExtraWithKey:GADUStringFromUTF8String(key)
                              value:GADUStringFromUTF8String(value)];
 }
 
 /// Makes a banner ad request.
 void GADURequestBannerAd(GADUTypeBannerRef banner, GADUTypeRequestRef request) {
-  GADUBanner *internalBanner = (GADUBanner *)banner;
-  GADURequest *internalRequest = (GADURequest *)request;
+  GADUBanner *internalBanner = (__bridge GADUBanner *)banner;
+  GADURequest *internalRequest = (__bridge GADURequest *)request;
   [internalBanner loadRequest:[internalRequest request]];
 }
 
 /// Makes an interstitial ad request.
 void GADURequestInterstitial(GADUTypeInterstitialRef interstitial, GADUTypeRequestRef request) {
-  GADUInterstitial *internalInterstitial = (GADUInterstitial *)interstitial;
-  GADURequest *internalRequest = (GADURequest *)request;
+  GADUInterstitial *internalInterstitial = (__bridge GADUInterstitial *)interstitial;
+  GADURequest *internalRequest = (__bridge GADURequest *)request;
   [internalInterstitial loadRequest:[internalRequest request]];
 }
 
@@ -185,6 +185,6 @@ void GADURequestInterstitial(GADUTypeInterstitialRef interstitial, GADUTypeReque
 void GADURelease(GADUTypeRef ref) {
   if (ref) {
     GADUObjectCache *cache = [GADUObjectCache sharedInstance];
-    [cache.references removeObjectForKey:[(NSObject *)ref gadu_referenceKey]];
+    [cache.references removeObjectForKey:[(__bridge NSObject *)ref gadu_referenceKey]];
   }
 }

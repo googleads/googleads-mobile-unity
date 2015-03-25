@@ -16,7 +16,7 @@
                                  adUnitID:(NSString *)adUnitID;
 
 /// The interstitial ad.
-@property(nonatomic, retain) GADInterstitial *interstitial;
+@property(nonatomic, strong) GADInterstitial *interstitial;
 
 /// A reference to the Unity interstitial client.
 @property(nonatomic, assign) GADUTypeInterstitialClientRef *interstitialClient;

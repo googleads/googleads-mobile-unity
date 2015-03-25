@@ -12,6 +12,8 @@ import android.graphics.Color;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.ViewParent;
 import android.widget.FrameLayout;
 
 /**
@@ -25,6 +27,18 @@ public class Banner {
 
   /** Banner position constant for the bottom of the screen. */
   private static final int POSITION_BOTTOM = 1;
+
+  /** Banner position constant for the top left of the screen. */
+  private static final int POSITION_TOP_LEFT = 2;
+
+  /** Banner position constant for the top right of the screen. */
+  private static final int POSITION_TOP_RIGHT = 3;
+
+  /** Banner position constant for the bottom left of the screen. */
+  private static final int POSITION_BOTTOM_LEFT = 4;
+
+  /** Banner position constant for the bottom right of the screen. */
+  private static final int POSITION_BOTTOM_RIGHT = 5;
 
   /** The {@link AdView} to display to the user. */
   private AdView adView;
@@ -99,13 +113,26 @@ public class Banner {
           }
         });
         FrameLayout.LayoutParams adParams = new FrameLayout.LayoutParams(
-            FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.WRAP_CONTENT);
-        switch(positionCode) {
+            FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT);
+
+        switch (positionCode) {
           case POSITION_TOP:
-            adParams.gravity = Gravity.TOP;
+            adParams.gravity = Gravity.TOP | Gravity.CENTER_HORIZONTAL;
             break;
           case POSITION_BOTTOM:
-            adParams.gravity = Gravity.BOTTOM;
+            adParams.gravity = Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL;
+            break;
+          case POSITION_TOP_LEFT:
+            adParams.gravity = Gravity.TOP | Gravity.LEFT;
+            break;
+          case POSITION_TOP_RIGHT:
+            adParams.gravity = Gravity.TOP | Gravity.RIGHT;
+            break;
+          case POSITION_BOTTOM_LEFT:
+            adParams.gravity = Gravity.BOTTOM | Gravity.LEFT;
+            break;
+          case POSITION_BOTTOM_RIGHT:
+            adParams.gravity = Gravity.BOTTOM | Gravity.RIGHT;
             break;
         }
         activity.addContentView(adView, adParams);
@@ -169,6 +196,10 @@ public class Banner {
       public void run() {
         Log.d(PluginUtils.LOGTAG, "Calling destroy() on Android");
         adView.destroy();
+        ViewParent parentView = adView.getParent();
+        if (parentView != null && parentView instanceof ViewGroup) {
+          ((ViewGroup) parentView).removeView(adView);
+        }
       }
     });
   }
