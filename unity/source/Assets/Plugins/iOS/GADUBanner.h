@@ -10,8 +10,12 @@
 
 /// Positions to place a banner.
 typedef NS_ENUM(NSUInteger, GADAdPosition) {
-  kGADAdPositionTopOfScreen = 0,    ///< Ad positioned at top of screen.
-  kGADAdPositionBottomOfScreen = 1  ///< Ad positioned at bottom of screen.
+  kGADAdPositionTopOfScreen = 0,         ///< Ad positioned at top of screen.
+  kGADAdPositionBottomOfScreen = 1,      ///< Ad positioned at bottom of screen.
+  kGADAdPositionTopLeftOfScreen = 2,     ///< Ad positioned at top left of screen.
+  kGADAdPositionTopRightOfScreen = 3,    ///< Ad positioned at top right of screen.
+  kGADAdPositionBottomLeftOfScreen = 4,  ///< Ad positioned at bottom left of screen.
+  kGADAdPositionBottomRightOfScreen = 5  ///< Ad positioned at bottom right of screen.
 };
 
 /// A wrapper around GADBannerView. Includes the ability to create GADBannerView objects, load them
@@ -35,7 +39,7 @@ typedef NS_ENUM(NSUInteger, GADAdPosition) {
 @property(nonatomic, assign) GADUTypeBannerClientRef *bannerClient;
 
 /// A GADBannerView which contains the ad.
-@property(nonatomic, retain) GADBannerView *bannerView;
+@property(nonatomic, strong) GADBannerView *bannerView;
 
 /// The ad received callback into Unity.
 @property(nonatomic, assign) GADUAdViewDidReceiveAdCallback adReceivedCallback;

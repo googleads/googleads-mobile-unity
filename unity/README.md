@@ -19,7 +19,7 @@ the plugin, as well as the source code for those that want to iterate on it.
 
 Requirements
 ------------
-* Unity 4.3 (untested on previous versions)
+* Unity 4.5
 * An ad unit ID
 * To deploy on Android:
   * Android SDK 3.2 or higher
@@ -28,6 +28,7 @@ Requirements
 * To deploy on iOS:
   * XCode 5.1 or above
   * [Google Mobile Ads SDK](https://developers.google.com/mobile-ads-sdk/download#downloadios)
+    7.0.0 or higher
 
 
 Integrate the Plugin into your Game
@@ -68,8 +69,10 @@ To build and run on iOS, click **File -> Build Settings**, select the iOS
 platform, then **Switch Platform**, then **Build**. This will export an
 XCode project. You'll need to do the following before you can run it:
 
-1. Add the Google Mobile Ads iOS SDK library.
-2. Add the following frameworks if they aren't already part of the project:
+1. From the Xcode project navigator, right-click on the project, and choose
+   Add Files To "<Project Name>".
+2. Navigate to and select **GoogleMobileAds.framework**.
+3. Add the following frameworks if they aren't already part of the project:
    * AdSupport
    * AudioToolbox
    * AVFoundation
@@ -80,7 +83,7 @@ XCode project. You'll need to do the following before you can run it:
    * MessageUI
    * StoreKit
    * SystemConfiguration
-3. Add the **-ObjC** linker flag to your **Other Linker Flags** in
+4. Set **Enable Modules (C and Objective-C)** to **Yes** in
    **Build Settings**.
 
 If these steps didn't work, the [developer docs](https://developers.google.com/mobile-ads-sdk/docs/admob/ios/quick-start#manually_using_the_sdk_download)
@@ -254,4 +257,3 @@ Additional Resources
 * [Developer documentation](https://developers.google.com/mobile-ads-sdk)
 * [Developer forum](https://groups.google.com/group/google-admob-ads-sdk)
 * [Google Ads +Page](https://plus.google.com/+GoogleAdsDevelopers)
-

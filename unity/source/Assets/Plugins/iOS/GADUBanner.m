@@ -9,7 +9,7 @@
 
 #import "UnityAppController.h"
 
-@interface GADUBanner ()<GADBannerViewDelegate>
+@interface GADUBanner () <GADBannerViewDelegate>
 
 /// Defines where the ad should be positioned on the screen.
 @property(nonatomic, assign) GADAdPosition adPosition;
@@ -39,7 +39,7 @@
                                              adUnitID:(NSString *)adUnitID
                                            adPosition:(GADAdPosition)adPosition {
   // Choose the correct Smart Banner constant according to orientation.
-  UIDeviceOrientation currentOrientation = [[UIDevice currentDevice] orientation];
+  UIDeviceOrientation currentOrientation = [UIApplication sharedApplication].statusBarOrientation;
   GADAdSize adSize;
   if (UIInterfaceOrientationIsPortrait(currentOrientation)) {
     adSize = kGADAdSizeSmartBannerPortrait;
@@ -66,6 +66,10 @@
     _bannerView.rootViewController = [GADUBanner unityGLViewController];
   }
   return self;
+}
+
+- (void)dealloc {
+  _bannerView.delegate = nil;
 }
 
 - (void)loadRequest:(GADRequest *)request {
@@ -114,6 +118,21 @@
       center = CGPointMake(CGRectGetMidX(unityView.bounds),
                            CGRectGetMaxY(unityView.bounds) - CGRectGetMidY(_bannerView.bounds));
       break;
+    case kGADAdPositionTopLeftOfScreen:
+      center = CGPointMake(CGRectGetMidX(_bannerView.bounds), CGRectGetMidY(_bannerView.bounds));
+      break;
+    case kGADAdPositionTopRightOfScreen:
+      center = CGPointMake(CGRectGetMaxX(unityView.bounds) - CGRectGetMidX(_bannerView.bounds),
+                           CGRectGetMidY(_bannerView.bounds));
+      break;
+    case kGADAdPositionBottomLeftOfScreen:
+      center = CGPointMake(CGRectGetMidX(_bannerView.bounds),
+                           CGRectGetMaxY(unityView.bounds) - CGRectGetMidY(_bannerView.bounds));
+      break;
+    case kGADAdPositionBottomRightOfScreen:
+      center = CGPointMake(CGRectGetMaxX(unityView.bounds) - CGRectGetMidX(_bannerView.bounds),
+                           CGRectGetMaxY(unityView.bounds) - CGRectGetMidY(_bannerView.bounds));
+      break;
   }
 
   // Remove existing banner view from superview.
@@ -159,14 +178,6 @@
   if (self.willLeaveCallback) {
     self.willLeaveCallback(self.bannerClient);
   }
-}
-
-#pragma mark Cleanup
-
-- (void)dealloc {
-  _bannerView.delegate = nil;
-  [_bannerView release];
-  [super dealloc];
 }
 
 @end

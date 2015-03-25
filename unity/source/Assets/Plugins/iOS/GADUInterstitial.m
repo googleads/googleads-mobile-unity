@@ -9,7 +9,7 @@
 
 #import "UnityAppController.h"
 
-@interface GADUInterstitial ()<GADInterstitialDelegate>
+@interface GADUInterstitial () <GADInterstitialDelegate>
 @end
 
 @implementation GADUInterstitial
@@ -32,8 +32,6 @@
 
 - (void)dealloc {
   _interstitial.delegate = nil;
-  [_interstitial release];
-  [super dealloc];
 }
 
 - (void)loadRequest:(GADRequest *)request {
