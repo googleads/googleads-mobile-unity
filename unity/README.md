@@ -47,9 +47,14 @@ Android Setup
 1. Add the google-play-services_lib folder,
    located at ANDROID_SDK_LOCATION/extras/google/google_play_services/libproject,
    into the Plugins/Android folder of your project.
-2. If you already had an AndroidManifest.xml in Plugins/Android/, keep your current
-   version and [add the necessary activities and permissions](https://developers.google.com/mobile-ads-sdk/docs/admob/android/quick-start#androidmanifestxml)
-   required by the Google Mobile Ads SDK.
+2. [For users running a version of Unity earlier than 5.0] Navigate to Temp/StagingArea
+   of your project directory and copy AndroidManifest.xml to Assets/Plugins/Android.
+   Add the following &lt;meta-data&gt; tag to the AndroidManifest.xml file:
+
+        <activity android:name="com.unity3d.player.UnityPlayerActivity" ...>
+          ...
+          <meta-data android:name="unityplayer.ForwardNativeEventsToDalvik" android:value="true" />
+        </activity>
 
 iOS Setup
 ---------
@@ -72,18 +77,7 @@ XCode project. You'll need to do the following before you can run it:
 1. From the Xcode project navigator, right-click on the project, and choose
    Add Files To "<Project Name>".
 2. Navigate to and select **GoogleMobileAds.framework**.
-3. Add the following frameworks if they aren't already part of the project:
-   * AdSupport
-   * AudioToolbox
-   * AVFoundation
-   * CoreGraphics
-   * CoreTelephony
-   * EventKit
-   * EventKitUI
-   * MessageUI
-   * StoreKit
-   * SystemConfiguration
-4. Set **Enable Modules (C and Objective-C)** to **Yes** in
+3. Set **Enable Modules (C and Objective-C)** to **Yes** in
    **Build Settings**.
 
 If these steps didn't work, the [developer docs](https://developers.google.com/mobile-ads-sdk/docs/admob/ios/quick-start#manually_using_the_sdk_download)
@@ -143,6 +137,17 @@ In addition to constants on _AdSize_, you can also create a custom size:
     AdSize adSize = new AdSize(250, 250);
     BannerView bannerView = new BannerView(
             "YOUR_AD_UNIT_ID", adSize, AdPosition.Bottom);
+
+Banner Placement Locations
+--------------------------
+The following constants list the available ad positions:
+
+    AdPosition.Top
+    AdPosition.Bottom
+    AdPosition.TopLeft
+    AdPosition.TopRight
+    AdPosition.BottomLeft
+    AdPosition.BottomRight
 
 Ad Request Targeting
 --------------------

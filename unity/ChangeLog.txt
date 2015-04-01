@@ -1,5 +1,11 @@
 Google Mobile Ads Unity Plugin Change Log
 
+*************
+Version 2.2.1
+*************
+- Fix for Android manifest merge issues on Unity 4.x
+- Fix for TouchCount issue on Unity 5.0
+
 ***********
 Version 2.2
 ***********
