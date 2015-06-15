@@ -51,5 +51,10 @@ namespace GoogleMobileAds.Common
         public void DestroyInterstitial() {
             Debug.Log("Dummy DestroyInterstitial");
         }
+
+        public void SetInAppPurchaseParams(IInAppPurchaseListener listener, string androidPublicKey)
+        {
+            Debug.Log("Dummy SetInAppPurchaseParams");
+        }
     }
 }

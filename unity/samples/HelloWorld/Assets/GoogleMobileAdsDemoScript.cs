@@ -3,17 +3,54 @@ using UnityEngine;
 using GoogleMobileAds;
 using GoogleMobileAds.Api;
 
+public class GoogleMobileAdsDemoHandler : IInAppPurchaseHandler
+{
+    private readonly string[] validSkus = { "android.test.purchased" };
+
+    //Will only be sent on a success.
+    public void OnInAppPurchaseFinished(IInAppPurchaseResult result)
+    {
+        result.FinishPurchase();
+        GoogleMobileAdsDemoScript.OutputMessage = "Purchase Succeeded! Credit user here.";
+    }
+
+    //Check SKU against valid SKUs.
+    public bool IsValidPurchase(string sku)
+    {
+        foreach(string validSku in validSkus) {
+            if (sku == validSku) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    //Return the app's public key.
+    public string AndroidPublicKey
+    {
+        //In a real app, return public key instead of null.
+        get { return null; }
+    }
+}
+
 // Example script showing how to invoke the Google Mobile Ads Unity plugin.
 public class GoogleMobileAdsDemoScript : MonoBehaviour
 {
 
     private BannerView bannerView;
     private InterstitialAd interstitial;
+    private static string outputMessage = "";
+
+    public static string OutputMessage
+    {
+        set { outputMessage = value; }
+    }
 
     void OnGUI()
     {
         // Puts some basic buttons onto the screen.
         GUI.skin.button.fontSize = (int) (0.05f * Screen.height);
+        GUI.skin.label.fontSize = (int) (0.025f * Screen.height);
 
         Rect requestBannerRect = new Rect(0.1f * Screen.width, 0.05f * Screen.height,
                                    0.8f * Screen.width, 0.1f * Screen.height);
@@ -63,6 +100,10 @@ public class GoogleMobileAdsDemoScript : MonoBehaviour
         {
             interstitial.Destroy();
         }
+
+        Rect textOutputRect = new Rect(0.1f * Screen.width, 0.925f * Screen.height,
+                                   0.8f * Screen.width, 0.05f * Screen.height);
+        GUI.Label(textOutputRect, outputMessage);
     }
 
     private void RequestBanner()
@@ -111,6 +152,8 @@ public class GoogleMobileAdsDemoScript : MonoBehaviour
         interstitial.AdClosing += HandleInterstitialClosing;
         interstitial.AdClosed += HandleInterstitialClosed;
         interstitial.AdLeftApplication += HandleInterstitialLeftApplication;
+        GoogleMobileAdsDemoHandler handler = new GoogleMobileAdsDemoHandler();
+        interstitial.SetInAppPurchaseHandler(handler);
         // Load an interstitial ad.
         interstitial.LoadAd(createAdRequest());
     }

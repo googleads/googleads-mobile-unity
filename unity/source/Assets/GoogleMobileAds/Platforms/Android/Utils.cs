@@ -20,6 +20,8 @@ namespace GoogleMobileAds.Android
         public const string AdSizeClassName = "com.google.android.gms.ads.AdSize";
         public const string AdMobExtrasClassName =
                 "com.google.android.gms.ads.mediation.admob.AdMobExtras";
+        public const string PlayStorePurchaseListenerClassName =
+            "com.google.android.gms.ads.purchase.PlayStorePurchaseListener";
 
         #endregion
 
@@ -28,6 +30,7 @@ namespace GoogleMobileAds.Android
         public const string BannerViewClassName = "com.google.unity.ads.Banner";
         public const string InterstitialClassName = "com.google.unity.ads.Interstitial";
         public const string UnityAdListenerClassName = "com.google.unity.ads.UnityAdListener";
+        public const string PluginUtilsClassName = "com.google.unity.ads.PluginUtils";
 
         #endregion
 

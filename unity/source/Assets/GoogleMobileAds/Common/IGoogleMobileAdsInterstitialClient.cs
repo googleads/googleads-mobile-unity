@@ -16,5 +16,8 @@ namespace GoogleMobileAds.Common {
 
         // Destroys an InterstitialAd to free up memory.
         void DestroyInterstitial();
+
+        // Sets in-app purchase params to use in-app purchase house ads.
+        void SetInAppPurchaseParams(IInAppPurchaseListener listener, string androidPublicKey);
     }
 }

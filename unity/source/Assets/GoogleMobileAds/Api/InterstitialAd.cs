@@ -3,9 +3,10 @@ using GoogleMobileAds.Common;
 
 namespace GoogleMobileAds.Api
 {
-    public class InterstitialAd : IAdListener
+    public class InterstitialAd : IAdListener, IInAppPurchaseListener
     {
         private IGoogleMobileAdsInterstitialClient client;
+        private IInAppPurchaseHandler handler;
 
         // These are the ad callback events that can be hooked into.
         public event EventHandler<EventArgs> AdLoaded = delegate {};
@@ -81,6 +82,31 @@ namespace GoogleMobileAds.Api
         void IAdListener.FireAdLeftApplication()
         {
             AdLeftApplication(this, EventArgs.Empty);
+        }
+
+        #endregion
+
+        #region IInAppPurchaseListener implementation
+
+        bool IInAppPurchaseListener.FireIsValidPurchase(string sku)
+        {
+            if (handler != null) {
+                return handler.IsValidPurchase(sku);
+            }
+            return false;
+        }
+
+        void IInAppPurchaseListener.FireOnInAppPurchaseFinished(IInAppPurchaseResult result)
+        {
+            if (handler != null) {
+                handler.OnInAppPurchaseFinished(result);
+            }
+        }
+
+        public void SetInAppPurchaseHandler(IInAppPurchaseHandler handler)
+        {
+            this.handler = handler;
+            client.SetInAppPurchaseParams(this, handler.AndroidPublicKey);
         }
 
         #endregion

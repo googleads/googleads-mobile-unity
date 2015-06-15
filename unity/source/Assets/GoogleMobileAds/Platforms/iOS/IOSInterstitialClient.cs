@@ -153,6 +153,11 @@ namespace GoogleMobileAds.iOS
             return handle.Target as IOSInterstitialClient;
         }
 
+        public void SetInAppPurchaseParams(IInAppPurchaseListener listener, string publicKey)
+        {
+            // iOS currently does not support in-app purchase ads.
+        }
+
         #endregion
     }
 }

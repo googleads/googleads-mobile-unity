@@ -5,6 +5,7 @@ package com.google.unity.ads;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.InterstitialAd;
+import com.google.android.gms.ads.purchase.PlayStorePurchaseListener;
 
 import android.app.Activity;
 import android.util.Log;
@@ -20,14 +21,14 @@ public class Interstitial {
   private Activity activity;
 
   /** A listener implemented in Unity via {@code AndroidJavaProxy} to receive ad events. */
-  private UnityAdListener listener;
+  private UnityAdListener adListener;
 
   /** Whether or not the {@link InterstitialAd} is ready to be shown. */
   private boolean isLoaded;
 
-  public Interstitial(Activity activity, UnityAdListener listener) {
+  public Interstitial(Activity activity, UnityAdListener adListener) {
     this.activity = activity;
-    this.listener = listener;
+    this.adListener = adListener;
     this.isLoaded = false;
   }
 
@@ -46,27 +47,27 @@ public class Interstitial {
           @Override
           public void onAdLoaded() {
             isLoaded = true;
-            listener.onAdLoaded();
+            adListener.onAdLoaded();
           }
 
           @Override
           public void onAdFailedToLoad(int errorCode) {
-            listener.onAdFailedToLoad(PluginUtils.getErrorReason(errorCode));
+            adListener.onAdFailedToLoad(PluginUtils.getErrorReason(errorCode));
           }
 
           @Override
           public void onAdOpened() {
-            listener.onAdOpened();
+            adListener.onAdOpened();
           }
 
           @Override
           public void onAdClosed() {
-            listener.onAdClosed();
+            adListener.onAdClosed();
           }
 
           @Override
           public void onAdLeftApplication() {
-            listener.onAdLeftApplication();
+            adListener.onAdLeftApplication();
           }
         });
       }
@@ -111,6 +112,17 @@ public class Interstitial {
         }
       }
     });
+  }
+
+  /**
+   * Sets Play Store purchase parameters. The PlayStorePurchaseListener is implemented on the Unity
+   * side via {@code AndroidJavaProxy}.
+   * @param purchaseListener A PlayStorePurchaseListener for monitoring purchase events.
+   * @param publicKey The app's public key string.
+   */
+  public void setPlayStorePurchaseParams(PlayStorePurchaseListener purchaseListener,
+                                         String publicKey) {
+    interstitial.setPlayStorePurchaseParams(purchaseListener, publicKey);
   }
 
   /**

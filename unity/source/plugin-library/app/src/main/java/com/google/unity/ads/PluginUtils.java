@@ -3,7 +3,9 @@
 package com.google.unity.ads;
 
 import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.purchase.InAppPurchaseResult;
 
+import android.app.Activity;
 import android.util.Log;
 
 /**
@@ -33,5 +35,14 @@ public class PluginUtils {
         Log.w(LOGTAG, String.format("Unexpected error code: %s", errorCode));
         return "";
     }
+  }
+
+  /**
+   * Returns whether the InAppPurchaseResult was successful.
+   * @param result The InAppPurchaseResult to check.
+   * @return true on success, otherwise false.
+   */
+  public static boolean isResultSuccess(InAppPurchaseResult result) {
+      return result.getResultCode() == Activity.RESULT_OK;
   }
 }

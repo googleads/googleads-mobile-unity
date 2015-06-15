@@ -1,6 +1,11 @@
 Google Mobile Ads Unity Plugin Change Log
 
 *************
+Version 2.3.0
+*************
+- Add support for In-App Purchase house ads on Android.
+
+*************
 Version 2.2.1
 *************
 - Fix for Android manifest merge issues on Unity 4.x
