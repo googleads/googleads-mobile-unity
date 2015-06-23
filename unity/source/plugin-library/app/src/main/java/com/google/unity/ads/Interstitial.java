@@ -120,9 +120,14 @@ public class Interstitial {
    * @param purchaseListener A PlayStorePurchaseListener for monitoring purchase events.
    * @param publicKey The app's public key string.
    */
-  public void setPlayStorePurchaseParams(PlayStorePurchaseListener purchaseListener,
-                                         String publicKey) {
-    interstitial.setPlayStorePurchaseParams(purchaseListener, publicKey);
+  public void setPlayStorePurchaseParams(final PlayStorePurchaseListener purchaseListener,
+                                         final String publicKey) {
+    activity.runOnUiThread(new Runnable() {
+      @Override
+      public void run() {
+        interstitial.setPlayStorePurchaseParams(purchaseListener, publicKey);
+      }
+    });
   }
 
   /**

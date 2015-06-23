@@ -13,7 +13,7 @@ import android.util.Log;
  */
 public class PluginUtils {
   /** Tag used for logging statements. */
-  public static final String LOGTAG = "GoogleMobileAdsUnityPlugin";
+  public static final String LOGTAG = "AdsUnity";
 
   /**
    * Gets a string error reason from an error code.
