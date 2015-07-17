@@ -1,9 +1,14 @@
 Google Mobile Ads Unity Plugin Change Log
 
 *************
+Version 2.3.1
+*************
+- Move IInAppBillingService into its own JAR
+
+*************
 Version 2.3.0
 *************
-- Add support for In-App Purchase house ads on Android.
+- Add support for In-App Purchase house ads on Android
 
 *************
 Version 2.2.1
