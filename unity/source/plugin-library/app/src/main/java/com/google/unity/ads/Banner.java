@@ -66,8 +66,9 @@ public class Banner {
    * @param publisherId Your ad unit ID.
    * @param adSize The size of the banner.
    * @param positionCode A code indicating where to place the ad.
+   * @param margins Array of margin. [left, top, right, bottom]
    */
-  public void create(final String publisherId, final AdSize adSize, final int positionCode) {
+  public void create(final String publisherId, final AdSize adSize, final int positionCode, final int[] margins) {
     activity.runOnUiThread(new Runnable() {
       @Override
       public void run() {
@@ -135,6 +136,15 @@ public class Banner {
             adParams.gravity = Gravity.BOTTOM | Gravity.RIGHT;
             break;
         }
+          
+        // converting dp units to pixel units
+        final float scale = activity.getResources().getDisplayMetrics().density;
+        final int marginLeft = (int) (margins[0] * scale + 0.5f);
+        final int marginTop = (int) (margins[1] * scale + 0.5f);
+        final int marginRight = (int) (margins[2] * scale + 0.5f);
+        final int marginBottom = (int) (margins[3] * scale + 0.5f);
+        adParams.setMargins(marginLeft, marginTop, marginRight, marginBottom);
+      
         activity.addContentView(adView, adParams);
       }
     });

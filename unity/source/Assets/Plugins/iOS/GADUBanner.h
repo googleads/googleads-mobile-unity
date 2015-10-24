@@ -28,12 +28,14 @@ typedef NS_ENUM(NSUInteger, GADAdPosition) {
                            adUnitID:(NSString *)adUnitID
                               width:(CGFloat)width
                              height:(CGFloat)height
-                         adPosition:(GADAdPosition)adPosition;
+                         adPosition:(GADAdPosition)adPosition
+                          adMargins:(int *)adMargins;
 
 /// Initializes a full-width GADUBanner, positioned at either the top or bottom of the screen.
 - (id)initWithSmartBannerSizeAndBannerClientReference:(GADUTypeBannerClientRef *)bannerClient
                                              adUnitID:(NSString *)adUnitID
-                                           adPosition:(GADAdPosition)adPosition;
+                                           adPosition:(GADAdPosition)adPosition
+                                            adMargins:(int *)adMargins;
 
 /// A reference to the Unity banner client.
 @property(nonatomic, assign) GADUTypeBannerClientRef *bannerClient;

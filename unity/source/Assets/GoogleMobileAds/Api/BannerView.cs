@@ -19,8 +19,14 @@ namespace GoogleMobileAds.Api
         public BannerView(string adUnitId, AdSize adSize, AdPosition position)
         {
             client = GoogleMobileAdsClientFactory.GetGoogleMobileAdsBannerClient(this);
-            client.CreateBannerView(adUnitId, adSize, position);
+			client.CreateBannerView(adUnitId, adSize, position, new AdMargin());
         }
+
+		public BannerView(string adUnitId, AdSize adSize, AdPosition position, AdMargin margin)
+		{
+			client = GoogleMobileAdsClientFactory.GetGoogleMobileAdsBannerClient(this);
+			client.CreateBannerView(adUnitId, adSize, position, margin);
+		}
 
         // Load an ad into the BannerView.
         public void LoadAd(AdRequest request)

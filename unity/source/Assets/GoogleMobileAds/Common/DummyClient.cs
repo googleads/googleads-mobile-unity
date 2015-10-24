@@ -15,6 +15,11 @@ namespace GoogleMobileAds.Common
             Debug.Log("Dummy CreateBannerView");
         }
 
+		public void CreateBannerView(string adUnitId, AdSize adSize, AdPosition position, AdMargin margin)
+		{
+			Debug.Log("Dummy CreateBannerView");
+		}
+
         public void LoadAd(AdRequest request)
         {
             Debug.Log("Dummy LoadAd");

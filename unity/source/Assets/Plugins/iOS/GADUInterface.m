@@ -20,13 +20,14 @@ static NSString *GADUStringFromUTF8String(const char *bytes) {
 /// the GADUBannerView.
 GADUTypeBannerRef GADUCreateBannerView(GADUTypeBannerClientRef *bannerClient, const char *adUnitID,
                                        NSInteger width, NSInteger height,
-                                       GADAdPosition adPosition) {
+                                       GADAdPosition adPosition, int *adMargins) {
   GADUBanner *banner =
       [[GADUBanner alloc] initWithBannerClientReference:bannerClient
                                                adUnitID:GADUStringFromUTF8String(adUnitID)
                                                   width:width
                                                  height:height
-                                             adPosition:adPosition];
+                                             adPosition:adPosition
+                                              adMargins:adMargins];
   GADUObjectCache *cache = [GADUObjectCache sharedInstance];
   [cache.references setObject:banner forKey:[banner gadu_referenceKey]];
   return (__bridge GADUTypeBannerRef)banner;
@@ -35,11 +36,12 @@ GADUTypeBannerRef GADUCreateBannerView(GADUTypeBannerClientRef *bannerClient, co
 /// Creates a full-width GADBannerView in the current orientation. Returns a reference to the
 /// GADUBannerView.
 GADUTypeBannerRef GADUCreateSmartBannerView(GADUTypeBannerClientRef *bannerClient,
-                                            const char *adUnitID, GADAdPosition adPosition) {
+                                            const char *adUnitID, GADAdPosition adPosition, int *adMargins) {
   GADUBanner *banner = [[GADUBanner alloc]
       initWithSmartBannerSizeAndBannerClientReference:bannerClient
                                              adUnitID:GADUStringFromUTF8String(adUnitID)
-                                           adPosition:adPosition];
+                                           adPosition:adPosition
+                            adMargins:adMargins];
   GADUObjectCache *cache = [GADUObjectCache sharedInstance];
   [cache.references setObject:banner forKey:[banner gadu_referenceKey]];
   return (__bridge GADUTypeBannerRef)banner;

@@ -13,6 +13,8 @@
 
 /// Defines where the ad should be positioned on the screen.
 @property(nonatomic, assign) GADAdPosition adPosition;
+/// Defines margins of ad.
+@property(nonatomic, retain) NSArray *adMargins;
 
 @end
 
@@ -27,17 +29,20 @@
                            adUnitID:(NSString *)adUnitID
                               width:(CGFloat)width
                              height:(CGFloat)height
-                         adPosition:(GADAdPosition)adPosition {
+                         adPosition:(GADAdPosition)adPosition
+                          adMargins:(int *)adMargins {
   GADAdSize adSize = GADAdSizeFromCGSize(CGSizeMake(width, height));
   return [self initWithBannerClientReference:bannerClient
                                     adUnitID:adUnitID
                                       adSize:adSize
-                                  adPosition:adPosition];
+                                  adPosition:adPosition
+                                   adMargins:adMargins];
 }
 
 - (id)initWithSmartBannerSizeAndBannerClientReference:(GADUTypeBannerClientRef *)bannerClient
                                              adUnitID:(NSString *)adUnitID
-                                           adPosition:(GADAdPosition)adPosition {
+                                           adPosition:(GADAdPosition)adPosition
+                                            adMargins:(int *)adMargins {
   // Choose the correct Smart Banner constant according to orientation.
   UIDeviceOrientation currentOrientation = [UIApplication sharedApplication].statusBarOrientation;
   GADAdSize adSize;
@@ -49,17 +54,23 @@
   return [self initWithBannerClientReference:bannerClient
                                     adUnitID:adUnitID
                                       adSize:adSize
-                                  adPosition:adPosition];
+                                  adPosition:adPosition
+                                   adMargins:adMargins];
 }
 
 - (id)initWithBannerClientReference:(GADUTypeBannerClientRef *)bannerClient
                            adUnitID:(NSString *)adUnitID
                              adSize:(GADAdSize)size
-                         adPosition:(GADAdPosition)adPosition {
+                         adPosition:(GADAdPosition)adPosition
+                          adMargins:(int *)adMargins {
   self = [super init];
   if (self) {
     _bannerClient = bannerClient;
     _adPosition = adPosition;
+    _adMargins = [NSArray arrayWithObjects:[NSNumber numberWithInt:adMargins[0]],
+                                           [NSNumber numberWithInt:adMargins[1]],
+                                           [NSNumber numberWithInt:adMargins[2]],
+                                           [NSNumber numberWithInt:adMargins[3]], nil];
     _bannerView = [[GADBannerView alloc] initWithAdSize:size];
     _bannerView.adUnitID = adUnitID;
     _bannerView.delegate = self;
@@ -134,6 +145,14 @@
                            CGRectGetMaxY(unityView.bounds) - CGRectGetMidY(_bannerView.bounds));
       break;
   }
+    
+  // Margins
+  int marginLeft = [[_adMargins objectAtIndex:0] intValue];
+  int marginTop = [[_adMargins objectAtIndex:1] intValue];
+  int marginRight = [[_adMargins objectAtIndex:2] intValue];
+  int marginBottom = [[_adMargins objectAtIndex:3] intValue];
+  center.x += marginLeft - marginRight;
+  center.y += marginTop - marginBottom;
 
   // Remove existing banner view from superview.
   [self.bannerView removeFromSuperview];
