@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+This Google Mobile Ads plugin library manifest will get merged with your
+application's manifest, adding the necessary activity and permissions
+required for displaying ads.
+-->
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.google.unity"
+    android:versionName="1.0"
+    android:versionCode="1">
+  <uses-sdk android:minSdkVersion="9"
+      android:targetSdkVersion="19" />
+  <!-- Google Mobile Ads Permissions -->
+  <uses-permission android:name="android.permission.INTERNET"/>
+  <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+  <!-- Uncomment to add billing for in-app purchase ads -->
+  <uses-permission android:name="com.android.vending.BILLING"/>
+  <application>
+    <!-- Denote the referenced Google Play services version -->
+    <meta-data android:name="com.google.android.gms.version"
+        android:value="@integer/google_play_services_version" />
+    <!-- Google Mobile Ads Activity -->
+    <activity android:name="com.google.android.gms.ads.AdActivity"
+        android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"/>
+    <!-- InAppPurchase Activity -->
+    <activity android:name="com.google.android.gms.ads.purchase.InAppPurchaseActivity"
+        android:theme="@style/Theme.IAPTheme"/>
+  </application>
+</manifest>
