@@ -183,6 +183,12 @@ void GADUAddKeyword(GADUTypeRequestRef request, const char *keyword) {
   [internalRequest addKeyword:GADUStringFromUTF8String(keyword)];
 }
 
+/// Sets the request agent for the GADRequest.
+void GADUSetRequestAgent(GADUTypeRequestRef request, const char *requestAgent) {
+  GADURequest *internalRequest = (__bridge GADURequest *)request;
+  [internalRequest setRequestAgent:GADUStringFromUTF8String(requestAgent)];
+}
+
 /// Sets the user's birthday on the GADRequest.
 void GADUSetBirthday(GADUTypeRequestRef request, NSInteger year, NSInteger month, NSInteger day) {
   GADURequest *internalRequest = (__bridge GADURequest *)request;

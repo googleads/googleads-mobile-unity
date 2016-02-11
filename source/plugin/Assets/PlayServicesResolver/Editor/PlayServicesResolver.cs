@@ -18,8 +18,6 @@
 namespace GooglePlayServices
 {
     using System;
-    using System.Collections.Generic;
-    using System.IO;
     using Google.JarResolver;
     using UnityEditor;
     using UnityEngine;
@@ -36,9 +34,21 @@ namespace GooglePlayServices
     public class PlayServicesResolver : AssetPostprocessor
     {
         /// <summary>
+        /// The name of the current resolver.
+        /// </summary>
+        /// <remarks>
+        /// This should be updated when a new revision is created.
+        /// </remarks>
+        private static string CurrentResolverName = "ResolverVer1_1";
+        /// <summary>
         /// The instance to the play services support object.
         /// </summary>
         private static PlayServicesSupport svcSupport;
+
+        /// <summary>
+        /// The resolver to use, injected to allow for version updating.
+        /// </summary>
+        private static IResolver _resolver;
 
         /// <summary>
         /// Initializes the <see cref="GooglePlayServices.PlayServicesResolver"/> class.
@@ -52,26 +62,42 @@ namespace GooglePlayServices
         }
 
         /// <summary>
-        /// Gets a value indicating whether this <see cref="GooglePlayServices.PlayServicesResolver"/> supports aar files.
+        /// Registers the resolver.
         /// </summary>
-        /// <value><c>true</c> if supports aar files; otherwise, <c>false</c>.</value>
-        static bool SupportsAarFiles
+        /// <remarks>
+        /// The resolver with the greatest version number is retained
+        /// </remarks>
+        /// <returns>The resolver.</returns>
+        /// <param name="resolverImpl">Resolver impl.</param>
+        public static IResolver RegisterResolver(IResolver resolverImpl)
+        {
+            if (resolverImpl == null)
+            {
+                return _resolver;
+            }
+            if (_resolver == null || _resolver.Version() < resolverImpl.Version())
+            {
+                _resolver = resolverImpl;
+            }
+            return _resolver;
+        }
+
+        /// <summary>
+        /// Gets the resolver.
+        /// </summary>
+        /// <value>The resolver.</value>
+        static IResolver Resolver
         {
             get
             {
-                // Get the version number.
-                string majorVersion = Application.unityVersion.Split('.')[0];
-                int ver;
-                if (!int.TryParse(majorVersion, out ver))
+                if (_resolver == null)
                 {
-                    #if UNITY_4
-                        ver = 4;
-                    #else
-                    ver = 5;
-                    #endif
-                }
+                    // create the latest resolver known.
+                    Type type = Type.GetType(CurrentResolverName, true);
 
-                return ver >= 5;
+                    _resolver = Activator.CreateInstance(type) as IResolver;
+                }
+                return _resolver;
             }
         }
 
@@ -88,9 +114,27 @@ namespace GooglePlayServices
                                            string[] movedAssets,
                                            string[] movedFromAssetPaths)
         {
-            DoResolution();
+            if (!Resolver.ShouldAutoResolve(importedAssets, deletedAssets,
+                    movedAssets, movedFromAssetPaths))
+            {
+                return;
+            }
+
+            Resolver.DoResolution(svcSupport,
+                "Assets/Plugins/Android",
+                HandleOverwriteConfirmation);
+
             AssetDatabase.Refresh();
             Debug.Log("Android Jar Dependencies: Resolution Complete");
+        }
+
+        /// <summary>
+        /// Add a menu item for resolving the jars manually.
+        /// </summary>
+        [MenuItem("Assets/Google Play Services/Settings")]
+        public static void SettingsDialog()
+        {
+            Resolver.ShowSettingsDialog();
         }
 
         /// <summary>
@@ -99,40 +143,11 @@ namespace GooglePlayServices
         [MenuItem("Assets/Google Play Services/Resolve Client Jars")]
         public static void MenuResolve()
         {
-             DoResolution();
+            Resolver.DoResolution(svcSupport, "Assets/Plugins/Android", HandleOverwriteConfirmation);
 
             AssetDatabase.Refresh();
             EditorUtility.DisplayDialog("Android Jar Dependencies",
                 "Resolution Complete", "OK");
-        }
-
-        /// <summary>
-        /// Perform the resolution and the exploding/cleanup as needed.
-        /// </summary>
-        static void DoResolution()
-        {
-            // Get the collection of dependencies that need to be copied.
-            Dictionary<string, Dependency> deps =
-                svcSupport.ResolveDependencies(true);
-
-            // Copy the list
-            svcSupport.CopyDependencies(deps,
-                "Assets/Plugins/Android",
-                HandleOverwriteConfirmation);
-
-            // If aar files are not supported, explode them into directories.
-            // otherwise clean up any exploded directories in favor of the aar files.
-            if (!SupportsAarFiles)
-            {
-                Debug.Log("Exploding");
-                // need to explode the .aar file in place.
-                ExplodeAarFiles("Assets/Plugins/Android");
-            }
-            else
-            {
-                Debug.Log("Cleaning up exploded aars...");
-                CleanupExploded("Assets/Plugins/Android");
-            }
         }
 
         /// <summary>
@@ -152,147 +167,6 @@ namespace GooglePlayServices
                     msg, "OK", "Keep");
             }
             return true;
-        }
-
-        /// <summary>
-        /// Clean ups the exploded aar files by deleting the directory of the
-        /// same name.
-        /// </summary>
-        /// <param name="dir">Directory to look for the aar files.</param>
-        static void CleanupExploded(string dir)
-        {
-            string[] files = Directory.GetFiles(dir, "*.aar");
-            foreach (string f in files)
-            {
-                string baseName = Path.GetFileNameWithoutExtension(f);
-                if (Directory.Exists(Path.Combine(dir, baseName)))
-                {
-                    DeleteFully(Path.Combine(dir, baseName));
-                }
-            }
-        }
-
-        /// <summary>
-        /// Deletes the directory fully.
-        /// </summary>
-        /// <param name="dir">Directory to delete.</param>
-        static void DeleteFully(string dir)
-        {
-            string[] files = Directory.GetFiles(dir);
-            string[] dirs = Directory.GetDirectories(dir);
-
-            foreach (string f in files)
-            {
-                File.Delete(f);
-            }
-
-            foreach (string d in dirs)
-            {
-                DeleteFully(d);
-            }
-
-            Directory.Delete(dir);
-        }
-
-        /// <summary>
-        /// Explodes the aar files into directories and deletes the aar file.
-        /// </summary>
-        /// <param name="dir">Dir.</param>
-        static void ExplodeAarFiles(string dir)
-        {
-            string[] files = Directory.GetFiles(dir, "*.aar");
-            foreach (string f in files)
-            {
-                ProcessAar(Path.GetFullPath(dir), f);
-            }
-        }
-
-        /// <summary>
-        /// Explodes a single aar file.  This is done by calling the
-        /// JDK "jar" command, then moving the classes.jar file.
-        /// </summary>
-        /// <param name="dir">the parent directory of the plugin.</param>
-        /// <param name="aarFile">Aar file to explode.</param>
-        static void ProcessAar(string dir, string aarFile)
-        {
-            string file = Path.GetFileNameWithoutExtension(aarFile);
-            string workingDir = Path.Combine(dir, file);
-            Directory.CreateDirectory(workingDir);
-            try
-            {
-				string exe = "jar";
-				if(RuntimePlatform.WindowsEditor == Application.platform)
-				{
-					exe = Path.Combine( System.Environment.GetEnvironmentVariable("JAVA_HOME"), Path.Combine("bin","jar.exe"));
-				}
-
-                System.Diagnostics.Process p = new System.Diagnostics.Process();
-                p.StartInfo.UseShellExecute = false;
-                p.StartInfo.Arguments = "xvf " + Path.GetFullPath(aarFile);
-                p.StartInfo.CreateNoWindow = true;
-                p.StartInfo.RedirectStandardOutput = false;
-                p.StartInfo.RedirectStandardError = true;
-				p.StartInfo.FileName = exe;
-                p.StartInfo.WorkingDirectory = workingDir;
-                p.Start();
-
-                // To avoid deadlocks, always read the output stream first and then wait.
-                string stderr = p.StandardError.ReadToEnd();
-
-                p.WaitForExit();
-
-                if (p.ExitCode == 0)
-                {
-
-                    // move the classes.jar file to libs.
-                    string libDir = Path.Combine(workingDir, "libs");
-                    if (!Directory.Exists(libDir))
-                    {
-                        Directory.CreateDirectory(libDir);
-                    }
-                    if (File.Exists(Path.Combine(libDir, "classes.jar")))
-                    {
-                        File.Delete(Path.Combine(libDir, "classes.jar"));
-                    }
-                    if (File.Exists(Path.Combine(workingDir, "classes.jar")))
-                    {
-                        File.Move(Path.Combine(workingDir, "classes.jar"),
-                            Path.Combine(libDir, "classes.jar"));
-                    }
-
-                    // Create the project.properties file which indicates to
-                    // Unity that this directory is a plugin.
-                    if (!File.Exists(Path.Combine(workingDir, "project.properties")))
-                    {
-                        // write out project.properties
-                        string[] props =
-                            {
-                        "# Project target.",
-                        "target=android-9",
-                        "android.library=true"
-                    };
-
-                    File.WriteAllLines(Path.Combine(workingDir,"project.properties"),
-                        props);
-                    }
-
-                    // Clean up the aar file.
-                    File.Delete(Path.GetFullPath(aarFile));
-
-                    Debug.Log(aarFile + " expanded successfully");
-                }
-                else
-                {
-                    Debug.LogError("Error expanding " +
-                        Path.GetFullPath(aarFile) +
-                        " err: " + p.ExitCode + ": " + stderr);
-                }
-            }
-            catch (Exception e)
-            {
-                Debug.Log(e);
-                throw e;
-            }
         }
     }
 }

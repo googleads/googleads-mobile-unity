@@ -92,33 +92,7 @@ namespace GoogleMobileAds.iOS
         // Load an ad.
         public void LoadAd(AdRequest request, string adUnitId)
         {
-            IntPtr requestPtr = Externs.GADUCreateRequest();
-            foreach (string keyword in request.Keywords)
-            {
-                Externs.GADUAddKeyword(requestPtr, keyword);
-            }
-            foreach (string deviceId in request.TestDevices)
-            {
-                Externs.GADUAddTestDevice(requestPtr, deviceId);
-            }
-            if (request.Birthday.HasValue)
-            {
-                DateTime birthday = request.Birthday.GetValueOrDefault();
-                Externs.GADUSetBirthday(requestPtr, birthday.Year, birthday.Month, birthday.Day);
-            }
-            if (request.Gender.HasValue)
-            {
-                Externs.GADUSetGender(requestPtr, (int)request.Gender.GetValueOrDefault());
-            }
-            if (request.TagForChildDirectedTreatment.HasValue)
-            {
-                Externs.GADUTagForChildDirectedTreatment(
-                    requestPtr, request.TagForChildDirectedTreatment.GetValueOrDefault());
-            }
-            foreach (KeyValuePair<string, string> entry in request.Extras)
-            {
-                Externs.GADUSetExtra(requestPtr, entry.Key, entry.Value);
-            }
+            IntPtr requestPtr = Utils.BuildAdRequest(request);
             Externs.GADURequestRewardBasedVideoAd(
                 RewardBasedVideoAdPtr, requestPtr, adUnitId, userId);
             Externs.GADURelease(requestPtr);

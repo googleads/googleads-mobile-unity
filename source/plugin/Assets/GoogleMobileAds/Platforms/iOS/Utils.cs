@@ -50,6 +50,7 @@ namespace GoogleMobileAds.iOS
             {
                 Externs.GADUSetExtra(requestPtr, entry.Key, entry.Value);
             }
+            Externs.GADUSetRequestAgent(requestPtr, "unity-" + AdRequest.Version);
             return requestPtr;
         }
     }

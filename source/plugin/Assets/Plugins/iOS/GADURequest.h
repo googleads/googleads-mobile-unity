@@ -25,6 +25,9 @@ typedef NS_ENUM(NSInteger, GADUGender) {
 /// The user's birthday may be used to deliver more relevant ads.
 @property(nonatomic, strong) NSDate *birthday;
 
+/// String that identifies the ad request's origin.
+@property(nonatomic, strong) NSString *requestAgent;
+
 /// The user's gender may be used to deliver more relevant ads.
 @property(nonatomic, assign) GADGender *gender;
 

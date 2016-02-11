@@ -141,13 +141,14 @@ namespace GoogleMobileAds.Android
                         "tagForChildDirectedTreatment",
                         request.TagForChildDirectedTreatment.GetValueOrDefault());
             }
+            // Denote that the request is coming from this Unity plugin.
+            adRequestBuilder.Call<AndroidJavaObject>("setRequestAgent",
+                    "unity-" + AdRequest.Version);
             AndroidJavaObject bundle = new AndroidJavaObject(BundleClassName);
             foreach (KeyValuePair<string, string> entry in request.Extras)
             {
                 bundle.Call("putString", entry.Key, entry.Value);
             }
-            // Denote that the request is coming from this Unity plugin.
-            bundle.Call("putInt", "unity", 1);
             AndroidJavaObject extras = new AndroidJavaObject(AdMobExtrasClassName, bundle);
             adRequestBuilder.Call<AndroidJavaObject>("addNetworkExtras", extras);
             return adRequestBuilder.Call<AndroidJavaObject>("build");

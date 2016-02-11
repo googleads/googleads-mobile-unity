@@ -45,6 +45,9 @@ namespace GoogleMobileAds.iOS
         internal static extern void GADUSetExtra(IntPtr request, string key, string value);
 
         [DllImport("__Internal")]
+        internal static extern void GADUSetRequestAgent(IntPtr request, string requestAgent);
+
+        [DllImport("__Internal")]
         internal static extern void GADURelease(IntPtr obj);
 
         #endregion

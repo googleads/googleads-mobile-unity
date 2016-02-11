@@ -57,7 +57,7 @@
   request.keywords = self.keywords;
   request.birthday = self.birthday;
   request.gender = self.gender;
-  request.requestAgent = @"unity";
+  request.requestAgent = self.requestAgent;
   [request tagForChildDirectedTreatment:self.tagForChildDirectedTreatment];
   GADExtras *extras = [[GADExtras alloc] init];
   extras.additionalParameters = self.extras;
