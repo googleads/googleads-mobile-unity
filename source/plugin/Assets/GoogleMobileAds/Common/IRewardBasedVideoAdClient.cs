@@ -35,13 +35,6 @@ namespace GoogleMobileAds.Common
         // Ad event fired when the reward based video ad is leaving the application.
         event EventHandler<EventArgs> OnAdLeavingApplication;
 
-        // UserId for reward based video ad requests.
-        String UserId
-        {
-            get;
-            set;
-        }
-
         // Creates a reward based video ad and adds it to the view hierarchy.
         void CreateRewardBasedVideoAd();
 

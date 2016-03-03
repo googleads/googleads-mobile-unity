@@ -26,7 +26,6 @@ namespace GoogleMobileAds.Android
     internal class RewardBasedVideoAdClient : AndroidJavaProxy, IRewardBasedVideoAdClient
     {
         private AndroidJavaObject androidRewardBasedVideo;
-        private String userId;
 
         public event EventHandler<EventArgs> OnAdLoaded = delegate {};
         public event EventHandler<AdFailedToLoadEventArgs> OnAdFailedToLoad = delegate {};
@@ -35,16 +34,6 @@ namespace GoogleMobileAds.Android
         public event EventHandler<EventArgs> OnAdClosed = delegate {};
         public event EventHandler<Reward> OnAdRewarded = delegate {};
         public event EventHandler<EventArgs> OnAdLeavingApplication = delegate {};
-
-        public String UserId
-        {
-            get { return userId; }
-            set
-            {
-                userId = value;
-                SetUserId(value);
-            }
-        }
 
         public RewardBasedVideoAdClient()
             : base(Utils.UnityRewardBasedVideoAdListenerClassName)
@@ -60,10 +49,6 @@ namespace GoogleMobileAds.Android
 
         public void CreateRewardBasedVideoAd() {
             androidRewardBasedVideo.Call("create");
-        }
-
-        public void SetUserId(string userId) {
-            androidRewardBasedVideo.Call("setUserId", userId);
         }
 
         public void LoadAd(AdRequest request, string adUnitId) {
@@ -133,3 +118,4 @@ namespace GoogleMobileAds.Android
 }
 
 #endif
+

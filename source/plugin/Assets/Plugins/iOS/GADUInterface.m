@@ -59,8 +59,7 @@ GADUTypeBannerRef GADUCreateInterstitial(GADUTypeInterstitialClientRef *intersti
 
 /// Creates a GADURewardBasedVideo and returns its reference.
 GADUTypeRewardBasedVideoAdRef GADUCreateRewardBasedVideoAd(
-    GADUTypeRewardBasedVideoAdClientRef *rewardBasedVideoAdClient, const char *adUnitID,
-    const char *userID) {
+    GADUTypeRewardBasedVideoAdClientRef *rewardBasedVideoAdClient) {
   GADURewardBasedVideoAd *rewardBasedVideoAd = [[GADURewardBasedVideoAd alloc]
       initWithRewardBasedVideoClientReference:rewardBasedVideoAdClient];
   GADUObjectCache *cache = [GADUObjectCache sharedInstance];
@@ -232,14 +231,12 @@ void GADURequestInterstitial(GADUTypeInterstitialRef interstitial, GADUTypeReque
 
 /// Makes a rewarded video ad request.
 void GADURequestRewardBasedVideoAd(GADUTypeRewardBasedVideoAdRef rewardBasedVideoAd,
-                                   GADUTypeRequestRef request, const char *adUnitID,
-                                   const char *userID) {
+                                   GADUTypeRequestRef request, const char *adUnitID) {
   GADURewardBasedVideoAd *internalRewardBasedVideoAd =
       (__bridge GADURewardBasedVideoAd *)rewardBasedVideoAd;
   GADURequest *internalRequest = (__bridge GADURequest *)request;
   [internalRewardBasedVideoAd loadRequest:[internalRequest request]
-                             withAdUnitID:GADUStringFromUTF8String(adUnitID)
-                                   userID:GADUStringFromUTF8String(userID)];
+                             withAdUnitID:GADUStringFromUTF8String(adUnitID)];
 }
 
 /// Removes an object from the cache.

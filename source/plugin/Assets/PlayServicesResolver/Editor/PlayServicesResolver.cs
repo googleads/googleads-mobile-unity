@@ -93,9 +93,7 @@ namespace GooglePlayServices
                 if (_resolver == null)
                 {
                     // create the latest resolver known.
-                    Type type = Type.GetType(CurrentResolverName, true);
-
-                    _resolver = Activator.CreateInstance(type) as IResolver;
+                    _resolver = Activator.CreateInstance("GooglePlayServices", CurrentResolverName) as IResolver;
                 }
                 return _resolver;
             }

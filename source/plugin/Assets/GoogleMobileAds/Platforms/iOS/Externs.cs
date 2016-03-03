@@ -127,7 +127,7 @@ namespace GoogleMobileAds.iOS
 
         [DllImport("__Internal")]
         internal static extern void GADURequestRewardBasedVideoAd(
-            IntPtr bannerView, IntPtr request, string adUnitId, string userId);
+            IntPtr bannerView, IntPtr request, string adUnitId);
 
         [DllImport("__Internal")]
         internal static extern void GADUSetRewardBasedVideoAdCallbacks(

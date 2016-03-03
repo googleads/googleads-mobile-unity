@@ -1,6 +1,25 @@
 Google Mobile Ads Unity Plugin Change Log
 
 *************
+Version 3.0.2
+*************
+- Fix compatibility issues with Google Mobile Ads iOS SDK 7.7.0
+
+Built and tested with:
+- Google Play Services 8.4.0
+- Google Mobile Ads iOS SDK 7.7.0
+
+*************
+Version 3.0.1
+*************
+- Update preprocessor directives for iOS post build setup
+- Add request agent to all ad requests from plugin
+
+Built and tested with:
+- Google Play Services 8.4.0
+- Google Mobile Ads iOS SDK 7.6.0
+
+*************
 Version 3.0.0
 *************
 - Add support for Custom In-App purchase flow on Android

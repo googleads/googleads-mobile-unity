@@ -39,9 +39,7 @@
 @property(nonatomic, assign) GADURewardBasedVideoAdWillLeaveApplicationCallback willLeaveCallback;
 
 /// Makes an ad request. Additional targeting options can be supplied with a request object.
-- (void)loadRequest:(GADRequest *)request
-       withAdUnitID:(NSString *)adUnitID
-             userID:(NSString *)userID;
+- (void)loadRequest:(GADRequest *)request withAdUnitID:(NSString *)adUnitID;
 
 /// Returns YES if the reward based video is ready to be displayed.
 - (BOOL)isReady;

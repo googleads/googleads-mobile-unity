@@ -34,10 +34,8 @@
   _rewardBasedVideo.delegate = nil;
 }
 
-- (void)loadRequest:(GADRequest *)request
-       withAdUnitID:(NSString *)adUnitID
-             userID:(NSString *)userID {
-  [self.rewardBasedVideo loadRequest:request withAdUnitID:adUnitID userID:userID];
+- (void)loadRequest:(GADRequest *)request withAdUnitID:(NSString *)adUnitID {
+  [self.rewardBasedVideo loadRequest:request withAdUnitID:adUnitID];
 }
 
 - (BOOL)isReady {

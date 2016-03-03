@@ -203,7 +203,8 @@ namespace GooglePlayServices
 
                 System.Diagnostics.Process p = new System.Diagnostics.Process();
                 p.StartInfo.UseShellExecute = false;
-                p.StartInfo.Arguments = "xvf " + Path.GetFullPath(aarFile);
+                p.StartInfo.Arguments = "xvf " +
+                    "\"" + Path.GetFullPath(aarFile) + "\"";
                 p.StartInfo.CreateNoWindow = true;
                 p.StartInfo.RedirectStandardOutput = false;
                 p.StartInfo.RedirectStandardError = true;

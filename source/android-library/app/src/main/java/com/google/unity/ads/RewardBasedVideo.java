@@ -113,20 +113,6 @@ public class RewardBasedVideo {
     }
 
     /**
-     * Sets user id for reward based video ad.
-     *
-     * @param userId The userId to be used for reward based video ad requests.
-     */
-    public void setUserId(final String userId) {
-        activity.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                rewardBasedVideo.setUserId(userId);
-            }
-        });
-    }
-
-    /**
      * Loads a reward based video ad.
      *
      * @param request  The {@link AdRequest} object with targeting parameters.

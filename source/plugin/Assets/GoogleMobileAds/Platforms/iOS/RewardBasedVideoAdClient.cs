@@ -52,7 +52,6 @@ namespace GoogleMobileAds.iOS
         public event EventHandler<EventArgs> OnAdLeavingApplication = delegate {};
 
         private IntPtr rewardBasedVideoAdPtr;
-        private string userId;
 
         // This property should be used when setting the rewardBasedVideoPtr.
         private IntPtr RewardBasedVideoAdPtr {
@@ -62,12 +61,6 @@ namespace GoogleMobileAds.iOS
                 Externs.GADURelease(rewardBasedVideoAdPtr);
                 rewardBasedVideoAdPtr = value;
             }
-        }
-
-        public String UserId
-        {
-            get { return userId; }
-            set { userId = value; }
         }
 
         #region IGoogleMobileAdsRewardBasedVideoClient implementation
@@ -94,7 +87,7 @@ namespace GoogleMobileAds.iOS
         {
             IntPtr requestPtr = Utils.BuildAdRequest(request);
             Externs.GADURequestRewardBasedVideoAd(
-                RewardBasedVideoAdPtr, requestPtr, adUnitId, userId);
+                RewardBasedVideoAdPtr, requestPtr, adUnitId);
             Externs.GADURelease(requestPtr);
         }
 
