@@ -18,7 +18,6 @@ package com.google.unity.ads;
 import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.google.ads.mediation.admob.AdMobAdapter;
 import com.google.android.gms.ads.AdRequest;
@@ -96,11 +95,6 @@ public class RewardBasedVideo {
                     @Override
                     public void onRewarded(RewardItem reward) {
                         adListener.onAdRewarded(reward.getType(), reward.getAmount());
-                        Toast.makeText(activity,
-                                String.format(" onRewarded! currency: %s amount: %d",
-                                        reward.getType(),
-                                        reward.getAmount()),
-                                Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
