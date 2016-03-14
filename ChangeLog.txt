@@ -1,6 +1,15 @@
 Google Mobile Ads Unity Plugin Change Log
 
 *************
+Version 3.0.3
+*************
+- Restrict simultaneous rewarded video requests on Android.
+
+Built and tested with:
+- Google Play Services 8.4.0
+- Google Mobile Ads iOS SDK 7.7.0
+
+*************
 Version 3.0.2
 *************
 - Fix compatibility issues with Google Mobile Ads iOS SDK 7.7.0

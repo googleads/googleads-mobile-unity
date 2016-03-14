@@ -51,10 +51,18 @@ public class RewardBasedVideo {
      */
     private boolean isLoaded;
 
+    /**
+     * Whether or not there is an ad request in progress.
+     */
+    private boolean isLoading;
+
+    private final Object mLock = new Object();
+
     public RewardBasedVideo(Activity activity, UnityRewardBasedVideoAdListener adListener) {
         this.activity = activity;
         this.adListener = adListener;
         this.isLoaded = false;
+        this.isLoading = false;
     }
 
     /**
@@ -68,13 +76,19 @@ public class RewardBasedVideo {
                 rewardBasedVideo.setRewardedVideoAdListener(new RewardedVideoAdListener() {
                     @Override
                     public void onRewardedVideoAdLoaded() {
-                        isLoaded = true;
-                        adListener.onAdLoaded();
+                        synchronized (mLock) {
+                            isLoaded = true;
+                            isLoading = false;
+                            adListener.onAdLoaded();
+                        }
                     }
 
                     @Override
                     public void onRewardedVideoAdFailedToLoad(int errorCode) {
-                        adListener.onAdFailedToLoad(PluginUtils.getErrorReason(errorCode));
+                        synchronized (mLock) {
+                            isLoading = false;
+                            adListener.onAdFailedToLoad(PluginUtils.getErrorReason(errorCode));
+                        }
                     }
 
                     @Override
@@ -121,7 +135,16 @@ public class RewardBasedVideo {
                 if (extras != null) {
                     extras.putBoolean("_noRefresh", true);
                 }
-                rewardBasedVideo.loadAd(adUnitId, request);
+                synchronized (mLock) {
+                    if (!isLoading) {
+                        isLoading = true;
+                        rewardBasedVideo.loadAd(adUnitId, request);
+                    } else {
+                        Log.w(PluginUtils.LOGTAG, "Cannot make a new rewarded video ad request "
+                                + "until previous request has completed.");
+                    }
+                }
+
             }
         });
     }
