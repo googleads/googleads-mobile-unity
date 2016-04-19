@@ -43,9 +43,10 @@ namespace GoogleMobileAds.Android
         }
 
         // Creates a banner view.
-        public void CreateBannerView(String adUnitId, AdSize adSize, AdPosition position) {
+        public void CreateBannerView(String adUnitId, AdSize adSize, AdPosition position, AdMargin margin) {
+            int[] margins = {margin.Left, margin.Top, margin.Right, margin.Bottom};
             bannerView.Call("create",
-                    new object[3] { adUnitId, Utils.GetAdSizeJavaObject(adSize), (int)position });
+                    new object[3] { adUnitId, Utils.GetAdSizeJavaObject(adSize), (int)position, margins });
         }
 
         // Loads an ad.

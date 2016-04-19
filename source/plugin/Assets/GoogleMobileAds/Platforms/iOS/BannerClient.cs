@@ -59,17 +59,19 @@ namespace GoogleMobileAds.iOS
         #region IBannerClient implementation
 
         // Creates a banner view.
-        public void CreateBannerView(string adUnitId, AdSize adSize, AdPosition position) {
+		public void CreateBannerView(string adUnitId, AdSize adSize, AdPosition position, AdMargin margin, AdMargin margin) {
             IntPtr bannerClientPtr = (IntPtr) GCHandle.Alloc(this);
+
+			int[] margins = {margin.Left, margin.Top, margin.Right, margin.Bottom};
 
             if (adSize.IsSmartBanner) {
                 BannerViewPtr = Externs.GADUCreateSmartBannerView(
-                        bannerClientPtr, adUnitId, (int)position);
+						bannerClientPtr, adUnitId, (int)position, margins);
             }
             else
             {
                 BannerViewPtr = Externs.GADUCreateBannerView(
-                        bannerClientPtr, adUnitId, adSize.Width, adSize.Height, (int)position);
+						bannerClientPtr, adUnitId, adSize.Width, adSize.Height, (int)position, margins);
             }
             Externs.GADUSetBannerCallbacks(
                     BannerViewPtr,
