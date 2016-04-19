@@ -1,0 +1,70 @@
+/*
+*   Gradle file to build the Unity plugin for the Google Mobile Ads SDK.
+*   Useage: ./gradlew exportPackage
+*/
+
+// Project level variables.
+project.ext {
+    sdk_root = System.getProperty("ANDROID_HOME")
+    if (sdk_root == null || sdk_root.isEmpty()) {
+        sdk_root = System.getenv("ANDROID_HOME")
+    }
+    unity_exe = System.getProperty("UNITY_EXE")
+    if (unity_exe == null || unity_exe.isEmpty()) {
+        unity_exe = System.getenv("UNITY_EXE")
+    }
+    if (unity_exe == null || unity_exe.isEmpty()) {
+        unity_exe ='/Applications/Unity/Unity.app/Contents/MacOS/Unity'
+    }
+    pluginSource = file('source/plugin').absolutePath
+    pluginBuildDir = file('temp/plugin-build-dir').absolutePath
+    buildPath = file('temp').absolutePath
+    exportPath = file('GoogleMobileAds.unitypackage').absolutePath
+}
+
+// Delete existing android plugin jar file.
+task clearJar(type: Delete) {
+    delete 'source/android-library/app/build/intermediates/bundles/release/unity-plugin-library.jar'
+}
+
+// Build jar from android plugin source files using existing Gradle build file.
+task buildAndroidPluginJar(type: GradleBuild) {
+    buildFile = 'source/android-library/app/build.gradle'
+    tasks = ['build']
+}
+
+// Move android plugin jar to temporary build directory.
+task copyAndroidLibraryJar(type: Copy) {
+    from("source/android-library/app/build/intermediates/bundles/release/")
+    into("${pluginBuildDir}/Assets/Plugins/Android/GoogleMobileAdsPlugin/libs")
+    include('classes.jar')
+    rename('classes.jar', 'unity-plugin-library.jar')
+}
+
+copyAndroidLibraryJar.dependsOn(clearJar, buildAndroidPluginJar)
+
+// Build unity package using through command line interface.
+// Create new unity project with files in temporary build directory and export files within Assets/GoogleMobileAds
+// to a unity package.
+// Command line usage and arguments documented at http://docs.unity3d.com/Manual/CommandLineArguments.html.
+task exportPackage() {
+    description = "Creates and exports the Plugin unity package"
+    doLast {
+        exec {
+            executable "${unity_exe}"
+                args "-g.building", "-batchmode", "-projectPath", "${pluginBuildDir}", "-logFile", "temp/unity.log",  "-exportPackage", "Assets/GoogleMobileAds", "Assets/Plugins", "Assets/PlayServicesResolver", "${exportPath}", "-quit"
+        }
+    }
+}
+
+task createTempBuildFolder(type: Copy) {
+        from {"${pluginSource}"}
+        into {"${pluginBuildDir}"}
+}
+
+task clearTempBuildFolder(type:Delete) {
+    delete {"${buildPath}"}
+}
+
+exportPackage.dependsOn(createTempBuildFolder, copyAndroidLibraryJar)
+exportPackage.finalizedBy(clearTempBuildFolder)

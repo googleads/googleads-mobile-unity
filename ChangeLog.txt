@@ -1,0 +1,98 @@
+Google Mobile Ads Unity Plugin Change Log
+
+*************
+Version 3.0.3
+*************
+- Restrict simultaneous rewarded video requests on Android.
+
+Built and tested with:
+- Google Play Services 8.4.0
+- Google Mobile Ads iOS SDK 7.7.0
+
+*************
+Version 3.0.2
+*************
+- Fix compatibility issues with Google Mobile Ads iOS SDK 7.7.0
+
+Built and tested with:
+- Google Play Services 8.4.0
+- Google Mobile Ads iOS SDK 7.7.0
+
+*************
+Version 3.0.1
+*************
+- Update preprocessor directives for iOS post build setup
+- Add request agent to all ad requests from plugin
+
+Built and tested with:
+- Google Play Services 8.4.0
+- Google Mobile Ads iOS SDK 7.6.0
+
+*************
+Version 3.0.0
+*************
+- Add support for Custom In-App purchase flow on Android
+- Add CocoaPods integration and automated build settings for iOS projects
+- Use JarResolver plugin to resolve Google Play services client dependencies
+- Ad events for banners and interstitials refactored with new names
+
+Built and tested with:
+- Google Play Services 8.4.0
+- Google Mobile Ads iOS SDK 7.6.0
+
+*************
+Version 2.3.1
+*************
+- Move IInAppBillingService into its own JAR
+
+*************
+Version 2.3.0
+*************
+- Add support for In-App Purchase house ads on Android
+
+*************
+Version 2.2.1
+*************
+- Fix for Android manifest merge issues on Unity 4.x
+- Fix for TouchCount issue on Unity 5.0
+
+***********
+Version 2.2
+***********
+- Support for Unity 5.0 & ARC
+- Additional Banner positions
+- iOS Ads SDK 7.0.0 compatibility
+
+***********
+Version 2.1
+***********
+- Support for Interstitial Ads
+- Ad events use EventHandlers
+
+***********
+Version 2.0
+***********
+- A single package with cross platform (Android/iOS) support
+- Mock ad calls when running inside Unity editor
+- Support for Banner Ads
+- Custom banner sizes
+- Banner ad events listeners
+- AdRequest targeting methods
+- A sample project to demonstrate plugin integration
+
+***********
+Version 1.2
+***********
+- Initial Android version with Google Play services support
+- Support for Banner Ads only
+
+***********
+Version 1.1
+***********
+- Initial iOS only version
+- Support for Banner Ads only
+
+***********
+Version 1.0
+***********
+- Initial version for Android (using now deprecated legacy Android SDK)
