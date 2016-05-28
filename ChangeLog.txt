@@ -1,12 +1,23 @@
 Google Mobile Ads Unity Plugin Change Log
 
 *************
+Version 3.0.4
+*************
+- Fix Podfile compatibility with CocoaPods 1.0.0.
+- Add support for DFP custom native ad formats.
+
+Built and tested with:
+- Google Play services 9.0.0
+- Google Mobile Ads iOS SDK 7.8.1
+- Unity Jar Resolver 1.2
+
+*************
 Version 3.0.3
 *************
 - Restrict simultaneous rewarded video requests on Android.
 
 Built and tested with:
-- Google Play Services 8.4.0
+- Google Play services 8.4.0
 - Google Mobile Ads iOS SDK 7.7.0
 
 *************
@@ -15,7 +26,7 @@ Version 3.0.2
 - Fix compatibility issues with Google Mobile Ads iOS SDK 7.7.0
 
 Built and tested with:
-- Google Play Services 8.4.0
+- Google Play services 8.4.0
 - Google Mobile Ads iOS SDK 7.7.0
 
 *************
@@ -25,7 +36,7 @@ Version 3.0.1
 - Add request agent to all ad requests from plugin
 
 Built and tested with:
-- Google Play Services 8.4.0
+- Google Play services 8.4.0
 - Google Mobile Ads iOS SDK 7.6.0
 
 *************
@@ -37,7 +48,7 @@ Version 3.0.0
 - Ad events for banners and interstitials refactored with new names
 
 Built and tested with:
-- Google Play Services 8.4.0
+- Google Play services 8.4.0
 - Google Mobile Ads iOS SDK 7.6.0
 
 *************

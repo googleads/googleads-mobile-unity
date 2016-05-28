@@ -113,7 +113,7 @@ namespace GooglePlayServices
         /// </summary>
         /// <returns><c>true</c>, if explode was shoulded, <c>false</c> otherwise.</returns>
         /// <param name="aarFile">The aar file.</param>
-        bool ShouldExplode(string aarFile)
+        internal virtual bool ShouldExplode(string aarFile)
         {
             return aarFile.Contains("play-services-measurement") ||
             !SupportsAarFiles;

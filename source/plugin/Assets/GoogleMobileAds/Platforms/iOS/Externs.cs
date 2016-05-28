@@ -131,18 +131,74 @@ namespace GoogleMobileAds.iOS
 
         [DllImport("__Internal")]
         internal static extern void GADUSetRewardBasedVideoAdCallbacks(
-            IntPtr rewardBasedVideo,
-            RewardBasedVideoAdClient.GADURewardBasedVideoAdDidReceiveAdCallback
-            adReceivedCallback,
-            RewardBasedVideoAdClient.GADURewardBasedVideoAdDidFailToReceiveAdWithErrorCallback
-            adFailedCallback,
-            RewardBasedVideoAdClient.GADURewardBasedVideoAdDidOpenCallback didOpenCallback,
-            RewardBasedVideoAdClient.GADURewardBasedVideoAdDidStartCallback didStartCallback,
-            RewardBasedVideoAdClient.GADURewardBasedVideoAdDidCloseCallback didCloseCallback,
-            RewardBasedVideoAdClient.GADURewardBasedVideoAdDidRewardCallback didRewardcallback,
-            RewardBasedVideoAdClient.GADURewardBasedVideoAdWillLeaveApplicationCallback
-            willLeaveCallback
+                IntPtr rewardBasedVideo,
+                RewardBasedVideoAdClient.GADURewardBasedVideoAdDidReceiveAdCallback
+                    adReceivedCallback,
+                RewardBasedVideoAdClient.GADURewardBasedVideoAdDidFailToReceiveAdWithErrorCallback
+                    adFailedCallback,
+                RewardBasedVideoAdClient.GADURewardBasedVideoAdDidOpenCallback didOpenCallback,
+                RewardBasedVideoAdClient.GADURewardBasedVideoAdDidStartCallback didStartCallback,
+                RewardBasedVideoAdClient.GADURewardBasedVideoAdDidCloseCallback didCloseCallback,
+                RewardBasedVideoAdClient.GADURewardBasedVideoAdDidRewardCallback didRewardcallback,
+                RewardBasedVideoAdClient.GADURewardBasedVideoAdWillLeaveApplicationCallback
+                    willLeaveCallback
         );
+
+        #endregion
+
+        #region AdLoader externs
+
+        [DllImport("__Internal")]
+        internal static extern IntPtr GADUCreateAdLoader(
+            IntPtr adLoader, string adUnitId, string[] templateIds, int templateIdsCount,
+            ref NativeAdTypes types);
+
+        [DllImport("__Internal")]
+        internal static extern void GADURequestNativeAd(IntPtr adLoader, IntPtr request);
+
+        [DllImport("__Internal")]
+        internal static extern void GADUSetAdLoaderCallbacks(
+            IntPtr adLoader,
+            AdLoaderClient.GADUAdLoaderDidReceiveNativeCustomTemplateAdCallback adReceivedCallback,
+            AdLoaderClient.GADUAdLoaderDidFailToReceiveAdWithErrorCallback adFailedCallback);
+
+        #endregion
+
+        #region NativeCustomTemplateAd externs
+
+        [DllImport("__Internal")]
+        internal static extern string GADUNativeCustomTemplateAdTemplateID(
+            IntPtr nativeCustomTemplateAd);
+
+        [DllImport("__Internal")]
+        internal static extern string GADUNativeCustomTemplateAdImageAsBytesForKey(
+            IntPtr nativeCustomTemplateAd, string key);
+
+        [DllImport("__Internal")]
+        internal static extern string GADUNativeCustomTemplateAdStringForKey(
+            IntPtr nativeCustomTemplateAd, string key);
+
+        [DllImport("__Internal")]
+        internal static extern void GADUNativeCustomTemplateAdRecordImpression(
+            IntPtr nativeCustomTemplateAd);
+
+        [DllImport("__Internal")]
+        internal static extern void GADUNativeCustomTemplateAdPerformClickOnAssetWithKey(
+            IntPtr nativeCustomTemplateAd, string assetName, bool customClickAction);
+
+        [DllImport("__Internal")]
+        internal static extern string GADUNativeCustomTemplateAdAvailableAssetKeys(
+            IntPtr nativeCustomTemplateAd);
+
+        [DllImport("__Internal")]
+        internal static extern void GADUSetNativeCustomTemplateAdUnityClient(
+            IntPtr nativeCustomTemplateAd, IntPtr nativeCustomTemplateClient);
+
+        [DllImport("__Internal")]
+        internal static extern void GADUSetNativeCustomTemplateAdCallbacks(
+                IntPtr nativeCustomTemplateAd,
+                CustomNativeTemplateClient.GADUNativeCustomTemplateDidReceiveClick
+                    adClickedCallback);
 
         #endregion
     }

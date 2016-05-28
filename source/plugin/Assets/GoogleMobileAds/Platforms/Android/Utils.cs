@@ -47,12 +47,15 @@ namespace GoogleMobileAds.Android
         public const string BannerViewClassName = "com.google.unity.ads.Banner";
         public const string InterstitialClassName = "com.google.unity.ads.Interstitial";
         public const string RewardBasedVideoClassName = "com.google.unity.ads.RewardBasedVideo";
+        public const string NativeAdLoaderClassName = "com.google.unity.ads.NativeAdLoader";
         public const string UnityBannerAdListenerClassName =
             "com.google.unity.ads.UnityBannerAdListener";
         public const string UnityInterstitialAdListenerClassName =
             "com.google.unity.ads.UnityInterstitialAdListener";
         public const string UnityRewardBasedVideoAdListenerClassName =
             "com.google.unity.ads.UnityRewardBasedVideoAdListener";
+        public const string UnityCustomNativeAdListener =
+            "com.google.unity.ads.UnityCustomNativeAdListener";
         public const string PluginUtilsClassName = "com.google.unity.ads.PluginUtils";
 
         #endregion

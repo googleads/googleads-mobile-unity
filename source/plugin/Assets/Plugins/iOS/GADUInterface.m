@@ -1,7 +1,9 @@
 // Copyright 2014 Google Inc. All Rights Reserved.
 
+#import "GADUAdLoader.h"
 #import "GADUBanner.h"
 #import "GADUInterstitial.h"
+#import "GADUNativeCustomTemplateAd.h"
 #import "GADUObjectCache.h"
 #import "GADURequest.h"
 #import "GADURewardBasedVideoAd.h"
@@ -9,13 +11,24 @@
 
 /// Returns an NSString copying the characters from |bytes|, a C array of UTF8-encoded bytes.
 /// Returns nil if |bytes| is NULL.
-static NSString *GADUStringFromUTF8String(const char *bytes) {
-  if (bytes) {
-    return @(bytes);
-  } else {
-    return nil;
+static NSString *GADUStringFromUTF8String(const char *bytes) { return bytes ? @(bytes) : nil; }
+
+/// Returns a C string from a C array of UTF8-encoded bytes.
+static char *cStringCopy(const char *string) {
+  if (!string) {
+    return NULL;
   }
+  char *res = (char *)malloc(strlen(string) + 1);
+  strcpy(res, string);
+  return res;
 }
+
+/// Defines the native ad types.
+struct AdTypes {
+  bool customTemplateAd;
+  bool appInstallAd;
+  bool contentAd;
+};
 
 /// Creates a GADBannerView with the specified width, height, and position. Returns a reference to
 /// the GADUBannerView.
@@ -67,6 +80,29 @@ GADUTypeRewardBasedVideoAdRef GADUCreateRewardBasedVideoAd(
   return (__bridge GADUTypeRewardBasedVideoAdRef)rewardBasedVideoAd;
 }
 
+/// Creates a GADUAdLoader and returns its reference.
+GADUTypeAdLoaderRef GADUCreateAdLoader(GADUTypeAdLoaderClientRef *adLoaderClient,
+                                       const char *adUnitID, const char **templateIDs,
+                                       NSInteger templateIDLength, struct AdTypes *types) {
+  NSMutableArray *templateIDsArray = [[NSMutableArray alloc] init];
+  for (int i = 0; i < templateIDLength; i++) {
+    [templateIDsArray addObject:GADUStringFromUTF8String(templateIDs[i])];
+  }
+  NSMutableArray *adTypesArray = [[NSMutableArray alloc] init];
+  if (types->customTemplateAd) {
+    [adTypesArray addObject:kGADAdLoaderAdTypeNativeCustomTemplate];
+  }
+
+  GADUAdLoader *adLoader =
+      [[GADUAdLoader alloc] initWithAdLoaderClientReference:adLoaderClient
+                                                   adUnitID:GADUStringFromUTF8String(adUnitID)
+                                                templateIDs:templateIDsArray
+                                                    adTypes:adTypesArray];
+  GADUObjectCache *cache = [GADUObjectCache sharedInstance];
+  [cache.references setObject:adLoader forKey:[adLoader gadu_referenceKey]];
+  return (__bridge GADUTypeAdLoaderRef)adLoader;
+}
+
 /// Sets the banner callback methods to be invoked during banner ad events.
 void GADUSetBannerCallbacks(GADUTypeBannerRef banner,
                             GADUAdViewDidReceiveAdCallback adReceivedCallback,
@@ -116,6 +152,16 @@ void GADUSetRewardBasedVideoAdCallbacks(
   internalRewardBasedVideoAd.didCloseCallback = didCloseCallback;
   internalRewardBasedVideoAd.didRewardCallback = didRewardCallback;
   internalRewardBasedVideoAd.willLeaveCallback = willLeaveCallback;
+}
+
+/// Sets the banner callback methods to be invoked during native ad events.
+void GADUSetAdLoaderCallbacks(
+    GADUTypeAdLoaderRef adLoader,
+    GADUAdLoaderDidReceiveNativeCustomTemplateAdCallback adReceivedCallback,
+    GADUAdLoaderDidFailToReceiveAdWithErrorCallback adFailedCallback) {
+  GADUAdLoader *internalAdLoader = (__bridge GADUAdLoader *)adLoader;
+  internalAdLoader.adReceivedCallback = adReceivedCallback;
+  internalAdLoader.adFailedCallback = adFailedCallback;
 }
 
 /// Sets the GADBannerView's hidden property to YES.
@@ -237,6 +283,90 @@ void GADURequestRewardBasedVideoAd(GADUTypeRewardBasedVideoAdRef rewardBasedVide
   GADURequest *internalRequest = (__bridge GADURequest *)request;
   [internalRewardBasedVideoAd loadRequest:[internalRequest request]
                              withAdUnitID:GADUStringFromUTF8String(adUnitID)];
+}
+
+/// Makes a native ad request.
+void GADURequestNativeAd(GADUTypeAdLoaderRef adLoader, GADUTypeRequestRef request) {
+  GADUAdLoader *internalAdLoader = (__bridge GADUAdLoader *)adLoader;
+  GADURequest *internalRequest = (__bridge GADURequest *)request;
+  [internalAdLoader loadRequest:[internalRequest request]];
+}
+
+/// Return the template ID of the native custom template ad.
+char *GADUNativeCustomTemplateAdTemplateID(
+    GADUTypeNativeCustomTemplateAdRef nativeCustomTemplateAd) {
+  GADUNativeCustomTemplateAd *internalNativeCustomTemplateAd =
+      (__bridge GADUNativeCustomTemplateAd *)nativeCustomTemplateAd;
+  return cStringCopy([[internalNativeCustomTemplateAd templateID] UTF8String]);
+}
+
+/// Returns the image corresponding to the specifed key as a base64 encoded byte array.
+char *GADUNativeCustomTemplateAdImageAsBytesForKey(
+    GADUTypeNativeCustomTemplateAdRef nativeCustomTemplateAd, const char *key) {
+  GADUNativeCustomTemplateAd *internalNativeCustomTemplateAd =
+      (__bridge GADUNativeCustomTemplateAd *)nativeCustomTemplateAd;
+  NSData *imageData = UIImageJPEGRepresentation(
+      [internalNativeCustomTemplateAd imageForKey:GADUStringFromUTF8String(key)], 0.0);
+  NSString *base64String = [imageData base64Encoding];
+  return cStringCopy([base64String UTF8String]);
+}
+
+/// Returns the string corresponding to the specifed key.
+char *GADUNativeCustomTemplateAdStringForKey(
+    GADUTypeNativeCustomTemplateAdRef nativeCustomTemplateAd, const char *key) {
+  GADUNativeCustomTemplateAd *internalNativeCustomTemplateAd =
+      (__bridge GADUNativeCustomTemplateAd *)nativeCustomTemplateAd;
+  return cStringCopy(
+      [[internalNativeCustomTemplateAd stringForKey:GADUStringFromUTF8String(key)] UTF8String]);
+}
+
+/// Call when the ad is played on screen to the user.
+void GADUNativeCustomTemplateAdRecordImpression(
+    GADUTypeNativeCustomTemplateAdRef nativeCustomTemplateAd) {
+  GADUNativeCustomTemplateAd *internalNativeCustomTemplateAd =
+      (__bridge GADUNativeCustomTemplateAd *)nativeCustomTemplateAd;
+  [internalNativeCustomTemplateAd recordImpression];
+}
+
+/// Call when the user clicks on an ad.
+void GADUNativeCustomTemplateAdPerformClickOnAssetWithKey(
+    GADUTypeNativeCustomTemplateAdRef nativeCustomTemplateAd, const char *key,
+    BOOL customClickAction) {
+  GADUNativeCustomTemplateAd *internalNativeCustomTemplateAd =
+      (__bridge GADUNativeCustomTemplateAd *)nativeCustomTemplateAd;
+  [internalNativeCustomTemplateAd performClickOnAssetWithKey:GADUStringFromUTF8String(key)
+                                       withCustomClickAction:customClickAction];
+}
+
+/// Returns the list of available asset keys for a custom native template ad.
+char *GADUNativeCustomTemplateAdAvailableAssetKeys(
+    GADUTypeNativeCustomTemplateAdRef nativeCustomTemplateAd) {
+  GADUNativeCustomTemplateAd *internalNativeCustomTemplateAd =
+      (__bridge GADUNativeCustomTemplateAd *)nativeCustomTemplateAd;
+  NSArray *assetKeys = [internalNativeCustomTemplateAd availableAssetKeys];
+  NSDictionary *assetNameDict = @{ @"assets" : assetKeys };
+  NSData *jsonArray =
+      [NSJSONSerialization dataWithJSONObject:assetNameDict options:kNilOptions error:nil];
+  NSString *base64String = [jsonArray base64Encoding];
+  return cStringCopy([base64String UTF8String]);
+}
+
+/// Sets the Unity native custom template ad client reference on GADUNativeCustomTemplateAd.
+void GADUSetNativeCustomTemplateAdUnityClient(
+    GADUTypeNativeCustomTemplateAdRef nativeCustomTemplateAd,
+    GADUTypeNativeCustomTemplateAdClientRef *nativeCustomTemplateClient) {
+  GADUNativeCustomTemplateAd *internalNativeCustomTemplateAd =
+      (__bridge GADUNativeCustomTemplateAd *)nativeCustomTemplateAd;
+  internalNativeCustomTemplateAd.nativeCustomTemplateClient = nativeCustomTemplateClient;
+}
+
+/// Sets the ad callback methods to be invoked during native custom template ad events.
+void GADUSetNativeCustomTemplateAdCallbacks(
+    GADUTypeNativeCustomTemplateAdRef nativeCustomTemplateAd,
+    GADUNativeCustomTemplateDidReceiveClickCallback adClickedCallback) {
+  GADUNativeCustomTemplateAd *internalNativeCustomTemplateAd =
+      (__bridge GADUNativeCustomTemplateAd *)nativeCustomTemplateAd;
+  internalNativeCustomTemplateAd.didReceiveClickCallback = adClickedCallback;
 }
 
 /// Removes an object from the cache.

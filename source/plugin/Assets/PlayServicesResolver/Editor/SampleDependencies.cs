@@ -32,6 +32,7 @@ public static class SampleDependencies
 
 /*
     private static readonly string PluginName = "your_plugin_name";
+    public static PlayServicesSupport svcSupport;
 
     /// <summary>
     /// Initializes static members of the <see cref="SampleDependencies"/> class.
@@ -43,7 +44,11 @@ public static class SampleDependencies
                                              PluginName,
                                              EditorPrefs.GetString("AndroidSdkRoot"),
                                              "ProjectSettings");
+        RegisterDependencies();
+    }
 
+    public static void RegisterDependencies()
+    {
         // add your dependencies here
 
         // svcSupport.DependOn("com.google.android.gms", "play-services-base", "8.1+");

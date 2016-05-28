@@ -13,13 +13,15 @@
 // limitations under the License.
 
 using System;
+using System.Reflection;
 using UnityEngine;
 
 using GoogleMobileAds.Api;
 
 namespace GoogleMobileAds.Common
 {
-    internal class DummyClient : IBannerClient, IInterstitialClient, IRewardBasedVideoAdClient
+    internal class DummyClient : IBannerClient, IInterstitialClient, IRewardBasedVideoAdClient,
+            IAdLoaderClient
     {
         public event EventHandler<EventArgs> OnAdLoaded = delegate {};
         public event EventHandler<AdFailedToLoadEventArgs> OnAdFailedToLoad = delegate {};
@@ -28,101 +30,112 @@ namespace GoogleMobileAds.Common
         public event EventHandler<EventArgs> OnAdClosed = delegate {};
         public event EventHandler<Reward> OnAdRewarded = delegate {};
         public event EventHandler<EventArgs> OnAdLeavingApplication = delegate {};
+        public event EventHandler<CustomNativeEventArgs> onCustomNativeTemplateAdLoaded = delegate {};
 
         public String UserId
         {
             get
             {
-                Debug.Log("Get userId");
+                Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
                 return "UserId";
             }
-            set { Debug.Log("Set userId"); }
+            set { Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name); }
         }
 
         public DummyClient()
         {
-            Debug.Log("Created DummyClient");
+            Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
         }
 
         public void CreateBannerView(string adUnitId, AdSize adSize, AdPosition position)
         {
-            Debug.Log("Dummy CreateBannerView");
+            Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
         }
 
         public void LoadAd(AdRequest request)
         {
-            Debug.Log("Dummy LoadAd");
+            Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
         }
 
         public void ShowBannerView()
         {
-            Debug.Log("Dummy ShowBannerView");
+            Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
         }
 
         public void HideBannerView()
         {
-            Debug.Log("Dummy HideBannerView");
+            Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
         }
 
         public void DestroyBannerView()
         {
-            Debug.Log("Dummy DestroyBannerView");
+            Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
         }
 
         public void CreateInterstitialAd(string adUnitId)
         {
-            Debug.Log("Dummy CreateIntersitialAd");
+            Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
         }
 
         public bool IsLoaded()
         {
-            Debug.Log("Dummy IsLoaded");
+            Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
             return true;
         }
 
         public void ShowInterstitial()
         {
-            Debug.Log("Dummy ShowInterstitial");
+            Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
         }
 
         public void DestroyInterstitial()
         {
-            Debug.Log("Dummy DestroyInterstitial");
+            Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
         }
 
         public void CreateRewardBasedVideoAd()
         {
-            Debug.Log("Dummy CreateRewardBasedVideoAd");
+            Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
         }
 
         public void SetUserId(string userId)
         {
-            Debug.Log("Dummy LoadAd");
+            Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
         }
 
         public void LoadAd(AdRequest request, string adUnitId)
         {
-            Debug.Log("Dummy LoadAd");
+            Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
         }
 
         public void DestroyRewardBasedVideoAd()
         {
-            Debug.Log("Dummy DestroyRewardBasedVideoAd");
+            Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
         }
 
         public void ShowRewardBasedVideoAd()
         {
-            Debug.Log("Dummy ShowRewardBasedVideoAd");
+            Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
         }
 
         public void SetDefaultInAppPurchaseProcessor(IDefaultInAppPurchaseProcessor processor)
         {
-            Debug.Log("Dummy SetDefaultInAppPurchaseProcessor");
+            Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
         }
 
         public void SetCustomInAppPurchaseProcessor(ICustomInAppPurchaseProcessor processor)
         {
-            Debug.Log("Dummy SetCustomInAppPurchaseProcessor");
+            Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
+        }
+
+        public void CreateAdLoader(AdLoader.Builder builder)
+        {
+            Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
+        }
+
+        public void Load(AdRequest request)
+        {
+            Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
         }
     }
 }
