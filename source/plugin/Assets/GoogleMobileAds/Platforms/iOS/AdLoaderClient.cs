@@ -53,7 +53,7 @@ namespace GoogleMobileAds.iOS
             }
             set
             {
-                if(adLoaderPtr != null)
+                if (adLoaderPtr != IntPtr.Zero)
                 {
                     Externs.GADURelease(adLoaderPtr);
                 }
