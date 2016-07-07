@@ -16,9 +16,9 @@
 
 using System;
 using System.Collections.Generic;
-using UnityEngine;
 
 using GoogleMobileAds.Common;
+using UnityEngine;
 
 namespace GoogleMobileAds.Android
 {
@@ -33,32 +33,44 @@ namespace GoogleMobileAds.Android
 
         public List<string> GetAvailableAssetNames()
         {
-            return new List<string>(customNativeAd.Call<string[]>("getAvailableAssetNames"));
+            return new List<string>(this.customNativeAd.Call<string[]>("getAvailableAssetNames"));
         }
 
         public string GetTemplateId()
         {
-            return customNativeAd.Call<string>("getTemplateId");
+            return this.customNativeAd.Call<string>("getTemplateId");
         }
 
         public byte[] GetImageByteArray(string key)
         {
-            return customNativeAd.Call<byte[]>("getImage", key);
+            byte[] imageAssetAsByteArray = this.customNativeAd.Call<byte[]>("getImage", key);
+            if (imageAssetAsByteArray.Length == 0)
+            {
+                return null;
+            }
+
+            return imageAssetAsByteArray;
         }
 
         public string GetText(string key)
         {
-            return customNativeAd.Call<string>("getText", key);
+            string assetText = this.customNativeAd.Call<string>("getText", key);
+            if (assetText.Equals(string.Empty))
+            {
+                return null;
+            }
+
+            return assetText;
         }
 
         public void PerformClick(string assetName)
         {
-            customNativeAd.Call("performClick", assetName);
+            this.customNativeAd.Call("performClick", assetName);
         }
 
         public void RecordImpression()
         {
-            customNativeAd.Call("recordImpression");
+            this.customNativeAd.Call("recordImpression");
         }
     }
 }

@@ -21,7 +21,7 @@
     GADUNativeCustomTemplateDidReceiveClickCallback didReceiveClickCallback;
 
 /// The custom template ID for the ad.
-- (NSString *) templateID;
+- (NSString *)templateID;
 
 /// Returns the string corresponding to the specified key.
 - (NSString *)stringForKey:(NSString *)key;

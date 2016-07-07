@@ -1,6 +1,16 @@
 Google Mobile Ads Unity Plugin Change Log
 
 *************
+Version 3.0.5
+*************
+- Remove use of JSONUtility.
+
+Built and tested with:
+- Google Play services 9.2.0
+- Google Mobile Ads iOS SDK 7.8.1
+- Unity Jar Resolver 1.2
+
+*************
 Version 3.0.4
 *************
 - Fix Podfile compatibility with CocoaPods 1.0.0.

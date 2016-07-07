@@ -20,6 +20,7 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 
+import com.google.android.gms.ads.formats.NativeAd;
 import com.google.android.gms.ads.formats.NativeCustomTemplateAd;
 
 import java.io.ByteArrayOutputStream;
@@ -93,8 +94,13 @@ public class CustomNativeAd {
      * @param key The name of the asset to be retrieved.
      */
     public byte[] getImage(String key) {
-        Drawable image = nativeAd.getImage(key).getDrawable();
-        Bitmap bitmap = ((BitmapDrawable) image).getBitmap();
+        NativeAd.Image imageAsset = nativeAd.getImage(key);
+        if (imageAsset == null) {
+            return new byte[0];
+        }
+
+        Drawable imageDrawable = imageAsset.getDrawable();
+        Bitmap bitmap = ((BitmapDrawable) imageDrawable).getBitmap();
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
         return stream.toByteArray();
@@ -106,6 +112,11 @@ public class CustomNativeAd {
      * @param key The name of the asset to be retrieved.
      */
     public String getText(String key) {
+        CharSequence assetText = nativeAd.getText(key);
+        if (assetText == null) {
+            return "";
+        }
+
         return nativeAd.getText(key).toString();
     }
 }

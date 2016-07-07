@@ -14,13 +14,28 @@
 static NSString *GADUStringFromUTF8String(const char *bytes) { return bytes ? @(bytes) : nil; }
 
 /// Returns a C string from a C array of UTF8-encoded bytes.
-static char *cStringCopy(const char *string) {
+static const char *cStringCopy(const char *string) {
   if (!string) {
     return NULL;
   }
   char *res = (char *)malloc(strlen(string) + 1);
   strcpy(res, string);
   return res;
+}
+
+/// Returns a C string from a C array of UTF8-encoded bytes.
+static const char **cStringArrayCopy(NSArray *array) {
+  if (array == nil) {
+    return nil;
+  }
+
+  const char **stringArray;
+
+  stringArray = malloc(array.count * sizeof(char *));
+  for (int i = 0; i < array.count; i++) {
+    stringArray[i] = cStringCopy([array[i] UTF8String]);
+  }
+  return stringArray;
 }
 
 /// Defines the native ad types.
@@ -339,16 +354,20 @@ void GADUNativeCustomTemplateAdPerformClickOnAssetWithKey(
 }
 
 /// Returns the list of available asset keys for a custom native template ad.
-char *GADUNativeCustomTemplateAdAvailableAssetKeys(
+char **GADUNativeCustomTemplateAdAvailableAssetKeys(
     GADUTypeNativeCustomTemplateAdRef nativeCustomTemplateAd) {
   GADUNativeCustomTemplateAd *internalNativeCustomTemplateAd =
       (__bridge GADUNativeCustomTemplateAd *)nativeCustomTemplateAd;
-  NSArray *assetKeys = [internalNativeCustomTemplateAd availableAssetKeys];
-  NSDictionary *assetNameDict = @{ @"assets" : assetKeys };
-  NSData *jsonArray =
-      [NSJSONSerialization dataWithJSONObject:assetNameDict options:kNilOptions error:nil];
-  NSString *base64String = [jsonArray base64Encoding];
-  return cStringCopy([base64String UTF8String]);
+  NSArray *availableAssetKeys = [internalNativeCustomTemplateAd availableAssetKeys];
+  return cStringArrayCopy(availableAssetKeys);
+}
+
+/// Returns the number of available asset keys for a custom native template ad.
+int GADUNativeCustomTemplateAdNumberOfAvailableAssetKeys(
+    GADUTypeNativeCustomTemplateAdRef nativeCustomTemplateAd) {
+  GADUNativeCustomTemplateAd *internalNativeCustomTemplateAd =
+      (__bridge GADUNativeCustomTemplateAd *)nativeCustomTemplateAd;
+  return (int)[internalNativeCustomTemplateAd availableAssetKeys].count;
 }
 
 /// Sets the Unity native custom template ad client reference on GADUNativeCustomTemplateAd.

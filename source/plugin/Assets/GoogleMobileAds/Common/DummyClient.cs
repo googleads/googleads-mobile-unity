@@ -14,9 +14,9 @@
 
 using System;
 using System.Reflection;
-using UnityEngine;
 
 using GoogleMobileAds.Api;
+using UnityEngine;
 
 namespace GoogleMobileAds.Common
 {
@@ -30,7 +30,7 @@ namespace GoogleMobileAds.Common
         public event EventHandler<EventArgs> OnAdClosed = delegate {};
         public event EventHandler<Reward> OnAdRewarded = delegate {};
         public event EventHandler<EventArgs> OnAdLeavingApplication = delegate {};
-        public event EventHandler<CustomNativeEventArgs> onCustomNativeTemplateAdLoaded = delegate {};
+        public event EventHandler<CustomNativeEventArgs> OnCustomNativeTemplateAdLoaded = delegate {};
 
         public String UserId
         {

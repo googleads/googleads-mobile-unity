@@ -29,7 +29,7 @@ namespace GoogleMobileAds.Android
         private Dictionary<string, Action<CustomNativeTemplateAd, string>>
                 CustomNativeTemplateCallbacks { get; set; }
         public event EventHandler<AdFailedToLoadEventArgs> OnAdFailedToLoad;
-        public event EventHandler<CustomNativeEventArgs> onCustomNativeTemplateAdLoaded;
+        public event EventHandler<CustomNativeEventArgs> OnCustomNativeTemplateAdLoaded;
 
         public AdLoaderClient(AdLoader unityAdLoader) : base(Utils.UnityCustomNativeAdListener)
         {
@@ -62,7 +62,7 @@ namespace GoogleMobileAds.Android
             CustomNativeEventArgs args = new CustomNativeEventArgs() {
                 nativeAd = new CustomNativeTemplateAd(new CustomNativeTemplateClient(ad))
             };
-            onCustomNativeTemplateAdLoaded(this, args);
+            OnCustomNativeTemplateAdLoaded(this, args);
         }
 
         void onAdFailedToLoad(string errorReason)

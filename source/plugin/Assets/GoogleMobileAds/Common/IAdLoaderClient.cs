@@ -11,6 +11,7 @@
 // limitations under the License.
 
 using System;
+
 using GoogleMobileAds.Api;
 
 namespace GoogleMobileAds.Common
@@ -18,7 +19,9 @@ namespace GoogleMobileAds.Common
     internal interface IAdLoaderClient
     {
         event EventHandler<AdFailedToLoadEventArgs> OnAdFailedToLoad;
-        event EventHandler<CustomNativeEventArgs> onCustomNativeTemplateAdLoaded;
+
+        event EventHandler<CustomNativeEventArgs> OnCustomNativeTemplateAdLoaded;
+
         void LoadAd(AdRequest request);
     }
 }

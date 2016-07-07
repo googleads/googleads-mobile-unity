@@ -13,10 +13,10 @@
 // limitations under the License.
 
 using System;
-using UnityEngine;
 
 using GoogleMobileAds.Api;
 using GoogleMobileAds.Common;
+using UnityEngine;
 
 namespace GoogleMobileAds
 {
@@ -76,8 +76,7 @@ namespace GoogleMobileAds
             #elif UNITY_ANDROID
                 return new GoogleMobileAds.Android.AdLoaderClient(adLoader);
             #elif (UNITY_5 && UNITY_IOS) || UNITY_IPHONE
-                //return new GoogleMobileAds.iOS.AdLoaderClient();
-                return null;
+                return new GoogleMobileAds.iOS.AdLoaderClient(adLoader);
             #else
                 return new GoogleMobileAds.Common.DummyClient();
             #endif

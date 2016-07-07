@@ -55,6 +55,7 @@ namespace GooglePlayServices
         internal override bool ShouldExplode(string aarFile)
         {
             return base.ShouldExplode(aarFile) ||
+            aarFile.Contains("firebase-iid") ||
             aarFile.Contains("firebase-common") ||
             aarFile.Contains("firebase-measurement") ||
             !SupportsAarFiles;

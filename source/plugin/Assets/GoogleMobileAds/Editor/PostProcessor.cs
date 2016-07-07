@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using UnityEditor.Callbacks;
 using UnityEditor;
+using UnityEditor.Callbacks;
 
 #if (UNITY_5 && UNITY_IOS)
     using UnityEditor.iOS.Xcode;
@@ -22,21 +22,33 @@ namespace GoogleMobileAds
                 iOSBuildTarget = BuildTarget.iPhone;
             #endif
 
-            if(target == iOSBuildTarget)
+            if (target == iOSBuildTarget)
             {
-                runPodUpdate(pathToBuiltProject);
+                RunPodUpdate(pathToBuiltProject);
             }
         }
 
-        static void runPodUpdate(string path)
+        public static void RunPodUpdate(string path)
         {
             #if !UNITY_CLOUD_BUILD
                 // Copy the podfile into the project.
                 string podfile = "Assets/GoogleMobileAds/Editor/Podfile";
-                string destpodfile = path + "/Podfile";
-                if(!System.IO.File.Exists(destpodfile))
+                string destPodfile = path + "/Podfile";
+
+                if (!System.IO.File.Exists(podfile))
                 {
-                    FileUtil.CopyFileOrDirectory(podfile, destpodfile);
+                    UnityEngine.Debug.LogWarning(@"Could not locate Podfile in
+                            Assets/GoogleMobileAds/Editor/");
+                    return;
+                }
+
+                if (!System.IO.File.Exists(destPodfile))
+                {
+                    FileUtil.CopyFileOrDirectory(podfile, destPodfile);
+                }
+                else
+                {
+                    FileUtil.ReplaceFile(podfile, destPodfile);
                 }
 
                 try
@@ -45,8 +57,8 @@ namespace GoogleMobileAds
                 }
                 catch (Exception e)
                 {
-                    UnityEngine.Debug.Log("Could not create a new Xcode project with CocoaPods: " +
-                            e.Message);
+                    UnityEngine.Debug.LogWarning("Could not create a new Xcode project with " +
+                            "CocoaPods: " + e.Message);
                 }
             #endif
 

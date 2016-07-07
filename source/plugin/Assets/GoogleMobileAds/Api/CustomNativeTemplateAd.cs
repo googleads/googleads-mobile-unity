@@ -14,9 +14,9 @@
 
 using System;
 using System.Collections.Generic;
-using UnityEngine;
 
 using GoogleMobileAds.Common;
+using UnityEngine;
 
 namespace GoogleMobileAds.Api
 {
@@ -31,32 +31,44 @@ namespace GoogleMobileAds.Api
 
         public List<string> GetAvailableAssetNames()
         {
-            return client.GetAvailableAssetNames();
+            return this.client.GetAvailableAssetNames();
         }
 
         public string GetCustomTemplateId()
         {
-            return client.GetTemplateId();
+            return this.client.GetTemplateId();
         }
 
+        // Get image asset corresponding to the key parameter of custom native template ad as a
+        // Texture2D. If the asset key does not map to an existing asset, a null object will be
+        // returned.
         public Texture2D GetTexture2D(string key)
         {
-            return Utils.GetTexture2DFromByteArray(client.GetImageByteArray(key));
+            byte[] imageAssetAsByteArray = this.client.GetImageByteArray(key);
+            if (imageAssetAsByteArray == null)
+            {
+                return null;
+            }
+
+            return Utils.GetTexture2DFromByteArray(imageAssetAsByteArray);
         }
 
+        // Get text asset corresponding to the key parameter of custom native template ad as a
+        // string. If the asset key does not map to an existing asset, a null object will be
+        // returned.
         public string GetText(string key)
         {
-            return client.GetText(key);
+            return this.client.GetText(key);
         }
 
         public void PerformClick(string assetName)
         {
-            client.PerformClick(assetName);
+            this.client.PerformClick(assetName);
         }
 
         public void RecordImpression()
         {
-            client.RecordImpression();
+            this.client.RecordImpression();
         }
     }
 }
