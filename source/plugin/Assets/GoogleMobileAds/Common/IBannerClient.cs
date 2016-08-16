@@ -31,7 +31,7 @@ namespace GoogleMobileAds.Common {
         event EventHandler<EventArgs> OnAdLeavingApplication;
 
         // Creates a banner view and adds it to the view hierarchy.
-        void CreateBannerView(string adUnitId, AdSize adSize, AdPosition position);
+        void CreateBannerView(string adUnitId, AdSize adSize, AdPosition position, AdMargin margin);
 
         // Requests a new ad for the banner view.
         void LoadAd(AdRequest request);

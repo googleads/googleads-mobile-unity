@@ -30,10 +30,10 @@ namespace GoogleMobileAds.Api
         public event EventHandler<EventArgs> OnAdLeavingApplication = delegate {};
 
         // Creates a BannerView and adds it to the view hierarchy.
-        public BannerView(string adUnitId, AdSize adSize, AdPosition position)
+		public BannerView(string adUnitId, AdSize adSize, AdPosition position, AdMargin margin = new AdMargin())
         {
             client = GoogleMobileAdsClientFactory.BuildBannerClient();
-            client.CreateBannerView(adUnitId, adSize, position);
+            client.CreateBannerView(adUnitId, adSize, position, margin);
 
             client.OnAdLoaded += delegate(object sender, EventArgs args)
             {
