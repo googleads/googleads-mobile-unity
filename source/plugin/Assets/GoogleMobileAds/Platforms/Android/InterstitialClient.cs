@@ -16,10 +16,10 @@
 
 using System;
 using System.Collections.Generic;
-using UnityEngine;
 
 using GoogleMobileAds.Api;
 using GoogleMobileAds.Common;
+using UnityEngine;
 
 namespace GoogleMobileAds.Android
 {
@@ -27,94 +27,105 @@ namespace GoogleMobileAds.Android
     {
         private AndroidJavaObject interstitial;
 
-        public event EventHandler<EventArgs> OnAdLoaded = delegate {};
-        public event EventHandler<AdFailedToLoadEventArgs> OnAdFailedToLoad = delegate {};
-        public event EventHandler<EventArgs> OnAdOpening = delegate {};
-        public event EventHandler<EventArgs> OnAdClosed = delegate {};
-        public event EventHandler<EventArgs> OnAdLeavingApplication = delegate {};
-
-        public InterstitialClient()
-            : base(Utils.UnityInterstitialAdListenerClassName)
+        public InterstitialClient() : base(Utils.UnityAdListenerClassName)
         {
             AndroidJavaClass playerClass = new AndroidJavaClass(Utils.UnityActivityClassName);
             AndroidJavaObject activity =
                     playerClass.GetStatic<AndroidJavaObject>("currentActivity");
-            interstitial = new AndroidJavaObject(
+            this.interstitial = new AndroidJavaObject(
                 Utils.InterstitialClassName, activity, this);
         }
+
+        public event EventHandler<EventArgs> OnAdLoaded;
+
+        public event EventHandler<AdFailedToLoadEventArgs> OnAdFailedToLoad;
+
+        public event EventHandler<EventArgs> OnAdOpening;
+
+        public event EventHandler<EventArgs> OnAdClosed;
+
+        public event EventHandler<EventArgs> OnAdLeavingApplication;
 
         #region IGoogleMobileAdsInterstitialClient implementation
 
         // Creates an interstitial ad.
-        public void CreateInterstitialAd(string adUnitId) {
-            interstitial.Call("create", adUnitId);
+        public void CreateInterstitialAd(string adUnitId)
+        {
+            this.interstitial.Call("create", adUnitId);
         }
 
         // Loads an ad.
-        public void LoadAd(AdRequest request) {
-            interstitial.Call("loadAd", Utils.GetAdRequestJavaObject(request));
+        public void LoadAd(AdRequest request)
+        {
+            this.interstitial.Call("loadAd", Utils.GetAdRequestJavaObject(request));
         }
 
         // Checks if interstitial has loaded.
-        public bool IsLoaded() {
-            return interstitial.Call<bool>("isLoaded");
+        public bool IsLoaded()
+        {
+            return this.interstitial.Call<bool>("isLoaded");
         }
 
         // Presents the interstitial ad on the screen.
-        public void ShowInterstitial() {
-            interstitial.Call("show");
+        public void ShowInterstitial()
+        {
+            this.interstitial.Call("show");
         }
 
         // Destroys the interstitial ad.
-        public void DestroyInterstitial() {
-            interstitial.Call("destroy");
+        public void DestroyInterstitial()
+        {
+            this.interstitial.Call("destroy");
         }
 
         // Sets IDefaultInAppPurchaseProcessor as PlayStorePurchaseListener on interstital ad.
-        public void SetDefaultInAppPurchaseProcessor(IDefaultInAppPurchaseProcessor processor) {
+        public void SetDefaultInAppPurchaseProcessor(IDefaultInAppPurchaseProcessor processor)
+        {
             DefaultInAppPurchaseListener listener = new DefaultInAppPurchaseListener(processor);
-            interstitial.Call("setPlayStorePurchaseParams", listener, processor.AndroidPublicKey);
+            this.interstitial.Call("setPlayStorePurchaseParams", listener, processor.AndroidPublicKey);
         }
 
         // Sets ICustomInAppPurchaseProcessor as PlayStorePurchaseListener on interstital ad.
-        public void SetCustomInAppPurchaseProcessor(ICustomInAppPurchaseProcessor processor) {
+        public void SetCustomInAppPurchaseProcessor(ICustomInAppPurchaseProcessor processor)
+        {
             CustomInAppPurchaseListener listener = new CustomInAppPurchaseListener(processor);
-            interstitial.Call("setInAppPurchaseListener", listener);
+            this.interstitial.Call("setInAppPurchaseListener", listener);
         }
 
         #endregion
 
         #region Callbacks from UnityInterstitialAdListener.
 
-        void onAdLoaded()
+        public void onAdLoaded()
         {
-            OnAdLoaded(this, EventArgs.Empty);
+            this.OnAdLoaded(this, EventArgs.Empty);
         }
 
-        void onAdFailedToLoad(string errorReason)
+        public void onAdFailedToLoad(string errorReason)
         {
-            AdFailedToLoadEventArgs args = new AdFailedToLoadEventArgs() {
+            AdFailedToLoadEventArgs args = new AdFailedToLoadEventArgs()
+            {
                 Message = errorReason
             };
-            OnAdFailedToLoad(this, args);
+            this.OnAdFailedToLoad(this, args);
         }
 
-        void onAdOpened()
+        public void onAdOpened()
         {
-            OnAdOpening(this, EventArgs.Empty);
+            this.OnAdOpening(this, EventArgs.Empty);
         }
 
-        void onAdClosed()
+        public void onAdClosed()
         {
-            OnAdClosed(this, EventArgs.Empty);
+            this.OnAdClosed(this, EventArgs.Empty);
         }
 
-        void onAdLeftApplication()
+        public void onAdLeftApplication()
         {
-            OnAdLeavingApplication(this, EventArgs.Empty);
+            this.OnAdLeavingApplication(this, EventArgs.Empty);
         }
 
-        # endregion
+        #endregion
     }
 }
 

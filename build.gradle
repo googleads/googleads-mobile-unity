@@ -3,6 +3,8 @@
 *   Useage: ./gradlew exportPackage
 */
 
+defaultTasks 'exportPackage'
+
 // Project level variables.
 project.ext {
     sdk_root = System.getProperty("ANDROID_HOME")

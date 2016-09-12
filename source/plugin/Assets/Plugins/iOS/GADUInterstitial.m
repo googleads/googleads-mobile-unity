@@ -1,12 +1,11 @@
 // Copyright 2014 Google Inc. All Rights Reserved.
 
-@import CoreGraphics;
-@import Foundation;
-@import GoogleMobileAds;
-@import UIKit;
-
 #import "GADUInterstitial.h"
 
+@import CoreGraphics;
+@import UIKit;
+
+#import "GADUPluginUtil.h"
 #import "UnityAppController.h"
 
 @interface GADUInterstitial () <GADInterstitialDelegate>
@@ -14,17 +13,12 @@
 
 @implementation GADUInterstitial
 
-+ (UIViewController *)unityGLViewController {
-  return ((UnityAppController *)[UIApplication sharedApplication].delegate).rootViewController;
-}
-
 - (id)initWithInterstitialClientReference:(GADUTypeInterstitialClientRef *)interstitialClient
                                  adUnitID:(NSString *)adUnitID {
   self = [super init];
   if (self) {
     _interstitialClient = interstitialClient;
-    _interstitial = [[GADInterstitial alloc] init];
-    _interstitial.adUnitID = adUnitID;
+    _interstitial = [[GADInterstitial alloc] initWithAdUnitID:adUnitID];
     _interstitial.delegate = self;
   }
   return self;
@@ -44,7 +38,7 @@
 
 - (void)show {
   if (self.interstitial.isReady) {
-    UIViewController *unityController = [GADUInterstitial unityGLViewController];
+    UIViewController *unityController = [GADUPluginUtil unityGLViewController];
     [self.interstitial presentFromRootViewController:unityController];
   } else {
     NSLog(@"GoogleMobileAdsPlugin: Interstitial is not ready to be shown.");

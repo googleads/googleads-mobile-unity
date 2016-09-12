@@ -1,8 +1,5 @@
 // Copyright 2014 Google Inc. All Rights Reserved.
 
-@import Foundation;
-@import GoogleMobileAds;
-
 #import "GADURequest.h"
 
 @implementation GADURequest

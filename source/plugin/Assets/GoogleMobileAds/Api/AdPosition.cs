@@ -22,6 +22,7 @@ namespace GoogleMobileAds.Api
         TopLeft = 2,
         TopRight = 3,
         BottomLeft = 4,
-        BottomRight = 5
+        BottomRight = 5,
+        Center = 6
     }
 }

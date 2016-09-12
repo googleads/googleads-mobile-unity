@@ -22,6 +22,7 @@ namespace GooglePlayServices
     using System.IO;
     using UnityEngine;
     using System;
+    using System.Collections.Generic;
 
     /// <summary>
     /// Default resolver base class.
@@ -61,6 +62,17 @@ namespace GooglePlayServices
         {
             return EditorPrefs.GetBool("GooglePlayServices.AutoResolverEnabled",
                 SupportsAarFiles);
+        }
+
+        /// <summary>
+        /// Returns true if Android package installation is enabled.
+        /// </summary>
+        /// <returns><c>true</c>, package installation is enabled, <c>false</c> otherwise.
+        /// </returns>
+        public virtual bool AndroidPackageInstallationEnabled()
+        {
+            return EditorPrefs.GetBool("GooglePlayServices.AndroidPackageInstallationEnabled",
+                                       true);
         }
 
         /// <summary>
@@ -116,10 +128,9 @@ namespace GooglePlayServices
         public virtual void ShowSettingsDialog()
         {
 
-            EditorWindow window = EditorWindow.GetWindow(
+            SettingsDialog window = (SettingsDialog)EditorWindow.GetWindow(
                 typeof(SettingsDialog), true, "Play Services Resolver Settings");
-            window.minSize = new Vector2(300, 200);
-            window.position = new Rect(200, 200, 300, 200);
+            window.Initialize();
             window.Show();
         }
 
@@ -129,11 +140,38 @@ namespace GooglePlayServices
         /// <param name="svcSupport">Svc support.</param>
         /// <param name="destinationDirectory">Destination directory.</param>
         /// <param name="handleOverwriteConfirmation">Handle overwrite confirmation.</param>
-        public abstract void DoResolution(PlayServicesSupport svcSupport,
-            string destinationDirectory,
-            PlayServicesSupport.OverwriteConfirmation handleOverwriteConfirmation);
+        /// <param name="resolutionComplete">Delegate called when resolution is complete.</param>
+        public virtual void DoResolution(
+            PlayServicesSupport svcSupport, string destinationDirectory,
+            PlayServicesSupport.OverwriteConfirmation handleOverwriteConfirmation,
+            System.Action resolutionComplete)
+        {
+            DoResolution(svcSupport, destinationDirectory, handleOverwriteConfirmation);
+            resolutionComplete();
+        }
+
+        /// <summary>
+        /// Called during Update to allow the resolver to check the bundle ID of the application
+        /// to see whether resolution should be triggered again.
+        /// </summary>
+        /// <returns>Array of packages that should be re-resolved if resolution should occur,
+        /// null otherwise.</returns>
+        public virtual string[] OnBundleId(string bundleId)
+        {
+            return null;
+        }
 
         #endregion
+
+        /// <summary>
+        /// Compatibility method for synchronous implementations of DoResolution().
+        /// </summary>
+        /// <param name="svcSupport">Svc support.</param>
+        /// <param name="destinationDirectory">Destination directory.</param>
+        /// <param name="handleOverwriteConfirmation">Handle overwrite confirmation.</param>
+        public abstract void DoResolution(
+            PlayServicesSupport svcSupport, string destinationDirectory,
+            PlayServicesSupport.OverwriteConfirmation handleOverwriteConfirmation);
 
         /// <summary>
         /// Makes the version number.
@@ -175,6 +213,102 @@ namespace GooglePlayServices
         }
 
         /// <summary>
+        /// Find a Java tool.
+        /// </summary>
+        /// <param name="toolName">Name of the tool to search for.</param>
+        private string FindJavaTool(string javaTool)
+        {
+            string javaHome = Environment.GetEnvironmentVariable("JAVA_HOME");
+            string toolPath;
+            if (javaHome != null)
+            {
+                toolPath = Path.Combine(
+                    javaHome, Path.Combine(
+                        "bin", javaTool + CommandLine.GetExecutableExtension()));
+                if (!File.Exists(toolPath))
+                {
+                    EditorUtility.DisplayDialog("Play Services Dependencies",
+                                                "JAVA_HOME environment references a directory (" +
+                                                javaHome + ") that does not contain " + javaTool +
+                                                " which is required to process Play Services " +
+                                                "dependencies.", "OK");
+                    throw new Exception("JAVA_HOME references incomplete Java distribution.  " +
+                                        javaTool + " not found.");
+                }
+            } else {
+                toolPath = CommandLine.FindExecutable(javaTool);
+                if (!File.Exists(toolPath))
+                {
+                    EditorUtility.DisplayDialog("Play Services Dependencies",
+                                                "Unable to find " + javaTool + " in the system " +
+                                                "path.  This tool is required to process Play " +
+                                                "Services dependencies.  Either set JAVA_HOME " +
+                                                "or add " + javaTool + " to the PATH variable " +
+                                                "to resolve this error.", "OK");
+                    throw new Exception(javaTool + " not found.");
+                }
+            }
+            return toolPath;
+        }
+
+        /// <summary>
+        /// Create a temporary directory.
+        /// </summary>
+        /// <returns>If temporary directory creation fails, return null.</returns>
+        public static string CreateTemporaryDirectory()
+        {
+            int retry = 100;
+            while (retry-- > 0)
+            {
+                string temporaryDirectory = Path.Combine(Path.GetTempPath(),
+                                                         Path.GetRandomFileName());
+                if (File.Exists(temporaryDirectory))
+                {
+                    continue;
+                }
+                Directory.CreateDirectory(temporaryDirectory);
+                return temporaryDirectory;
+            }
+            return null;
+        }
+
+        // store the AndroidManifest.xml in a temporary directory before processing it.
+        /// <summary>
+        /// Extract an AAR to the specified directory.
+        /// </summary>
+        /// <param name="aarFile">Name of the AAR file to extract.</param>
+        /// <param name="extract_filenames">List of files to extract from the AAR.  If this array
+        /// is empty or null all files are extracted.</param>
+        /// <param name="outputDirectory">Directory to extract the AAR file to.</param>
+        /// <returns>true if successful, false otherwise.</returns>
+        internal virtual bool ExtractAar(string aarFile, string[] extractFilenames,
+                                         string outputDirectory)
+        {
+            try
+            {
+                string aarPath = Path.GetFullPath(aarFile);
+                string extractFilesArg = extractFilenames != null && extractFilenames.Length > 0 ?
+                    " \"" + String.Join("\" \"", extractFilenames) + "\"" : "";
+                CommandLine.Result result = CommandLine.Run(FindJavaTool("jar"),
+                                                            "xvf " + "\"" + aarPath + "\"" +
+                                                            extractFilesArg,
+                                                            workingDirectory: outputDirectory);
+                if (result.exitCode != 0)
+                {
+                    Debug.LogError("Error expanding " + aarPath + " err: " +
+                                   result.exitCode + ": " + result.stderr);
+                    return false;
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.Log(e);
+                throw e;
+            }
+            return true;
+        }
+
+        /// <summary>
         /// Explodes a single aar file.  This is done by calling the
         /// JDK "jar" command, then moving the classes.jar file.
         /// </summary>
@@ -183,115 +317,46 @@ namespace GooglePlayServices
         /// <returns>The path to the exploded aar.
         internal virtual string ProcessAar(string dir, string aarFile)
         {
-            string file = Path.GetFileNameWithoutExtension(aarFile);
-            string workingDir = Path.Combine(dir, file);
+            string workingDir = Path.Combine(dir, Path.GetFileNameWithoutExtension(aarFile));
             Directory.CreateDirectory(workingDir);
-            try
+            if (!ExtractAar(aarFile, null, workingDir)) return workingDir;
+
+            // move the classes.jar file to libs.
+            string libDir = Path.Combine(workingDir, "libs");
+            if (!Directory.Exists(libDir))
             {
-                string exe = "jar";
-                if (RuntimePlatform.WindowsEditor == Application.platform)
-                {
-                    string javaHome = Environment.GetEnvironmentVariable("JAVA_HOME");
-                    if (javaHome == null)
-                    {
-                        EditorUtility.DisplayDialog("Play Services Jar Dependencies",
-                            "JAVA_HOME environment variable must be set.", "OK");
-                        throw new Exception("JAVA_HOME not set");
-                    }
-                    exe = Path.Combine(javaHome, Path.Combine("bin", "jar.exe"));
-                }
-
-                System.Diagnostics.Process p = new System.Diagnostics.Process();
-                p.StartInfo.UseShellExecute = false;
-                p.StartInfo.Arguments = "xvf " +
-                    "\"" + Path.GetFullPath(aarFile) + "\"";
-                p.StartInfo.CreateNoWindow = true;
-                p.StartInfo.RedirectStandardOutput = false;
-                p.StartInfo.RedirectStandardError = true;
-                p.StartInfo.FileName = exe;
-                p.StartInfo.WorkingDirectory = workingDir;
-                p.Start();
-
-                // To avoid deadlocks, always read the output stream first and then wait.
-                string stderr = p.StandardError.ReadToEnd();
-
-                p.WaitForExit();
-
-                if (p.ExitCode == 0)
-                {
-
-                    // move the classes.jar file to libs.
-                    string libDir = Path.Combine(workingDir, "libs");
-                    if (!Directory.Exists(libDir))
-                    {
-                        Directory.CreateDirectory(libDir);
-                    }
-                    if (File.Exists(Path.Combine(libDir, "classes.jar")))
-                    {
-                        File.Delete(Path.Combine(libDir, "classes.jar"));
-                    }
-                    if (File.Exists(Path.Combine(workingDir, "classes.jar")))
-                    {
-                        File.Move(Path.Combine(workingDir, "classes.jar"),
-                            Path.Combine(libDir, "classes.jar"));
-                    }
-
-                    // Create the project.properties file which indicates to
-                    // Unity that this directory is a plugin.
-                    if (!File.Exists(Path.Combine(workingDir, "project.properties")))
-                    {
-                        // write out project.properties
-                        string[] props =
-                            {
-                                "# Project target.",
-                                "target=android-9",
-                                "android.library=true"
-                            };
-
-                        File.WriteAllLines(Path.Combine(workingDir, "project.properties"),
-                            props);
-                    }
-
-                    // Clean up the aar file.
-                    File.Delete(Path.GetFullPath(aarFile));
-
-                    Debug.Log(aarFile + " expanded successfully");
-                }
-                else
-                {
-                    Debug.LogError("Error expanding " +
-                        Path.GetFullPath(aarFile) +
-                        " err: " + p.ExitCode + ": " + stderr);
-                }
+                Directory.CreateDirectory(libDir);
             }
-            catch (Exception e)
+            if (File.Exists(Path.Combine(libDir, "classes.jar")))
             {
-                Debug.Log(e);
-                throw e;
+                File.Delete(Path.Combine(libDir, "classes.jar"));
             }
+            if (File.Exists(Path.Combine(workingDir, "classes.jar")))
+            {
+                File.Move(Path.Combine(workingDir, "classes.jar"),
+                          Path.Combine(libDir, "classes.jar"));
+            }
+
+            // Create the project.properties file which indicates to
+            // Unity that this directory is a plugin.
+            if (!File.Exists(Path.Combine(workingDir, "project.properties")))
+            {
+                // write out project.properties
+                string[] props =
+                    {
+                        "# Project target.",
+                        "target=android-9",
+                        "android.library=true"
+                    };
+
+                File.WriteAllLines(Path.Combine(workingDir, "project.properties"),
+                                   props);
+            }
+
+            // Clean up the aar file.
+            File.Delete(Path.GetFullPath(aarFile));
+            Debug.Log(aarFile + " expanded successfully");
             return workingDir;
-        }
-
-        /// <summary>
-        /// Deletes the directory fully.
-        /// </summary>
-        /// <param name="dir">Directory to delete.</param>
-        internal static void DeleteFully(string dir)
-        {
-            string[] files = Directory.GetFiles(dir);
-            string[] dirs = Directory.GetDirectories(dir);
-
-            foreach (string f in files)
-            {
-                File.Delete(f);
-            }
-
-            foreach (string d in dirs)
-            {
-                DeleteFully(d);
-            }
-
-            Directory.Delete(dir);
         }
     }
 }

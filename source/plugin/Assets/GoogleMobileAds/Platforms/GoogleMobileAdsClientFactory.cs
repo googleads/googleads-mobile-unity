@@ -81,5 +81,20 @@ namespace GoogleMobileAds
                 return new GoogleMobileAds.Common.DummyClient();
             #endif
         }
+
+        internal static INativeExpressAdClient BuildNativeExpressAdClient()
+        {
+            #if UNITY_EDITOR
+                // Testing UNITY_EDITOR first because the editor also responds to the currently
+                // selected platform.
+                return new GoogleMobileAds.Common.DummyClient();
+            #elif UNITY_ANDROID
+                return new GoogleMobileAds.Android.NativeExpressAdClient();
+            #elif (UNITY_5 && UNITY_IOS) || UNITY_IPHONE
+                return new GoogleMobileAds.iOS.NativeExpressAdClient();
+            #else
+                return new GoogleMobileAds.Common.DummyClient();
+            #endif
+        }
     }
 }

@@ -12,6 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+#if UNITY_IOS
+
 using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
@@ -23,56 +25,70 @@ namespace GoogleMobileAds.iOS
 {
     internal class BannerClient : IBannerClient, IDisposable
     {
+        private IntPtr bannerViewPtr;
+
+        private IntPtr bannerClientPtr;
+
         #region Banner callback types
 
         internal delegate void GADUAdViewDidReceiveAdCallback(IntPtr bannerClient);
+
         internal delegate void GADUAdViewDidFailToReceiveAdWithErrorCallback(
                 IntPtr bannerClient, string error);
+
         internal delegate void GADUAdViewWillPresentScreenCallback(IntPtr bannerClient);
+
         internal delegate void GADUAdViewDidDismissScreenCallback(IntPtr bannerClient);
+
         internal delegate void GADUAdViewWillLeaveApplicationCallback(IntPtr bannerClient);
 
         #endregion
 
-        public event EventHandler<EventArgs> OnAdLoaded = delegate {};
-        public event EventHandler<AdFailedToLoadEventArgs> OnAdFailedToLoad = delegate {};
-        public event EventHandler<EventArgs> OnAdOpening = delegate {};
-        public event EventHandler<EventArgs> OnAdClosed = delegate {};
-        public event EventHandler<EventArgs> OnAdLeavingApplication = delegate {};
+        public event EventHandler<EventArgs> OnAdLoaded;
 
-        private IntPtr bannerViewPtr;
+        public event EventHandler<AdFailedToLoadEventArgs> OnAdFailedToLoad;
+
+        public event EventHandler<EventArgs> OnAdOpening;
+
+        public event EventHandler<EventArgs> OnAdClosed;
+
+        public event EventHandler<EventArgs> OnAdLeavingApplication;
 
         // This property should be used when setting the bannerViewPtr.
         private IntPtr BannerViewPtr
         {
             get
             {
-                return bannerViewPtr;
+                return this.bannerViewPtr;
             }
+
             set
             {
-                Externs.GADURelease(bannerViewPtr);
-                bannerViewPtr = value;
+                Externs.GADURelease(this.bannerViewPtr);
+                this.bannerViewPtr = value;
             }
         }
 
         #region IBannerClient implementation
 
         // Creates a banner view.
-        public void CreateBannerView(string adUnitId, AdSize adSize, AdPosition position) {
-            IntPtr bannerClientPtr = (IntPtr) GCHandle.Alloc(this);
+        public void CreateBannerView(string adUnitId, AdSize adSize, AdPosition position)
+        {
+            this.bannerClientPtr = (IntPtr)GCHandle.Alloc(this);
 
-            if (adSize.IsSmartBanner) {
-                BannerViewPtr = Externs.GADUCreateSmartBannerView(
-                        bannerClientPtr, adUnitId, (int)position);
+            if (adSize.IsSmartBanner)
+            {
+                this.BannerViewPtr = Externs.GADUCreateSmartBannerView(
+                        this.bannerClientPtr, adUnitId, (int)position);
             }
             else
             {
-                BannerViewPtr = Externs.GADUCreateBannerView(
-                        bannerClientPtr, adUnitId, adSize.Width, adSize.Height, (int)position);
+                this.BannerViewPtr = Externs.GADUCreateBannerView(
+                        this.bannerClientPtr, adUnitId, adSize.Width, adSize.Height, (int)position);
             }
+
             Externs.GADUSetBannerCallbacks(
-                    BannerViewPtr,
+                    this.BannerViewPtr,
                     AdViewDidReceiveAdCallback,
                     AdViewDidFailToReceiveAdWithErrorCallback,
                     AdViewWillPresentScreenCallback,
@@ -84,37 +100,38 @@ namespace GoogleMobileAds.iOS
         public void LoadAd(AdRequest request)
         {
             IntPtr requestPtr = Utils.BuildAdRequest(request);
-            Externs.GADURequestBannerAd(BannerViewPtr, requestPtr);
+            Externs.GADURequestBannerAd(this.BannerViewPtr, requestPtr);
             Externs.GADURelease(requestPtr);
         }
 
         // Displays the banner view on the screen.
-        public void ShowBannerView() {
-            Externs.GADUShowBannerView(BannerViewPtr);
+        public void ShowBannerView()
+        {
+            Externs.GADUShowBannerView(this.BannerViewPtr);
         }
 
         // Hides the banner view from the screen.
         public void HideBannerView()
         {
-            Externs.GADUHideBannerView(BannerViewPtr);
+            Externs.GADUHideBannerView(this.BannerViewPtr);
         }
 
         // Destroys the banner view.
         public void DestroyBannerView()
         {
-            Externs.GADURemoveBannerView(BannerViewPtr);
-            BannerViewPtr = IntPtr.Zero;
+            Externs.GADURemoveBannerView(this.BannerViewPtr);
+            this.BannerViewPtr = IntPtr.Zero;
         }
 
         public void Dispose()
         {
-            DestroyBannerView();
-            ((GCHandle)bannerViewPtr).Free();
+            this.DestroyBannerView();
+            ((GCHandle)this.bannerClientPtr).Free();
         }
 
         ~BannerClient()
         {
-            Dispose();
+            this.Dispose();
         }
 
         #endregion
@@ -133,7 +150,8 @@ namespace GoogleMobileAds.iOS
                 IntPtr bannerClient, string error)
         {
             BannerClient client = IntPtrToBannerClient(bannerClient);
-            AdFailedToLoadEventArgs args = new AdFailedToLoadEventArgs() {
+            AdFailedToLoadEventArgs args = new AdFailedToLoadEventArgs()
+            {
                 Message = error
             };
             client.OnAdFailedToLoad(client, args);
@@ -162,10 +180,12 @@ namespace GoogleMobileAds.iOS
 
         private static BannerClient IntPtrToBannerClient(IntPtr bannerClient)
         {
-            GCHandle handle = (GCHandle) bannerClient;
+            GCHandle handle = (GCHandle)bannerClient;
             return handle.Target as BannerClient;
         }
 
         #endregion
     }
 }
+
+#endif

@@ -1,6 +1,6 @@
 // Copyright 2014 Google Inc. All Rights Reserved.
 
-#import <Foundation/Foundation.h>
+@import Foundation;
 
 /// A cache to hold onto objects while Unity is still referencing them.
 @interface GADUObjectCache : NSObject

@@ -16,10 +16,10 @@
 package com.google.unity.ads;
 
 /**
- * An interface form of {@link UnityInterstitialAdListener} that can be implemented via
+ * An interface form of {@link UnityBannerAdListener} that can be implemented via
  * {@code AndroidJavaProxy} in Unity to receive ad events synchronously.
  */
-public interface UnityInterstitialAdListener {
+public interface UnityAdListener {
     void onAdLoaded();
     void onAdFailedToLoad(String errorReason);
     void onAdOpened();

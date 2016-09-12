@@ -21,30 +21,41 @@ using UnityEngine;
 namespace GoogleMobileAds.Common
 {
     internal class DummyClient : IBannerClient, IInterstitialClient, IRewardBasedVideoAdClient,
-            IAdLoaderClient
+            IAdLoaderClient, INativeExpressAdClient
     {
-        public event EventHandler<EventArgs> OnAdLoaded = delegate {};
-        public event EventHandler<AdFailedToLoadEventArgs> OnAdFailedToLoad = delegate {};
-        public event EventHandler<EventArgs> OnAdOpening = delegate {};
-        public event EventHandler<EventArgs> OnAdStarted = delegate {};
-        public event EventHandler<EventArgs> OnAdClosed = delegate {};
-        public event EventHandler<Reward> OnAdRewarded = delegate {};
-        public event EventHandler<EventArgs> OnAdLeavingApplication = delegate {};
-        public event EventHandler<CustomNativeEventArgs> OnCustomNativeTemplateAdLoaded = delegate {};
+        public DummyClient()
+        {
+            Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
+        }
 
-        public String UserId
+        public event EventHandler<EventArgs> OnAdLoaded;
+
+        public event EventHandler<AdFailedToLoadEventArgs> OnAdFailedToLoad;
+
+        public event EventHandler<EventArgs> OnAdOpening;
+
+        public event EventHandler<EventArgs> OnAdStarted;
+
+        public event EventHandler<EventArgs> OnAdClosed;
+
+        public event EventHandler<Reward> OnAdRewarded;
+
+        public event EventHandler<EventArgs> OnAdLeavingApplication;
+
+        public event EventHandler<CustomNativeEventArgs> OnCustomNativeTemplateAdLoaded;
+
+        public string UserId
         {
             get
             {
                 Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
                 return "UserId";
             }
-            set { Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name); }
-        }
 
-        public DummyClient()
-        {
-            Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
+            set
+            {
+                Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
+            }
         }
 
         public void CreateBannerView(string adUnitId, AdSize adSize, AdPosition position)
@@ -134,6 +145,31 @@ namespace GoogleMobileAds.Common
         }
 
         public void Load(AdRequest request)
+        {
+            Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
+        }
+
+        public void CreateNativeExpressAdView(string adUnitId, AdSize adSize, AdPosition position)
+        {
+            Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
+        }
+
+        public void SetAdSize(AdSize adSize)
+        {
+            Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
+        }
+
+        public void ShowNativeExpressAdView()
+        {
+            Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
+        }
+
+        public void HideNativeExpressAdView()
+        {
+            Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
+        }
+
+        public void DestroyNativeExpressAdView()
         {
             Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
         }

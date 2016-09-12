@@ -18,7 +18,6 @@ package com.google.unity.ads;
 import android.app.Activity;
 import android.graphics.Color;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
@@ -35,35 +34,6 @@ import com.google.android.gms.ads.AdView;
  * Play services. The Google Play services library is a dependency for this plugin.
  */
 public class Banner {
-    /**
-     * Banner position constant for the top of the screen.
-     */
-    private static final int POSITION_TOP = 0;
-
-    /**
-     * Banner position constant for the bottom of the screen.
-     */
-    private static final int POSITION_BOTTOM = 1;
-
-    /**
-     * Banner position constant for the top left of the screen.
-     */
-    private static final int POSITION_TOP_LEFT = 2;
-
-    /**
-     * Banner position constant for the top right of the screen.
-     */
-    private static final int POSITION_TOP_RIGHT = 3;
-
-    /**
-     * Banner position constant for the bottom left of the screen.
-     */
-    private static final int POSITION_BOTTOM_LEFT = 4;
-
-    /**
-     * Banner position constant for the bottom right of the screen.
-     */
-    private static final int POSITION_BOTTOM_RIGHT = 5;
 
     /**
      * The {@link AdView} to display to the user.
@@ -78,16 +48,16 @@ public class Banner {
     /**
      * A listener implemented in Unity via {@code AndroidJavaProxy} to receive ad events.
      */
-    private UnityBannerAdListener listener;
+    private UnityAdListener listener;
 
     /**
      * Creates an instance of {@code Banner}.
      *
      * @param activity The {@link Activity} that will contain an ad.
-     * @param listener The {@link UnityBannerAdListener} used to receive synchronous ad events in
+     * @param listener The {@link UnityAdListener} used to receive synchronous ad events in
      *                 Unity.
      */
-    public Banner(Activity activity, UnityBannerAdListener listener) {
+    public Banner(Activity activity, UnityAdListener listener) {
         this.activity = activity;
         this.listener = listener;
     }
@@ -148,34 +118,10 @@ public class Banner {
                 FrameLayout.LayoutParams adParams = new FrameLayout.LayoutParams(
                         FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams
                         .WRAP_CONTENT);
-
-                switch (positionCode) {
-                    case POSITION_TOP:
-                        adParams.gravity = Gravity.TOP | Gravity.CENTER_HORIZONTAL;
-                        break;
-                    case POSITION_BOTTOM:
-                        adParams.gravity = Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL;
-                        break;
-                    case POSITION_TOP_LEFT:
-                        adParams.gravity = Gravity.TOP | Gravity.LEFT;
-                        break;
-                    case POSITION_TOP_RIGHT:
-                        adParams.gravity = Gravity.TOP | Gravity.RIGHT;
-                        break;
-                    case POSITION_BOTTOM_LEFT:
-                        adParams.gravity = Gravity.BOTTOM | Gravity.LEFT;
-                        break;
-                    case POSITION_BOTTOM_RIGHT:
-                        adParams.gravity = Gravity.BOTTOM | Gravity.RIGHT;
-                        break;
-                }
+                adParams.gravity = PluginUtils.getLayoutGravityForPositionCode(positionCode);
                 activity.addContentView(adView, adParams);
             }
         });
-    }
-
-    public void setAdListener(UnityBannerAdListener listener) {
-        this.listener = listener;
     }
 
     /**

@@ -41,14 +41,14 @@ public class Interstitial {
     /**
      * A listener implemented in Unity via {@code AndroidJavaProxy} to receive ad events.
      */
-    private UnityInterstitialAdListener adListener;
+    private UnityAdListener adListener;
 
     /**
      * Whether or not the {@link InterstitialAd} is ready to be shown.
      */
     private boolean isLoaded;
 
-    public Interstitial(Activity activity, UnityInterstitialAdListener adListener) {
+    public Interstitial(Activity activity, UnityAdListener adListener) {
         this.activity = activity;
         this.adListener = adListener;
         this.isLoaded = false;
@@ -152,7 +152,7 @@ public class Interstitial {
     }
 
     /**
-     * Sets a InAppPurchaseListener for the interstitial. The InAppPurchaseListener is
+     * Sets an InAppPurchaseListener for the interstitial. The InAppPurchaseListener is
      * implemented on the Unity side via {@code AndroidJavaProxy}.
      *
      * @param purchaseListener An InAppPurchaseListener for monitoring purchase events.

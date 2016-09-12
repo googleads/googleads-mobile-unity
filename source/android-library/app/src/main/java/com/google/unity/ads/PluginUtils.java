@@ -15,47 +15,124 @@
  */
 package com.google.unity.ads;
 
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.purchase.InAppPurchaseResult;
-
 import android.app.Activity;
 import android.util.Log;
+import android.view.Gravity;
+
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.purchase.InAppPurchaseResult;
 
 /**
  * Utilities for the Google Mobile Ads Unity plugin.
  */
 public class PluginUtils {
-  /** Tag used for logging statements. */
-  public static final String LOGTAG = "AdsUnity";
 
-  /**
-   * Gets a string error reason from an error code.
-   *
-   * @param errorCode The error code.
-   * @return The reason for the error.
-   */
-  public static String getErrorReason(int errorCode) {
-    switch(errorCode) {
-      case AdRequest.ERROR_CODE_INTERNAL_ERROR:
-        return "Internal error";
-      case AdRequest.ERROR_CODE_INVALID_REQUEST:
-        return "Invalid request";
-      case AdRequest.ERROR_CODE_NETWORK_ERROR:
-        return "Network Error";
-      case AdRequest.ERROR_CODE_NO_FILL:
-        return "No fill";
-      default:
-        Log.w(LOGTAG, String.format("Unexpected error code: %s", errorCode));
-        return "";
+    /**
+     * Tag used for logging statements.
+     */
+    public static final String LOGTAG = "AdsUnity";
+
+    /**
+     * Position constant for top of the screen.
+     */
+    private static final int POSITION_TOP = 0;
+
+    /**
+     * Position constant for bottom of the screen.
+     */
+    private static final int POSITION_BOTTOM = 1;
+
+    /**
+     * Position constant for top-left of the screen.
+     */
+    private static final int POSITION_TOP_LEFT = 2;
+
+    /**
+     * Position constant for top-right of the screen.
+     */
+    private static final int POSITION_TOP_RIGHT = 3;
+
+    /**
+     * Position constant for bottom-left of the screen.
+     */
+    private static final int POSITION_BOTTOM_LEFT = 4;
+
+    /**
+     * Position constant bottom-right of the screen.
+     */
+    private static final int POSITION_BOTTOM_RIGHT = 5;
+
+    /**
+     * Position constant center of the screen.
+     */
+    private static final int POSITION_CENTER = 6;
+
+    /**
+     * Gets a string error reason from an error code.
+     *
+     * @param errorCode The error code.
+     * @return The reason for the error.
+     */
+    public static String getErrorReason(int errorCode) {
+        switch (errorCode) {
+            case AdRequest.ERROR_CODE_INTERNAL_ERROR:
+                return "Internal error";
+            case AdRequest.ERROR_CODE_INVALID_REQUEST:
+                return "Invalid request";
+            case AdRequest.ERROR_CODE_NETWORK_ERROR:
+                return "Network Error";
+            case AdRequest.ERROR_CODE_NO_FILL:
+                return "No fill";
+            default:
+                Log.w(LOGTAG, String.format("Unexpected error code: %s", errorCode));
+                return "";
+        }
     }
-  }
 
-  /**
-   * Returns whether the InAppPurchaseResult was successful.
-   * @param result The InAppPurchaseResult to check.
-   * @return true on success, otherwise false.
-   */
-  public static boolean isResultSuccess(InAppPurchaseResult result) {
-      return result.getResultCode() == Activity.RESULT_OK;
-  }
+    /**
+     * Returns a {@link Gravity} constant corresponding to a positionCode.
+     *
+     * @param positionCode A code indicating where to place the ad.
+     * @return {@link Gravity} constant corresponding to positionCode argument.
+     */
+    public static int getLayoutGravityForPositionCode(int positionCode) {
+        int gravity;
+        switch (positionCode) {
+            case POSITION_TOP:
+                gravity = Gravity.TOP | Gravity.CENTER_HORIZONTAL;
+                break;
+            case POSITION_BOTTOM:
+                gravity = Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL;
+                break;
+            case POSITION_TOP_LEFT:
+                gravity = Gravity.TOP | Gravity.LEFT;
+                break;
+            case POSITION_TOP_RIGHT:
+                gravity = Gravity.TOP | Gravity.RIGHT;
+                break;
+            case POSITION_BOTTOM_LEFT:
+                gravity = Gravity.BOTTOM | Gravity.LEFT;
+                break;
+            case POSITION_BOTTOM_RIGHT:
+                gravity = Gravity.BOTTOM | Gravity.RIGHT;
+                break;
+            case POSITION_CENTER:
+                gravity = Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL;
+                break;
+            default:
+                throw new IllegalArgumentException("Attempted to position ad with invalid ad "
+                        + "position.");
+        }
+        return gravity;
+    }
+
+    /**
+     * Returns whether the InAppPurchaseResult was successful.
+     *
+     * @param result The InAppPurchaseResult to check.
+     * @return true on success, otherwise false.
+     */
+    public static boolean isResultSuccess(InAppPurchaseResult result) {
+        return result.getResultCode() == Activity.RESULT_OK;
+    }
 }

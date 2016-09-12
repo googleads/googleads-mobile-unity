@@ -1,13 +1,12 @@
 // Copyright 2014 Google Inc. All Rights Reserved.
 
+#import "GADURewardBasedVideoAd.h"
+
 @import CoreGraphics;
-@import Foundation;
-@import GoogleMobileAds;
 @import UIKit;
 
+#import "GADUPluginUtil.h"
 #import "UnityAppController.h"
-
-#import "GADURewardBasedVideoAd.h"
 
 @interface GADURewardBasedVideoAd () <GADRewardBasedVideoAdDelegate>
 @end

@@ -1,6 +1,18 @@
 Google Mobile Ads Unity Plugin Change Log
 
 *************
+Version 3.0.6
+*************
+- Add support for Native Ads express.
+- Fix compatibility issues with Android IL2CPP compilation.
+- Fix memory leak of C# client objects
+
+Built and tested with:
+- Google Play services 9.4.0
+- Google Mobile Ads iOS SDK 7.10.1
+- Unity Jar Resolver 1.2
+
+*************
 Version 3.0.5
 *************
 - Remove use of JSONUtility.

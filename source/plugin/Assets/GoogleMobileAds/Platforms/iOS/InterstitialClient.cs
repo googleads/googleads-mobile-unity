@@ -12,6 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+#if UNITY_IOS
+
 using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
@@ -24,49 +26,61 @@ namespace GoogleMobileAds.iOS
 {
     internal class InterstitialClient : IInterstitialClient, IDisposable
     {
+        private IntPtr interstitialPtr;
+        private IntPtr interstitialClientPtr;
+
         #region Interstitial callback types
 
         internal delegate void GADUInterstitialDidReceiveAdCallback(IntPtr interstitialClient);
+
         internal delegate void GADUInterstitialDidFailToReceiveAdWithErrorCallback(
                 IntPtr interstitialClient, string error);
+
         internal delegate void GADUInterstitialWillPresentScreenCallback(IntPtr interstitialClient);
+
         internal delegate void GADUInterstitialDidDismissScreenCallback(IntPtr interstitialClient);
+
         internal delegate void GADUInterstitialWillLeaveApplicationCallback(
                 IntPtr interstitialClient);
 
         #endregion
 
-        public event EventHandler<EventArgs> OnAdLoaded = delegate {};
-        public event EventHandler<AdFailedToLoadEventArgs> OnAdFailedToLoad = delegate {};
-        public event EventHandler<EventArgs> OnAdOpening = delegate {};
-        public event EventHandler<EventArgs> OnAdClosing = delegate {};
-        public event EventHandler<EventArgs> OnAdClosed = delegate {};
-        public event EventHandler<EventArgs> OnAdLeavingApplication = delegate {};
+        public event EventHandler<EventArgs> OnAdLoaded;
 
-        private IntPtr interstitialPtr;
+        public event EventHandler<AdFailedToLoadEventArgs> OnAdFailedToLoad;
+
+        public event EventHandler<EventArgs> OnAdOpening;
+
+        public event EventHandler<EventArgs> OnAdClosing;
+
+        public event EventHandler<EventArgs> OnAdClosed;
+
+        public event EventHandler<EventArgs> OnAdLeavingApplication;
 
         // This property should be used when setting the interstitialPtr.
         private IntPtr InterstitialPtr
         {
             get
             {
-                return interstitialPtr;
+                return this.interstitialPtr;
             }
+
             set
             {
-                Externs.GADURelease(interstitialPtr);
-                interstitialPtr = value;
+                Externs.GADURelease(this.interstitialPtr);
+                this.interstitialPtr = value;
             }
         }
 
         #region IInterstitialClient implementation
 
         // Creates an interstitial ad.
-        public void CreateInterstitialAd(string adUnitId) {
-            IntPtr interstitialClientPtr = (IntPtr) GCHandle.Alloc(this);
-            InterstitialPtr = Externs.GADUCreateInterstitial(interstitialClientPtr, adUnitId);
+        public void CreateInterstitialAd(string adUnitId)
+        {
+            this.interstitialClientPtr = (IntPtr)GCHandle.Alloc(this);
+            this.InterstitialPtr = Externs.GADUCreateInterstitial(this.interstitialClientPtr, adUnitId);
             Externs.GADUSetInterstitialCallbacks(
-                    InterstitialPtr,
+                    this.InterstitialPtr,
                     InterstitialDidReceiveAdCallback,
                     InterstitialDidFailToReceiveAdWithErrorCallback,
                     InterstitialWillPresentScreenCallback,
@@ -75,36 +89,50 @@ namespace GoogleMobileAds.iOS
         }
 
         // Loads an ad.
-        public void LoadAd(AdRequest request) {
+        public void LoadAd(AdRequest request)
+        {
             IntPtr requestPtr = Utils.BuildAdRequest(request);
-            Externs.GADURequestInterstitial(InterstitialPtr, requestPtr);
+            Externs.GADURequestInterstitial(this.InterstitialPtr, requestPtr);
             Externs.GADURelease(requestPtr);
         }
 
         // Checks if interstitial has loaded.
-        public bool IsLoaded() {
-            return Externs.GADUInterstitialReady(InterstitialPtr);
+        public bool IsLoaded()
+        {
+            return Externs.GADUInterstitialReady(this.InterstitialPtr);
         }
 
         // Presents the interstitial ad on the screen
-        public void ShowInterstitial() {
-            Externs.GADUShowInterstitial(InterstitialPtr);
+        public void ShowInterstitial()
+        {
+            Externs.GADUShowInterstitial(this.InterstitialPtr);
         }
 
         // Destroys the interstitial ad.
-        public void DestroyInterstitial() {
-            InterstitialPtr = IntPtr.Zero;
+        public void DestroyInterstitial()
+        {
+            this.InterstitialPtr = IntPtr.Zero;
         }
 
         public void Dispose()
         {
-            DestroyInterstitial();
-            ((GCHandle)interstitialPtr).Free();
+            this.DestroyInterstitial();
+            ((GCHandle)this.interstitialClientPtr).Free();
         }
 
         ~InterstitialClient()
         {
-            Dispose();
+            this.Dispose();
+        }
+
+        public void SetDefaultInAppPurchaseProcessor(IDefaultInAppPurchaseProcessor processor)
+        {
+            // iOS currently does not support in-app purchase ads.
+        }
+
+        public void SetCustomInAppPurchaseProcessor(ICustomInAppPurchaseProcessor processor)
+        {
+            // iOS currently does not support in-app purchase ads.
         }
 
         #endregion
@@ -123,7 +151,8 @@ namespace GoogleMobileAds.iOS
                 IntPtr interstitialClient, string error)
         {
             InterstitialClient client = IntPtrToInterstitialClient(interstitialClient);
-            AdFailedToLoadEventArgs args = new AdFailedToLoadEventArgs() {
+            AdFailedToLoadEventArgs args = new AdFailedToLoadEventArgs()
+            {
                 Message = error
             };
             client.OnAdFailedToLoad(client, args);
@@ -152,20 +181,12 @@ namespace GoogleMobileAds.iOS
 
         private static InterstitialClient IntPtrToInterstitialClient(IntPtr interstitialClient)
         {
-            GCHandle handle = (GCHandle) interstitialClient;
+            GCHandle handle = (GCHandle)interstitialClient;
             return handle.Target as InterstitialClient;
-        }
-
-        public void SetDefaultInAppPurchaseProcessor(IDefaultInAppPurchaseProcessor processor)
-        {
-            // iOS currently does not support in-app purchase ads.
-        }
-
-        public void SetCustomInAppPurchaseProcessor(ICustomInAppPurchaseProcessor processor)
-        {
-            // iOS currently does not support in-app purchase ads.
         }
 
         #endregion
     }
 }
+
+#endif

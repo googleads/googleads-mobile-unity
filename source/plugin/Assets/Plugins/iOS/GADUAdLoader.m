@@ -2,10 +2,9 @@
 
 #import "GADUAdLoader.h"
 
-@import GoogleMobileAds;
-
 #import "GADUNativeCustomTemplateAd.h"
 #import "GADUObjectCache.h"
+#import "GADUPluginUtil.h"
 #import "UnityAppController.h"
 
 @interface GADUAdLoader () <GADAdLoaderDelegate, GADNativeCustomTemplateAdLoaderDelegate>
@@ -13,10 +12,6 @@
 @end
 
 @implementation GADUAdLoader
-
-+ (UIViewController *)unityGLViewController {
-  return ((UnityAppController *)[UIApplication sharedApplication].delegate).rootViewController;
-}
 
 - (instancetype)initWithAdLoaderClientReference:(GADUTypeAdLoaderClientRef *)adLoaderClient
                                        adUnitID:(NSString *)adUnitID
@@ -26,7 +21,7 @@
   if (self) {
     _adLoaderClient = adLoaderClient;
     _adLoader = [[GADAdLoader alloc] initWithAdUnitID:adUnitID
-                                   rootViewController:[GADUAdLoader unityGLViewController]
+                                   rootViewController:[GADUPluginUtil unityGLViewController]
                                               adTypes:@[ kGADAdLoaderAdTypeNativeCustomTemplate ]
                                               options:nil];
     _adLoader.delegate = self;

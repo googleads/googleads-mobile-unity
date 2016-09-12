@@ -50,7 +50,8 @@ namespace GooglePlayServices
         /// Resolution should only happen when needed, and avoid infinite loops
         /// of automatic resolution triggered by resolution actions.
         /// </remarks>
-        /// <returns><c>true</c>, if auto resolution should happen, <c>false</c> otherwise.</returns>
+        /// <returns><c>true</c>, if auto resolution should happen, <c>false</c> otherwise.
+        /// </returns>
         /// <param name="importedAssets">Imported assets.</param>
         /// <param name="deletedAssets">Deleted assets.</param>
         /// <param name="movedAssets">Moved assets.</param>
@@ -71,9 +72,19 @@ namespace GooglePlayServices
         /// <param name="svcSupport">Svc support.</param>
         /// <param name="destinationDirectory">Destination directory.</param>
         /// <param name="handleOverwriteConfirmation">Handle overwrite confirmation.</param>
+        /// <param name="resolutionComplete">Delegate called when resolution is complete.</param>
         void DoResolution(PlayServicesSupport svcSupport,
                           string destinationDirectory,
-                          PlayServicesSupport.OverwriteConfirmation handleOverwriteConfirmation);
+                          PlayServicesSupport.OverwriteConfirmation handleOverwriteConfirmation,
+                          System.Action resolutionComplete);
+
+        /// <summary>
+        /// Called during Update to allow the resolver to check the bundle ID of the application
+        /// to see whether resolution should be triggered again.
+        /// </summary>
+        /// <returns>Array of packages that should be re-resolved if resolution should occur,
+        /// null otherwise.</returns>
+        string[] OnBundleId(string bundleId);
     }
 }
 #endif
