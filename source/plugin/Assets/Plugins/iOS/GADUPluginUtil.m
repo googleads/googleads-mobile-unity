@@ -11,8 +11,8 @@
 }
 
 + (void)positionView:(UIView *)view
-        inParentBounds:(CGRect)parentBounds
-        withAdPosition:(GADAdPosition)adPosition {
+      inParentBounds:(CGRect)parentBounds
+      withAdPosition:(GADAdPosition)adPosition {
   CGPoint center = CGPointMake(CGRectGetMidX(parentBounds), CGRectGetMidY(view.bounds));
   switch (adPosition) {
     case kGADAdPositionTopOfScreen:

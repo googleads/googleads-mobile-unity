@@ -86,7 +86,8 @@ namespace GoogleMobileAds.iOS
         public void CreateRewardBasedVideoAd()
         {
             this.rewardBasedVideoAdClientPtr = (IntPtr)GCHandle.Alloc(this);
-            this.RewardBasedVideoAdPtr = Externs.GADUCreateRewardBasedVideoAd(rewardBasedVideoAdPtr);
+            this.RewardBasedVideoAdPtr = Externs.GADUCreateRewardBasedVideoAd(
+                this.rewardBasedVideoAdClientPtr);
 
             Externs.GADUSetRewardBasedVideoAdCallbacks(
                 this.RewardBasedVideoAdPtr,

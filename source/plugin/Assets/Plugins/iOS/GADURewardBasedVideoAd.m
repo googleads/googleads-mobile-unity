@@ -60,10 +60,12 @@
 
 - (void)rewardBasedVideoAd:(GADRewardBasedVideoAd *)rewardBasedVideoAd
     didFailToLoadWithError:(NSError *)error {
-  NSString *errorMsg = [NSString
-      stringWithFormat:@"Failed to receive ad with error: %@", [error localizedFailureReason]];
-  self.adFailedCallback(self.rewardBasedVideoAdClient,
-                        [errorMsg cStringUsingEncoding:NSUTF8StringEncoding]);
+  if (self.adFailedCallback) {
+    NSString *errorMsg = [NSString
+        stringWithFormat:@"Failed to receive ad with error: %@", [error localizedFailureReason]];
+    self.adFailedCallback(self.rewardBasedVideoAdClient,
+                          [errorMsg cStringUsingEncoding:NSUTF8StringEncoding]);
+  }
 }
 
 - (void)rewardBasedVideoAdDidOpen:(GADRewardBasedVideoAd *)rewardBasedVideoAd {

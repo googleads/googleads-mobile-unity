@@ -109,10 +109,12 @@
 
 - (void)nativeExpressAdView:(GADNativeExpressAdView *)nativeExpressAdView
     didFailToReceiveAdWithError:(GADRequestError *)error {
-  NSString *errorMsg = [[NSString alloc]
-      initWithFormat:@"Failed to receive ad with error: %@", [error localizedFailureReason]];
-  self.adFailedCallback(self.nativeExpressAdClient,
-                        [errorMsg cStringUsingEncoding:NSUTF8StringEncoding]);
+  if (self.adFailedCallback) {
+    NSString *errorMsg = [[NSString alloc]
+        initWithFormat:@"Failed to receive ad with error: %@", [error localizedFailureReason]];
+    self.adFailedCallback(self.nativeExpressAdClient,
+                          [errorMsg cStringUsingEncoding:NSUTF8StringEncoding]);
+  }
 }
 
 - (void)nativeExpressAdViewWillPresentScreen:(GADNativeExpressAdView *)nativeExpressAdView {
