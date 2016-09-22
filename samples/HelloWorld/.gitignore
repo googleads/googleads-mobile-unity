@@ -6,7 +6,6 @@ Obj/
 UnityGenerated/
 Library/
 ProjectSettings/
-*.meta
 
 # ===================================== #
 # Visual Studio / MonoDevelop generated #
