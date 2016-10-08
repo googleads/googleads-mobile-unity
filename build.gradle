@@ -18,10 +18,17 @@ project.ext {
     if (unity_exe == null || unity_exe.isEmpty()) {
         unity_exe ='/Applications/Unity/Unity.app/Contents/MacOS/Unity'
     }
+    resolverPackageUri = System.getProperty("RESOLVER_PACKAGE_URI")
+    if (resolverPackageUri == null) {
+      resolverPackageUri = (
+        'https://github.com/googlesamples/unity-jar-resolver/raw/master/' +
+        'play-services-resolver-1.2.1.0.unitypackage')
+    }
     pluginSource = file('source/plugin').absolutePath
     pluginBuildDir = file('temp/plugin-build-dir').absolutePath
     buildPath = file('temp').absolutePath
     exportPath = file('GoogleMobileAds.unitypackage').absolutePath
+    resolverPath = file('play-services-resolver.unitypackage').absolutePath
 }
 
 // Delete existing android plugin jar file.
@@ -45,6 +52,21 @@ task copyAndroidLibraryJar(type: Copy) {
 
 copyAndroidLibraryJar.dependsOn(clearJar, buildAndroidPluginJar)
 
+task downloadResolver() {
+  description = "Download the Play Services Resolver"
+  doLast {
+    def resolver = new File("${resolverPath}")
+    if (!resolver.exists()) {
+      new URL("${resolverPackageUri}").withInputStream{
+        inputStream -> resolver.withOutputStream{ it << inputStream }}
+    }
+  }
+}
+
+task deleteResolver(type: Delete) {
+  delete { "${resolverPath}" }
+}
+
 // Build unity package using through command line interface.
 // Create new unity project with files in temporary build directory and export files within Assets/GoogleMobileAds
 // to a unity package.
@@ -54,7 +76,17 @@ task exportPackage() {
     doLast {
         exec {
             executable "${unity_exe}"
-                args "-g.building", "-batchmode", "-projectPath", "${pluginBuildDir}", "-logFile", "temp/unity.log",  "-exportPackage", "Assets/GoogleMobileAds", "Assets/Plugins", "Assets/PlayServicesResolver", "${exportPath}", "-quit"
+            args "-g.building",
+                 "-batchmode",
+                 "-projectPath", "${pluginBuildDir}",
+                 "-logFile", "temp/unity.log",
+                 "-importPackage", "${resolverPath}",
+                 "-exportPackage",
+                 "Assets/GoogleMobileAds",
+                 "Assets/Plugins",
+                 "Assets/PlayServicesResolver",
+                 "${exportPath}",
+                 "-quit"
         }
     }
 }
@@ -65,8 +97,9 @@ task createTempBuildFolder(type: Copy) {
 }
 
 task clearTempBuildFolder(type:Delete) {
-    delete {"${buildPath}"}
+  delete {"${buildPath}"}
 }
 
-exportPackage.dependsOn(createTempBuildFolder, copyAndroidLibraryJar)
-exportPackage.finalizedBy(clearTempBuildFolder)
+exportPackage.dependsOn(createTempBuildFolder, copyAndroidLibraryJar,
+                        downloadResolver)
+exportPackage.finalizedBy(clearTempBuildFolder, deleteResolver)

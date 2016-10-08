@@ -49,8 +49,6 @@ public class RewardBasedVideo {
      */
     private boolean isLoaded;
 
-    private final Object mLock = new Object();
-
     public RewardBasedVideo(Activity activity, UnityRewardBasedVideoAdListener adListener) {
         this.activity = activity;
         this.adListener = adListener;
@@ -149,7 +147,8 @@ public class RewardBasedVideo {
      * Destroys the {@link RewardedVideoAd}.
      */
     public void destroy() {
-        rewardBasedVideo.destroy();
+        // Currently there is no destroy() method for the RewardedVideoAd class. This method is a
+        // placeholder in case there is any cleanup to do here in the future.
     }
 }
 

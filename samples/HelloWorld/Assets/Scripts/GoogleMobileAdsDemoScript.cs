@@ -293,9 +293,9 @@ public class GoogleMobileAdsDemoScript : MonoBehaviour
         #if UNITY_EDITOR
         string adUnitId = "unused";
         #elif UNITY_ANDROID
-        string adUnitId = "ca-app-pub-3940256099942544/6905715713";
+        string adUnitId = "INSERT_AD_UNIT_HERE";
         #elif UNITY_IPHONE
-        string adUnitId = "ca-app-pub-3940256099942544/9998782919";
+        string adUnitId = "INSERT_AD_UNIT_HERE";
         #else
         string adUnitId = "unexpected_platform";
         #endif
