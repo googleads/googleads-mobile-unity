@@ -18,17 +18,22 @@ project.ext {
     if (unity_exe == null || unity_exe.isEmpty()) {
         unity_exe ='/Applications/Unity/Unity.app/Contents/MacOS/Unity'
     }
-    resolverPackageUri = System.getProperty("RESOLVER_PACKAGE_URI")
-    if (resolverPackageUri == null) {
-      resolverPackageUri = (
-        'https://github.com/googlesamples/unity-jar-resolver/raw/master/' +
-        'play-services-resolver-1.2.1.0.unitypackage')
+    git_exe = System.getProperty("GIT_EXE")
+    if (git_exe == null || git_exe.isEmpty()) {
+        git_exe = System.getenv("GIT_EXE")
     }
+    if (git_exe == null || git_exe.isEmpty()) {
+        git_exe = 'git'
+    }
+
+    resolverPackageUri = System.getProperty("RESOLVER_PACKAGE_URI")
+    jarResolverRepo = 'https://github.com/googlesamples/unity-jar-resolver.git'
+
     pluginSource = file('source/plugin').absolutePath
     pluginBuildDir = file('temp/plugin-build-dir').absolutePath
     buildPath = file('temp').absolutePath
     exportPath = file('GoogleMobileAds.unitypackage').absolutePath
-    resolverPath = file('play-services-resolver.unitypackage').absolutePath
+    resolverDir = file("${buildPath}/jarresolver").absolutePath
 }
 
 // Delete existing android plugin jar file.
@@ -53,18 +58,23 @@ task copyAndroidLibraryJar(type: Copy) {
 copyAndroidLibraryJar.dependsOn(clearJar, buildAndroidPluginJar)
 
 task downloadResolver() {
-  description = "Download the Play Services Resolver"
-  doLast {
-    def resolver = new File("${resolverPath}")
-    if (!resolver.exists()) {
-      new URL("${resolverPackageUri}").withInputStream{
-        inputStream -> resolver.withOutputStream{ it << inputStream }}
+    description = "Download the Play Services Resolver"
+    if (resolverPackageUri != null) {
+        mkdir("${resolverDir}")
+        def resolver = new File("${resolverDir}/resolver.unitypackage")
+        new URL("${resolverPackageUri}").withInputStream {
+            inputStream -> resolver.withOutputStream { it << inputStream }
+        }
+    } else {
+        println 'clone ' + jarResolverRepo
+        def result = exec {
+            executable "${git_exe}"
+            args "clone", jarResolverRepo, "${resolverDir}"
+        }
+        if (result.exitValue == 0) {
+            println "Downloaded resolver from " + jarResolverRepo
+        }
     }
-  }
-}
-
-task deleteResolver(type: Delete) {
-  delete { "${resolverPath}" }
 }
 
 // Build unity package using through command line interface.
@@ -74,13 +84,19 @@ task deleteResolver(type: Delete) {
 task exportPackage() {
     description = "Creates and exports the Plugin unity package"
     doLast {
+        def tree = fileTree("${resolverDir}")
+        {
+            include '*.unitypackage'
+        }
+        def jarresolver_package = tree.getSingleFile()
+
         exec {
             executable "${unity_exe}"
             args "-g.building",
                  "-batchmode",
                  "-projectPath", "${pluginBuildDir}",
                  "-logFile", "temp/unity.log",
-                 "-importPackage", "${resolverPath}",
+                 "-importPackage", "${jarresolver_package}",
                  "-exportPackage",
                  "Assets/GoogleMobileAds",
                  "Assets/Plugins",
@@ -102,4 +118,4 @@ task clearTempBuildFolder(type:Delete) {
 
 exportPackage.dependsOn(createTempBuildFolder, copyAndroidLibraryJar,
                         downloadResolver)
-exportPackage.finalizedBy(clearTempBuildFolder, deleteResolver)
+exportPackage.finalizedBy(clearTempBuildFolder)

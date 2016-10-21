@@ -20,7 +20,7 @@ for the latest official version of the plugin.
 Documentation
 --------------
 For instructions on using the plugin, please refer to
-[this developer guide](//developers.google.com/admob/games#unity).
+[this developer guide](//firebase.google.com/docs/admob/unity/start).
 
 Be sure to also join the developer community on
 [our forum](//groups.google.com/forum/#!categories/google-admob-ads-sdk/game-engines).

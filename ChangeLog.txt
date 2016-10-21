@@ -1,6 +1,17 @@
 Google Mobile Ads Unity Plugin Change Log
 
 *************
+Version 3.1.1
+*************
+- Remove dependency on Android Support Library and update GMA iOS SDK
+version in `AdMobDependencies.cs`.
+
+Built and tested with:
+- Google Play services 9.6.1
+- Google Mobile Ads iOS SDK 7.13.0
+- Unity Jar Resolver 1.2.2.0
+
+*************
 Version 3.1.0
 *************
 - Integrate plugin with play-services-resolver-1.2.1.0.

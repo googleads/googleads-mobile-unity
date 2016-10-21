@@ -49,14 +49,6 @@ public class AdMobDependencies : AssetPostprocessor
                         "extra-google-m2repository",
                         "extra-android-m2repository"} }
             });
-
-        // Marshmallow permissions requires app-compat.
-        Google.VersionHandler.InvokeInstanceMethod(
-            svcSupport, "DependOn",
-            new object[] { "com.android.support", "appcompat-v7", "23.1.0+" },
-            namedArgs: new Dictionary<string, object>() {
-                {"packageIds", new string[] { "extra-android-m2repository" }},
-            });
 #elif UNITY_IOS
         Type iosResolver = Google.VersionHandler.FindClass(
             "Google.IOSResolver", "Google.IOSResolver");
@@ -67,7 +59,7 @@ public class AdMobDependencies : AssetPostprocessor
             iosResolver, "AddPod",
             new object[] { "Google-Mobile-Ads-SDK" },
             namedArgs: new Dictionary<string, object>() {
-                { "version", "7.8+" }
+                { "version", "7.13+" }
             });
 #endif  // UNITY_IOS
     }
