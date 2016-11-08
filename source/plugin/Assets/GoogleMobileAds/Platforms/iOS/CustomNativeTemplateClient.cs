@@ -142,8 +142,12 @@ namespace GoogleMobileAds.iOS
             IntPtr nativeCustomAd, string assetName)
         {
             CustomNativeTemplateClient client = IntPtrToAdLoaderClient(nativeCustomAd);
-            CustomNativeTemplateAd nativeAd = new CustomNativeTemplateAd(client);
-            client.clickHandler(nativeAd, assetName);
+            if (client.clickHandler != null)
+            {
+                CustomNativeTemplateAd nativeAd = new CustomNativeTemplateAd(client);
+                client.clickHandler(nativeAd, assetName);
+            }
+
         }
 
         private static CustomNativeTemplateClient IntPtrToAdLoaderClient(

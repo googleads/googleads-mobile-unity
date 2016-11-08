@@ -1,6 +1,16 @@
 Google Mobile Ads Unity Plugin Change Log
 
 *************
+Version 3.1.2
+*************
+- Fix NPE when ad events are not hooked up.
+
+Built and tested with:
+- Google Play services 9.8.0
+- Google Mobile Ads iOS SDK 7.13.0
+- Unity Jar Resolver 1.2.2.0
+
+*************
 Version 3.1.1
 *************
 - Remove dependency on Android Support Library and update GMA iOS SDK

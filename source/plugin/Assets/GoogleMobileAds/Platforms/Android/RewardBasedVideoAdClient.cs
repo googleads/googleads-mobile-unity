@@ -73,44 +73,66 @@ namespace GoogleMobileAds.Android
 
         void onAdLoaded()
         {
-            OnAdLoaded(this, EventArgs.Empty);
+            if (this.OnAdLoaded != null)
+            {
+                this.OnAdLoaded(this, EventArgs.Empty);
+            }
         }
 
         void onAdFailedToLoad(string errorReason)
         {
-            AdFailedToLoadEventArgs args = new AdFailedToLoadEventArgs() {
-                Message = errorReason
-            };
-            OnAdFailedToLoad(this, args);
+            if (this.OnAdFailedToLoad != null)
+            {
+                AdFailedToLoadEventArgs args = new AdFailedToLoadEventArgs()
+                {
+                    Message = errorReason
+                };
+                this.OnAdFailedToLoad(this, args);
+            }
         }
 
         void onAdOpened()
         {
-            OnAdOpening(this , EventArgs.Empty);
+            if (this.OnAdOpening != null)
+            {
+                this.OnAdOpening(this, EventArgs.Empty);
+            }
         }
 
         void onAdStarted()
         {
-            OnAdStarted(this, EventArgs.Empty);
+            if (this.OnAdStarted != null)
+            {
+                this.OnAdStarted(this, EventArgs.Empty);
+            }
         }
 
         void onAdClosed()
         {
-            OnAdClosed(this, EventArgs.Empty);
+            if (this.OnAdClosed != null)
+            {
+                this.OnAdClosed(this, EventArgs.Empty);
+            }
         }
 
         void onAdRewarded(string type, float amount)
         {
-            Reward args = new Reward() {
-                Type = type,
-                Amount = amount
-            };
-            OnAdRewarded(this, args);
+            if (this.OnAdRewarded != null)
+            {
+                Reward args = new Reward() {
+                    Type = type,
+                    Amount = amount
+                };
+                this.OnAdRewarded(this, args);
+            }
         }
 
         void onAdLeftApplication()
         {
-            OnAdLeavingApplication(this, EventArgs.Empty);
+            if (this.OnAdLeavingApplication != null)
+            {
+                this.OnAdLeavingApplication(this, EventArgs.Empty);
+            }
         }
 
         #endregion

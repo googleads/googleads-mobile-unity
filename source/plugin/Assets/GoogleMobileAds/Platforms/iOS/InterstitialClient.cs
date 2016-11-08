@@ -143,7 +143,10 @@ namespace GoogleMobileAds.iOS
         private static void InterstitialDidReceiveAdCallback(IntPtr interstitialClient)
         {
             InterstitialClient client = IntPtrToInterstitialClient(interstitialClient);
-            client.OnAdLoaded(client, EventArgs.Empty);
+            if (client.OnAdLoaded != null)
+            {
+                client.OnAdLoaded(client, EventArgs.Empty);
+            }
         }
 
         [MonoPInvokeCallback(typeof(GADUInterstitialDidFailToReceiveAdWithErrorCallback))]
@@ -151,32 +154,44 @@ namespace GoogleMobileAds.iOS
                 IntPtr interstitialClient, string error)
         {
             InterstitialClient client = IntPtrToInterstitialClient(interstitialClient);
-            AdFailedToLoadEventArgs args = new AdFailedToLoadEventArgs()
+            if (client.OnAdFailedToLoad != null)
             {
-                Message = error
-            };
-            client.OnAdFailedToLoad(client, args);
+                AdFailedToLoadEventArgs args = new AdFailedToLoadEventArgs()
+                {
+                    Message = error
+                };
+                client.OnAdFailedToLoad(client, args);
+            }
         }
 
         [MonoPInvokeCallback(typeof(GADUInterstitialWillPresentScreenCallback))]
         private static void InterstitialWillPresentScreenCallback(IntPtr interstitialClient)
         {
             InterstitialClient client = IntPtrToInterstitialClient(interstitialClient);
-            client.OnAdOpening(client, EventArgs.Empty);
+            if (client.OnAdOpening != null)
+            {
+                client.OnAdOpening(client, EventArgs.Empty);
+            }
         }
 
         [MonoPInvokeCallback(typeof(GADUInterstitialDidDismissScreenCallback))]
         private static void InterstitialDidDismissScreenCallback(IntPtr interstitialClient)
         {
             InterstitialClient client = IntPtrToInterstitialClient(interstitialClient);
-            client.OnAdClosed(client, EventArgs.Empty);
+            if (client.OnAdClosed != null)
+            {
+                client.OnAdClosed(client, EventArgs.Empty);
+            }
         }
 
         [MonoPInvokeCallback(typeof(GADUInterstitialWillLeaveApplicationCallback))]
         private static void InterstitialWillLeaveApplicationCallback(IntPtr interstitialClient)
         {
             InterstitialClient client = IntPtrToInterstitialClient(interstitialClient);
-            client.OnAdLeavingApplication(client, EventArgs.Empty);
+            if (client.OnAdLeavingApplication != null)
+            {
+                client.OnAdLeavingApplication(client, EventArgs.Empty);
+            }
         }
 
         private static InterstitialClient IntPtrToInterstitialClient(IntPtr interstitialClient)

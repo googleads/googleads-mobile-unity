@@ -23,11 +23,11 @@ namespace GoogleMobileAds.Api
         private IBannerClient client;
 
         // These are the ad callback events that can be hooked into.
-        public event EventHandler<EventArgs> OnAdLoaded = delegate {};
-        public event EventHandler<AdFailedToLoadEventArgs> OnAdFailedToLoad = delegate {};
-        public event EventHandler<EventArgs> OnAdOpening = delegate {};
-        public event EventHandler<EventArgs> OnAdClosed = delegate {};
-        public event EventHandler<EventArgs> OnAdLeavingApplication = delegate {};
+        public event EventHandler<EventArgs> OnAdLoaded;
+        public event EventHandler<AdFailedToLoadEventArgs> OnAdFailedToLoad;
+        public event EventHandler<EventArgs> OnAdOpening;
+        public event EventHandler<EventArgs> OnAdClosed;
+        public event EventHandler<EventArgs> OnAdLeavingApplication;
 
         // Creates a BannerView and adds it to the view hierarchy.
         public BannerView(string adUnitId, AdSize adSize, AdPosition position)
@@ -35,30 +35,45 @@ namespace GoogleMobileAds.Api
             client = GoogleMobileAdsClientFactory.BuildBannerClient();
             client.CreateBannerView(adUnitId, adSize, position);
 
-            client.OnAdLoaded += delegate(object sender, EventArgs args)
-            {
-                OnAdLoaded(this, args);
-            };
+            this.client.OnAdLoaded += (sender, args) =>
+                {
+                    if(this.OnAdLoaded != null)
+                    {
+                        this.OnAdLoaded(this, args);
+                    }
+                };
 
-            client.OnAdFailedToLoad += delegate(object sender, AdFailedToLoadEventArgs args)
-            {
-                OnAdFailedToLoad(this, args);
-            };
+            this.client.OnAdFailedToLoad += (sender, args) =>
+                {
+                    if(this.OnAdLoaded != null)
+                    {
+                        this.OnAdLoaded(this, args);
+                    }
+                };
 
-            client.OnAdOpening += delegate(object sender, EventArgs args)
-            {
-                OnAdOpening(this, args);
-            };
+            this.client.OnAdOpening += (sender, args) =>
+                {
+                    if(this.OnAdOpening != null)
+                    {
+                        this.OnAdOpening(this, args);
+                    }
+                };
 
-            client.OnAdClosed += delegate(object sender, EventArgs args)
-            {
-                OnAdClosed(this, args);
-            };
+            this.client.OnAdClosed += (sender, args) =>
+                {
+                    if(this.OnAdClosed != null)
+                    {
+                        this.OnAdClosed(this, args);
+                    }
+                };
 
-            client.OnAdLeavingApplication += delegate(object sender, EventArgs args)
-            {
-                OnAdLeavingApplication(this, args);
-            };
+            this.client.OnAdLeavingApplication += (sender, args) =>
+                {
+                    if(this.OnAdLeavingApplication != null)
+                    {
+                        this.OnAdLeavingApplication(this, args);
+                    }
+                };
         }
 
         // Loads an ad into the BannerView.

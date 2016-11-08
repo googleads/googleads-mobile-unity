@@ -142,7 +142,10 @@ namespace GoogleMobileAds.iOS
         private static void AdViewDidReceiveAdCallback(IntPtr bannerClient)
         {
             BannerClient client = IntPtrToBannerClient(bannerClient);
-            client.OnAdLoaded(client, EventArgs.Empty);
+            if (client.OnAdLoaded != null)
+            {
+                client.OnAdLoaded(client, EventArgs.Empty);
+            }
         }
 
         [MonoPInvokeCallback(typeof(GADUAdViewDidFailToReceiveAdWithErrorCallback))]
@@ -150,32 +153,44 @@ namespace GoogleMobileAds.iOS
                 IntPtr bannerClient, string error)
         {
             BannerClient client = IntPtrToBannerClient(bannerClient);
-            AdFailedToLoadEventArgs args = new AdFailedToLoadEventArgs()
+            if (client.OnAdFailedToLoad != null)
             {
-                Message = error
-            };
-            client.OnAdFailedToLoad(client, args);
+                AdFailedToLoadEventArgs args = new AdFailedToLoadEventArgs()
+                {
+                    Message = error
+                };
+                client.OnAdFailedToLoad(client, args);
+            }
         }
 
         [MonoPInvokeCallback(typeof(GADUAdViewWillPresentScreenCallback))]
         private static void AdViewWillPresentScreenCallback(IntPtr bannerClient)
         {
             BannerClient client = IntPtrToBannerClient(bannerClient);
-            client.OnAdOpening(client, EventArgs.Empty);
+            if (client.OnAdOpening != null)
+            {
+                client.OnAdOpening(client, EventArgs.Empty);
+            }
         }
 
         [MonoPInvokeCallback(typeof(GADUAdViewDidDismissScreenCallback))]
         private static void AdViewDidDismissScreenCallback(IntPtr bannerClient)
         {
             BannerClient client = IntPtrToBannerClient(bannerClient);
-            client.OnAdClosed(client, EventArgs.Empty);
+            if (client.OnAdClosed != null)
+            {
+                client.OnAdClosed(client, EventArgs.Empty);
+            }
         }
 
         [MonoPInvokeCallback(typeof(GADUAdViewWillLeaveApplicationCallback))]
         private static void AdViewWillLeaveApplicationCallback(IntPtr bannerClient)
         {
             BannerClient client = IntPtrToBannerClient(bannerClient);
-            client.OnAdLeavingApplication(client, EventArgs.Empty);
+            if (client.OnAdLeavingApplication != null)
+            {
+                client.OnAdLeavingApplication(client, EventArgs.Empty);
+            }
         }
 
         private static BannerClient IntPtrToBannerClient(IntPtr bannerClient)

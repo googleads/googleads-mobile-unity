@@ -59,18 +59,25 @@ namespace GoogleMobileAds.Android
 
         public void onCustomTemplateAdLoaded(AndroidJavaObject ad)
         {
-            CustomNativeEventArgs args = new CustomNativeEventArgs() {
-                nativeAd = new CustomNativeTemplateAd(new CustomNativeTemplateClient(ad))
-            };
-            OnCustomNativeTemplateAdLoaded(this, args);
+            if (this.OnCustomNativeTemplateAdLoaded != null)
+            {
+                CustomNativeEventArgs args = new CustomNativeEventArgs() {
+                    nativeAd = new CustomNativeTemplateAd(new CustomNativeTemplateClient(ad))
+                };
+                this.OnCustomNativeTemplateAdLoaded(this, args);
+            }
         }
 
         void onAdFailedToLoad(string errorReason)
         {
-            AdFailedToLoadEventArgs args = new AdFailedToLoadEventArgs() {
-                Message = errorReason
-            };
-            OnAdFailedToLoad(this, args);
+            if (this.OnAdFailedToLoad != null)
+            {
+                AdFailedToLoadEventArgs args = new AdFailedToLoadEventArgs()
+                {
+                    Message = errorReason
+                };
+                this.OnAdFailedToLoad(this, args);
+            }
         }
 
         public void onCustomClick(AndroidJavaObject ad, string assetName)
