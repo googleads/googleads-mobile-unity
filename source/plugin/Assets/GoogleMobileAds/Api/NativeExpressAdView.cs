@@ -38,9 +38,9 @@ namespace GoogleMobileAds.Api
 
             this.client.OnAdFailedToLoad += (sender, args) =>
                 {
-                    if(this.OnAdLoaded != null)
+                    if(this.OnAdFailedToLoad != null)
                     {
-                        this.OnAdLoaded(this, args);
+                        this.OnAdFailedToLoad(this, args);
                     }
                 };
 

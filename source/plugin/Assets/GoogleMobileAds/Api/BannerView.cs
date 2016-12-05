@@ -22,13 +22,6 @@ namespace GoogleMobileAds.Api
     {
         private IBannerClient client;
 
-        // These are the ad callback events that can be hooked into.
-        public event EventHandler<EventArgs> OnAdLoaded;
-        public event EventHandler<AdFailedToLoadEventArgs> OnAdFailedToLoad;
-        public event EventHandler<EventArgs> OnAdOpening;
-        public event EventHandler<EventArgs> OnAdClosed;
-        public event EventHandler<EventArgs> OnAdLeavingApplication;
-
         // Creates a BannerView and adds it to the view hierarchy.
         public BannerView(string adUnitId, AdSize adSize, AdPosition position)
         {
@@ -45,9 +38,9 @@ namespace GoogleMobileAds.Api
 
             this.client.OnAdFailedToLoad += (sender, args) =>
                 {
-                    if(this.OnAdLoaded != null)
+                    if(this.OnAdFailedToLoad != null)
                     {
-                        this.OnAdLoaded(this, args);
+                        this.OnAdFailedToLoad(this, args);
                     }
                 };
 
@@ -75,6 +68,17 @@ namespace GoogleMobileAds.Api
                     }
                 };
         }
+
+        // These are the ad callback events that can be hooked into.
+        public event EventHandler<EventArgs> OnAdLoaded;
+
+        public event EventHandler<AdFailedToLoadEventArgs> OnAdFailedToLoad;
+
+        public event EventHandler<EventArgs> OnAdOpening;
+
+        public event EventHandler<EventArgs> OnAdClosed;
+
+        public event EventHandler<EventArgs> OnAdLeavingApplication;
 
         // Loads an ad into the BannerView.
         public void LoadAd(AdRequest request)

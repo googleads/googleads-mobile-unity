@@ -23,15 +23,6 @@ namespace GoogleMobileAds.Api
         private IRewardBasedVideoAdClient client;
         private static RewardBasedVideoAd instance;
 
-        // These are the ad callback events that can be hooked into.
-        public event EventHandler<EventArgs> OnAdLoaded = delegate {};
-        public event EventHandler<AdFailedToLoadEventArgs> OnAdFailedToLoad = delegate {};
-        public event EventHandler<EventArgs> OnAdOpening = delegate {};
-        public event EventHandler<EventArgs> OnAdStarted = delegate {};
-        public event EventHandler<EventArgs> OnAdClosed = delegate {};
-        public event EventHandler<Reward> OnAdRewarded = delegate {};
-        public event EventHandler<EventArgs> OnAdLeavingApplication = delegate {};
-
         public static RewardBasedVideoAd Instance
         {
             get
@@ -60,9 +51,9 @@ namespace GoogleMobileAds.Api
 
             this.client.OnAdFailedToLoad += (sender, args) =>
                 {
-                    if (this.OnAdLoaded != null)
+                    if (this.OnAdFailedToLoad != null)
                     {
-                        this.OnAdLoaded(this, args);
+                        this.OnAdFailedToLoad(this, args);
                     }
                 };
 
@@ -106,6 +97,21 @@ namespace GoogleMobileAds.Api
                     }
                 };
         }
+
+        // These are the ad callback events that can be hooked into.
+        public event EventHandler<EventArgs> OnAdLoaded;
+
+        public event EventHandler<AdFailedToLoadEventArgs> OnAdFailedToLoad;
+
+        public event EventHandler<EventArgs> OnAdOpening;
+
+        public event EventHandler<EventArgs> OnAdStarted;
+
+        public event EventHandler<EventArgs> OnAdClosed;
+
+        public event EventHandler<Reward> OnAdRewarded;
+
+        public event EventHandler<EventArgs> OnAdLeavingApplication;
 
         // Loads a new reward based video ad request
         public void LoadAd(AdRequest request, string adUnitId)

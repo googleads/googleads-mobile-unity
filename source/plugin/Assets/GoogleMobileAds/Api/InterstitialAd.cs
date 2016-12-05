@@ -21,13 +21,6 @@ namespace GoogleMobileAds.Api
     {
         private IInterstitialClient client;
 
-        // These are the ad callback events that can be hooked into.
-        public event EventHandler<EventArgs> OnAdLoaded = delegate {};
-        public event EventHandler<AdFailedToLoadEventArgs> OnAdFailedToLoad = delegate {};
-        public event EventHandler<EventArgs> OnAdOpening = delegate {};
-        public event EventHandler<EventArgs> OnAdClosed = delegate {};
-        public event EventHandler<EventArgs> OnAdLeavingApplication = delegate {};
-
         // Creates an InterstitialAd.
         public InterstitialAd(string adUnitId)
         {
@@ -44,9 +37,9 @@ namespace GoogleMobileAds.Api
 
             this.client.OnAdFailedToLoad += (sender, args) =>
                 {
-                    if(this.OnAdLoaded != null)
+                    if(this.OnAdFailedToLoad != null)
                     {
-                        this.OnAdLoaded(this, args);
+                        this.OnAdFailedToLoad(this, args);
                     }
                 };
 
@@ -74,6 +67,17 @@ namespace GoogleMobileAds.Api
                     }
                 };
         }
+
+        // These are the ad callback events that can be hooked into.
+        public event EventHandler<EventArgs> OnAdLoaded;
+
+        public event EventHandler<AdFailedToLoadEventArgs> OnAdFailedToLoad;
+
+        public event EventHandler<EventArgs> OnAdOpening;
+
+        public event EventHandler<EventArgs> OnAdClosed;
+
+        public event EventHandler<EventArgs> OnAdLeavingApplication;
 
         // Loads an InterstitialAd.
         public void LoadAd(AdRequest request)
