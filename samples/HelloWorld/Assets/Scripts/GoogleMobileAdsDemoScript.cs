@@ -223,7 +223,7 @@ public class GoogleMobileAdsDemoScript : MonoBehaviour
         // Register for ad events.
         this.bannerView.OnAdLoaded += this.HandleAdLoaded;
         this.bannerView.OnAdFailedToLoad += this.HandleAdFailedToLoad;
-        this.bannerView.OnAdLoaded += this.HandleAdOpened;
+        this.bannerView.OnAdOpening += this.HandleAdOpened;
         this.bannerView.OnAdClosed += this.HandleAdClosed;
         this.bannerView.OnAdLeavingApplication += this.HandleAdLeftApplication;
 
@@ -280,7 +280,7 @@ public class GoogleMobileAdsDemoScript : MonoBehaviour
         // Register for ad events.
         this.nativeExpressAdView.OnAdLoaded += this.HandleNativeExpressAdLoaded;
         this.nativeExpressAdView.OnAdFailedToLoad += this.HandleNativeExpresseAdFailedToLoad;
-        this.nativeExpressAdView.OnAdLoaded += this.HandleNativeExpressAdOpened;
+        this.nativeExpressAdView.OnAdOpening += this.HandleNativeExpressAdOpened;
         this.nativeExpressAdView.OnAdClosed += this.HandleNativeExpressAdClosed;
         this.nativeExpressAdView.OnAdLeavingApplication += this.HandleNativeExpressAdLeftApplication;
 
