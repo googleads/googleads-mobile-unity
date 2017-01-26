@@ -33,6 +33,9 @@ namespace GoogleMobileAds.Common {
         // Creates a banner view and adds it to the view hierarchy.
         void CreateBannerView(string adUnitId, AdSize adSize, AdPosition position);
 
+        // Creates a banner view and adds it to the view hierarchy with a custom position.
+        void CreateBannerView(string adUnitId, AdSize adSize, int x, int y);
+
         // Requests a new ad for the banner view.
         void LoadAd(AdRequest request);
 

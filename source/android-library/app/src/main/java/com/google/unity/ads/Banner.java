@@ -18,10 +18,11 @@ package com.google.unity.ads;
 import android.app.Activity;
 import android.graphics.Color;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
-import android.widget.FrameLayout;
+import android.widget.PopupWindow;
 
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
@@ -38,17 +39,23 @@ public class Banner {
     /**
      * The {@link AdView} to display to the user.
      */
-    private AdView adView;
+    private AdView mAdView;
 
     /**
      * The {@code Activity} that the banner will be displayed in.
      */
-    private Activity activity;
+    private Activity mUnityPlayerActivity;
+
+    /**
+     * The {@code PopupWindow} that the banner ad be displayed in to ensure banner ads will be
+     * presented over a {@code SurfaceView}.
+     */
+    private PopupWindow mPopupWindow;
 
     /**
      * A listener implemented in Unity via {@code AndroidJavaProxy} to receive ad events.
      */
-    private UnityAdListener listener;
+    private UnityAdListener mUnityListener;
 
     /**
      * Creates an instance of {@code Banner}.
@@ -58,8 +65,8 @@ public class Banner {
      *                 Unity.
      */
     public Banner(Activity activity, UnityAdListener listener) {
-        this.activity = activity;
-        this.listener = listener;
+        this.mUnityPlayerActivity = activity;
+        this.mUnityListener = listener;
     }
 
     /**
@@ -70,58 +77,92 @@ public class Banner {
      * @param positionCode A code indicating where to place the ad.
      */
     public void create(final String publisherId, final AdSize adSize, final int positionCode) {
-        activity.runOnUiThread(new Runnable() {
+        mUnityPlayerActivity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                adView = new AdView(activity);
-                // Setting the background color works around an issue where the first ad isn't
-                // visible.
-                adView.setBackgroundColor(Color.TRANSPARENT);
-                adView.setAdUnitId(publisherId);
-                adView.setAdSize(adSize);
-                adView.setAdListener(new AdListener() {
-                    @Override
-                    public void onAdLoaded() {
-                        if (listener != null) {
-                            listener.onAdLoaded();
-                        }
-                    }
-
-                    @Override
-                    public void onAdFailedToLoad(int errorCode) {
-                        if (listener != null) {
-                            listener.onAdFailedToLoad(PluginUtils.getErrorReason(errorCode));
-                        }
-                    }
-
-                    @Override
-                    public void onAdOpened() {
-                        if (listener != null) {
-                            listener.onAdOpened();
-                        }
-                    }
-
-                    @Override
-                    public void onAdClosed() {
-                        if (listener != null) {
-                            listener.onAdClosed();
-                        }
-                    }
-
-                    @Override
-                    public void onAdLeftApplication() {
-                        if (listener != null) {
-                            listener.onAdLeftApplication();
-                        }
-                    }
-                });
-                FrameLayout.LayoutParams adParams = new FrameLayout.LayoutParams(
-                        FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams
-                        .WRAP_CONTENT);
-                adParams.gravity = PluginUtils.getLayoutGravityForPositionCode(positionCode);
-                activity.addContentView(adView, adParams);
+                createAdView(publisherId, adSize);
+                createPopupWindow();
+                mPopupWindow.showAtLocation(mUnityPlayerActivity.getWindow().getDecorView()
+                                .getRootView(),
+                        PluginUtils.getLayoutGravityForPositionCode(positionCode), 0, 0);
             }
         });
+    }
+
+    /**
+     * Creates an {@link AdView} to hold banner ads with a custom position.
+     *
+     * @param publisherId Your ad unit ID.
+     * @param adSize      The size of the banner.
+     * @param positionX   Position of banner ad on the x axis.
+     * @param positionY   Position of banner ad on the y axis.
+     */
+    public void create(final String publisherId, final AdSize adSize, final int positionX, final
+    int positionY) {
+        mUnityPlayerActivity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                createAdView(publisherId, adSize);
+                createPopupWindow();
+                mPopupWindow.showAtLocation(
+                        mUnityPlayerActivity.getWindow().getDecorView().getRootView(),
+                        Gravity.NO_GRAVITY, (int) PluginUtils.convertDpToPixel(positionX),
+                        (int) PluginUtils.convertDpToPixel(positionY));
+            }
+        });
+    }
+
+    public void createAdView(final String publisherId, final AdSize adSize) {
+        mAdView = new AdView(mUnityPlayerActivity);
+        // Setting the background color works around an issue where the first ad isn't visible.
+        mAdView.setBackgroundColor(Color.TRANSPARENT);
+        mAdView.setAdUnitId(publisherId);
+        mAdView.setAdSize(adSize);
+        mAdView.setAdListener(new AdListener() {
+            @Override
+            public void onAdLoaded() {
+                if (mUnityListener != null) {
+                    mUnityListener.onAdLoaded();
+                }
+            }
+
+            @Override
+            public void onAdFailedToLoad(int errorCode) {
+                if (mUnityListener != null) {
+                    mUnityListener.onAdFailedToLoad(PluginUtils.getErrorReason(errorCode));
+                }
+            }
+
+            @Override
+            public void onAdOpened() {
+                if (mUnityListener != null) {
+                    mUnityListener.onAdOpened();
+                }
+            }
+
+            @Override
+            public void onAdClosed() {
+                if (mUnityListener != null) {
+                    mUnityListener.onAdClosed();
+                }
+            }
+
+            @Override
+            public void onAdLeftApplication() {
+                if (mUnityListener != null) {
+                    mUnityListener.onAdLeftApplication();
+                }
+            }
+        });
+    }
+
+    public void createPopupWindow() {
+        // Workaround for issue where popUpWindow will not resize to the full width
+        // of the screen to accommodate a smart banner.
+        int popUpWindowWidthLayoutParam = mAdView.getAdSize().equals(AdSize.SMART_BANNER)
+                ? ViewGroup.LayoutParams.MATCH_PARENT : ViewGroup.LayoutParams.WRAP_CONTENT;
+        mPopupWindow = new PopupWindow(mAdView, popUpWindowWidthLayoutParam,
+                ViewGroup.LayoutParams.WRAP_CONTENT);
     }
 
     /**
@@ -130,11 +171,11 @@ public class Banner {
      * @param request The {@link AdRequest} object with targeting parameters.
      */
     public void loadAd(final AdRequest request) {
-        activity.runOnUiThread(new Runnable() {
+        mUnityPlayerActivity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 Log.d(PluginUtils.LOGTAG, "Calling loadAd() on Android");
-                adView.loadAd(request);
+                mAdView.loadAd(request);
             }
         });
     }
@@ -143,12 +184,12 @@ public class Banner {
      * Sets the {@link AdView} to be visible.
      */
     public void show() {
-        activity.runOnUiThread(new Runnable() {
+        mUnityPlayerActivity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 Log.d(PluginUtils.LOGTAG, "Calling show() on Android");
-                adView.setVisibility(View.VISIBLE);
-                adView.resume();
+                mAdView.setVisibility(View.VISIBLE);
+                mAdView.resume();
             }
         });
     }
@@ -157,12 +198,12 @@ public class Banner {
      * Sets the {@link AdView} to be gone.
      */
     public void hide() {
-        activity.runOnUiThread(new Runnable() {
+        mUnityPlayerActivity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 Log.d(PluginUtils.LOGTAG, "Calling hide() on Android");
-                adView.setVisibility(View.GONE);
-                adView.pause();
+                mAdView.setVisibility(View.GONE);
+                mAdView.pause();
             }
         });
     }
@@ -171,14 +212,15 @@ public class Banner {
      * Destroys the {@link AdView}.
      */
     public void destroy() {
-        activity.runOnUiThread(new Runnable() {
+        mUnityPlayerActivity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 Log.d(PluginUtils.LOGTAG, "Calling destroy() on Android");
-                adView.destroy();
-                ViewParent parentView = adView.getParent();
+                mAdView.destroy();
+                mPopupWindow.dismiss();
+                ViewParent parentView = mAdView.getParent();
                 if (parentView != null && parentView instanceof ViewGroup) {
-                    ((ViewGroup) parentView).removeView(adView);
+                    ((ViewGroup) parentView).removeView(mAdView);
                 }
             }
         });

@@ -10,8 +10,11 @@
 
 @interface GADUNativeExpressAd () <GADNativeExpressAdViewDelegate>
 
-/// Defines where the ad should be positioned on the screen.
+/// Defines where the ad should be positioned on the screen with a GADAdPosition.
 @property(nonatomic, assign) GADAdPosition adPosition;
+
+/// Defines where the ad should be positioned on the screen with a CGPoint.
+@property(nonatomic, assign) CGPoint customAdPosition;
 
 @end
 
@@ -39,6 +42,23 @@
   if (self) {
     _nativeExpressAdClient = nativeExpressAdClient;
     _adPosition = adPosition;
+    _nativeExpressAdView = [[GADNativeExpressAdView alloc] initWithAdSize:size];
+    _nativeExpressAdView.adUnitID = adUnitID;
+    _nativeExpressAdView.delegate = self;
+    _nativeExpressAdView.rootViewController = [GADUPluginUtil unityGLViewController];
+  }
+  return self;
+}
+
+- (instancetype)initWithNativeExpressAdClientReference:
+                    (GADUTypeNativeExpressAdClientRef *)nativeExpressAdClient
+                                              adUnitID:(NSString *)adUnitID
+                                                adSize:(GADAdSize)size
+                                      customAdPosition:(CGPoint)customAdPosition {
+  self = [super init];
+  if (self) {
+    _nativeExpressAdClient = nativeExpressAdClient;
+    _customAdPosition = customAdPosition;
     _nativeExpressAdView = [[GADNativeExpressAdView alloc] initWithAdSize:size];
     _nativeExpressAdView.adUnitID = adUnitID;
     _nativeExpressAdView.delegate = self;
@@ -97,9 +117,15 @@
 
   /// Align the nativeExpressAdView in the Unity view bounds.
   UIView *unityView = [GADUPluginUtil unityGLViewController].view;
-  [GADUPluginUtil positionView:self.nativeExpressAdView
-                inParentBounds:unityView.bounds
-                withAdPosition:self.adPosition];
+  if (self.adPosition) {
+    [GADUPluginUtil positionView:self.nativeExpressAdView
+                  inParentBounds:unityView.bounds
+                      adPosition:self.adPosition];
+  } else {
+    [GADUPluginUtil positionView:self.nativeExpressAdView
+                  inParentBounds:unityView.bounds
+                  customPosition:self.customAdPosition];
+  }
   [unityView addSubview:self.nativeExpressAdView];
 
   if (self.adReceivedCallback) {

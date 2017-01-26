@@ -18,10 +18,11 @@ package com.google.unity.ads;
 import android.app.Activity;
 import android.graphics.Color;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
-import android.widget.FrameLayout;
+import android.widget.PopupWindow;
 
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
@@ -42,6 +43,13 @@ public class NativeExpressAd {
      * The {@link Activity} that the native express ad will be displayed in.
      */
     private Activity mUnityPlayerActivity;
+
+    /**
+     * The {@code PopupWindow} that the banner ad be displayed in to ensure banner ads will be
+     * presented over a {@code SurfaceView}.
+     */
+    private PopupWindow popupWindow;
+
 
     /**
      * A listener implemented in Unity via {@code AndroidJavaProxy} to receive ad events.
@@ -70,55 +78,87 @@ public class NativeExpressAd {
         mUnityPlayerActivity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                mAdView = new NativeExpressAdView(mUnityPlayerActivity);
-                // Setting the background color works around an issue where the first ad isn't
-                // visible.
-                mAdView.setBackgroundColor(Color.TRANSPARENT);
-                mAdView.setAdUnitId(publisherId);
-                mAdView.setAdSize(adSize);
-                mAdView.setAdListener(new AdListener() {
-                    @Override
-                    public void onAdLoaded() {
-                        if (mUnityListener != null) {
-                            mUnityListener.onAdLoaded();
-                        }
-                    }
 
-                    @Override
-                    public void onAdFailedToLoad(int errorCode) {
-                        if (mUnityListener != null) {
-                            mUnityListener.onAdFailedToLoad(PluginUtils.getErrorReason(errorCode));
-                        }
-                    }
-
-                    @Override
-                    public void onAdOpened() {
-                        if (mUnityListener != null) {
-                            mUnityListener.onAdOpened();
-                        }
-                    }
-
-                    @Override
-                    public void onAdClosed() {
-                        if (mUnityListener != null) {
-                            mUnityListener.onAdClosed();
-                        }
-                    }
-
-                    @Override
-                    public void onAdLeftApplication() {
-                        if (mUnityListener != null) {
-                            mUnityListener.onAdLeftApplication();
-                        }
-                    }
-                });
-                FrameLayout.LayoutParams adParams = new FrameLayout.LayoutParams(
-                        FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams
-                        .WRAP_CONTENT);
-                adParams.gravity = PluginUtils.getLayoutGravityForPositionCode(positionCode);
-                mUnityPlayerActivity.addContentView(mAdView, adParams);
+                createNativeExpressAdView(publisherId, adSize);
+                popupWindow = new PopupWindow(mAdView, ViewGroup.LayoutParams.WRAP_CONTENT,
+                        ViewGroup.LayoutParams
+                                .WRAP_CONTENT);
+                popupWindow.showAtLocation(mUnityPlayerActivity.getWindow().getDecorView()
+                                .getRootView(),
+                        PluginUtils.getLayoutGravityForPositionCode(positionCode), 0, 0);
             }
         });
+    }
+
+    /**
+     * Creates a {@link NativeExpressAdView} to hold native express ads with a custom position.
+     *
+     * @param publisherId Your ad unit ID.
+     * @param adSize      The size of the native express ad.
+     * @param positionX   Position of native express ad on the x axis.
+     * @param positionY   Position of native express ad on the y axis.
+     */
+    public void create(final String publisherId, final AdSize adSize, final int positionX, final
+    int positionY) {
+        mUnityPlayerActivity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+
+                createNativeExpressAdView(publisherId, adSize);
+                popupWindow = new PopupWindow(mAdView, ViewGroup.LayoutParams.WRAP_CONTENT,
+                        ViewGroup.LayoutParams.WRAP_CONTENT);
+                popupWindow.showAtLocation(mUnityPlayerActivity.getWindow().getDecorView()
+                                .getRootView(),
+                        Gravity.NO_GRAVITY, (int) PluginUtils.convertDpToPixel(positionX),
+                        (int) PluginUtils.convertDpToPixel(positionY));
+            }
+        });
+    }
+
+    public void createNativeExpressAdView(final String publisherId, final AdSize adSize) {
+        mAdView = new NativeExpressAdView(mUnityPlayerActivity);
+        // Setting the background color works around an issue where the first ad isn't
+        // visible.
+        mAdView.setBackgroundColor(Color.TRANSPARENT);
+        mAdView.setAdUnitId(publisherId);
+        mAdView.setAdSize(adSize);
+        mAdView.setAdListener(new AdListener() {
+            @Override
+            public void onAdLoaded() {
+                if (mUnityListener != null) {
+                    mUnityListener.onAdLoaded();
+                }
+            }
+
+            @Override
+            public void onAdFailedToLoad(int errorCode) {
+                if (mUnityListener != null) {
+                    mUnityListener.onAdFailedToLoad(PluginUtils.getErrorReason(errorCode));
+                }
+            }
+
+            @Override
+            public void onAdOpened() {
+                if (mUnityListener != null) {
+                    mUnityListener.onAdOpened();
+                }
+            }
+
+            @Override
+            public void onAdClosed() {
+                if (mUnityListener != null) {
+                    mUnityListener.onAdClosed();
+                }
+            }
+
+            @Override
+            public void onAdLeftApplication() {
+                if (mUnityListener != null) {
+                    mUnityListener.onAdLeftApplication();
+                }
+            }
+        });
+
     }
 
     /**
@@ -185,6 +225,7 @@ public class NativeExpressAd {
             public void run() {
                 Log.d(PluginUtils.LOGTAG, "Calling destroy() on NativeExpressAdView");
                 mAdView.destroy();
+                popupWindow.dismiss();
                 ViewParent parentView = mAdView.getParent();
                 if (parentView != null && parentView instanceof ViewGroup) {
                     ((ViewGroup) parentView).removeView(mAdView);

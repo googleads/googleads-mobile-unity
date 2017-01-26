@@ -10,8 +10,11 @@
 
 @interface GADUBanner () <GADBannerViewDelegate>
 
-/// Defines where the ad should be positioned on the screen.
+/// Defines where the ad should be positioned on the screen with a GADAdPosition.
 @property(nonatomic, assign) GADAdPosition adPosition;
+
+/// Defines where the ad should be positioned on the screen with a CGPoint.
+@property(nonatomic, assign) CGPoint customAdPosition;
 
 @end
 
@@ -46,6 +49,23 @@
                                   adPosition:adPosition];
 }
 
+- (id)initWithSmartBannerSizeAndBannerClientReference:(GADUTypeBannerClientRef *)bannerClient
+                                             adUnitID:(NSString *)adUnitID
+                                     customAdPosition:(CGPoint)customAdPosition {
+  // Choose the correct Smart Banner constant according to orientation.
+  UIDeviceOrientation currentOrientation = [UIApplication sharedApplication].statusBarOrientation;
+  GADAdSize adSize;
+  if (UIInterfaceOrientationIsPortrait(currentOrientation)) {
+    adSize = kGADAdSizeSmartBannerPortrait;
+  } else {
+    adSize = kGADAdSizeSmartBannerLandscape;
+  }
+  return [self initWithBannerClientReference:bannerClient
+                                    adUnitID:adUnitID
+                                      adSize:adSize
+                            customAdPosition:customAdPosition];
+}
+
 - (id)initWithBannerClientReference:(GADUTypeBannerClientRef *)bannerClient
                            adUnitID:(NSString *)adUnitID
                              adSize:(GADAdSize)size
@@ -54,6 +74,22 @@
   if (self) {
     _bannerClient = bannerClient;
     _adPosition = adPosition;
+    _bannerView = [[GADBannerView alloc] initWithAdSize:size];
+    _bannerView.adUnitID = adUnitID;
+    _bannerView.delegate = self;
+    _bannerView.rootViewController = [GADUPluginUtil unityGLViewController];
+  }
+  return self;
+}
+
+- (id)initWithBannerClientReference:(GADUTypeBannerClientRef *)bannerClient
+                           adUnitID:(NSString *)adUnitID
+                             adSize:(GADAdSize)size
+                   customAdPosition:(CGPoint)customAdPosition {
+  self = [super init];
+  if (self) {
+    _bannerClient = bannerClient;
+    _customAdPosition = customAdPosition;
     _bannerView = [[GADBannerView alloc] initWithAdSize:size];
     _bannerView.adUnitID = adUnitID;
     _bannerView.delegate = self;
@@ -109,9 +145,17 @@
 
   /// Align the bannerView in the Unity view bounds.
   UIView *unityView = [GADUPluginUtil unityGLViewController].view;
-  [GADUPluginUtil positionView:self.bannerView
-                inParentBounds:unityView.bounds
-                withAdPosition:self.adPosition];
+
+  if (self.adPosition) {
+    [GADUPluginUtil positionView:self.bannerView
+                  inParentBounds:unityView.bounds
+                      adPosition:self.adPosition];
+  } else {
+    [GADUPluginUtil positionView:self.bannerView
+                  inParentBounds:unityView.bounds
+                  customPosition:self.customAdPosition];
+  }
+
   [unityView addSubview:self.bannerView];
 
   if (self.adReceivedCallback) {

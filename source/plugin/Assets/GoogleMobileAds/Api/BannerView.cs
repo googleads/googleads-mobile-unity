@@ -28,45 +28,16 @@ namespace GoogleMobileAds.Api
             client = GoogleMobileAdsClientFactory.BuildBannerClient();
             client.CreateBannerView(adUnitId, adSize, position);
 
-            this.client.OnAdLoaded += (sender, args) =>
-                {
-                    if(this.OnAdLoaded != null)
-                    {
-                        this.OnAdLoaded(this, args);
-                    }
-                };
+            configureBannerEvents();
+        }
 
-            this.client.OnAdFailedToLoad += (sender, args) =>
-                {
-                    if(this.OnAdFailedToLoad != null)
-                    {
-                        this.OnAdFailedToLoad(this, args);
-                    }
-                };
+        // Creates a BannerView with a custom position.
+        public BannerView(string adUnitId, AdSize adSize, int x, int y)
+        {
+            client = GoogleMobileAdsClientFactory.BuildBannerClient();
+            client.CreateBannerView(adUnitId, adSize, x, y);
 
-            this.client.OnAdOpening += (sender, args) =>
-                {
-                    if(this.OnAdOpening != null)
-                    {
-                        this.OnAdOpening(this, args);
-                    }
-                };
-
-            this.client.OnAdClosed += (sender, args) =>
-                {
-                    if(this.OnAdClosed != null)
-                    {
-                        this.OnAdClosed(this, args);
-                    }
-                };
-
-            this.client.OnAdLeavingApplication += (sender, args) =>
-                {
-                    if(this.OnAdLeavingApplication != null)
-                    {
-                        this.OnAdLeavingApplication(this, args);
-                    }
-                };
+            configureBannerEvents();
         }
 
         // These are the ad callback events that can be hooked into.
@@ -102,6 +73,49 @@ namespace GoogleMobileAds.Api
         public void Destroy()
         {
             client.DestroyBannerView();
+        }
+
+        private void configureBannerEvents()
+        {
+            this.client.OnAdLoaded += (sender, args) =>
+            {
+                if(this.OnAdLoaded != null)
+                {
+                    this.OnAdLoaded(this, args);
+                }
+            };
+
+            this.client.OnAdFailedToLoad += (sender, args) =>
+            {
+                if(this.OnAdFailedToLoad != null)
+                {
+                    this.OnAdFailedToLoad(this, args);
+                }
+            };
+
+            this.client.OnAdOpening += (sender, args) =>
+            {
+                if(this.OnAdOpening != null)
+                {
+                    this.OnAdOpening(this, args);
+                }
+            };
+
+            this.client.OnAdClosed += (sender, args) =>
+            {
+                if(this.OnAdClosed != null)
+                {
+                    this.OnAdClosed(this, args);
+                }
+            };
+
+            this.client.OnAdLeavingApplication += (sender, args) =>
+            {
+                if(this.OnAdLeavingApplication != null)
+                {
+                    this.OnAdLeavingApplication(this, args);
+                }
+            };
         }
     }
 }

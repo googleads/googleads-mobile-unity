@@ -22,6 +22,17 @@
                                              adUnitID:(NSString *)adUnitID
                                            adPosition:(GADAdPosition)adPosition;
 
+/// Initializes a GADUBanner with specified width and height at the specified point.
+- (id)initWithBannerClientReference:(GADUTypeBannerClientRef *)bannerClient
+                           adUnitID:(NSString *)adUnitID
+                             adSize:(GADAdSize)size
+                   customAdPosition:(CGPoint)customAdPosition;
+
+/// Initializes a full-width GADUBanner with specified width and height at the specified point.
+- (id)initWithSmartBannerSizeAndBannerClientReference:(GADUTypeBannerClientRef *)bannerClient
+                                             adUnitID:(NSString *)adUnitID
+                                     customAdPosition:(CGPoint)customAdPosition;
+
 /// A reference to the Unity banner client.
 @property(nonatomic, assign) GADUTypeBannerClientRef *bannerClient;
 

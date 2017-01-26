@@ -62,6 +62,24 @@ GADUTypeBannerRef GADUCreateBannerView(GADUTypeBannerClientRef *bannerClient, co
   return (__bridge GADUTypeBannerRef)banner;
 }
 
+/// Creates a GADBannerView with the specified width, height, and custom position. Returns
+/// a reference to the GADUBannerView.
+GADUTypeBannerRef GADUCreateBannerViewWithCustomPosition(GADUTypeBannerClientRef *bannerClient,
+                                                         const char *adUnitID, NSInteger width,
+                                                         NSInteger height, NSInteger x,
+                                                         NSInteger y) {
+  CGPoint adPosition = CGPointMake(x, y);
+  GADAdSize adSize = GADAdSizeFromCGSize(CGSizeMake(width, height));
+  GADUBanner *banner =
+      [[GADUBanner alloc] initWithBannerClientReference:bannerClient
+                                               adUnitID:GADUStringFromUTF8String(adUnitID)
+                                                 adSize:adSize
+                                       customAdPosition:adPosition];
+  GADUObjectCache *cache = [GADUObjectCache sharedInstance];
+  [cache.references setObject:banner forKey:[banner gadu_referenceKey]];
+  return (__bridge GADUTypeBannerRef)banner;
+}
+
 /// Creates a full-width GADBannerView in the current orientation. Returns a reference to the
 /// GADUBannerView.
 GADUTypeBannerRef GADUCreateSmartBannerView(GADUTypeBannerClientRef *bannerClient,
@@ -70,6 +88,21 @@ GADUTypeBannerRef GADUCreateSmartBannerView(GADUTypeBannerClientRef *bannerClien
       initWithSmartBannerSizeAndBannerClientReference:bannerClient
                                              adUnitID:GADUStringFromUTF8String(adUnitID)
                                            adPosition:adPosition];
+  GADUObjectCache *cache = [GADUObjectCache sharedInstance];
+  [cache.references setObject:banner forKey:[banner gadu_referenceKey]];
+  return (__bridge GADUTypeBannerRef)banner;
+}
+
+/// Creates a full-width GADBannerView in the current orientation with a custom position. Returns a
+/// reference to the GADUBannerView.
+GADUTypeBannerRef GADUCreateSmartBannerViewWithCustomPosition(GADUTypeBannerClientRef *bannerClient,
+                                                              const char *adUnitID, NSInteger x,
+                                                              NSInteger y) {
+  CGPoint adPosition = CGPointMake(x, y);
+  GADUBanner *banner = [[GADUBanner alloc]
+      initWithSmartBannerSizeAndBannerClientReference:bannerClient
+                                             adUnitID:GADUStringFromUTF8String(adUnitID)
+                                     customAdPosition:adPosition];
   GADUObjectCache *cache = [GADUObjectCache sharedInstance];
   [cache.references setObject:banner forKey:[banner gadu_referenceKey]];
   return (__bridge GADUTypeBannerRef)banner;
@@ -198,6 +231,23 @@ GADUTypeNativeExpressAdRef GADUCreateNativeExpressAdView(
                                       height:height
                                   adPosition:adPosition];
 
+  GADUObjectCache *cache = [GADUObjectCache sharedInstance];
+  [cache.references setObject:nativeExpressAd forKey:[nativeExpressAd gadu_referenceKey]];
+  return (__bridge GADUTypeNativeExpressAdRef)nativeExpressAd;
+}
+
+/// Creates a GADNativeExpressAdView with the specified width, height, and custom position. Returns
+/// a reference to the GADUNativeExpressAdView.
+GADUTypeNativeExpressAdRef GADUCreateNativeExpressAdViewWithCustomPosition(
+    GADUTypeNativeExpressAdClientRef *nativeExpressAdClient, const char *adUnitID, NSInteger width,
+    NSInteger height, NSInteger x, NSInteger y) {
+  CGPoint adPosition = CGPointMake(x, y);
+  GADAdSize adSize = GADAdSizeFromCGSize(CGSizeMake(width, height));
+  GADUNativeExpressAd *nativeExpressAd = [[GADUNativeExpressAd alloc]
+      initWithNativeExpressAdClientReference:nativeExpressAdClient
+                                    adUnitID:GADUStringFromUTF8String(adUnitID)
+                                      adSize:adSize
+                            customAdPosition:adPosition];
   GADUObjectCache *cache = [GADUObjectCache sharedInstance];
   [cache.references setObject:nativeExpressAd forKey:[nativeExpressAd gadu_referenceKey]];
   return (__bridge GADUTypeNativeExpressAdRef)nativeExpressAd;
