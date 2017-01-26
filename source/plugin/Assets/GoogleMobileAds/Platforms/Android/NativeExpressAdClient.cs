@@ -54,6 +54,14 @@ namespace GoogleMobileAds.Android
                     new object[3] { adUnitId, Utils.GetAdSizeJavaObject(adSize), (int)position });
         }
 
+        // Creates a native express ad view with a custom position
+        public void CreateNativeExpressAdView(string adUnitId, AdSize adSize, int x, int y)
+        {
+            this.nativeExpressAdView.Call(
+                "create",
+                new object[4] { adUnitId, Utils.GetAdSizeJavaObject(adSize), x, y });
+        }
+
         // Loads an ad.
         public void LoadAd(AdRequest request)
         {

@@ -63,6 +63,11 @@ namespace GoogleMobileAds.Common
             Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
         }
 
+        public void CreateBannerView(string adUnitId, AdSize adSize, int positionX, int positionY)
+        {
+            Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
+        }
+
         public void LoadAd(AdRequest request)
         {
             Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
@@ -150,6 +155,11 @@ namespace GoogleMobileAds.Common
         }
 
         public void CreateNativeExpressAdView(string adUnitId, AdSize adSize, AdPosition position)
+        {
+            Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
+        }
+
+        public void CreateNativeExpressAdView(string adUnitId, AdSize adSize, int positionX, int positionY)
         {
             Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
         }

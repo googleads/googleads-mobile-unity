@@ -28,45 +28,16 @@ namespace GoogleMobileAds.Api
             this.client = GoogleMobileAdsClientFactory.BuildNativeExpressAdClient();
             this.client.CreateNativeExpressAdView(adUnitId, adSize, position);
 
-            this.client.OnAdLoaded += (sender, args) =>
-                {
-                    if(this.OnAdLoaded != null)
-                    {
-                         this.OnAdLoaded(this, args);
-                    }
-                };
+            configureNativeExpressAdEvents();
+        }
 
-            this.client.OnAdFailedToLoad += (sender, args) =>
-                {
-                    if(this.OnAdFailedToLoad != null)
-                    {
-                        this.OnAdFailedToLoad(this, args);
-                    }
-                };
+        // Creates a NativeExpressAd with a custom position.
+        public NativeExpressAdView(string adUnitId, AdSize adSize, int x, int y)
+        {
+            this.client = GoogleMobileAdsClientFactory.BuildNativeExpressAdClient();
+            this.client.CreateNativeExpressAdView(adUnitId, adSize, x, y);
 
-            this.client.OnAdOpening += (sender, args) =>
-                {
-                    if(this.OnAdOpening != null)
-                    {
-                        this.OnAdOpening(this, args);
-                    }
-                };
-
-            this.client.OnAdClosed += (sender, args) =>
-                {
-                    if(this.OnAdClosed != null)
-                    {
-                        this.OnAdClosed(this, args);
-                    }
-                };
-
-            this.client.OnAdLeavingApplication += (sender, args) =>
-                {
-                    if(this.OnAdLeavingApplication != null)
-                    {
-                        this.OnAdLeavingApplication(this, args);
-                    }
-                };
+            configureNativeExpressAdEvents();
         }
 
         // These are the ad callback events that can be hooked into.
@@ -102,6 +73,49 @@ namespace GoogleMobileAds.Api
         public void Destroy()
         {
             this.client.DestroyNativeExpressAdView();
+        }
+
+        private void configureNativeExpressAdEvents()
+        {
+            this.client.OnAdLoaded += (sender, args) =>
+            {
+                if(this.OnAdLoaded != null)
+                {
+                    this.OnAdLoaded(this, args);
+                }
+            };
+
+            this.client.OnAdFailedToLoad += (sender, args) =>
+            {
+                if(this.OnAdFailedToLoad != null)
+                {
+                    this.OnAdFailedToLoad(this, args);
+                }
+            };
+
+            this.client.OnAdOpening += (sender, args) =>
+            {
+                if(this.OnAdOpening != null)
+                {
+                    this.OnAdOpening(this, args);
+                }
+            };
+
+            this.client.OnAdClosed += (sender, args) =>
+            {
+                if(this.OnAdClosed != null)
+                {
+                    this.OnAdClosed(this, args);
+                }
+            };
+
+            this.client.OnAdLeavingApplication += (sender, args) =>
+            {
+                if(this.OnAdLeavingApplication != null)
+                {
+                    this.OnAdLeavingApplication(this, args);
+                }
+            };
         }
     }
 }

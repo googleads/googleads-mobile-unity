@@ -16,6 +16,8 @@
 package com.google.unity.ads;
 
 import android.app.Activity;
+import android.content.res.Resources;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
 
@@ -125,6 +127,19 @@ public class PluginUtils {
         }
         return gravity;
     }
+
+    public static float convertPixelsToDp(float px) {
+        DisplayMetrics metrics = Resources.getSystem().getDisplayMetrics();
+        float dp = px / metrics.density;
+        return dp;
+    }
+
+    public static float convertDpToPixel(float dp) {
+        DisplayMetrics metrics = Resources.getSystem().getDisplayMetrics();
+        float px = dp * metrics.density;
+        return px;
+    }
+
 
     /**
      * Returns whether the InAppPurchaseResult was successful.

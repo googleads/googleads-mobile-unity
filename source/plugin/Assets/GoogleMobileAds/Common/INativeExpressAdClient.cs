@@ -38,6 +38,9 @@ namespace GoogleMobileAds.Common
         // Creates a native express ad view and adds it to the view hierarchy.
         void CreateNativeExpressAdView(string adUnitId, AdSize adSize, AdPosition position);
 
+        // Creates a native express ad view and adds it to the view hierarchy with a custom position.
+        void CreateNativeExpressAdView(string adUnitId, AdSize adSize, int x, int y);
+
         // Requests a new ad for the native express ad view.
         void LoadAd(AdRequest request);
 

@@ -20,7 +20,7 @@ namespace GoogleMobileAds.Api
 {
     public class AdRequest
     {
-        public const string Version = "3.1.3";
+        public const string Version = "3.2.0";
         public const string TestDeviceSimulator = "SIMULATOR";
 
         public class Builder

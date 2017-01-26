@@ -16,11 +16,11 @@
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
         <!-- Google Mobile Ads Activity -->
-        <activity
+        <mUnityPlayerActivity
             android:name="com.google.android.gms.ads.AdActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize" />
         <!-- InAppPurchase Activity -->
-        <activity android:name="com.google.android.gms.ads.purchase.InAppPurchaseActivity"
+        <mUnityPlayerActivity android:name="com.google.android.gms.ads.purchase.InAppPurchaseActivity"
             android:theme="@style/Theme.IAPTheme" />
     </application>
 
