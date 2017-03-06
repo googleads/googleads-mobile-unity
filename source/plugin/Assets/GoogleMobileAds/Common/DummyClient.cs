@@ -28,6 +28,7 @@ namespace GoogleMobileAds.Common
             Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
         }
 
+#pragma warning disable 67
         public event EventHandler<EventArgs> OnAdLoaded;
 
         public event EventHandler<AdFailedToLoadEventArgs> OnAdFailedToLoad;
@@ -43,6 +44,7 @@ namespace GoogleMobileAds.Common
         public event EventHandler<EventArgs> OnAdLeavingApplication;
 
         public event EventHandler<CustomNativeEventArgs> OnCustomNativeTemplateAdLoaded;
+#pragma warning restore 67
 
         public string UserId
         {
