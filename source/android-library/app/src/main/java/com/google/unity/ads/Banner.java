@@ -159,10 +159,15 @@ public class Banner {
     public void createPopupWindow() {
         // Workaround for issue where popUpWindow will not resize to the full width
         // of the screen to accommodate a smart banner.
-        int popUpWindowWidthLayoutParam = mAdView.getAdSize().equals(AdSize.SMART_BANNER)
-                ? ViewGroup.LayoutParams.MATCH_PARENT : ViewGroup.LayoutParams.WRAP_CONTENT;
-        mPopupWindow = new PopupWindow(mAdView, popUpWindowWidthLayoutParam,
-                ViewGroup.LayoutParams.WRAP_CONTENT);
+        int popUpWindowWidth = mAdView.getAdSize().equals(AdSize.SMART_BANNER)
+                ? ViewGroup.LayoutParams.MATCH_PARENT
+                : mAdView.getAdSize().getWidthInPixels(mUnityPlayerActivity);
+        int popUpWindowHeight = mAdView.getAdSize().getHeightInPixels(mUnityPlayerActivity);
+        mPopupWindow = new PopupWindow(mAdView, popUpWindowWidth, popUpWindowHeight);
+
+        // Copy system UI visibility flags set on Unity player window to newly created PopUpWindow.
+        int visibilityFlags = mUnityPlayerActivity.getWindow().getAttributes().flags;
+        mPopupWindow.getContentView().setSystemUiVisibility(visibilityFlags);
     }
 
     /**

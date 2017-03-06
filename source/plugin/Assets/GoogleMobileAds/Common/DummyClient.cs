@@ -28,7 +28,9 @@ namespace GoogleMobileAds.Common
             Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
         }
 
-#pragma warning disable 67
+        // Disable warnings for unused dummy ad events.
+        #pragma warning disable 67
+
         public event EventHandler<EventArgs> OnAdLoaded;
 
         public event EventHandler<AdFailedToLoadEventArgs> OnAdFailedToLoad;
@@ -44,7 +46,8 @@ namespace GoogleMobileAds.Common
         public event EventHandler<EventArgs> OnAdLeavingApplication;
 
         public event EventHandler<CustomNativeEventArgs> OnCustomNativeTemplateAdLoaded;
-#pragma warning restore 67
+
+        #pragma warning restore 67
 
         public string UserId
         {
@@ -132,16 +135,6 @@ namespace GoogleMobileAds.Common
         }
 
         public void ShowRewardBasedVideoAd()
-        {
-            Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
-        }
-
-        public void SetDefaultInAppPurchaseProcessor(IDefaultInAppPurchaseProcessor processor)
-        {
-            Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
-        }
-
-        public void SetCustomInAppPurchaseProcessor(ICustomInAppPurchaseProcessor processor)
         {
             Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
         }

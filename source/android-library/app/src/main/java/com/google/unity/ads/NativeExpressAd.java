@@ -48,7 +48,7 @@ public class NativeExpressAd {
      * The {@code PopupWindow} that the banner ad be displayed in to ensure banner ads will be
      * presented over a {@code SurfaceView}.
      */
-    private PopupWindow popupWindow;
+    private PopupWindow mPopupWindow;
 
 
     /**
@@ -80,10 +80,8 @@ public class NativeExpressAd {
             public void run() {
 
                 createNativeExpressAdView(publisherId, adSize);
-                popupWindow = new PopupWindow(mAdView, ViewGroup.LayoutParams.WRAP_CONTENT,
-                        ViewGroup.LayoutParams
-                                .WRAP_CONTENT);
-                popupWindow.showAtLocation(mUnityPlayerActivity.getWindow().getDecorView()
+                createPopupWindow();
+                mPopupWindow.showAtLocation(mUnityPlayerActivity.getWindow().getDecorView()
                                 .getRootView(),
                         PluginUtils.getLayoutGravityForPositionCode(positionCode), 0, 0);
             }
@@ -105,9 +103,8 @@ public class NativeExpressAd {
             public void run() {
 
                 createNativeExpressAdView(publisherId, adSize);
-                popupWindow = new PopupWindow(mAdView, ViewGroup.LayoutParams.WRAP_CONTENT,
-                        ViewGroup.LayoutParams.WRAP_CONTENT);
-                popupWindow.showAtLocation(mUnityPlayerActivity.getWindow().getDecorView()
+                createPopupWindow();
+                mPopupWindow.showAtLocation(mUnityPlayerActivity.getWindow().getDecorView()
                                 .getRootView(),
                         Gravity.NO_GRAVITY, (int) PluginUtils.convertDpToPixel(positionX),
                         (int) PluginUtils.convertDpToPixel(positionY));
@@ -159,6 +156,16 @@ public class NativeExpressAd {
             }
         });
 
+    }
+
+    public void createPopupWindow() {
+        int popUpWindowWidth = mAdView.getAdSize().getWidthInPixels(mUnityPlayerActivity);
+        int popUpWindowHeight = mAdView.getAdSize().getHeightInPixels(mUnityPlayerActivity);
+        mPopupWindow = new PopupWindow(mAdView, popUpWindowWidth, popUpWindowHeight);
+
+        // Copy system UI visibility flags set on Unity player window to newly created PopUpWindow.
+        int visibilityFlags = mUnityPlayerActivity.getWindow().getAttributes().flags;
+        mPopupWindow.getContentView().setSystemUiVisibility(visibilityFlags);
     }
 
     /**
@@ -225,7 +232,7 @@ public class NativeExpressAd {
             public void run() {
                 Log.d(PluginUtils.LOGTAG, "Calling destroy() on NativeExpressAdView");
                 mAdView.destroy();
-                popupWindow.dismiss();
+                mPopupWindow.dismiss();
                 ViewParent parentView = mAdView.getParent();
                 if (parentView != null && parentView instanceof ViewGroup) {
                     ((ViewGroup) parentView).removeView(mAdView);

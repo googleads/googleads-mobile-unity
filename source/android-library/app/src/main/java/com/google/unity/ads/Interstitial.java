@@ -21,8 +21,6 @@ import android.util.Log;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.InterstitialAd;
-import com.google.android.gms.ads.purchase.InAppPurchaseListener;
-import com.google.android.gms.ads.purchase.PlayStorePurchaseListener;
 
 /**
  * Native interstitial implementation for the Google Mobile Ads Unity plugin.
@@ -130,38 +128,6 @@ public class Interstitial {
                 } else {
                     Log.d(PluginUtils.LOGTAG, "Interstitial was not ready to be shown.");
                 }
-            }
-        });
-    }
-
-    /**
-     * Sets Play Store purchase parameters. The PlayStorePurchaseListener is implemented on the
-     * Unity side via {@code AndroidJavaProxy}.
-     *
-     * @param purchaseListener A PlayStorePurchaseListener for monitoring purchase events.
-     * @param publicKey        The app's public key string.
-     */
-    public void setPlayStorePurchaseParams(final PlayStorePurchaseListener purchaseListener,
-                                           final String publicKey) {
-        activity.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                interstitial.setPlayStorePurchaseParams(purchaseListener, publicKey);
-            }
-        });
-    }
-
-    /**
-     * Sets an InAppPurchaseListener for the interstitial. The InAppPurchaseListener is
-     * implemented on the Unity side via {@code AndroidJavaProxy}.
-     *
-     * @param purchaseListener An InAppPurchaseListener for monitoring purchase events.
-     */
-    public void setInAppPurchaseListener(final InAppPurchaseListener purchaseListener) {
-        activity.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                interstitial.setInAppPurchaseListener(purchaseListener);
             }
         });
     }

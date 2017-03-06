@@ -78,20 +78,6 @@ namespace GoogleMobileAds.Android
             this.interstitial.Call("destroy");
         }
 
-        // Sets IDefaultInAppPurchaseProcessor as PlayStorePurchaseListener on interstital ad.
-        public void SetDefaultInAppPurchaseProcessor(IDefaultInAppPurchaseProcessor processor)
-        {
-            DefaultInAppPurchaseListener listener = new DefaultInAppPurchaseListener(processor);
-            this.interstitial.Call("setPlayStorePurchaseParams", listener, processor.AndroidPublicKey);
-        }
-
-        // Sets ICustomInAppPurchaseProcessor as PlayStorePurchaseListener on interstital ad.
-        public void SetCustomInAppPurchaseProcessor(ICustomInAppPurchaseProcessor processor)
-        {
-            CustomInAppPurchaseListener listener = new CustomInAppPurchaseListener(processor);
-            this.interstitial.Call("setInAppPurchaseListener", listener);
-        }
-
         #endregion
 
         #region Callbacks from UnityInterstitialAdListener.

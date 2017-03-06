@@ -3,39 +3,6 @@ using UnityEngine;
 using GoogleMobileAds;
 using GoogleMobileAds.Api;
 
-public class GoogleMobileAdsDemoHandler : IDefaultInAppPurchaseProcessor
-{
-    private readonly string[] validSkus = { "android.test.purchased" };
-
-    // Will only be sent on a success.
-    public void ProcessCompletedInAppPurchase(IInAppPurchaseResult result)
-    {
-        result.FinishPurchase();
-        GoogleMobileAdsDemoScript.OutputMessage = "Purchase Succeeded! Credit user here.";
-    }
-
-    // Check SKU against valid SKUs.
-    public bool IsValidPurchase(string sku)
-    {
-        foreach (string validSku in this.validSkus)
-        {
-            if (sku == validSku)
-            {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    // Return the app's public key.
-    public string AndroidPublicKey
-    {
-        // In a real app, return public key instead of null.
-        get { return null; }
-    }
-}
-
 // Example script showing how to invoke the Google Mobile Ads Unity plugin.
 public class GoogleMobileAdsDemoScript : MonoBehaviour
 {
@@ -293,9 +260,9 @@ public class GoogleMobileAdsDemoScript : MonoBehaviour
         #if UNITY_EDITOR
         string adUnitId = "unused";
         #elif UNITY_ANDROID
-        string adUnitId = "INSERT_AD_UNIT_HERE";
+        string adUnitId = "ca-app-pub-3940256099942544/5224354917";
         #elif UNITY_IPHONE
-        string adUnitId = "INSERT_AD_UNIT_HERE";
+        string adUnitId = "ca-app-pub-3940256099942544/1712485313";
         #else
         string adUnitId = "unexpected_platform";
         #endif

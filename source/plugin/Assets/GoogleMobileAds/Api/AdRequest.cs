@@ -16,22 +16,42 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
+using GoogleMobileAds.Api.Mediation;
+
 namespace GoogleMobileAds.Api
 {
     public class AdRequest
     {
-        public const string Version = "3.2.0";
+        public const string Version = "3.3.0";
         public const string TestDeviceSimulator = "SIMULATOR";
+
+        private AdRequest(Builder builder)
+        {
+            this.TestDevices = new List<string>(builder.TestDevices);
+            this.Keywords = new HashSet<string>(builder.Keywords);
+            this.Birthday = builder.Birthday;
+            this.Gender = builder.Gender;
+            this.TagForChildDirectedTreatment = builder.ChildDirectedTreatmentTag;
+            this.Extras = new Dictionary<string, string>(builder.Extras);
+            this.MediationExtras = builder.MediationExtras;
+        }
+
+        public List<string> TestDevices { get; private set; }
+
+        public HashSet<string> Keywords { get; private set; }
+
+        public DateTime? Birthday { get; private set; }
+
+        public Gender? Gender { get; private set; }
+
+        public bool? TagForChildDirectedTreatment { get; private set; }
+
+        public Dictionary<string, string> Extras { get; private set; }
+
+        public List<MediationExtras> MediationExtras { get; private set; }
 
         public class Builder
         {
-            internal List<string> TestDevices { get; private set; }
-            internal HashSet<string> Keywords { get; private set; }
-            internal DateTime? Birthday { get; private set; }
-            internal Gender? Gender { get; private set; }
-            internal bool? ChildDirectedTreatmentTag { get; private set; }
-            internal Dictionary<string, string> Extras { get; private set; }
-
             public Builder()
             {
                 this.TestDevices = new List<string>();
@@ -40,7 +60,22 @@ namespace GoogleMobileAds.Api
                 this.Gender = null;
                 this.ChildDirectedTreatmentTag = null;
                 this.Extras = new Dictionary<string, string>();
+                this.MediationExtras = new List<MediationExtras>();
             }
+
+            internal List<string> TestDevices { get; private set; }
+
+            internal HashSet<string> Keywords { get; private set; }
+
+            internal DateTime? Birthday { get; private set; }
+
+            internal Gender? Gender { get; private set; }
+
+            internal bool? ChildDirectedTreatmentTag { get; private set; }
+
+            internal Dictionary<string, string> Extras { get; private set; }
+
+            internal List<MediationExtras> MediationExtras { get; private set; }
 
             public Builder AddKeyword(string keyword)
             {
@@ -71,6 +106,12 @@ namespace GoogleMobileAds.Api
                 return this;
             }
 
+            public Builder AddMediationExtras(MediationExtras extras)
+            {
+                this.MediationExtras.Add(extras);
+                return this;
+            }
+
             public Builder TagForChildDirectedTreatment(bool tagForChildDirectedTreatment)
             {
                 this.ChildDirectedTreatmentTag = tagForChildDirectedTreatment;
@@ -82,23 +123,6 @@ namespace GoogleMobileAds.Api
                 this.Extras.Add(key, value);
                 return this;
             }
-        }
-
-        public List<string> TestDevices  { get; private set; }
-        public HashSet<string> Keywords  { get; private set; }
-        public DateTime? Birthday  { get; private set; }
-        public Gender? Gender  { get; private set; }
-        public bool? TagForChildDirectedTreatment { get; private set; }
-        public Dictionary<string, string> Extras  { get; private set; }
-
-        private AdRequest(Builder builder)
-        {
-            this.TestDevices = new List<string>(builder.TestDevices);
-            this.Keywords = new HashSet<string>(builder.Keywords);
-            this.Birthday = builder.Birthday;
-            this.Gender = builder.Gender;
-            this.TagForChildDirectedTreatment = builder.ChildDirectedTreatmentTag;
-            this.Extras = new Dictionary<string, string>(builder.Extras);
         }
     }
 }

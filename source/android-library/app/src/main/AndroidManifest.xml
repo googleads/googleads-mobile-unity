@@ -3,8 +3,6 @@
     <!-- Google Mobile Ads Permissions -->
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <!-- Uncomment to add billing for in-app purchase ads -->
-    <!--<uses-permission android:name="com.android.vending.BILLING" /> -->
 
     <application
         android:allowBackup="true"

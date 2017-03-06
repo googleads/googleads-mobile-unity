@@ -10,8 +10,6 @@ required for displaying ads.
     android:versionCode="1">
   <uses-sdk android:minSdkVersion="14"
       android:targetSdkVersion="19" />
-  <!-- Uncomment to add billing for in-app purchase ads -->
-  <!--<uses-permission android:name="com.android.vending.BILLING"/> -->
   <application>
   </application>
 </manifest>

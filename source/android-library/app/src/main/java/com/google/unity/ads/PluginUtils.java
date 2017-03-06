@@ -15,14 +15,12 @@
  */
 package com.google.unity.ads;
 
-import android.app.Activity;
 import android.content.res.Resources;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
 
 import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.purchase.InAppPurchaseResult;
 
 /**
  * Utilities for the Google Mobile Ads Unity plugin.
@@ -138,16 +136,5 @@ public class PluginUtils {
         DisplayMetrics metrics = Resources.getSystem().getDisplayMetrics();
         float px = dp * metrics.density;
         return px;
-    }
-
-
-    /**
-     * Returns whether the InAppPurchaseResult was successful.
-     *
-     * @param result The InAppPurchaseResult to check.
-     * @return true on success, otherwise false.
-     */
-    public static boolean isResultSuccess(InAppPurchaseResult result) {
-        return result.getResultCode() == Activity.RESULT_OK;
     }
 }

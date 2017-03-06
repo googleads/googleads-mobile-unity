@@ -28,6 +28,21 @@ namespace GoogleMobileAds.iOS
         internal static extern IntPtr GADUCreateRequest();
 
         [DllImport("__Internal")]
+        internal static extern IntPtr GADUCreateMutableDictionary();
+
+        [DllImport("__Internal")]
+        internal static extern void GADUMutableDictionarySetValue(
+                IntPtr mutableDictionaryPtr,
+                string key,
+                string value);
+
+        [DllImport("__Internal")]
+        internal static extern void GADUSetMediationExtras(
+                IntPtr request,
+                IntPtr mutableDictionaryPtr,
+                string adNetworkExtrasClassName);
+
+        [DllImport("__Internal")]
         internal static extern void GADUAddTestDevice(IntPtr request, string deviceId);
 
         [DllImport("__Internal")]

@@ -1,6 +1,21 @@
 Google Mobile Ads Unity Plugin Change Log
 
 *************
+Version 3.3.0
+*************
+- Removed support for in-app purchases.
+- Fix positioning of ads in sticky-immersive mode.
+- Fix issue were ads larger than 320dp could not be rendered.
+- Fix incorrect positioning of ads in iOS for ad position BOTTOM.
+- Add rewarded video test ad units to HelloWorld sample app.
+- Suppress warnings for unsed dummy ad events.
+
+Built and tested with:
+- Google Play services 10.2.0
+- Google Mobile Ads iOS SDK 7.18.0
+- Unity Jar Resolver 1.2.12.0
+
+*************
 Version 3.2.0
 *************
 - Banner ads and native express ads display correctly on Unity 5.6.

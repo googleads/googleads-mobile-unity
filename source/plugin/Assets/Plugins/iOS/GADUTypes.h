@@ -2,6 +2,7 @@
 
 /// Positions to place an ad.
 typedef NS_ENUM(NSUInteger, GADAdPosition) {
+  kGADAdPositionCustom = -1,              ///< Custom ad position.
   kGADAdPositionTopOfScreen = 0,          ///< Top of screen.
   kGADAdPositionBottomOfScreen = 1,       ///< Bottom of screen.
   kGADAdPositionTopLeftOfScreen = 2,      ///< Top left of screen.
@@ -52,6 +53,12 @@ typedef const void *GADUTypeNativeExpressAdRef;
 
 /// Type representing a GADURequest.
 typedef const void *GADUTypeRequestRef;
+
+/// Type representing a NSMutableDictionary of extras.
+typedef const void *GADUTypeMutableDictionaryRef;
+
+/// Type representing a GADUAdNetworkExtras.
+typedef const void *GADUTypeAdNetworkExtrasRef;
 
 /// Callback for when a banner ad request was successfully loaded.
 typedef void (*GADUAdViewDidReceiveAdCallback)(GADUTypeBannerClientRef *bannerClient);

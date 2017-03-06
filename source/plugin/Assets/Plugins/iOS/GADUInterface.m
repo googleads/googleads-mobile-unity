@@ -9,6 +9,7 @@
 #import "GADURequest.h"
 #import "GADURewardBasedVideoAd.h"
 #import "GADUTypes.h"
+#import "GADUAdNetworkExtras.h"
 
 /// Returns an NSString copying the characters from |bytes|, a C array of UTF8-encoded bytes.
 /// Returns nil if |bytes| is NULL.
@@ -369,6 +370,44 @@ void GADUSetGender(GADUTypeRequestRef request, NSInteger genderCode) {
 void GADUTagForChildDirectedTreatment(GADUTypeRequestRef request, BOOL childDirectedTreatment) {
   GADURequest *internalRequest = (__bridge GADURequest *)request;
   internalRequest.tagForChildDirectedTreatment = childDirectedTreatment;
+}
+
+/// Creates an empty NSMutableableDictionary returns its reference.
+GADUTypeMutableDictionaryRef GADUCreateMutableDictionary() {
+  NSMutableDictionary *dictionary = [[NSMutableDictionary alloc] init];
+  GADUObjectCache *cache = [GADUObjectCache sharedInstance];
+  [cache.references setObject:dictionary forKey:[dictionary gadu_referenceKey]];
+  return (__bridge GADUTypeMutableDictionaryRef)(dictionary);
+}
+
+/// Sets an mediation extra key value pair on a NSMutableableDictionary.
+void GADUMutableDictionarySetValue(GADUTypeMutableDictionaryRef dictionary, const char *key,
+                                   const char *value) {
+  NSMutableDictionary *internalDictionary = (__bridge NSMutableDictionary *)dictionary;
+  [internalDictionary setValue:GADUStringFromUTF8String(value)
+                        forKey:GADUStringFromUTF8String(key)];
+}
+
+/// Create a GADMediatonExtras object from the specified NSMutableableDictionary of extras and
+/// include it in the ad request.
+void GADUSetMediationExtras(GADUTypeRequestRef request, GADUTypeMutableDictionaryRef dictionary,
+                            const char *adNetworkExtraClassName) {
+  GADURequest *internalRequest = (__bridge GADURequest *)request;
+  NSMutableDictionary *internalDictionary = (__bridge NSMutableDictionary *)dictionary;
+  GADUObjectCache *cache = [GADUObjectCache sharedInstance];
+
+  id<GADUAdNetworkExtras> extra =
+      [[NSClassFromString(GADUStringFromUTF8String(adNetworkExtraClassName)) alloc] init];
+  if (![extra respondsToSelector:@selector(adNetworkExtrasWithDictionary:)]) {
+    NSLog(@"Unable to create mediation ad network class: %@",
+          GADUStringFromUTF8String(adNetworkExtraClassName));
+    [cache.references removeObjectForKey:[internalDictionary gadu_referenceKey]];
+    return;
+  }
+
+  [internalRequest.mediationExtras
+      addObject:[extra adNetworkExtrasWithDictionary:internalDictionary]];
+  [cache.references removeObjectForKey:[internalDictionary gadu_referenceKey]];
 }
 
 /// Sets an extra parameter to be included in the ad request.

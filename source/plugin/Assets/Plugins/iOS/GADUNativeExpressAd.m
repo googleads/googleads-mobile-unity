@@ -59,6 +59,7 @@
   if (self) {
     _nativeExpressAdClient = nativeExpressAdClient;
     _customAdPosition = customAdPosition;
+    _adPosition = kGADAdPositionCustom;
     _nativeExpressAdView = [[GADNativeExpressAdView alloc] initWithAdSize:size];
     _nativeExpressAdView.adUnitID = adUnitID;
     _nativeExpressAdView.delegate = self;
@@ -117,7 +118,7 @@
 
   /// Align the nativeExpressAdView in the Unity view bounds.
   UIView *unityView = [GADUPluginUtil unityGLViewController].view;
-  if (self.adPosition) {
+  if (self.adPosition != kGADAdPositionCustom) {
     [GADUPluginUtil positionView:self.nativeExpressAdView
                   inParentBounds:unityView.bounds
                       adPosition:self.adPosition];

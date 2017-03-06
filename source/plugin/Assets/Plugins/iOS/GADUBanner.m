@@ -90,6 +90,7 @@
   if (self) {
     _bannerClient = bannerClient;
     _customAdPosition = customAdPosition;
+    _adPosition = kGADAdPositionCustom;
     _bannerView = [[GADBannerView alloc] initWithAdSize:size];
     _bannerView.adUnitID = adUnitID;
     _bannerView.delegate = self;
@@ -146,7 +147,7 @@
   /// Align the bannerView in the Unity view bounds.
   UIView *unityView = [GADUPluginUtil unityGLViewController].view;
 
-  if (self.adPosition) {
+  if (self.adPosition != kGADAdPositionCustom) {
     [GADUPluginUtil positionView:self.bannerView
                   inParentBounds:unityView.bounds
                       adPosition:self.adPosition];
