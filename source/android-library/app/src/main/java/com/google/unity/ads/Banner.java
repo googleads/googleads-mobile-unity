@@ -53,6 +53,28 @@ public class Banner {
     private PopupWindow mPopupWindow;
 
     /**
+     * A code indicating where to place the ad.
+     */
+    private int mPositionCode;
+
+    /**
+     * Offset for the ad in the x-axis when a custom position is used. Value will be 0 for
+     * non-custom positions.
+     */
+    private int mHorizontalOffset;
+
+    /**
+     * Offset for the ad in the y-axis when a custom position is used. Value will be 0 for
+     * non-custom positions.
+     */
+    private int mVerticalOffset;
+
+    /**
+     * A boolean indicating whether the ad has been hidden.
+     */
+    private boolean mHidden;
+
+    /**
      * A listener implemented in Unity via {@code AndroidJavaProxy} to receive ad events.
      */
     private UnityAdListener mUnityListener;
@@ -82,9 +104,10 @@ public class Banner {
             public void run() {
                 createAdView(publisherId, adSize);
                 createPopupWindow();
-                mPopupWindow.showAtLocation(mUnityPlayerActivity.getWindow().getDecorView()
-                                .getRootView(),
-                        PluginUtils.getLayoutGravityForPositionCode(positionCode), 0, 0);
+                mHorizontalOffset = 0;
+                mVerticalOffset = 0;
+                mPositionCode = positionCode;
+                mHidden = false;
             }
         });
     }
@@ -104,10 +127,10 @@ public class Banner {
             public void run() {
                 createAdView(publisherId, adSize);
                 createPopupWindow();
-                mPopupWindow.showAtLocation(
-                        mUnityPlayerActivity.getWindow().getDecorView().getRootView(),
-                        Gravity.NO_GRAVITY, (int) PluginUtils.convertDpToPixel(positionX),
-                        (int) PluginUtils.convertDpToPixel(positionY));
+                mPositionCode = PluginUtils.POSITION_CUSTOM;
+                mHorizontalOffset = positionX;
+                mVerticalOffset = positionY;
+                mHidden = false;
             }
         });
     }
@@ -122,6 +145,9 @@ public class Banner {
             @Override
             public void onAdLoaded() {
                 if (mUnityListener != null) {
+                    if (!mPopupWindow.isShowing() && !mHidden) {
+                        showPopUpWindow();
+                    }
                     mUnityListener.onAdLoaded();
                 }
             }
@@ -156,7 +182,7 @@ public class Banner {
         });
     }
 
-    public void createPopupWindow() {
+    private void createPopupWindow() {
         // Workaround for issue where popUpWindow will not resize to the full width
         // of the screen to accommodate a smart banner.
         int popUpWindowWidth = mAdView.getAdSize().equals(AdSize.SMART_BANNER)
@@ -168,6 +194,19 @@ public class Banner {
         // Copy system UI visibility flags set on Unity player window to newly created PopUpWindow.
         int visibilityFlags = mUnityPlayerActivity.getWindow().getAttributes().flags;
         mPopupWindow.getContentView().setSystemUiVisibility(visibilityFlags);
+    }
+
+    private void showPopUpWindow() {
+        if (this.mPositionCode == PluginUtils.POSITION_CUSTOM) {
+            mPopupWindow.showAtLocation(
+                    mUnityPlayerActivity.getWindow().getDecorView().getRootView(),
+                    Gravity.NO_GRAVITY, (int) PluginUtils.convertDpToPixel(mHorizontalOffset),
+                    (int) PluginUtils.convertDpToPixel(mVerticalOffset));
+        } else {
+            mPopupWindow.showAtLocation(mUnityPlayerActivity.getWindow().getDecorView()
+                            .getRootView(),
+                    PluginUtils.getLayoutGravityForPositionCode(mPositionCode), 0, 0);
+        }
     }
 
     /**
@@ -193,7 +232,11 @@ public class Banner {
             @Override
             public void run() {
                 Log.d(PluginUtils.LOGTAG, "Calling show() on Android");
+                mHidden = false;
                 mAdView.setVisibility(View.VISIBLE);
+                if (!mPopupWindow.isShowing()) {
+                    showPopUpWindow();
+                }
                 mAdView.resume();
             }
         });
@@ -207,7 +250,9 @@ public class Banner {
             @Override
             public void run() {
                 Log.d(PluginUtils.LOGTAG, "Calling hide() on Android");
+                mHidden = true;
                 mAdView.setVisibility(View.GONE);
+                mPopupWindow.dismiss();
                 mAdView.pause();
             }
         });

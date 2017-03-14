@@ -33,6 +33,11 @@ public class PluginUtils {
     public static final String LOGTAG = "AdsUnity";
 
     /**
+     * Position constant for a position with a custom offset.
+     */
+    public static final int POSITION_CUSTOM = -1;
+
+    /**
      * Position constant for top of the screen.
      */
     private static final int POSITION_TOP = 0;

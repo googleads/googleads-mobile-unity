@@ -50,6 +50,27 @@ public class NativeExpressAd {
      */
     private PopupWindow mPopupWindow;
 
+    /**
+     * A code indicating where to place the ad.
+     */
+    private int mPositionCode;
+
+    /**
+     * Offset for the ad in the x-axis when a custom position is used. Value will be 0 for
+     * non-custom positions.
+     */
+    private int mHorizontalOffset;
+
+    /**
+     * Offset for the ad in the y-axis when a custom position is used. Value will be 0 for
+     * non-custom positions.
+     */
+    private int mVerticalOffset;
+
+    /**
+     * A boolean indicating whether the ad has been hidden.
+     */
+    private boolean mHidden;
 
     /**
      * A listener implemented in Unity via {@code AndroidJavaProxy} to receive ad events.
@@ -78,12 +99,11 @@ public class NativeExpressAd {
         mUnityPlayerActivity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-
                 createNativeExpressAdView(publisherId, adSize);
-                createPopupWindow();
-                mPopupWindow.showAtLocation(mUnityPlayerActivity.getWindow().getDecorView()
-                                .getRootView(),
-                        PluginUtils.getLayoutGravityForPositionCode(positionCode), 0, 0);
+                mPositionCode = positionCode;
+                mHorizontalOffset = 0;
+                mVerticalOffset = 0;
+                mHidden = false;
             }
         });
     }
@@ -101,13 +121,11 @@ public class NativeExpressAd {
         mUnityPlayerActivity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-
                 createNativeExpressAdView(publisherId, adSize);
-                createPopupWindow();
-                mPopupWindow.showAtLocation(mUnityPlayerActivity.getWindow().getDecorView()
-                                .getRootView(),
-                        Gravity.NO_GRAVITY, (int) PluginUtils.convertDpToPixel(positionX),
-                        (int) PluginUtils.convertDpToPixel(positionY));
+                mPositionCode = PluginUtils.POSITION_CUSTOM;
+                mHorizontalOffset = positionX;
+                mVerticalOffset = positionY;
+                mHidden = false;
             }
         });
     }
@@ -123,6 +141,9 @@ public class NativeExpressAd {
             @Override
             public void onAdLoaded() {
                 if (mUnityListener != null) {
+                    if (!mPopupWindow.isShowing() && !mHidden) {
+                        showPopUpWindow();
+                    }
                     mUnityListener.onAdLoaded();
                 }
             }
@@ -168,6 +189,19 @@ public class NativeExpressAd {
         mPopupWindow.getContentView().setSystemUiVisibility(visibilityFlags);
     }
 
+    private void showPopUpWindow() {
+        if (this.mPositionCode == PluginUtils.POSITION_CUSTOM) {
+            mPopupWindow.showAtLocation(
+                    mUnityPlayerActivity.getWindow().getDecorView().getRootView(),
+                    Gravity.NO_GRAVITY, (int) PluginUtils.convertDpToPixel(mHorizontalOffset),
+                    (int) PluginUtils.convertDpToPixel(mVerticalOffset));
+        } else {
+            mPopupWindow.showAtLocation(mUnityPlayerActivity.getWindow().getDecorView()
+                            .getRootView(),
+                    PluginUtils.getLayoutGravityForPositionCode(mPositionCode), 0, 0);
+        }
+    }
+
     /**
      * Loads an ad on a background thread.
      *
@@ -203,7 +237,11 @@ public class NativeExpressAd {
             @Override
             public void run() {
                 Log.d(PluginUtils.LOGTAG, "Calling show() on NativeExpressAdView");
+                mHidden = false;
                 mAdView.setVisibility(View.VISIBLE);
+                if (!mPopupWindow.isShowing()) {
+                    showPopUpWindow();
+                }
                 mAdView.resume();
             }
         });
@@ -217,7 +255,9 @@ public class NativeExpressAd {
             @Override
             public void run() {
                 Log.d(PluginUtils.LOGTAG, "Calling hide() on NativeExpressAdView");
+                mHidden = true;
                 mAdView.setVisibility(View.GONE);
+                mPopupWindow.dismiss();
                 mAdView.pause();
             }
         });
