@@ -100,6 +100,7 @@ public class NativeExpressAd {
             @Override
             public void run() {
                 createNativeExpressAdView(publisherId, adSize);
+				createPopupWindow();
                 mPositionCode = positionCode;
                 mHorizontalOffset = 0;
                 mVerticalOffset = 0;
