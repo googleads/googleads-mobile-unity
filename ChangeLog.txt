@@ -1,6 +1,17 @@
 Google Mobile Ads Unity Plugin Change Log
 
 *************
+Version 3.4.0
+*************
+- Fix native express and banner ad behavior where initializing and
+hidden ads create unclickable region.
+
+Built and tested with:
+- Google Play services 10.2.1
+- Google Mobile Ads iOS SDK 7.19.0
+- Unity Jar Resolver 1.2.14.0
+
+*************
 Version 3.3.0
 *************
 - Removed support for in-app purchases.
