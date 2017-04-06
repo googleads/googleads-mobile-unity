@@ -1,6 +1,7 @@
 // Copyright 2016 Google Inc. All Rights Reserved.
 
 @import Foundation;
+@import UIKit;
 
 #import "GADUTypes.h"
 
