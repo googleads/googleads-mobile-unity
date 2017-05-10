@@ -23,7 +23,7 @@ using GoogleMobileAds.Common;
 
 namespace GoogleMobileAds.iOS
 {
-    internal class NativeExpressAdClient : IDisposable, INativeExpressAdClient
+    public class NativeExpressAdClient : IDisposable, INativeExpressAdClient
     {
         private IntPtr nativeExpressAdViewPtr;
         private IntPtr nativeExpressAdClientPtr;

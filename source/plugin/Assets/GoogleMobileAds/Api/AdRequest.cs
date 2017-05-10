@@ -13,7 +13,6 @@
 // limitations under the License.
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
 
 using GoogleMobileAds.Api.Mediation;
@@ -22,7 +21,7 @@ namespace GoogleMobileAds.Api
 {
     public class AdRequest
     {
-        public const string Version = "3.4.0";
+        public const string Version = "3.5.0";
         public const string TestDeviceSimulator = "SIMULATOR";
 
         private AdRequest(Builder builder)

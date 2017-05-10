@@ -18,7 +18,7 @@ using GoogleMobileAds.Api;
 
 namespace GoogleMobileAds.Common
 {
-    internal interface IRewardBasedVideoAdClient
+    public interface IRewardBasedVideoAdClient
     {
         // Ad event fired when the reward based video ad has been received.
         event EventHandler<EventArgs> OnAdLoaded;

@@ -19,8 +19,12 @@ import android.content.res.Resources;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
+import android.widget.PopupWindow;
 
 import com.google.android.gms.ads.AdRequest;
+
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 
 /**
  * Utilities for the Google Mobile Ads Unity plugin.
@@ -142,4 +146,22 @@ public class PluginUtils {
         float px = dp * metrics.density;
         return px;
     }
+
+    public static void setPopUpWindowLayoutType(PopupWindow popupWindow, int layoutType) {
+        try {
+            Method method = PopupWindow.class.getDeclaredMethod("setWindowLayoutType", int.class);
+            method.setAccessible(true);
+            method.invoke(popupWindow, layoutType);
+        } catch (NoSuchMethodException exception) {
+            Log.w(LOGTAG, String.format("Unable to set popUpWindow window layout type: %s",
+                    exception.getLocalizedMessage()));
+        } catch (IllegalAccessException exception) {
+            Log.w(LOGTAG, String.format("Unable to set popUpWindow window layout type: %s",
+                    exception.getLocalizedMessage()));
+        } catch (InvocationTargetException exception) {
+            Log.d(LOGTAG, String.format("Unable to set popUpWindow window layout type: %s",
+                    exception.getLocalizedMessage()));
+        }
+    }
+
 }

@@ -14,15 +14,15 @@
 
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 
 using GoogleMobileAds.Common;
-using UnityEngine;
 
 namespace GoogleMobileAds.Api
 {
     public enum NativeAdType
     {
-        CustomTemplate = 0,
+        CustomTemplate = 0
     }
 
     public class AdLoader
@@ -37,23 +37,30 @@ namespace GoogleMobileAds.Api
                     builder.CustomNativeTemplateClickHandlers);
             this.TemplateIds = new HashSet<string>(builder.TemplateIds);
             this.AdTypes = new HashSet<NativeAdType>(builder.AdTypes);
-            this.adLoaderClient = GoogleMobileAdsClientFactory.BuildAdLoaderClient(this);
 
-            this.adLoaderClient.OnCustomNativeTemplateAdLoaded += (sender, args) =>
-                {
-                    if(this.OnCustomNativeTemplateAdLoaded != null)
-                    {
-                        this.OnCustomNativeTemplateAdLoaded(this, args);
-                    }
-                };
+            Type googleMobileAdsClientFactory = Type.GetType(
+                "GoogleMobileAds.GoogleMobileAdsClientFactory,Assembly-CSharp");
+            MethodInfo method = googleMobileAdsClientFactory.GetMethod(
+                "BuildAdLoaderClient",
+                BindingFlags.Static | BindingFlags.Public);
+            this.adLoaderClient = (IAdLoaderClient)method.Invoke(null, new object[] { this });
 
-            this.adLoaderClient.OnAdFailedToLoad += (sender, args) =>
+            this.adLoaderClient.OnCustomNativeTemplateAdLoaded +=
+                    delegate (object sender, CustomNativeEventArgs args)
+            {
+                if (this.OnCustomNativeTemplateAdLoaded != null)
                 {
-                    if(this.OnAdFailedToLoad != null)
-                    {
-                        this.OnAdFailedToLoad(this, args);
-                    }
-                };
+                    this.OnCustomNativeTemplateAdLoaded(this, args);
+                }
+            };
+            this.adLoaderClient.OnAdFailedToLoad += delegate (
+                object sender, AdFailedToLoadEventArgs args)
+            {
+                if (this.OnAdFailedToLoad != null)
+                {
+                    this.OnAdFailedToLoad(this, args);
+                }
+            };
         }
 
         public event EventHandler<AdFailedToLoadEventArgs> OnAdFailedToLoad;

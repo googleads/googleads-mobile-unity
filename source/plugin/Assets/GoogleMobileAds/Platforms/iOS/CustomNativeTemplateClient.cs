@@ -24,7 +24,7 @@ using UnityEngine;
 
 namespace GoogleMobileAds.iOS
 {
-    public class CustomNativeTemplateClient : ICustomNativeTemplateClient, IDisposable
+    internal class CustomNativeTemplateClient : ICustomNativeTemplateClient, IDisposable
     {
         private IntPtr customNativeAdPtr;
         private IntPtr customNativeTemplateAdClientPtr;

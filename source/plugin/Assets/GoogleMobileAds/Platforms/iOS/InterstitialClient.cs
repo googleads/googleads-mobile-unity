@@ -24,7 +24,7 @@ using GoogleMobileAds.Common;
 
 namespace GoogleMobileAds.iOS
 {
-    internal class InterstitialClient : IInterstitialClient, IDisposable
+    public class InterstitialClient : IInterstitialClient, IDisposable
     {
         private IntPtr interstitialPtr;
         private IntPtr interstitialClientPtr;

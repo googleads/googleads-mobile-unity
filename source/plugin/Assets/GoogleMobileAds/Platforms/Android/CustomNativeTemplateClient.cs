@@ -14,7 +14,6 @@
 
 #if UNITY_ANDROID
 
-using System;
 using System.Collections.Generic;
 
 using GoogleMobileAds.Common;
@@ -22,7 +21,7 @@ using UnityEngine;
 
 namespace GoogleMobileAds.Android
 {
-    public class CustomNativeTemplateClient : ICustomNativeTemplateClient
+    internal class CustomNativeTemplateClient : ICustomNativeTemplateClient
     {
         private AndroidJavaObject customNativeAd;
 

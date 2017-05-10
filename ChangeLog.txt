@@ -1,6 +1,17 @@
 Google Mobile Ads Unity Plugin Change Log
 
 *************
+Version 3.5.0
+*************
+- Fix ad views losing visibility after an activity change for certain devices
+(eg. Huaweai devices).
+
+Built and tested with:
+- Google Play services 10.2.4
+- Google Mobile Ads iOS SDK 7.20.0
+- Unity Jar Resolver 1.2.20.0
+
+*************
 Version 3.4.0
 *************
 - Fix native express and banner ad behavior where initializing and

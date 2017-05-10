@@ -13,6 +13,7 @@
 // limitations under the License.
 
 using System;
+using System.Reflection;
 
 using GoogleMobileAds.Common;
 
@@ -25,7 +26,12 @@ namespace GoogleMobileAds.Api
         // Creates a BannerView and adds it to the view hierarchy.
         public BannerView(string adUnitId, AdSize adSize, AdPosition position)
         {
-            client = GoogleMobileAdsClientFactory.BuildBannerClient();
+            Type googleMobileAdsClientFactory = Type.GetType(
+                "GoogleMobileAds.GoogleMobileAdsClientFactory,Assembly-CSharp");
+            MethodInfo method = googleMobileAdsClientFactory.GetMethod(
+                "BuildBannerClient",
+                BindingFlags.Static | BindingFlags.Public);
+            this.client = (IBannerClient)method.Invoke(null, null);
             client.CreateBannerView(adUnitId, adSize, position);
 
             configureBannerEvents();
@@ -34,7 +40,12 @@ namespace GoogleMobileAds.Api
         // Creates a BannerView with a custom position.
         public BannerView(string adUnitId, AdSize adSize, int x, int y)
         {
-            client = GoogleMobileAdsClientFactory.BuildBannerClient();
+            Type googleMobileAdsClientFactory = Type.GetType(
+                "GoogleMobileAds.GoogleMobileAdsClientFactory,Assembly-CSharp");
+            MethodInfo method = googleMobileAdsClientFactory.GetMethod(
+                "BuildBannerClient",
+                BindingFlags.Static | BindingFlags.Public);
+            this.client = (IBannerClient)method.Invoke(null, null);
             client.CreateBannerView(adUnitId, adSize, x, y);
 
             configureBannerEvents();
@@ -79,7 +90,7 @@ namespace GoogleMobileAds.Api
         {
             this.client.OnAdLoaded += (sender, args) =>
             {
-                if(this.OnAdLoaded != null)
+                if (this.OnAdLoaded != null)
                 {
                     this.OnAdLoaded(this, args);
                 }
@@ -87,7 +98,7 @@ namespace GoogleMobileAds.Api
 
             this.client.OnAdFailedToLoad += (sender, args) =>
             {
-                if(this.OnAdFailedToLoad != null)
+                if (this.OnAdFailedToLoad != null)
                 {
                     this.OnAdFailedToLoad(this, args);
                 }
@@ -95,7 +106,7 @@ namespace GoogleMobileAds.Api
 
             this.client.OnAdOpening += (sender, args) =>
             {
-                if(this.OnAdOpening != null)
+                if (this.OnAdOpening != null)
                 {
                     this.OnAdOpening(this, args);
                 }
@@ -103,7 +114,7 @@ namespace GoogleMobileAds.Api
 
             this.client.OnAdClosed += (sender, args) =>
             {
-                if(this.OnAdClosed != null)
+                if (this.OnAdClosed != null)
                 {
                     this.OnAdClosed(this, args);
                 }
@@ -111,7 +122,7 @@ namespace GoogleMobileAds.Api
 
             this.client.OnAdLeavingApplication += (sender, args) =>
             {
-                if(this.OnAdLeavingApplication != null)
+                if (this.OnAdLeavingApplication != null)
                 {
                     this.OnAdLeavingApplication(this, args);
                 }

@@ -45,11 +45,11 @@ public class NativeAdLoader {
     /**
      * A listener implemented in Unity via {@code AndroidJavaProxy} to receive ad events.
      */
-    private UnityCustomNativeAdListener mListener;
+    private UnityAdLoaderListener mListener;
 
 
     public NativeAdLoader(final Activity activity, final String adUnitId,
-                          UnityCustomNativeAdListener listener) {
+                          UnityAdLoaderListener listener) {
         this.mActivity = activity;
         this.mListener = listener;
 

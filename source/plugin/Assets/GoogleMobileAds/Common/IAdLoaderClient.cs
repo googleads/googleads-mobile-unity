@@ -16,7 +16,7 @@ using GoogleMobileAds.Api;
 
 namespace GoogleMobileAds.Common
 {
-    internal interface IAdLoaderClient
+    public interface IAdLoaderClient
     {
         event EventHandler<AdFailedToLoadEventArgs> OnAdFailedToLoad;
 

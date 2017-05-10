@@ -20,6 +20,7 @@ using System.Collections.Generic;
 
 using GoogleMobileAds.Api;
 using GoogleMobileAds.Api.Mediation;
+using GoogleMobileAds.Common;
 
 namespace GoogleMobileAds.Android
 {
@@ -44,9 +45,6 @@ namespace GoogleMobileAds.Android
         public const string PlayStorePurchaseListenerClassName =
             "com.google.android.gms.ads.purchase.PlayStorePurchaseListener";
 
-        public const string InAppPurchaseListenerClassName =
-            "com.google.android.gms.ads.purchase.InAppPurchaseListener";
-
         #endregion
 
         #region Google Mobile Ads Unity Plugin class names
@@ -66,8 +64,8 @@ namespace GoogleMobileAds.Android
         public const string UnityRewardBasedVideoAdListenerClassName =
             "com.google.unity.ads.UnityRewardBasedVideoAdListener";
 
-        public const string UnityCustomNativeAdListener =
-            "com.google.unity.ads.UnityCustomNativeAdListener";
+        public const string UnityAdLoaderListenerClassName =
+            "com.google.unity.ads.UnityAdLoaderListener";
 
         public const string PluginUtilsClassName = "com.google.unity.ads.PluginUtils";
 
@@ -138,18 +136,18 @@ namespace GoogleMobileAds.Android
                 int? genderCode = null;
                 switch (request.Gender.GetValueOrDefault())
                 {
-                case Gender.Unknown:
-                    genderCode = new AndroidJavaClass(AdRequestClassName)
-                            .GetStatic<int>("GENDER_UNKNOWN");
-                    break;
-                case Gender.Male:
-                    genderCode = new AndroidJavaClass(AdRequestClassName)
-                            .GetStatic<int>("GENDER_MALE");
-                    break;
-                case Gender.Female:
-                    genderCode = new AndroidJavaClass(AdRequestClassName)
-                            .GetStatic<int>("GENDER_FEMALE");
-                    break;
+                    case Gender.Unknown:
+                        genderCode = new AndroidJavaClass(AdRequestClassName)
+                                .GetStatic<int>("GENDER_UNKNOWN");
+                        break;
+                    case Gender.Male:
+                        genderCode = new AndroidJavaClass(AdRequestClassName)
+                                .GetStatic<int>("GENDER_MALE");
+                        break;
+                    case Gender.Female:
+                        genderCode = new AndroidJavaClass(AdRequestClassName)
+                                .GetStatic<int>("GENDER_FEMALE");
+                        break;
                 }
 
                 if (genderCode.HasValue)

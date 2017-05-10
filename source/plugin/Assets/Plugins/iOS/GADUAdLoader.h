@@ -19,9 +19,9 @@
 /// List of templateIDs.
 @property(nonatomic, copy) NSArray *templateIDs;
 
-/// The ad received callback into Unity.
+/// The custom template ad received callback into Unity.
 @property(nonatomic, assign)
-    GADUAdLoaderDidReceiveNativeCustomTemplateAdCallback adReceivedCallback;
+    GADUAdLoaderDidReceiveNativeCustomTemplateAdCallback customTemplateAdReceivedCallback;
 
 /// The ad failed to load callback into Unity.
 @property(nonatomic, assign) GADUAdLoaderDidFailToReceiveAdWithErrorCallback adFailedCallback;

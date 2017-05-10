@@ -19,6 +19,7 @@ using System.Collections.Generic;
 
 using GoogleMobileAds.Api;
 using GoogleMobileAds.Api.Mediation;
+using GoogleMobileAds.Common;
 
 namespace GoogleMobileAds.iOS
 {
@@ -84,6 +85,7 @@ namespace GoogleMobileAds.iOS
             Externs.GADUSetRequestAgent(requestPtr, "unity-" + AdRequest.Version);
             return requestPtr;
         }
+
     }
 }
 

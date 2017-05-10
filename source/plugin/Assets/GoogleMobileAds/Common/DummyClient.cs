@@ -20,7 +20,7 @@ using UnityEngine;
 
 namespace GoogleMobileAds.Common
 {
-    internal class DummyClient : IBannerClient, IInterstitialClient, IRewardBasedVideoAdClient,
+    public class DummyClient : IBannerClient, IInterstitialClient, IRewardBasedVideoAdClient,
             IAdLoaderClient, INativeExpressAdClient
     {
         public DummyClient()

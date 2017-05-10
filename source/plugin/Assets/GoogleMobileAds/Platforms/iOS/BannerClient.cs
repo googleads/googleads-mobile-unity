@@ -23,7 +23,7 @@ using GoogleMobileAds.Common;
 
 namespace GoogleMobileAds.iOS
 {
-    internal class BannerClient : IBannerClient, IDisposable
+    public class BannerClient : IBannerClient, IDisposable
     {
         private IntPtr bannerViewPtr;
 

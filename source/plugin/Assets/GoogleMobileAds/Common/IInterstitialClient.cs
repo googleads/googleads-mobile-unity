@@ -17,7 +17,7 @@ using System;
 using GoogleMobileAds.Api;
 
 namespace GoogleMobileAds.Common {
-    internal interface IInterstitialClient
+    public interface IInterstitialClient
     {
         // Ad event fired when the interstitial ad has been received.
         event EventHandler<EventArgs> OnAdLoaded;

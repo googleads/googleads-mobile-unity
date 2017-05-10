@@ -16,10 +16,10 @@
 package com.google.unity.ads;
 
 /**
- * An interface form of {@link UnityCustomNativeAdListener} that can be implemented via
+ * An interface form of {@link UnityAdLoaderListener} that can be implemented via
  * {@code AndroidJavaProxy} in Unity to receive ad events synchronously.
  */
-public interface UnityCustomNativeAdListener {
+public interface UnityAdLoaderListener {
     void onAdFailedToLoad(String errorReason);
     void onCustomTemplateAdLoaded(CustomNativeAd ad);
     void onCustomClick(CustomNativeAd ad, String assetName);

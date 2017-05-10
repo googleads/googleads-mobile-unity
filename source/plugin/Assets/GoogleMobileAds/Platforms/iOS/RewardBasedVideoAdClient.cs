@@ -24,7 +24,7 @@ using GoogleMobileAds.Common;
 
 namespace GoogleMobileAds.iOS
 {
-    internal class RewardBasedVideoAdClient : IRewardBasedVideoAdClient, IDisposable
+    public class RewardBasedVideoAdClient : IRewardBasedVideoAdClient, IDisposable
     {
         private IntPtr rewardBasedVideoAdPtr;
         private IntPtr rewardBasedVideoAdClientPtr;

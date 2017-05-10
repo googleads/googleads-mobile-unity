@@ -22,6 +22,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
+import android.view.WindowManager;
 import android.widget.PopupWindow;
 
 import com.google.android.gms.ads.AdListener;
@@ -189,6 +190,12 @@ public class NativeExpressAd {
         // Copy system UI visibility flags set on Unity player window to newly created PopUpWindow.
         int visibilityFlags = mUnityPlayerActivity.getWindow().getAttributes().flags;
         mPopupWindow.getContentView().setSystemUiVisibility(visibilityFlags);
+
+        // Workaround to prevent ad views from losing visibility on activity changes for certain
+        // devices (eg. Huawei devices).
+        PluginUtils.setPopUpWindowLayoutType(mPopupWindow,
+                WindowManager.LayoutParams.TYPE_APPLICATION_SUB_PANEL);
+
     }
 
     private void showPopUpWindow() {

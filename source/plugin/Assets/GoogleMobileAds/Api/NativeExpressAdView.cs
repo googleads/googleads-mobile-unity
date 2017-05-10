@@ -13,6 +13,7 @@
 // limitations under the License.
 
 using System;
+using System.Reflection;
 
 using GoogleMobileAds.Common;
 
@@ -25,7 +26,12 @@ namespace GoogleMobileAds.Api
         // Creates a NativeExpressAd and adds it to the view hierarchy.
         public NativeExpressAdView(string adUnitId, AdSize adSize, AdPosition position)
         {
-            this.client = GoogleMobileAdsClientFactory.BuildNativeExpressAdClient();
+            Type googleMobileAdsClientFactory = Type.GetType(
+                "GoogleMobileAds.GoogleMobileAdsClientFactory,Assembly-CSharp");
+            MethodInfo method = googleMobileAdsClientFactory.GetMethod(
+                "BuildNativeExpressAdClient",
+                BindingFlags.Static | BindingFlags.Public);
+            this.client = (INativeExpressAdClient)method.Invoke(null, null);
             this.client.CreateNativeExpressAdView(adUnitId, adSize, position);
 
             configureNativeExpressAdEvents();
@@ -34,7 +40,12 @@ namespace GoogleMobileAds.Api
         // Creates a NativeExpressAd with a custom position.
         public NativeExpressAdView(string adUnitId, AdSize adSize, int x, int y)
         {
-            this.client = GoogleMobileAdsClientFactory.BuildNativeExpressAdClient();
+            Type googleMobileAdsClientFactory = Type.GetType(
+                "GoogleMobileAds.GoogleMobileAdsClientFactory,Assembly-CSharp");
+            MethodInfo method = googleMobileAdsClientFactory.GetMethod(
+                "BuildNativeExpressAdClient",
+                BindingFlags.Static | BindingFlags.Public);
+            this.client = (INativeExpressAdClient)method.Invoke(null, null);
             this.client.CreateNativeExpressAdView(adUnitId, adSize, x, y);
 
             configureNativeExpressAdEvents();

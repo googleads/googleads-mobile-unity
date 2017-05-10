@@ -271,6 +271,7 @@ namespace GoogleMobileAds.iOS
         internal static extern void GADURequestNativeExpressAd(IntPtr nativeExpresAdView, IntPtr request);
 
         #endregion
+
     }
 }
 
