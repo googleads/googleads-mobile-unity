@@ -1,7 +1,8 @@
 // Copyright 2014 Google Inc. All Rights Reserved.
 
-@import Foundation;
-@import GoogleMobileAds;
+#import <Foundation/Foundation.h>
+
+#import <GoogleMobileAds/GoogleMobileAds.h>
 
 #import "GADUTypes.h"
 
@@ -25,7 +26,8 @@
 /// Initializes a GADUBanner with specified width and height at the specified point.
 - (id)initWithBannerClientReference:(GADUTypeBannerClientRef *)bannerClient
                            adUnitID:(NSString *)adUnitID
-                             adSize:(GADAdSize)size
+                              width:(CGFloat)width
+                             height:(CGFloat)height
                    customAdPosition:(CGPoint)customAdPosition;
 
 /// Initializes a full-width GADUBanner with specified width and height at the specified point.

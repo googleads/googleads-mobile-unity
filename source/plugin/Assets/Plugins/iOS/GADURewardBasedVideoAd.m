@@ -2,13 +2,13 @@
 
 #import "GADURewardBasedVideoAd.h"
 
-@import CoreGraphics;
-@import UIKit;
+#import <CoreGraphics/CoreGraphics.h>
+#import <UIKit/UIKit.h>
 
 #import "GADUPluginUtil.h"
 #import "UnityAppController.h"
 
-@interface GADURewardBasedVideoAd () <GADRewardBasedVideoAdDelegate>
+@interface GADURewardBasedVideoAd ()<GADRewardBasedVideoAdDelegate>
 @end
 
 @implementation GADURewardBasedVideoAd
@@ -19,7 +19,7 @@
 }
 
 - (instancetype)initWithRewardBasedVideoClientReference:
-        (GADUTypeRewardBasedVideoAdClientRef *)rewardBasedVideoAdClient {
+    (GADUTypeRewardBasedVideoAdClientRef *)rewardBasedVideoAdClient {
   self = [super init];
   if (self) {
     _rewardBasedVideoAdClient = rewardBasedVideoAdClient;

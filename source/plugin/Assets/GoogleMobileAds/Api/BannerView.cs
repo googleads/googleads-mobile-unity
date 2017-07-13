@@ -34,7 +34,7 @@ namespace GoogleMobileAds.Api
             this.client = (IBannerClient)method.Invoke(null, null);
             client.CreateBannerView(adUnitId, adSize, position);
 
-            configureBannerEvents();
+            ConfigureBannerEvents();
         }
 
         // Creates a BannerView with a custom position.
@@ -48,7 +48,7 @@ namespace GoogleMobileAds.Api
             this.client = (IBannerClient)method.Invoke(null, null);
             client.CreateBannerView(adUnitId, adSize, x, y);
 
-            configureBannerEvents();
+            ConfigureBannerEvents();
         }
 
         // These are the ad callback events that can be hooked into.
@@ -86,7 +86,7 @@ namespace GoogleMobileAds.Api
             client.DestroyBannerView();
         }
 
-        private void configureBannerEvents()
+        private void ConfigureBannerEvents()
         {
             this.client.OnAdLoaded += (sender, args) =>
             {

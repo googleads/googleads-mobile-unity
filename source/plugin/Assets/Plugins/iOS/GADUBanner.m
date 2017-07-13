@@ -2,13 +2,13 @@
 
 #import "GADUBanner.h"
 
-@import CoreGraphics;
-@import UIKit;
+#import <CoreGraphics/CoreGraphics.h>
+#import <UIKit/UIKit.h>
 
 #import "GADUPluginUtil.h"
 #import "UnityAppController.h"
 
-@interface GADUBanner () <GADBannerViewDelegate>
+@interface GADUBanner ()<GADBannerViewDelegate>
 
 /// Defines where the ad should be positioned on the screen with a GADAdPosition.
 @property(nonatomic, assign) GADAdPosition adPosition;
@@ -25,11 +25,21 @@
                               width:(CGFloat)width
                              height:(CGFloat)height
                          adPosition:(GADAdPosition)adPosition {
-  GADAdSize adSize = GADAdSizeFromCGSize(CGSizeMake(width, height));
   return [self initWithBannerClientReference:bannerClient
                                     adUnitID:adUnitID
-                                      adSize:adSize
+                                      adSize:[GADUPluginUtil adSizeForWidth:width height:height]
                                   adPosition:adPosition];
+}
+
+- (id)initWithBannerClientReference:(GADUTypeBannerClientRef *)bannerClient
+                           adUnitID:(NSString *)adUnitID
+                              width:(CGFloat)width
+                             height:(CGFloat)height
+                   customAdPosition:(CGPoint)customAdPosition {
+  return [self initWithBannerClientReference:bannerClient
+                                    adUnitID:adUnitID
+                                      adSize:[GADUPluginUtil adSizeForWidth:width height:height]
+                            customAdPosition:customAdPosition];
 }
 
 - (id)initWithSmartBannerSizeAndBannerClientReference:(GADUTypeBannerClientRef *)bannerClient

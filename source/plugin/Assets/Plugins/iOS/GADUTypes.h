@@ -12,6 +12,8 @@ typedef NS_ENUM(NSUInteger, GADAdPosition) {
   kGADAdPositionCenterOfScreen = 6        ///< Bottom right of screen.
 };
 
+typedef NS_ENUM(NSInteger, GADUAdSize) { kGADUAdSizeUseFullWidth = -1 };
+
 /// Base type representing a GADU* pointer.
 typedef const void *GADUTypeRef;
 

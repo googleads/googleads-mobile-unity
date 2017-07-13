@@ -1,7 +1,8 @@
 // Copyright 2016 Google Inc. All Rights Reserved.
 
-@import Foundation;
-@import UIKit;
+#import <Foundation/Foundation.h>
+
+#import <GoogleMobileAds/GoogleMobileAds.h>
 
 #import "GADUTypes.h"
 
@@ -19,5 +20,8 @@
 + (void)positionView:(UIView *)view
       inParentBounds:(CGRect)parentBounds
       customPosition:(CGPoint)adPosition;
+
+/// Returns a GADAdSize for a specified width and height.
++ (GADAdSize)adSizeForWidth:(CGFloat)width height:(CGFloat)height;
 
 @end

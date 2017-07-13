@@ -60,100 +60,100 @@ public class GoogleMobileAdsDemoScript : MonoBehaviour
         float columnTwoPosition = 0.55f * Screen.width;
 
         Rect requestBannerRect = new Rect(
-                                     columnOnePosition,
-                                     0.05f * Screen.height,
-                                     buttonWidth,
-                                     buttonHeight);
+            columnOnePosition,
+            0.05f * Screen.height,
+            buttonWidth,
+            buttonHeight);
         if (GUI.Button(requestBannerRect, "Request\nBanner"))
         {
             this.RequestBanner();
         }
 
         Rect destroyBannerRect = new Rect(
-                                     columnOnePosition,
-                                     0.225f * Screen.height,
-                                     buttonWidth,
-                                     buttonHeight);
+            columnOnePosition,
+            0.225f * Screen.height,
+            buttonWidth,
+            buttonHeight);
         if (GUI.Button(destroyBannerRect, "Destroy\nBanner"))
         {
             this.bannerView.Destroy();
         }
 
         Rect requestInterstitialRect = new Rect(
-                                           columnOnePosition,
-                                           0.4f * Screen.height,
-                                           buttonWidth,
-                                           buttonHeight);
+            columnOnePosition,
+            0.4f * Screen.height,
+            buttonWidth,
+            buttonHeight);
         if (GUI.Button(requestInterstitialRect, "Request\nInterstitial"))
         {
             this.RequestInterstitial();
         }
 
         Rect showInterstitialRect = new Rect(
-                                        columnOnePosition,
-                                        0.575f * Screen.height,
-                                        buttonWidth,
-                                        buttonHeight);
+            columnOnePosition,
+            0.575f * Screen.height,
+            buttonWidth,
+            buttonHeight);
         if (GUI.Button(showInterstitialRect, "Show\nInterstitial"))
         {
             this.ShowInterstitial();
         }
 
         Rect destroyInterstitialRect = new Rect(
-                                           columnOnePosition,
-                                           0.75f * Screen.height,
-                                           buttonWidth,
-                                           buttonHeight);
+            columnOnePosition,
+            0.75f * Screen.height,
+            buttonWidth,
+            buttonHeight);
         if (GUI.Button(destroyInterstitialRect, "Destroy\nInterstitial"))
         {
             this.interstitial.Destroy();
         }
 
         Rect requestNativeExpressAdRect = new Rect(
-                                              columnTwoPosition,
-                                              0.05f * Screen.height,
-                                              buttonWidth,
-                                              buttonHeight);
+            columnTwoPosition,
+            0.05f * Screen.height,
+            buttonWidth,
+            buttonHeight);
         if (GUI.Button(requestNativeExpressAdRect, "Request Native\nExpress Ad"))
         {
             this.RequestNativeExpressAdView();
         }
 
         Rect destroyNativeExpressAdRect = new Rect(
-                                              columnTwoPosition,
-                                              0.225f * Screen.height,
-                                              buttonWidth,
-                                              buttonHeight);
-        if (GUI.Button(destroyNativeExpressAdRect, "Destory Native\nExpress Ad"))
+            columnTwoPosition,
+            0.225f * Screen.height,
+            buttonWidth,
+            buttonHeight);
+        if (GUI.Button(destroyNativeExpressAdRect, "Destroy Native\nExpress Ad"))
         {
             this.nativeExpressAdView.Destroy();
         }
 
         Rect requestRewardedRect = new Rect(
-                                       columnTwoPosition,
-                                       0.4f * Screen.height,
-                                       buttonWidth,
-                                       buttonHeight);
+            columnTwoPosition,
+            0.4f * Screen.height,
+            buttonWidth,
+            buttonHeight);
         if (GUI.Button(requestRewardedRect, "Request\nRewarded Video"))
         {
             this.RequestRewardBasedVideo();
         }
 
         Rect showRewardedRect = new Rect(
-                                    columnTwoPosition,
-                                    0.575f * Screen.height,
-                                    buttonWidth,
-                                    buttonHeight);
+            columnTwoPosition,
+            0.575f * Screen.height,
+            buttonWidth,
+            buttonHeight);
         if (GUI.Button(showRewardedRect, "Show\nRewarded Video"))
         {
             this.ShowRewardBasedVideo();
         }
 
         Rect textOutputRect = new Rect(
-                                  columnTwoPosition,
-                                  0.925f * Screen.height,
-                                  buttonWidth,
-                                  0.05f * Screen.height);
+            columnTwoPosition,
+            0.925f * Screen.height,
+            buttonWidth,
+            0.05f * Screen.height);
         GUI.Label(textOutputRect, outputMessage);
     }
 
@@ -174,15 +174,21 @@ public class GoogleMobileAdsDemoScript : MonoBehaviour
     private void RequestBanner()
     {
         // These ad units are configured to always serve test ads.
-        #if UNITY_EDITOR
+#if UNITY_EDITOR
         string adUnitId = "unused";
-        #elif UNITY_ANDROID
+#elif UNITY_ANDROID
         string adUnitId = "ca-app-pub-3940256099942544/6300978111";
-        #elif UNITY_IPHONE
+#elif UNITY_IPHONE
         string adUnitId = "ca-app-pub-3940256099942544/2934735716";
-        #else
+#else
         string adUnitId = "unexpected_platform";
-        #endif
+#endif
+
+        // Clean up banner ad before creating a new one.
+        if (this.bannerView != null)
+        {
+            this.bannerView.Destroy();
+        }
 
         // Create a 320x50 banner at the top of the screen.
         this.bannerView = new BannerView(adUnitId, AdSize.SmartBanner, AdPosition.Top);
@@ -201,15 +207,21 @@ public class GoogleMobileAdsDemoScript : MonoBehaviour
     private void RequestInterstitial()
     {
         // These ad units are configured to always serve test ads.
-        #if UNITY_EDITOR
+#if UNITY_EDITOR
         string adUnitId = "unused";
-        #elif UNITY_ANDROID
+#elif UNITY_ANDROID
         string adUnitId = "ca-app-pub-3940256099942544/1033173712";
-        #elif UNITY_IPHONE
+#elif UNITY_IPHONE
         string adUnitId = "ca-app-pub-3940256099942544/4411468910";
-        #else
+#else
         string adUnitId = "unexpected_platform";
-        #endif
+#endif
+
+        // Clean up interstitial ad before creating a new one.
+        if (this.interstitial != null)
+        {
+            this.interstitial.Destroy();
+        }
 
         // Create an interstitial.
         this.interstitial = new InterstitialAd(adUnitId);
@@ -228,15 +240,21 @@ public class GoogleMobileAdsDemoScript : MonoBehaviour
     private void RequestNativeExpressAdView()
     {
         // These ad units are configured to always serve test ads.
-        #if UNITY_EDITOR
+#if UNITY_EDITOR
         string adUnitId = "unused";
-        #elif UNITY_ANDROID
+#elif UNITY_ANDROID
         string adUnitId = "ca-app-pub-3940256099942544/1072772517";
-        #elif UNITY_IPHONE
+#elif UNITY_IPHONE
         string adUnitId = "ca-app-pub-3940256099942544/2562852117";
-        #else
+#else
         string adUnitId = "unexpected_platform";
-        #endif
+#endif
+
+        // Clean up native express ad before creating a new one.
+        if (this.nativeExpressAdView != null)
+        {
+            this.nativeExpressAdView.Destroy();
+        }
 
         // Create a 320x150 native express ad at the top of the screen.
         this.nativeExpressAdView = new NativeExpressAdView(
@@ -257,15 +275,15 @@ public class GoogleMobileAdsDemoScript : MonoBehaviour
 
     private void RequestRewardBasedVideo()
     {
-        #if UNITY_EDITOR
+#if UNITY_EDITOR
         string adUnitId = "unused";
-        #elif UNITY_ANDROID
+#elif UNITY_ANDROID
         string adUnitId = "ca-app-pub-3940256099942544/5224354917";
-        #elif UNITY_IPHONE
+#elif UNITY_IPHONE
         string adUnitId = "ca-app-pub-3940256099942544/1712485313";
-        #else
+#else
         string adUnitId = "unexpected_platform";
-        #endif
+#endif
 
         this.rewardBasedVideo.LoadAd(this.CreateAdRequest(), adUnitId);
     }

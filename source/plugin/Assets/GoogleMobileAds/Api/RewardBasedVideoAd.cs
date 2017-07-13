@@ -22,16 +22,12 @@ namespace GoogleMobileAds.Api
     public class RewardBasedVideoAd
     {
         private IRewardBasedVideoAdClient client;
-        private static RewardBasedVideoAd instance;
+        private static readonly RewardBasedVideoAd instance = new RewardBasedVideoAd();
 
         public static RewardBasedVideoAd Instance
         {
             get
             {
-                if (instance == null)
-                {
-                    instance = new RewardBasedVideoAd();
-                }
                 return instance;
             }
         }

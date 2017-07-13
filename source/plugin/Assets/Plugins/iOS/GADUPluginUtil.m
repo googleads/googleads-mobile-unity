@@ -52,4 +52,16 @@
   view.center = center;
 }
 
++ (GADAdSize)adSizeForWidth:(CGFloat)width height:(CGFloat)height {
+  UIDeviceOrientation currentOrientation = [UIApplication sharedApplication].statusBarOrientation;
+
+  if (width == kGADUAdSizeUseFullWidth && UIInterfaceOrientationIsPortrait(currentOrientation)) {
+    return GADAdSizeFullWidthPortraitWithHeight(height);
+  } else if ((width == kGADUAdSizeUseFullWidth &&
+              UIInterfaceOrientationIsLandscape(currentOrientation))) {
+    return GADAdSizeFullWidthLandscapeWithHeight(height);
+  }
+  return GADAdSizeFromCGSize(CGSizeMake(width, height));
+}
+
 @end

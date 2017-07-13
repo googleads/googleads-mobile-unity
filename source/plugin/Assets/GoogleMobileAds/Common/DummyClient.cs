@@ -21,7 +21,7 @@ using UnityEngine;
 namespace GoogleMobileAds.Common
 {
     public class DummyClient : IBannerClient, IInterstitialClient, IRewardBasedVideoAdClient,
-            IAdLoaderClient, INativeExpressAdClient
+            IAdLoaderClient, INativeExpressAdClient, IMobileAdsClient
     {
         public DummyClient()
         {
@@ -29,7 +29,7 @@ namespace GoogleMobileAds.Common
         }
 
         // Disable warnings for unused dummy ad events.
-        #pragma warning disable 67
+#pragma warning disable 67
 
         public event EventHandler<EventArgs> OnAdLoaded;
 
@@ -47,7 +47,7 @@ namespace GoogleMobileAds.Common
 
         public event EventHandler<CustomNativeEventArgs> OnCustomNativeTemplateAdLoaded;
 
-        #pragma warning restore 67
+#pragma warning restore 67
 
         public string UserId
         {
@@ -61,6 +61,11 @@ namespace GoogleMobileAds.Common
             {
                 Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
             }
+        }
+
+        public void Initialize(string appId)
+        {
+            Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
         }
 
         public void CreateBannerView(string adUnitId, AdSize adSize, AdPosition position)

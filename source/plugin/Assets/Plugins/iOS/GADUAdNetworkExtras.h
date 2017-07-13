@@ -1,10 +1,10 @@
 // Copyright 2016 Google Inc. All Rights Reserved.
 
-@import GoogleMobileAds;
+#import <GoogleMobileAds/GoogleMobileAds.h>
 
 @protocol GADUAdNetworkExtras<NSObject>
 
 - (id<GADAdNetworkExtras>)adNetworkExtrasWithDictionary:
-        (NSDictionary<NSString *, NSString *> *)extras;
+    (NSDictionary<NSString *, NSString *> *)extras;
 
 @end

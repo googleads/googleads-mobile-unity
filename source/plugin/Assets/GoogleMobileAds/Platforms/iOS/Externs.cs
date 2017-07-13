@@ -25,6 +25,9 @@ namespace GoogleMobileAds.iOS
         #region Common externs
 
         [DllImport("__Internal")]
+        internal static extern void GADUInitialize(string key);
+
+        [DllImport("__Internal")]
         internal static extern IntPtr GADUCreateRequest();
 
         [DllImport("__Internal")]

@@ -45,6 +45,8 @@ namespace GoogleMobileAds.Android
         public const string PlayStorePurchaseListenerClassName =
             "com.google.android.gms.ads.purchase.PlayStorePurchaseListener";
 
+        public const string MobileAdsClassName = "com.google.android.gms.ads.MobileAds";
+
         #endregion
 
         #region Google Mobile Ads Unity Plugin class names

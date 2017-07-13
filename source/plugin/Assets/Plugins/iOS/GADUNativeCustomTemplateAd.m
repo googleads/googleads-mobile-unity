@@ -2,8 +2,6 @@
 
 #import "GADUNativeCustomTemplateAd.h"
 
-@import GoogleMobileAds;
-
 @implementation GADUNativeCustomTemplateAd
 
 - (instancetype)initWithAd:(GADNativeCustomTemplateAd *)nativeCustomTemplateAd {
