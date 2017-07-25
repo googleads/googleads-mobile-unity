@@ -47,7 +47,8 @@ public class AdMobDependencies : AssetPostprocessor
             namedArgs: new Dictionary<string, object>() {
                 {"packageIds", new string[] {
                         "extra-google-m2repository",
-                        "extra-android-m2repository"} }
+                        "extra-android-m2repository"} },
+                {"repositories", null }
             });
 #elif UNITY_IOS
         Type iosResolver = Google.VersionHandler.FindClass(
