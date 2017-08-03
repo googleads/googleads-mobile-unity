@@ -1,6 +1,28 @@
 Google Mobile Ads Unity Plugin Change Log
 
 *************
+Version 3.6.2
+*************
+
+- Add mediation sub-directories to Plugin folder.
+
+Built and tested with:
+- Google Play services 11.0.4
+- Google Mobile Ads iOS SDK 7.21.0
+- Unity Jar Resolver 1.2.35.0
+
+*************
+Version 3.6.1
+*************
+
+- Updated Unity Jar Resolver.
+
+Built and tested with:
+- Google Play services 11.0.0
+- Google Mobile Ads iOS SDK 7.21.0
+- Unity Jar Resolver 1.2.32.0
+
+*************
 Version 3.6.0
 *************
 
