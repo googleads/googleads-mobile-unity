@@ -16,7 +16,11 @@
 }
 
 - (void)addTestDevice:(NSString *)deviceID {
-  [self.testDevices addObject:deviceID];
+  if ([deviceID isEqualToString:@"SIMULATOR"]) {
+    [self.testDevices addObject:kGADSimulatorID];
+  } else {
+    [self.testDevices addObject:deviceID];
+  }
 }
 
 - (void)addKeyword:(NSString *)keyword {
