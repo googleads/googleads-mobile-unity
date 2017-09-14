@@ -1,6 +1,18 @@
 Google Mobile Ads Unity Plugin Change Log
 
 *************
+Version 3.7.0
+*************
+
+- Updated dependency specification for JarResolver to use new XML format.
+- Resolved JarResolver incompatibility issues when using Firebase Unity plugins.
+
+Built and tested with:
+- Google Play services 11.2.0
+- Google Mobile Ads iOS SDK 7.23.0
+- Unity Jar Resolver 1.2.48.0
+
+*************
 Version 3.6.3
 *************
 
