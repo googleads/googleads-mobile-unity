@@ -1,6 +1,17 @@
 Google Mobile Ads Unity Plugin Change Log
 
 *************
+Version 3.7.10
+*************
+
+- Fix issue where banner and Native Express ads fail to show after being hidden.
+
+Built and tested with:
+- Google Play services 11.4.0
+- Google Mobile Ads iOS SDK 7.24.0
+- Unity Jar Resolver 1.2.52.0
+
+*************
 Version 3.7.0
 *************
 

@@ -243,6 +243,8 @@ public class Banner {
                 if (!mPopupWindow.isShowing()) {
                     showPopUpWindow();
                 }
+                mPopupWindow.setTouchable(true);
+                mPopupWindow.update();
                 mAdView.resume();
             }
         });
@@ -258,7 +260,8 @@ public class Banner {
                 Log.d(PluginUtils.LOGTAG, "Calling hide() on Android");
                 mHidden = true;
                 mAdView.setVisibility(View.GONE);
-                mPopupWindow.dismiss();
+                mPopupWindow.setTouchable(false);
+                mPopupWindow.update();
                 mAdView.pause();
             }
         });

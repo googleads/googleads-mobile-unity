@@ -3,14 +3,31 @@ guid: ce63e67f4e40b4584aa5a7d6cfd99c25
 timeCreated: 1427838353
 licenseType: Free
 PluginImporter:
-  serializedVersion: 1
+  serializedVersion: 2
   iconMap: {}
   executionOrder: {}
   isPreloaded: 0
+  isOverridable: 0
   platformData:
-    Any:
-      enabled: 1
-      settings: {}
+    data:
+      first:
+        Any: 
+      second:
+        enabled: 0
+        settings: {}
+    data:
+      first:
+        Editor: Editor
+      second:
+        enabled: 0
+        settings:
+          DefaultValueInitialized: true
+    data:
+      first:
+        iPhone: iOS
+      second:
+        enabled: 1
+        settings: {}
   userData: 
   assetBundleName: 
   assetBundleVariant: 

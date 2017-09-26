@@ -251,6 +251,8 @@ public class NativeExpressAd {
                 if (!mPopupWindow.isShowing()) {
                     showPopUpWindow();
                 }
+                mPopupWindow.setTouchable(true);
+                mPopupWindow.update();
                 mAdView.resume();
             }
         });
@@ -266,7 +268,8 @@ public class NativeExpressAd {
                 Log.d(PluginUtils.LOGTAG, "Calling hide() on NativeExpressAdView");
                 mHidden = true;
                 mAdView.setVisibility(View.GONE);
-                mPopupWindow.dismiss();
+                mPopupWindow.setTouchable(false);
+                mPopupWindow.update();
                 mAdView.pause();
             }
         });
