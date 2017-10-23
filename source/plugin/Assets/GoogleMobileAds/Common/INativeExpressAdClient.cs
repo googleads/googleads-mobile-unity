@@ -52,5 +52,8 @@ namespace GoogleMobileAds.Common
 
         // Destroys a native express ad view.
         void DestroyNativeExpressAdView();
+
+        // Returns the mediation adapter class name.
+        string MediationAdapterClassName();
     }
 }

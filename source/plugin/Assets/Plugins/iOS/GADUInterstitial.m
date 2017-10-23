@@ -8,7 +8,7 @@
 #import "GADUPluginUtil.h"
 #import "UnityAppController.h"
 
-@interface GADUInterstitial ()<GADInterstitialDelegate>
+@interface GADUInterstitial () <GADInterstitialDelegate>
 @end
 
 @implementation GADUInterstitial
@@ -43,6 +43,10 @@
   } else {
     NSLog(@"GoogleMobileAdsPlugin: Interstitial is not ready to be shown.");
   }
+}
+
+- (NSString *)mediationAdapterClassName {
+  return [self.interstitial adNetworkClassName];
 }
 
 #pragma mark GADInterstitialDelegate implementation

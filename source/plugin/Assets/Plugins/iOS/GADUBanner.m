@@ -8,7 +8,7 @@
 #import "GADUPluginUtil.h"
 #import "UnityAppController.h"
 
-@interface GADUBanner ()<GADBannerViewDelegate>
+@interface GADUBanner () <GADBannerViewDelegate>
 
 /// Defines where the ad should be positioned on the screen with a GADAdPosition.
 @property(nonatomic, assign) GADAdPosition adPosition;
@@ -145,6 +145,10 @@
   [self.bannerView removeFromSuperview];
 }
 
+- (NSString *)mediationAdapterClassName {
+  return [self.bannerView adNetworkClassName];
+}
+
 #pragma mark GADBannerViewDelegate implementation
 
 - (void)adViewDidReceiveAd:(GADBannerView *)adView {
@@ -159,11 +163,11 @@
 
   if (self.adPosition != kGADAdPositionCustom) {
     [GADUPluginUtil positionView:self.bannerView
-                  inParentBounds:unityView.bounds
+                    inParentView:unityView
                       adPosition:self.adPosition];
   } else {
     [GADUPluginUtil positionView:self.bannerView
-                  inParentBounds:unityView.bounds
+                    inParentView:unityView
                   customPosition:self.customAdPosition];
   }
 

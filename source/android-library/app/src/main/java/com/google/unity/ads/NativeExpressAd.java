@@ -227,6 +227,15 @@ public class NativeExpressAd {
     }
 
     /**
+     * Returns the mediation adapter class name. In the case of a mediated ad response, this is the
+     * name of the class that was responsible for performing the ad request and rendering the ad.
+     * For non-mediated responses, this value will be {@code null}.
+     */
+    public String getMediationAdapterClassName() {
+        return mAdView != null ? mAdView.getMediationAdapterClassName() : null;
+    }
+
+    /**
      * Sets the ad size for the {@link NativeExpressAdView}.
      */
     public void setAdSize(final AdSize adSize) {
@@ -248,11 +257,11 @@ public class NativeExpressAd {
                 Log.d(PluginUtils.LOGTAG, "Calling show() on NativeExpressAdView");
                 mHidden = false;
                 mAdView.setVisibility(View.VISIBLE);
+                mPopupWindow.setTouchable(true);
+                mPopupWindow.update();
                 if (!mPopupWindow.isShowing()) {
                     showPopUpWindow();
                 }
-                mPopupWindow.setTouchable(true);
-                mPopupWindow.update();
                 mAdView.resume();
             }
         });

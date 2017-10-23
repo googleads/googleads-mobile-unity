@@ -47,5 +47,8 @@ namespace GoogleMobileAds.Common {
 
         // Destroys a banner view.
         void DestroyBannerView();
+
+        // Returns the mediation adapter class name.
+        string MediationAdapterClassName();
     }
 }

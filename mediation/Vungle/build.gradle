@@ -1,0 +1,93 @@
+/*
+/*
+*   Gradle file to build a  Unity package to add Vungle mediation support to the Google Mobile Ads Unity plugin.
+*   Usage: ./gradlew exportPackage
+*/
+
+defaultTasks 'exportPackage'
+
+// Project level variables.
+project.ext {
+    unity_exe = System.getProperty("UNITY_EXE")
+    if (unity_exe == null || unity_exe.isEmpty()) {
+        unity_exe = System.getenv("UNITY_EXE")
+    }
+    if (unity_exe == null || unity_exe.isEmpty()) {
+        unity_exe = '/Applications/Unity/Unity.app/Contents/MacOS/Unity'
+    }
+
+    if (!file(unity_exe).exists()) {
+        throw new GradleException('Unable to locate installation of Unity. Please create a' +
+                'UNITY_EXE environment variable and point it to your Unity installation.')
+    }
+
+    pluginSource = file('source/plugin').absolutePath
+    pluginBuildDir = file('temp/plugin-build-dir').absolutePath
+    buildPath = file('temp').absolutePath
+    exportPath = file('GoogleMobileAdsVungleMediation.unitypackage').absolutePath
+}
+
+// Build jar from android plugin source files using existing Gradle build file.
+task buildAndroidPluginJar(type: GradleBuild) {
+    buildFile = 'source/android-library/app/build.gradle'
+    tasks = ['build']
+}
+
+// Move android plugin jar to temporary build directory.
+task copyAndroidLibraryJar(type: Copy) {
+    from("source/android-library/app/build/intermediates/bundles/release/")
+    into("${pluginBuildDir}/Assets/Plugins/Android/")
+    include('classes.jar')
+    rename('classes.jar', 'vungle-extras-library.jar')
+}
+
+// Copy Unity mediation extras interface to temporary build directory.
+task copyExtrasInterface(type: Copy) {
+    from("../../source/plugin/Assets/GoogleMobileAds/Api/Mediation/")
+    into("${pluginBuildDir}/Assets/GoogleMobileAds/Api/Mediation/")
+    include('MediationExtras.cs')
+}
+
+copyAndroidLibraryJar.dependsOn(buildAndroidPluginJar)
+
+// Build unity package using through command line interface.
+// Create new unity project with files in temporary build directory and export files to a unity package.
+// Command line usage and arguments documented at http://docs.unity3d.com/Manual/CommandLineArguments.html.
+task exportPackage(type: Exec) {
+    description = "Creates and exports the Plugin unity package"
+    executable "${unity_exe}"
+    args "-g.building",
+            "-batchmode",
+            "-projectPath", "${pluginBuildDir}",
+            "-logFile", "temp/unity.log",
+            "-exportPackage",
+            "Assets/GoogleMobileAds/Api/Mediation/Vungle",
+            "Assets/GoogleMobileAds/Editor",
+            "Assets/Plugins",
+            "${exportPath}",
+            "-quit"
+
+    ignoreExitValue true
+
+    doLast {
+        if (execResult.getExitValue() != 0) {
+            copy {
+                from "temp/"
+                into "./"
+                include "unity.log"
+            }
+        }
+    }
+}
+
+task createTempBuildFolder(type: Copy) {
+    from { "${pluginSource}" }
+    into { "${pluginBuildDir}" }
+}
+
+task clearTempBuildFolder(type: Delete) {
+    delete { "${buildPath}" }
+}
+
+exportPackage.dependsOn(createTempBuildFolder, copyAndroidLibraryJar, copyExtrasInterface)
+exportPackage.finalizedBy(clearTempBuildFolder)

@@ -1,7 +1,23 @@
 Google Mobile Ads Unity Plugin Change Log
 
 *************
-Version 3.7.10
+Version 3.8.0
+*************
+
+- Added support for Vungle mediation extras.
+- Updated ad views to render within safe area on iOS 11 when using predefined
+AdPosition constants.
+- Added MediationAdapterClassName() method to all ad formats.
+- Fixed issue where ad views are always rendered on the top of the screen for
+certain devices.
+
+Built and tested with:
+- Google Play services 11.4.0
+- Google Mobile Ads iOS SDK 7.24.1
+- Unity Jar Resolver 1.2.59.0
+
+*************
+Version 3.7.1
 *************
 
 - Fix issue where banner and Native Express ads fail to show after being hidden.

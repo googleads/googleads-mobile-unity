@@ -49,6 +49,9 @@
 /// The will leave application callback into Unity.
 @property(nonatomic, assign) GADUAdViewWillLeaveApplicationCallback willLeaveAppCallback;
 
+// Returns the mediation adapter class name.
+@property(nonatomic, readonly, copy) NSString *mediationAdapterClassName;
+
 /// Requests a native express ad. Additional targeting options can be supplied with a request
 /// object.
 - (void)loadRequest:(GADRequest *)request;

@@ -85,7 +85,13 @@ namespace GoogleMobileAds.Android
             this.bannerView.Call("destroy");
         }
 
-        #region Callbacks from UnityBannerAdListener.
+        // Returns the mediation adapter class name.
+        public string MediationAdapterClassName()
+        {
+            return this.bannerView.Call<string>("getMediationAdapterClassName");
+        }
+
+#region Callbacks from UnityBannerAdListener.
 
         public void onAdLoaded()
         {
@@ -131,7 +137,7 @@ namespace GoogleMobileAds.Android
             }
         }
 
-        #endregion
+#endregion
     }
 }
 

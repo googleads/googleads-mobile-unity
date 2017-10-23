@@ -8,7 +8,7 @@
 #import "GADUPluginUtil.h"
 #import "UnityAppController.h"
 
-@interface GADURewardBasedVideoAd ()<GADRewardBasedVideoAdDelegate>
+@interface GADURewardBasedVideoAd () <GADRewardBasedVideoAdDelegate>
 @end
 
 @implementation GADURewardBasedVideoAd
@@ -19,7 +19,7 @@
 }
 
 - (instancetype)initWithRewardBasedVideoClientReference:
-    (GADUTypeRewardBasedVideoAdClientRef *)rewardBasedVideoAdClient {
+        (GADUTypeRewardBasedVideoAdClientRef *)rewardBasedVideoAdClient {
   self = [super init];
   if (self) {
     _rewardBasedVideoAdClient = rewardBasedVideoAdClient;
@@ -50,6 +50,9 @@
   }
 }
 
+- (NSString *)mediationAdapterClassName {
+  return [self.rewardBasedVideo adNetworkClassName];
+}
 #pragma mark GADRewardBasedVideoAdDelegate implementation
 
 - (void)rewardBasedVideoAdDidReceiveAd:(GADRewardBasedVideoAd *)rewardBasedVideoAd {

@@ -44,5 +44,8 @@ namespace GoogleMobileAds.Common {
 
         // Destroys an InterstitialAd.
         void DestroyInterstitial();
+
+        // Returns the mediation adapter class name.
+        string MediationAdapterClassName();
     }
 }

@@ -5,7 +5,7 @@
 #import "GADUPluginUtil.h"
 #import "UnityAppController.h"
 
-@interface GADUNativeExpressAd ()<GADNativeExpressAdViewDelegate>
+@interface GADUNativeExpressAd () <GADNativeExpressAdViewDelegate>
 
 /// Defines where the ad should be positioned on the screen with a GADAdPosition.
 @property(nonatomic, assign) GADAdPosition adPosition;
@@ -106,6 +106,10 @@
   [self.nativeExpressAdView removeFromSuperview];
 }
 
+- (NSString *)mediationAdapterClassName {
+  return [self.nativeExpressAdView adNetworkClassName];
+}
+
 #pragma mark GADNativeExpressAdViewDelegate implementation
 
 - (void)nativeExpressAdViewDidReceiveAd:(GADNativeExpressAdView *)nativeExpressAdView {
@@ -119,11 +123,11 @@
   UIView *unityView = [GADUPluginUtil unityGLViewController].view;
   if (self.adPosition != kGADAdPositionCustom) {
     [GADUPluginUtil positionView:self.nativeExpressAdView
-                  inParentBounds:unityView.bounds
+                    inParentView:unityView
                       adPosition:self.adPosition];
   } else {
     [GADUPluginUtil positionView:self.nativeExpressAdView
-                  inParentBounds:unityView.bounds
+                    inParentView:unityView
                   customPosition:self.customAdPosition];
   }
   [unityView addSubview:self.nativeExpressAdView];

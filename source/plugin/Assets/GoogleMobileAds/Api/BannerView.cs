@@ -128,5 +128,11 @@ namespace GoogleMobileAds.Api
                 }
             };
         }
+
+        // Returns the mediation adapter class name.
+        public string MediationAdapterClassName()
+        {
+            return this.client.MediationAdapterClassName();
+        }
     }
 }

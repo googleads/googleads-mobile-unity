@@ -547,3 +547,25 @@ void GADURelease(GADUTypeRef ref) {
     [cache.references removeObjectForKey:[(__bridge NSObject *)ref gadu_referenceKey]];
   }
 }
+
+const char *GADUMediationAdapterClassNameForBannerView(GADUTypeBannerRef bannerView) {
+  GADUBanner *banner = (__bridge GADUBanner *)bannerView;
+  return cStringCopy(banner.mediationAdapterClassName.UTF8String);
+}
+
+const char *GADUMediationAdapterClassNameForNativeExpressAdView(
+    GADUTypeNativeExpressAdRef nativeExpressAdView) {
+  GADUNativeExpressAd *nativeAd = (__bridge GADUNativeExpressAd *)nativeExpressAdView;
+  return cStringCopy(nativeAd.mediationAdapterClassName.UTF8String);
+}
+
+const char *GADUMediationAdapterClassNameForRewardedVideo(
+    GADUTypeRewardBasedVideoAdRef rewardedVideo) {
+  GADURewardBasedVideoAd *rewarded = (__bridge GADURewardBasedVideoAd *)rewardedVideo;
+  return cStringCopy(rewarded.mediationAdapterClassName.UTF8String);
+}
+
+const char *GADUMediationAdapterClassNameForInterstitial(GADUTypeInterstitialRef interstitial) {
+  GADUInterstitial *interstitialAd = (__bridge GADUInterstitial *)interstitial;
+  return cStringCopy(interstitialAd.mediationAdapterClassName.UTF8String);
+}
