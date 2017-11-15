@@ -1,1 +1,4 @@
-include ':app'
+include 'vungle'
+include 'app'
+project(':app').projectDir = new File('${projectDir}/../../../../../source/android-library/app')
+

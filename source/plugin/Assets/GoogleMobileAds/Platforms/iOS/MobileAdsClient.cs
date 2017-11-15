@@ -38,6 +38,16 @@ namespace GoogleMobileAds.iOS
         {
             Externs.GADUInitialize(appId);
         }
+
+        public void SetApplicationVolume(float volume)
+        {
+            Externs.GADUSetApplicationVolume(volume);
+        }
+
+        public void SetApplicationMuted(bool muted)
+        {
+            Externs.GADUSetApplicationMuted(muted);
+        }
     }
 }
 

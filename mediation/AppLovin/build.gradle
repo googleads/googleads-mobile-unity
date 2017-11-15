@@ -1,5 +1,5 @@
 /*
-*   Gradle file to build a  Unity package to add Vungle mediation support to the Google Mobile Ads Unity plugin.
+*   Gradle file to build a  Unity package to add AppLovin mediation support to the Google Mobile Ads Unity plugin.
 *   Usage: ./gradlew exportPackage
 */
 
@@ -23,31 +23,8 @@ project.ext {
     pluginSource = file('source/plugin').absolutePath
     pluginBuildDir = file('temp/plugin-build-dir').absolutePath
     buildPath = file('temp').absolutePath
-    exportPath = file('GoogleMobileAdsVungleMediation.unitypackage').absolutePath
+    exportPath = file('GoogleMobileAdsAppLovinMediation.unitypackage').absolutePath
 }
-
-// Build jar from android plugin source files using existing Gradle build file.
-task buildAndroidPluginJar(type: GradleBuild) {
-    buildFile = 'source/android-library/vungle/build.gradle'
-    tasks = ['build']
-}
-
-// Move android plugin jar to temporary build directory.
-task copyAndroidLibraryJar(type: Copy) {
-    from("source/android-library/vungle/build/intermediates/bundles/release/")
-    into("${pluginBuildDir}/Assets/Plugins/Android/")
-    include('classes.jar')
-    rename('classes.jar', 'vungle-extras-library.jar')
-}
-
-// Copy Unity mediation extras interface to temporary build directory.
-task copyExtrasInterface(type: Copy) {
-    from("../../source/plugin/Assets/GoogleMobileAds/Api/Mediation/")
-    into("${pluginBuildDir}/Assets/GoogleMobileAds/Api/Mediation/")
-    include('MediationExtras.cs')
-}
-
-copyAndroidLibraryJar.dependsOn(buildAndroidPluginJar)
 
 // Build unity package using through command line interface.
 // Create new unity project with files in temporary build directory and export files to a unity package.
@@ -60,7 +37,6 @@ task exportPackage(type: Exec) {
             "-projectPath", "${pluginBuildDir}",
             "-logFile", "temp/unity.log",
             "-exportPackage",
-            "Assets/GoogleMobileAds/Api/Mediation/Vungle",
             "Assets/GoogleMobileAds/Editor",
             "Assets/Plugins",
             "${exportPath}",
@@ -88,5 +64,5 @@ task clearTempBuildFolder(type: Delete) {
     delete { "${buildPath}" }
 }
 
-exportPackage.dependsOn(createTempBuildFolder, copyAndroidLibraryJar, copyExtrasInterface)
+exportPackage.dependsOn(createTempBuildFolder)
 exportPackage.finalizedBy(clearTempBuildFolder)

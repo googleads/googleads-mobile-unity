@@ -4,7 +4,23 @@
 
 #import "UnityAppController.h"
 
+@interface UIView (unityStub)
+@property UILayoutGuide *safeAreaLayoutGuide;
+@end
+
 @implementation GADUPluginUtil
+
+static BOOL IsOperatingSystemAtLeastVersion(NSInteger majorVersion) {
+  NSProcessInfo *processInfo = NSProcessInfo.processInfo;
+  if ([processInfo respondsToSelector:@selector(isOperatingSystemAtLeastVersion:)]) {
+    // iOS 8+.
+    NSOperatingSystemVersion version = {majorVersion};
+    return [processInfo isOperatingSystemAtLeastVersion:version];
+  } else {
+    // pre-iOS 8. App supports iOS 7+, so this process must be running on iOS 7.
+    return majorVersion >= 7;
+  }
+}
 
 + (UIViewController *)unityGLViewController {
   return ((UnityAppController *)[UIApplication sharedApplication].delegate).rootViewController;
@@ -14,7 +30,7 @@
         inParentView:(UIView *)parentView
           adPosition:(GADAdPosition)adPosition {
   CGRect parentBounds = parentView.bounds;
-  if (@available(iOS 11, *)) {
+  if (IsOperatingSystemAtLeastVersion(11)) {
     parentBounds = parentView.safeAreaLayoutGuide.layoutFrame;
   }
   CGFloat top = CGRectGetMinY(parentBounds) + CGRectGetMidY(view.bounds);

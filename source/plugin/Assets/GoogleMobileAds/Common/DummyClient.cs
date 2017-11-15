@@ -29,7 +29,7 @@ namespace GoogleMobileAds.Common
         }
 
         // Disable warnings for unused dummy ad events.
-#pragma warning disable 67
+        #pragma warning disable 67
 
         public event EventHandler<EventArgs> OnAdLoaded;
 
@@ -47,7 +47,7 @@ namespace GoogleMobileAds.Common
 
         public event EventHandler<CustomNativeEventArgs> OnCustomNativeTemplateAdLoaded;
 
-#pragma warning restore 67
+        #pragma warning restore 67
 
         public string UserId
         {
@@ -64,6 +64,16 @@ namespace GoogleMobileAds.Common
         }
 
         public void Initialize(string appId)
+        {
+            Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
+        }
+
+        public void SetApplicationMuted(bool muted)
+        {
+            Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
+        }
+
+        public void SetApplicationVolume(float volume)
         {
             Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
         }

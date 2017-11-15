@@ -17,6 +17,7 @@ package com.google.unity.ads;
 
 import android.app.Activity;
 import android.graphics.Color;
+import android.os.Build;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -24,7 +25,6 @@ import android.view.ViewGroup;
 import android.view.ViewParent;
 import android.view.WindowManager;
 import android.widget.PopupWindow;
-
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdSize;
@@ -199,15 +199,38 @@ public class NativeExpressAd {
     }
 
     private void showPopUpWindow() {
+        View anchorView = mUnityPlayerActivity.getWindow().getDecorView().getRootView();
+
         if (this.mPositionCode == PluginUtils.POSITION_CUSTOM) {
-            mPopupWindow.showAtLocation(
-                    mUnityPlayerActivity.getWindow().getDecorView().getRootView(),
-                    Gravity.NO_GRAVITY, (int) PluginUtils.convertDpToPixel(mHorizontalOffset),
-                    (int) PluginUtils.convertDpToPixel(mVerticalOffset));
+            // Android Nougat has a PopUpWindow bug gravity doesn't position views as expected.
+            // Using offset values as a workaround. On certain devices (ie. Samsung S8) calls to
+            // update() cause the PopUpWindow to be rendered at the top of the screen. Using
+            // showAsDropDown() instead of showAtLocation() (when possible) avoids this issue.
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                mPopupWindow.showAsDropDown(anchorView,
+                        (int) PluginUtils.convertDpToPixel(mHorizontalOffset),
+                        -anchorView.getHeight()
+                                + (int) PluginUtils.convertDpToPixel(mVerticalOffset));
+            } else {
+                mPopupWindow.showAtLocation(
+                        anchorView, Gravity.NO_GRAVITY,
+                        (int) PluginUtils.convertDpToPixel(mHorizontalOffset),
+                        (int) PluginUtils.convertDpToPixel(mVerticalOffset));
+            }
         } else {
-            mPopupWindow.showAtLocation(mUnityPlayerActivity.getWindow().getDecorView()
-                            .getRootView(),
-                    PluginUtils.getLayoutGravityForPositionCode(mPositionCode), 0, 0);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                int adViewWidth = mAdView.getAdSize().getWidthInPixels(mUnityPlayerActivity);
+                int adViewHeight = mAdView.getAdSize().getHeightInPixels(mUnityPlayerActivity);
+
+                mPopupWindow.showAsDropDown(anchorView,
+                        PluginUtils.getHorizontalOffsetForPositionCode(mPositionCode, adViewWidth,
+                                anchorView.getWidth()),
+                        PluginUtils.getVerticalOffsetForPositionCode(mPositionCode, adViewHeight,
+                                anchorView.getHeight()));
+            } else {
+                mPopupWindow.showAtLocation(anchorView,
+                        PluginUtils.getLayoutGravityForPositionCode(mPositionCode), 0, 0);
+            }
         }
     }
 

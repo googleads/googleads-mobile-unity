@@ -2,7 +2,6 @@ apply plugin: 'com.android.library'
 
 android {
     compileSdkVersion 26
-    buildToolsVersion "22.0.1"
 
     defaultConfig {
         minSdkVersion 14
@@ -23,22 +22,8 @@ android {
 }
 
 dependencies {
-    compile files('libs/unity-plugin-library.jar')
-    compile 'com.google.ads.mediation:vungle:5.1.0.0'
-}
-
-// Build jar from android plugin source files using existing Gradle build file.
-task buildAndroidPluginJar(type: GradleBuild) {
-    buildFile = '../../../../../source/android-library/app/build.gradle'
-    tasks = ['build']
-}
-
-// Move android plugin jar to libs directory.
-task copyAndroidLibraryJar(type: Copy) {
-    from("../../../../../source/android-library/app/build/intermediates/bundles/release/")
-    into("libs")
-    include('classes.jar')
-    rename('classes.jar', 'unity-plugin-library.jar')
+    api project(':app')
+    api 'com.google.ads.mediation:vungle:5.3.0.0'
 }
 
 task clearJar(type: Delete) {
@@ -53,4 +38,3 @@ task makeJar(type: Copy) {
 }
 
 makeJar.dependsOn(clearJar, build)
-preBuild.dependsOn(copyAndroidLibraryJar, buildAndroidPluginJar)

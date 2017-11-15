@@ -28,6 +28,16 @@ namespace GoogleMobileAds.Api
             client.Initialize(appId);
         }
 
+        public static void SetApplicationMuted(bool muted)
+        {
+            client.SetApplicationMuted(muted);
+        }
+
+        public static void SetApplicationVolume(float volume)
+        {
+            client.SetApplicationVolume(volume);
+        }
+
         private static IMobileAdsClient GetMobileAdsClient()
         {
             Type googleMobileAdsClientFactory = Type.GetType(

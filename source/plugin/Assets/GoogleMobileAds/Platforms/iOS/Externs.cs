@@ -28,6 +28,12 @@ namespace GoogleMobileAds.iOS
         internal static extern void GADUInitialize(string key);
 
         [DllImport("__Internal")]
+        internal static extern void GADUSetApplicationVolume(float volume);
+
+        [DllImport("__Internal")]
+        internal static extern void GADUSetApplicationMuted(bool muted);
+
+        [DllImport("__Internal")]
         internal static extern IntPtr GADUCreateRequest();
 
         [DllImport("__Internal")]

@@ -135,16 +135,68 @@ public class PluginUtils {
         return gravity;
     }
 
+    public static int getHorizontalOffsetForPositionCode(int positionCode, int viewWidth,
+                                                         int anchorWidth) {
+        int offset;
+        switch (positionCode) {
+            case POSITION_TOP_LEFT:
+            case POSITION_BOTTOM_LEFT:
+                offset = 0;
+                break;
+            case POSITION_TOP_RIGHT:
+            case POSITION_BOTTOM_RIGHT:
+                offset = anchorWidth - viewWidth;
+                break;
+            case POSITION_TOP:
+            case POSITION_BOTTOM:
+            case POSITION_CENTER:
+                offset = (anchorWidth - viewWidth) / 2;
+                break;
+            // Make the center position the default horizontal position.
+            default:
+                Log.w(LOGTAG, "Attempted to position ad with invalid ad "
+                        + "position. Using default center horizontal position.");
+                offset = (anchorWidth - viewWidth) / 2;
+        }
+
+        return offset;
+    }
+
+    public static int getVerticalOffsetForPositionCode(int positionCode, int viewHeight,
+                                                       int anchorHeight) {
+        int offset;
+        switch (positionCode) {
+            case POSITION_TOP:
+            case POSITION_TOP_LEFT:
+            case POSITION_TOP_RIGHT:
+                offset = -anchorHeight;
+                break;
+            case POSITION_CENTER:
+                offset = (-anchorHeight - viewHeight) / 2;
+                break;
+            case POSITION_BOTTOM:
+            case POSITION_BOTTOM_LEFT:
+            case POSITION_BOTTOM_RIGHT:
+                offset = -viewHeight;
+                break;
+            // Make the bottom position the default vertical position.
+            default:
+                Log.w(LOGTAG, "Attempted to position ad with invalid ad "
+                        + "position. Using default bottom vertical position.");
+                offset = -viewHeight;
+        }
+
+        return offset;
+    }
+
     public static float convertPixelsToDp(float px) {
         DisplayMetrics metrics = Resources.getSystem().getDisplayMetrics();
-        float dp = px / metrics.density;
-        return dp;
+        return px / metrics.density;
     }
 
     public static float convertDpToPixel(float dp) {
         DisplayMetrics metrics = Resources.getSystem().getDisplayMetrics();
-        float px = dp * metrics.density;
-        return px;
+        return dp * metrics.density;
     }
 
     public static void setPopUpWindowLayoutType(PopupWindow popupWindow, int layoutType) {
