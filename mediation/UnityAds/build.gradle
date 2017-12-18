@@ -1,0 +1,144 @@
+/*
+*   Gradle file to build a Unity package to add Unity Ads mediation support to the Google Mobile Ads Unity plugin.
+*   Usage: ./gradlew exportPackage
+*/
+plugins {
+    id "com.jfrog.bintray" version "1.7.3"
+}
+
+defaultTasks 'exportPackage'
+
+// Project level variables.
+project.ext {
+    unity_exe = System.getProperty("UNITY_EXE")
+    if (unity_exe == null || unity_exe.isEmpty()) {
+        unity_exe = System.getenv("UNITY_EXE")
+    }
+    if (unity_exe == null || unity_exe.isEmpty()) {
+        unity_exe = '/Applications/Unity/Unity.app/Contents/MacOS/Unity'
+    }
+
+    if (!file(unity_exe).exists()) {
+        throw new GradleException('Unable to locate installation of Unity. Please create a ' +
+                'UNITY_EXE environment variable and point it to your Unity installation.')
+    }
+
+    versionString = '1.0.0'
+    pluginName = 'GoogleMobileAdsUnityAdsMediation'
+    pluginFileName = "${pluginName}.unitypackage"
+    zipName = "${pluginName}-${versionString}"
+    zipFileName = "${zipName}.zip"
+    pluginSource = file('source/plugin').absolutePath
+    pluginBuildDir = file('temp/plugin-build-dir').absolutePath
+    buildPath = file('temp').absolutePath
+    exportPath = file(pluginFileName).absolutePath
+}
+
+// Build unity package using through command line interface.
+// Create new unity project with files in temporary build directory and export files to a unity package.
+// Command line usage and arguments documented at http://docs.unity3d.com/Manual/CommandLineArguments.html.
+task exportPackage(type: Exec) {
+    description = "Creates and exports the Plugin unity package"
+    executable "${unity_exe}"
+    args "-g.building",
+            "-batchmode",
+            "-projectPath", "${pluginBuildDir}",
+            "-logFile", "temp/unity.log",
+            "-exportPackage",
+            "Assets/GoogleMobileAds/Editor",
+            "${exportPath}",
+            "-quit"
+
+    ignoreExitValue true
+
+    doLast {
+        if (execResult.getExitValue() != 0) {
+            copy {
+                from "temp/"
+                into "./"
+                include "unity.log"
+            }
+        }
+    }
+}
+
+task createTempBuildFolder(type: Copy) {
+    from { "${pluginSource}" }
+    into { "${pluginBuildDir}" }
+}
+
+task clearTempBuildFolder(type: Delete) {
+    delete { "${buildPath}" }
+}
+
+exportPackage.dependsOn(createTempBuildFolder)
+exportPackage.finalizedBy(clearTempBuildFolder)
+
+/**
+ * Delete task to delete any previously generated .zip files by makeZip task.
+ * makeZip depends on this task.
+ */
+task clearZip(type: Delete) {
+    // Targets to be deleted.
+    delete(zipFileName)
+}
+
+/**
+ * Zip task to make a zip archive. This task depends on exportPackage and clearZip tasks.
+ */
+task makeZip(type: Zip) {
+    // Targets to be added to the zip archive.
+    from('./' + pluginFileName, './README.md', './CHANGELOG.md')
+    // Root directory name for the zip archive.
+    into(zipName)
+    // Name of the zip archive.
+    archiveName zipFileName
+    // Destination directory in which the archive needs to be saved.
+    destinationDir file('.')
+}
+
+makeZip.dependsOn([clearZip, exportPackage])
+makeZip.mustRunAfter([clearZip, exportPackage])
+
+/**
+ * Bintray closure needed to run the bintrayUpload task.
+ *
+ * Usage:
+ * ./gradlew bintrayUpload -PbintrayUser=YOUR_BINTRAY_USER_ID -PbintrayApiKey=YOUR_BINTRAY_API_KEY
+ *
+ * The Bintray User ID and API key can be added to your system environment variables as BINTRAY_USER
+ * and BINTRAY_API_KEY respectively, and the command can be reduced to:
+ * ./gradlew bintrayUpload
+ */
+bintray {
+    user = project.hasProperty('bintrayUser') ? project.property('bintrayUser')
+            : System.getenv('BINTRAY_USER')
+    key = project.hasProperty('bintrayApiKey') ? project.property('bintrayApiKey')
+            : System.getenv('BINTRAY_API_KEY')
+
+    filesSpec { // 'filesSpec' is a standard Gradle CopySpec
+        from zipFileName
+        into "${pluginName}/${versionString}"
+    }
+    dryRun = false // Deploy after running.
+    publish = false // Don't auto publish after deploying.
+    override = false // Don't override existing version artifacts that are already published.
+
+    pkg {
+        repo = 'mobile-ads-adapters-unity'
+        name = pluginName
+        userOrg = 'google'
+        desc = 'Unity Ads plugin for Google Mobile Ads Mediation.'
+        websiteUrl = 'https://developers.google.com/admob/unity/mediation/unity'
+        issueTrackerUrl = 'https://github.com/googleads/googleads-mobile-unity/issues'
+        vcsUrl = 'https://github.com/googleads/googleads-mobile-unity'
+        licenses = ['Apache-2.0']
+
+        version {
+            name = versionString
+        }
+    }
+}
+
+bintrayUpload.dependsOn(makeZip)
+bintrayUpload.mustRunAfter(makeZip)

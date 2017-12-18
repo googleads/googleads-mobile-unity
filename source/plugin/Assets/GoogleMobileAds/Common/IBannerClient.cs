@@ -48,6 +48,18 @@ namespace GoogleMobileAds.Common {
         // Destroys a banner view.
         void DestroyBannerView();
 
+        // Returns the height of the BannerView in pixels.
+        float GetHeightInPixels();
+
+        // Returns the width of the BannerView in pixels.
+        float GetWidthInPixels();
+
+      // Set the position of the banner view using standard position.
+        void SetPosition(AdPosition adPosition);
+
+        // Set the position of the banner view using custom position.
+        void SetPosition(int x, int y);
+
         // Returns the mediation adapter class name.
         string MediationAdapterClassName();
     }

@@ -156,6 +156,30 @@ namespace GoogleMobileAds.iOS
             this.BannerViewPtr = IntPtr.Zero;
         }
 
+        // Returns the height of the BannerView in pixels.
+        public float GetHeightInPixels()
+        {
+            return Externs.GADUGetBannerViewHeightInPixels(this.BannerViewPtr);
+        }
+
+        // Returns the width of the BannerView in pixels.
+        public float GetWidthInPixels()
+        {
+            return Externs.GADUGetBannerViewWidthInPixels(this.BannerViewPtr);
+        }
+
+        // Set the position of the banner view using standard position.
+        public void SetPosition(AdPosition adPosition)
+        {
+            Externs.GADUSetBannerViewAdPosition(this.BannerViewPtr, (int)adPosition);
+        }
+
+        // Set the position of the banner view using custom position.
+        public void SetPosition(int x, int y)
+        {
+            Externs.GADUSetBannerViewCustomPosition(this.BannerViewPtr, x, y);
+        }
+
         // Returns the mediation adapter class name.
         public string MediationAdapterClassName()
         {

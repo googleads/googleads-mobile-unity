@@ -1,13 +1,38 @@
 Google Mobile Ads Unity Plugin Change Log
 
+**************
+Version 3.10.0
+**************
+
+Plugin:
+- Updated Smart Banner positioning to render within safe area on iOS 11.
+- Added API to return height and width of BannerView in pixels.
+- Added SetPosition method to reposition banner ads.
+- Updated AppLovin Unity mediation package to support AppLovin initialization
+integration.
+
+Mediation packages:
+- Added InMobi mediation support package.
+- Added Tapjoy mediation support package.
+- Added Unity Ads mediation support package.
+- Added myTarget mediation support package.
+
+Built and tested with:
+- Google Play services 11.6.2
+- Google Mobile Ads iOS SDK 7.27.0
+- Unity Jar Resolver 1.2.59.0
+
 *************
 Version 3.9.0
 *************
 
+Plugin:
 - Implemented workaround for issue where ad views are rendered in incorrect
 position.
 - Resolved compatibility issues with Gradle 4.
 - Resovled comnpatilbity issues with older versions of Xcode.
+
+Mediation packages:
 - Added API for video ad volume control.
 - Added AdColony mediation support package.
 - Added AppLovin mediation support package.

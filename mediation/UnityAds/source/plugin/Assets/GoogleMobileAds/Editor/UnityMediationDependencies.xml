@@ -1,0 +1,23 @@
+<dependencies>
+  <androidPackages>
+    <androidPackage spec="com.google.ads.mediation:unity:2.1.2.0">
+      <repositories>
+        <repository>https://jcenter.bintray.com/</repository>
+      </repositories>
+    </androidPackage>
+    <androidPackage spec="com.unity3d.ads:unity-ads:2.1.2">
+      <repositories>
+        <repository>https://jcenter.bintray.com/</repository>
+      </repositories>
+    </androidPackage>
+  </androidPackages>
+
+  <iosPods>
+    <iosPod name="GoogleMobileAdsMediationUnity" version="2.1.2.0">
+      <sources>
+        <source>https://github.com/CocoaPods/Specs</source>
+      </sources>
+    </iosPod>
+  </iosPods>
+</dependencies>
+

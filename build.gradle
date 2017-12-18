@@ -31,8 +31,9 @@ project.ext {
 
     pluginSource = file('source/plugin').absolutePath
     pluginBuildDir = file('temp/plugin-build-dir').absolutePath
-    buildPath = file('temp').absolutePath
     exportPath = file('GoogleMobileAds.unitypackage').absolutePath
+
+    buildPath = file('temp').absolutePath
     resolverDir = file("${buildPath}/jarresolver").absolutePath
 }
 

@@ -4,9 +4,9 @@
 
     <application>
 
-        <!--<meta-data-->
-            <!--android:name="applovin.sdk.key"-->
-            <!--android:value="INSERT_APP_LOVIN_SDK_KEY_HERE" />-->
+        <!--<meta-data
+            android:name="applovin.sdk.key"
+            android:value="INSERT_APP_LOVIN_SDK_KEY_HERE" />-->
 
         <activity
             android:name="com.applovin.adview.AppLovinInterstitialActivity"

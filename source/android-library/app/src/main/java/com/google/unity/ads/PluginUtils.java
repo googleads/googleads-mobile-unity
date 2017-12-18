@@ -162,6 +162,14 @@ public class PluginUtils {
         return offset;
     }
 
+    /**
+     * Returns the vertical offset using a bottom left co-ordinate system.
+     * i.e top is at -anchorHeight.
+     * @param positionCode the position code to use
+     * @param viewHeight the height of the view
+     * @param anchorHeight the height of the anchoring view to position in
+     * @return the vertical offset relative to the bottom of the anchorview.
+     */
     public static int getVerticalOffsetForPositionCode(int positionCode, int viewHeight,
                                                        int anchorHeight) {
         int offset;

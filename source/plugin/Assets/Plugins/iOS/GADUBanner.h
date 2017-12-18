@@ -59,6 +59,12 @@
 // Returns the mediation adapter class name.
 @property(nonatomic, readonly, copy) NSString *mediationAdapterClassName;
 
+// Returns the height of the banner view in pixels.
+@property(nonatomic, readonly) CGFloat heightInPixels;
+
+// Returns the width of the banner view in pixels.
+@property(nonatomic, readonly) CGFloat widthInPixels;
+
 /// Makes an ad request. Additional targeting options can be supplied with a request object.
 - (void)loadRequest:(GADRequest *)request;
 
@@ -70,5 +76,11 @@
 
 /// Removes the GADBannerView from the view hierarchy.
 - (void)removeBannerView;
+
+/// Set the GADBannerView's position on screen using a standard position.
+- (void)setAdPosition:(GADAdPosition)adPosition;
+
+/// Set the GADBannerView's position on screen using a custom position.
+- (void)setCustomAdPosition:(CGPoint)customPosition;
 
 @end

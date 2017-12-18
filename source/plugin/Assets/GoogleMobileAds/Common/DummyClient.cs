@@ -108,6 +108,28 @@ namespace GoogleMobileAds.Common
             Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
         }
 
+        public float GetHeightInPixels()
+        {
+            Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
+            return 0;
+        }
+
+        public float GetWidthInPixels()
+        {
+            Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
+            return 0;
+        }
+
+        public void SetPosition(AdPosition adPosition)
+        {
+            Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
+        }
+
+        public void SetPosition(int x, int y)
+        {
+            Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
+        }
+
         public void CreateInterstitialAd(string adUnitId)
         {
             Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);

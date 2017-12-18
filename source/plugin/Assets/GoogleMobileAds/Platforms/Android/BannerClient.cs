@@ -85,6 +85,30 @@ namespace GoogleMobileAds.Android
             this.bannerView.Call("destroy");
         }
 
+        // Returns the height of the BannerView in pixels.
+        public float GetHeightInPixels()
+        {
+            return this.bannerView.Call<float>("getHeightInPixels");
+        }
+
+        // Returns the width of the BannerView in pixels.
+        public float GetWidthInPixels()
+        {
+            return this.bannerView.Call<float>("getWidthInPixels");
+        }
+
+        // Set the position of the banner view using standard position.
+        public void SetPosition(AdPosition adPosition)
+        {
+            this.bannerView.Call("setPosition", (int)adPosition);
+        }
+
+        // Set the position of the banner view using custom position.
+        public void SetPosition(int x, int y)
+        {
+            this.bannerView.Call("setPosition", x, y);
+        }
+
         // Returns the mediation adapter class name.
         public string MediationAdapterClassName()
         {

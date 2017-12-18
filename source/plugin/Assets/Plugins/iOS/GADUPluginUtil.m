@@ -8,8 +8,6 @@
 @property UILayoutGuide *safeAreaLayoutGuide;
 @end
 
-@implementation GADUPluginUtil
-
 static BOOL IsOperatingSystemAtLeastVersion(NSInteger majorVersion) {
   NSProcessInfo *processInfo = NSProcessInfo.processInfo;
   if ([processInfo respondsToSelector:@selector(isOperatingSystemAtLeastVersion:)]) {
@@ -22,6 +20,30 @@ static BOOL IsOperatingSystemAtLeastVersion(NSInteger majorVersion) {
   }
 }
 
+static CGFloat FullSafeWidthLandscape(void) {
+  CGRect screenBounds = [UIScreen mainScreen].bounds;
+  if (IsOperatingSystemAtLeastVersion(11)) {
+    CGRect safeFrame = [UIApplication sharedApplication].keyWindow.safeAreaLayoutGuide.layoutFrame;
+    if (!CGSizeEqualToSize(safeFrame.size, CGSizeZero)) {
+      screenBounds = safeFrame;
+    }
+  }
+  return MAX(CGRectGetWidth(screenBounds), CGRectGetHeight(screenBounds));
+}
+
+@implementation GADUPluginUtil
+
++ (GADAdSize)safeAdSizeForAdSize:(GADAdSize)adSize {
+  if (IsOperatingSystemAtLeastVersion(11) &&
+      GADAdSizeEqualToSize(kGADAdSizeSmartBannerLandscape, adSize)) {
+    CGSize usualSize = CGSizeFromGADAdSize(kGADAdSizeSmartBannerLandscape);
+    CGSize bannerSize = CGSizeMake(FullSafeWidthLandscape(), usualSize.height);
+    return GADAdSizeFromCGSize(bannerSize);
+  } else {
+    return adSize;
+  }
+}
+
 + (UIViewController *)unityGLViewController {
   return ((UnityAppController *)[UIApplication sharedApplication].delegate).rootViewController;
 }
@@ -31,7 +53,10 @@ static BOOL IsOperatingSystemAtLeastVersion(NSInteger majorVersion) {
           adPosition:(GADAdPosition)adPosition {
   CGRect parentBounds = parentView.bounds;
   if (IsOperatingSystemAtLeastVersion(11)) {
-    parentBounds = parentView.safeAreaLayoutGuide.layoutFrame;
+    CGRect safeAreaFrame = parentView.safeAreaLayoutGuide.layoutFrame;
+    if (!CGSizeEqualToSize(CGSizeZero, safeAreaFrame.size)) {
+      parentBounds = safeAreaFrame;
+    }
   }
   CGFloat top = CGRectGetMinY(parentBounds) + CGRectGetMidY(view.bounds);
   CGFloat left = CGRectGetMinX(parentBounds) + CGRectGetMidX(view.bounds);
@@ -86,8 +111,16 @@ static BOOL IsOperatingSystemAtLeastVersion(NSInteger majorVersion) {
 + (void)positionView:(UIView *)view
         inParentView:(UIView *)parentView
       customPosition:(CGPoint)adPosition {
-  CGPoint center = CGPointMake(adPosition.x + CGRectGetMidX(view.bounds),
-                               adPosition.y + CGRectGetMidY(view.bounds));
+  CGPoint origin = parentView.bounds.origin;
+  if (IsOperatingSystemAtLeastVersion(11)) {
+    CGRect safeAreaFrame = parentView.safeAreaLayoutGuide.layoutFrame;
+    if (!CGSizeEqualToSize(CGSizeZero, safeAreaFrame.size)) {
+      origin = safeAreaFrame.origin;
+    }
+  }
+
+  CGPoint center = CGPointMake(origin.x + adPosition.x + CGRectGetMidX(view.bounds),
+                               origin.y + adPosition.y + CGRectGetMidY(view.bounds));
   view.center = center;
 }
 
@@ -98,7 +131,7 @@ static BOOL IsOperatingSystemAtLeastVersion(NSInteger majorVersion) {
     return GADAdSizeFullWidthPortraitWithHeight(height);
   } else if ((width == kGADUAdSizeUseFullWidth &&
               UIInterfaceOrientationIsLandscape(currentOrientation))) {
-    return GADAdSizeFullWidthLandscapeWithHeight(height);
+    return GADAdSizeFromCGSize(CGSizeMake(FullSafeWidthLandscape(), height));
   }
   return GADAdSizeFromCGSize(CGSizeMake(width, height));
 }
