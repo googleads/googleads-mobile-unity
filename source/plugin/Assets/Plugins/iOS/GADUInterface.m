@@ -4,6 +4,7 @@
 #import "GADUBanner.h"
 #import "GADUInterstitial.h"
 #import "GADUNativeCustomTemplateAd.h"
+#import "GADUPluginUtil.h"
 #import "GADUAdNetworkExtras.h"
 #import "GADUNativeExpressAd.h"
 #import "GADUObjectCache.h"
@@ -65,6 +66,10 @@ void GADUSetApplicationVolume(float volume) {
 void GADUSetApplicationMuted(BOOL muted) {
   [[GADMobileAds sharedInstance] setApplicationMuted:muted];
 }
+
+// Indicates if the Unity app should be paused when a full screen ad (interstitial
+// or rewarded video ad) is displayed.
+void GADUSetiOSAppPauseOnBackground(BOOL pause) { [GADUPluginUtil setPauseOnBackground:pause]; }
 
 /// Creates a GADBannerView with the specified width, height, and position. Returns a reference to
 /// the GADUBannerView.
@@ -510,7 +515,7 @@ const char *GADUNativeCustomTemplateAdImageAsBytesForKey(
       (__bridge GADUNativeCustomTemplateAd *)nativeCustomTemplateAd;
   NSData *imageData = UIImageJPEGRepresentation(
       [internalNativeCustomTemplateAd imageForKey:GADUStringFromUTF8String(key)], 0.0);
-  NSString *base64String = [imageData base64Encoding];
+  NSString *base64String = [imageData base64EncodedStringWithOptions:nil];
   return cStringCopy(base64String.UTF8String);
 }
 

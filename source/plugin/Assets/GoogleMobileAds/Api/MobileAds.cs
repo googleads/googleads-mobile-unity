@@ -26,6 +26,7 @@ namespace GoogleMobileAds.Api
         public static void Initialize(string appId)
         {
             client.Initialize(appId);
+            MobileAdsEventExecutor.Initialize();
         }
 
         public static void SetApplicationMuted(bool muted)
@@ -36,6 +37,11 @@ namespace GoogleMobileAds.Api
         public static void SetApplicationVolume(float volume)
         {
             client.SetApplicationVolume(volume);
+        }
+
+        public static void SetiOSAppPauseOnBackground(bool pause)
+        {
+            client.SetiOSAppPauseOnBackground(pause);
         }
 
         private static IMobileAdsClient GetMobileAdsClient()

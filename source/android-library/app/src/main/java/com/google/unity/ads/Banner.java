@@ -18,14 +18,13 @@ package com.google.unity.ads;
 import android.app.Activity;
 import android.graphics.Color;
 import android.graphics.Point;
-import android.os.Build;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
 import android.view.WindowManager;
 import android.widget.PopupWindow;
+
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdSize;
@@ -80,6 +79,12 @@ public class Banner {
      * A listener implemented in Unity via {@code AndroidJavaProxy} to receive ad events.
      */
     private UnityAdListener mUnityListener;
+
+    /**
+     * A {@code View.OnLayoutChangeListener} used to detect orientation changes and reposition
+     * banner ads as required.
+     */
+    private View.OnLayoutChangeListener mLayoutChangeListener;
 
     /**
      * Creates an instance of {@code Banner}.
@@ -182,6 +187,18 @@ public class Banner {
                 }
             }
         });
+
+        mLayoutChangeListener = new View.OnLayoutChangeListener() {
+            @Override
+            public void onLayoutChange(View v, int left, int top, int right, int bottom,
+                                       int oldLeft, int oldTop, int oldRight, int oldBottom) {
+                if (mPopupWindow.isShowing() && !mHidden) {
+                    updatePosition();
+                }
+            }
+        };
+        mUnityPlayerActivity.getWindow().getDecorView().getRootView()
+                .addOnLayoutChangeListener(mLayoutChangeListener);
     }
 
     private void createPopupWindow() {
@@ -280,10 +297,14 @@ public class Banner {
                 }
             }
         });
+
+        mUnityPlayerActivity.getWindow().getDecorView().getRootView()
+                .removeOnLayoutChangeListener(mLayoutChangeListener);
     }
 
     /**
      * Get {@link AdView} height.
+     *
      * @return the height of the {@link AdView}.
      */
     public float getHeightInPixels() {
@@ -292,6 +313,7 @@ public class Banner {
 
     /**
      * Get {@link AdView} width.
+     *
      * @return the width of the {@link AdView}.
      */
     public float getWidthInPixels() {
@@ -316,8 +338,8 @@ public class Banner {
     /**
      * Updates the {@link AdView} position.
      *
-     * @param positionX   Position of banner ad on the x axis.
-     * @param positionY   Position of banner ad on the y axis.
+     * @param positionX Position of banner ad on the x axis.
+     * @param positionY Position of banner ad on the y axis.
      */
     public void setPosition(final int positionX, final int positionY) {
         mUnityPlayerActivity.runOnUiThread(new Runnable() {
@@ -335,7 +357,6 @@ public class Banner {
      * Update the {@link AdView} position based on current parameters.
      */
     private void updatePosition() {
-
         if (mPopupWindow != null && mPopupWindow.isShowing()) {
             View anchorView = mUnityPlayerActivity.getWindow().getDecorView().getRootView();
             Point location = getPositionInPixels(anchorView);
@@ -351,6 +372,7 @@ public class Banner {
      * Gets the location for the PopUp window based on the current position code / offset and ad
      * view size. The location is in bottom left coordinate system as per the showAsDropDown and
      * update methods requirements.
+     *
      * @param anchorView the anchorview to position against.
      * @return the position point in pixels in the bottom left coordinate system.
      */

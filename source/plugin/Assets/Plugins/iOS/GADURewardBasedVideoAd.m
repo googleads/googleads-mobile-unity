@@ -19,7 +19,7 @@
 }
 
 - (instancetype)initWithRewardBasedVideoClientReference:
-        (GADUTypeRewardBasedVideoAdClientRef *)rewardBasedVideoAdClient {
+    (GADUTypeRewardBasedVideoAdClientRef *)rewardBasedVideoAdClient {
   self = [super init];
   if (self) {
     _rewardBasedVideoAdClient = rewardBasedVideoAdClient;
@@ -72,6 +72,10 @@
 }
 
 - (void)rewardBasedVideoAdDidOpen:(GADRewardBasedVideoAd *)rewardBasedVideoAd {
+  if ([GADUPluginUtil pauseOnBackground]) {
+    UnityPause(YES);
+  }
+
   if (self.didOpenCallback) {
     self.didOpenCallback(self.rewardBasedVideoAdClient);
   }
@@ -84,6 +88,10 @@
 }
 
 - (void)rewardBasedVideoAdDidClose:(GADRewardBasedVideoAd *)rewardBasedVideoAd {
+  if (UnityIsPaused()) {
+    UnityPause(NO);
+  }
+
   if (self.didCloseCallback) {
     self.didCloseCallback(self.rewardBasedVideoAdClient);
   }

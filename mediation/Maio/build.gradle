@@ -1,5 +1,5 @@
 /*
-*   Gradle file to build a  Unity package to add AppLovin mediation support to the Google Mobile Ads Unity plugin.
+*   Gradle file to build a Unity package to add maio mediation support to the Google Mobile Ads Unity plugin.
 *   Usage: ./gradlew exportPackage
 */
 plugins {
@@ -23,8 +23,8 @@ project.ext {
                 'UNITY_EXE environment variable and point it to your Unity installation.')
     }
 
-    versionString = '1.1.0'
-    pluginName = 'GoogleMobileAdsAppLovinMediation'
+    versionString = '1.0.0'
+    pluginName = 'GoogleMobileAdsMaioMediation'
     pluginFileName = "${pluginName}.unitypackage"
     zipName = "${pluginName}-${versionString}"
     zipFileName = "${zipName}.zip"
@@ -45,7 +45,7 @@ task exportPackage(type: Exec) {
             "-projectPath", "${pluginBuildDir}",
             "-logFile", "temp/unity.log",
             "-exportPackage",
-            "Assets/GoogleMobileAds",
+            "Assets/GoogleMobileAds/Editor",
             "Assets/Plugins",
             "${exportPath}",
             "-quit"
@@ -89,7 +89,7 @@ task clearZip(type: Delete) {
  */
 task makeZip(type: Zip) {
     // Targets to be added to the zip archive.
-    from("./${pluginFileName}", "./README.md", "./CHANGELOG.md")
+    from('./' + pluginFileName, './README.md', './CHANGELOG.md')
     // Root directory name for the zip archive.
     into(zipName)
     // Name of the zip archive.
@@ -129,8 +129,8 @@ bintray {
         repo = 'mobile-ads-adapters-unity'
         name = pluginName
         userOrg = 'google'
-        desc = 'AppLovin plugin for Google Mobile Ads Mediation.'
-        websiteUrl = 'https://developers.google.com/admob/unity/mediation/applovin'
+        desc = 'maio plugin for Google Mobile Ads Mediation.'
+        websiteUrl = 'https://developers.google.com/admob/unity/mediation/maio'
         issueTrackerUrl = 'https://github.com/googleads/googleads-mobile-unity/issues'
         vcsUrl = 'https://github.com/googleads/googleads-mobile-unity'
         licenses = ['Apache-2.0']

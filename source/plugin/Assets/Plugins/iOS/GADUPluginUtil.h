@@ -8,6 +8,9 @@
 
 @interface GADUPluginUtil : NSObject
 
+/// Whether the Unity app should be paused when a full screen ad is displayed.
+@property(class) BOOL pauseOnBackground;
+
 /// Returns the Unity view controller.
 + (UIViewController *)unityGLViewController;
 

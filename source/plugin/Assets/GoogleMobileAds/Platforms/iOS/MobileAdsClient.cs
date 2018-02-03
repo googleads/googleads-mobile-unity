@@ -48,6 +48,11 @@ namespace GoogleMobileAds.iOS
         {
             Externs.GADUSetApplicationMuted(muted);
         }
+
+        public void SetiOSAppPauseOnBackground(bool pause)
+        {
+            Externs.GADUSetiOSAppPauseOnBackground(pause);
+        }
     }
 }
 

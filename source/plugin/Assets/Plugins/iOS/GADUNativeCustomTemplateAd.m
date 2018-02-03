@@ -25,13 +25,13 @@
 }
 
 - (void)performClickOnAssetWithKey:(NSString *)key withCustomClickAction:(bool)customClickAction {
-  dispatch_block_t clickHandler = nil;
   if (customClickAction) {
-    clickHandler = ^{
-      [self didReceiveClickForAsset:key];
-    };
+    __weak GADUNativeCustomTemplateAd *weakSelf = self;
+    [self.nativeCustomTemplateAd setCustomClickHandler:^(NSString *assetID){
+      [weakSelf didReceiveClickForAsset:key];
+    }];
   }
-  [self.nativeCustomTemplateAd performClickOnAssetWithKey:key customClickHandler:clickHandler];
+  [self.nativeCustomTemplateAd performClickOnAssetWithKey:key];
 }
 
 - (void)didReceiveClickForAsset:(NSString *)key {

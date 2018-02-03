@@ -29,5 +29,8 @@ namespace GoogleMobileAds.Common
         // all ads. Use this method only if your application has its own volume controls
         // (e.g., custom music or sound effect muting). Defaults to false.
         void SetApplicationMuted(bool muted);
+
+        // Set whether an iOS app should pause when a full screen ad is displayed.
+        void SetiOSAppPauseOnBackground(bool pause);
     }
 }

@@ -54,6 +54,11 @@ namespace GoogleMobileAds.Android
             AndroidJavaClass mobileAdsClass = new AndroidJavaClass(Utils.MobileAdsClassName);
             mobileAdsClass.CallStatic("setAppMuted", muted);
         }
+
+        public void SetiOSAppPauseOnBackground(bool pause)
+        {
+            // Do nothing on Android. Default behavior is to pause when app is backgrounded.
+        }
     }
 }
 

@@ -1,0 +1,23 @@
+<dependencies>
+  <androidPackages>
+    <androidPackage spec="com.google.ads.mediation:nend:4.0.2.0">
+      <repositories>
+        <repository>https://jcenter.bintray.com/</repository>
+      </repositories>
+    </androidPackage>
+    <androidPackage spec="net.nend.android:nend-sdk:4.0.2">
+      <repositories>
+        <repository>http://fan-adn.github.io/nendSDK-Android-lib/library</repository>
+      </repositories>
+    </androidPackage>
+  </androidPackages>
+
+  <iosPods>
+    <iosPod name="GoogleMobileAdsMediationNend" version="4.0.2.0">
+      <sources>
+        <source>https://github.com/CocoaPods/Specs</source>
+      </sources>
+    </iosPod>
+  </iosPods>
+</dependencies>
+

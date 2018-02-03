@@ -1,6 +1,26 @@
 Google Mobile Ads Unity Plugin Change Log
 
 **************
+Version 3.11.0
+**************
+
+Plugin:
+- Updated Android ad events to be invoked on the main thread.
+- Added `MobileAds.SetiOSAppPauseOnBackground()` method to pause iOS apps when
+displaying full screen ads.
+- Fixed issue were banners repositioned incorrectly following an orienation
+change.
+
+Mediation packages:
+- Added maio mediation support package.
+- Added nend mediation support package.
+
+Built and tested with:
+- Google Play services 11.8.0
+- Google Mobile Ads iOS SDK 7.27.0
+- Unity Jar Resolver 1.2.61.0
+
+**************
 Version 3.10.0
 **************
 

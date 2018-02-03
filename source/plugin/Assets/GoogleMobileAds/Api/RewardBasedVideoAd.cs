@@ -43,61 +43,62 @@ namespace GoogleMobileAds.Api
             this.client = (IRewardBasedVideoAdClient)method.Invoke(null, null);
             client.CreateRewardBasedVideoAd();
 
+            Utils.CheckInitialization();
             this.client.OnAdLoaded += (sender, args) =>
+            {
+                if (this.OnAdLoaded != null)
                 {
-                    if (this.OnAdLoaded != null)
-                    {
-                        this.OnAdLoaded(this, args);
-                    }
-                };
+                    MobileAdsEventExecutor.executeInUpdate(() => this.OnAdLoaded(this, args));
+                }
+            };
 
             this.client.OnAdFailedToLoad += (sender, args) =>
+            {
+                if (this.OnAdFailedToLoad != null)
                 {
-                    if (this.OnAdFailedToLoad != null)
-                    {
-                        this.OnAdFailedToLoad(this, args);
-                    }
-                };
+                    MobileAdsEventExecutor.executeInUpdate(() => this.OnAdFailedToLoad(this, args));
+                }
+            };
 
             this.client.OnAdOpening += (sender, args) =>
+            {
+                if (this.OnAdOpening != null)
                 {
-                    if (this.OnAdOpening != null)
-                    {
-                        this.OnAdOpening(this, args);
-                    }
-                };
+                    MobileAdsEventExecutor.executeInUpdate(() => this.OnAdOpening(this, args));
+                }
+            };
 
             this.client.OnAdStarted += (sender, args) =>
+            {
+                if (this.OnAdStarted != null)
                 {
-                    if (this.OnAdStarted != null)
-                    {
-                        this.OnAdStarted(this, args);
-                    }
-                };
+                    MobileAdsEventExecutor.executeInUpdate(() => this.OnAdStarted(this, args));
+                }
+            };
 
             this.client.OnAdClosed += (sender, args) =>
+            {
+                if (this.OnAdClosed != null)
                 {
-                    if (this.OnAdClosed != null)
-                    {
-                        this.OnAdClosed(this, args);
-                    }
-                };
+                    MobileAdsEventExecutor.executeInUpdate(() => this.OnAdClosed(this, args));
+                }
+            };
 
             this.client.OnAdLeavingApplication += (sender, args) =>
+            {
+                if (this.OnAdLeavingApplication != null)
                 {
-                    if (this.OnAdLeavingApplication != null)
-                    {
-                        this.OnAdLeavingApplication(this, args);
-                    }
-                };
+                    MobileAdsEventExecutor.executeInUpdate(() => this.OnAdLeavingApplication(this, args));
+                }
+            };
 
             this.client.OnAdRewarded += (sender, args) =>
+            {
+                if (this.OnAdRewarded != null)
                 {
-                    if (this.OnAdRewarded != null)
-                    {
-                        this.OnAdRewarded(this, args);
-                    }
-                };
+                    MobileAdsEventExecutor.executeInUpdate(() => this.OnAdRewarded(this, args));
+                }
+            };
         }
 
         // These are the ad callback events that can be hooked into.

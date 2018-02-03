@@ -29,6 +29,8 @@ public class GoogleMobileAdsDemoScript : MonoBehaviour
         string appId = "unexpected_platform";
 #endif
 
+        MobileAds.SetiOSAppPauseOnBackground(true);
+
         // Initialize the Google Mobile Ads SDK.
         MobileAds.Initialize(appId);
 

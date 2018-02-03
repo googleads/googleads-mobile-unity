@@ -1,0 +1,22 @@
+<dependencies>
+  <androidPackages>
+    <androidPackage spec="com.google.ads.mediation:maio:1.0.6.0">
+      <repositories>
+        <repository>https://jcenter.bintray.com/</repository>
+      </repositories>
+    </androidPackage>
+    <androidPackage spec="com.maio:android-sdk:1.0.6">
+      <repositories>
+        <repository>https://imobile-maio.github.io/maven</repository>
+      </repositories>
+    </androidPackage>
+  </androidPackages>
+
+  <iosPods>
+    <iosPod name="GoogleMobileAdsMediationMaio" version="1.2.18.0">
+      <sources>
+        <source>https://github.com/CocoaPods/Specs</source>
+      </sources>
+    </iosPod>
+  </iosPods>
+</dependencies>

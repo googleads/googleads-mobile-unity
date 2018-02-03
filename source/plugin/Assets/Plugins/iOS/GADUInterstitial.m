@@ -66,6 +66,10 @@
 }
 
 - (void)interstitialWillPresentScreen:(GADInterstitial *)ad {
+  if ([GADUPluginUtil pauseOnBackground]) {
+    UnityPause(YES);
+  }
+
   if (self.willPresentCallback) {
     self.willPresentCallback(self.interstitialClient);
   }
@@ -76,6 +80,10 @@
 }
 
 - (void)interstitialDidDismissScreen:(GADInterstitial *)ad {
+  if (UnityIsPaused()) {
+    UnityPause(NO);
+  }
+
   if (self.didDismissCallback) {
     self.didDismissCallback(self.interstitialClient);
   }
