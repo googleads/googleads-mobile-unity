@@ -30,6 +30,10 @@ import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.AdView;
 
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.FutureTask;
+
 /**
  * This class represents the native implementation for the Google Mobile Ads Unity plugin. This
  * class is used to request Google Mobile ads natively via the Google Mobile Ads library in Google
@@ -85,6 +89,7 @@ public class Banner {
      * banner ads as required.
      */
     private View.OnLayoutChangeListener mLayoutChangeListener;
+
 
     /**
      * Creates an instance of {@code Banner}.
@@ -308,7 +313,25 @@ public class Banner {
      * @return the height of the {@link AdView}.
      */
     public float getHeightInPixels() {
-        return mAdView.getAdSize().getHeightInPixels(mUnityPlayerActivity);
+        FutureTask<Integer> task = new FutureTask<>(new Callable<Integer>() {
+            @Override
+            public Integer call() throws Exception {
+                return mAdView.getAdSize().getHeightInPixels(mUnityPlayerActivity);
+            }
+        });
+        mUnityPlayerActivity.runOnUiThread(task);
+
+        float result = -1;
+        try {
+            result = task.get();
+        } catch (InterruptedException e) {
+            Log.e(PluginUtils.LOGTAG,
+                    String.format("Failed to get ad view height: %s", e.getLocalizedMessage()));
+        } catch (ExecutionException e) {
+            Log.e(PluginUtils.LOGTAG,
+                    String.format("Failed to get ad view height: %s", e.getLocalizedMessage()));
+        }
+        return result;
     }
 
     /**
@@ -317,7 +340,25 @@ public class Banner {
      * @return the width of the {@link AdView}.
      */
     public float getWidthInPixels() {
-        return mAdView.getAdSize().getWidthInPixels(mUnityPlayerActivity);
+        FutureTask<Integer> task = new FutureTask<>(new Callable<Integer>() {
+            @Override
+            public Integer call() throws Exception {
+                return mAdView.getAdSize().getWidthInPixels(mUnityPlayerActivity);
+            }
+        });
+        mUnityPlayerActivity.runOnUiThread(task);
+
+        float result = -1;
+        try {
+            result = task.get();
+        } catch (InterruptedException e) {
+            Log.e(PluginUtils.LOGTAG,
+                    String.format("Failed to get ad view width: %s", e.getLocalizedMessage()));
+        } catch (ExecutionException e) {
+            Log.e(PluginUtils.LOGTAG,
+                    String.format("Failed to get ad view width: %s", e.getLocalizedMessage()));
+        }
+        return result;
     }
 
     /**

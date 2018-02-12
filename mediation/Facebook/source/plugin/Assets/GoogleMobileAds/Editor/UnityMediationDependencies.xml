@@ -1,0 +1,23 @@
+<dependencies>
+  <androidPackages>
+    <androidPackage spec="com.google.ads.mediation:facebook:4.27.0.0">
+      <repositories>
+        <repository>https://jcenter.bintray.com/</repository>
+      </repositories>
+    </androidPackage>
+    <androidPackage spec="com.facebook.android:audience-network-sdk:4.27.0">
+      <repositories>
+        <repository>https://jcenter.bintray.com/</repository>
+      </repositories>
+    </androidPackage>
+  </androidPackages>
+
+  <iosPods>
+    <iosPod name="GoogleMobileAdsMediationFacebook" version="4.27.1.0">
+      <sources>
+        <source>https://github.com/CocoaPods/Specs</source>
+      </sources>
+    </iosPod>
+  </iosPods>
+</dependencies>
+

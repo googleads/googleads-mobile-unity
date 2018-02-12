@@ -1,5 +1,5 @@
 /*
-*   Gradle file to build a  Unity package to add AdColony mediation support to the Google Mobile Ads Unity plugin.
+*   Gradle file to build a Unity package to add Facebook mediation support to the Google Mobile Ads Unity plugin.
 *   Usage: ./gradlew exportPackage
 */
 plugins {
@@ -24,7 +24,7 @@ project.ext {
     }
 
     versionString = '1.0.0'
-    pluginName = 'GoogleMobileAdsAdColonyMediation'
+    pluginName = 'GoogleMobileAdsFacebookMediation'
     pluginFileName = "${pluginName}.unitypackage"
     zipName = "${pluginName}-${versionString}"
     zipFileName = "${zipName}.zip"
@@ -33,29 +33,6 @@ project.ext {
     buildPath = file('temp').absolutePath
     exportPath = file(pluginFileName).absolutePath
 }
-
-// Build jar from android plugin source files using existing Gradle build file.
-task buildAndroidPluginJar(type: GradleBuild) {
-    buildFile = 'source/android-library/adcolony/build.gradle'
-    tasks = ['build']
-}
-
-// Move android plugin jar to temporary build directory.
-task copyAndroidLibraryJar(type: Copy) {
-    from("source/android-library/adcolony/build/intermediates/bundles/release/")
-    into("${pluginBuildDir}/Assets/Plugins/Android/")
-    include('classes.jar')
-    rename('classes.jar', 'adcolony-extras-library.jar')
-}
-
-// Copy Unity mediation extras interface to temporary build directory.
-task copyExtrasInterface(type: Copy) {
-    from("../../source/plugin/Assets/GoogleMobileAds/Api/Mediation/")
-    into("${pluginBuildDir}/Assets/GoogleMobileAds/Api/Mediation/")
-    include('MediationExtras.cs')
-}
-
-copyAndroidLibraryJar.dependsOn(buildAndroidPluginJar)
 
 // Build unity package using through command line interface.
 // Create new unity project with files in temporary build directory and export files to a unity package.
@@ -68,9 +45,7 @@ task exportPackage(type: Exec) {
             "-projectPath", "${pluginBuildDir}",
             "-logFile", "temp/unity.log",
             "-exportPackage",
-            "Assets/GoogleMobileAds/Api/Mediation/AdColony",
             "Assets/GoogleMobileAds/Editor",
-            "Assets/Plugins",
             "${exportPath}",
             "-quit"
 
@@ -96,7 +71,7 @@ task clearTempBuildFolder(type: Delete) {
     delete { "${buildPath}" }
 }
 
-exportPackage.dependsOn(createTempBuildFolder, copyAndroidLibraryJar, copyExtrasInterface)
+exportPackage.dependsOn(createTempBuildFolder)
 exportPackage.finalizedBy(clearTempBuildFolder)
 
 /**
@@ -113,7 +88,7 @@ task clearZip(type: Delete) {
  */
 task makeZip(type: Zip) {
     // Targets to be added to the zip archive.
-    from("./${pluginFileName}", "./README.md", "./CHANGELOG.md")
+    from('./' + pluginFileName, './README.md', './CHANGELOG.md')
     // Root directory name for the zip archive.
     into(zipName)
     // Name of the zip archive.
@@ -153,8 +128,8 @@ bintray {
         repo = 'mobile-ads-adapters-unity'
         name = pluginName
         userOrg = 'google'
-        desc = 'AdColony plugin for Google Mobile Ads Mediation.'
-        websiteUrl = 'https://developers.google.com/admob/unity/mediation/adcolony'
+        desc = 'Facebook plugin for Google Mobile Ads Mediation.'
+        websiteUrl = 'https://developers.google.com/admob/unity/mediation/facebook'
         issueTrackerUrl = 'https://github.com/googleads/googleads-mobile-unity/issues'
         vcsUrl = 'https://github.com/googleads/googleads-mobile-unity'
         licenses = ['Apache-2.0']

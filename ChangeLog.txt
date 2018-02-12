@@ -1,6 +1,22 @@
 Google Mobile Ads Unity Plugin Change Log
 
 **************
+Version 3.11.1
+**************
+
+Plugin:
+- Fixed issue where calling GetWidthInPixels() or GetHeightInPixels() resulted
+in a null pointer exception.
+
+Mediation packages:
+- Added Facebook mediation support package.
+
+Built and tested with:
+- Google Play services 11.8.0
+- Google Mobile Ads iOS SDK 7.28.0
+- Unity Jar Resolver 1.2.61.0
+
+**************
 Version 3.11.0
 **************
 
