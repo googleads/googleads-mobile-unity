@@ -39,7 +39,7 @@ namespace GoogleMobileAds.Android.Mediation.AppLovin
             MonoBehaviour.print("AppLovin intialize received");
             AndroidJavaClass unityPlayer = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
             AndroidJavaObject currentActivity = unityPlayer.GetStatic<AndroidJavaObject>("currentActivity");
-            AndroidJavaObject appLovin = new AndroidJavaObject("com.applovin.sdk.AppLovinSdk");
+            AndroidJavaClass appLovin = new AndroidJavaClass("com.applovin.sdk.AppLovinSdk");
             appLovin.CallStatic("initializeSdk", currentActivity);
         }
     }
