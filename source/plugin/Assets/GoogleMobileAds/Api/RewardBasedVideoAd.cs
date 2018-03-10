@@ -43,12 +43,11 @@ namespace GoogleMobileAds.Api
             this.client = (IRewardBasedVideoAdClient)method.Invoke(null, null);
             client.CreateRewardBasedVideoAd();
 
-            Utils.CheckInitialization();
             this.client.OnAdLoaded += (sender, args) =>
             {
                 if (this.OnAdLoaded != null)
                 {
-                    MobileAdsEventExecutor.executeInUpdate(() => this.OnAdLoaded(this, args));
+                    this.OnAdLoaded(this, args);
                 }
             };
 
@@ -56,7 +55,7 @@ namespace GoogleMobileAds.Api
             {
                 if (this.OnAdFailedToLoad != null)
                 {
-                    MobileAdsEventExecutor.executeInUpdate(() => this.OnAdFailedToLoad(this, args));
+                    this.OnAdFailedToLoad(this, args);
                 }
             };
 
@@ -64,7 +63,7 @@ namespace GoogleMobileAds.Api
             {
                 if (this.OnAdOpening != null)
                 {
-                    MobileAdsEventExecutor.executeInUpdate(() => this.OnAdOpening(this, args));
+                    this.OnAdOpening(this, args);
                 }
             };
 
@@ -72,7 +71,7 @@ namespace GoogleMobileAds.Api
             {
                 if (this.OnAdStarted != null)
                 {
-                    MobileAdsEventExecutor.executeInUpdate(() => this.OnAdStarted(this, args));
+                    this.OnAdStarted(this, args);
                 }
             };
 
@@ -80,7 +79,7 @@ namespace GoogleMobileAds.Api
             {
                 if (this.OnAdClosed != null)
                 {
-                    MobileAdsEventExecutor.executeInUpdate(() => this.OnAdClosed(this, args));
+                    this.OnAdClosed(this, args);
                 }
             };
 
@@ -88,7 +87,7 @@ namespace GoogleMobileAds.Api
             {
                 if (this.OnAdLeavingApplication != null)
                 {
-                    MobileAdsEventExecutor.executeInUpdate(() => this.OnAdLeavingApplication(this, args));
+                    this.OnAdLeavingApplication(this, args);
                 }
             };
 
@@ -96,7 +95,7 @@ namespace GoogleMobileAds.Api
             {
                 if (this.OnAdRewarded != null)
                 {
-                    MobileAdsEventExecutor.executeInUpdate(() => this.OnAdRewarded(this, args));
+                    this.OnAdRewarded(this, args);
                 }
             };
         }
@@ -132,6 +131,12 @@ namespace GoogleMobileAds.Api
         public void Show()
         {
             client.ShowRewardBasedVideoAd();
+        }
+
+        // Sets the user id of current user.
+        public void SetUserId(string userId)
+        {
+            client.SetUserId(userId);
         }
 
         // Returns the mediation adapter class name.

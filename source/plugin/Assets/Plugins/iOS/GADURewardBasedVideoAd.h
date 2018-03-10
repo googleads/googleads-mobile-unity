@@ -10,7 +10,7 @@
 
 /// Initializes a GADURewardBasedVideoAd.
 - (instancetype)initWithRewardBasedVideoClientReference:
-        (GADUTypeRewardBasedVideoAdClientRef *)rewardBasedVideoAdClient;
+    (GADUTypeRewardBasedVideoAdClientRef *)rewardBasedVideoAdClient;
 
 /// The reward based video ad.
 @property(nonatomic, strong) GADRewardBasedVideoAd *rewardBasedVideo;
@@ -51,5 +51,8 @@
 
 /// Shows the reward based video ad.
 - (void)show;
+
+// Sets the user ID to be used in server-to-server reward callbacks.
+- (void)setUserId:(NSString *)userId;
 
 @end

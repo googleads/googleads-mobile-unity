@@ -45,22 +45,17 @@ namespace GoogleMobileAds.Api
                 BindingFlags.Static | BindingFlags.Public);
             this.adLoaderClient = (IAdLoaderClient)method.Invoke(null, new object[] { this });
 
-            Utils.CheckInitialization();
-
             this.adLoaderClient.OnCustomNativeTemplateAdLoaded +=
                     delegate (object sender, CustomNativeEventArgs args)
             {
-                if (this.OnCustomNativeTemplateAdLoaded != null)
-                {
-                    MobileAdsEventExecutor.executeInUpdate(() => this.OnCustomNativeTemplateAdLoaded(this, args));
-                }
+                this.OnCustomNativeTemplateAdLoaded(this, args);
             };
             this.adLoaderClient.OnAdFailedToLoad += delegate (
                 object sender, AdFailedToLoadEventArgs args)
             {
                 if (this.OnAdFailedToLoad != null)
                 {
-                    MobileAdsEventExecutor.executeInUpdate(() => this.OnAdFailedToLoad(this, args));
+                    this.OnAdFailedToLoad(this, args);
                 }
             };
         }

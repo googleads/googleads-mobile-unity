@@ -34,7 +34,6 @@ namespace GoogleMobileAds.Api
             this.client = (IBannerClient)method.Invoke(null, null);
             client.CreateBannerView(adUnitId, adSize, position);
 
-            Utils.CheckInitialization();
             ConfigureBannerEvents();
         }
 
@@ -49,7 +48,6 @@ namespace GoogleMobileAds.Api
             this.client = (IBannerClient)method.Invoke(null, null);
             client.CreateBannerView(adUnitId, adSize, x, y);
 
-            Utils.CheckInitialization();
             ConfigureBannerEvents();
         }
 
@@ -118,7 +116,7 @@ namespace GoogleMobileAds.Api
             {
                 if (this.OnAdLoaded != null)
                 {
-                    MobileAdsEventExecutor.executeInUpdate(() => this.OnAdLoaded(this, args));
+                    this.OnAdLoaded(this, args);
                 }
             };
 
@@ -126,7 +124,7 @@ namespace GoogleMobileAds.Api
             {
                 if (this.OnAdFailedToLoad != null)
                 {
-                    MobileAdsEventExecutor.executeInUpdate(() => this.OnAdFailedToLoad(this, args));
+                    this.OnAdFailedToLoad(this, args);
                 }
             };
 
@@ -134,7 +132,7 @@ namespace GoogleMobileAds.Api
             {
                 if (this.OnAdOpening != null)
                 {
-                    MobileAdsEventExecutor.executeInUpdate(() => this.OnAdOpening(this, args));
+                    this.OnAdOpening(this, args);
                 }
             };
 
@@ -142,7 +140,7 @@ namespace GoogleMobileAds.Api
             {
                 if (this.OnAdClosed != null)
                 {
-                    MobileAdsEventExecutor.executeInUpdate(() => this.OnAdClosed(this, args));
+                    this.OnAdClosed(this, args);
                 }
             };
 
@@ -150,7 +148,7 @@ namespace GoogleMobileAds.Api
             {
                 if (this.OnAdLeavingApplication != null)
                 {
-                    MobileAdsEventExecutor.executeInUpdate(() => this.OnAdLeavingApplication(this, args));
+                    this.OnAdLeavingApplication(this, args);
                 }
             };
         }

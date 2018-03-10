@@ -84,8 +84,7 @@ namespace GoogleMobileAds.Android
         {
             CustomNativeTemplateAd nativeAd = new CustomNativeTemplateAd(
                     new CustomNativeTemplateClient(ad));
-            MobileAdsEventExecutor.executeInUpdate(() =>
-                this.CustomNativeTemplateCallbacks[nativeAd.GetCustomTemplateId()](nativeAd, assetName));
+            this.CustomNativeTemplateCallbacks[nativeAd.GetCustomTemplateId()](nativeAd, assetName);
         }
     }
 }

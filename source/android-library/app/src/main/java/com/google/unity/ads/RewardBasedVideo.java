@@ -127,6 +127,18 @@ public class RewardBasedVideo {
     }
 
     /**
+     * Sets the user ID to be used in server-to-server reward callbacks.
+     */
+    public void setUserId(final String userId) {
+        activity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                rewardBasedVideo.setUserId(userId);
+            }
+        });
+    }
+
+    /**
      * Shows the reward based video ad if it has loaded.
      */
     public void show() {

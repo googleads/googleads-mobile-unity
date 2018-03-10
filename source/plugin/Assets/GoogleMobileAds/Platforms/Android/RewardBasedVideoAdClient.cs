@@ -66,6 +66,11 @@ namespace GoogleMobileAds.Android
             androidRewardBasedVideo.Call("show");
         }
 
+        public void SetUserId(string userId)
+        {
+            androidRewardBasedVideo.Call("setUserId", userId);
+        }
+
         public void DestroyRewardBasedVideoAd()
         {
             androidRewardBasedVideo.Call("destroy");

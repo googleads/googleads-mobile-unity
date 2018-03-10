@@ -353,6 +353,14 @@ BOOL GADURewardBasedVideoAdReady(GADUTypeRewardBasedVideoAdRef rewardBasedVideo)
   return [internalRewardBasedVideoAd isReady];
 }
 
+/// Sets the user ID to be used in server-to-server reward callbacks.
+void GADUSetRewardBasedVideoAdUserId(GADUTypeRewardBasedVideoAdRef rewardBasedVideo,
+                                     const char *userId) {
+  GADURewardBasedVideoAd *internalRewardBasedVideoAd =
+      (__bridge GADURewardBasedVideoAd *)rewardBasedVideo;
+  [internalRewardBasedVideoAd setUserId:GADUStringFromUTF8String(userId)];
+}
+
 /// Shows the GADRewardBasedVideo.
 void GADUShowRewardBasedVideoAd(GADUTypeRewardBasedVideoAdRef rewardBasedVideoAd) {
   GADURewardBasedVideoAd *internalRewardBasedVideoAd =

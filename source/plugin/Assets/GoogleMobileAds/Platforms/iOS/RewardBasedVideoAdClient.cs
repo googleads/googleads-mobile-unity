@@ -115,6 +115,12 @@ namespace GoogleMobileAds.iOS
             Externs.GADUShowRewardBasedVideoAd(this.RewardBasedVideoAdPtr);
         }
 
+        // Sets the user ID to be used in server-to-server reward callbacks.
+        public void SetUserId(string userId)
+        {
+            Externs.GADUSetRewardBasedVideoAdUserId(this.RewardBasedVideoAdPtr, userId);
+        }
+
         public bool IsLoaded()
         {
             return Externs.GADURewardBasedVideoAdReady(this.RewardBasedVideoAdPtr);

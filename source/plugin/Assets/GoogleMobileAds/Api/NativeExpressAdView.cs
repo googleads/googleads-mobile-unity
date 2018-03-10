@@ -34,7 +34,6 @@ namespace GoogleMobileAds.Api
             this.client = (INativeExpressAdClient)method.Invoke(null, null);
             this.client.CreateNativeExpressAdView(adUnitId, adSize, position);
 
-            Utils.CheckInitialization();
             ConfigureNativeExpressAdEvents();
         }
 
@@ -49,7 +48,6 @@ namespace GoogleMobileAds.Api
             this.client = (INativeExpressAdClient)method.Invoke(null, null);
             this.client.CreateNativeExpressAdView(adUnitId, adSize, x, y);
 
-            Utils.CheckInitialization();
             ConfigureNativeExpressAdEvents();
         }
 
@@ -94,7 +92,7 @@ namespace GoogleMobileAds.Api
             {
                 if (this.OnAdLoaded != null)
                 {
-                    MobileAdsEventExecutor.executeInUpdate(() => this.OnAdLoaded(this, args));
+                    this.OnAdLoaded(this, args);
                 }
             };
 
@@ -102,7 +100,7 @@ namespace GoogleMobileAds.Api
             {
                 if (this.OnAdFailedToLoad != null)
                 {
-                    MobileAdsEventExecutor.executeInUpdate(() => this.OnAdFailedToLoad(this, args));
+                    this.OnAdFailedToLoad(this, args);
                 }
             };
 
@@ -110,7 +108,7 @@ namespace GoogleMobileAds.Api
             {
                 if (this.OnAdOpening != null)
                 {
-                    MobileAdsEventExecutor.executeInUpdate(() => this.OnAdOpening(this, args));
+                    this.OnAdOpening(this, args);
                 }
             };
 
@@ -118,7 +116,7 @@ namespace GoogleMobileAds.Api
             {
                 if (this.OnAdClosed != null)
                 {
-                    MobileAdsEventExecutor.executeInUpdate(() => this.OnAdClosed(this, args));
+                    this.OnAdClosed(this, args);
                 }
             };
 
@@ -126,7 +124,7 @@ namespace GoogleMobileAds.Api
             {
                 if (this.OnAdLeavingApplication != null)
                 {
-                    MobileAdsEventExecutor.executeInUpdate(() => this.OnAdLeavingApplication(this, args));
+                    this.OnAdLeavingApplication(this, args);
                 }
             };
         }

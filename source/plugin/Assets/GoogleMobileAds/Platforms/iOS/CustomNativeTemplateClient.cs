@@ -145,7 +145,7 @@ namespace GoogleMobileAds.iOS
             if (client.clickHandler != null)
             {
                 CustomNativeTemplateAd nativeAd = new CustomNativeTemplateAd(client);
-                MobileAdsEventExecutor.executeInUpdate(() => client.clickHandler(nativeAd, assetName));
+                client.clickHandler(nativeAd, assetName);
             }
 
         }

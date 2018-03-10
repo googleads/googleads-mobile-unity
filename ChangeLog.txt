@@ -1,6 +1,24 @@
 Google Mobile Ads Unity Plugin Change Log
 
 **************
+Version 3.12.0
+**************
+
+Plugin:
+- Add `setUserId` API to rewarded video ads to identify users in
+server-to-server reward callbacks.
+- Remove functionality that forced ad events to be invoked on the
+main thread.
+
+Mediation packages:
+- Updated maio Unity package to v1.0.1.
+
+Built and tested with:
+- Google Play services 11.8.0
+- Google Mobile Ads iOS SDK 7.29.0
+- Unity Jar Resolver 1.2.61.0
+
+**************
 Version 3.11.1
 **************
 

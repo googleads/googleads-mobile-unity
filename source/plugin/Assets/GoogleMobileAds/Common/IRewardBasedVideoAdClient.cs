@@ -49,5 +49,8 @@ namespace GoogleMobileAds.Common
 
         // Shows the reward based video ad on the screen.
         void ShowRewardBasedVideoAd();
+
+        // Sets the user id of current user.
+        void SetUserId(string userId);
     }
 }
