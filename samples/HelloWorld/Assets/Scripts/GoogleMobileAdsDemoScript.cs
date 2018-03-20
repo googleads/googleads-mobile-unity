@@ -1,6 +1,5 @@
 using System;
 using UnityEngine;
-using GoogleMobileAds;
 using GoogleMobileAds.Api;
 
 // Example script showing how to invoke the Google Mobile Ads Unity plugin.
