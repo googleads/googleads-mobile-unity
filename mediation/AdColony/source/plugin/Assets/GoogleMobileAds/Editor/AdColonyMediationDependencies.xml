@@ -5,7 +5,7 @@
         <repository>https://adcolony.bintray.com/AdColony</repository>
       </repositories>
     </androidPackage>
-    <androidPackage spec="com.adcolony:sdk:3.3.0">
+    <androidPackage spec="com.adcolony:sdk:3.3.0-unity">
       <repositories>
         <repository>https://adcolony.bintray.com/AdColony</repository>
       </repositories>
