@@ -1,13 +1,33 @@
 Google Mobile Ads Unity Plugin Change Log
 
 **************
+Version 3.13.0
+**************
+
+Plugin:
+- Added `OnAdCompleted` ad event to rewarded video ads.
+- Removed support for Native Ads Express.
+
+Mediation packages:
+- Added Chartboost mediation support package.
+- Added MoPub mediation support package.
+- Updated AppLovin Unity package to v1.2.1.
+- Updated AdColony Unity package to v1.0.1.
+- Updated myTarget Unity package to v2.0.0.
+
+Built and tested with:
+- Google Play services 12.0.1
+- Google Mobile Ads iOS SDK 7.30.0
+- Unity Jar Resolver 1.2.64.0
+
+**************
 Version 3.12.0
 **************
 
 Plugin:
-- Add `setUserId` API to rewarded video ads to identify users in
+- Added `setUserId` API to rewarded video ads to identify users in
 server-to-server reward callbacks.
-- Remove functionality that forced ad events to be invoked on the
+- Removed functionality that forced ad events to be invoked on the
 main thread.
 
 Mediation packages:

@@ -99,6 +99,11 @@ public class RewardBasedVideo {
                     public void onRewardedVideoAdLeftApplication() {
                         adListener.onAdLeftApplication();
                     }
+
+                    @Override
+                    public void onRewardedVideoCompleted() {
+                        adListener.onAdCompleted();
+                    }
                 });
             }
         });

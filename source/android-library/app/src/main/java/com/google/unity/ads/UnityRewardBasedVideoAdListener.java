@@ -27,4 +27,5 @@ public interface UnityRewardBasedVideoAdListener {
     void onAdClosed();
     void onAdRewarded(String type, float amount);
     void onAdLeftApplication();
+    void onAdCompleted();
 }

@@ -11,7 +11,7 @@ import java.util.HashMap;
 /**
  * Mediation extras bundle class for the AdColony adapter.
  */
-public abstract class AdColonyUnityExtrasBuilder implements AdNetworkExtras {
+public class AdColonyUnityExtrasBuilder implements AdNetworkExtras {
 
     /**
      * Key to obtain Zone ID.

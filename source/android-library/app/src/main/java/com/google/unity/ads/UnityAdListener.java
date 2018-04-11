@@ -16,7 +16,7 @@
 package com.google.unity.ads;
 
 /**
- * An interface form of {@link UnityBannerAdListener} that can be implemented via
+ * An interface form of {@link UnityAdListener} that can be implemented via
  * {@code AndroidJavaProxy} in Unity to receive ad events synchronously.
  */
 public interface UnityAdListener {

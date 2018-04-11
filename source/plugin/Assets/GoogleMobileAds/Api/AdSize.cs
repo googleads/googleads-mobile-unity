@@ -12,8 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-namespace GoogleMobileAds.Api {
-    public class AdSize {
+namespace GoogleMobileAds.Api
+{
+    public class AdSize
+    {
         private bool isSmartBanner;
         private int width;
         private int height;
@@ -25,13 +27,15 @@ namespace GoogleMobileAds.Api {
         public static readonly AdSize SmartBanner = new AdSize(true);
         public static readonly int FullWidth = -1;
 
-        public AdSize(int width, int height) {
+        public AdSize(int width, int height)
+        {
             isSmartBanner = false;
             this.width = width;
             this.height = height;
         }
 
-        private AdSize(bool isSmartBanner) : this(0, 0) {
+        private AdSize(bool isSmartBanner) : this(0, 0)
+        {
             this.isSmartBanner = isSmartBanner;
         }
 
@@ -57,6 +61,37 @@ namespace GoogleMobileAds.Api {
             {
                 return isSmartBanner;
             }
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (obj == null || GetType() != obj.GetType())
+                return false;
+
+            AdSize other = (AdSize)obj;
+            return (width == other.width) && (height == other.height) && (isSmartBanner == other.isSmartBanner);
+        }
+
+        public static bool operator ==(AdSize a, AdSize b)
+        {
+            return a.Equals(b);
+        }
+
+        public static bool operator !=(AdSize a, AdSize b)
+        {
+            return !a.Equals(b);
+        }
+
+        public override int GetHashCode()
+        {
+            int hashBase = 71;
+            int hashMultiplier = 11;
+
+            int hash = hashBase;
+            hash = (hash * hashMultiplier) ^ width.GetHashCode();
+            hash = (hash * hashMultiplier) ^ height.GetHashCode();
+            hash = (hash * hashMultiplier) ^ isSmartBanner.GetHashCode();
+            return hash;
         }
     }
 }

@@ -31,7 +31,8 @@
 - (instancetype)initWithAdLoaderClientReference:(GADUTypeAdLoaderClientRef *)adLoaderClient
                                        adUnitID:(NSString *)adUnitID
                                     templateIDs:(NSArray *)templateIDs
-                                        adTypes:(NSArray *)adTypes;
+                                        adTypes:(NSArray *)adTypes
+                                        options:(NSArray *)options;
 
 /// Makes an ad request. Additional targeting options can be supplied with a request object.
 - (void)loadRequest:(GADRequest *)request;

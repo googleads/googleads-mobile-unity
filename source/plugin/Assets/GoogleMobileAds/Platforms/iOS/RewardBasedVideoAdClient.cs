@@ -52,6 +52,9 @@ namespace GoogleMobileAds.iOS
         internal delegate void GADURewardBasedVideoAdWillLeaveApplicationCallback(
             IntPtr rewardBasedVideoAdClient);
 
+        internal delegate void GADURewardBasedVideoAdDidCompleteCallback(
+            IntPtr rewardBasedVideoAdClient);
+
         #endregion
 
         public event EventHandler<EventArgs> OnAdLoaded;
@@ -67,6 +70,8 @@ namespace GoogleMobileAds.iOS
         public event EventHandler<Reward> OnAdRewarded;
 
         public event EventHandler<EventArgs> OnAdLeavingApplication;
+
+        public event EventHandler<EventArgs> OnAdCompleted;
 
         // This property should be used when setting the rewardBasedVideoPtr.
         private IntPtr RewardBasedVideoAdPtr
@@ -97,7 +102,8 @@ namespace GoogleMobileAds.iOS
                 RewardBasedVideoAdDidStartCallback,
                 RewardBasedVideoAdDidCloseCallback,
                 RewardBasedVideoAdDidRewardUserCallback,
-                RewardBasedVideoAdWillLeaveApplicationCallback);
+                RewardBasedVideoAdWillLeaveApplicationCallback,
+                RewardBasedVideoAdDidCompleteCallback);
         }
 
         // Load an ad.
@@ -239,6 +245,18 @@ namespace GoogleMobileAds.iOS
             if (client.OnAdLeavingApplication != null)
             {
                 client.OnAdLeavingApplication(client, EventArgs.Empty);
+            }
+        }
+
+        [MonoPInvokeCallback(typeof(GADURewardBasedVideoAdDidCompleteCallback))]
+        private static void RewardBasedVideoAdDidCompleteCallback(
+            IntPtr rewardBasedVideoAdClient)
+        {
+            RewardBasedVideoAdClient client = IntPtrToRewardBasedVideoClient(
+                rewardBasedVideoAdClient);
+            if (client.OnAdCompleted != null)
+            {
+                client.OnAdCompleted(client, EventArgs.Empty);
             }
         }
 

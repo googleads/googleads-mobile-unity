@@ -27,7 +27,7 @@
 - (void)performClickOnAssetWithKey:(NSString *)key withCustomClickAction:(bool)customClickAction {
   if (customClickAction) {
     __weak GADUNativeCustomTemplateAd *weakSelf = self;
-    [self.nativeCustomTemplateAd setCustomClickHandler:^(NSString *assetID){
+    [self.nativeCustomTemplateAd setCustomClickHandler:^(NSString *assetID) {
       [weakSelf didReceiveClickForAsset:key];
     }];
   }

@@ -1,6 +1,5 @@
 using System;
 using UnityEngine;
-using GoogleMobileAds;
 using GoogleMobileAds.Api;
 
 // Example script showing how to invoke the Google Mobile Ads Unity plugin.
@@ -8,7 +7,6 @@ public class GoogleMobileAdsDemoScript : MonoBehaviour
 {
     private BannerView bannerView;
     private InterstitialAd interstitial;
-    private NativeExpressAdView nativeExpressAdView;
     private RewardBasedVideoAd rewardBasedVideo;
     private float deltaTime = 0.0f;
     private static string outputMessage = string.Empty;
@@ -123,29 +121,9 @@ public class GoogleMobileAdsDemoScript : MonoBehaviour
             this.interstitial.Destroy();
         }
 
-        Rect requestNativeExpressAdRect = new Rect(
-            columnTwoPosition,
-            0.05f * Screen.height,
-            buttonWidth,
-            buttonHeight);
-        if (GUI.Button(requestNativeExpressAdRect, "Request Native\nExpress Ad"))
-        {
-            this.RequestNativeExpressAdView();
-        }
-
-        Rect destroyNativeExpressAdRect = new Rect(
-            columnTwoPosition,
-            0.225f * Screen.height,
-            buttonWidth,
-            buttonHeight);
-        if (GUI.Button(destroyNativeExpressAdRect, "Destroy Native\nExpress Ad"))
-        {
-            this.nativeExpressAdView.Destroy();
-        }
-
         Rect requestRewardedRect = new Rect(
             columnTwoPosition,
-            0.4f * Screen.height,
+            0.05f * Screen.height,
             buttonWidth,
             buttonHeight);
         if (GUI.Button(requestRewardedRect, "Request\nRewarded Video"))
@@ -155,7 +133,7 @@ public class GoogleMobileAdsDemoScript : MonoBehaviour
 
         Rect showRewardedRect = new Rect(
             columnTwoPosition,
-            0.575f * Screen.height,
+            0.225f * Screen.height,
             buttonWidth,
             buttonHeight);
         if (GUI.Button(showRewardedRect, "Show\nRewarded Video"))
@@ -249,42 +227,6 @@ public class GoogleMobileAdsDemoScript : MonoBehaviour
 
         // Load an interstitial ad.
         this.interstitial.LoadAd(this.CreateAdRequest());
-    }
-
-    private void RequestNativeExpressAdView()
-    {
-        // These ad units are configured to always serve test ads.
-#if UNITY_EDITOR
-        string adUnitId = "unused";
-#elif UNITY_ANDROID
-        string adUnitId = "ca-app-pub-3940256099942544/1072772517";
-#elif UNITY_IPHONE
-        string adUnitId = "ca-app-pub-3940256099942544/2562852117";
-#else
-        string adUnitId = "unexpected_platform";
-#endif
-
-        // Clean up native express ad before creating a new one.
-        if (this.nativeExpressAdView != null)
-        {
-            this.nativeExpressAdView.Destroy();
-        }
-
-        // Create a 320x150 native express ad at the top of the screen.
-        this.nativeExpressAdView = new NativeExpressAdView(
-            adUnitId,
-            new AdSize(320, 150),
-            AdPosition.Top);
-
-        // Register for ad events.
-        this.nativeExpressAdView.OnAdLoaded += this.HandleNativeExpressAdLoaded;
-        this.nativeExpressAdView.OnAdFailedToLoad += this.HandleNativeExpresseAdFailedToLoad;
-        this.nativeExpressAdView.OnAdOpening += this.HandleNativeExpressAdOpened;
-        this.nativeExpressAdView.OnAdClosed += this.HandleNativeExpressAdClosed;
-        this.nativeExpressAdView.OnAdLeavingApplication += this.HandleNativeExpressAdLeftApplication;
-
-        // Load a native express ad.
-        this.nativeExpressAdView.LoadAd(this.CreateAdRequest());
     }
 
     private void RequestRewardBasedVideo()
@@ -381,36 +323,6 @@ public class GoogleMobileAdsDemoScript : MonoBehaviour
     public void HandleInterstitialLeftApplication(object sender, EventArgs args)
     {
         MonoBehaviour.print("HandleInterstitialLeftApplication event received");
-    }
-
-    #endregion
-
-    #region Native express ad callback handlers
-
-    public void HandleNativeExpressAdLoaded(object sender, EventArgs args)
-    {
-        MonoBehaviour.print("HandleNativeExpressAdAdLoaded event received");
-    }
-
-    public void HandleNativeExpresseAdFailedToLoad(object sender, AdFailedToLoadEventArgs args)
-    {
-        MonoBehaviour.print(
-            "HandleNativeExpressAdFailedToReceiveAd event received with message: " + args.Message);
-    }
-
-    public void HandleNativeExpressAdOpened(object sender, EventArgs args)
-    {
-        MonoBehaviour.print("HandleNativeExpressAdAdOpened event received");
-    }
-
-    public void HandleNativeExpressAdClosed(object sender, EventArgs args)
-    {
-        MonoBehaviour.print("HandleNativeExpressAdAdClosed event received");
-    }
-
-    public void HandleNativeExpressAdLeftApplication(object sender, EventArgs args)
-    {
-        MonoBehaviour.print("HandleNativeExpressAdAdLeftApplication event received");
     }
 
     #endregion

@@ -15,14 +15,15 @@
 - (instancetype)initWithAdLoaderClientReference:(GADUTypeAdLoaderClientRef *)adLoaderClient
                                        adUnitID:(NSString *)adUnitID
                                     templateIDs:(NSArray *)templateIDs
-                                        adTypes:(NSArray *)adTypes {
+                                        adTypes:(NSArray *)adTypes
+                                        options:(NSArray *)options {
   self = [super init];
   if (self) {
     _adLoaderClient = adLoaderClient;
     _adLoader = [[GADAdLoader alloc] initWithAdUnitID:adUnitID
                                    rootViewController:[GADUPluginUtil unityGLViewController]
                                               adTypes:adTypes
-                                              options:nil];
+                                              options:options];
     _adLoader.delegate = self;
     _templateIDs = [NSArray arrayWithArray:templateIDs];
     _adTypes = [NSArray arrayWithArray:adTypes];

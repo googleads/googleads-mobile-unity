@@ -21,7 +21,7 @@ using UnityEngine;
 namespace GoogleMobileAds.Common
 {
     public class DummyClient : IBannerClient, IInterstitialClient, IRewardBasedVideoAdClient,
-            IAdLoaderClient, INativeExpressAdClient, IMobileAdsClient
+            IAdLoaderClient, IMobileAdsClient
     {
         public DummyClient()
         {
@@ -44,6 +44,8 @@ namespace GoogleMobileAds.Common
         public event EventHandler<Reward> OnAdRewarded;
 
         public event EventHandler<EventArgs> OnAdLeavingApplication;
+
+        public event EventHandler<EventArgs> OnAdCompleted;
 
         public event EventHandler<CustomNativeEventArgs> OnCustomNativeTemplateAdLoaded;
 
@@ -191,32 +193,7 @@ namespace GoogleMobileAds.Common
             Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
         }
 
-        public void CreateNativeExpressAdView(string adUnitId, AdSize adSize, AdPosition position)
-        {
-            Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
-        }
-
-        public void CreateNativeExpressAdView(string adUnitId, AdSize adSize, int positionX, int positionY)
-        {
-            Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
-        }
-
         public void SetAdSize(AdSize adSize)
-        {
-            Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
-        }
-
-        public void ShowNativeExpressAdView()
-        {
-            Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
-        }
-
-        public void HideNativeExpressAdView()
-        {
-            Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
-        }
-
-        public void DestroyNativeExpressAdView()
         {
             Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
         }

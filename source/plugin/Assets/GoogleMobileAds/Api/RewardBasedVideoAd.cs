@@ -98,6 +98,14 @@ namespace GoogleMobileAds.Api
                     this.OnAdRewarded(this, args);
                 }
             };
+
+            this.client.OnAdCompleted += (sender, args) =>
+            {
+                if (this.OnAdCompleted != null)
+                {
+                    this.OnAdCompleted(this, args);
+                }
+            };
         }
 
         // These are the ad callback events that can be hooked into.
@@ -114,6 +122,8 @@ namespace GoogleMobileAds.Api
         public event EventHandler<Reward> OnAdRewarded;
 
         public event EventHandler<EventArgs> OnAdLeavingApplication;
+
+        public event EventHandler<EventArgs> OnAdCompleted;
 
         // Loads a new reward based video ad request
         public void LoadAd(AdRequest request, string adUnitId)
