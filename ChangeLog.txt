@@ -1,6 +1,19 @@
 Google Mobile Ads Unity Plugin Change Log
 
 **************
+Version 3.13.1
+**************
+
+Plugin:
+- Fixed issue where banner ads reposition to top of screen after a full
+screen ad is displayed.
+
+Built and tested with:
+- Google Play services 12.0.1
+- Google Mobile Ads iOS SDK 7.30.0
+- Unity Jar Resolver 1.2.64.0
+
+**************
 Version 3.13.0
 **************
 
