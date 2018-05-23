@@ -28,6 +28,11 @@ namespace GoogleMobileAds.Api.Mediation.AppLovin
             client.Initialize();
         }
 
+        public static void SetHasUserConsent(bool hasUserConsent)
+        {
+            client.SetHasUserConsent (hasUserConsent);
+        }
+
         private static IAppLovinClient GetAppLovinClient()
         {
             return AppLovinClientFactory.AppLovinInstance();

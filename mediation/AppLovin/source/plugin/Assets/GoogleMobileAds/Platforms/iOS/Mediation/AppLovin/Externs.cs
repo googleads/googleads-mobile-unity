@@ -24,6 +24,9 @@ namespace GoogleMobileAds.iOS.Mediation.AppLovin
     {
         [DllImport("__Internal")]
         internal static extern void GADUMInitializeAppLovin();
+
+        [DllImport("__Internal")]
+        internal static extern void GADUMAppLovinSetHasUserConsent(bool hasUserConsent);
     }
 }
 

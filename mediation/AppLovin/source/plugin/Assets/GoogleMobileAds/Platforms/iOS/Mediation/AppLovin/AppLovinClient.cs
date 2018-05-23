@@ -38,6 +38,11 @@ namespace GoogleMobileAds.iOS.Mediation.AppLovin
         {
             Externs.GADUMInitializeAppLovin();
         }
+
+        public void SetHasUserConsent(bool hasUserConsent)
+        {
+            Externs.GADUMAppLovinSetHasUserConsent (hasUserConsent);
+        }
     }
 }
 

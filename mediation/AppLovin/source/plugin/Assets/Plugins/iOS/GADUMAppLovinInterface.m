@@ -17,3 +17,7 @@
 void GADUMInitializeAppLovin(void) {
     [ALSdk initializeSdk];
 }
+
+void GADUMAppLovinSetHasUserConsent(BOOL hasUserConsent) {
+    [ALPrivacySettings setHasUserConsent:hasUserConsent];
+}

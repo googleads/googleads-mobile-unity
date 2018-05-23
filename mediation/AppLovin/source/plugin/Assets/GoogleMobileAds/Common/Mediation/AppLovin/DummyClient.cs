@@ -30,6 +30,11 @@ namespace GoogleMobileAds.Common.Mediation.AppLovin
         {
             Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
         }
+
+        public void SetHasUserConsent(bool hasUserConsent)
+        {
+            Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
+        }
     }
 }
 
