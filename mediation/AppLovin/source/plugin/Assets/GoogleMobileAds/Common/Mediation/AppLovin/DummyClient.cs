@@ -35,6 +35,11 @@ namespace GoogleMobileAds.Common.Mediation.AppLovin
         {
             Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
         }
+
+        public void SetIsAgeRestrictedUser(bool isAgeRestrictedUser)
+        {
+            Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
+        }
     }
 }
 

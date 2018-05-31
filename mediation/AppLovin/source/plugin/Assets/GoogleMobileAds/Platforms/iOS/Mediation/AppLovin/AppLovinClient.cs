@@ -41,7 +41,16 @@ namespace GoogleMobileAds.iOS.Mediation.AppLovin
 
         public void SetHasUserConsent(bool hasUserConsent)
         {
+            string parameterString = (hasUserConsent == true ? "YES" : "NO");
+            MonoBehaviour.print("Calling '[ALPrivacySettings setHasUserConsent:]' with argument: " + parameterString);
             Externs.GADUMAppLovinSetHasUserConsent (hasUserConsent);
+        }
+
+        public void SetIsAgeRestrictedUser(bool isAgeRestrictedUser)
+        {
+            string parameterString = (isAgeRestrictedUser == true ? "YES" : "NO");
+            MonoBehaviour.print("Calling '[ALPrivacySettings setIsAgeRestrictedUser:]' with argument: " + parameterString);
+            Externs.GADUMAppLovinSetIsAgeRestrictedUser (isAgeRestrictedUser);
         }
     }
 }
