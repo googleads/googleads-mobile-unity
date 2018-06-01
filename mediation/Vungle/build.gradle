@@ -23,7 +23,7 @@ project.ext {
                 'UNITY_EXE environment variable and point it to your Unity installation.')
     }
 
-    versionString = '1.0.0'
+    versionString = '3.0.0'
     pluginName = 'GoogleMobileAdsVungleMediation'
     pluginFileName = "${pluginName}.unitypackage"
     zipName = "${pluginName}-${versionString}"
@@ -68,8 +68,7 @@ task exportPackage(type: Exec) {
             "-projectPath", "${pluginBuildDir}",
             "-logFile", "temp/unity.log",
             "-exportPackage",
-            "Assets/GoogleMobileAds/Api/Mediation/Vungle",
-            "Assets/GoogleMobileAds/Editor",
+            "Assets/GoogleMobileAds",
             "Assets/Plugins",
             "${exportPath}",
             "-quit"
