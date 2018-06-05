@@ -1,11 +1,11 @@
 <dependencies>
   <androidPackages>
-    <androidPackage spec="com.google.ads.mediation:mopub:4.20.0.0">
+    <androidPackage spec="com.google.ads.mediation:mopub:5.0.0.0">
       <repositories>
         <repository>https://jcenter.bintray.com/</repository>
       </repositories>
     </androidPackage>
-    <androidPackage spec="com.mopub:mopub-sdk:4.20.0">
+    <androidPackage spec="com.mopub:mopub-sdk:5.0.0">
       <repositories>
         <repository>https://jcenter.bintray.com/</repository>
       </repositories>
@@ -13,7 +13,7 @@
   </androidPackages>
 
   <iosPods>
-    <iosPod name="GoogleMobileAdsMediationMoPub" version="4.20.1.0">
+    <iosPod name="GoogleMobileAdsMediationMoPub" version="5.0.0.0">
       <sources>
         <source>https://github.com/CocoaPods/Specs</source>
       </sources>
