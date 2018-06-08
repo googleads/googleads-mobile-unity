@@ -1,8 +1,8 @@
 <dependencies>
   <androidPackages>
-    <androidPackage spec="com.google.ads.mediation:applovin:8.0.0.0">
+    <androidPackage spec="com.google.ads.mediation:applovin:8.0.1.0">
     </androidPackage>
-    <androidPackage spec="com.applovin:applovin-sdk:8.0.0">
+    <androidPackage spec="com.applovin:applovin-sdk:8.0.1">
     </androidPackage>
   </androidPackages>
 
