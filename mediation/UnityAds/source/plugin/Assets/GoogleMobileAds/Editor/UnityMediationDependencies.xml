@@ -13,7 +13,7 @@
   </androidPackages>
 
   <iosPods>
-    <iosPod name="GoogleMobileAdsMediationUnity" version="2.2.0.0">
+    <iosPod name="GoogleMobileAdsMediationUnity" version="2.1.2.0">
       <sources>
         <source>https://github.com/CocoaPods/Specs</source>
       </sources>
