@@ -34,9 +34,14 @@ public class AdColonyUnityExtrasBuilder implements AdNetworkExtras {
     private static final String KEY_SHOW_POST_POPUP = "show_post_popup";
 
     /**
-     * Key to obtain test mode option.
+     * Key to obtain the "GDPR Required" option.
      */
-    private static final String KEY_TEST_MODE = "test_mode";
+    private static final String KEY_GDPR_REQUIRED = "gdpr_required";
+
+    /**
+     * Key to obtain the "GDPR Consent String" option.
+     */
+    private static final String KEY_GDPR_CONSENT_STRING = "gdpr_consent_string";
 
     @Override
     public Bundle buildExtras(HashMap<String, String> extras) {
@@ -60,9 +65,14 @@ public class AdColonyUnityExtrasBuilder implements AdNetworkExtras {
             AdColonyBundleBuilder.setShowPostPopup(Boolean.valueOf(showPostPopup));
         }
 
-        String testMode = extras.get(KEY_TEST_MODE);
-        if (testMode != null) {
-            AdColonyBundleBuilder.setTestModeEnabled(Boolean.valueOf(testMode));
+        String gdprRequired = extras.get(KEY_GDPR_REQUIRED);
+        if (gdprRequired != null) {
+            AdColonyBundleBuilder.setGdprRequired(Boolean.valueOf(gdprRequired));
+        }
+
+        String gdprConsentString = extras.get(KEY_GDPR_CONSENT_STRING);
+        if (gdprConsentString != null) {
+            AdColonyBundleBuilder.setGdprConsentString(gdprConsentString);
         }
 
         return AdColonyBundleBuilder.build();

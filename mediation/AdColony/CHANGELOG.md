@@ -1,5 +1,13 @@
 # AdColony Adapter plugin for Google Mobile Ads SDK for Unity 3D Changelog
 
+## 1.0.2
+- Supports AdColony Android SDK version 3.3.4.
+- Supports AdColony iOS SDK version 3.3.4.
+- `SetTestMode()` from the `AdColonyMediationExtras` Builder class is now ignored for Android. Publishers can now request test ads from AdColony for Android by specifying a test device via `AddTestDevice()` from the `AdRequest` Builder class.
+- Added the following methods to the `AdColonyMediationExtras` Builder class:
+  * `SetGDPRRequired()`
+  * `SetGDPRConsentString()`
+
 ## 1.0.1
 - Supports AdColony Android SDK version 3.3.0-unity.
 - Supports AdColony iOS SDK version 3.3.0.

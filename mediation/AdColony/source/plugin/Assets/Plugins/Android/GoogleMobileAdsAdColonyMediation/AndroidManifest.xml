@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.google.unity.mediation.adcolony">
+    package="com.google.unity.mediation.adcolony.support">
+
+    <uses-sdk
+      android:minSdkVersion="14"
+      android:targetSdkVersion="26" />
 
     <!-- For optimal performance, AdColony recommends adding the following OPTIONAL permission -->
     <!-- <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" /> -->

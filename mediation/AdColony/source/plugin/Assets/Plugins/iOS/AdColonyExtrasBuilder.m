@@ -14,6 +14,10 @@ NSString *const ShowPostPopupKey = @"show_post_popup";
 
 NSString *const TestModeKey = @"test_mode";
 
+NSString *const GDPRRequiredKey = @"gdpr_required";
+
+NSString *const GDPRConsentString = @"gdpr_consent_string";
+
 - (id<GADAdNetworkExtras>)adNetworkExtrasWithDictionary:
     (NSDictionary<NSString *, NSString *> *)extras {
 
@@ -37,6 +41,16 @@ NSString *const TestModeKey = @"test_mode";
   NSString *testMode = extras[TestModeKey];
   if (testMode) {
     adColonyExtras.testMode = testMode.boolValue;
+  }
+
+  NSString *gdprRequired = extras[GDPRRequiredKey];
+  if (gdprRequired) {
+    adColonyExtras.gdprRequired = gdprRequired.boolValue;
+  }
+
+  NSString *gdprConsentString = extras[GDPRConsentString];
+  if (gdprConsentString) {
+    adColonyExtras.gdprConsentString = gdprConsentString;
   }
 
   return adColonyExtras;

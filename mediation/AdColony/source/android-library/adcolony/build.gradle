@@ -23,7 +23,7 @@ android {
 
 dependencies {
     api project(':app')
-    api 'com.google.ads.mediation:adcolony:3.3.2.0'
+    api 'com.google.ads.mediation:adcolony:3.3.4.0'
 }
 
 task clearJar(type: Delete) {

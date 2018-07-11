@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace GoogleMobileAds.Api.Mediation.AdColony
 {
@@ -10,6 +9,8 @@ namespace GoogleMobileAds.Api.Mediation.AdColony
         public const string ShowPrePopupKey = "show_pre_popup";
         public const string ShowPostPopupKey = "show_post_popup";
         public const string TestModeKey = "test_mode";
+        public const string GDPRRequiredKey = "gdpr_required";
+        public const string GDPRConsentString = "gdpr_consent_string";
 
         public AdColonyMediationExtras() : base() { }
 
@@ -46,6 +47,16 @@ namespace GoogleMobileAds.Api.Mediation.AdColony
         public void SetTestMode(bool testMode)
         {
             this.Extras.Add(TestModeKey, testMode.ToString());
+        }
+
+        public void SetGDPRRequired(bool gdprRequired)
+        {
+            this.Extras.Add(GDPRRequiredKey, gdprRequired.ToString());
+        }
+
+        public void SetGDPRConsentString(string gdprConsentString)
+        {
+            this.Extras.Add(GDPRConsentString, gdprConsentString);
         }
     }
 }
