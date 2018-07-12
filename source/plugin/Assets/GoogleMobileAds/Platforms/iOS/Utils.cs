@@ -16,6 +16,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 
 using GoogleMobileAds.Api;
 using GoogleMobileAds.Api.Mediation;
@@ -86,6 +87,12 @@ namespace GoogleMobileAds.iOS
 
             Externs.GADUSetRequestAgent(requestPtr, "unity-" + AdRequest.Version);
             return requestPtr;
+        }
+
+        public static string PtrToString(IntPtr stringPtr) {
+            string managedString = Marshal.PtrToStringAnsi(stringPtr);
+            Marshal.FreeHGlobal(stringPtr);
+            return managedString;
         }
 
     }

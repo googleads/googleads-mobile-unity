@@ -183,7 +183,7 @@ namespace GoogleMobileAds.iOS
         // Returns the mediation adapter class name.
         public string MediationAdapterClassName()
         {
-            return Externs.GADUMediationAdapterClassNameForBannerView(this.BannerViewPtr);
+            return Utils.PtrToString(Externs.GADUMediationAdapterClassNameForBannerView(this.BannerViewPtr));
         }
 
         public void Dispose()

@@ -1,6 +1,32 @@
 Google Mobile Ads Unity Plugin Change Log
 
 **************
+Version 3.14.0
+**************
+
+Plugin:
+- Fixed Google Play dependencies version conflict with Firebase plugins.
+
+Mediation packages:
+- Updated AdColony Unity package to v1.2.1.
+- Updated AppLovin Unity package to v3.0.2.
+- Updated Chartboost Unity package to v1.1.0.
+- Updated Facebook Unity package to v1.1.2.
+- Updated InMobi Unity package to v2.1.0.
+- Updated IronSource Unity package to v1.0.1.
+- Updated Maio Unity package to v1.1.0.
+- Updated MoPub Unity package to v2.1.0.
+- Updated MyTarget Unity package to v2.1.0.
+- Updated Nend Unity package to v1.0.2.
+- Updated Tapjoy Unity package to v1.1.1.
+- Updated UnityAds Unity package to v1.1.3.
+
+Built and tested with:
+- Google Play services 15.0.1
+- Google Mobile Ads iOS SDK 7.31.0
+- Unity Jar Resolver 1.2.75.0
+
+**************
 Version 3.13.1
 **************
 

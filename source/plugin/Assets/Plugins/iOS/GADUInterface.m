@@ -436,6 +436,7 @@ void GADURequestNativeAd(GADUTypeAdLoaderRef adLoader, GADUTypeRequestRef reques
   [internalAdLoader loadRequest:[internalRequest request]];
 }
 
+#pragma mark - Native Custom Template Ad methods
 /// Return the template ID of the native custom template ad.
 const char *GADUNativeCustomTemplateAdTemplateID(
     GADUTypeNativeCustomTemplateAdRef nativeCustomTemplateAd) {
@@ -517,6 +518,8 @@ void GADUSetNativeCustomTemplateAdCallbacks(
   internalNativeCustomTemplateAd.didReceiveClickCallback = adClickedCallback;
 }
 
+
+#pragma mark - Other methods
 /// Removes an object from the cache.
 void GADURelease(GADUTypeRef ref) {
   if (ref) {

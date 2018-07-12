@@ -2,6 +2,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.google.unity.mediation.ironsource">
 
+    <uses-sdk
+      android:minSdkVersion="14"
+      android:targetSdkVersion="26" />
+
     <application>
       <activity android:name="com.ironsource.sdk.controller.ControllerActivity"
         android:configChanges="orientation|screenSize"

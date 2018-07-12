@@ -43,6 +43,10 @@ static BOOL _pauseOnBackground = NO;
   _pauseOnBackground = pause;
 }
 
++ (NSString *)GADUStringFromUTF8String:(const char *)bytes {
+  return bytes ? @(bytes) : nil;
+}
+
 + (GADAdSize)safeAdSizeForAdSize:(GADAdSize)adSize {
   if (IsOperatingSystemAtLeastVersion(11) &&
       GADAdSizeEqualToSize(kGADAdSizeSmartBannerLandscape, adSize)) {

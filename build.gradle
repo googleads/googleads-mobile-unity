@@ -33,8 +33,8 @@ project.ext {
     pluginBuildDir = file('temp/plugin-build-dir').absolutePath
     exportPath = file('GoogleMobileAds.unitypackage').absolutePath
 
-    buildPath = file('temp').absolutePath
-    resolverDir = file("${buildPath}/jarresolver").absolutePath
+    tempPath = file('temp').absolutePath
+    resolverDir = file("${tempPath}/jarresolver").absolutePath
 }
 
 // Delete existing android plugin jar file.
@@ -50,7 +50,7 @@ task buildAndroidPluginJar(type: GradleBuild) {
 
 // Move android plugin jar to temporary build directory.
 task copyAndroidLibraryJar(type: Copy) {
-    from("source/android-library/app/build/intermediates/bundles/release/")
+    from("source/android-library/app/build/intermediates/intermediate-jars/release/")
     into("${pluginBuildDir}/Assets/Plugins/Android/GoogleMobileAdsPlugin/libs")
     include('classes.jar')
     rename('classes.jar', 'unity-plugin-library.jar')
@@ -114,7 +114,7 @@ task createTempBuildFolder(type: Copy) {
 }
 
 task clearTempBuildFolder(type:Delete) {
-  delete {"${buildPath}"}
+  delete {"${tempPath}"}
 }
 
 exportPackage.dependsOn(createTempBuildFolder, copyAndroidLibraryJar,

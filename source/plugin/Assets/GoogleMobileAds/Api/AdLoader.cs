@@ -1,4 +1,4 @@
-﻿// Copyright (C) 2015 Google, Inc.
+// Copyright (C) 2015 Google, Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -44,6 +44,8 @@ namespace GoogleMobileAds.Api
                 "BuildAdLoaderClient",
                 BindingFlags.Static | BindingFlags.Public);
             this.adLoaderClient = (IAdLoaderClient)method.Invoke(null, new object[] { this });
+
+            Utils.CheckInitialization();
 
             this.adLoaderClient.OnCustomNativeTemplateAdLoaded +=
                     delegate (object sender, CustomNativeEventArgs args)

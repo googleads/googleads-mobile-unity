@@ -3,6 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.google.unity.mediation.inmobi">
 
+    <uses-sdk
+      android:minSdkVersion="16"
+      android:targetSdkVersion="26" />
+
     <application>
         <activity
             android:name="com.mopub.common.privacy.ConsentDialogActivity"

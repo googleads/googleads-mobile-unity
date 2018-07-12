@@ -6,4 +6,7 @@ required for displaying ads.
 -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.google.unity">
+
+  <uses-permission android:name="android.permission.INTERNET"/>
 </manifest>
+

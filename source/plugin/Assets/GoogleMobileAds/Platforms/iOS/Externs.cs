@@ -138,7 +138,7 @@ namespace GoogleMobileAds.iOS
         internal static extern void GADUSetBannerViewCustomPosition(IntPtr bannerView, int x, int y);
 
         [DllImport("__Internal")]
-        internal static extern string GADUMediationAdapterClassNameForBannerView(IntPtr bannerView);
+        internal static extern IntPtr GADUMediationAdapterClassNameForBannerView(IntPtr bannerView);
 
         #endregion
 
@@ -169,7 +169,7 @@ namespace GoogleMobileAds.iOS
         internal static extern void GADURequestInterstitial(IntPtr interstitial, IntPtr request);
 
         [DllImport("__Internal")]
-        internal static extern string GADUMediationAdapterClassNameForInterstitial(IntPtr interstitial);
+        internal static extern IntPtr GADUMediationAdapterClassNameForInterstitial(IntPtr interstitial);
 
         #endregion
 
@@ -207,7 +207,7 @@ namespace GoogleMobileAds.iOS
             RewardBasedVideoAdClient.GADURewardBasedVideoAdDidCompleteCallback didCompleteCallback);
 
         [DllImport("__Internal")]
-        internal static extern string GADUMediationAdapterClassNameForRewardedVideo(IntPtr rewardedVideo);
+        internal static extern IntPtr GADUMediationAdapterClassNameForRewardedVideo(IntPtr rewardedVideo);
 
         #endregion
 
