@@ -1,5 +1,10 @@
 # Tapjoy Adapter plugin for Google Mobile Ads SDK for Unity 3D Changelog
 
+## 2.0.0
+
+- Supports Tapjoy Android adapter version 12.0.0.0.
+- Supports Tapjoy iOS adapter version 12.0.0.0.
+
 ## 1.1.1
 
 - Supports Tapjoy Android SDK version 11.12.2.
