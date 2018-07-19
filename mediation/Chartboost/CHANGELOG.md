@@ -1,5 +1,9 @@
 # Chartboost Adapter plugin for Google Mobile Ads SDK for Unity 3D Changelog
 
+## 1.1.1
+- Supports Chartboost Android adapter version 7.2.0.1.
+- Supports Chartboost iOS adapter version 7.2.0.1.
+
 ## 1.1.0
 - Supports Chartboost Android SDK version 7.2.0.
 - Supports Chartboost iOS SDK version 7.2.0.
