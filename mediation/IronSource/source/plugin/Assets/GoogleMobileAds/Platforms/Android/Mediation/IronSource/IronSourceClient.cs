@@ -36,11 +36,11 @@ namespace GoogleMobileAds.Android.Mediation.IronSource
 
         public void SetConsent(bool consent)
         {
-            AndroidJavaClass chartboost = new AndroidJavaClass ("com.ironsource.mediationsdk.IronSource");
+            AndroidJavaClass ironSource = new AndroidJavaClass ("com.ironsource.mediationsdk.IronSource");
 
             string parameterString = (consent == true ? "true" : "false");
             MonoBehaviour.print ("Calling 'IronSource.setConsent()' with argument: " + parameterString);
-            chartboost.CallStatic ("setConsent", consent);
+            ironSource.CallStatic ("setConsent", consent);
         }
     }
 }
