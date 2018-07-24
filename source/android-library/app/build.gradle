@@ -32,7 +32,7 @@ task clearJar(type: Delete) {
 }
 
 task makeJar(type: Copy) {
-    from('build/intermediates/bundles/release/')
+    from('build/intermediates/intermediate-jars/release/')
     into('build/libs/')
     include('classes.jar')
     rename('classes.jar', 'unity-plugin-library.jar')

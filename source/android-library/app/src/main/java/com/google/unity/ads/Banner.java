@@ -168,35 +168,72 @@ public class Banner {
                     if (!mPopupWindow.isShowing() && !mHidden) {
                         showPopUpWindow();
                     }
-                    mUnityListener.onAdLoaded();
+
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (mUnityListener != null) {
+                                mUnityListener.onAdLoaded();
+                            }
+                        }
+                    }).start();
                 }
             }
 
             @Override
-            public void onAdFailedToLoad(int errorCode) {
+            public void onAdFailedToLoad(final int errorCode) {
                 if (mUnityListener != null) {
-                    mUnityListener.onAdFailedToLoad(PluginUtils.getErrorReason(errorCode));
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (mUnityListener != null) {
+                                mUnityListener.onAdFailedToLoad(
+                                    PluginUtils.getErrorReason(errorCode));
+                            }
+                        }
+                    }).start();
                 }
             }
 
             @Override
             public void onAdOpened() {
                 if (mUnityListener != null) {
-                    mUnityListener.onAdOpened();
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (mUnityListener != null) {
+                                mUnityListener.onAdOpened();
+                            }
+                        }
+                    }).start();
                 }
             }
 
             @Override
             public void onAdClosed() {
                 if (mUnityListener != null) {
-                    mUnityListener.onAdClosed();
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (mUnityListener != null) {
+                                mUnityListener.onAdClosed();
+                            }
+                        }
+                    }).start();
                 }
             }
 
             @Override
             public void onAdLeftApplication() {
                 if (mUnityListener != null) {
-                    mUnityListener.onAdLeftApplication();
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (mUnityListener != null) {
+                                mUnityListener.onAdLeftApplication();
+                            }
+                        }
+                    }).start();
                 }
             }
         });

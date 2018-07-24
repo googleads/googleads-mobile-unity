@@ -67,27 +67,73 @@ public class Interstitial {
                     @Override
                     public void onAdLoaded() {
                         isLoaded = true;
-                        adListener.onAdLoaded();
+                        if (adListener != null) {
+                            new Thread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    if (adListener != null) {
+                                        adListener.onAdLoaded();
+                                    }
+                                }
+                            }).start();
+                        }
                     }
 
                     @Override
-                    public void onAdFailedToLoad(int errorCode) {
-                        adListener.onAdFailedToLoad(PluginUtils.getErrorReason(errorCode));
+                    public void onAdFailedToLoad(final int errorCode) {
+                        if (adListener != null) {
+                            new Thread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    if (adListener != null) {
+                                        adListener.onAdFailedToLoad(
+                                            PluginUtils.getErrorReason(errorCode));
+                                    }
+                                }
+                            }).start();
+                        }
                     }
 
                     @Override
                     public void onAdOpened() {
-                        adListener.onAdOpened();
+                        if (adListener != null) {
+                            new Thread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    if (adListener != null) {
+                                        adListener.onAdOpened();
+                                    }
+                                }
+                            }).start();
+                        }
                     }
 
                     @Override
                     public void onAdClosed() {
-                        adListener.onAdClosed();
+                        if (adListener != null) {
+                            new Thread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    if (adListener != null) {
+                                        adListener.onAdClosed();
+                                    }
+                                }
+                            }).start();
+                        }
                     }
 
                     @Override
                     public void onAdLeftApplication() {
-                        adListener.onAdLeftApplication();
+                        if (adListener != null) {
+                            new Thread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    if (adListener != null) {
+                                        adListener.onAdLeftApplication();
+                                    }
+                                }
+                            }).start();
+                        }
                     }
                 });
             }
