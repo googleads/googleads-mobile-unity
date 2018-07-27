@@ -1,5 +1,9 @@
 # maio Adapter plugin for Google Mobile Ads SDK for Unity 3D Changelog
 
+## 1.1.2
+- Supports maio Android adapter version 1.1.3.0.
+- Supports maio iOS adapter version 1.3.2.0.
+
 ## 1.1.1
 - Supports maio Android adapter version 1.1.1.0.
 - Supports maio iOS adapter version 1.3.1.1.
