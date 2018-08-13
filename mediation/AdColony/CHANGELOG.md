@@ -1,5 +1,9 @@
 # AdColony Adapter plugin for Google Mobile Ads SDK for Unity 3D Changelog
 
+## 1.0.3
+- Supports AdColony Android adapter version 3.3.5.1.
+- Supports AdColony iOS adapter version 3.3.5.0.
+
 ## 1.0.2
 - Supports AdColony Android SDK version 3.3.4.
 - Supports AdColony iOS SDK version 3.3.4.
