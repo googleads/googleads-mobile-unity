@@ -1,11 +1,11 @@
 <dependencies>
   <androidPackages>
-    <androidPackage spec="com.google.ads.mediation:ironsource:6.7.9.1.1">
+    <androidPackage spec="com.google.ads.mediation:ironsource:6.7.10.0">
       <repositories>
         <repository>https://jcenter.bintray.com/</repository>
       </repositories>
     </androidPackage>
-    <androidPackage spec="com.ironsource.sdk:mediationsdk:6.7.9.1">
+    <androidPackage spec="com.ironsource.sdk:mediationsdk:6.7.10">
       <repositories>
         <repository>https://dl.bintray.com/ironsource-mobile/android-sdk</repository>
       </repositories>
