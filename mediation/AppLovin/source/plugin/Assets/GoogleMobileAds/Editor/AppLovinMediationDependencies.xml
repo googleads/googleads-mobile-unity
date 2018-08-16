@@ -1,13 +1,13 @@
 <dependencies>
   <androidPackages>
-    <androidPackage spec="com.google.ads.mediation:applovin:8.0.2.1">
+    <androidPackage spec="com.google.ads.mediation:applovin:8.1.0.0">
     </androidPackage>
-    <androidPackage spec="com.applovin:applovin-sdk:8.0.2">
+    <androidPackage spec="com.applovin:applovin-sdk:8.1.0">
     </androidPackage>
   </androidPackages>
 
   <iosPods>
-    <iosPod name="GoogleMobileAdsMediationAppLovin" version="5.0.2.0">
+    <iosPod name="GoogleMobileAdsMediationAppLovin" version="5.1.0.0">
       <sources>
         <source>https://github.com/CocoaPods/Specs</source>
       </sources>
