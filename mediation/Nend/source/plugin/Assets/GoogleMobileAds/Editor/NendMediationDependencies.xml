@@ -13,7 +13,7 @@
   </androidPackages>
 
   <iosPods>
-    <iosPod name="GoogleMobileAdsMediationNend" version="5.0.1.0">
+    <iosPod name="GoogleMobileAdsMediationNend" version="5.0.2.0">
       <sources>
         <source>https://github.com/CocoaPods/Specs</source>
       </sources>
