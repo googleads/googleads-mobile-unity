@@ -14,6 +14,7 @@
 
 #if UNITY_IOS
 
+using System;
 using UnityEngine;
 
 using GoogleMobileAds.Api.Mediation.Vungle;
@@ -34,7 +35,8 @@ namespace GoogleMobileAds.iOS.Mediation.Vungle
             }
         }
 
-        public void UpdateConsentStatus(VungleConsent consentStatus)
+        public void UpdateConsentStatus(VungleConsent consentStatus,
+                                        String consentMessageVersion)
         {
             if (consentStatus == VungleConsent.UNKNOWN) {
                 MonoBehaviour.print ("Cannot call '[VungleRouterConsent updateConsentStatus:]' with unknown consent status.");
@@ -47,14 +49,20 @@ namespace GoogleMobileAds.iOS.Mediation.Vungle
             } else if (consentStatus == VungleConsent.DENIED) {
                 parameterString = "VungleConsentDenied";
             }
+            parameterString += ", '" + consentMessageVersion + "'";
 
-            MonoBehaviour.print ("Calling '[VungleRouterConsent updateConsentStatus:]' with argument: " + parameterString);
-            Externs.GADUMUpdateConsentStatus( (int)consentStatus );
+            MonoBehaviour.print ("Calling '[VungleRouterConsent updateConsentStatus:]' with arguments: " + parameterString);
+            Externs.GADUMUpdateConsentStatus( (int)consentStatus, consentMessageVersion );
         }
 
         public VungleConsent GetCurrentConsentStatus()
         {
             return (VungleConsent)Externs.GADUMGetCurrentConsentStatus();
+        }
+
+        public String GetCurrentConsentMessageVersion()
+        {
+            return Externs.GADUMGetCurrentConsentMessageVersion();
         }
     }
 }

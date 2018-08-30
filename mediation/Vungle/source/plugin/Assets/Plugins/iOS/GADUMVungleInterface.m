@@ -15,14 +15,33 @@
 #import <VungleSDK/VungleSDK.h>
 #import <VungleAdapter/VungleAdapter.h>
 
-void GADUMUpdateConsentStatus(int consentStatus){
-  if (consentStatus == (int)VungleConsentAccepted){
-    [VungleRouterConsent updateConsentStatus:VungleConsentAccepted];
+void GADUMUpdateConsentStatus(int consentStatus,
+                              const char *consentMessageVersion) {
+  NSString *consentMessage = @"";
+  if (consentMessageVersion != nil && strlen(consentMessageVersion) > 0) {
+    consentMessage = [NSString stringWithUTF8String:consentMessageVersion];
+  }
+
+  if (consentStatus == (int)VungleConsentAccepted) {
+    [VungleRouterConsent updateConsentStatus:VungleConsentAccepted
+                       consentMessageVersion:consentMessage];
   } else if (consentStatus == (int)VungleConsentDenied) {
-    [VungleRouterConsent updateConsentStatus:VungleConsentDenied];
+    [VungleRouterConsent updateConsentStatus:VungleConsentDenied
+                       consentMessageVersion:consentMessage];
   }
 }
 
-int GADUMGetCurrentConsentStatus(){
+int GADUMGetCurrentConsentStatus() {
   return (int)[VungleRouterConsent getConsentStatus];
+}
+
+const char* GADUMGetCurrentConsentMessageVersion() {
+  NSString *message = [VungleRouterConsent getConsentMessageVersion];
+  if (message == nil || message.length == 0) {
+    return nil;
+  }
+
+  char* consentMessage = (char*) malloc(strlen(message.UTF8String) + 1);
+  strcpy(consentMessage, message.UTF8String);
+  return consentMessage;
 }

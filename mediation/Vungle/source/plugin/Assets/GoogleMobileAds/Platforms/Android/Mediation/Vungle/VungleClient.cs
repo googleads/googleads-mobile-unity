@@ -14,8 +14,8 @@
 
 #if UNITY_ANDROID
 
+using System;
 using UnityEngine;
-using System.Reflection;
 
 using GoogleMobileAds.Api.Mediation.Vungle;
 using GoogleMobileAds.Common.Mediation.Vungle;
@@ -35,11 +35,15 @@ namespace GoogleMobileAds.Android.Mediation.Vungle
             }
         }
 
-        public void UpdateConsentStatus(VungleConsent consentStatus)
+        public void UpdateConsentStatus(VungleConsent consentStatus,
+                                        String consentMessageVersion)
         {
             if (consentStatus == VungleConsent.UNKNOWN) {
                 MonoBehaviour.print("Cannot call 'VungleConsent.updateConsentStatus()' with unknown consent status.");
                 return;
+            }
+            if (consentMessageVersion == null) {
+                consentMessageVersion = "";
             }
 
             AndroidJavaClass vungleConsentClass = new AndroidJavaClass("com.vungle.mediation.VungleConsent");
@@ -54,9 +58,10 @@ namespace GoogleMobileAds.Android.Mediation.Vungle
                 parameterString = "Vungle.Consent.OPTED_OUT";
                 vungleConsentObject = vungleConsentEnum.GetStatic<AndroidJavaObject>("OPTED_OUT");
             }
+            parameterString += ", '" + consentMessageVersion + "'";
 
             MonoBehaviour.print("Calling 'VungleConsent.updateConsentStatus()' with argument: " + parameterString);
-            vungleConsentClass.CallStatic("updateConsentStatus", vungleConsentObject);
+            vungleConsentClass.CallStatic("updateConsentStatus", vungleConsentObject, consentMessageVersion);
         }
 
         public VungleConsent GetCurrentConsentStatus()
@@ -81,6 +86,12 @@ namespace GoogleMobileAds.Android.Mediation.Vungle
             }
 
             return VungleConsent.UNKNOWN;
+        }
+
+        public String GetCurrentConsentMessageVersion()
+        {
+            AndroidJavaClass vungleConsentClass = new AndroidJavaClass("com.vungle.mediation.VungleConsent");
+            return vungleConsentClass.CallStatic<String> ("getCurrentVungleConsentMessageVersion");
         }
     }
 }

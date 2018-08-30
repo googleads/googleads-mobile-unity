@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using UnityEngine;
+using System;
 
 using GoogleMobileAds.Common.Mediation.Vungle;
 using GoogleMobileAds.Mediation;
@@ -30,14 +30,20 @@ namespace GoogleMobileAds.Api.Mediation.Vungle
     {
         public static readonly IVungleClient client = GetVungleClient();
 
-        public static void UpdateConsentStatus(VungleConsent consentStatus)
+        public static void UpdateConsentStatus(VungleConsent consentStatus,
+                                               String consentMessageVersion)
         {
-            client.UpdateConsentStatus(consentStatus);
+            client.UpdateConsentStatus(consentStatus, consentMessageVersion);
         }
 
         public static VungleConsent GetCurrentConsentStatus()
         {
             return client.GetCurrentConsentStatus();
+        }
+
+        public static String GetCurrentConsentMessageVersion()
+        {
+            return client.GetCurrentConsentMessageVersion();
         }
 
         private static IVungleClient GetVungleClient()
