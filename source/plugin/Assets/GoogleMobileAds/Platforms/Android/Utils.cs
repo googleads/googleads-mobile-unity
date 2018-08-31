@@ -186,7 +186,7 @@ namespace GoogleMobileAds.Android
 
                 foreach (KeyValuePair<string, string> entry in mediationExtra.Extras)
                 {
-                    map.Call<string>("put", entry.Key, entry.Value);
+                    map.Call<AndroidJavaObject>("put", entry.Key, entry.Value);
                 }
 
                 AndroidJavaObject mediationExtras =
