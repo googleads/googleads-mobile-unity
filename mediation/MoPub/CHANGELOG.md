@@ -1,5 +1,10 @@
 # MoPub Adapter plugin for Google Mobile Ads SDK for Unity 3D Changelog
 
+## 2.3.1
+- Fixed an issue where the MoPub API files were not included when importing the plugin.
+- Supports MoPub Android adapter version 5.3.0.1.
+- Supports MoPub iOS adapter version 5.3.0.1.
+
 ## 2.3.0
 - Supports MoPub Android adapter version 5.3.0.0.
 - Supports MoPub iOS adapter version 5.3.0.0.
