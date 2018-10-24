@@ -1,11 +1,11 @@
 <dependencies>
   <androidPackages>
-    <androidPackage spec="com.google.ads.mediation:mytarget:5.1.4.0">
+    <androidPackage spec="com.google.ads.mediation:mytarget:5.2.2.0">
       <repositories>
         <repository>https://google.bintray.com/mobile-ads-adapters-android</repository>
       </repositories>
     </androidPackage>
-    <androidPackage spec="com.my.target:mytarget-sdk:5.1.4">
+    <androidPackage spec="com.my.target:mytarget-sdk:5.2.2">
       <repositories>
         <repository>https://dl.bintray.com/mytarget/maven/</repository>
       </repositories>

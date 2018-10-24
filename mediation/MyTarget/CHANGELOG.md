@@ -1,5 +1,9 @@
 # myTarget Adapter plugin for Google Mobile Ads SDK for Unity 3D Changelog
 
+## 2.3.0
+- Supports myTarget Android adapter version 5.2.2.0.
+- Supports myTarget iOS adapter version 4.8.0.0.
+
 ## 2.2.0
 - Supports myTarget Android adapter version 5.1.4.0.
 - Supports myTarget iOS adapter version 4.8.0.0.
