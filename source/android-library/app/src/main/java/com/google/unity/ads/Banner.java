@@ -258,7 +258,6 @@ public class Banner {
                 updatePosition();
             }
         };
-        mAdView.getViewTreeObserver().addOnGlobalLayoutListener(mViewTreeLayoutChangeListener);
     }
 
     private void createPopupWindow() {
@@ -314,6 +313,7 @@ public class Banner {
                 Log.d(PluginUtils.LOGTAG, "Calling show() on Android");
                 mHidden = false;
                 mAdView.setVisibility(View.VISIBLE);
+                mAdView.getViewTreeObserver().addOnGlobalLayoutListener(mViewTreeLayoutChangeListener);
                 mPopupWindow.setTouchable(true);
                 mPopupWindow.update();
                 if (!mPopupWindow.isShowing()) {
@@ -337,6 +337,13 @@ public class Banner {
                 mPopupWindow.setTouchable(false);
                 mPopupWindow.update();
                 mAdView.pause();
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                    mAdView.getViewTreeObserver()
+                            .removeOnGlobalLayoutListener(mViewTreeLayoutChangeListener);
+                } else {
+                    mAdView.getViewTreeObserver()
+                            .removeGlobalOnLayoutListener(mViewTreeLayoutChangeListener);
+                }
             }
         });
     }
@@ -360,14 +367,6 @@ public class Banner {
 
         mUnityPlayerActivity.getWindow().getDecorView().getRootView()
                 .removeOnLayoutChangeListener(mLayoutChangeListener);
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-            mAdView.getViewTreeObserver()
-                    .removeOnGlobalLayoutListener(mViewTreeLayoutChangeListener);
-        } else {
-            mAdView.getViewTreeObserver()
-                    .removeGlobalOnLayoutListener(mViewTreeLayoutChangeListener);
-        }
     }
 
     /**
