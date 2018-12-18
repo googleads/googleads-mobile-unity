@@ -16,8 +16,6 @@
 
 void GADUMSetGDPRConsentMetaData(BOOL consent) {
   UADSMetaData *unityAdsMetaData = [[UADSMetaData alloc] init];
-  BOOL success = [unityAdsMetaData set:@"gdpr.consent" value:@(consent)];
-  if (success) {
-    [unityAdsMetaData commit];
-  }
+  [unityAdsMetaData set:@"gdpr.consent" value:@(consent)];
+  [unityAdsMetaData commit];
 }

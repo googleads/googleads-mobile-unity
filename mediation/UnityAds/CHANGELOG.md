@@ -1,5 +1,8 @@
 # Unity Ads Adapter plugin for Google Mobile Ads SDK for Unity 3D Changelog
 
+## 2.0.1
+- Fixed an "incompatible type" error that caused issues when building for iOS.
+
 ## 2.0.0
 - Supports Unity Ads Android adapter version 3.0.0.0.
 - Supports Unity Ads iOS adapter version 3.0.0.0.
