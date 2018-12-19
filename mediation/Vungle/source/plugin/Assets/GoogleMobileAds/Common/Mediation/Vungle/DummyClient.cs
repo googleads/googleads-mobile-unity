@@ -28,6 +28,11 @@ namespace GoogleMobileAds.Common.Mediation.Vungle
             Debug.Log ("Dummy " + MethodBase.GetCurrentMethod().Name);
         }
 
+        public void UpdateConsentStatus(VungleConsent consentStatus)
+        {
+            Debug.Log ("Dummy " + MethodBase.GetCurrentMethod().Name);
+        }
+
         public void UpdateConsentStatus(VungleConsent consentStatus,
                                         String consentMessageVersion)
         {

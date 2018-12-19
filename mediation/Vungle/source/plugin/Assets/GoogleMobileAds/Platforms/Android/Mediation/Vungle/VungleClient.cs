@@ -35,6 +35,11 @@ namespace GoogleMobileAds.Android.Mediation.Vungle
             }
         }
 
+        public void UpdateConsentStatus(VungleConsent consentStatus)
+        {
+            UpdateConsentStatus(consentStatus, "");
+        }
+
         public void UpdateConsentStatus(VungleConsent consentStatus,
                                         String consentMessageVersion)
         {
@@ -91,7 +96,7 @@ namespace GoogleMobileAds.Android.Mediation.Vungle
         public String GetCurrentConsentMessageVersion()
         {
             AndroidJavaClass vungleConsentClass = new AndroidJavaClass("com.vungle.mediation.VungleConsent");
-            return vungleConsentClass.CallStatic<String> ("getCurrentVungleConsentMessageVersion");
+            return vungleConsentClass.CallStatic<String>("getCurrentVungleConsentMessageVersion");
         }
     }
 }

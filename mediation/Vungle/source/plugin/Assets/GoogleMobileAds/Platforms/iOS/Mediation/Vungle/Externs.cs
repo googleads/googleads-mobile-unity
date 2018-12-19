@@ -24,14 +24,10 @@ namespace GoogleMobileAds.iOS.Mediation.Vungle
     internal class Externs
     {
         [DllImport("__Internal")]
-        internal static extern void GADUMUpdateConsentStatus(int consentStatus,
-                                                             String consentMessageVersion);
+        internal static extern void GADUMUpdateConsentStatus(int consentStatus);
 
         [DllImport("__Internal")]
         internal static extern int GADUMGetCurrentConsentStatus();
-
-        [DllImport("__Internal")]
-        internal static extern String GADUMGetCurrentConsentMessageVersion();
     }
 }
 

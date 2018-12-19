@@ -1,5 +1,11 @@
 # Vungle Adapter plugin for Google Mobile Ads SDK for Unity 3D Changelog
 
+## 3.1.1
+- Supports Android adapter version 6.3.24.0.
+- Supports iOS adapter version 6.3.2.0.
+- Updated `Vungle.UpdateConsentStatus()` method to make the `consentMessageVersion` parameter optional. The value of `consentMessageVersion` is now ignored for iOS.
+- Deprecated `Vungle.GetCurrentConsentMessageVersion()` for iOS.
+
 ## 3.1.0
 - Supports Android adapter version 6.3.17.0.
 - Supports iOS adapter version 6.3.0.0.

@@ -21,6 +21,7 @@ namespace GoogleMobileAds.Common.Mediation.Vungle
     public interface IVungleClient
     {
         // Sets the consent status that will be recorded in the Vungle SDK.
+        void UpdateConsentStatus(VungleConsent consentStatus);
         void UpdateConsentStatus(VungleConsent consentStatus,
                                  String consentMessageVersion);
 

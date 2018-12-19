@@ -1,11 +1,11 @@
 <dependencies>
   <androidPackages>
-    <androidPackage spec="com.google.ads.mediation:vungle:6.3.17.0">
+    <androidPackage spec="com.google.ads.mediation:vungle:6.3.24.0">
       <repositories>
         <repository>https://jcenter.bintray.com</repository>
       </repositories>
     </androidPackage>
-    <androidPackage spec="com.github.vungle:vungle-android-sdk:6.3.17">
+    <androidPackage spec="com.github.vungle:vungle-android-sdk:6.3.24">
       <repositories>
         <repository>https://jitpack.io</repository>
       </repositories>
@@ -13,7 +13,7 @@
   </androidPackages>
 
   <iosPods>
-    <iosPod name="GoogleMobileAdsMediationVungle" version="6.3.0.0">
+    <iosPod name="GoogleMobileAdsMediationVungle" version="6.3.2.0">
       <sources>
         <source>https://github.com/CocoaPods/Specs</source>
       </sources>

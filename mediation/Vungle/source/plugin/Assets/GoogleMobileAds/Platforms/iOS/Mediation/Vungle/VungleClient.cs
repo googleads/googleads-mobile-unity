@@ -35,8 +35,7 @@ namespace GoogleMobileAds.iOS.Mediation.Vungle
             }
         }
 
-        public void UpdateConsentStatus(VungleConsent consentStatus,
-                                        String consentMessageVersion)
+        public void UpdateConsentStatus(VungleConsent consentStatus)
         {
             if (consentStatus == VungleConsent.UNKNOWN) {
                 MonoBehaviour.print ("Cannot call '[VungleRouterConsent updateConsentStatus:]' with unknown consent status.");
@@ -49,10 +48,15 @@ namespace GoogleMobileAds.iOS.Mediation.Vungle
             } else if (consentStatus == VungleConsent.DENIED) {
                 parameterString = "VungleConsentDenied";
             }
-            parameterString += ", '" + consentMessageVersion + "'";
 
             MonoBehaviour.print ("Calling '[VungleRouterConsent updateConsentStatus:]' with arguments: " + parameterString);
-            Externs.GADUMUpdateConsentStatus( (int)consentStatus, consentMessageVersion );
+            Externs.GADUMUpdateConsentStatus( (int)consentStatus );
+        }
+
+        public void UpdateConsentStatus(VungleConsent consentStatus,
+                                        String consentMessageVersion)
+        {
+            UpdateConsentStatus(consentStatus);
         }
 
         public VungleConsent GetCurrentConsentStatus()
@@ -60,9 +64,10 @@ namespace GoogleMobileAds.iOS.Mediation.Vungle
             return (VungleConsent)Externs.GADUMGetCurrentConsentStatus();
         }
 
+        [System.Obsolete("Consent Message is obsolete as of version 6.3.2.0 of the Vungle iOS adapter.")]
         public String GetCurrentConsentMessageVersion()
         {
-            return Externs.GADUMGetCurrentConsentMessageVersion();
+            return "";
         }
     }
 }
