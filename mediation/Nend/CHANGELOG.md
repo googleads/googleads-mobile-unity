@@ -1,5 +1,9 @@
 # nend Adapter plugin for Google Mobile Ads SDK for Unity 3D Changelog
 
+## 2.0.3
+- Supports nend Android adapter version 5.0.2.1.
+- Supports nend iOS adapter version 5.0.2.0.
+
 ## 2.0.2
 - Supports nend Android adapter version 5.0.2.0.
 - Supports nend iOS adapter version 5.0.2.0.

@@ -1,6 +1,6 @@
 <dependencies>
   <androidPackages>
-    <androidPackage spec="com.google.ads.mediation:nend:5.0.2.0">
+    <androidPackage spec="com.google.ads.mediation:nend:5.0.2.1">
       <repositories>
         <repository>https://jcenter.bintray.com/</repository>
       </repositories>
