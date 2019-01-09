@@ -68,21 +68,21 @@ public class Interstitial {
                     public void onAdLoaded() {
                         isLoaded = true;
                         if (adListener != null) {
-                            new Thread(new Runnable() {
+                            PluginUtils.submitToThreadPool(new Runnable() {
                                 @Override
                                 public void run() {
                                     if (adListener != null) {
                                         adListener.onAdLoaded();
                                     }
                                 }
-                            }).start();
+                            });
                         }
                     }
 
                     @Override
                     public void onAdFailedToLoad(final int errorCode) {
                         if (adListener != null) {
-                            new Thread(new Runnable() {
+                            PluginUtils.submitToThreadPool(new Runnable() {
                                 @Override
                                 public void run() {
                                     if (adListener != null) {
@@ -90,49 +90,49 @@ public class Interstitial {
                                             PluginUtils.getErrorReason(errorCode));
                                     }
                                 }
-                            }).start();
+                            });
                         }
                     }
 
                     @Override
                     public void onAdOpened() {
                         if (adListener != null) {
-                            new Thread(new Runnable() {
+                            PluginUtils.submitToThreadPool(new Runnable() {
                                 @Override
                                 public void run() {
                                     if (adListener != null) {
                                         adListener.onAdOpened();
                                     }
                                 }
-                            }).start();
+                            });
                         }
                     }
 
                     @Override
                     public void onAdClosed() {
                         if (adListener != null) {
-                            new Thread(new Runnable() {
+                            PluginUtils.submitToThreadPool(new Runnable() {
                                 @Override
                                 public void run() {
                                     if (adListener != null) {
                                         adListener.onAdClosed();
                                     }
                                 }
-                            }).start();
+                            });
                         }
                     }
 
                     @Override
                     public void onAdLeftApplication() {
                         if (adListener != null) {
-                            new Thread(new Runnable() {
+                            PluginUtils.submitToThreadPool(new Runnable() {
                                 @Override
                                 public void run() {
                                     if (adListener != null) {
                                         adListener.onAdLeftApplication();
                                     }
                                 }
-                            }).start();
+                            });
                         }
                     }
                 });

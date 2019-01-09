@@ -68,21 +68,21 @@ public class RewardBasedVideo {
                     public void onRewardedVideoAdLoaded() {
                         isLoaded = true;
                         if (adListener != null) {
-                            new Thread(new Runnable() {
+                            PluginUtils.submitToThreadPool(new Runnable() {
                                 @Override
                                 public void run() {
                                     if (adListener != null) {
                                         adListener.onAdLoaded();
                                     }
                                 }
-                            }).start();
+                            });
                         }
                     }
 
                     @Override
                     public void onRewardedVideoAdFailedToLoad(final int errorCode) {
                         if (adListener != null) {
-                            new Thread(new Runnable() {
+                            PluginUtils.submitToThreadPool(new Runnable() {
                                 @Override
                                 public void run() {
                                     if (adListener != null) {
@@ -90,56 +90,56 @@ public class RewardBasedVideo {
                                             PluginUtils.getErrorReason(errorCode));
                                     }
                                 }
-                            }).start();
+                            });
                         }
                     }
 
                     @Override
                     public void onRewardedVideoAdOpened() {
                         if (adListener != null) {
-                            new Thread(new Runnable() {
+                            PluginUtils.submitToThreadPool(new Runnable() {
                                 @Override
                                 public void run() {
                                     if (adListener != null) {
                                         adListener.onAdOpened();
                                     }
                                 }
-                            }).start();
+                            });
                         }
                     }
 
                     @Override
                     public void onRewardedVideoStarted() {
                         if (adListener != null) {
-                            new Thread(new Runnable() {
+                            PluginUtils.submitToThreadPool(new Runnable() {
                                 @Override
                                 public void run() {
                                     if (adListener != null) {
                                         adListener.onAdStarted();
                                     }
                                 }
-                            }).start();
+                            });
                         }
                     }
 
                     @Override
                     public void onRewardedVideoAdClosed() {
                         if (adListener != null) {
-                            new Thread(new Runnable() {
+                            PluginUtils.submitToThreadPool(new Runnable() {
                                 @Override
                                 public void run() {
                                     if (adListener != null) {
                                         adListener.onAdClosed();
                                     }
                                 }
-                            }).start();
+                            });
                         }
                     }
 
                     @Override
                     public void onRewarded(final RewardItem reward) {
                         if (adListener != null) {
-                            new Thread(new Runnable() {
+                            PluginUtils.submitToThreadPool(new Runnable() {
                                 @Override
                                 public void run() {
                                     if (adListener != null) {
@@ -147,35 +147,35 @@ public class RewardBasedVideo {
                                             reward.getAmount());
                                     }
                                 }
-                            }).start();
+                            });
                         }
                     }
 
                     @Override
                     public void onRewardedVideoAdLeftApplication() {
                         if (adListener != null) {
-                            new Thread(new Runnable() {
+                            PluginUtils.submitToThreadPool(new Runnable() {
                                 @Override
                                 public void run() {
                                     if (adListener != null) {
                                         adListener.onAdLeftApplication();
                                     }
                                 }
-                            }).start();
+                            });
                         }
                     }
 
                     @Override
                     public void onRewardedVideoCompleted() {
                         if (adListener != null) {
-                            new Thread(new Runnable() {
+                            PluginUtils.submitToThreadPool(new Runnable() {
                                 @Override
                                 public void run() {
                                     if (adListener != null) {
                                         adListener.onAdCompleted();
                                     }
                                 }
-                            }).start();
+                            });
                         }
                     }
                 });
