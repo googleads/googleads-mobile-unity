@@ -26,10 +26,9 @@ namespace GoogleMobileAds.Api
         // Creates a BannerView and adds it to the view hierarchy.
         public BannerView(string adUnitId, AdSize adSize, AdPosition position)
         {
-            Type googleMobileAdsClientFactory = Type.GetType(
-                "GoogleMobileAds.GoogleMobileAdsClientFactory,Assembly-CSharp");
+            Type googleMobileAdsClientFactory = typeof(GoogleMobileAdsClientFactory);
             MethodInfo method = googleMobileAdsClientFactory.GetMethod(
-                "BuildBannerClient",
+                nameof(GoogleMobileAdsClientFactory.BuildBannerClient),
                 BindingFlags.Static | BindingFlags.Public);
             this.client = (IBannerClient)method.Invoke(null, null);
             client.CreateBannerView(adUnitId, adSize, position);
@@ -40,10 +39,9 @@ namespace GoogleMobileAds.Api
         // Creates a BannerView with a custom position.
         public BannerView(string adUnitId, AdSize adSize, int x, int y)
         {
-            Type googleMobileAdsClientFactory = Type.GetType(
-                "GoogleMobileAds.GoogleMobileAdsClientFactory,Assembly-CSharp");
+            Type googleMobileAdsClientFactory = typeof(GoogleMobileAdsClientFactory);
             MethodInfo method = googleMobileAdsClientFactory.GetMethod(
-                "BuildBannerClient",
+                nameof(GoogleMobileAdsClientFactory.BuildBannerClient),
                 BindingFlags.Static | BindingFlags.Public);
             this.client = (IBannerClient)method.Invoke(null, null);
             client.CreateBannerView(adUnitId, adSize, x, y);

@@ -26,10 +26,9 @@ namespace GoogleMobileAds.Api
         // Creates an InterstitialAd.
         public InterstitialAd(string adUnitId)
         {
-            Type googleMobileAdsClientFactory = Type.GetType(
-                "GoogleMobileAds.GoogleMobileAdsClientFactory,Assembly-CSharp");
+            Type googleMobileAdsClientFactory = typeof(GoogleMobileAdsClientFactory);
             MethodInfo method = googleMobileAdsClientFactory.GetMethod(
-                "BuildInterstitialClient",
+                nameof(GoogleMobileAdsClientFactory.BuildInterstitialClient),
                 BindingFlags.Static | BindingFlags.Public);
             this.client = (IInterstitialClient)method.Invoke(null, null);
             client.CreateInterstitialAd(adUnitId);
