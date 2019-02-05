@@ -1,11 +1,11 @@
 <dependencies>
   <androidPackages>
-    <androidPackage spec="com.inmobi.monetization:inmobi-ads:7.2.1">
+    <androidPackage spec="com.inmobi.monetization:inmobi-ads:7.2.2">
       <repositories>
         <repository>https://jcenter.bintray.com/</repository>
       </repositories>
     </androidPackage>
-    <androidPackage spec="com.google.ads.mediation:inmobi:7.2.1.0">
+    <androidPackage spec="com.google.ads.mediation:inmobi:7.2.2.0">
       <repositories>
         <repository>https://jcenter.bintray.com/</repository>
       </repositories>
@@ -20,10 +20,15 @@
         <repository>https://jcenter.bintray.com/</repository>
       </repositories>
     </androidPackage>
+    <androidPackage spec="com.google.android.gms:play-services-location:16.0.0">
+      <repositories>
+        <repository>https://jcenter.bintray.com/</repository>
+      </repositories>
+    </androidPackage>
   </androidPackages>
 
   <iosPods>
-    <iosPod name="GoogleMobileAdsMediationInMobi" version="7.2.0.0">
+    <iosPod name="GoogleMobileAdsMediationInMobi" version="7.2.4.0">
       <sources>
         <source>https://github.com/CocoaPods/Specs</source>
       </sources>
