@@ -1,8 +1,14 @@
 <dependencies>
   <androidPackages>
     <androidPackage spec="com.google.ads.mediation:applovin:9.2.1.0">
+	<repositories>
+        <repository>https://jcenter.bintray.com/</repository>
+      </repositories>
     </androidPackage>
     <androidPackage spec="com.applovin:applovin-sdk:9.2.1">
+	<repositories>
+        <repository>https://jcenter.bintray.com/</repository>
+      </repositories>
     </androidPackage>
   </androidPackages>
 
