@@ -94,7 +94,6 @@ namespace GoogleMobileAds.iOS
             Marshal.FreeHGlobal(stringPtr);
             return managedString;
         }
-
     }
 }
 

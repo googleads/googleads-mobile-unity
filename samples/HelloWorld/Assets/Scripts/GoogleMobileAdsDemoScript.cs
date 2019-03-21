@@ -7,7 +7,7 @@ public class GoogleMobileAdsDemoScript : MonoBehaviour
 {
     private BannerView bannerView;
     private InterstitialAd interstitial;
-    private RewardBasedVideoAd rewardBasedVideo;
+    private RewardedAd rewardedAd;
     private float deltaTime = 0.0f;
     private static string outputMessage = string.Empty;
 
@@ -32,17 +32,7 @@ public class GoogleMobileAdsDemoScript : MonoBehaviour
         // Initialize the Google Mobile Ads SDK.
         MobileAds.Initialize(appId);
 
-        // Get singleton reward based video ad reference.
-        this.rewardBasedVideo = RewardBasedVideoAd.Instance;
-
-        // RewardBasedVideoAd is a singleton, so handlers should only be registered once.
-        this.rewardBasedVideo.OnAdLoaded += this.HandleRewardBasedVideoLoaded;
-        this.rewardBasedVideo.OnAdFailedToLoad += this.HandleRewardBasedVideoFailedToLoad;
-        this.rewardBasedVideo.OnAdOpening += this.HandleRewardBasedVideoOpened;
-        this.rewardBasedVideo.OnAdStarted += this.HandleRewardBasedVideoStarted;
-        this.rewardBasedVideo.OnAdRewarded += this.HandleRewardBasedVideoRewarded;
-        this.rewardBasedVideo.OnAdClosed += this.HandleRewardBasedVideoClosed;
-        this.rewardBasedVideo.OnAdLeavingApplication += this.HandleRewardBasedVideoLeftApplication;
+        this.CreateAndLoadRewardedAd();
     }
 
     public void Update()
@@ -126,9 +116,9 @@ public class GoogleMobileAdsDemoScript : MonoBehaviour
             0.05f * Screen.height,
             buttonWidth,
             buttonHeight);
-        if (GUI.Button(requestRewardedRect, "Request\nRewarded Video"))
+        if (GUI.Button(requestRewardedRect, "Request\nRewarded Ad"))
         {
-            this.RequestRewardBasedVideo();
+            this.CreateAndLoadRewardedAd();
         }
 
         Rect showRewardedRect = new Rect(
@@ -136,9 +126,9 @@ public class GoogleMobileAdsDemoScript : MonoBehaviour
             0.225f * Screen.height,
             buttonWidth,
             buttonHeight);
-        if (GUI.Button(showRewardedRect, "Show\nRewarded Video"))
+        if (GUI.Button(showRewardedRect, "Show\nRewarded Ad"))
         {
-            this.ShowRewardBasedVideo();
+            this.ShowRewardedAd();
         }
 
         Rect textOutputRect = new Rect(
@@ -229,7 +219,7 @@ public class GoogleMobileAdsDemoScript : MonoBehaviour
         this.interstitial.LoadAd(this.CreateAdRequest());
     }
 
-    private void RequestRewardBasedVideo()
+    public void CreateAndLoadRewardedAd()
     {
 #if UNITY_EDITOR
         string adUnitId = "unused";
@@ -240,8 +230,26 @@ public class GoogleMobileAdsDemoScript : MonoBehaviour
 #else
         string adUnitId = "unexpected_platform";
 #endif
+        // Create new rewarded ad instance.
+        this.rewardedAd = new RewardedAd(adUnitId);
 
-        this.rewardBasedVideo.LoadAd(this.CreateAdRequest(), adUnitId);
+        // Called when an ad request has successfully loaded.
+        this.rewardedAd.OnAdLoaded += HandleRewardedAdLoaded;
+        // Called when an ad request failed to load.
+        this.rewardedAd.OnAdFailedToLoad += HandleRewardedAdFailedToLoad;
+        // Called when an ad is shown.
+        this.rewardedAd.OnAdOpening += HandleRewardedAdOpening;
+        // Called when an ad request failed to show.
+        this.rewardedAd.OnAdFailedToShow += HandleRewardedAdFailedToShow;
+        // Called when the user should be rewarded for interacting with the ad.
+        this.rewardedAd.OnUserEarnedReward += HandleUserEarnedReward;
+        // Called when the ad is closed.
+        this.rewardedAd.OnAdClosed += HandleRewardedAdClosed;
+
+        // Create an empty ad request.
+        AdRequest request = this.CreateAdRequest();
+        // Load the rewarded ad with the request.
+        this.rewardedAd.LoadAd(request);
     }
 
     private void ShowInterstitial()
@@ -256,15 +264,15 @@ public class GoogleMobileAdsDemoScript : MonoBehaviour
         }
     }
 
-    private void ShowRewardBasedVideo()
+    private void ShowRewardedAd()
     {
-        if (this.rewardBasedVideo.IsLoaded())
+        if (this.rewardedAd.IsLoaded())
         {
-            this.rewardBasedVideo.Show();
+            this.rewardedAd.Show();
         }
         else
         {
-            MonoBehaviour.print("Reward based video ad is not ready yet");
+            MonoBehaviour.print("Rewarded ad is not ready yet");
         }
     }
 
@@ -327,45 +335,42 @@ public class GoogleMobileAdsDemoScript : MonoBehaviour
 
     #endregion
 
-    #region RewardBasedVideo callback handlers
+    #region RewardedAd callback handlers
 
-    public void HandleRewardBasedVideoLoaded(object sender, EventArgs args)
+    public void HandleRewardedAdLoaded(object sender, EventArgs args)
     {
-        MonoBehaviour.print("HandleRewardBasedVideoLoaded event received");
+        MonoBehaviour.print("HandleRewardedAdLoaded event received");
     }
 
-    public void HandleRewardBasedVideoFailedToLoad(object sender, AdFailedToLoadEventArgs args)
+    public void HandleRewardedAdFailedToLoad(object sender, AdErrorEventArgs args)
     {
         MonoBehaviour.print(
-            "HandleRewardBasedVideoFailedToLoad event received with message: " + args.Message);
+            "HandleRewardedAdFailedToLoad event received with message: " + args.Message);
     }
 
-    public void HandleRewardBasedVideoOpened(object sender, EventArgs args)
+    public void HandleRewardedAdOpening(object sender, EventArgs args)
     {
-        MonoBehaviour.print("HandleRewardBasedVideoOpened event received");
+        MonoBehaviour.print("HandleRewardedAdOpening event received");
     }
 
-    public void HandleRewardBasedVideoStarted(object sender, EventArgs args)
+    public void HandleRewardedAdFailedToShow(object sender, AdErrorEventArgs args)
     {
-        MonoBehaviour.print("HandleRewardBasedVideoStarted event received");
+        MonoBehaviour.print(
+            "HandleRewardedAdFailedToShow event received with message: " + args.Message);
     }
 
-    public void HandleRewardBasedVideoClosed(object sender, EventArgs args)
+    public void HandleRewardedAdClosed(object sender, EventArgs args)
     {
-        MonoBehaviour.print("HandleRewardBasedVideoClosed event received");
+        MonoBehaviour.print("HandleRewardedAdClosed event received");
     }
 
-    public void HandleRewardBasedVideoRewarded(object sender, Reward args)
+    public void HandleUserEarnedReward(object sender, Reward args)
     {
         string type = args.Type;
         double amount = args.Amount;
         MonoBehaviour.print(
-            "HandleRewardBasedVideoRewarded event received for " + amount.ToString() + " " + type);
-    }
-
-    public void HandleRewardBasedVideoLeftApplication(object sender, EventArgs args)
-    {
-        MonoBehaviour.print("HandleRewardBasedVideoLeftApplication event received");
+            "HandleRewardedAdRewarded event received for "
+                        + amount.ToString() + " " + type);
     }
 
     #endregion
