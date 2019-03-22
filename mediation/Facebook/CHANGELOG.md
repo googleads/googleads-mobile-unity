@@ -1,5 +1,10 @@
 # Facebook Adapter plugin for Google Mobile Ads SDK for Unity 3D Changelog
 
+## 2.2.0
+- Updated the plugin to support the new open-beta Rewarded API.
+- Supports Facebook Android adapter version 5.2.0.1.
+- Supports Facebook iOS adapter version 5.2.0.1.
+
 ## 2.1.1
 - Supports Facebook Android adapter version 5.1.0.1.
 - Supports Facebook iOS adapter version 5.1.0.0.
