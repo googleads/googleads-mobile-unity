@@ -1,11 +1,11 @@
 <dependencies>
   <androidPackages>
-    <androidPackage spec="com.google.ads.mediation:adcolony:3.3.5.1">
+    <androidPackage spec="com.google.ads.mediation:adcolony:3.3.8.1">
       <repositories>
         <repository>https://adcolony.bintray.com/AdColony</repository>
       </repositories>
     </androidPackage>
-    <androidPackage spec="com.adcolony:sdk:3.3.5-unity">
+    <androidPackage spec="com.adcolony:sdk:3.3.8">
       <repositories>
         <repository>https://adcolony.bintray.com/AdColony</repository>
       </repositories>
@@ -13,7 +13,7 @@
   </androidPackages>
 
   <iosPods>
-    <iosPod name="GoogleMobileAdsMediationAdColony" version="3.3.5.0">
+    <iosPod name="GoogleMobileAdsMediationAdColony" version="3.3.6.1">
       <sources>
         <source>https://github.com/CocoaPods/Specs</source>
       </sources>
