@@ -16,6 +16,7 @@
 package com.google.unity.ads;
 
 import android.content.res.Resources;
+import android.support.annotation.NonNull;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
@@ -25,6 +26,8 @@ import com.google.android.gms.ads.AdRequest;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * Utilities for the Google Mobile Ads Unity plugin.
@@ -75,6 +78,8 @@ public class PluginUtils {
      * Position constant center of the screen.
      */
     private static final int POSITION_CENTER = 6;
+
+    private static final ExecutorService CACHED_THREAD_POOL = Executors.newCachedThreadPool();
 
     /**
      * Gets a string error reason from an error code.
@@ -224,4 +229,7 @@ public class PluginUtils {
         }
     }
 
+    static void submitToThreadPool(@NonNull Runnable task){
+        CACHED_THREAD_POOL.submit(task);
+    }
 }

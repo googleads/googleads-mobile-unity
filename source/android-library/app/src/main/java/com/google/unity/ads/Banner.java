@@ -169,21 +169,21 @@ public class Banner {
                         showPopUpWindow();
                     }
 
-                    new Thread(new Runnable() {
+                    PluginUtils.submitToThreadPool(new Runnable() {
                         @Override
                         public void run() {
                             if (mUnityListener != null) {
                                 mUnityListener.onAdLoaded();
                             }
                         }
-                    }).start();
+                    });
                 }
             }
 
             @Override
             public void onAdFailedToLoad(final int errorCode) {
                 if (mUnityListener != null) {
-                    new Thread(new Runnable() {
+                    PluginUtils.submitToThreadPool(new Runnable() {
                         @Override
                         public void run() {
                             if (mUnityListener != null) {
@@ -191,49 +191,49 @@ public class Banner {
                                         PluginUtils.getErrorReason(errorCode));
                             }
                         }
-                    }).start();
+                    });
                 }
             }
 
             @Override
             public void onAdOpened() {
                 if (mUnityListener != null) {
-                    new Thread(new Runnable() {
+                    PluginUtils.submitToThreadPool(new Runnable() {
                         @Override
                         public void run() {
                             if (mUnityListener != null) {
                                 mUnityListener.onAdOpened();
                             }
                         }
-                    }).start();
+                    });
                 }
             }
 
             @Override
             public void onAdClosed() {
                 if (mUnityListener != null) {
-                    new Thread(new Runnable() {
+                    PluginUtils.submitToThreadPool(new Runnable() {
                         @Override
                         public void run() {
                             if (mUnityListener != null) {
                                 mUnityListener.onAdClosed();
                             }
                         }
-                    }).start();
+                    });
                 }
             }
 
             @Override
             public void onAdLeftApplication() {
                 if (mUnityListener != null) {
-                    new Thread(new Runnable() {
+                    PluginUtils.submitToThreadPool(new Runnable() {
                         @Override
                         public void run() {
                             if (mUnityListener != null) {
                                 mUnityListener.onAdLeftApplication();
                             }
                         }
-                    }).start();
+                    });
                 }
             }
         });
