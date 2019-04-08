@@ -11,7 +11,6 @@
 #import "GADURewardBasedVideoAd.h"
 #import "GADURewardedAd.h"
 
-
 #import "GADUTypes.h"
 
 /// Returns an NSString copying the characters from |bytes|, a C array of UTF8-encoded bytes.
@@ -52,8 +51,6 @@ struct AdTypes {
 void GADUInitialize(const char *appId) {
   [GADMobileAds configureWithApplicationID:GADUStringFromUTF8String(appId)];
 }
-
-
 
 // The application’s audio volume. Affects audio volumes of all ads relative to
 // other audio output. Valid ad volume values range from 0.0 (silent) to 1.0
@@ -568,7 +565,6 @@ void GADUSetNativeCustomTemplateAdCallbacks(
       (__bridge GADUNativeCustomTemplateAd *)nativeCustomTemplateAd;
   internalNativeCustomTemplateAd.didReceiveClickCallback = adClickedCallback;
 }
-
 
 #pragma mark - Other methods
 /// Removes an object from the cache.

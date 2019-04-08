@@ -16,6 +16,7 @@
 package com.google.unity.ads;
 
 import android.content.res.Resources;
+import android.support.v4.view.DisplayCutoutCompat;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
@@ -136,16 +137,20 @@ public class PluginUtils {
     }
 
     public static int getHorizontalOffsetForPositionCode(int positionCode, int viewWidth,
-                                                         int anchorWidth) {
+                                                         int anchorWidth, 
+                                                         DisplayCutoutCompat displayCutout) {
         int offset;
+        int safeInsetLeft = displayCutout == null ? 0 : displayCutout.getSafeInsetLeft();
+        int safeInsetRight = displayCutout == null ? 0 : displayCutout.getSafeInsetRight();
+
         switch (positionCode) {
             case POSITION_TOP_LEFT:
             case POSITION_BOTTOM_LEFT:
-                offset = 0;
+                offset = safeInsetLeft;
                 break;
             case POSITION_TOP_RIGHT:
             case POSITION_BOTTOM_RIGHT:
-                offset = anchorWidth - viewWidth;
+                offset = anchorWidth - viewWidth - safeInsetRight;
                 break;
             case POSITION_TOP:
             case POSITION_BOTTOM:
@@ -168,16 +173,21 @@ public class PluginUtils {
      * @param positionCode the position code to use
      * @param viewHeight the height of the view
      * @param anchorHeight the height of the anchoring view to position in
+     * @param displayCutout the display cutout information of the device
      * @return the vertical offset relative to the bottom of the anchorview.
      */
     public static int getVerticalOffsetForPositionCode(int positionCode, int viewHeight,
-                                                       int anchorHeight) {
+                                                       int anchorHeight, 
+                                                       DisplayCutoutCompat displayCutout) {
         int offset;
+        int safeInsetTop = displayCutout == null ? 0 : displayCutout.getSafeInsetTop();
+        int safeInsetBottom = displayCutout == null ? 0 : displayCutout.getSafeInsetBottom();
+
         switch (positionCode) {
             case POSITION_TOP:
             case POSITION_TOP_LEFT:
             case POSITION_TOP_RIGHT:
-                offset = -anchorHeight;
+                offset = -anchorHeight + safeInsetTop;
                 break;
             case POSITION_CENTER:
                 offset = (-anchorHeight - viewHeight) / 2;
@@ -185,7 +195,7 @@ public class PluginUtils {
             case POSITION_BOTTOM:
             case POSITION_BOTTOM_LEFT:
             case POSITION_BOTTOM_RIGHT:
-                offset = -viewHeight;
+                offset = -viewHeight - safeInsetBottom;
                 break;
             // Make the bottom position the default vertical position.
             default:
@@ -223,5 +233,4 @@ public class PluginUtils {
                     exception.getLocalizedMessage()));
         }
     }
-
 }

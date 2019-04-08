@@ -26,9 +26,7 @@ namespace GoogleMobileAds.iOS
     public class MobileAdsClient : IMobileAdsClient
     {
         private static MobileAdsClient instance = new MobileAdsClient();
-
         private IntPtr mobileAdsClientPtr;
-
         private MobileAdsClient()
         {
             this.mobileAdsClientPtr = (IntPtr)GCHandle.Alloc(this);
@@ -46,7 +44,6 @@ namespace GoogleMobileAds.iOS
         {
             Externs.GADUInitialize(appId);
         }
-
         public void SetApplicationVolume(float volume)
         {
             Externs.GADUSetApplicationVolume(volume);
@@ -61,7 +58,6 @@ namespace GoogleMobileAds.iOS
         {
             Externs.GADUSetiOSAppPauseOnBackground(pause);
         }
-
         private static MobileAdsClient IntPtrToMobileAdsClient(IntPtr mobileAdsClient)
         {
             GCHandle handle = (GCHandle)mobileAdsClient;

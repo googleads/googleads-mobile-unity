@@ -18,12 +18,17 @@ package com.google.unity.ads;
 import android.app.Activity;
 import android.graphics.Color;
 import android.graphics.Point;
+import android.graphics.Rect;
 import android.os.Build;
+import android.support.v4.view.DisplayCutoutCompat;
 import android.util.Log;
+import android.view.DisplayCutout;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
 import android.view.ViewTreeObserver;
+import android.view.Window;
+import android.view.WindowInsets;
 import android.view.WindowManager;
 import android.widget.PopupWindow;
 
@@ -77,6 +82,12 @@ public class Banner {
     private int mVerticalOffset;
 
     /**
+     * An object that contains display cutout information of the device. Value will be null
+     * for devices that have no display cutouts or running below Android 9.0 (API 28).
+     */
+    private DisplayCutoutCompat displayCutoutCompat;
+
+    /**
      * A boolean indicating whether the ad has been hidden.
      */
     private boolean mHidden;
@@ -85,6 +96,11 @@ public class Banner {
      * A listener implemented in Unity via {@code AndroidJavaProxy} to receive ad events.
      */
     private UnityAdListener mUnityListener;
+
+    /**
+     * A {@code View.OnAttachStateChangeListener} used to detect display cutouts.
+     */
+    private View.OnAttachStateChangeListener onAttachStateChangeListener;
 
     /**
      * A {@code View.OnLayoutChangeListener} used to detect orientation changes and reposition
@@ -238,6 +254,20 @@ public class Banner {
             }
         });
 
+        onAttachStateChangeListener = new View.OnAttachStateChangeListener() {
+            @Override
+            public void onViewAttachedToWindow(View unusedView) {
+                displayCutoutCompat = getDisplayCutoutCompat();
+            }
+
+            @Override
+            public void onViewDetachedFromWindow(View unusedView) {
+
+            }
+        };
+        mUnityPlayerActivity.getWindow().getDecorView()
+                .addOnAttachStateChangeListener(onAttachStateChangeListener);
+
         mLayoutChangeListener = new View.OnLayoutChangeListener() {
             @Override
             public void onLayoutChange(View v, int left, int top, int right, int bottom,
@@ -269,6 +299,9 @@ public class Banner {
                 : mAdView.getAdSize().getWidthInPixels(mUnityPlayerActivity);
         int popUpWindowHeight = mAdView.getAdSize().getHeightInPixels(mUnityPlayerActivity);
         mPopupWindow = new PopupWindow(mAdView, popUpWindowWidth, popUpWindowHeight);
+
+        // Workaround to prevent ad view from being clipped.
+        mPopupWindow.setClippingEnabled(false);
 
         // Copy system UI visibility flags set on Unity player window to newly created PopUpWindow.
         int visibilityFlags = mUnityPlayerActivity.getWindow().getAttributes().flags;
@@ -357,6 +390,9 @@ public class Banner {
                 }
             }
         });
+
+        mUnityPlayerActivity.getWindow().getDecorView()
+                .removeOnAttachStateChangeListener(onAttachStateChangeListener);
 
         mUnityPlayerActivity.getWindow().getDecorView().getRootView()
                 .removeOnLayoutChangeListener(mLayoutChangeListener);
@@ -491,11 +527,36 @@ public class Banner {
             int adViewHeight = mAdView.getAdSize().getHeightInPixels(mUnityPlayerActivity);
 
             int x = PluginUtils.getHorizontalOffsetForPositionCode(mPositionCode, adViewWidth,
-                    anchorView.getWidth());
+                    anchorView.getWidth(), displayCutoutCompat);
             int y = PluginUtils.getVerticalOffsetForPositionCode(mPositionCode, adViewHeight,
-                    anchorView.getHeight());
+                    anchorView.getHeight(), displayCutoutCompat);
             return new Point(x, y);
         }
+    }
+
+    private DisplayCutoutCompat getDisplayCutoutCompat() {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.P) {
+            return null;
+        }
+
+        Window window = mUnityPlayerActivity.getWindow();
+        if (window == null) {
+            return null;
+        }
+
+        WindowInsets windowInsets = window.getDecorView().getRootWindowInsets();
+        if (windowInsets == null) {
+            return null;
+        }
+
+        DisplayCutout cutout = windowInsets.getDisplayCutout();
+        if (cutout == null) {
+            return null;
+        }
+
+        Rect safeInsets = new Rect(cutout.getSafeInsetLeft(), cutout.getSafeInsetTop(),
+                cutout.getSafeInsetRight(), cutout.getSafeInsetBottom());
+        return new DisplayCutoutCompat(safeInsets, cutout.getBoundingRects());
     }
 
     /**
