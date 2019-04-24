@@ -46,6 +46,5 @@ namespace GoogleMobileAds.Common
 
             return nativeAdTexture;
         }
-
     }
 }
