@@ -105,6 +105,13 @@ namespace GoogleMobileAds.iOS
             Externs.GADURelease(requestPtr);
         }
 
+        public void SetServerSideVerificationOptions(ServerSideVerificationOptions serverSideVerificationOptions)
+        {
+            IntPtr optionsPtr = Utils.BuildServerSideVerificationOptions(serverSideVerificationOptions);
+            Externs.GADURewardedAdSetServerSideVerificationOptions(this.RewardedAdPtr, optionsPtr);
+            Externs.GADURelease(optionsPtr);
+        }
+
         // Show the rewarded ad on the screen.
         public void Show()
         {

@@ -394,6 +394,25 @@ void GADUTagForChildDirectedTreatment(GADUTypeRequestRef request, BOOL childDire
   internalRequest.tagForChildDirectedTreatment = childDirectedTreatment;
 }
 
+/// Creates an empty GADRequest and returns its reference.
+GADUTypeServerSideVerificationOptionsRef GADUCreateServerSideVerificationOptions() {
+  GADUServerSideVerificationOptions *options = [[GADUServerSideVerificationOptions alloc] init];
+  GADUObjectCache *cache = [GADUObjectCache sharedInstance];
+  [cache.references setObject:options forKey:[options gadu_referenceKey]];
+  return (__bridge GADUTypeServerSideVerificationOptionsRef)(options);
+}
+
+void GADUServerSideVerificationOptionsSetUserId(GADUTypeServerSideVerificationOptionsRef options, const char *userId) {
+  GADUServerSideVerificationOptions *internalOptions = (__bridge GADUServerSideVerificationOptions*)options;
+  internalOptions.userIdentifier = GADUStringFromUTF8String(userId);
+}
+
+void GADUServerSideVerificationOptionsSetCustomRewardString(GADUTypeServerSideVerificationOptionsRef options, 
+                                                            const char *customRewardString) {
+  GADUServerSideVerificationOptions *internalOptions = (__bridge GADUServerSideVerificationOptions*)options;
+  internalOptions.customRewardString = GADUStringFromUTF8String(customRewardString);                                                            
+}
+
 /// Creates an empty NSMutableableDictionary returns its reference.
 GADUTypeMutableDictionaryRef GADUCreateMutableDictionary() {
   NSMutableDictionary *dictionary = [[NSMutableDictionary alloc] init];
@@ -485,6 +504,12 @@ void GADURequestNativeAd(GADUTypeAdLoaderRef adLoader, GADUTypeRequestRef reques
   GADUAdLoader *internalAdLoader = (__bridge GADUAdLoader *)adLoader;
   GADURequest *internalRequest = (__bridge GADURequest *)request;
   [internalAdLoader loadRequest:[internalRequest request]];
+}
+
+void GADURewardedAdSetServerSideVerificationOptions(GADUTypeRewardedAdRef rewardedAd, GADUTypeServerSideVerificationOptionsRef options) {
+  GADURewardedAd *internalRewardedAd = (__bridge GADURewardedAd *)rewardedAd;
+  GADUServerSideVerificationOptions *internalOptions = (__bridge GADUServerSideVerificationOptions *)options;
+  [internalRewardedAd setServerSideVerificationOptions:[internalOptions options]];
 }
 
 #pragma mark - Native Custom Template Ad methods

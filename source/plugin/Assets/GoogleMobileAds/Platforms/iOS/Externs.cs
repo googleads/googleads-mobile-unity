@@ -309,6 +309,17 @@ namespace GoogleMobileAds.iOS
 
         #endregion
 
+        [DllImport("__Internal")]
+        internal static extern IntPtr GADUCreateServerSideVerificationOptions();
+
+        [DllImport("__Internal")]
+        internal static extern void GADUServerSideVerificationOptionsSetUserId(IntPtr options, string userId);
+
+        [DllImport("__Internal")]
+        internal static extern void GADUServerSideVerificationOptionsSetCustomRewardString(IntPtr options, string customRewardString);   
+
+        [DllImport("__Internal")]
+        internal static extern void GADURewardedAdSetServerSideVerificationOptions(IntPtr rewardedAd, IntPtr options);     
     }
 }
 

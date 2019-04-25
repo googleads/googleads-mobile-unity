@@ -47,5 +47,7 @@ namespace GoogleMobileAds.Common
 
         // Shows the rewarded ad on the screen.
         void Show();
+
+        void SetServerSideVerificationOptions(ServerSideVerificationOptions serverSideVerificationOptions);
     }
 }

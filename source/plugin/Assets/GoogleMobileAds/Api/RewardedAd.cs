@@ -115,6 +115,11 @@ namespace GoogleMobileAds.Api
             client.Show();
         }
 
+        public void SetServerSideVerificationOptions(ServerSideVerificationOptions serverSideVerificationOptions)
+        {
+            client.SetServerSideVerificationOptions(serverSideVerificationOptions);
+        }
+
         // Returns the mediation adapter class name.
         public string MediationAdapterClassName()
         {
