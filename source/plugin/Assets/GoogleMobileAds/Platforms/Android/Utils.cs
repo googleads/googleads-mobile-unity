@@ -205,6 +205,11 @@ namespace GoogleMobileAds.Android
                         "addNetworkExtrasBundle",
                         mediationExtrasBundleBuilder.Call<AndroidJavaClass>("getAdapterClass"),
                         mediationExtras);
+
+                    adRequestBuilder.Call<AndroidJavaObject>(
+                        "addCustomEventExtrasBundle",
+                        mediationExtrasBundleBuilder.Call<AndroidJavaClass>("getAdapterClass"),
+                        mediationExtras);
                 }
             }
 
