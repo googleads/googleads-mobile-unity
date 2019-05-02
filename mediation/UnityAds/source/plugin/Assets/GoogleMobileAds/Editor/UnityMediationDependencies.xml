@@ -1,6 +1,6 @@
 <dependencies>
   <androidPackages>
-    <androidPackage spec="com.google.ads.mediation:unity:3.0.0.0">
+    <androidPackage spec="com.google.ads.mediation:unity:3.0.0.2">
       <repositories>
         <repository>https://jcenter.bintray.com/</repository>
       </repositories>
@@ -13,7 +13,7 @@
   </androidPackages>
 
   <iosPods>
-    <iosPod name="GoogleMobileAdsMediationUnity" version="3.0.0.1">
+    <iosPod name="GoogleMobileAdsMediationUnity" version="3.0.0.3">
       <sources>
         <source>https://github.com/CocoaPods/Specs</source>
       </sources>

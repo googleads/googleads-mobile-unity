@@ -1,6 +1,6 @@
 <dependencies>
   <androidPackages>
-    <androidPackage spec="com.google.android.gms:play-services-ads:15.0.1">
+    <androidPackage spec="com.google.android.gms:play-services-ads:17.2.0">
       <repositories>
         <repository>https://maven.google.com/</repository>
       </repositories>
@@ -8,7 +8,7 @@
   </androidPackages>
 
   <iosPods>
-    <iosPod name="Google-Mobile-Ads-SDK" version="~> 7.0">
+    <iosPod name="Google-Mobile-Ads-SDK" version="~> 7.41">
       <sources>
         <source>https://github.com/CocoaPods/Specs</source>
       </sources>

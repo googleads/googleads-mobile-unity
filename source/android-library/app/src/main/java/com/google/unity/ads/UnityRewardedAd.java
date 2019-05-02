@@ -1,0 +1,197 @@
+package com.google.unity.ads;
+
+import android.app.Activity;
+import android.support.annotation.NonNull;
+import android.util.Log;
+
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.rewarded.RewardItem;
+import com.google.android.gms.ads.rewarded.RewardedAd;
+import com.google.android.gms.ads.rewarded.RewardedAdCallback;
+import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback;
+
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.FutureTask;
+
+/**
+ * Native rewarded ad implementation for the Google Mobile Ads Unity plugin.
+ */
+public class UnityRewardedAd {
+
+    /**
+     * The {@link RewardedAd}.
+     */
+    private RewardedAd rewardedAd;
+
+    /**
+     * The {@code Activity} on which the rewarded ad will display.
+     */
+    private Activity activity;
+
+    /**
+     * A callback implemented in Unity via {@code AndroidJavaProxy} to receive ad events.
+     */
+    private UnityRewardedAdCallback callback;
+
+
+    public UnityRewardedAd(Activity activity, UnityRewardedAdCallback callback) {
+        this.activity = activity;
+        this.callback = callback;
+    }
+
+    /**
+     * Creates a {@link RewardedAd}.
+     */
+    public void create(final String adUnitID) {
+        activity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                rewardedAd = new RewardedAd(activity, adUnitID);
+            }
+        });
+    }
+
+    /**
+     * Loads a rewarded ad.
+     *
+     * @param request The {@link AdRequest} object with targeting parameters.
+     */
+    public void loadAd(final AdRequest request) {
+        activity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                rewardedAd.loadAd(request, new RewardedAdLoadCallback() {
+                    public void onRewardedAdLoaded() {
+                        if (callback != null) {
+                            new Thread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    if (callback != null) {
+                                        callback.onRewardedAdLoaded();
+                                    }
+                                }
+                            }).start();
+                        }
+                    }
+
+
+                    public void onRewardedAdFailedToLoad(final int errorCode) {
+                        if (callback != null) {
+                            new Thread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    if (callback != null) {
+                                        callback.onRewardedAdFailedToLoad(
+                                                PluginUtils.getErrorReason(errorCode));
+                                    }
+                                }
+                            }).start();
+                        }
+                    }
+                });
+            }
+        });
+    }
+
+    /**
+     * Returns {@code true} if the rewarded ad has loaded.
+     */
+    public boolean isLoaded() {
+        FutureTask<Boolean> task = new FutureTask<>(new Callable<Boolean>() {
+            @Override
+            public Boolean call() {
+                return rewardedAd.isLoaded();
+            }
+        });
+        activity.runOnUiThread(task);
+
+        boolean result = false;
+        try {
+            result = task.get();
+        } catch (InterruptedException e) {
+            Log.e(PluginUtils.LOGTAG,
+                    String.format("Unable to check if rewarded as has loaded: %s",
+                            e.getLocalizedMessage()));
+        } catch (ExecutionException e) {
+            Log.e(PluginUtils.LOGTAG,
+                    String.format("Unable to check if rewarded as has loaded: %s",
+                            e.getLocalizedMessage()));
+        }
+        return result;
+    }
+
+    /**
+     * Shows the rewarded ad if it has loaded.
+     */
+    public void show() {
+        activity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if (rewardedAd.isLoaded()) {
+                    rewardedAd.show(activity, new RewardedAdCallback() {
+                        public void onRewardedAdOpened() {
+                            if (callback != null) {
+                                new Thread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        if (callback != null) {
+                                            callback.onRewardedAdOpened();
+                                        }
+                                    }
+                                }).start();
+                            }
+                        }
+
+                        public void onRewardedAdClosed() {
+                            if (callback != null) {
+                                new Thread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        if (callback != null) {
+                                            callback.onRewardedAdClosed();
+                                        }
+                                    }
+                                }).start();
+                            }
+                        }
+
+                        public void onUserEarnedReward(@NonNull final RewardItem reward) {
+                            if (callback != null) {
+                                new Thread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        if (callback != null) {
+                                            callback.onUserEarnedReward(reward.getType(),
+                                                    reward.getAmount());
+                                        }
+                                    }
+                                }).start();
+                            }
+                        }
+
+                        public void onRewardedAdFailedToShow(final int errorCode) {
+                            if (callback != null) {
+                                new Thread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        if (callback != null) {
+                                            callback.onRewardedAdFailedToShow(
+                                                    PluginUtils.getErrorReason(errorCode));
+                                        }
+                                    }
+                                }).start();
+                            }
+                        }
+                    });
+                } else {
+                    Log.w(PluginUtils.LOGTAG, "Rewarded ad is not ready to be shown.");
+                }
+            }
+        });
+    }
+
+    public String getMediationAdapterClassName() {
+        return rewardedAd != null ? rewardedAd.getMediationAdapterClassName() : null;
+    }
+}

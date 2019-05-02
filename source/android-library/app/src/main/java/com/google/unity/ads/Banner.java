@@ -188,7 +188,7 @@ public class Banner {
                         public void run() {
                             if (mUnityListener != null) {
                                 mUnityListener.onAdFailedToLoad(
-                                    PluginUtils.getErrorReason(errorCode));
+                                        PluginUtils.getErrorReason(errorCode));
                             }
                         }
                     }).start();
@@ -365,7 +365,8 @@ public class Banner {
             mAdView.getViewTreeObserver()
                     .removeOnGlobalLayoutListener(mViewTreeLayoutChangeListener);
         } else {
-            mAdView.getViewTreeObserver().removeGlobalOnLayoutListener(mViewTreeLayoutChangeListener);
+            mAdView.getViewTreeObserver()
+                    .removeGlobalOnLayoutListener(mViewTreeLayoutChangeListener);
         }
     }
 

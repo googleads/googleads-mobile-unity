@@ -57,6 +57,8 @@ namespace GoogleMobileAds.Android
 
         public const string RewardBasedVideoClassName = "com.google.unity.ads.RewardBasedVideo";
 
+        public const string UnityRewardedAdClassName = "com.google.unity.ads.UnityRewardedAd";
+
         public const string NativeAdLoaderClassName = "com.google.unity.ads.NativeAdLoader";
 
         public const string UnityAdListenerClassName = "com.google.unity.ads.UnityAdListener";
@@ -64,6 +66,11 @@ namespace GoogleMobileAds.Android
         public const string UnityRewardBasedVideoAdListenerClassName =
             "com.google.unity.ads.UnityRewardBasedVideoAdListener";
 
+        public const string UnityRewardedAdCallbackClassName =
+            "com.google.unity.ads.UnityRewardedAdCallback";
+
+        public const string UnityAdapterStatusEnumName =
+                "com.google.android.gms.ads.initialization.AdapterStatus$State";
         public const string UnityAdLoaderListenerClassName =
             "com.google.unity.ads.UnityAdLoaderListener";
 
@@ -203,7 +210,6 @@ namespace GoogleMobileAds.Android
 
             return adRequestBuilder.Call<AndroidJavaObject>("build");
         }
-
         #endregion
     }
 }

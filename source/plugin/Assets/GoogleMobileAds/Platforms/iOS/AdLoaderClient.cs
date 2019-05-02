@@ -55,12 +55,15 @@ namespace GoogleMobileAds.iOS
                 adTypes.CustomTemplateAd = 1;
             }
 
+            bool supportsConfigureReturnUrlsForImageAssets = false;
+
             this.AdLoaderPtr = Externs.GADUCreateAdLoader(
                 this.adLoaderClientPtr,
                 unityAdLoader.AdUnitId,
                 templateIdsArray,
                 templateIdsArray.Length,
-                ref adTypes);
+                ref adTypes,
+                supportsConfigureReturnUrlsForImageAssets);
 
             Externs.GADUSetAdLoaderCallbacks(
                 this.AdLoaderPtr,

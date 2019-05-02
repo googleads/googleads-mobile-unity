@@ -1,5 +1,10 @@
 # Unity Ads Adapter plugin for Google Mobile Ads SDK for Unity 3D Changelog
 
+## 2.0.3
+- Updated the plugin to support the new open-beta Rewarded API.
+- Supports Unity Ads Android adapter version 3.0.0.2.
+- Supports Unity Ads iOS adapter version 3.0.0.3.
+
 ## 2.0.2
 - Supports Unity Ads Android adapter version 3.0.0.0.
 - Supports Unity Ads iOS adapter version 3.0.0.1.

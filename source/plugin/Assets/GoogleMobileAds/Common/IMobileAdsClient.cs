@@ -12,13 +12,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System;
+
+using GoogleMobileAds.Api;
+
 namespace GoogleMobileAds.Common
 {
     public interface IMobileAdsClient
     {
         // Initialize the Mobile Ads SDK.
         void Initialize(string appId);
-
         // The application’s audio volume. Affects audio volumes of all ads relative
         // to other audio output. Valid ad volume values range from 0.0 (silent) to 1.0
         // (current device volume). Use this method only if your application has its own

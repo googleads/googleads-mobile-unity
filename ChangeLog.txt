@@ -1,6 +1,20 @@
 Google Mobile Ads Unity Plugin Change Log
 
 **************
+Version 3.16.0
+**************
+
+Plugin:
+- Added new RewardedAd APIs support.
+- Added PListProcessor to assist in adding the GADApplicationIdentifier
+to iOS build Info.plist.
+
+Built and tested with:
+- Google Play services 17.2.0
+- Google Mobile Ads iOS SDK 7.42.0
+- Unity Jar Resolver 1.2.102.0
+
+**************
 Version 3.15.1
 **************
 
