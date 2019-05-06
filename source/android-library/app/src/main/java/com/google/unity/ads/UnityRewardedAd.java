@@ -9,6 +9,7 @@ import com.google.android.gms.ads.rewarded.RewardItem;
 import com.google.android.gms.ads.rewarded.RewardedAd;
 import com.google.android.gms.ads.rewarded.RewardedAdCallback;
 import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback;
+import com.google.android.gms.ads.rewarded.ServerSideVerificationOptions;
 
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
@@ -187,6 +188,18 @@ public class UnityRewardedAd {
                 } else {
                     Log.w(PluginUtils.LOGTAG, "Rewarded ad is not ready to be shown.");
                 }
+            }
+        });
+    }
+
+    /**
+     * Sets server side verification options.
+     */
+    public void setServerSideVerificationOptions(final ServerSideVerificationOptions serverSideVerificationOptions) {
+        activity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                rewardedAd.setServerSideVerificationOptions(serverSideVerificationOptions);
             }
         });
     }

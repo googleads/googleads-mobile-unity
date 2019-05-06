@@ -89,6 +89,15 @@ namespace GoogleMobileAds.iOS
             return requestPtr;
         }
 
+        public static IntPtr BuildServerSideVerificationOptions(ServerSideVerificationOptions options)
+        {
+            IntPtr optionsPtr = Externs.GADUCreateServerSideVerificationOptions();
+            Externs.GADUServerSideVerificationOptionsSetUserId(optionsPtr, options.UserId);
+            Externs.GADUServerSideVerificationOptionsSetCustomRewardString(optionsPtr, options.CustomData);
+
+            return optionsPtr;
+        }
+
         public static string PtrToString(IntPtr stringPtr) {
             string managedString = Marshal.PtrToStringAnsi(stringPtr);
             Marshal.FreeHGlobal(stringPtr);

@@ -103,4 +103,8 @@
   }
 }
 
+- (void)setServerSideVerificationOptions:(GADServerSideVerificationOptions *)options {
+  self.rewardedAd.serverSideVerificationOptions = options;
+}
+
 @end

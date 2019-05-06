@@ -47,6 +47,12 @@ namespace GoogleMobileAds.Android
 
         public const string MobileAdsClassName = "com.google.android.gms.ads.MobileAds";
 
+        public const string ServerSideVerificationOptionsClassName = 
+            "com.google.android.gms.ads.rewarded.ServerSideVerificationOptions";
+
+        public const string ServerSideVerificationOptionsBuilderClassName = 
+            "com.google.android.gms.ads.rewarded.ServerSideVerificationOptions$Builder";    
+
         #endregion
 
         #region Google Mobile Ads Unity Plugin class names
@@ -214,6 +220,15 @@ namespace GoogleMobileAds.Android
             }
 
             return adRequestBuilder.Call<AndroidJavaObject>("build");
+        }
+
+        public static AndroidJavaObject GetServerSideVerificationOptionsJavaObject(ServerSideVerificationOptions serverSideVerificationOptions)
+        {
+            AndroidJavaObject serverSideVerificationOptionsBuilder = new AndroidJavaObject(ServerSideVerificationOptionsBuilderClassName);
+            serverSideVerificationOptionsBuilder.Call<AndroidJavaObject>("setUserId", serverSideVerificationOptions.UserId);
+            serverSideVerificationOptionsBuilder.Call<AndroidJavaObject>("setCustomData", serverSideVerificationOptions.CustomData);
+
+            return serverSideVerificationOptionsBuilder.Call<AndroidJavaObject>("build");
         }
         #endregion
     }

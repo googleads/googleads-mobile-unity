@@ -49,4 +49,7 @@
 /// Shows the rewarded ad.
 - (void)show;
 
+/// Options specified for server-to-server user reward verification.
+- (void)setServerSideVerificationOptions:(GADServerSideVerificationOptions *)options;
+
 @end
