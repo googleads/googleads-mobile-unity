@@ -1,6 +1,6 @@
 <dependencies>
   <androidPackages>
-    <androidPackage spec="com.google.ads.mediation:duadplatform:1.1.1.8.0">
+    <androidPackage spec="com.google.ads.mediation:duadplatform:1.2.2.0.1">
       <repositories>
         <repository>https://jcenter.bintray.com/</repository>
       </repositories>

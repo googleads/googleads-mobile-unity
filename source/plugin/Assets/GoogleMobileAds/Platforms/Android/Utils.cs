@@ -77,7 +77,6 @@ namespace GoogleMobileAds.Android
 
         public const string UnityAdapterStatusEnumName =
                 "com.google.android.gms.ads.initialization.AdapterStatus$State";
-
         public const string UnityAdLoaderListenerClassName =
             "com.google.unity.ads.UnityAdLoaderListener";
 
@@ -210,6 +209,11 @@ namespace GoogleMobileAds.Android
                 {
                     adRequestBuilder.Call<AndroidJavaObject>(
                         "addNetworkExtrasBundle",
+                        mediationExtrasBundleBuilder.Call<AndroidJavaClass>("getAdapterClass"),
+                        mediationExtras);
+
+                    adRequestBuilder.Call<AndroidJavaObject>(
+                        "addCustomEventExtrasBundle",
                         mediationExtrasBundleBuilder.Call<AndroidJavaClass>("getAdapterClass"),
                         mediationExtras);
                 }

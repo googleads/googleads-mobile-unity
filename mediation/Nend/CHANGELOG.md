@@ -1,5 +1,10 @@
 # nend Adapter plugin for Google Mobile Ads SDK for Unity 3D Changelog
 
+## 2.1.0
+- Updated the plugin to support the new Rewarded API.
+- Supports nend Android adapter version 5.1.0.2.
+- Supports nend iOS adapter version 5.1.1.0.
+
 ## 2.0.3
 - Supports nend Android adapter version 5.0.2.1.
 - Supports nend iOS adapter version 5.0.2.0.

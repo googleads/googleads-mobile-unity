@@ -47,7 +47,6 @@ public class NativeAdLoader {
      */
     private UnityAdLoaderListener mListener;
 
-
     public NativeAdLoader(final Activity activity, final String adUnitId,
                           UnityAdLoaderListener listener) {
         this.mActivity = activity;

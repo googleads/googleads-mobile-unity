@@ -27,7 +27,6 @@ namespace GoogleMobileAds.iOS
         [DllImport("__Internal")]
         internal static extern void GADUInitialize(string key);
 
-
         [DllImport("__Internal")]
         internal static extern void GADUSetApplicationVolume(float volume);
 
@@ -319,7 +318,7 @@ namespace GoogleMobileAds.iOS
             CustomNativeTemplateClient.GADUNativeCustomTemplateDidReceiveClick
                     adClickedCallback);
 
-        #endregion     
+        #endregion
     }
 }
 
