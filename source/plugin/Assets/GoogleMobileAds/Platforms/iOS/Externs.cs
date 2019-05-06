@@ -238,7 +238,19 @@ namespace GoogleMobileAds.iOS
                     adFailedToShowCallback,
             RewardedAdClient.GADURewardedAdDidOpenCallback didOpenCallback,
             RewardedAdClient.GADURewardedAdDidCloseCallback didCloseCallback,
-            RewardedAdClient.GADUUserEarnedRewardCallback userEarnedRewardCallback);
+            RewardedAdClient.GADUUserEarnedRewardCallback userEarnedRewardCallback);        
+
+        [DllImport("__Internal")]
+        internal static extern IntPtr GADUCreateServerSideVerificationOptions();
+
+        [DllImport("__Internal")]
+        internal static extern void GADUServerSideVerificationOptionsSetUserId(IntPtr options, string userId);
+
+        [DllImport("__Internal")]
+        internal static extern void GADUServerSideVerificationOptionsSetCustomRewardString(IntPtr options, string customRewardString);   
+
+        [DllImport("__Internal")]
+        internal static extern void GADURewardedAdSetServerSideVerificationOptions(IntPtr rewardedAd, IntPtr options);
 
         [DllImport("__Internal")]
         internal static extern IntPtr GADUMediationAdapterClassNameForRewardedAd(IntPtr rewardedVideo);
@@ -307,19 +319,7 @@ namespace GoogleMobileAds.iOS
             CustomNativeTemplateClient.GADUNativeCustomTemplateDidReceiveClick
                     adClickedCallback);
 
-        #endregion
-
-        [DllImport("__Internal")]
-        internal static extern IntPtr GADUCreateServerSideVerificationOptions();
-
-        [DllImport("__Internal")]
-        internal static extern void GADUServerSideVerificationOptionsSetUserId(IntPtr options, string userId);
-
-        [DllImport("__Internal")]
-        internal static extern void GADUServerSideVerificationOptionsSetCustomRewardString(IntPtr options, string customRewardString);   
-
-        [DllImport("__Internal")]
-        internal static extern void GADURewardedAdSetServerSideVerificationOptions(IntPtr rewardedAd, IntPtr options);     
+        #endregion     
     }
 }
 

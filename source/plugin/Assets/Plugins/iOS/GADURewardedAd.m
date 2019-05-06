@@ -104,7 +104,7 @@
 }
 
 - (void)setServerSideVerificationOptions:(GADServerSideVerificationOptions *)options {
-  self.serverSideVerificationOptions = options;
+  self.rewardedAd.serverSideVerificationOptions = options;
 }
 
 @end

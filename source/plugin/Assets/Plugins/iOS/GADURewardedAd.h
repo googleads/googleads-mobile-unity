@@ -40,10 +40,6 @@
 // Returns the mediation adapter class name.
 @property(nonatomic, readonly, copy) NSString *mediationAdapterClassName;
 
-/// Options specified for server-to-server user reward verification.
-@property(nonatomic, copy, nullable)
-    GADServerSideVerificationOptions *serverSideVerificationOptions;
-
 /// Makes an ad request. Additional targeting options can be supplied with a request object.
 - (void)loadRequest:(GADRequest *)request;
 

@@ -115,6 +115,7 @@ namespace GoogleMobileAds.Api
             client.Show();
         }
 
+        // Sets the server side verification options
         public void SetServerSideVerificationOptions(ServerSideVerificationOptions serverSideVerificationOptions)
         {
             client.SetServerSideVerificationOptions(serverSideVerificationOptions);
