@@ -10,8 +10,6 @@
 #import "GADURequest.h"
 #import "GADURewardBasedVideoAd.h"
 #import "GADURewardedAd.h"
-#import "GADUServerSideVerificationOptions.h"
-
 #import "GADUTypes.h"
 
 /// Returns an NSString copying the characters from |bytes|, a C array of UTF8-encoded bytes.
@@ -394,7 +392,7 @@ void GADUTagForChildDirectedTreatment(GADUTypeRequestRef request, BOOL childDire
 
 /// Creates an empty GADUServerSideVerificationOptions and returns its reference.
 GADUTypeServerSideVerificationOptionsRef GADUCreateServerSideVerificationOptions() {
-  GADUServerSideVerificationOptions *options = [[GADUServerSideVerificationOptions alloc] init];
+  GADServerSideVerificationOptions *options = [[GADServerSideVerificationOptions alloc] init];
   GADUObjectCache *cache = [GADUObjectCache sharedInstance];
   [cache.references setObject:options forKey:[options gadu_referenceKey]];
   return (__bridge GADUTypeServerSideVerificationOptionsRef)(options);
@@ -402,14 +400,14 @@ GADUTypeServerSideVerificationOptionsRef GADUCreateServerSideVerificationOptions
 
 /// Sets the user id on the GADUServerSideVerificationOptions
 void GADUServerSideVerificationOptionsSetUserId(GADUTypeServerSideVerificationOptionsRef options, const char *userId) {
-  GADUServerSideVerificationOptions *internalOptions = (__bridge GADUServerSideVerificationOptions*)options;
+  GADServerSideVerificationOptions *internalOptions = (__bridge GADServerSideVerificationOptions*)options;
   internalOptions.userIdentifier = GADUStringFromUTF8String(userId);
 }
 
 /// Sets the custom reward string on the GADUServerSideVerificationOptions
 void GADUServerSideVerificationOptionsSetCustomRewardString(GADUTypeServerSideVerificationOptionsRef options, 
                                                             const char *customRewardString) {
-  GADUServerSideVerificationOptions *internalOptions = (__bridge GADUServerSideVerificationOptions*)options;
+  GADServerSideVerificationOptions *internalOptions = (__bridge GADServerSideVerificationOptions*)options;
   internalOptions.customRewardString = GADUStringFromUTF8String(customRewardString);                                                            
 }
 
@@ -509,8 +507,8 @@ void GADURequestNativeAd(GADUTypeAdLoaderRef adLoader, GADUTypeRequestRef reques
 /// Sets the GADUServerSideVerificationOptions on GADURewardedAd
 void GADURewardedAdSetServerSideVerificationOptions(GADUTypeRewardedAdRef rewardedAd, GADUTypeServerSideVerificationOptionsRef options) {
   GADURewardedAd *internalRewardedAd = (__bridge GADURewardedAd *)rewardedAd;
-  GADUServerSideVerificationOptions *internalOptions = (__bridge GADUServerSideVerificationOptions *)options;
-  [internalRewardedAd setServerSideVerificationOptions:[internalOptions options]];
+  GADServerSideVerificationOptions *internalOptions = (__bridge GADServerSideVerificationOptions *)options;
+  [internalRewardedAd setServerSideVerificationOptions:internalOptions];
 }
 
 #pragma mark - Native Custom Template Ad methods
