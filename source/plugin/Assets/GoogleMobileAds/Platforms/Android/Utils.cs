@@ -47,11 +47,11 @@ namespace GoogleMobileAds.Android
 
         public const string MobileAdsClassName = "com.google.android.gms.ads.MobileAds";
 
-        public const string ServerSideVerificationOptionsClassName = 
+        public const string ServerSideVerificationOptionsClassName =
             "com.google.android.gms.ads.rewarded.ServerSideVerificationOptions";
 
-        public const string ServerSideVerificationOptionsBuilderClassName = 
-            "com.google.android.gms.ads.rewarded.ServerSideVerificationOptions$Builder";    
+        public const string ServerSideVerificationOptionsBuilderClassName =
+            "com.google.android.gms.ads.rewarded.ServerSideVerificationOptions$Builder";
 
         #endregion
 

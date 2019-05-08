@@ -34,7 +34,7 @@ namespace GoogleMobileAds.Api
             internal string CustomData { get; private set; }
 
             public Builder()
-            {                
+            {
             }
 
             public Builder SetUserId(string userId)

@@ -246,7 +246,7 @@ namespace GoogleMobileAds.iOS
         internal static extern void GADUServerSideVerificationOptionsSetUserId(IntPtr options, string userId);
 
         [DllImport("__Internal")]
-        internal static extern void GADUServerSideVerificationOptionsSetCustomRewardString(IntPtr options, string customRewardString);   
+        internal static extern void GADUServerSideVerificationOptionsSetCustomRewardString(IntPtr options, string customRewardString);
 
         [DllImport("__Internal")]
         internal static extern void GADURewardedAdSetServerSideVerificationOptions(IntPtr rewardedAd, IntPtr options);

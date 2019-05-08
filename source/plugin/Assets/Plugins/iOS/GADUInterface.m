@@ -405,10 +405,10 @@ void GADUServerSideVerificationOptionsSetUserId(GADUTypeServerSideVerificationOp
 }
 
 /// Sets the custom reward string on the GADUServerSideVerificationOptions
-void GADUServerSideVerificationOptionsSetCustomRewardString(GADUTypeServerSideVerificationOptionsRef options, 
+void GADUServerSideVerificationOptionsSetCustomRewardString(GADUTypeServerSideVerificationOptionsRef options,
                                                             const char *customRewardString) {
   GADServerSideVerificationOptions *internalOptions = (__bridge GADServerSideVerificationOptions*)options;
-  internalOptions.customRewardString = GADUStringFromUTF8String(customRewardString);                                                            
+  internalOptions.customRewardString = GADUStringFromUTF8String(customRewardString);
 }
 
 /// Creates an empty NSMutableableDictionary returns its reference.

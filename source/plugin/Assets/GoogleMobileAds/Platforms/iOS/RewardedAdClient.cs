@@ -118,7 +118,7 @@ namespace GoogleMobileAds.iOS
             Externs.GADURewardedAdSetServerSideVerificationOptions(this.RewardedAdPtr, optionsPtr);
             Externs.GADURelease(optionsPtr);
         }
-        
+
         public bool IsLoaded()
         {
             return Externs.GADURewardedAdReady(this.RewardedAdPtr);
