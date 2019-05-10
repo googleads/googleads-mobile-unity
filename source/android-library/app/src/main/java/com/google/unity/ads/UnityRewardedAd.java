@@ -3,13 +3,12 @@ package com.google.unity.ads;
 import android.app.Activity;
 import android.support.annotation.NonNull;
 import android.util.Log;
-
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.rewarded.RewardItem;
 import com.google.android.gms.ads.rewarded.RewardedAd;
 import com.google.android.gms.ads.rewarded.RewardedAdCallback;
 import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback;
-
+import com.google.android.gms.ads.rewarded.ServerSideVerificationOptions;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.FutureTask;
@@ -190,6 +189,18 @@ public class UnityRewardedAd {
             }
         });
     }
+
+  /** Sets server side verification options. */
+  public void setServerSideVerificationOptions(
+      final ServerSideVerificationOptions serverSideVerificationOptions) {
+    activity.runOnUiThread(
+        new Runnable() {
+          @Override
+          public void run() {
+            rewardedAd.setServerSideVerificationOptions(serverSideVerificationOptions);
+          }
+        });
+  }
 
     public String getMediationAdapterClassName() {
         return rewardedAd != null ? rewardedAd.getMediationAdapterClassName() : null;
