@@ -1,5 +1,10 @@
 # maio Adapter plugin for Google Mobile Ads SDK for Unity 3D Changelog
 
+## 1.2.3
+- Updated the plugin to support the new Rewarded API.
+- Supports maio Android adapter version 1.1.7.0.
+- Supports maio iOS adapter version 1.4.6.0.
+
 ## 1.2.2
 - Supports maio Android adapter version 1.1.6.0.
 - Supports maio iOS adapter version 1.4.2.0.
