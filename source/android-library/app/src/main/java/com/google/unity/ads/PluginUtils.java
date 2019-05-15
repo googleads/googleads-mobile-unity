@@ -19,12 +19,8 @@ import android.content.res.Resources;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
-import android.widget.PopupWindow;
 
 import com.google.android.gms.ads.AdRequest;
-
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 
 /**
  * Utilities for the Google Mobile Ads Unity plugin.
@@ -44,37 +40,37 @@ public class PluginUtils {
     /**
      * Position constant for top of the screen.
      */
-    private static final int POSITION_TOP = 0;
+    public static final int POSITION_TOP = 0;
 
     /**
      * Position constant for bottom of the screen.
      */
-    private static final int POSITION_BOTTOM = 1;
+    public static final int POSITION_BOTTOM = 1;
 
     /**
      * Position constant for top-left of the screen.
      */
-    private static final int POSITION_TOP_LEFT = 2;
+    public static final int POSITION_TOP_LEFT = 2;
 
     /**
      * Position constant for top-right of the screen.
      */
-    private static final int POSITION_TOP_RIGHT = 3;
+    public static final int POSITION_TOP_RIGHT = 3;
 
     /**
      * Position constant for bottom-left of the screen.
      */
-    private static final int POSITION_BOTTOM_LEFT = 4;
+    public static final int POSITION_BOTTOM_LEFT = 4;
 
     /**
      * Position constant bottom-right of the screen.
      */
-    private static final int POSITION_BOTTOM_RIGHT = 5;
+    public static final int POSITION_BOTTOM_RIGHT = 5;
 
     /**
      * Position constant center of the screen.
      */
-    private static final int POSITION_CENTER = 6;
+    public static final int POSITION_CENTER = 6;
 
     /**
      * Gets a string error reason from an error code.
@@ -128,73 +124,14 @@ public class PluginUtils {
             case POSITION_CENTER:
                 gravity = Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL;
                 break;
+            case POSITION_CUSTOM:
+                gravity = Gravity.TOP | Gravity.LEFT;
+                break;
             default:
                 throw new IllegalArgumentException("Attempted to position ad with invalid ad "
                         + "position.");
         }
         return gravity;
-    }
-
-    public static int getHorizontalOffsetForPositionCode(int positionCode, int viewWidth,
-                                                         int anchorWidth) {
-        int offset;
-        switch (positionCode) {
-            case POSITION_TOP_LEFT:
-            case POSITION_BOTTOM_LEFT:
-                offset = 0;
-                break;
-            case POSITION_TOP_RIGHT:
-            case POSITION_BOTTOM_RIGHT:
-                offset = anchorWidth - viewWidth;
-                break;
-            case POSITION_TOP:
-            case POSITION_BOTTOM:
-            case POSITION_CENTER:
-                offset = (anchorWidth - viewWidth) / 2;
-                break;
-            // Make the center position the default horizontal position.
-            default:
-                Log.w(LOGTAG, "Attempted to position ad with invalid ad "
-                        + "position. Using default center horizontal position.");
-                offset = (anchorWidth - viewWidth) / 2;
-        }
-
-        return offset;
-    }
-
-    /**
-     * Returns the vertical offset using a bottom left co-ordinate system.
-     * i.e top is at -anchorHeight.
-     * @param positionCode the position code to use
-     * @param viewHeight the height of the view
-     * @param anchorHeight the height of the anchoring view to position in
-     * @return the vertical offset relative to the bottom of the anchorview.
-     */
-    public static int getVerticalOffsetForPositionCode(int positionCode, int viewHeight,
-                                                       int anchorHeight) {
-        int offset;
-        switch (positionCode) {
-            case POSITION_TOP:
-            case POSITION_TOP_LEFT:
-            case POSITION_TOP_RIGHT:
-                offset = -anchorHeight;
-                break;
-            case POSITION_CENTER:
-                offset = (-anchorHeight - viewHeight) / 2;
-                break;
-            case POSITION_BOTTOM:
-            case POSITION_BOTTOM_LEFT:
-            case POSITION_BOTTOM_RIGHT:
-                offset = -viewHeight;
-                break;
-            // Make the bottom position the default vertical position.
-            default:
-                Log.w(LOGTAG, "Attempted to position ad with invalid ad "
-                        + "position. Using default bottom vertical position.");
-                offset = -viewHeight;
-        }
-
-        return offset;
     }
 
     public static float convertPixelsToDp(float px) {
@@ -205,22 +142,5 @@ public class PluginUtils {
     public static float convertDpToPixel(float dp) {
         DisplayMetrics metrics = Resources.getSystem().getDisplayMetrics();
         return dp * metrics.density;
-    }
-
-    public static void setPopUpWindowLayoutType(PopupWindow popupWindow, int layoutType) {
-        try {
-            Method method = PopupWindow.class.getDeclaredMethod("setWindowLayoutType", int.class);
-            method.setAccessible(true);
-            method.invoke(popupWindow, layoutType);
-        } catch (NoSuchMethodException exception) {
-            Log.w(LOGTAG, String.format("Unable to set popUpWindow window layout type: %s",
-                    exception.getLocalizedMessage()));
-        } catch (IllegalAccessException exception) {
-            Log.w(LOGTAG, String.format("Unable to set popUpWindow window layout type: %s",
-                    exception.getLocalizedMessage()));
-        } catch (InvocationTargetException exception) {
-            Log.d(LOGTAG, String.format("Unable to set popUpWindow window layout type: %s",
-                    exception.getLocalizedMessage()));
-        }
     }
 }
