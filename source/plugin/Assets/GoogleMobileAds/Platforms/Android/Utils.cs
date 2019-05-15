@@ -149,15 +149,15 @@ namespace GoogleMobileAds.Android
                 int? genderCode = null;
                 switch (request.Gender.GetValueOrDefault())
                 {
-                    case Gender.Unknown:
+                    case Api.Gender.Unknown:
                         genderCode = new AndroidJavaClass(AdRequestClassName)
                                 .GetStatic<int>("GENDER_UNKNOWN");
                         break;
-                    case Gender.Male:
+                    case Api.Gender.Male:
                         genderCode = new AndroidJavaClass(AdRequestClassName)
                                 .GetStatic<int>("GENDER_MALE");
                         break;
-                    case Gender.Female:
+                    case Api.Gender.Female:
                         genderCode = new AndroidJavaClass(AdRequestClassName)
                                 .GetStatic<int>("GENDER_FEMALE");
                         break;
