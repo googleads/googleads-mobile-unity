@@ -18,7 +18,6 @@ package com.google.unity.ads;
 import android.app.Activity;
 import android.graphics.Color;
 import android.os.Build;
-import android.support.annotation.RequiresApi;
 import android.util.Log;
 import android.view.DisplayCutout;
 import android.view.View;
@@ -487,11 +486,19 @@ public class Banner {
 
   private Insets getSafeInsets() {
     Insets insets = new Insets();
+
     if (Build.VERSION.SDK_INT < Build.VERSION_CODES.P) {
       return insets;
     }
-    DisplayCutout displayCutout = getDisplayCutout();
-
+    Window window = mUnityPlayerActivity.getWindow();
+    if (window == null) {
+      return insets;
+    }
+    WindowInsets windowInsets = window.getDecorView().getRootWindowInsets();
+    if (windowInsets == null) {
+      return insets;
+    }
+    DisplayCutout displayCutout = windowInsets.getDisplayCutout();
     if (displayCutout == null) {
       return insets;
     }
@@ -499,22 +506,7 @@ public class Banner {
     insets.left = displayCutout.getSafeInsetLeft();
     insets.bottom = displayCutout.getSafeInsetBottom();
     insets.right = displayCutout.getSafeInsetRight();
-    return insets;
-  }
-
-  @RequiresApi(Build.VERSION_CODES.P)
-  private DisplayCutout getDisplayCutout() {
-    Window window = mUnityPlayerActivity.getWindow();
-    if (window == null) {
-      return null;
-    }
-
-    WindowInsets windowInsets = window.getDecorView().getRootWindowInsets();
-    if (windowInsets == null) {
-      return null;
-    }
-
-    return windowInsets.getDisplayCutout();
+      return insets;
   }
 
   /**

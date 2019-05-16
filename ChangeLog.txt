@@ -1,6 +1,24 @@
 Google Mobile Ads Unity Plugin Change Log
 
 **************
+Version 3.17.0
+**************
+
+Plugin:
+- Revised Banner positioning code to use gravity instead of popup window.
+- Tested Banner positioning with notched devices supporting Google P APIs.
+- Added Rewarded Ads ServerSideVerificationOptions (thanks @halfdevil !)
+- Fixed issue with PListProcessor macro.
+- Added whitelist for apache http library (thanks @RolandSzep !)
+- Specified package for gender enum (thanks @armnotstrong !)
+- Added mediation extras for custom events (thanks SeanPONeil !)
+
+Built and tested with:
+- Google Play services 17.2.0
+- Google Mobile Ads iOS SDK 7.44.0
+- Unity Jar Resolver 1.2.111
+
+**************
 Version 3.16.0
 **************
 

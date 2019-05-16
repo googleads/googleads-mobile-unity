@@ -1,4 +1,4 @@
-#if UNITY_IOS
+#if UNITY_IPHONE || UNITY_IOS || UNITY_TVOS
 
 using System.IO;
 
