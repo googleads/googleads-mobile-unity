@@ -103,6 +103,21 @@ namespace GoogleMobileAds.iOS
             Marshal.FreeHGlobal(stringPtr);
             return managedString;
         }
+
+        public static List<string> PtrArrayToManagedList(IntPtr arrayPtr, int numOfAssets) {
+            IntPtr[] intPtrArray = new IntPtr[numOfAssets];
+            string[] managedAssetArray = new string[numOfAssets];
+            Marshal.Copy(arrayPtr, intPtrArray, 0, numOfAssets);
+
+            for (int i = 0; i < numOfAssets; i++)
+            {
+                managedAssetArray[i] = Marshal.PtrToStringAuto(intPtrArray[i]);
+                Marshal.FreeHGlobal(intPtrArray[i]);
+            }
+
+            Marshal.FreeHGlobal(arrayPtr);
+            return new List<string>(managedAssetArray);
+        }
     }
 }
 
