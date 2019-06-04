@@ -1,5 +1,9 @@
 # AppLovin Adapter plugin for Google Mobile Ads SDK for Unity 3D Changelog
 
+## 4.2.0
+- Supports AppLovin Android adapter version 9.4.2.0.
+- Supports AppLovin iOS adapter version 6.6.1.0.
+
 ## 4.1.0
 - Updated the plugin to support the new open-beta Rewarded API.
 - Supports AppLovin Android adapter version 9.2.1.1.
