@@ -1,5 +1,9 @@
 # IronSource Adapter plugin for Google Mobile Ads SDK for Unity 3D Changelog
 
+## 1.1.1
+- Supports IronSource Android adapter version 6.8.4.1
+- Supports IronSource iOS adapter version 6.8.3.0
+
 ## 1.1.0
 - Updated the plugin to support the new open-beta Rewarded API.
 - Supports IronSource Android adapter version 6.8.1.2
