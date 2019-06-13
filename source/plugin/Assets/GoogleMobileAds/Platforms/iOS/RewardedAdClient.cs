@@ -188,7 +188,7 @@ namespace GoogleMobileAds.iOS
                 {
                     Message = error
                 };
-                client.OnAdFailedToLoad(client, args);
+                client.OnAdFailedToShow(client, args);
             }
         }
 

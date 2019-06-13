@@ -233,7 +233,7 @@ namespace GoogleMobileAds.iOS
                     adReceivedCallback,
             RewardedAdClient.GADURewardedAdDidFailToReceiveAdWithErrorCallback
                     adFailedToLoadCallback,
-            RewardedAdClient.GADURewardedAdDidFailToReceiveAdWithErrorCallback
+            RewardedAdClient.GADURewardedAdDidFailToShowAdWithErrorCallback
                     adFailedToShowCallback,
             RewardedAdClient.GADURewardedAdDidOpenCallback didOpenCallback,
             RewardedAdClient.GADURewardedAdDidCloseCallback didCloseCallback,
