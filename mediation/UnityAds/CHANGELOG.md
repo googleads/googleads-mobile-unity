@@ -6,6 +6,7 @@
 
 ## 2.0.3
 - Updated the plugin to support the new open-beta Rewarded API.
+- Adds support for Banner Ads.
 - Supports Unity Ads Android adapter version 3.0.0.2.
 - Supports Unity Ads iOS adapter version 3.0.0.3.
 
