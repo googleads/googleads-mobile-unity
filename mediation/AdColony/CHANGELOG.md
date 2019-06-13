@@ -1,5 +1,20 @@
 # AdColony Adapter plugin for Google Mobile Ads SDK for Unity 3D Changelog
 
+## Next Version
+- Moved the following methods from the `AdColonyMediationExtras` Builder class to the `AdColonyAppOptions` class:
+  * `SetGDPRRequired()`
+  * `SetGDPRConsentString()`
+  * `SetUserId()`
+  * `SetTestMode()`
+- Added the following methods to the `AdColonyAppOptions` class:
+  * `IsGDPRRequired()`
+  * `GetGDPRConsentString()`
+  * `GetUserId()`
+  * `IsTestMode()`
+- Removed the `SetZoneId()` method from the `AdColonyMediationExtras` Builder class.
+- Supports AdColony Android adapter version 3.3.10.1.
+- Supports AdColony iOS adapter version 3.3.7.2.
+
 ## 1.0.4
 - Updated the plugin to support the new open-beta Rewarded API.
 - Supports AdColony Android adapter version 3.3.8.1.

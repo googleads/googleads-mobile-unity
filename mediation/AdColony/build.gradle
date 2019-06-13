@@ -3,7 +3,7 @@
 *   Usage: ./gradlew exportPackage
 */
 plugins {
-    id "com.jfrog.bintray" version "1.7.3"
+    id "com.jfrog.bintray" version "1.8.4"
 }
 
 defaultTasks 'exportPackage'
@@ -68,8 +68,7 @@ task exportPackage(type: Exec) {
             "-projectPath", "${pluginBuildDir}",
             "-logFile", "temp/unity.log",
             "-exportPackage",
-            "Assets/GoogleMobileAds/Api/Mediation/AdColony",
-            "Assets/GoogleMobileAds/Editor",
+            "Assets/GoogleMobileAds",
             "Assets/Plugins",
             "${exportPath}",
             "-quit"

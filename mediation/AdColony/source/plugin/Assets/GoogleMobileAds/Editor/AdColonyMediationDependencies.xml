@@ -1,11 +1,11 @@
 <dependencies>
   <androidPackages>
-    <androidPackage spec="com.google.ads.mediation:adcolony:3.3.9.0">
+    <androidPackage spec="com.google.ads.mediation:adcolony:3.3.10.1">
       <repositories>
         <repository>https://adcolony.bintray.com/AdColony</repository>
       </repositories>
     </androidPackage>
-    <androidPackage spec="com.adcolony:sdk:3.3.9">
+    <androidPackage spec="com.adcolony:sdk:3.3.10">
       <repositories>
         <repository>https://adcolony.bintray.com/AdColony</repository>
       </repositories>
