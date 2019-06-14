@@ -14,6 +14,7 @@
 
 namespace GoogleMobileAds.Api
 {
+
     public class AdSize
     {
         private bool isSmartBanner;
@@ -38,7 +39,6 @@ namespace GoogleMobileAds.Api
         {
             this.isSmartBanner = isSmartBanner;
         }
-
         public int Width
         {
             get
@@ -69,7 +69,8 @@ namespace GoogleMobileAds.Api
                 return false;
 
             AdSize other = (AdSize)obj;
-            return (width == other.width) && (height == other.height) && (isSmartBanner == other.isSmartBanner);
+            return (width == other.width) && (height == other.height)
+            && (isSmartBanner == other.isSmartBanner);
         }
 
         public static bool operator ==(AdSize a, AdSize b)

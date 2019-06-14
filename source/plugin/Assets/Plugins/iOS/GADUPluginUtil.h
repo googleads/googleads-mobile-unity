@@ -30,7 +30,6 @@
 
 /// Returns a GADAdSize for a specified width and height.
 + (GADAdSize)adSizeForWidth:(CGFloat)width height:(CGFloat)height;
-
 /// If requesting smart banner landscape, returns the custom size for landscape smart banners which
 /// is full width of the safe area and auto height. Assumes that the application window is visible.
 /// If requesting any other ad size, returns the un-modified ad size.

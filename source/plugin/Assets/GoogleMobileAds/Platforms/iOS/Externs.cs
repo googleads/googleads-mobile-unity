@@ -103,7 +103,6 @@ namespace GoogleMobileAds.iOS
         [DllImport("__Internal")]
         internal static extern IntPtr GADUCreateSmartBannerViewWithCustomPosition(
             IntPtr bannerClient, string adUnitId, int x, int y);
-
         [DllImport("__Internal")]
         internal static extern void GADUSetBannerCallbacks(
             IntPtr bannerView,
