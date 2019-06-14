@@ -1,6 +1,6 @@
 # AdColony Adapter plugin for Google Mobile Ads SDK for Unity 3D Changelog
 
-## Next Version
+## 1.0.5
 - Moved the following methods from the `AdColonyMediationExtras` Builder class to the `AdColonyAppOptions` class:
   * `SetGDPRRequired()`
   * `SetGDPRConsentString()`
