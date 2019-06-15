@@ -1,6 +1,6 @@
 # Vungle Adapter plugin for Google Mobile Ads SDK for Unity 3D Changelog
 
-## Next Version
+## 3.1.3
 - Supports Android adapter version 6.3.24.1.
 - Supports iOS adapter version 6.3.2.2.
 
