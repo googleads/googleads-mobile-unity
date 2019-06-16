@@ -11,8 +11,8 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-// Attention Unity 2019 Managed Stripping Level "Medium" or "High" Required Preserve Artributes.
-// Also Ads Not Showing After Build. Managed Stripping Level "Disabled" or "Low" Not Required Preserve Artributes.
+// Attention Unity 2018 & 2019 Managed Stripping Level "Medium" or "High" Required Preserve Attributes.
+// Also Ads Not Showing After Build. Managed Stripping Level "Disabled" or "Low" Not Required Preserve Attributes.
 
 using GoogleMobileAds.Api;
 using GoogleMobileAds.Common;
