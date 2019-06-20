@@ -11,6 +11,14 @@ typedef NS_ENUM(NSUInteger, GADAdPosition) {
   kGADAdPositionBottomRightOfScreen = 5,  ///< Bottom right of screen.
   kGADAdPositionCenterOfScreen = 6        ///< Bottom right of screen.
 };
+// copybara_strip_begin
+/// Orientation for an adaptive banner.
+typedef NS_ENUM(NSUInteger, GADUBannerOrientation) {
+  kGADUBannerOrientationCurrent = 0,    ///< Current Orientation.
+  kGADUBannerOrientationLandscape = 1,  ///< Landscape.
+  kGADUBannerOrientationPortrait = 2,   ///< Portrait.
+};
+// copybara_strip_end
 
 typedef NS_ENUM(NSInteger, GADUAdSize) { kGADUAdSizeUseFullWidth = -1 };
 

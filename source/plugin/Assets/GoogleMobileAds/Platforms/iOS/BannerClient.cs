@@ -81,6 +81,17 @@ namespace GoogleMobileAds.iOS
                 this.BannerViewPtr = Externs.GADUCreateSmartBannerView(
                         this.bannerClientPtr, adUnitId, (int)position);
             }
+// copybara_strip_begin
+            else if (adSize.IsAdaptiveBanner)
+            {
+              this.BannerViewPtr = Externs.GADUCreateAdaptiveBannerView(
+                      this.bannerClientPtr,
+                      adUnitId,
+                      adSize.Width,
+                      (int)adSize.Orientation,
+                      (int)position);
+            }
+// copybara_strip_end
             else
             {
                 this.BannerViewPtr = Externs.GADUCreateBannerView(
@@ -109,6 +120,18 @@ namespace GoogleMobileAds.iOS
                     x,
                     y);
             }
+// copybara_strip_begin
+            else if (adSize.IsAdaptiveBanner)
+            {
+              this.BannerViewPtr = Externs.GADUCreateAdaptiveBannerViewWithCustomPosition(
+                      this.bannerClientPtr,
+                      adUnitId,
+                      adSize.Width,
+                      (int)adSize.Orientation,
+                      x,
+                      y);
+            }
+// copybara_strip_end
             else
             {
                 this.BannerViewPtr = Externs.GADUCreateBannerViewWithCustomPosition(

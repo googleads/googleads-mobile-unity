@@ -149,5 +149,17 @@ static BOOL _pauseOnBackground = NO;
   }
   return GADAdSizeFromCGSize(CGSizeMake(width, height));
 }
+// copybara_strip_begin
++ (GADAdSize)adaptiveAdSizeForWidth:(CGFloat)width orientation:(GADUBannerOrientation)orientation {
+  switch (orientation) {
+    case kGADUBannerOrientationCurrent:
+      return GADCurrentOrientationBannerAdSizeWithWidth(width);
+    case kGADUBannerOrientationLandscape:
+      return GADLandscapeBannerAdSizeWithWidth(width);
+    case kGADUBannerOrientationPortrait:
+      return GADPortraitBannerAdSizeWithWidth(width);
+  }
+}
+// copybara_strip_end
 
 @end
