@@ -13,7 +13,7 @@
   </androidPackages>
 
   <iosPods>
-    <iosPod name="GoogleMobileAdsMediationVungle" version="6.3.2.2">
+    <iosPod name="GoogleMobileAdsMediationVungle" version="6.3.2.3">
       <sources>
         <source>https://github.com/CocoaPods/Specs</source>
       </sources>
