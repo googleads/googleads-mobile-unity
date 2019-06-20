@@ -76,32 +76,6 @@
                             customAdPosition:customAdPosition];
 }
 
-// copybara_strip_begin
-- (id)initWithAdaptiveBannerSizeAndBannerClientReference:(GADUTypeBannerClientRef *)bannerClient
-                                                adUnitID:(NSString *)adUnitID
-                                                   width:(NSInteger)width
-                                             orientation:(GADUBannerOrientation)orientation
-                                              adPosition:(GADAdPosition)adPosition {
-  return [self initWithBannerClientReference:bannerClient
-                                    adUnitID:adUnitID
-                                      adSize:[GADUPluginUtil adaptiveAdSizeForWidth:(CGFloat)width
-                                                                        orientation:orientation]
-                                  adPosition:adPosition];
-}
-
-- (id)initWithAdaptiveBannerSizeAndBannerClientReference:(GADUTypeBannerClientRef *)bannerClient
-                                                adUnitID:(NSString *)adUnitID
-                                                   width:(NSInteger)width
-                                             orientation:(GADUBannerOrientation)orientation
-                                        customAdPosition:(CGPoint)customAdPosition {
-  return [self initWithBannerClientReference:bannerClient
-                                    adUnitID:adUnitID
-                                      adSize:[GADUPluginUtil adaptiveAdSizeForWidth:(CGFloat)width
-                                                                        orientation:orientation]
-                            customAdPosition:customAdPosition];
-}
-// copybara_strip_end
-
 - (id)initWithBannerClientReference:(GADUTypeBannerClientRef *)bannerClient
                            adUnitID:(NSString *)adUnitID
                              adSize:(GADAdSize)size

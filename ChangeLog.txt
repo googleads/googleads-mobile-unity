@@ -1,6 +1,21 @@
 Google Mobile Ads Unity Plugin Change Log
 
 **************
+Version 3.18.0
+**************
+
+Plugin:
+- Added GoogleMobileAdsSettings editor UI for making Plist / manifest changes.
+- Fix OnRewardedAdFailedToShow callbacks.
+- Migrated android support library to androidx (JetPack) with Google Mobile Ads
+  SDK version 18.0.0.
+
+Built and tested with:
+- Google Play services 18.0.0
+- Google Mobile Ads iOS SDK 7.45.0
+- Unity Jar Resolver 1.2.119
+
+**************
 Version 3.17.0
 **************
 
