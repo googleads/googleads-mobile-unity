@@ -15,20 +15,8 @@
 namespace GoogleMobileAds.Api
 {
 
-// copybara_strip_begin
-    internal enum Orientation {
-         Current = 0,
-         Landscape = 1,
-         Portrait = 2
-    }
-// copybara_strip_end
-
     public class AdSize
     {
-// copybara_strip_begin
-        private bool isAdaptiveBanner;
-        private Orientation orientation;
-// copybara_strip_end
         private bool isSmartBanner;
         private int width;
         private int height;
@@ -45,38 +33,12 @@ namespace GoogleMobileAds.Api
             isSmartBanner = false;
             this.width = width;
             this.height = height;
-// copybara_strip_begin
-            isAdaptiveBanner = false;
-            this.orientation = Orientation.Current;
-// copybara_strip_end
         }
 
         private AdSize(bool isSmartBanner) : this(0, 0)
         {
             this.isSmartBanner = isSmartBanner;
         }
-// copybara_strip_begin
-        private static AdSize CreateAdaptiveAdSize(int width, Orientation orientation)
-        {
-            AdSize adSize = new AdSize(width, 0);
-            adSize.isAdaptiveBanner = true;
-            adSize.orientation = orientation;
-            return adSize;
-        }
-
-
-        public static AdSize GetLandscapeBannerAdSizeWithWidth(int width) {
-          return CreateAdaptiveAdSize(width, Orientation.Landscape);
-        }
-
-        public static AdSize GetPortraitBannerAdSizeWithWidth(int width) {
-            return CreateAdaptiveAdSize(width, Orientation.Portrait);
-        }
-
-        public static AdSize GetCurrentOrientationBannerAdSizeWithWidth(int width) {
-            return CreateAdaptiveAdSize(width, Orientation.Current);
-        }
-// copybara_strip_end
         public int Width
         {
             get
@@ -100,23 +62,6 @@ namespace GoogleMobileAds.Api
                 return isSmartBanner;
             }
         }
-// copybara_strip_begin
-        public bool IsAdaptiveBanner
-        {
-            get
-            {
-                return isAdaptiveBanner;
-            }
-        }
-
-        internal Orientation Orientation
-        {
-            get
-            {
-              return orientation;
-            }
-        }
-// copybara_strip_end
 
         public override bool Equals(object obj)
         {
@@ -125,9 +70,6 @@ namespace GoogleMobileAds.Api
 
             AdSize other = (AdSize)obj;
             return (width == other.width) && (height == other.height)
-// copybara_strip_begin
-            && (isAdaptiveBanner == other.isAdaptiveBanner) && (orientation == other.orientation)
-// copybara_strip_end
             && (isSmartBanner == other.isSmartBanner);
         }
 
@@ -150,10 +92,6 @@ namespace GoogleMobileAds.Api
             hash = (hash * hashMultiplier) ^ width.GetHashCode();
             hash = (hash * hashMultiplier) ^ height.GetHashCode();
             hash = (hash * hashMultiplier) ^ isSmartBanner.GetHashCode();
-// copybara_strip_begin
-            hash = (hash * hashMultiplier) ^ isAdaptiveBanner.GetHashCode();
-            hash = (hash * hashMultiplier) ^ orientation.GetHashCode();
-// copybara_strip_end
             return hash;
         }
     }

@@ -35,21 +35,6 @@
                                              adUnitID:(NSString *)adUnitID
                                      customAdPosition:(CGPoint)customAdPosition;
 
-// copybara_strip_begin
-/// Initializes an adaptive GADUBanner, positioned at either the top or bottom of the screen.
-- (id)initWithAdaptiveBannerSizeAndBannerClientReference:(GADUTypeBannerClientRef *)bannerClient
-                                               adUnitID:(NSString *)adUnitID
-                                                  width:(NSInteger)width
-                                            orientation:(GADUBannerOrientation)orientation
-                                             adPosition:(GADAdPosition)adPosition;
-
-/// Initializes an adaptive GADUBanner with a custom position at given point from top left.
-- (id)initWithAdaptiveBannerSizeAndBannerClientReference:(GADUTypeBannerClientRef *)bannerClient
-                                                adUnitID:(NSString *)adUnitID
-                                                   width:(NSInteger)width
-                                             orientation:(GADUBannerOrientation)orientation
-                                        customAdPosition:(CGPoint)customAdPosition;
-// copybara_strip_end
 /// A reference to the Unity banner client.
 @property(nonatomic, assign) GADUTypeBannerClientRef *bannerClient;
 
