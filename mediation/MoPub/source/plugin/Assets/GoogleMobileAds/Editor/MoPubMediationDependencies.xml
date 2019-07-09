@@ -1,12 +1,8 @@
 <dependencies>
   <androidPackages>
-    <androidPackage spec="com.google.ads.mediation:mopub:5.4.1.2">
+    <androidPackage spec="com.google.ads.mediation:mopub:5.7.1.0">
       <repositories>
         <repository>https://jcenter.bintray.com/</repository>
-      </repositories>
-    </androidPackage>
-    <androidPackage spec="com.mopub:mopub-sdk:5.4.1">
-      <repositories>
         <repository>https://s3.amazonaws.com/moat-sdk-builds</repository>
       </repositories>
     </androidPackage>
