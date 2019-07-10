@@ -28,6 +28,13 @@ namespace GoogleMobileAds.Api
             client.Initialize(appId);
             MobileAdsEventExecutor.Initialize();
         }
+
+        public static void Initialize(Action<InitializationStatus> initCompleteAction)
+        {
+            client.Initialize(initCompleteAction);
+            MobileAdsEventExecutor.Initialize();
+        }
+
         public static void SetApplicationMuted(bool muted)
         {
             client.SetApplicationMuted(muted);

@@ -77,6 +77,10 @@ namespace GoogleMobileAds.Android
 
         public const string UnityAdapterStatusEnumName =
                 "com.google.android.gms.ads.initialization.AdapterStatus$State";
+
+        public const string OnInitializationCompleteListenerClassName =
+            "com.google.android.gms.ads.initialization.OnInitializationCompleteListener";
+
         public const string UnityAdLoaderListenerClassName =
             "com.google.unity.ads.UnityAdLoaderListener";
 

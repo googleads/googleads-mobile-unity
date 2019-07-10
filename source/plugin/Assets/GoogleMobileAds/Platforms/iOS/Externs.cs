@@ -28,6 +28,26 @@ namespace GoogleMobileAds.iOS
         internal static extern void GADUInitialize(string key);
 
         [DllImport("__Internal")]
+        internal static extern void GADUInitializeWithCallback(
+            IntPtr mobileAdsClient, MobileAdsClient.GADUInitializationCompleteCallback callback);
+
+        [DllImport("__Internal")]
+        internal static extern IntPtr GADUGetInitDescription(IntPtr status, string className);
+
+        [DllImport("__Internal")]
+        internal static extern int GADUGetInitLatency(IntPtr status, string className);
+
+        [DllImport("__Internal")]
+        internal static extern int GADUGetInitState(IntPtr status, string className);
+
+        [DllImport("__Internal")]
+        internal static extern IntPtr GADUGetInitAdapterClasses(IntPtr status);
+
+        [DllImport("__Internal")]
+        internal static extern int GADUGetInitNumberOfAdapterClasses(IntPtr status);
+
+
+        [DllImport("__Internal")]
         internal static extern void GADUSetApplicationVolume(float volume);
 
         [DllImport("__Internal")]

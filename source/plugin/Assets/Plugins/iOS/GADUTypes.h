@@ -19,6 +19,11 @@ typedef const void *GADUTypeRef;
 
 typedef const void *GADUTypeMobileAdsClientRef;
 
+typedef const void *GADUTypeInitializationStatusRef;
+
+typedef void (*GADUInitializationCompleteCallback)(GADUTypeMobileAdsClientRef *clientRef,
+                                                   GADUTypeInitializationStatusRef statusRef);
+
 /// Type representing a Unity banner client.
 typedef const void *GADUTypeBannerClientRef;
 

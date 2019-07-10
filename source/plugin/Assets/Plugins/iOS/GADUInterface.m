@@ -10,6 +10,7 @@
 #import "GADURequest.h"
 #import "GADURewardBasedVideoAd.h"
 #import "GADURewardedAd.h"
+#import <GoogleMobileAds/GoogleMobileAds.h>
 
 #import "GADUTypes.h"
 
@@ -50,6 +51,53 @@ struct AdTypes {
 /// Configures the SDK using the settings associated with the given application ID.
 void GADUInitialize(const char *appId) {
   [GADMobileAds configureWithApplicationID:GADUStringFromUTF8String(appId)];
+}
+
+void GADUInitializeWithCallback(GADUTypeMobileAdsClientRef *mobileAdsClientRef,
+                                GADUInitializationCompleteCallback callback) {
+  [[GADMobileAds sharedInstance]
+      startWithCompletionHandler:^(GADInitializationStatus *_Nonnull status) {
+        GADUObjectCache *cache = [GADUObjectCache sharedInstance];
+        [cache.references setObject:status forKey:[status gadu_referenceKey]];
+        callback(mobileAdsClientRef, (__bridge GADUTypeInitializationStatusRef)status);
+      }];
+}
+
+const char *GADUGetInitDescription(GADUTypeInitializationStatusRef statusRef,
+                                   const char *className) {
+  GADInitializationStatus *status = (__bridge GADInitializationStatus *)statusRef;
+
+  GADAdapterStatus *adapterStatus =
+      status.adapterStatusesByClassName[GADUStringFromUTF8String(className)];
+  return cStringCopy(adapterStatus.description.UTF8String);
+}
+
+int GADUGetInitLatency(GADUTypeInitializationStatusRef statusRef, const char *className) {
+  GADInitializationStatus *status = (__bridge GADInitializationStatus *)statusRef;
+  GADAdapterStatus *adapterStatus =
+      status.adapterStatusesByClassName[GADUStringFromUTF8String(className)];
+  return adapterStatus.latency;
+}
+
+int GADUGetInitState(GADUTypeInitializationStatusRef statusRef, const char *className) {
+  GADInitializationStatus *status = (__bridge GADInitializationStatus *)statusRef;
+  GADAdapterStatus *adapterStatus =
+      status.adapterStatusesByClassName[GADUStringFromUTF8String(className)];
+  return (int)adapterStatus.state;
+}
+
+const char **GADUGetInitAdapterClasses(GADUTypeInitializationStatusRef statusRef) {
+  GADInitializationStatus *status = (__bridge GADInitializationStatus *)statusRef;
+  NSDictionary<NSString *, GADAdapterStatus *> *map = status.adapterStatusesByClassName;
+  NSArray<NSString *> *classes = map.allKeys;
+  return cStringArrayCopy(classes);
+}
+
+int GADUGetInitNumberOfAdapterClasses(GADUTypeInitializationStatusRef statusRef) {
+  GADInitializationStatus *status = (__bridge GADInitializationStatus *)statusRef;
+  NSDictionary<NSString *, GADAdapterStatus *> *map = status.adapterStatusesByClassName;
+  NSArray<NSString *> *classes = map.allKeys;
+  return (int)classes.count;
 }
 
 // The application’s audio volume. Affects audio volumes of all ads relative to

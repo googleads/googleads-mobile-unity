@@ -14,6 +14,7 @@ public static class PListProcessor
     [PostProcessBuild]
     public static void OnPostProcessBuild(BuildTarget buildTarget, string path)
     {
+#if UNITY_IPHONE || UNITY_IOS
         string plistPath = Path.Combine(path, "Info.plist");
         PlistDocument plist = new PlistDocument();
         plist.ReadFromFile(plistPath);
@@ -42,6 +43,7 @@ public static class PListProcessor
         }
 
         File.WriteAllText(plistPath, plist.WriteToString());
+#endif
     }
 }
 
