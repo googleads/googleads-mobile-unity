@@ -21,6 +21,12 @@ namespace GoogleMobileAds.Api
 {
     public class MobileAds
     {
+        public static class Utils {
+            // Returns the device's scale.
+            public static float GetDeviceScale() {
+                return client.GetDeviceScale();
+            }
+        }
         private static readonly IMobileAdsClient client = GetMobileAdsClient();
 
         public static void Initialize(string appId)

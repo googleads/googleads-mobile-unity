@@ -75,6 +75,16 @@ namespace GoogleMobileAds.Android
             // Do nothing on Android. Default behavior is to pause when app is backgrounded.
         }
 
+        public float GetDeviceScale()
+        {
+            AndroidJavaClass playerClass = new AndroidJavaClass(Utils.UnityActivityClassName);
+            AndroidJavaObject activity =
+                    playerClass.GetStatic<AndroidJavaObject>("currentActivity");
+            AndroidJavaObject resources = activity.Call<AndroidJavaObject>("getResources");
+            AndroidJavaObject metrics = resources.Call<AndroidJavaObject>("getDisplayMetrics");
+            return metrics.Get<float>("density");
+        }
+
         #region Callbacks from OnInitializationCompleteListener.
 
         public void onInitializationComplete(AndroidJavaObject initStatus)

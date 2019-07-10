@@ -26,11 +26,8 @@ namespace GoogleMobileAds.iOS
     public class MobileAdsClient : IMobileAdsClient
     {
         private static MobileAdsClient instance = new MobileAdsClient();
-
         private Action<InitializationStatus> initCompleteAction;
-
         private IntPtr mobileAdsClientPtr;
-
         internal delegate void GADUInitializationCompleteCallback(IntPtr mobileAdsClient, IntPtr initStatusClient);
 
         private MobileAdsClient()
@@ -70,6 +67,11 @@ namespace GoogleMobileAds.iOS
         public void SetiOSAppPauseOnBackground(bool pause)
         {
             Externs.GADUSetiOSAppPauseOnBackground(pause);
+        }
+
+        public float GetDeviceScale()
+        {
+            return Externs.GADUDeviceScale();
         }
 
         [MonoPInvokeCallback(typeof(GADUInitializationCompleteCallback))]

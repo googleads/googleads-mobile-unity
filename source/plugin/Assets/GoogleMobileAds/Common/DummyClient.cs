@@ -90,6 +90,12 @@ namespace GoogleMobileAds.Common
             Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
         }
 
+        public float GetDeviceScale()
+        {
+            Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
+            return 0;
+        }
+
         public void CreateBannerView(string adUnitId, AdSize adSize, AdPosition position)
         {
             Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);

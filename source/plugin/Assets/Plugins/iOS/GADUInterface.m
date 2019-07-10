@@ -120,6 +120,10 @@ void GADUSetApplicationMuted(BOOL muted) {
 // or rewarded video ad) is displayed.
 void GADUSetiOSAppPauseOnBackground(BOOL pause) { [GADUPluginUtil setPauseOnBackground:pause]; }
 
+float GADUDeviceScale() {
+  return UIScreen.mainScreen.scale;
+}
+
 /// Creates a GADBannerView with the specified width, height, and position. Returns a reference to
 /// the GADUBannerView.
 GADUTypeBannerRef GADUCreateBannerView(GADUTypeBannerClientRef *bannerClient, const char *adUnitID,
