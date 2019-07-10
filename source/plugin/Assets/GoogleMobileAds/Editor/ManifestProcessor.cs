@@ -1,21 +1,25 @@
 #if UNITY_ANDROID
 
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Xml;
-using System.Xml.Serialization;
 using System.Xml.Linq;
 
+#if UNITY_2018_1_OR_NEWER
+using UnityEditor.Build.Reporting;
+#else
 using UnityEditor;
+#endif
 using UnityEditor.Build;
-using UnityEditor.Callbacks;
 using UnityEngine;
 
 using GoogleMobileAds.Editor;
 
+#if UNITY_2018_1_OR_NEWER
+public class ManifestProcessor : IPreprocessBuildWithReport
+#else
 public class ManifestProcessor : IPreprocessBuild
+#endif
 {
     private const string META_AD_MANAGER_APP = "com.google.android.gms.ads.AD_MANAGER_APP";
 
@@ -28,7 +32,11 @@ public class ManifestProcessor : IPreprocessBuild
 
     public int callbackOrder { get { return 0; } }
 
+#if UNITY_2018_1_OR_NEWER
+    public void OnPreprocessBuild(BuildReport report)
+#else
     public void OnPreprocessBuild(BuildTarget target, string path)
+#endif
     {
         string manifestPath = Path.Combine(
                 Application.dataPath, "Plugins/Android/GoogleMobileAdsPlugin/AndroidManifest.xml");
