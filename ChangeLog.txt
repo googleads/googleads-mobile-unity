@@ -1,6 +1,21 @@
 Google Mobile Ads Unity Plugin Change Log
 
 **************
+Version 3.18.1
+**************
+
+Plugin:
+- Add new Initialization API.
+- Fixed Android compile error with PListProcessor.
+- Removed reflection for improved IL2CPP support.
+- Fixed iOS dependency to not use patch version.
+
+Built and tested with:
+- Google Play services 18.1.0
+- Google Mobile Ads iOS SDK 7.46.0
+- Unity Jar Resolver 1.2.122
+
+**************
 Version 3.18.0
 **************
 
