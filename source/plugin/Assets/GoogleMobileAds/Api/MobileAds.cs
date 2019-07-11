@@ -13,7 +13,6 @@
 // limitations under the License.
 
 using System;
-using System.Reflection;
 
 using GoogleMobileAds.Common;
 
@@ -58,12 +57,7 @@ namespace GoogleMobileAds.Api
 
         private static IMobileAdsClient GetMobileAdsClient()
         {
-            Type googleMobileAdsClientFactory = Type.GetType(
-                "GoogleMobileAds.GoogleMobileAdsClientFactory,Assembly-CSharp");
-            MethodInfo method = googleMobileAdsClientFactory.GetMethod(
-                "MobileAdsInstance",
-                BindingFlags.Static | BindingFlags.Public);
-            return (IMobileAdsClient)method.Invoke(null, null);
+          return GoogleMobileAdsClientFactory.MobileAdsInstance();
         }
     }
 }

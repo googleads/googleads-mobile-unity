@@ -13,7 +13,6 @@
 // limitations under the License.
 
 using System;
-using System.Reflection;
 
 using GoogleMobileAds.Common;
 
@@ -25,14 +24,7 @@ namespace GoogleMobileAds.Api
 
         public RewardedAd(string adUnitId)
         {
-            // GoogleMobileAdsClientFactory is not included in the compiled DLL due to
-            // needing platform directives, so reflection is needed to call this method.
-            Type googleMobileAdsClientFactory = Type.GetType(
-                "GoogleMobileAds.GoogleMobileAdsClientFactory,Assembly-CSharp");
-            MethodInfo method = googleMobileAdsClientFactory.GetMethod(
-                "BuildRewardedAdClient",
-                BindingFlags.Static | BindingFlags.Public);
-            this.client = (IRewardedAdClient)method.Invoke(null, null);
+            this.client = GoogleMobileAdsClientFactory.BuildRewardedAdClient();
             client.CreateRewardedAd(adUnitId);
 
             this.client.OnAdLoaded += (sender, args) =>

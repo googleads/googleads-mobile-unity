@@ -13,7 +13,6 @@
 // limitations under the License.
 
 using System;
-using System.Reflection;
 
 using GoogleMobileAds.Common;
 
@@ -26,12 +25,7 @@ namespace GoogleMobileAds.Api
         // Creates an InterstitialAd.
         public InterstitialAd(string adUnitId)
         {
-            Type googleMobileAdsClientFactory = Type.GetType(
-                "GoogleMobileAds.GoogleMobileAdsClientFactory,Assembly-CSharp");
-            MethodInfo method = googleMobileAdsClientFactory.GetMethod(
-                "BuildInterstitialClient",
-                BindingFlags.Static | BindingFlags.Public);
-            this.client = (IInterstitialClient)method.Invoke(null, null);
+            this.client = GoogleMobileAdsClientFactory.BuildInterstitialClient();
             client.CreateInterstitialAd(adUnitId);
 
             this.client.OnAdLoaded += (sender, args) =>
