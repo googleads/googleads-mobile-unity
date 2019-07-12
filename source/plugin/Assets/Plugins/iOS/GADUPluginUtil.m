@@ -4,6 +4,7 @@
 
 #import "UnityAppController.h"
 
+
 @interface UIView (unityStub)
 @property UILayoutGuide *safeAreaLayoutGuide;
 @end

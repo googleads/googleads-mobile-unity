@@ -43,13 +43,19 @@ namespace GoogleMobileAds.Android
 
             this.CustomNativeTemplateCallbacks = unityAdLoader.CustomNativeTemplateClickHandlers;
 
+            bool supportsRequestImageAssetUrls = false;
+
             if (unityAdLoader.AdTypes.Contains(NativeAdType.CustomTemplate))
             {
+                supportsRequestImageAssetUrls = false;
                 foreach (string templateId in unityAdLoader.TemplateIds)
                 {
                     adLoader.Call("configureCustomNativeTemplateAd", templateId,
                         this.CustomNativeTemplateCallbacks.ContainsKey(templateId));
                 }
+            }
+            if (supportsRequestImageAssetUrls) {
+                adLoader.Call("configureReturnUrlsForImageAssets");
             }
             adLoader.Call("create");
         }
