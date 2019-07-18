@@ -12,6 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+#if UNITY_IPHONE || UNITY_IOS
+
 using UnityEditor;
 using UnityEditor.Callbacks;
 using UnityEditor.iOS.Xcode;
@@ -25,18 +27,17 @@ namespace GoogleMobileAds.Common.Mediation.AppLovin
         public static void ChangeXcodePlist(BuildTarget buildTarget,
                                             string pathToBuiltProject)
         {
-            if (buildTarget == BuildTarget.iOS)
-            {
-                string plistPath = pathToBuiltProject + "/Info.plist";
-                PlistDocument plist = new PlistDocument();
-                plist.ReadFromString(File.ReadAllText(plistPath));
+            string plistPath = pathToBuiltProject + "/Info.plist";
+            PlistDocument plist = new PlistDocument();
+            plist.ReadFromString(File.ReadAllText(plistPath));
 
-                PlistElementDict rootDict = plist.root;
+            PlistElementDict rootDict = plist.root;
 
-                rootDict.SetString("AppLovinSdkKey",
-                                   "INSERT_APP_LOVIN_SDK_KEY_HERE");
-                File.WriteAllText(plistPath, plist.WriteToString());
-            }
+            rootDict.SetString("AppLovinSdkKey",
+                               "INSERT_APP_LOVIN_SDK_KEY_HERE");
+            File.WriteAllText(plistPath, plist.WriteToString());
         }
     }
 }
+
+#endif

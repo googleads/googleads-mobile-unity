@@ -24,7 +24,7 @@ namespace GoogleMobileAds.Mediation
             return new GoogleMobileAds.Common.Mediation.DUAdPlatform.DummyClient();
             #elif UNITY_ANDROID
             return GoogleMobileAds.Android.Mediation.DUAdPlatform.DUAdPlatformClient.Instance;
-            #elif (UNITY_5 && UNITY_IOS) || UNITY_IPHONE
+            #elif UNITY_IPHONE || UNITY_IOS
             return GoogleMobileAds.iOS.Mediation.DUAdPlatform.DUAdPlatformClient.Instance;
             #else
             return new GoogleMobileAds.Common.Mediation.DUAdPlatform.DummyClient();
