@@ -1,11 +1,6 @@
 <dependencies>
   <androidPackages>
-    <androidPackage spec="com.google.ads.mediation:facebook:5.4.0.0">
-      <repositories>
-        <repository>https://jcenter.bintray.com/</repository>
-      </repositories>
-    </androidPackage>
-    <androidPackage spec="com.facebook.android:audience-network-sdk:5.4.0">
+    <androidPackage spec="com.google.ads.mediation:facebook:5.4.1.1">
       <repositories>
         <repository>https://jcenter.bintray.com/</repository>
       </repositories>
