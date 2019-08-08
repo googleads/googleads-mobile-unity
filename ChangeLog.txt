@@ -1,6 +1,18 @@
 Google Mobile Ads Unity Plugin Change Log
 
 **************
+Version 3.18.3
+**************
+
+Plugin:
+- Update JAR resolver.
+
+Built and tested with:
+- Google Play services 18.1.1
+- Google Mobile Ads iOS SDK 7.48.0
+- Unity Jar Resolver 1.2.124
+
+**************
 Version 3.18.2
 **************
 
