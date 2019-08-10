@@ -109,8 +109,15 @@ namespace GoogleMobileAds.Android
         {
             if (adSize.IsSmartBanner)
             {
+#if UNITY_2019_2_OR_NEWER
+                // AndroidJavaClass.GetStatic<AndroidJavaObject>() returns null since Unity 2019.2.
+                // Creates an AdSize object by directly calling the constructor, as a workaround.
+                return new AndroidJavaObject(AdSizeClassName, -1, -2)
+                        .GetStatic<AndroidJavaObject>("SMART_BANNER");
+#else
                 return new AndroidJavaClass(AdSizeClassName)
                         .GetStatic<AndroidJavaObject>("SMART_BANNER");
+#endif
             }
             else
             {
