@@ -1,6 +1,6 @@
 # InMobi Adapter plugin for Google Mobile Ads SDK for Unity 3D Changelog
 
-## Next Version
+## 2.3.0
 - Supports Android adapter version 7.2.9.0.
 - Supports iOS adapter version 7.3.2.0.
 
