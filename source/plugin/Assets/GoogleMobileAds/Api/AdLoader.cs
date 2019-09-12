@@ -39,7 +39,7 @@ namespace GoogleMobileAds.Api
             this.AdTypes = new HashSet<NativeAdType>(builder.AdTypes);
             this.adLoaderClient = GoogleMobileAdsClientFactory.BuildAdLoaderClient(this);
 
-            Utils.CheckInitialization();
+            Common.Utils.CheckInitialization();
 
             this.adLoaderClient.OnCustomNativeTemplateAdLoaded +=
                     delegate (object sender, CustomNativeEventArgs args)

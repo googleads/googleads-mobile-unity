@@ -50,7 +50,7 @@ namespace GoogleMobileAds.Api
                 return null;
             }
 
-            return Utils.GetTexture2DFromByteArray(imageAssetAsByteArray);
+            return Common.Utils.GetTexture2DFromByteArray(imageAssetAsByteArray);
         }
 
         // Get text asset corresponding to the key parameter of custom native template ad as a
