@@ -1,6 +1,6 @@
 ## Chartboost Unity Mediation Plugin Changelog
 
-#### Next Version
+#### Version 2.0.0
 - Supports Chartboost Android adapter version 7.5.0.0.
 - Supports Chartboost iOS adapter version 8.0.1.1.
 
