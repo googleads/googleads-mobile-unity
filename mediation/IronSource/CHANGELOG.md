@@ -1,5 +1,9 @@
 ## IronSource Unity Mediation Plugin Changelog
 
+#### Next Version
+- Supports IronSource Android adapter version 6.10.0.0
+- Supports IronSource iOS adapter version 6.8.4.1.0
+
 #### Version 1.2.0
 - Supports IronSource Android adapter version 6.9.0.1
 - Supports IronSource iOS adapter version 6.8.4.1.0
