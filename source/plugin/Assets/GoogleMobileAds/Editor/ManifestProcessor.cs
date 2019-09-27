@@ -5,13 +5,11 @@ using System.IO;
 using System.Linq;
 using System.Xml.Linq;
 
-#if UNITY_2018_1_OR_NEWER
 using UnityEditor;
-using UnityEditor.Build.Reporting;
-#else
-using UnityEditor;
-#endif
 using UnityEditor.Build;
+#if UNITY_2018_1_OR_NEWER
+using UnityEditor.Build.Reporting;
+#endif
 using UnityEngine;
 
 using GoogleMobileAds.Editor;

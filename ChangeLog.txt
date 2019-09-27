@@ -1,6 +1,25 @@
 Google Mobile Ads Unity Plugin Change Log
 
 **************
+Version 4.0.0
+**************
+
+Plugin:
+- Breaking change: The Android library included in this plugin is now distributed as an aar, and
+  lives at `Assets/Plugins/Android/googlemobileads-unity.aar'. If you are upgrading from a previous
+  version, remove the `Assets/Plugins/Android/GoogleMobileAdsPlugin' folder prior to importing this
+  latest version of the plugin.
+- Added proguard support on Android.
+- Update Android Google Mobile Ads SDK version to 18.2.0.
+- Fixed a bug where the AdSize.SMART_BANNER banner size did not work on Unity 2019.2+.
+- Added assertion to stop Android builds when Google Mobile Ads settings are invalid.
+
+Built and tested with:
+- Google Play services 18.2.0
+- Google Mobile Ads iOS SDK 7.50.0
+- Unity Jar Resolver 1.2.125
+
+**************
 Version 3.18.3
 **************
 
