@@ -45,7 +45,8 @@ task exportPackage(type: Exec) {
             "-projectPath", "${pluginBuildDir}",
             "-logFile", "temp/unity.log",
             "-exportPackage",
-            "Assets/GoogleMobileAds/Editor",
+            "Assets/GoogleMobileAds",
+            "Assets/Plugins",
             "${exportPath}",
             "-quit"
 
