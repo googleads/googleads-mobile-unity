@@ -22,8 +22,11 @@ namespace GoogleMobileAds.Api
     {
         private IRewardedAdClient client;
 
+        public string AdUnitId { get; private set; }
+
         public RewardedAd(string adUnitId)
         {
+            this.AdUnitId = adUnitId;
             this.client = GoogleMobileAdsClientFactory.BuildRewardedAdClient();
             client.CreateRewardedAd(adUnitId);
 

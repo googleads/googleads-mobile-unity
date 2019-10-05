@@ -22,9 +22,12 @@ namespace GoogleMobileAds.Api
     {
         private IInterstitialClient client;
 
+        public string AdUnitId { get; private set; }
+
         // Creates an InterstitialAd.
         public InterstitialAd(string adUnitId)
         {
+            this.AdUnitId = adUnitId;
             this.client = GoogleMobileAdsClientFactory.BuildInterstitialClient();
             client.CreateInterstitialAd(adUnitId);
 

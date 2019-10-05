@@ -22,9 +22,12 @@ namespace GoogleMobileAds.Api
     {
         private IBannerClient client;
 
+        public string AdUnitId { get; private set; }
+
         // Creates a BannerView and adds it to the view hierarchy.
         public BannerView(string adUnitId, AdSize adSize, AdPosition position)
         {
+            this.AdUnitId = adUnitId;
             this.client = GoogleMobileAdsClientFactory.BuildBannerClient();
             client.CreateBannerView(adUnitId, adSize, position);
 
@@ -34,6 +37,7 @@ namespace GoogleMobileAds.Api
         // Creates a BannerView with a custom position.
         public BannerView(string adUnitId, AdSize adSize, int x, int y)
         {
+            this.AdUnitId = adUnitId;
             this.client = GoogleMobileAdsClientFactory.BuildBannerClient();
             client.CreateBannerView(adUnitId, adSize, x, y);
 
