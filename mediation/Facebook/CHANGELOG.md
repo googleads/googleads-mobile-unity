@@ -1,6 +1,6 @@
 ## Facebook Unity Mediation Plugin Changelog
 
-#### Next Version
+#### Version 2.5.1
 - Supports Facebook Android adapter version 5.5.0.0.
 - Supports Facebook iOS adapter version 5.5.1.0.
 
