@@ -1,6 +1,6 @@
 ## Verizon Media Unity Mediation Plugin Changelog
 
-#### Next Version
+#### Version 1.0.1
 - Added the following methods to the `VerizonMedia` class to support GDPR requirements:
   * `GetVerizonIABConsentKey()` to get the Verizon Media SDK's IAB Consent Key.
   * `SetConsentData()` to pass GDPR consent data to the Verizon Media SDK.
