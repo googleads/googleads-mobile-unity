@@ -2,24 +2,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.google.unity.mediation.AppLovin">
 
-    <uses-sdk
-      android:minSdkVersion="14"
-      android:targetSdkVersion="26" />
-
     <application>
-
+        <!-- See https://developers.google.com/admob/unity/mediation/applovin#manage_apps
+            for instructions on how to set AppLovin's SDK key. -->
         <!--<meta-data
             android:name="applovin.sdk.key"
             android:value="INSERT_APP_LOVIN_SDK_KEY_HERE" />-->
-
-        <activity
-            android:name="com.applovin.adview.AppLovinInterstitialActivity"
-            android:configChanges="orientation|screenSize" />
-
-        <activity
-            android:name="com.applovin.adview.AppLovinConfirmationActivity"
-            android:configChanges="orientation|screenSize" />
     </application>
-
 </manifest>
-
