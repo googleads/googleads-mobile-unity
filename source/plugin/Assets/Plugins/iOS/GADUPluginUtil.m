@@ -151,4 +151,15 @@ static BOOL _pauseOnBackground = NO;
   return GADAdSizeFromCGSize(CGSizeMake(width, height));
 }
 
++ (GADAdSize)adaptiveAdSizeForWidth:(CGFloat)width orientation:(GADUBannerOrientation)orientation {
+  switch (orientation) {
+    case kGADUBannerOrientationCurrent:
+      return GADCurrentOrientationAnchoredAdaptiveBannerAdSizeWithWidth(width);
+    case kGADUBannerOrientationLandscape:
+      return GADLandscapeAnchoredAdaptiveBannerAdSizeWithWidth(width);
+    case kGADUBannerOrientationPortrait:
+      return GADPortraitAnchoredAdaptiveBannerAdSizeWithWidth(width);
+  }
+}
+
 @end

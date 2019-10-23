@@ -1,6 +1,13 @@
 Google Mobile Ads Unity Plugin Change Log
 
 **************
+Next version
+**************
+
+Plugin:
+  - Released Anchored Adaptive Banner APIs.
+
+**************
 Version 4.0.0
 **************
 

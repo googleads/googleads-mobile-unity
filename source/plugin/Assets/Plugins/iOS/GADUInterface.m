@@ -186,6 +186,40 @@ GADUTypeBannerRef GADUCreateSmartBannerViewWithCustomPosition(GADUTypeBannerClie
   return (__bridge GADUTypeBannerRef)banner;
 }
 
+/// Creates a an adaptive sized GADBannerView with the specified width, orientation, and position.
+/// Returns a reference to the GADUBannerView.
+GADUTypeBannerRef GADUCreateAnchoredAdaptiveBannerView(GADUTypeBannerClientRef *bannerClient,
+                                               const char *adUnitID, NSInteger width,
+                                               GADUBannerOrientation orientation,
+                                               GADAdPosition adPosition) {
+  GADUBanner *banner = [[GADUBanner alloc]
+      initWithAdaptiveBannerSizeAndBannerClientReference:bannerClient
+                                                adUnitID:GADUStringFromUTF8String(adUnitID)
+                                                   width:(int)width
+                                             orientation:orientation
+                                              adPosition:adPosition];
+  GADUObjectCache *cache = [GADUObjectCache sharedInstance];
+  [cache.references setObject:banner forKey:[banner gadu_referenceKey]];
+  return (__bridge GADUTypeBannerRef)banner;
+}
+
+/// Creates a an adaptive sized GADBannerView with the specified width, orientation, and position.
+/// Returns a reference to the GADUBannerView.
+GADUTypeBannerRef GADUCreateAnchoredAdaptiveBannerViewWithCustomPosition(
+    GADUTypeBannerClientRef *bannerClient, const char *adUnitID, NSInteger width,
+    GADUBannerOrientation orientation, NSInteger x, NSInteger y) {
+  CGPoint adPosition = CGPointMake(x, y);
+  GADUBanner *banner = [[GADUBanner alloc]
+      initWithAdaptiveBannerSizeAndBannerClientReference:bannerClient
+                                                adUnitID:GADUStringFromUTF8String(adUnitID)
+                                                   width:(int)width
+                                             orientation:orientation
+                                        customAdPosition:adPosition];
+  GADUObjectCache *cache = [GADUObjectCache sharedInstance];
+  [cache.references setObject:banner forKey:[banner gadu_referenceKey]];
+  return (__bridge GADUTypeBannerRef)banner;
+}
+
 /// Creates a GADUInterstitial and returns its reference.
 GADUTypeInterstitialRef GADUCreateInterstitial(GADUTypeInterstitialClientRef *interstitialClient,
                                                const char *adUnitID) {

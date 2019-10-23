@@ -15,9 +15,21 @@
 namespace GoogleMobileAds.Api
 {
 
+    internal enum Orientation {
+        Current = 0,
+        Landscape = 1,
+        Portrait = 2
+    }
+
     public class AdSize
     {
-        private bool isSmartBanner;
+        public enum Type {
+            Standard = 0,
+            SmartBanner = 1,
+            AnchoredAdaptive = 2
+        }
+        private Type type;
+        private Orientation orientation;
         private int width;
         private int height;
 
@@ -25,20 +37,41 @@ namespace GoogleMobileAds.Api
         public static readonly AdSize MediumRectangle = new AdSize(300, 250);
         public static readonly AdSize IABBanner = new AdSize(468, 60);
         public static readonly AdSize Leaderboard = new AdSize(728, 90);
-        public static readonly AdSize SmartBanner = new AdSize(true);
+        public static readonly AdSize SmartBanner = new AdSize(0, 0, Type.SmartBanner);
         public static readonly int FullWidth = -1;
 
         public AdSize(int width, int height)
         {
-            isSmartBanner = false;
+            this.type = Type.Standard;
             this.width = width;
             this.height = height;
+            this.orientation = Orientation.Current;
         }
 
-        private AdSize(bool isSmartBanner) : this(0, 0)
+        private AdSize(int width, int height, Type type) : this(width, height)
         {
-            this.isSmartBanner = isSmartBanner;
+            this.type = type;
         }
+
+        private static AdSize CreateAnchoredAdaptiveAdSize(int width, Orientation orientation)
+        {
+            AdSize adSize = new AdSize(width, 0, Type.AnchoredAdaptive);
+            adSize.orientation = orientation;
+            return adSize;
+        }
+
+        public static AdSize GetLandscapeAnchoredAdaptiveBannerAdSizeWithWidth(int width) {
+          return CreateAnchoredAdaptiveAdSize(width, Orientation.Landscape);
+        }
+
+        public static AdSize GetPortraitAnchoredAdaptiveBannerAdSizeWithWidth(int width) {
+            return CreateAnchoredAdaptiveAdSize(width, Orientation.Portrait);
+        }
+
+        public static AdSize GetCurrentOrientationAnchoredAdaptiveBannerAdSizeWithWidth(int width) {
+            return CreateAnchoredAdaptiveAdSize(width, Orientation.Current);
+        }
+
         public int Width
         {
             get
@@ -55,11 +88,19 @@ namespace GoogleMobileAds.Api
             }
         }
 
-        public bool IsSmartBanner
+        public Type AdType
         {
             get
             {
-                return isSmartBanner;
+                return type;
+            }
+        }
+
+        internal Orientation Orientation
+        {
+            get
+            {
+              return orientation;
             }
         }
 
@@ -70,7 +111,7 @@ namespace GoogleMobileAds.Api
 
             AdSize other = (AdSize)obj;
             return (width == other.width) && (height == other.height)
-            && (isSmartBanner == other.isSmartBanner);
+            && (type == other.type) && (orientation == other.orientation);
         }
 
         public static bool operator ==(AdSize a, AdSize b)
@@ -91,7 +132,8 @@ namespace GoogleMobileAds.Api
             int hash = hashBase;
             hash = (hash * hashMultiplier) ^ width.GetHashCode();
             hash = (hash * hashMultiplier) ^ height.GetHashCode();
-            hash = (hash * hashMultiplier) ^ isSmartBanner.GetHashCode();
+            hash = (hash * hashMultiplier) ^ type.GetHashCode();
+            hash = (hash * hashMultiplier) ^ orientation.GetHashCode();
             return hash;
         }
     }
