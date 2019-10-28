@@ -1,11 +1,16 @@
 Google Mobile Ads Unity Plugin Change Log
 
 **************
-Next version
+Version 4.1.0
 **************
 
 Plugin:
   - Released Anchored Adaptive Banner APIs.
+
+Built and tested with:
+- Google Play services 18.2.0
+- Google Mobile Ads iOS SDK 7.51.0
+- Unity Jar Resolver 1.2.130
 
 **************
 Version 4.0.0
