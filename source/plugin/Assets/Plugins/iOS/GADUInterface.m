@@ -619,7 +619,7 @@ const char *GADUNativeCustomTemplateAdImageAsBytesForKey(
       (__bridge GADUNativeCustomTemplateAd *)nativeCustomTemplateAd;
   NSData *imageData = UIImageJPEGRepresentation(
       [internalNativeCustomTemplateAd imageForKey:GADUStringFromUTF8String(key)], 0.0);
-  NSString *base64String = [imageData base64EncodedStringWithOptions:nil];
+  NSString *base64String = [imageData base64EncodedStringWithOptions:0];
   return cStringCopy(base64String.UTF8String);
 }
 

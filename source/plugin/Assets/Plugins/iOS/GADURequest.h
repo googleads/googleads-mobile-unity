@@ -30,7 +30,7 @@ typedef NS_ENUM(NSInteger, GADUGender) {
 @property(nonatomic, strong) NSString *requestAgent;
 
 /// The user's gender may be used to deliver more relevant ads.
-@property(nonatomic, assign) GADGender *gender;
+@property(nonatomic, assign) GADGender gender;
 
 /// [Optional] This method allows you to specify whether you would like your app to be treated as
 /// child-directed for purposes of the Children’s Online Privacy Protection Act (COPPA) -

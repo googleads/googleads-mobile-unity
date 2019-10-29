@@ -60,7 +60,7 @@
 }
 
 - (NSString *)mediationAdapterClassName {
-  return [self.rewardedAd adNetworkClassName];
+  return self.rewardedAd.responseInfo.adNetworkClassName;
 }
 
 - (void)rewardedAd:(nonnull GADRewardedAd *)rewardedAd

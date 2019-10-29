@@ -140,7 +140,8 @@ static BOOL _pauseOnBackground = NO;
 }
 
 + (GADAdSize)adSizeForWidth:(CGFloat)width height:(CGFloat)height {
-  UIDeviceOrientation currentOrientation = [UIApplication sharedApplication].statusBarOrientation;
+  UIInterfaceOrientation currentOrientation =
+      [UIApplication sharedApplication].statusBarOrientation;
 
   if (width == kGADUAdSizeUseFullWidth && UIInterfaceOrientationIsPortrait(currentOrientation)) {
     return GADAdSizeFullWidthPortraitWithHeight(height);

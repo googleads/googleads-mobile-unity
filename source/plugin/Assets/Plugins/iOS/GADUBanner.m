@@ -46,7 +46,8 @@
                                              adUnitID:(NSString *)adUnitID
                                            adPosition:(GADAdPosition)adPosition {
   // Choose the correct Smart Banner constant according to orientation.
-  UIDeviceOrientation currentOrientation = [UIApplication sharedApplication].statusBarOrientation;
+  UIInterfaceOrientation currentOrientation =
+      [UIApplication sharedApplication].statusBarOrientation;
   GADAdSize adSize;
   if (UIInterfaceOrientationIsPortrait(currentOrientation)) {
     adSize = kGADAdSizeSmartBannerPortrait;
@@ -63,7 +64,8 @@
                                              adUnitID:(NSString *)adUnitID
                                      customAdPosition:(CGPoint)customAdPosition {
   // Choose the correct Smart Banner constant according to orientation.
-  UIDeviceOrientation currentOrientation = [UIApplication sharedApplication].statusBarOrientation;
+  UIInterfaceOrientation currentOrientation =
+      [UIApplication sharedApplication].statusBarOrientation;
   GADAdSize adSize;
   if (UIInterfaceOrientationIsPortrait(currentOrientation)) {
     adSize = kGADAdSizeSmartBannerPortrait;
@@ -170,7 +172,7 @@
 }
 
 - (NSString *)mediationAdapterClassName {
-  return [self.bannerView adNetworkClassName];
+  return self.bannerView.responseInfo.adNetworkClassName;
 }
 
 - (CGFloat)heightInPixels {
