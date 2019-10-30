@@ -14,6 +14,8 @@
 
 using System;
 
+using UnityEngine;
+
 using GoogleMobileAds.Common;
 
 namespace GoogleMobileAds.Api
@@ -53,6 +55,103 @@ namespace GoogleMobileAds.Api
         public static void SetiOSAppPauseOnBackground(bool pause)
         {
             client.SetiOSAppPauseOnBackground(pause);
+        }
+
+        public static TAdPlacement FindAdPlacementByName<TAdPlacement>(string name)
+        {
+            if (typeof(TAdPlacement).IsSubclassOf(typeof(AdPlacement)))
+            {
+                GameObject go = GameObject.Find(name);
+                if (go != null)
+                {
+                    return go.GetComponent<TAdPlacement>();
+                }
+            }
+            return default(TAdPlacement);
+        }
+
+        public static void LoadBannerAd(string placementName)
+        {
+            BannerAdPlacement banner = FindAdPlacementByName<BannerAdPlacement>(placementName);
+            if (banner != null)
+            {
+                banner.Load();
+            }
+            else
+            {
+                throw new ArgumentException("No Banner Ad Placement found with the name: " + placementName);
+            }
+        }
+
+        public static void LoadInterstitialAd(string placementName)
+        {
+            InterstitialAdPlacement interstitial = FindAdPlacementByName<InterstitialAdPlacement>(placementName);
+            if (interstitial != null)
+            {
+                interstitial.Load();
+            }
+            else
+            {
+                throw new ArgumentException("No Interstitial Ad Placement found with the name: " + placementName);
+            }
+        }
+
+        public static void ShowInterstitialAd(string placementName)
+        {
+            InterstitialAdPlacement interstitial = FindAdPlacementByName<InterstitialAdPlacement>(placementName);
+            if (interstitial != null)
+            {
+                if (interstitial.IsLoaded)
+                {
+                    interstitial.Show();
+                }
+            }
+            else
+            {
+                throw new ArgumentException("No Interstitial Ad Placement found with the name: " + placementName);
+            }
+        }
+
+        public static void LoadRewardedAd(string placementName)
+        {
+            RewardedAdPlacement rewarded = FindAdPlacementByName<RewardedAdPlacement>(placementName);
+            if (rewarded != null)
+            {
+                rewarded.Load();
+            }
+            else
+            {
+                throw new ArgumentException("No Rewarded Ad Placement found with the name: " + placementName);
+            }
+        }
+
+        public static bool IsRewardedAdLoaded(string placementName)
+        {
+            RewardedAdPlacement rewarded = FindAdPlacementByName<RewardedAdPlacement>(placementName);
+            if (rewarded != null)
+            {
+                return rewarded.IsLoaded;
+            }
+            else
+            {
+                throw new ArgumentException("No Rewarded Ad Placement found with the name: " + placementName);
+            }
+        }
+
+        public static void ShowRewardedAd(string placementName)
+        {
+            RewardedAdPlacement rewarded = FindAdPlacementByName<RewardedAdPlacement>(placementName);
+            if (rewarded != null)
+            {
+                if (rewarded.IsLoaded)
+                {
+                    rewarded.Show();
+                }
+            }
+            else
+            {
+                throw new ArgumentException("No Rewarded Ad Placement found with the name: " + placementName);
+            }
         }
 
         private static IMobileAdsClient GetMobileAdsClient()
