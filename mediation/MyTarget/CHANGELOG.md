@@ -1,5 +1,9 @@
 ## Vungle Unity Mediation Plugin Changelog
 
+#### Next Version
+- Supports [myTarget Android adapter version 5.4.6.0](https://github.com/googleads/googleads-mobile-android-mediation/blob/master/ThirdPartyAdapters/mytarget/CHANGELOG.md#version-5460).
+- Supports [myTarget iOS adapter version 5.3.3.0](https://github.com/googleads/googleads-mobile-ios-mediation/blob/master/adapters/MyTarget/CHANGELOG.md#version-5330).
+
 #### Version 3.0.0
 - Updated the plugin to support the new open-beta Rewarded API.
 - Supports myTarget Android adapter version 5.3.9.0.
