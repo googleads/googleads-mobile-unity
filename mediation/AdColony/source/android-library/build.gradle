@@ -17,5 +17,8 @@ allprojects {
     repositories {
         google()
         jcenter()
+        maven {
+            url  "https://adcolony.bintray.com/AdColony"
+        }
     }
 }
