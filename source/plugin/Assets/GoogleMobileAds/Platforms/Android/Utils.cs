@@ -128,7 +128,7 @@ namespace GoogleMobileAds.Android
                         case Orientation.Landscape:
                             return adSizeClass.CallStatic<AndroidJavaObject>("getLandscapeBannerAdSizeWithWidth", activity, adSize.Width);
                         case Orientation.Portrait:
-                            return adSizeClass.CallStatic<AndroidJavaObject>("getPortaitBannerAdSizeWithWidth", activity, adSize.Width);
+                            return adSizeClass.CallStatic<AndroidJavaObject>("getPortraitBannerAdSizeWithWidth", activity, adSize.Width);
                         case Orientation.Current:
                             return adSizeClass.CallStatic<AndroidJavaObject>("getCurrentOrientationBannerAdSizeWithWidth", activity, adSize.Width);
                         default:
