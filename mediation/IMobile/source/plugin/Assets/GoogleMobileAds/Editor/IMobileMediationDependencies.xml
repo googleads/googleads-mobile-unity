@@ -1,0 +1,18 @@
+<dependencies>
+  <androidPackages>
+    <androidPackage spec="com.google.ads.mediation:imobile:2.0.20.1">
+      <repositories>
+        <repository>https://jcenter.bintray.com/</repository>
+        <repository>https://imobile.github.io/adnw-sdk-android</repository>
+      </repositories>
+    </androidPackage>
+  </androidPackages>
+
+  <iosPods>
+    <iosPod name="GoogleMobileAdsMediationIMobile" version="2.0.29.0">
+      <sources>
+        <source>https://github.com/CocoaPods/Specs</source>
+      </sources>
+    </iosPod>
+  </iosPods>
+</dependencies>
