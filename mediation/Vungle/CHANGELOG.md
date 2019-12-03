@@ -1,5 +1,9 @@
 ## Vungle Unity Mediation Plugin Changelog
 
+#### Next Version
+- Supports [Vungle Android adapter version 6.4.11.1](https://github.com/googleads/googleads-mobile-android-mediation/blob/master/ThirdPartyAdapters/vungle/CHANGELOG.md#version-64111).
+- Supports [Vungle iOS adapter version 6.4.6.0](https://github.com/googleads/googleads-mobile-ios-mediation/blob/master/adapters/Vungle/CHANGELOG.md#version-6460).
+
 #### Version 3.1.4
 - Supports Android adapter version 6.3.24.1.
 - Supports iOS adapter version 6.3.2.3.

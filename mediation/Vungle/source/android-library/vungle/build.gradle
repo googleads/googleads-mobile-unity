@@ -1,11 +1,10 @@
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion 26
-
+    compileSdkVersion 28
     defaultConfig {
         minSdkVersion 14
-        targetSdkVersion 26
+        targetSdkVersion 28
         versionCode 1
         versionName "1.0"
     }
@@ -23,7 +22,7 @@ android {
 
 dependencies {
     api project(':app')
-    api 'com.google.ads.mediation:vungle:6.3.24.1'
+    api 'com.google.ads.mediation:vungle:6.4.11.1'
 }
 
 task clearJar(type: Delete) {
