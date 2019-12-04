@@ -1,6 +1,6 @@
 ## MoPub Unity Mediation Plugin Changelog
 
-#### Next Version
+#### Version 2.9.0
 - Supports [MoPub Android adapter version 5.10.0.0](https://github.com/googleads/googleads-mobile-android-mediation/blob/master/ThirdPartyAdapters/mopub/CHANGELOG.md#version-51000).
 - Supports [MoPub iOS adapter version 5.10.0.0](https://github.com/googleads/googleads-mobile-ios-mediation/blob/master/adapters/MoPub/CHANGELOG.md#version-51000).
 
