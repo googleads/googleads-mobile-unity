@@ -1,6 +1,6 @@
 ## AdColony Unity Mediation Plugin Changelog
 
-#### Next Version
+#### Version 2.0.0
 - Supports [AdColony Android adapter version 4.1.0.0](https://github.com/googleads/googleads-mobile-android-mediation/blob/master/ThirdPartyAdapters/adcolony/CHANGELOG.md#version-4100).
 - Supports [AdColony iOS adapter version 4.1.2.0](https://github.com/googleads/googleads-mobile-ios-mediation/blob/master/adapters/AdColony/CHANGELOG.md#version-4120).
 
