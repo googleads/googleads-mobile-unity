@@ -46,5 +46,13 @@ namespace GoogleMobileAds.Common
 
             return nativeAdTexture;
         }
+
+        public static bool IsLandscape
+        {
+            get
+            {
+                return Screen.width > Screen.height;
+            }
+        }
     }
 }

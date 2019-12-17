@@ -74,6 +74,11 @@ namespace GoogleMobileAds.iOS
             return Externs.GADUDeviceScale();
         }
 
+        public int GetDeviceSafeWidth()
+        {
+            return Externs.GADUDeviceSafeWidth();
+        }
+
         [MonoPInvokeCallback(typeof(GADUInitializationCompleteCallback))]
         private static void InitializationCompleteCallback(IntPtr mobileAdsClient, IntPtr initStatus)
         {

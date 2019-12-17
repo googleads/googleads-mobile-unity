@@ -124,6 +124,18 @@ float GADUDeviceScale() {
   return UIScreen.mainScreen.scale;
 }
 
+/// Returns the safe width of the device.
+int GADUDeviceSafeWidth() {
+  CGRect screenBounds = [UIScreen mainScreen].bounds;
+  if (IsOperatingSystemAtLeastVersion(11)) {
+    CGRect safeFrame = [UIApplication sharedApplication].keyWindow.safeAreaLayoutGuide.layoutFrame;
+    if (!CGSizeEqualToSize(safeFrame.size, CGSizeZero)) {
+      screenBounds = safeFrame;
+    }
+  }
+  return (int)CGRectGetWidth(screenBounds);
+}
+
 /// Creates a GADBannerView with the specified width, height, and position. Returns a reference to
 /// the GADUBannerView.
 GADUTypeBannerRef GADUCreateBannerView(GADUTypeBannerClientRef *bannerClient, const char *adUnitID,

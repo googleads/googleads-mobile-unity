@@ -96,6 +96,12 @@ namespace GoogleMobileAds.Common
             return 0;
         }
 
+        public int GetDeviceSafeWidth()
+        {
+            Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
+            return 0;
+        }
+
         public void CreateBannerView(string adUnitId, AdSize adSize, AdPosition position)
         {
             Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);

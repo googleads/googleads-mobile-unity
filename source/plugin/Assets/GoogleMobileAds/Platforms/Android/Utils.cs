@@ -98,6 +98,7 @@ namespace GoogleMobileAds.Android
 
         public const string BundleClassName = "android.os.Bundle";
         public const string DateClassName = "java.util.Date";
+        public const string DisplayMetricsClassName = "android.util.DisplayMetrics";
 
         #endregion
 
@@ -139,6 +140,11 @@ namespace GoogleMobileAds.Android
                 default:
                     throw new ArgumentException("Invalid AdSize.Type provided for ad size.");
   }
+        }
+
+        internal static int GetScreenWidth() {
+          int width = GoogleMobileAds.Common.Utils.IsLandscape ? DisplayMetrics.HeightPixels : DisplayMetrics.WidthPixels;
+          return (int) (width / DisplayMetrics.Density);
         }
 
         public static AndroidJavaObject GetAdRequestJavaObject(AdRequest request)

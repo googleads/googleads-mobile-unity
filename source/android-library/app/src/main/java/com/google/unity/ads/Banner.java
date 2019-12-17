@@ -518,4 +518,3 @@ public class Banner {
     return mAdView != null ? mAdView.getMediationAdapterClassName() : null;
   }
 }
-

@@ -6,6 +6,9 @@
 
 #import "GADUTypes.h"
 
+/// Returns YES if the operating system is at least the supplied major version.
+static BOOL IsOperatingSystemAtLeastVersion(NSInteger majorVersion);
+
 @interface GADUPluginUtil : NSObject
 
 /// Whether the Unity app should be paused when a full screen ad is displayed.

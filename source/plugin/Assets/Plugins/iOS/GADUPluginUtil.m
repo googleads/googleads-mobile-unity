@@ -4,7 +4,6 @@
 
 #import "UnityAppController.h"
 
-
 @interface UIView (unityStub)
 @property UILayoutGuide *safeAreaLayoutGuide;
 @end
@@ -21,7 +20,7 @@ static BOOL IsOperatingSystemAtLeastVersion(NSInteger majorVersion) {
   }
 }
 
-static CGFloat FullSafeWidthLandscape(void) {
+static CGFloat GADUSafeWidthLandscape(void) {
   CGRect screenBounds = [UIScreen mainScreen].bounds;
   if (IsOperatingSystemAtLeastVersion(11)) {
     CGRect safeFrame = [UIApplication sharedApplication].keyWindow.safeAreaLayoutGuide.layoutFrame;
@@ -52,7 +51,7 @@ static BOOL _pauseOnBackground = NO;
   if (IsOperatingSystemAtLeastVersion(11) &&
       GADAdSizeEqualToSize(kGADAdSizeSmartBannerLandscape, adSize)) {
     CGSize usualSize = CGSizeFromGADAdSize(kGADAdSizeSmartBannerLandscape);
-    CGSize bannerSize = CGSizeMake(FullSafeWidthLandscape(), usualSize.height);
+    CGSize bannerSize = CGSizeMake(GADUSafeWidthLandscape(), usualSize.height);
     return GADAdSizeFromCGSize(bannerSize);
   } else {
     return adSize;
@@ -147,7 +146,7 @@ static BOOL _pauseOnBackground = NO;
     return GADAdSizeFullWidthPortraitWithHeight(height);
   } else if ((width == kGADUAdSizeUseFullWidth &&
               UIInterfaceOrientationIsLandscape(currentOrientation))) {
-    return GADAdSizeFromCGSize(CGSizeMake(FullSafeWidthLandscape(), height));
+    return GADAdSizeFromCGSize(CGSizeMake(GADUSafeWidthLandscape(), height));
   }
   return GADAdSizeFromCGSize(CGSizeMake(width, height));
 }
