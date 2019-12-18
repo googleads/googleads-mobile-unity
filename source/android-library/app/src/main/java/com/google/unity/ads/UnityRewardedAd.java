@@ -190,19 +190,63 @@ public class UnityRewardedAd {
         });
     }
 
-  /** Sets server side verification options. */
-  public void setServerSideVerificationOptions(
-      final ServerSideVerificationOptions serverSideVerificationOptions) {
-    activity.runOnUiThread(
-        new Runnable() {
-          @Override
-          public void run() {
-            rewardedAd.setServerSideVerificationOptions(serverSideVerificationOptions);
-          }
-        });
-  }
+    /** Sets server side verification options. */
+    public void setServerSideVerificationOptions(
+        final ServerSideVerificationOptions serverSideVerificationOptions) {
+        activity.runOnUiThread(
+            new Runnable() {
+                @Override
+                public void run() {
+                    rewardedAd.setServerSideVerificationOptions(serverSideVerificationOptions);
+                }
+            });
+    }
 
     public String getMediationAdapterClassName() {
-        return rewardedAd != null ? rewardedAd.getMediationAdapterClassName() : null;
+        FutureTask<String> task = new FutureTask<>(new Callable<String>() {
+            @Override
+            public String call() {
+                return rewardedAd.getMediationAdapterClassName();
+            }
+        });
+        activity.runOnUiThread(task);
+
+        String result = null;
+        try {
+            result = task.get();
+        } catch (InterruptedException e) {
+            Log.e(PluginUtils.LOGTAG,
+                    String.format("Unable to check rewarded ad adapter class name: %s",
+                            e.getLocalizedMessage()));
+        } catch (ExecutionException e) {
+            Log.e(PluginUtils.LOGTAG,
+                    String.format("Unable to check rewarded ad adapter class name: %s",
+                            e.getLocalizedMessage()));
+        }
+        return result;
+    }
+
+    public RewardItem getRewardItem() {
+        FutureTask<RewardItem> task = new FutureTask<>(new Callable<RewardItem>() {
+            @Override
+            public RewardItem call() {
+                return rewardedAd.getRewardItem();
+            }
+        });
+        activity.runOnUiThread(task);
+
+        RewardItem result = null;
+        try {
+            result = task.get();
+        } catch (InterruptedException e) {
+            Log.e(PluginUtils.LOGTAG,
+                    String.format("Unable to get rewarded ad reward item: %s",
+                            e.getLocalizedMessage()));
+        } catch (ExecutionException e) {
+            Log.e(PluginUtils.LOGTAG,
+                    String.format("Unable to get rewarded ad reward item: %s",
+                            e.getLocalizedMessage()));
+        }
+        return result;
     }
 }

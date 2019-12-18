@@ -113,6 +113,15 @@ namespace GoogleMobileAds.Api
             client.SetServerSideVerificationOptions(serverSideVerificationOptions);
         }
 
+        // Returns the reward item for the loaded rewarded ad.
+        public Reward GetRewardItem()
+        {
+            if (client.IsLoaded()) {
+              return client.GetRewardItem();
+            }
+            return null;
+        }
+
         // Returns the mediation adapter class name.
         public string MediationAdapterClassName()
         {
