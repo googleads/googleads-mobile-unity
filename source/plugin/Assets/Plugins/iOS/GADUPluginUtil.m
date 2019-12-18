@@ -8,7 +8,7 @@
 @property UILayoutGuide *safeAreaLayoutGuide;
 @end
 
-static BOOL IsOperatingSystemAtLeastVersion(NSInteger majorVersion) {
+BOOL GADUIsOperatingSystemAtLeastVersion(NSInteger majorVersion) {
   NSProcessInfo *processInfo = NSProcessInfo.processInfo;
   if ([processInfo respondsToSelector:@selector(isOperatingSystemAtLeastVersion:)]) {
     // iOS 8+.
@@ -22,7 +22,7 @@ static BOOL IsOperatingSystemAtLeastVersion(NSInteger majorVersion) {
 
 static CGFloat GADUSafeWidthLandscape(void) {
   CGRect screenBounds = [UIScreen mainScreen].bounds;
-  if (IsOperatingSystemAtLeastVersion(11)) {
+  if (GADUIsOperatingSystemAtLeastVersion(11)) {
     CGRect safeFrame = [UIApplication sharedApplication].keyWindow.safeAreaLayoutGuide.layoutFrame;
     if (!CGSizeEqualToSize(safeFrame.size, CGSizeZero)) {
       screenBounds = safeFrame;
@@ -48,7 +48,7 @@ static BOOL _pauseOnBackground = NO;
 }
 
 + (GADAdSize)safeAdSizeForAdSize:(GADAdSize)adSize {
-  if (IsOperatingSystemAtLeastVersion(11) &&
+  if (GADUIsOperatingSystemAtLeastVersion(11) &&
       GADAdSizeEqualToSize(kGADAdSizeSmartBannerLandscape, adSize)) {
     CGSize usualSize = CGSizeFromGADAdSize(kGADAdSizeSmartBannerLandscape);
     CGSize bannerSize = CGSizeMake(GADUSafeWidthLandscape(), usualSize.height);
@@ -66,7 +66,7 @@ static BOOL _pauseOnBackground = NO;
         inParentView:(UIView *)parentView
           adPosition:(GADAdPosition)adPosition {
   CGRect parentBounds = parentView.bounds;
-  if (IsOperatingSystemAtLeastVersion(11)) {
+  if (GADUIsOperatingSystemAtLeastVersion(11)) {
     CGRect safeAreaFrame = parentView.safeAreaLayoutGuide.layoutFrame;
     if (!CGSizeEqualToSize(CGSizeZero, safeAreaFrame.size)) {
       parentBounds = safeAreaFrame;
@@ -126,7 +126,7 @@ static BOOL _pauseOnBackground = NO;
         inParentView:(UIView *)parentView
       customPosition:(CGPoint)adPosition {
   CGPoint origin = parentView.bounds.origin;
-  if (IsOperatingSystemAtLeastVersion(11)) {
+  if (GADUIsOperatingSystemAtLeastVersion(11)) {
     CGRect safeAreaFrame = parentView.safeAreaLayoutGuide.layoutFrame;
     if (!CGSizeEqualToSize(CGSizeZero, safeAreaFrame.size)) {
       origin = safeAreaFrame.origin;

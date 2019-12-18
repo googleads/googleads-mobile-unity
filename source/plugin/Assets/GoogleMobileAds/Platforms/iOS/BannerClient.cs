@@ -85,7 +85,7 @@ namespace GoogleMobileAds.iOS
                   this.BannerViewPtr = Externs.GADUCreateAnchoredAdaptiveBannerView(
                           this.bannerClientPtr,
                           adUnitId,
-                          adSize.Width(),
+                          adSize.Width,
                           (int)adSize.Orientation,
                           (int)position);
                   break;

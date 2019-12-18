@@ -127,7 +127,7 @@ float GADUDeviceScale() {
 /// Returns the safe width of the device.
 int GADUDeviceSafeWidth() {
   CGRect screenBounds = [UIScreen mainScreen].bounds;
-  if (IsOperatingSystemAtLeastVersion(11)) {
+  if (GADUIsOperatingSystemAtLeastVersion(11)) {
     CGRect safeFrame = [UIApplication sharedApplication].keyWindow.safeAreaLayoutGuide.layoutFrame;
     if (!CGSizeEqualToSize(safeFrame.size, CGSizeZero)) {
       screenBounds = safeFrame;

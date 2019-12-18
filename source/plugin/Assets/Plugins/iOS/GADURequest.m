@@ -55,7 +55,7 @@
 }
 
 - (void)setMediationExtras:(id<GADAdNetworkExtras>)mediationExtras {
-  [self.mediationExtras addObject:mediationExtras];
+  [_mediationExtras addObject:mediationExtras];
 }
 
 - (GADRequest *)request {

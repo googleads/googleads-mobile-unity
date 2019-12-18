@@ -7,7 +7,7 @@
 #import "GADUTypes.h"
 
 /// Returns YES if the operating system is at least the supplied major version.
-static BOOL IsOperatingSystemAtLeastVersion(NSInteger majorVersion);
+BOOL GADUIsOperatingSystemAtLeastVersion(NSInteger majorVersion);
 
 @interface GADUPluginUtil : NSObject
 
