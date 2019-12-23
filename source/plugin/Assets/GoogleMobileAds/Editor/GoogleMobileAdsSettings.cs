@@ -13,10 +13,10 @@ namespace GoogleMobileAds.Editor
     {
         private const string MobileAdsSettingsDir = "Assets/GoogleMobileAds";
 
-        private const string MobileAdsSettingsResDir = "Assets/GoogleMobileAds/Resources";
+        private const string MobileAdsSettingsResDir = "Assets/GoogleMobileAds/Editor/Resources";
 
         private const string MobileAdsSettingsFile =
-            "Assets/GoogleMobileAds/Resources/GoogleMobileAdsSettings.asset";
+            "Assets/GoogleMobileAds/Editor/Resources/GoogleMobileAdsSettings.asset";
 
         private static GoogleMobileAdsSettings instance;
 
