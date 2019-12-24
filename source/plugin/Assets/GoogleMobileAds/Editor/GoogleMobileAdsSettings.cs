@@ -8,15 +8,11 @@ using UnityEngine;
 
 namespace GoogleMobileAds.Editor
 {
-
     internal class GoogleMobileAdsSettings : ScriptableObject
     {
-        private const string MobileAdsSettingsDir = "Assets/GoogleMobileAds";
-
-        private const string MobileAdsSettingsResDir = "Assets/GoogleMobileAds/Resources";
-
-        private const string MobileAdsSettingsFile =
-            "Assets/GoogleMobileAds/Resources/GoogleMobileAdsSettings.asset";
+        private const string MobileAdsSettingsDir = "Assets/GoogleMobileAds/Editor";
+        private const string MobileAdsSettingsResDir = MobileAdsSettingsDir + "/Resources";
+        private const string MobileAdsSettingsFile = MobileAdsSettingsResDir + "/GoogleMobileAdsSettings.asset";
 
         private static GoogleMobileAdsSettings instance;
 
