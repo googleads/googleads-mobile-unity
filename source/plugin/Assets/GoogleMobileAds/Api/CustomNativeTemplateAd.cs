@@ -31,20 +31,23 @@ namespace GoogleMobileAds.Api
 
         public List<string> GetAvailableAssetNames()
         {
-            return this.client.GetAvailableAssetNames();
+            return client.GetAvailableAssetNames();
         }
 
         public string GetCustomTemplateId()
         {
-            return this.client.GetTemplateId();
+            return client.GetTemplateId();
         }
 
-        // Get image asset corresponding to the key parameter of custom native template ad as a
-        // Texture2D. If the asset key does not map to an existing asset, a null object will be
-        // returned.
+        /// <summary>
+        /// Get image asset corresponding to the key parameter of custom native template ad as a
+        /// Texture2D. If the asset key does not map to an existing asset, a null object will be returned.
+        /// </summary>
+        /// <param name="key"></param>
+        /// <returns></returns>
         public Texture2D GetTexture2D(string key)
         {
-            byte[] imageAssetAsByteArray = this.client.GetImageByteArray(key);
+            byte[] imageAssetAsByteArray = client.GetImageByteArray(key);
             if (imageAssetAsByteArray == null)
             {
                 return null;
@@ -53,22 +56,25 @@ namespace GoogleMobileAds.Api
             return Utils.GetTexture2DFromByteArray(imageAssetAsByteArray);
         }
 
-        // Get text asset corresponding to the key parameter of custom native template ad as a
-        // string. If the asset key does not map to an existing asset, a null object will be
-        // returned.
+        /// <summary>
+        /// Get text asset corresponding to the key parameter of custom native template ad as a string.
+        /// If the asset key does not map to an existing asset, a null object will be returned.
+        /// </summary>
+        /// <param name="key"></param>
+        /// <returns></returns>
         public string GetText(string key)
         {
-            return this.client.GetText(key);
+            return client.GetText(key);
         }
 
         public void PerformClick(string assetName)
         {
-            this.client.PerformClick(assetName);
+            client.PerformClick(assetName);
         }
 
         public void RecordImpression()
         {
-            this.client.RecordImpression();
+            client.RecordImpression();
         }
     }
 }

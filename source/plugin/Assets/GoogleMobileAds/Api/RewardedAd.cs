@@ -18,114 +18,73 @@ using GoogleMobileAds.Common;
 
 namespace GoogleMobileAds.Api
 {
-    public class RewardedAd
+    public class RewardedAd : AdvertisingBase
     {
+        // These are the ad callback events that can be hooked into.
+        public event EventHandler<EventArgs> OnAdLoaded;
+        public event EventHandler<AdErrorEventArgs> OnAdFailedToLoad;
+        public event EventHandler<AdErrorEventArgs> OnAdFailedToShow;
+        public event EventHandler<EventArgs> OnAdOpening;
+        public event EventHandler<EventArgs> OnAdClosed;
+        public event EventHandler<Reward> OnUserEarnedReward;
+
         private IRewardedAdClient client;
 
         public RewardedAd(string adUnitId)
         {
-            this.client = GoogleMobileAdsClientFactory.BuildRewardedAdClient();
+            client = GoogleMobileAdsClientFactory.BuildRewardedAdClient();
             client.CreateRewardedAd(adUnitId);
 
-            this.client.OnAdLoaded += (sender, args) =>
-            {
-                if (this.OnAdLoaded != null)
-                {
-                    this.OnAdLoaded(this, args);
-                }
-            };
-
-            this.client.OnAdFailedToLoad += (sender, args) =>
-            {
-                if (this.OnAdFailedToLoad != null)
-                {
-                    this.OnAdFailedToLoad(this, args);
-                }
-            };
-
-            this.client.OnAdFailedToShow += (sender, args) =>
-            {
-                if (this.OnAdFailedToShow != null)
-                {
-                    this.OnAdFailedToShow(this, args);
-                }
-            };
-
-            this.client.OnAdOpening += (sender, args) =>
-            {
-                if (this.OnAdOpening != null)
-                {
-                    this.OnAdOpening(this, args);
-                }
-            };
-
-            this.client.OnAdClosed += (sender, args) =>
-            {
-                if (this.OnAdClosed != null)
-                {
-                    this.OnAdClosed(this, args);
-                }
-            };
-
-            this.client.OnUserEarnedReward += (sender, args) =>
-            {
-                if (this.OnUserEarnedReward != null)
-                {
-                    this.OnUserEarnedReward(this, args);
-                }
-            };
+            client.OnAdLoaded += (sender, args) => ExecuteEvent(this, OnAdLoaded, args);
+            client.OnAdFailedToLoad += (sender, args) => ExecuteEvent(this, OnAdFailedToLoad, args);
+            client.OnAdFailedToShow += (sender, args) => ExecuteEvent(this, OnAdFailedToShow, args);
+            client.OnAdOpening += (sender, args) => ExecuteEvent(this, OnAdOpening, args);
+            client.OnUserEarnedReward += (sender, args) => ExecuteEvent(this, OnUserEarnedReward, args);
+            client.OnAdClosed += (sender, args) => ExecuteEvent(this, OnAdClosed, args);
         }
 
-        // These are the ad callback events that can be hooked into.
-        public event EventHandler<EventArgs> OnAdLoaded;
-
-        public event EventHandler<AdErrorEventArgs> OnAdFailedToLoad;
-
-        public event EventHandler<AdErrorEventArgs> OnAdFailedToShow;
-
-        public event EventHandler<EventArgs> OnAdOpening;
-
-        public event EventHandler<EventArgs> OnAdClosed;
-
-        public event EventHandler<Reward> OnUserEarnedReward;
-
-        // Loads a new rewarded ad.
-        public void LoadAd(AdRequest request)
+        /// <summary>
+        /// Loads a new rewarded ad.
+        /// </summary>
+        /// <param name="request"></param>
+        public override void LoadAd(AdRequest request)
         {
             client.LoadAd(request);
         }
 
-        // Determines whether the rewarded ad has loaded.
-        public bool IsLoaded()
+        /// <summary>
+        /// Determines whether the rewarded ad has loaded.
+        /// </summary>
+        /// <returns></returns>
+        public override bool IsLoaded()
         {
             return client.IsLoaded();
         }
 
-        // Shows the rewarded ad.
-        public void Show()
+        /// <summary>
+        /// Shows the rewarded ad.
+        /// </summary>
+        public override void Show()
         {
             client.Show();
         }
 
-        // Sets the server side verification options
+        /// <summary>
+        /// Sets the server side verification options
+        /// </summary>
+        /// <param name="serverSideVerificationOptions"></param>
         public void SetServerSideVerificationOptions(ServerSideVerificationOptions serverSideVerificationOptions)
         {
             client.SetServerSideVerificationOptions(serverSideVerificationOptions);
         }
 
-        // Returns the reward item for the loaded rewarded ad.
-        public Reward GetRewardItem()
+        /// <summary>
+        /// Returns the mediation adapter class name.
+        /// </summary>
+        /// <returns></returns>
+        public override string MediationAdapterClassName()
         {
-            if (client.IsLoaded()) {
-              return client.GetRewardItem();
-            }
-            return null;
-        }
-
-        // Returns the mediation adapter class name.
-        public string MediationAdapterClassName()
-        {
-            return this.client.MediationAdapterClassName();
+            return client.MediationAdapterClassName();
         }
     }
 }

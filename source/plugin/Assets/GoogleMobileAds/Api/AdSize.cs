@@ -42,10 +42,10 @@ namespace GoogleMobileAds.Api
 
         public AdSize(int width, int height)
         {
-            this.type = Type.Standard;
+            type = Type.Standard;
             this.width = width;
             this.height = height;
-            this.orientation = Orientation.Current;
+            orientation = Orientation.Current;
         }
 
         private AdSize(int width, int height, Type type) : this(width, height)
@@ -76,9 +76,6 @@ namespace GoogleMobileAds.Api
         {
             get
             {
-                if (width == FullWidth) {
-                    return MobileAds.Utils.GetDeviceSafeWidth();
-                }
                 return width;
             }
         }

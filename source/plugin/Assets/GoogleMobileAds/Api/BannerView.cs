@@ -20,80 +20,109 @@ namespace GoogleMobileAds.Api
 {
     public class BannerView
     {
+        // These are the ad callback events that can be hooked into.
+        public event EventHandler<EventArgs> OnAdLoaded;
+        public event EventHandler<AdFailedToLoadEventArgs> OnAdFailedToLoad;
+        public event EventHandler<EventArgs> OnAdOpening;
+        public event EventHandler<EventArgs> OnAdClosed;
+        public event EventHandler<EventArgs> OnAdLeavingApplication;
+
         private IBannerClient client;
 
-        // Creates a BannerView and adds it to the view hierarchy.
+        /// <summary>
+        /// Creates a BannerView and adds it to the view hierarchy.
+        /// </summary>
+        /// <param name="adUnitId"></param>
+        /// <param name="adSize"></param>
+        /// <param name="position"></param>
         public BannerView(string adUnitId, AdSize adSize, AdPosition position)
         {
-            this.client = GoogleMobileAdsClientFactory.BuildBannerClient();
+            client = GoogleMobileAdsClientFactory.BuildBannerClient();
             client.CreateBannerView(adUnitId, adSize, position);
 
             ConfigureBannerEvents();
         }
 
-        // Creates a BannerView with a custom position.
+        /// <summary>
+        /// Creates a BannerView with a custom position.
+        /// </summary>
+        /// <param name="adUnitId"></param>
+        /// <param name="adSize"></param>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
         public BannerView(string adUnitId, AdSize adSize, int x, int y)
         {
-            this.client = GoogleMobileAdsClientFactory.BuildBannerClient();
+            client = GoogleMobileAdsClientFactory.BuildBannerClient();
             client.CreateBannerView(adUnitId, adSize, x, y);
 
             ConfigureBannerEvents();
         }
 
-        // These are the ad callback events that can be hooked into.
-        public event EventHandler<EventArgs> OnAdLoaded;
-
-        public event EventHandler<AdFailedToLoadEventArgs> OnAdFailedToLoad;
-
-        public event EventHandler<EventArgs> OnAdOpening;
-
-        public event EventHandler<EventArgs> OnAdClosed;
-
-        public event EventHandler<EventArgs> OnAdLeavingApplication;
-
-        // Loads an ad into the BannerView.
+        /// <summary>
+        /// Loads an ad into the BannerView.
+        /// </summary>
+        /// <param name="request"></param>
         public void LoadAd(AdRequest request)
         {
             client.LoadAd(request);
         }
 
-        // Hides the BannerView from the screen.
+        /// <summary>
+        /// Hides the BannerView from the screen.
+        /// </summary>
         public void Hide()
         {
             client.HideBannerView();
         }
 
-        // Shows the BannerView on the screen.
+        /// <summary>
+        /// Shows the BannerView on the screen.
+        /// </summary>
         public void Show()
         {
             client.ShowBannerView();
         }
 
-        // Destroys the BannerView.
+        /// <summary>
+        /// Destroys the BannerView.
+        /// </summary>
         public void Destroy()
         {
             client.DestroyBannerView();
         }
 
-        // Returns the height of the BannerView in pixels.
+        /// <summary>
+        /// Returns the height of the BannerView in pixels.
+        /// </summary>
+        /// <returns></returns>
         public float GetHeightInPixels()
         {
             return client.GetHeightInPixels();
         }
 
-        // Returns the width of the BannerView in pixels.
+        /// <summary>
+        /// Returns the width of the BannerView in pixels.
+        /// </summary>
+        /// <returns></returns>
         public float GetWidthInPixels()
         {
             return client.GetWidthInPixels();
         }
 
-        // Set the position of the BannerView using standard position.
+        /// <summary>
+        /// Set the position of the BannerView using standard position.
+        /// </summary>
+        /// <param name="adPosition"></param>
         public void SetPosition(AdPosition adPosition)
         {
             client.SetPosition(adPosition);
         }
 
-        // Set the position of the BannerView using custom position.
+        /// <summary>
+        /// Set the position of the BannerView using custom position.
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
         public void SetPosition(int x, int y)
         {
             client.SetPosition(x, y);
@@ -101,51 +130,20 @@ namespace GoogleMobileAds.Api
 
         private void ConfigureBannerEvents()
         {
-            this.client.OnAdLoaded += (sender, args) =>
-            {
-                if (this.OnAdLoaded != null)
-                {
-                    this.OnAdLoaded(this, args);
-                }
-            };
-
-            this.client.OnAdFailedToLoad += (sender, args) =>
-            {
-                if (this.OnAdFailedToLoad != null)
-                {
-                    this.OnAdFailedToLoad(this, args);
-                }
-            };
-
-            this.client.OnAdOpening += (sender, args) =>
-            {
-                if (this.OnAdOpening != null)
-                {
-                    this.OnAdOpening(this, args);
-                }
-            };
-
-            this.client.OnAdClosed += (sender, args) =>
-            {
-                if (this.OnAdClosed != null)
-                {
-                    this.OnAdClosed(this, args);
-                }
-            };
-
-            this.client.OnAdLeavingApplication += (sender, args) =>
-            {
-                if (this.OnAdLeavingApplication != null)
-                {
-                    this.OnAdLeavingApplication(this, args);
-                }
-            };
+            client.OnAdLoaded += (sender, args) => OnAdLoaded?.Invoke(this, args);
+            client.OnAdFailedToLoad += (sender, args) => OnAdFailedToLoad?.Invoke(this, args);
+            client.OnAdOpening += (sender, args) => OnAdOpening?.Invoke(this, args);
+            client.OnAdClosed += (sender, args) => OnAdClosed?.Invoke(this, args);
+            client.OnAdLeavingApplication += (sender, args) => OnAdLeavingApplication?.Invoke(this, args);
         }
 
-        // Returns the mediation adapter class name.
+        /// <summary>
+        /// Returns the mediation adapter class name.
+        /// </summary>
+        /// <returns></returns>
         public string MediationAdapterClassName()
         {
-            return this.client.MediationAdapterClassName();
+            return client.MediationAdapterClassName();
         }
     }
 }

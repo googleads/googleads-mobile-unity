@@ -16,7 +16,9 @@ using System;
 
 namespace GoogleMobileAds.Api
 {
-    // Event that occurs when a custom native template ad loads.
+    /// <summary>
+    /// Event that occurs when a custom native template ad loads.
+    /// </summary>
     public class CustomNativeEventArgs : EventArgs
     {
         public CustomNativeTemplateAd nativeAd { get; set; }

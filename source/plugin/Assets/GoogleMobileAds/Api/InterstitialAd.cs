@@ -18,96 +18,74 @@ using GoogleMobileAds.Common;
 
 namespace GoogleMobileAds.Api
 {
-    public class InterstitialAd
+    public class InterstitialAd : AdvertisingBase
     {
-        private IInterstitialClient client;
-
-        // Creates an InterstitialAd.
-        public InterstitialAd(string adUnitId)
-        {
-            this.client = GoogleMobileAdsClientFactory.BuildInterstitialClient();
-            client.CreateInterstitialAd(adUnitId);
-
-            this.client.OnAdLoaded += (sender, args) =>
-            {
-                if (this.OnAdLoaded != null)
-                {
-                    this.OnAdLoaded(this, args);
-                }
-            };
-
-            this.client.OnAdFailedToLoad += (sender, args) =>
-            {
-                if (this.OnAdFailedToLoad != null)
-                {
-                    this.OnAdFailedToLoad(this, args);
-                }
-            };
-
-            this.client.OnAdOpening += (sender, args) =>
-            {
-                if (this.OnAdOpening != null)
-                {
-                    this.OnAdOpening(this, args);
-                }
-            };
-
-            this.client.OnAdClosed += (sender, args) =>
-            {
-                if (this.OnAdClosed != null)
-                {
-                    this.OnAdClosed(this, args);
-                }
-            };
-
-            this.client.OnAdLeavingApplication += (sender, args) =>
-            {
-                if (this.OnAdLeavingApplication != null)
-                {
-                    this.OnAdLeavingApplication(this, args);
-                }
-            };
-        }
-
         // These are the ad callback events that can be hooked into.
         public event EventHandler<EventArgs> OnAdLoaded;
-
         public event EventHandler<AdFailedToLoadEventArgs> OnAdFailedToLoad;
-
         public event EventHandler<EventArgs> OnAdOpening;
-
         public event EventHandler<EventArgs> OnAdClosed;
-
         public event EventHandler<EventArgs> OnAdLeavingApplication;
 
-        // Loads an InterstitialAd.
-        public void LoadAd(AdRequest request)
+        private IInterstitialClient client;
+
+        /// <summary>
+        /// Creates an InterstitialAd.
+        /// </summary>
+        /// <param name="adUnitId"></param>
+        public InterstitialAd(string adUnitId)
+        {
+            client = GoogleMobileAdsClientFactory.BuildInterstitialClient();
+            client.CreateInterstitialAd(adUnitId);
+
+            client.OnAdLoaded += (sender, args) => ExecuteEvent(this, OnAdLoaded, args);
+            client.OnAdFailedToLoad += (sender, args) => ExecuteEvent(this, OnAdFailedToLoad, args);
+            client.OnAdOpening += (sender, args) => ExecuteEvent(this, OnAdOpening, args);
+            client.OnAdClosed += (sender, args) => ExecuteEvent(this, OnAdClosed, args);
+            client.OnAdLeavingApplication += (sender, args) => ExecuteEvent(this, OnAdLeavingApplication, args);
+        }
+
+        /// <summary>
+        /// Loads an InterstitialAd.
+        /// </summary>
+        /// <param name="request"></param>
+        public override void LoadAd(AdRequest request)
         {
             client.LoadAd(request);
         }
 
-        // Determines whether the InterstitialAd has loaded.
-        public bool IsLoaded()
+        /// <summary>
+        /// Determines whether the InterstitialAd has loaded.
+        /// </summary>
+        /// <returns></returns>
+        public override bool IsLoaded()
         {
             return client.IsLoaded();
         }
 
-        // Displays the InterstitialAd.
-        public void Show()
+        /// <summary>
+        /// Displays the InterstitialAd.
+        /// </summary>
+        public override void Show()
         {
             client.ShowInterstitial();
         }
 
-        // Destroys the InterstitialAd.
+        /// <summary>
+        /// Destroys the InterstitialAd.
+        /// </summary>
         public void Destroy()
         {
             client.DestroyInterstitial();
         }
 
-        // Returns the mediation adapter class name.
-        public string MediationAdapterClassName()
+        /// <summary>
+        /// Returns the mediation adapter class name.
+        /// </summary>
+        /// <returns></returns>
+        public override string MediationAdapterClassName()
         {
-            return this.client.MediationAdapterClassName();
+            return client.MediationAdapterClassName();
         }
     }
 }

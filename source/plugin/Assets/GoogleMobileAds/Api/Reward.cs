@@ -16,7 +16,9 @@ using System;
 
 namespace GoogleMobileAds.Api
 {
-    // Event that occurs when a user is rewarded by a reward based video ad.
+    /// <summary>
+    /// Event that occurs when a user is rewarded by a reward based video ad.
+    /// </summary>
     public class Reward : EventArgs
     {
         public string Type { get; set; }

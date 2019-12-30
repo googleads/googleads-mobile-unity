@@ -14,37 +14,42 @@
 
 using System;
 
-using UnityEngine;
-
 using GoogleMobileAds.Common;
 
 namespace GoogleMobileAds.Api
 {
     public class MobileAds
     {
-        public static class Utils {
-            // Returns the device's scale.
-            public static float GetDeviceScale() {
+        public static class Utils
+        {
+            /// <summary>
+            /// Returns the device's scale.
+            /// </summary>
+            /// <returns></returns>
+            public static float GetDeviceScale()
+            {
                 return client.GetDeviceScale();
             }
-
-            // Returns the safe width for the current device.
-            public static int GetDeviceSafeWidth() {
-                return client.GetDeviceSafeWidth();
-            }
         }
+
+        internal static bool IsDebugging { get; private set; }
+
         private static readonly IMobileAdsClient client = GetMobileAdsClient();
 
-        public static void Initialize(string appId)
+        public static void Initialize(string appId, bool debug = false)
         {
             client.Initialize(appId);
             MobileAdsEventExecutor.Initialize();
+
+            IsDebugging = debug;
         }
 
-        public static void Initialize(Action<InitializationStatus> initCompleteAction)
+        public static void Initialize(Action<InitializationStatus> initCompleteAction, bool debug = false)
         {
             client.Initialize(initCompleteAction);
             MobileAdsEventExecutor.Initialize();
+
+            IsDebugging = debug;
         }
 
         public static void SetApplicationMuted(bool muted)
@@ -64,7 +69,7 @@ namespace GoogleMobileAds.Api
 
         private static IMobileAdsClient GetMobileAdsClient()
         {
-          return GoogleMobileAdsClientFactory.MobileAdsInstance();
+            return GoogleMobileAdsClientFactory.MobileAdsInstance();
         }
     }
 }

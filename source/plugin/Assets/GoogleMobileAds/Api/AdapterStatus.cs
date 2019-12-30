@@ -24,9 +24,9 @@ namespace GoogleMobileAds.Api
 
         internal AdapterStatus(AdapterState state, string description, int latency)
         {
-            this.InitializationState = state;
-            this.Description = description;
-            this.Latency = latency;
+            InitializationState = state;
+            Description = description;
+            Latency = latency;
         }
     }
 
