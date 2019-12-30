@@ -45,6 +45,9 @@ namespace GoogleMobileAds.Common
         // Returns the mediation adapter class name.
         string MediationAdapterClassName();
 
+        // Returns the reward item for the loaded rewarded ad.
+        Reward GetRewardItem();
+
         // Shows the rewarded ad on the screen.
         void Show();
 

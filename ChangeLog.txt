@@ -1,6 +1,20 @@
 Google Mobile Ads Unity Plugin Change Log
 
 **************
+Version 4.2.0
+**************
+
+Plugin:
+  - Added support for using AdSize.FullWidth with Adaptive banner APIs.
+  - Added `GetRewardItem()` API for `RewardedAd`.
+  - Fixed issue with Android implementation of `GetPortraitAnchoredAdaptiveBannerAdSizeWithWidth`.
+
+Built and tested with:
+- Google Play services 18.3.0
+- Google Mobile Ads iOS SDK 7.53.1
+- Unity Jar Resolver 1.2.135
+
+**************
 Version 4.1.0
 **************
 

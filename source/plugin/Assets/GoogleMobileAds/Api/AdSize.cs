@@ -76,6 +76,9 @@ namespace GoogleMobileAds.Api
         {
             get
             {
+                if (width == FullWidth) {
+                    return MobileAds.Utils.GetDeviceSafeWidth();
+                }
                 return width;
             }
         }

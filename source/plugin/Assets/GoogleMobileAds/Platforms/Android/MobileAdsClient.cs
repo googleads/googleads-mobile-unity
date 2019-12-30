@@ -85,6 +85,11 @@ namespace GoogleMobileAds.Android
             return metrics.Get<float>("density");
         }
 
+        public int GetDeviceSafeWidth()
+        {
+          return Utils.GetScreenWidth();
+        }
+
         #region Callbacks from OnInitializationCompleteListener.
 
         public void onInitializationComplete(AndroidJavaObject initStatus)

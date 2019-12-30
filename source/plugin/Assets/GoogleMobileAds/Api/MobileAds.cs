@@ -14,6 +14,8 @@
 
 using System;
 
+using UnityEngine;
+
 using GoogleMobileAds.Common;
 
 namespace GoogleMobileAds.Api
@@ -26,14 +28,18 @@ namespace GoogleMobileAds.Api
             /// Returns the device's scale.
             /// </summary>
             /// <returns></returns>
-            public static float GetDeviceScale()
-            {
+            public static float GetDeviceScale() {
                 return client.GetDeviceScale();
             }
+
+            /// <summary>
+            /// Returns the safe width for the current device.
+            /// </summary>
+            /// <returns></returns>
+            public static int GetDeviceSafeWidth() {
+                return client.GetDeviceSafeWidth();
         }
-
-        internal static bool IsDebugging { get; private set; }
-
+        }
         private static readonly IMobileAdsClient client = GetMobileAdsClient();
 
         public static void Initialize(string appId, bool debug = false)
