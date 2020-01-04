@@ -32,7 +32,7 @@ namespace GoogleMobileAds.iOS
             this.status = status;
         }
 
-        public AdapterStatus getAdapterStatusForClassName(string className)
+        public AdapterStatus GetAdapterStatusForClassName(string className)
         {
             string description = Utils.PtrToString(
                    Externs.GADUGetInitDescription(this.status, className));
@@ -41,13 +41,13 @@ namespace GoogleMobileAds.iOS
             return new AdapterStatus(state, description, latency);
         }
 
-        public Dictionary<string, AdapterStatus> getAdapterStatusMap()
+        public Dictionary<string, AdapterStatus> GetAdapterStatusMap()
         {
             Dictionary<string, AdapterStatus> map = new Dictionary<string, AdapterStatus>();
             List<string> keys = GetAdapterClassNames();
             foreach(string key in keys)
             {
-                map.Add(key, getAdapterStatusForClassName(key));
+                map.Add(key, GetAdapterStatusForClassName(key));
             }
             return map;
         }
