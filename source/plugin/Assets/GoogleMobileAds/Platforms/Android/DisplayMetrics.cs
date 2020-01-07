@@ -21,15 +21,15 @@ namespace GoogleMobileAds.Android
 {
     public class DisplayMetrics {
         // The logical density of the display.
-        public static float Density { get; protected set; }
+        public float Density { get; protected set; }
 
         // The absolute height of the display in pixels
-        public static int HeightPixels { get; protected set; }
+        public int HeightPixels { get; protected set; }
 
         // The absolute width of the display in pixels
-        public static int WidthPixels { get; protected set; }
+        public int WidthPixels { get; protected set; }
 
-        static DisplayMetrics() {
+        public DisplayMetrics() {
             using (
                 AndroidJavaClass unityPlayerClass = new AndroidJavaClass(Utils.UnityActivityClassName),
                 metricsClass = new AndroidJavaClass(Utils.DisplayMetricsClassName)

@@ -143,8 +143,8 @@ namespace GoogleMobileAds.Android
         }
 
         internal static int GetScreenWidth() {
-          int width = GoogleMobileAds.Common.Utils.IsLandscape ? DisplayMetrics.HeightPixels : DisplayMetrics.WidthPixels;
-          return (int) (width / DisplayMetrics.Density);
+          DisplayMetrics metrics = new DisplayMetrics();
+          return (int) (metrics.WidthPixels / metrics.Density);
         }
 
         public static AndroidJavaObject GetAdRequestJavaObject(AdRequest request)
