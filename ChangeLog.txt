@@ -1,6 +1,18 @@
 Google Mobile Ads Unity Plugin Change Log
 
 **************
+Version 4.2.1
+**************
+
+Plugin:
+  - Fixed issue with using `AdSize.FullWidth` API for apps that only support landscape.
+
+Built and tested with:
+- Google Play services 18.3.0
+- Google Mobile Ads iOS SDK 7.53.1
+- Unity Jar Resolver 1.2.135
+
+**************
 Version 4.2.0
 **************
 
