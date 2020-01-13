@@ -138,7 +138,6 @@
 - (void)dealloc {
   _bannerView.delegate = nil;
 }
-
 - (void)loadRequest:(GADRequest *)request {
   if (!self.bannerView) {
     NSLog(@"GoogleMobileAdsPlugin: BannerView is nil. Ignoring ad request.");

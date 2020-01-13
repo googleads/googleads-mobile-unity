@@ -41,7 +41,6 @@ namespace GoogleMobileAds.iOS
         internal delegate void GADUAdViewDidDismissScreenCallback(IntPtr bannerClient);
 
         internal delegate void GADUAdViewWillLeaveApplicationCallback(IntPtr bannerClient);
-
 #endregion
 
         public event EventHandler<EventArgs> OnAdLoaded;
@@ -103,7 +102,8 @@ namespace GoogleMobileAds.iOS
                     AdViewDidFailToReceiveAdWithErrorCallback,
                     AdViewWillPresentScreenCallback,
                     AdViewDidDismissScreenCallback,
-                    AdViewWillLeaveApplicationCallback);
+                    AdViewWillLeaveApplicationCallback
+                    );
         }
 
         public void CreateBannerView(string adUnitId, AdSize adSize, int x, int y)
@@ -147,7 +147,8 @@ namespace GoogleMobileAds.iOS
                 AdViewDidFailToReceiveAdWithErrorCallback,
                 AdViewWillPresentScreenCallback,
                 AdViewDidDismissScreenCallback,
-                AdViewWillLeaveApplicationCallback);
+                AdViewWillLeaveApplicationCallback
+                );
         }
 
         // Loads an ad.
@@ -276,7 +277,6 @@ namespace GoogleMobileAds.iOS
                 client.OnAdLeavingApplication(client, EventArgs.Empty);
             }
         }
-
         private static BannerClient IntPtrToBannerClient(IntPtr bannerClient)
         {
             GCHandle handle = (GCHandle)bannerClient;

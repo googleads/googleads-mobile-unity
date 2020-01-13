@@ -97,7 +97,6 @@ typedef void (*GADUAdViewDidDismissScreenCallback)(GADUTypeBannerClientRef *bann
 
 /// Callback for when an application will background or terminate as a result of a banner click.
 typedef void (*GADUAdViewWillLeaveApplicationCallback)(GADUTypeBannerClientRef *bannerClient);
-
 /// Callback for when a interstitial ad request was successfully loaded.
 typedef void (*GADUInterstitialDidReceiveAdCallback)(
     GADUTypeInterstitialClientRef *interstitialClient);

@@ -50,7 +50,6 @@ namespace GoogleMobileAds.Api
         public event EventHandler<EventArgs> OnAdClosed;
 
         public event EventHandler<EventArgs> OnAdLeavingApplication;
-
         // Loads an ad into the BannerView.
         public void LoadAd(AdRequest request)
         {
