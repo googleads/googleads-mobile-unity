@@ -32,7 +32,6 @@ namespace GoogleMobileAds.Common
         event EventHandler<Reward> OnUserEarnedReward;
         // Ad event fired when the rewarded ad is closed.
         event EventHandler<EventArgs> OnAdClosed;
-
         // Creates a rewarded ad.
         void CreateRewardedAd(string adUnitId);
 

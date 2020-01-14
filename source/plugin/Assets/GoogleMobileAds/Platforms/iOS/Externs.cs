@@ -201,7 +201,8 @@ namespace GoogleMobileAds.iOS
             InterstitialClient.GADUInterstitialWillPresentScreenCallback willPresentCallback,
             InterstitialClient.GADUInterstitialDidDismissScreenCallback didDismissCallback,
             InterstitialClient.GADUInterstitialWillLeaveApplicationCallback
-                        willLeaveCallback);
+                        willLeaveCallback
+        );
 
         [DllImport("__Internal")]
         internal static extern bool GADUInterstitialReady(IntPtr interstitial);
@@ -281,7 +282,8 @@ namespace GoogleMobileAds.iOS
                     adFailedToShowCallback,
             RewardedAdClient.GADURewardedAdDidOpenCallback didOpenCallback,
             RewardedAdClient.GADURewardedAdDidCloseCallback didCloseCallback,
-            RewardedAdClient.GADUUserEarnedRewardCallback userEarnedRewardCallback);
+            RewardedAdClient.GADUUserEarnedRewardCallback userEarnedRewardCallback
+        );
 
         [DllImport("__Internal")]
         internal static extern IntPtr GADUCreateServerSideVerificationOptions();

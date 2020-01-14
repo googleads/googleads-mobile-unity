@@ -79,7 +79,6 @@ namespace GoogleMobileAds.Api
         public event EventHandler<EventArgs> OnAdClosed;
 
         public event EventHandler<EventArgs> OnAdLeavingApplication;
-
         // Loads an InterstitialAd.
         public void LoadAd(AdRequest request)
         {

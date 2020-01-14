@@ -312,7 +312,8 @@ void GADUSetInterstitialCallbacks(
     GADUInterstitialDidFailToReceiveAdWithErrorCallback adFailedCallback,
     GADUInterstitialWillPresentScreenCallback willPresentCallback,
     GADUInterstitialDidDismissScreenCallback didDismissCallback,
-    GADUInterstitialWillLeaveApplicationCallback willLeaveCallback) {
+    GADUInterstitialWillLeaveApplicationCallback willLeaveCallback
+) {
   GADUInterstitial *internalInterstitial = (__bridge GADUInterstitial *)interstitial;
   internalInterstitial.adReceivedCallback = adReceivedCallback;
   internalInterstitial.adFailedCallback = adFailedCallback;
@@ -350,7 +351,8 @@ void GADUSetRewardedAdCallbacks(
     GADURewardedAdDidFailToReceiveAdWithErrorCallback adFailedToLoadCallback,
     GADURewardedAdDidFailToShowAdWithErrorCallback adFailedToShowCallback,
     GADURewardedAdDidOpenCallback didOpenCallback, GADURewardedAdDidCloseCallback didCloseCallback,
-    GADUUserEarnedRewardCallback didEarnRewardCallback) {
+    GADUUserEarnedRewardCallback didEarnRewardCallback
+) {
   GADURewardedAd *internalRewardedAd = (__bridge GADURewardedAd *)rewardedAd;
   internalRewardedAd.adReceivedCallback = adReceivedCallback;
   internalRewardedAd.adFailedToLoadCallback = adFailedToLoadCallback;

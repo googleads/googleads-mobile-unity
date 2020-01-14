@@ -180,7 +180,6 @@ typedef void (*GADURewardedAdDidCloseCallback)(GADUTypeRewardedAdClientRef *rewa
 /// Callback for when a user earned a reward.
 typedef void (*GADUUserEarnedRewardCallback)(GADUTypeRewardedAdClientRef *rewardBasedVideoClient,
                                              const char *rewardType, double rewardAmount);
-
 /// Callback for when a native ad request failed.
 typedef void (*GADUAdLoaderDidFailToReceiveAdWithErrorCallback)(GADUTypeAdLoaderClientRef *adLoader,
                                                                 const char *error);

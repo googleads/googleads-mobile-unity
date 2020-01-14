@@ -65,7 +65,6 @@ namespace GoogleMobileAds.iOS
 
         public event EventHandler<Reward> OnUserEarnedReward;
 
-
         // This property should be used when setting the rewardedAdPtr.
         private IntPtr RewardedAdPtr
         {
@@ -94,7 +93,8 @@ namespace GoogleMobileAds.iOS
                 RewardedAdDidFailToShowAdWithErrorCallback,
                 RewardedAdDidOpenCallback,
                 RewardedAdDidCloseCallback,
-                RewardedAdUserDidEarnRewardCallback);
+                RewardedAdUserDidEarnRewardCallback
+                );
         }
 
         // Load an ad.

@@ -42,7 +42,6 @@ namespace GoogleMobileAds.iOS
 
         internal delegate void GADUInterstitialWillLeaveApplicationCallback(
                 IntPtr interstitialClient);
-
         #endregion
 
         public event EventHandler<EventArgs> OnAdLoaded;
@@ -83,7 +82,8 @@ namespace GoogleMobileAds.iOS
                     InterstitialDidFailToReceiveAdWithErrorCallback,
                     InterstitialWillPresentScreenCallback,
                     InterstitialDidDismissScreenCallback,
-                    InterstitialWillLeaveApplicationCallback);
+                    InterstitialWillLeaveApplicationCallback
+                );
         }
 
         // Loads an ad.

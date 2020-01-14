@@ -41,7 +41,6 @@ namespace GoogleMobileAds.Common
         public event EventHandler<EventArgs> OnAdClosed;
 
         public event EventHandler<Reward> OnUserEarnedReward;
-
 #pragma warning restore 67
 
         public void CreateRewardedAd(string adUnitId)

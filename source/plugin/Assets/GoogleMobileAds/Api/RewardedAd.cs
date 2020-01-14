@@ -88,7 +88,6 @@ namespace GoogleMobileAds.Api
         public event EventHandler<EventArgs> OnAdClosed;
 
         public event EventHandler<Reward> OnUserEarnedReward;
-
         // Loads a new rewarded ad.
         public void LoadAd(AdRequest request)
         {
