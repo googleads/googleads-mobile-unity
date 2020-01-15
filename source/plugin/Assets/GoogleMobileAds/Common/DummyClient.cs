@@ -73,6 +73,7 @@ namespace GoogleMobileAds.Common
         public void Initialize(Action<InitializationStatus> initCompleteAction)
         {
             Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
+            initCompleteAction();
         }
 
         public void SetApplicationMuted(bool muted)
