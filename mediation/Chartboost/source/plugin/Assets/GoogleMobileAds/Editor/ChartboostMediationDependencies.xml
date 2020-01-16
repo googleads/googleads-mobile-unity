@@ -1,6 +1,6 @@
 <dependencies>
   <androidPackages>
-    <androidPackage spec="com.google.ads.mediation:chartboost:7.5.0.0">
+    <androidPackage spec="com.google.ads.mediation:chartboost:7.5.0.1">
       <repositories>
         <repository>https://jcenter.bintray.com/</repository>
       </repositories>
@@ -8,7 +8,7 @@
   </androidPackages>
 
   <iosPods>
-    <iosPod name="GoogleMobileAdsMediationChartboost" version="8.0.1.1">
+    <iosPod name="GoogleMobileAdsMediationChartboost" version="8.0.4.0">
       <sources>
         <source>https://github.com/CocoaPods/Specs</source>
       </sources>
