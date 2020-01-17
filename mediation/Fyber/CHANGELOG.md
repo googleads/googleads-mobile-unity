@@ -1,6 +1,6 @@
 ## Fyber Unity Mediation Plugin Changelog
 
-#### Next Version
+#### Version 1.1.0
 - Added the following methods to the `Fyber` class to support GDPR requirements:
   * `SetGDPRConsent()`
   * `SetGDPRConsentString()`
