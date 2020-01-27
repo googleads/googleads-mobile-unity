@@ -18,7 +18,7 @@ namespace GoogleMobileAds.Common.Mediation.VerizonMedia
 {
     public interface IVerizonMediaClient
     {
-        void SetConsentData(Dictionary<string, string> consentMap, bool restricted);
+        void SetPrivacyData(Dictionary<string, string> privacyData);
         string GetVerizonIABConsentKey();
     }
 }

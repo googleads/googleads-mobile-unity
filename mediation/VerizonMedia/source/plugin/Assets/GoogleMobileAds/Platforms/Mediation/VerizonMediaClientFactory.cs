@@ -18,7 +18,7 @@ namespace GoogleMobileAds.Mediation
 {
     public class VerizonMediaClientFactory
     {
-        public static IVerizonMediaClient VerizonMediaInstance()
+        public static IVerizonMediaClient CreateVerizonMediaClient()
         {
             #if UNITY_EDITOR
             return new GoogleMobileAds.Common.Mediation.VerizonMedia.DummyClient();

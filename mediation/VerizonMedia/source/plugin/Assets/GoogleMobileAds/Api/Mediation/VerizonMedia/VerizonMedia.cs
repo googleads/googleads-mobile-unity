@@ -22,21 +22,16 @@ namespace GoogleMobileAds.Api.Mediation.VerizonMedia
 {
     public class VerizonMedia
     {
-        public static readonly IVerizonMediaClient client = GetVerizonMediaClient();
+        private static readonly IVerizonMediaClient client = VerizonMediaClientFactory.CreateVerizonMediaClient();
 
-        private static IVerizonMediaClient GetVerizonMediaClient()
+        public static void SetPrivacyData(Dictionary<string, string> privacyData)
         {
-            return VerizonMediaClientFactory.VerizonMediaInstance();
-        }
-
-        public static void SetConsentData(Dictionary<string, string> consentMap, bool restricted)
-        {
-            if (consentMap == null) {
-                Debug.Log("Error: Consent map is null");
+            if (privacyData == null) {
+                Debug.LogError("Error: Privacy Data map is null");
                 return;
             }
 
-            client.SetConsentData(consentMap, restricted);
+            client.SetPrivacyData(privacyData);
         }
 
         public static string GetVerizonIABConsentKey()

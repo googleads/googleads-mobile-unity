@@ -34,17 +34,17 @@ namespace GoogleMobileAds.iOS.Mediation.VerizonMedia
             }
         }
 
-        public void SetConsentData(Dictionary<string, string> consentMap, bool restricted)
+        public void SetPrivacyData(Dictionary<string, string> privacyData)
         {
             IntPtr mutableDictionary = Externs.GADUMVerizonMediaCreateMutableDictionary();
             if (mutableDictionary != IntPtr.Zero)
             {
-                foreach (KeyValuePair<string, string> entry in consentMap)
+                foreach (KeyValuePair<string, string> entry in privacyData)
                 {
                     Externs.GADUMVerizonMediaDictionaryAddObject(mutableDictionary, entry.Key, entry.Value);
                 }
 
-                Externs.GADUMVerizonMediaSetConsentData(mutableDictionary, restricted);
+                Externs.GADUMVerizonMediaSetPrivacyData(mutableDictionary);
             }
         }
 

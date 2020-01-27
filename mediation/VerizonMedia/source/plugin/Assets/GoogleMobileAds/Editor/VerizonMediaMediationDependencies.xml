@@ -1,6 +1,6 @@
 <dependencies>
   <androidPackages>
-    <androidPackage spec="com.google.ads.mediation:verizonmedia:1.1.1.0">
+    <androidPackage spec="com.google.ads.mediation:verizonmedia:1.3.0.0">
       <repositories>
         <repository>https://jcenter.bintray.com/</repository>
       </repositories>
@@ -8,7 +8,7 @@
   </androidPackages>
 
   <iosPods>
-    <iosPod name="GoogleMobileAdsMediationVerizonMedia" version="1.1.2.0">
+    <iosPod name="GoogleMobileAdsMediationVerizonMedia" version="1.3.0.1">
       <sources>
         <source>https://github.com/CocoaPods/Specs</source>
       </sources>
