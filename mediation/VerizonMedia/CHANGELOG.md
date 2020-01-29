@@ -1,6 +1,6 @@
 ## Verizon Media Unity Mediation Plugin Changelog
 
-#### Next Version
+#### Version 1.1.0
 - Renamed the `SetConsentData()` method from the `VerizonMedia` class to `SetPrivacyData()`.
 - Supports [Verizon Media Android adapter version 1.3.0.0](https://github.com/googleads/googleads-mobile-android-mediation/blob/master/ThirdPartyAdapters/verizonmedia/CHANGELOG.md#version-1300).
 - Supports [Verizon Media iOS adapter version 1.3.0.1](https://github.com/googleads/googleads-mobile-ios-mediation/blob/master/adapters/VerizonMedia/CHANGELOG.md#version-1301).
