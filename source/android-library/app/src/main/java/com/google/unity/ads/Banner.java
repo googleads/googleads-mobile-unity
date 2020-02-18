@@ -506,7 +506,7 @@ public class Banner {
     insets.left = displayCutout.getSafeInsetLeft();
     insets.bottom = displayCutout.getSafeInsetBottom();
     insets.right = displayCutout.getSafeInsetRight();
-      return insets;
+    return insets;
   }
 
   /**
