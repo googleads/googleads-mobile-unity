@@ -23,7 +23,7 @@ project.ext {
                 'UNITY_EXE environment variable and point it to your Unity installation.')
     }
 
-    versionString = '2.4.0'
+    versionString = '2.4.1'
     pluginName = 'GoogleMobileAdsUnityAdsMediation'
     pluginFileName = "${pluginName}.unitypackage"
     zipName = "${pluginName}-${versionString}"
