@@ -19,9 +19,13 @@ import android.app.Activity;
 import android.util.Log;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdValue;
 import com.google.android.gms.ads.InterstitialAd;
+import com.google.android.gms.ads.OnPaidEventListener;
 
-/** Native interstitial implementation for the Google Mobile Ads Unity plugin. */
+/**
+ * Native interstitial implementation for the Google Mobile Ads Unity plugin.
+ */
 public class Interstitial {
     /**
      * The {@link InterstitialAd}.
@@ -138,6 +142,27 @@ public class Interstitial {
                                                 public void run() {
                                                     if (adListener != null) {
                                                         adListener.onAdLeftApplication();
+                                                    }
+                                                }
+                                            })
+                                            .start();
+                                }
+                            }
+                        });
+                interstitial.setOnPaidEventListener(
+                        new OnPaidEventListener() {
+                            @Override
+                            public void onPaidEvent(final AdValue adValue) {
+                                if (adListener != null) {
+                                    new Thread(
+                                            new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    if (adListener != null) {
+                                                        adListener.onPaidEvent(
+                                                                adValue.getPrecisionType(),
+                                                                adValue.getValueMicros(),
+                                                                adValue.getCurrencyCode());
                                                     }
                                                 }
                                             })

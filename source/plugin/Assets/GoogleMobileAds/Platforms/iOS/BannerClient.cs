@@ -39,6 +39,10 @@ namespace GoogleMobileAds.iOS
         internal delegate void GADUAdViewDidDismissScreenCallback(IntPtr bannerClient);
 
         internal delegate void GADUAdViewWillLeaveApplicationCallback(IntPtr bannerClient);
+
+        internal delegate void GADUAdViewPaidEventCallback(
+            IntPtr bannerClient, int precision, long value, string currencyCode);
+
 #endregion
 
         public event EventHandler<EventArgs> OnAdLoaded;
@@ -50,6 +54,9 @@ namespace GoogleMobileAds.iOS
         public event EventHandler<EventArgs> OnAdClosed;
 
         public event EventHandler<EventArgs> OnAdLeavingApplication;
+
+        public event EventHandler<AdValueEventArgs> OnPaidEvent;
+
 
         // This property should be used when setting the bannerViewPtr.
         private IntPtr BannerViewPtr
@@ -100,7 +107,8 @@ namespace GoogleMobileAds.iOS
                     AdViewDidFailToReceiveAdWithErrorCallback,
                     AdViewWillPresentScreenCallback,
                     AdViewDidDismissScreenCallback,
-                    AdViewWillLeaveApplicationCallback
+                    AdViewWillLeaveApplicationCallback,
+                    AdViewPaidEventCallback
                     );
         }
 
@@ -145,7 +153,8 @@ namespace GoogleMobileAds.iOS
                 AdViewDidFailToReceiveAdWithErrorCallback,
                 AdViewWillPresentScreenCallback,
                 AdViewDidDismissScreenCallback,
-                AdViewWillLeaveApplicationCallback
+                AdViewWillLeaveApplicationCallback,
+                AdViewPaidEventCallback
                 );
         }
 
@@ -275,6 +284,28 @@ namespace GoogleMobileAds.iOS
                 client.OnAdLeavingApplication(client, EventArgs.Empty);
             }
         }
+
+        [MonoPInvokeCallback(typeof(GADUAdViewPaidEventCallback))]
+        private static void AdViewPaidEventCallback(
+            IntPtr bannerClient, int precision, long value, string currencyCode)
+        {
+            BannerClient client = IntPtrToBannerClient(bannerClient);
+            if (client.OnPaidEvent != null)
+            {
+                AdValue adValue = new AdValue()
+                {
+                    Precision = (AdValue.PrecisionType)precision,
+                    Value = value,
+                    CurrencyCode = currencyCode
+                };
+                AdValueEventArgs args = new AdValueEventArgs() {
+                    AdValue = adValue
+                };
+
+                client.OnPaidEvent(client, args);
+            }
+        }
+
         private static BannerClient IntPtrToBannerClient(IntPtr bannerClient)
         {
             GCHandle handle = (GCHandle)bannerClient;

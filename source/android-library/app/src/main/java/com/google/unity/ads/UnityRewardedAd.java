@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.util.Log;
 import androidx.annotation.NonNull;
 import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdValue;
+import com.google.android.gms.ads.OnPaidEventListener;
 import com.google.android.gms.ads.rewarded.RewardItem;
 import com.google.android.gms.ads.rewarded.RewardedAd;
 import com.google.android.gms.ads.rewarded.RewardedAdCallback;
@@ -48,6 +50,27 @@ public class UnityRewardedAd {
                     @Override
                     public void run() {
                         rewardedAd = new RewardedAd(activity, adUnitID);
+                        rewardedAd.setOnPaidEventListener(
+                                new OnPaidEventListener() {
+                                    @Override
+                                    public void onPaidEvent(final AdValue adValue) {
+                                        if (callback != null) {
+                                            new Thread(
+                                                    new Runnable() {
+                                                        @Override
+                                                        public void run() {
+                                                            if (callback != null) {
+                                                                callback.onPaidEvent(
+                                                                        adValue.getPrecisionType(),
+                                                                        adValue.getValueMicros(),
+                                                                        adValue.getCurrencyCode());
+                                                            }
+                                                        }
+                                                    })
+                                                    .start();
+                                        }
+                                    }
+                                });
                     }
                 });
     }

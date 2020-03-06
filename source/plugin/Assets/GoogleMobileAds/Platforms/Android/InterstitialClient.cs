@@ -43,6 +43,8 @@ namespace GoogleMobileAds.Android
 
         public event EventHandler<EventArgs> OnAdLeavingApplication;
 
+        public event EventHandler<AdValueEventArgs> OnPaidEvent;
+
         #region IGoogleMobileAdsInterstitialClient implementation
 
         // Creates an interstitial ad.
@@ -128,6 +130,25 @@ namespace GoogleMobileAds.Android
                 this.OnAdLeavingApplication(this, EventArgs.Empty);
             }
         }
+
+        public void onPaidEvent(int precision, long valueInMicros, string currencyCode)
+        {
+            if (this.OnPaidEvent != null)
+            {
+              AdValue adValue = new AdValue()
+              {
+                  Precision = (AdValue.PrecisionType)precision,
+                  Value = valueInMicros,
+                  CurrencyCode = currencyCode
+              };
+              AdValueEventArgs args = new AdValueEventArgs() {
+                  AdValue = adValue
+              };
+
+              this.OnPaidEvent(this, args);
+            }
+        }
+
 
         #endregion
     }

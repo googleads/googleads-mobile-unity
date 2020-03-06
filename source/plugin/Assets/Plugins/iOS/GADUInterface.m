@@ -296,14 +296,16 @@ void GADUSetBannerCallbacks(GADUTypeBannerRef banner,
                             GADUAdViewDidFailToReceiveAdWithErrorCallback adFailedCallback,
                             GADUAdViewWillPresentScreenCallback willPresentCallback,
                             GADUAdViewDidDismissScreenCallback didDismissCallback,
-                            GADUAdViewWillLeaveApplicationCallback willLeaveCallback
-) {
+                            GADUAdViewWillLeaveApplicationCallback willLeaveCallback,
+                            GADUAdViewPaidEventCallback paidEventCallback) {
   GADUBanner *internalBanner = (__bridge GADUBanner *)banner;
   internalBanner.adReceivedCallback = adReceivedCallback;
   internalBanner.adFailedCallback = adFailedCallback;
   internalBanner.willPresentCallback = willPresentCallback;
   internalBanner.didDismissCallback = didDismissCallback;
   internalBanner.willLeaveCallback = willLeaveCallback;
+
+  internalBanner.paidEventCallback = paidEventCallback;
 }
 
 /// Sets the interstitial callback methods to be invoked during interstitial ad events.
@@ -312,14 +314,16 @@ void GADUSetInterstitialCallbacks(
     GADUInterstitialDidFailToReceiveAdWithErrorCallback adFailedCallback,
     GADUInterstitialWillPresentScreenCallback willPresentCallback,
     GADUInterstitialDidDismissScreenCallback didDismissCallback,
-    GADUInterstitialWillLeaveApplicationCallback willLeaveCallback
-) {
+    GADUInterstitialWillLeaveApplicationCallback willLeaveCallback,
+    GADUInterstitialPaidEventCallback paidEventCallback) {
   GADUInterstitial *internalInterstitial = (__bridge GADUInterstitial *)interstitial;
   internalInterstitial.adReceivedCallback = adReceivedCallback;
   internalInterstitial.adFailedCallback = adFailedCallback;
   internalInterstitial.willPresentCallback = willPresentCallback;
   internalInterstitial.didDismissCallback = didDismissCallback;
   internalInterstitial.willLeaveCallback = willLeaveCallback;
+
+  internalInterstitial.paidEventCallback = paidEventCallback;
 }
 
 /// Sets the reward based video callback methods to be invoked during reward based video ad events.
@@ -351,8 +355,8 @@ void GADUSetRewardedAdCallbacks(
     GADURewardedAdDidFailToReceiveAdWithErrorCallback adFailedToLoadCallback,
     GADURewardedAdDidFailToShowAdWithErrorCallback adFailedToShowCallback,
     GADURewardedAdDidOpenCallback didOpenCallback, GADURewardedAdDidCloseCallback didCloseCallback,
-    GADUUserEarnedRewardCallback didEarnRewardCallback
-) {
+    GADUUserEarnedRewardCallback didEarnRewardCallback,
+    GADURewardedAdPaidEventCallback paidEventCallback) {
   GADURewardedAd *internalRewardedAd = (__bridge GADURewardedAd *)rewardedAd;
   internalRewardedAd.adReceivedCallback = adReceivedCallback;
   internalRewardedAd.adFailedToLoadCallback = adFailedToLoadCallback;
@@ -360,6 +364,8 @@ void GADUSetRewardedAdCallbacks(
   internalRewardedAd.didOpenCallback = didOpenCallback;
   internalRewardedAd.didCloseCallback = didCloseCallback;
   internalRewardedAd.didEarnRewardCallback = didEarnRewardCallback;
+
+  internalRewardedAd.paidEventCallback = paidEventCallback;
 }
 
 /// Sets the banner callback methods to be invoked during native ad events.

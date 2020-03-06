@@ -114,6 +114,8 @@
     _bannerView.adUnitID = adUnitID;
     _bannerView.delegate = self;
     _bannerView.rootViewController = [GADUPluginUtil unityGLViewController];
+
+    [self addPaidEventHandler];
   }
   return self;
 }
@@ -131,6 +133,8 @@
     _bannerView.adUnitID = adUnitID;
     _bannerView.delegate = self;
     _bannerView.rootViewController = [GADUPluginUtil unityGLViewController];
+
+    [self addPaidEventHandler];
   }
   return self;
 }
@@ -138,6 +142,20 @@
 - (void)dealloc {
   _bannerView.delegate = nil;
 }
+
+- (void)addPaidEventHandler {
+  __weak GADUBanner *weakSelf = self;
+  _bannerView.paidEventHandler = ^void(GADAdValue *_Nonnull adValue) {
+    GADUBanner *strongSelf = weakSelf;
+    if (strongSelf.paidEventCallback) {
+      int64_t valueInMicros = [adValue.value decimalNumberByMultiplyingByPowerOf10:6].longLongValue;
+      strongSelf.paidEventCallback(
+          strongSelf.bannerClient, (int)adValue.precision, valueInMicros,
+          [adValue.currencyCode cStringUsingEncoding:NSUTF8StringEncoding]);
+    }
+  };
+}
+
 - (void)loadRequest:(GADRequest *)request {
   if (!self.bannerView) {
     NSLog(@"GoogleMobileAdsPlugin: BannerView is nil. Ignoring ad request.");

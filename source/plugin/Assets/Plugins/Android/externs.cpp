@@ -110,7 +110,8 @@ extern "C" {
                                 void *adFailedCallback,
                                 void *willPresentCallback,
                                 void *didDismissCallback,
-                                void *willLeaveCallback
+                                void *willLeaveCallback,
+                                void *paidEventCallback
     ) {}
 
     void GADUSetInterstitialCallbacks(
@@ -118,7 +119,8 @@ extern "C" {
             void *adFailedCallback,
             void *willPresentCallback,
             void *didDismissCallback,
-            void *willLeaveCallback
+            void *willLeaveCallback,
+            void *paidEventCallback
     ) {}
 
     void GADUSetRewardBasedVideoAdCallbacks(
@@ -137,7 +139,8 @@ extern "C" {
             void *adFailedToLoadCallback,
             void *adFailedToShowCallback,
             void *didOpenCallback, void *didCloseCallback,
-            void *didEarnRewardCallback
+            void *didEarnRewardCallback,
+            void *paidEventCallback
     ) {}
 
     void GADUSetAdLoaderCallbacks(

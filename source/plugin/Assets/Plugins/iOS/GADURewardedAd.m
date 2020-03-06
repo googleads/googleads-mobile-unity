@@ -25,6 +25,18 @@
   if (self) {
     _rewardedAdClient = rewardedAdClient;
     _rewardedAd = [[GADRewardedAd alloc] initWithAdUnitID:adUnitID];
+
+    __weak GADURewardedAd *weakSelf = self;
+    _rewardedAd.paidEventHandler = ^void(GADAdValue *_Nonnull adValue) {
+      GADURewardedAd *strongSelf = weakSelf;
+      if (strongSelf.paidEventCallback) {
+        int64_t valueInMicros =
+            [adValue.value decimalNumberByMultiplyingByPowerOf10:6].longLongValue;
+        strongSelf.paidEventCallback(
+            strongSelf.rewardedAdClient, (int)adValue.precision, valueInMicros,
+            [adValue.currencyCode cStringUsingEncoding:NSUTF8StringEncoding]);
+      }
+    };
   }
   return self;
 }

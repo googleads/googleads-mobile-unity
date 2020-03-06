@@ -47,6 +47,8 @@ namespace GoogleMobileAds.Common
 
         public event EventHandler<EventArgs> OnAdCompleted;
 
+        public event EventHandler<AdValueEventArgs> OnPaidEvent;
+
         public event EventHandler<CustomNativeEventArgs> OnCustomNativeTemplateAdLoaded;
 #pragma warning restore 67
 

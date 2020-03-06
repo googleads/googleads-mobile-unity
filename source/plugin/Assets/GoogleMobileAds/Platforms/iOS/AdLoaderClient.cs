@@ -34,6 +34,9 @@ namespace GoogleMobileAds.iOS
     {
         private IntPtr adLoaderPtr;
         private IntPtr adLoaderClientPtr;
+
+        private IntPtr nativeAdClientPtr;
+
         private NativeAdTypes adTypes;
 
         private Dictionary<string, Action<CustomNativeTemplateAd, string>>
@@ -111,6 +114,9 @@ namespace GoogleMobileAds.iOS
         {
             this.DestroyAdLoader();
             ((GCHandle)this.adLoaderClientPtr).Free();
+
+            ((GCHandle)this.nativeAdClientPtr).Free();
+
         }
 
         ~AdLoaderClient()

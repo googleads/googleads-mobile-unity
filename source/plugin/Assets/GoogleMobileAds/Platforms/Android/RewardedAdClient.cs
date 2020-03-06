@@ -46,6 +46,8 @@ namespace GoogleMobileAds.Android
 
         public event EventHandler<EventArgs> OnAdClosed;
 
+        public event EventHandler<AdValueEventArgs> OnPaidEvent;
+
         public void CreateRewardedAd(string adUnitId)
         {
             androidRewardedAd.Call("create", adUnitId);
@@ -163,6 +165,25 @@ namespace GoogleMobileAds.Android
                 this.OnUserEarnedReward(this, args);
             }
         }
+
+        public void onPaidEvent(int precision, long valueInMicros, string currencyCode)
+        {
+            if (this.OnPaidEvent != null)
+            {
+              AdValue adValue = new AdValue()
+              {
+                  Precision = (AdValue.PrecisionType)precision,
+                  Value = valueInMicros,
+                  CurrencyCode = currencyCode
+              };
+              AdValueEventArgs args = new AdValueEventArgs() {
+                  AdValue = adValue
+              };
+
+              this.OnPaidEvent(this, args);
+            }
+        }
+
 
         #endregion
     }

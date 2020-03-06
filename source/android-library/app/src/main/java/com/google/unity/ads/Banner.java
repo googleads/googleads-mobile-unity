@@ -29,7 +29,9 @@ import android.widget.FrameLayout;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdSize;
+import com.google.android.gms.ads.AdValue;
 import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.OnPaidEventListener;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.FutureTask;
@@ -231,6 +233,30 @@ public class Banner {
             }
           }
         });
+
+
+    mAdView.setOnPaidEventListener(
+        new OnPaidEventListener() {
+          @Override
+          public void onPaidEvent(final AdValue adValue) {
+            if (mUnityListener != null) {
+              new Thread(
+                      new Runnable() {
+                        @Override
+                        public void run() {
+                          if (mUnityListener != null) {
+                            mUnityListener.onPaidEvent(
+                                adValue.getPrecisionType(),
+                                adValue.getValueMicros(),
+                                adValue.getCurrencyCode());
+                          }
+                        }
+                      })
+                  .start();
+            }
+          }
+        });
+
 
     mLayoutChangeListener =
         new View.OnLayoutChangeListener() {

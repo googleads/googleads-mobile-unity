@@ -19,8 +19,8 @@ package com.google.unity.ads;
  * An interface form of {@link UnityAdListener} that can be implemented via {@code AndroidJavaProxy}
  * in Unity to receive ad events synchronously.
  */
-public interface UnityAdListener
-{
+public interface UnityAdListener extends UnityPaidEventListener {
+
     void onAdLoaded();
     void onAdFailedToLoad(String errorReason);
     void onAdOpened();

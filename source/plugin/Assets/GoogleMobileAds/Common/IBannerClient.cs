@@ -29,6 +29,8 @@ namespace GoogleMobileAds.Common {
         event EventHandler<EventArgs> OnAdClosed;
         // Ad event fired when the banner ad is leaving the application.
         event EventHandler<EventArgs> OnAdLeavingApplication;
+        // Ad event fired when the banner ad is estimated to have earned money.
+        event EventHandler<AdValueEventArgs> OnPaidEvent;
 
         // Creates a banner view and adds it to the view hierarchy.
         void CreateBannerView(string adUnitId, AdSize adSize, AdPosition position);

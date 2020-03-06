@@ -152,7 +152,8 @@ namespace GoogleMobileAds.iOS
             BannerClient.GADUAdViewDidFailToReceiveAdWithErrorCallback adFailedCallback,
             BannerClient.GADUAdViewWillPresentScreenCallback willPresentCallback,
             BannerClient.GADUAdViewDidDismissScreenCallback didDismissCallback,
-            BannerClient.GADUAdViewWillLeaveApplicationCallback willLeaveCallback
+            BannerClient.GADUAdViewWillLeaveApplicationCallback willLeaveCallback,
+            BannerClient.GADUAdViewPaidEventCallback paidEventCallback
         );
 
         [DllImport("__Internal")]
@@ -199,7 +200,8 @@ namespace GoogleMobileAds.iOS
             InterstitialClient.GADUInterstitialWillPresentScreenCallback willPresentCallback,
             InterstitialClient.GADUInterstitialDidDismissScreenCallback didDismissCallback,
             InterstitialClient.GADUInterstitialWillLeaveApplicationCallback
-                        willLeaveCallback
+                        willLeaveCallback,
+            InterstitialClient.GADUInterstitialPaidEventCallback paidEventCallback
         );
 
         [DllImport("__Internal")]
@@ -280,7 +282,8 @@ namespace GoogleMobileAds.iOS
                     adFailedToShowCallback,
             RewardedAdClient.GADURewardedAdDidOpenCallback didOpenCallback,
             RewardedAdClient.GADURewardedAdDidCloseCallback didCloseCallback,
-            RewardedAdClient.GADUUserEarnedRewardCallback userEarnedRewardCallback
+            RewardedAdClient.GADUUserEarnedRewardCallback userEarnedRewardCallback,
+            RewardedAdClient.GADURewardedAdPaidEventCallback paidEventCallback
         );
 
         [DllImport("__Internal")]
@@ -371,5 +374,3 @@ namespace GoogleMobileAds.iOS
         #endregion
     }
 }
-
-

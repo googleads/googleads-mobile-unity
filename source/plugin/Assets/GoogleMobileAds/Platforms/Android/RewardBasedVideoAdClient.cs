@@ -33,8 +33,7 @@ namespace GoogleMobileAds.Android
         public event EventHandler<EventArgs> OnAdLeavingApplication = delegate { };
         public event EventHandler<EventArgs> OnAdCompleted = delegate { };
 
-        public RewardBasedVideoAdClient()
-            : base(Utils.UnityRewardBasedVideoAdListenerClassName)
+        public RewardBasedVideoAdClient(): base(Utils.UnityRewardBasedVideoAdListenerClassName)
         {
             AndroidJavaClass playerClass = new AndroidJavaClass(Utils.UnityActivityClassName);
             AndroidJavaObject activity =

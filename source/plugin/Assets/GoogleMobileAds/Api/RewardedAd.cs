@@ -75,6 +75,15 @@ namespace GoogleMobileAds.Api
                     this.OnUserEarnedReward(this, args);
                 }
             };
+
+            this.client.OnPaidEvent += (sender, args) =>
+            {
+                if (this.OnPaidEvent != null)
+                {
+                    this.OnPaidEvent(this, args);
+                }
+            };
+
         }
 
         // These are the ad callback events that can be hooked into.
@@ -89,6 +98,10 @@ namespace GoogleMobileAds.Api
         public event EventHandler<EventArgs> OnAdClosed;
 
         public event EventHandler<Reward> OnUserEarnedReward;
+
+        // Called when the ad is estimated to have earned money.
+        public event EventHandler<AdValueEventArgs> OnPaidEvent;
+
         // Loads a new rewarded ad.
         public void LoadAd(AdRequest request)
         {
