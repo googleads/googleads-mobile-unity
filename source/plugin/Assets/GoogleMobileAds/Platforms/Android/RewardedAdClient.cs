@@ -12,8 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#if UNITY_ANDROID
-
 using System;
 using UnityEngine;
 
@@ -170,4 +168,4 @@ namespace GoogleMobileAds.Android
     }
 }
 
-#endif
+

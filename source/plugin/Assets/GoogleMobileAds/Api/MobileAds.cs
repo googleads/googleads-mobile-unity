@@ -16,8 +16,8 @@ using System;
 
 using UnityEngine;
 
+using GoogleMobileAds;
 using GoogleMobileAds.Common;
-using GoogleMobileAds.Internal;
 
 namespace GoogleMobileAds.Api
 {

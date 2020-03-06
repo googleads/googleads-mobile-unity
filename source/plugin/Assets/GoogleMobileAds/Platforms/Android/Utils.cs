@@ -12,8 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#if UNITY_ANDROID
-
 using UnityEngine;
 using System;
 using System.Collections.Generic;
@@ -110,15 +108,10 @@ namespace GoogleMobileAds.Android
         {
             switch (adSize.AdType) {
                 case AdSize.Type.SmartBanner:
-  #if UNITY_2019_2_OR_NEWER
                     // AndroidJavaClass.GetStatic<AndroidJavaObject>() returns null since Unity 2019.2.
                     // Creates an AdSize object by directly calling the constructor, as a workaround.
                     return new AndroidJavaObject(AdSizeClassName, -1, -2)
                             .GetStatic<AndroidJavaObject>("SMART_BANNER");
-  #else
-                    return new AndroidJavaClass(AdSizeClassName)
-                            .GetStatic<AndroidJavaObject>("SMART_BANNER");
-  #endif
                 case AdSize.Type.AnchoredAdaptive:
                     AndroidJavaClass adSizeClass = new AndroidJavaClass(AdSizeClassName);
                     AndroidJavaClass playerClass = new AndroidJavaClass(Utils.UnityActivityClassName);
@@ -266,4 +259,3 @@ namespace GoogleMobileAds.Android
         #endregion
     }
 }
-#endif

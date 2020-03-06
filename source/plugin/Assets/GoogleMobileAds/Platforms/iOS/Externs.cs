@@ -12,8 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#if UNITY_IOS
-
 using System;
 using System.Runtime.InteropServices;
 
@@ -374,4 +372,4 @@ namespace GoogleMobileAds.iOS
     }
 }
 
-#endif
+
