@@ -43,12 +43,13 @@ public class UnityRewardedAd {
      * Creates a {@link RewardedAd}.
      */
     public void create(final String adUnitID) {
-        activity.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                rewardedAd = new RewardedAd(activity, adUnitID);
-            }
-        });
+        activity.runOnUiThread(
+                new Runnable() {
+                    @Override
+                    public void run() {
+                        rewardedAd = new RewardedAd(activity, adUnitID);
+                    }
+                });
     }
 
     /**
