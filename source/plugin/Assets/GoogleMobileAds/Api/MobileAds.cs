@@ -43,7 +43,13 @@ namespace GoogleMobileAds.Api
 
         public static void Initialize(Action<InitializationStatus> initCompleteAction)
         {
-            client.Initialize(initCompleteAction);
+            client.Initialize((initStatus) => {
+                if (initCompleteAction != null)
+                {
+                    initCompleteAction.Invoke(initStatus);
+                }
+                InitCompleteExecutor.Instance.NotifySdkInitialized();
+            });
             MobileAdsEventExecutor.Initialize();
         }
 
