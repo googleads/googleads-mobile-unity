@@ -10,7 +10,7 @@ extern "C" {
 
     const char *GADUGetInitDescription(void *statusRef,
                                        const char *className) {
-        return nullptr;
+        return NULL;
     }
 
     int GADUGetInitLatency(void *statusRef, const char *className) {
@@ -48,53 +48,53 @@ extern "C" {
     void *GADUCreateBannerView(void **bannerClient, const char *adUnitID,
                                int width, int height,
                                int adPosition) {
-        return nullptr;
+        return NULL;
     }
 
     void *GADUCreateBannerViewWithCustomPosition(void **bannerClient,
                                                  const char *adUnitID, int width,
                                                  int height, int x,
                                                  int y) {
-        return nullptr;
+        return NULL;
     }
 
     void *GADUCreateSmartBannerView(void **bannerClient,
                                     const char *adUnitID, int adPosition) {
-        return nullptr;
+        return NULL;
     }
 
     void *GADUCreateSmartBannerViewWithCustomPosition(void **bannerClient,
                                                       const char *adUnitID, int x,
                                                       int y) {
-        return nullptr;
+        return NULL;
     }
 
     void *GADUCreateAnchoredAdaptiveBannerView(void **bannerClient,
                                                const char *adUnitID, int width,
                                                int orientation,
                                                int adPosition) {
-        return nullptr;
+        return NULL;
     }
 
     void *GADUCreateAnchoredAdaptiveBannerViewWithCustomPosition(
             void **bannerClient, const char *adUnitID, int width,
             int orientation, int x, int y) {
-        return nullptr;
+        return NULL;
     }
 
     void *GADUCreateInterstitial(void **interstitialClient,
                                  const char *adUnitID) {
-        return nullptr;
+        return NULL;
     }
 
     void *GADUCreateRewardBasedVideoAd(
             void **rewardBasedVideoAdClient) {
-        return nullptr;
+        return NULL;
     }
 
     void *GADUCreateRewardedAd(void **rewardedAdClient,
                                const char *adUnitID) {
-        return nullptr;
+        return NULL;
 
     }
 
@@ -102,7 +102,7 @@ extern "C" {
                              const char *adUnitID,
                              const char **templateIDs, int templateIDLength,
                              struct AdTypes *types, bool returnUrlsForImageAssets) {
-        return nullptr;
+        return NULL;
     }
 
     void GADUSetBannerCallbacks(void *banner,
@@ -184,7 +184,7 @@ extern "C" {
     void GADUShowRewardedAd(void *rewardedAd) {}
 
     const char *GADURewardedAdGetRewardType(void *rewardedAd) {
-        return nullptr;
+        return NULL;
     }
 
     double GADURewardedAdGetRewardAmount(void *rewardedAd) {
@@ -192,7 +192,7 @@ extern "C" {
     }
 
     void *GADUCreateRequest() {
-        return nullptr;
+        return NULL;
     }
 
     void GADUAddTestDevice(void *request, const char *deviceID) {}
@@ -208,7 +208,7 @@ extern "C" {
     void GADUTagForChildDirectedTreatment(void *request, bool childDirectedTreatment) {}
 
     void *GADUCreateServerSideVerificationOptions() {
-        return nullptr;
+        return NULL;
     }
 
     void GADUServerSideVerificationOptionsSetUserId(void *options,
@@ -218,7 +218,7 @@ extern "C" {
             void *options, const char *customRewardString) {}
 
     void *GADUCreateMutableDictionary() {
-        return nullptr;
+        return NULL;
     }
 
     void GADUMutableDictionarySetValue(void *dictionary, const char *key,
@@ -250,17 +250,17 @@ extern "C" {
     #pragma mark - Native Custom Template Ad methods
     const char *GADUNativeCustomTemplateAdTemplateID(
             void *nativeCustomTemplateAd) {
-        return nullptr;
+        return NULL;
     }
 
     const char *GADUNativeCustomTemplateAdImageAsBytesForKey(
             void *nativeCustomTemplateAd, const char *key) {
-        return nullptr;
+        return NULL;
     }
 
     const char *GADUNativeCustomTemplateAdStringForKey(
             void *nativeCustomTemplateAd, const char *key) {
-        return nullptr;
+        return NULL;
     }
 
     void GADUNativeCustomTemplateAdRecordImpression(
@@ -293,18 +293,18 @@ extern "C" {
     void GADURelease(void *ref) {}
 
     const char *GADUMediationAdapterClassNameForBannerView(void *bannerView) {
-        return nullptr;
+        return NULL;
     }
 
     const char *GADUMediationAdapterClassNameForRewardedVideo(void *rewardedVideo) {
-        return nullptr;
+        return NULL;
     }
 
     const char *GADUMediationAdapterClassNameForRewardedAd(void *rewardedAd) {
-        return nullptr;
+        return NULL;
     }
 
     const char *GADUMediationAdapterClassNameForInterstitial(void *interstitial) {
-        return nullptr;
+        return NULL;
     }
 }
