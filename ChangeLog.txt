@@ -1,6 +1,18 @@
 Google Mobile Ads Unity Plugin Change Log
 
 **************
+Version 5.0.1
+**************
+
+Plugin:
+  - Fixed issue with externs.cpp in pre-2019 versions of Unity
+
+Built and tested with:
+- Google Play services 19.0.0
+- Google Mobile Ads iOS SDK 7.56.0
+- Unity Jar Resolver 1.2.136
+
+**************
 Version 5.0.0
 **************
 
