@@ -19,15 +19,14 @@
 
 #pragma mark - GADUMVerizonMediaInterface Interface
 
-void GADUMVerizonMediaSetConsentData(GADUMVerizonMediaTypeMutableDictionaryRef dictionary,
+void GADUMVerizonMediaSetPrivacyData(GADUMVerizonMediaTypeMutableDictionaryRef dictionary,
                                      BOOL restricted) {
   NSMutableDictionary<NSString *, NSString *> *internalDictionary =
       (__bridge NSMutableDictionary *)dictionary;
   NSString *referenceKey = GADUMVerizonMediaReferenceKeyForObject(internalDictionary);
 
   GADUMVerizonMediaObjectCache *cache = GADUMVerizonMediaObjectCache.sharedInstance;
-  [GADMVerizonConsent.sharedInstance setConsentInfo:[cache objectForKey:referenceKey]
-                                         restricted:restricted];
+  [GADMVerizonPrivacy.sharedInstance setPrivacyData:[cache objectForKey:referenceKey]];
   [cache removeObjectForKey:referenceKey];
 }
 

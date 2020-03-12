@@ -1,6 +1,45 @@
 Google Mobile Ads Unity Plugin Change Log
 
 **************
+Version 5.0.1
+**************
+
+Plugin:
+  - Fixed issue with externs.cpp in pre-2019 versions of Unity
+
+Built and tested with:
+- Google Play services 19.0.0
+- Google Mobile Ads iOS SDK 7.56.0
+- Unity Jar Resolver 1.2.136
+
+**************
+Version 5.0.0
+**************
+
+Plugin:
+  - Removed preprocessor directives for custom assembly support.
+  - Fixed IL2CPP build support on Android.
+  - Updated to Google Play services 19.0.0.
+  - Updated minimum Android API level to 16.
+
+Built and tested with:
+- Google Play services 19.0.0
+- Google Mobile Ads iOS SDK 7.56.0
+- Unity Jar Resolver 1.2.136
+
+**************
+Version 4.2.1
+**************
+
+Plugin:
+  - Fixed issue with using `AdSize.FullWidth` API for apps that only support landscape.
+
+Built and tested with:
+- Google Play services 18.3.0
+- Google Mobile Ads iOS SDK 7.53.1
+- Unity Jar Resolver 1.2.135
+
+**************
 Version 4.2.0
 **************
 

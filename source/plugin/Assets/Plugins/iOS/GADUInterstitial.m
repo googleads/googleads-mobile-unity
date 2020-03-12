@@ -21,6 +21,18 @@
     _interstitialClient = interstitialClient;
     _interstitial = [[GADInterstitial alloc] initWithAdUnitID:adUnitID];
     _interstitial.delegate = self;
+
+    __weak GADUInterstitial *weakSelf = self;
+    _interstitial.paidEventHandler = ^void(GADAdValue *_Nonnull adValue) {
+      GADUInterstitial *strongSelf = weakSelf;
+      if (strongSelf.paidEventCallback) {
+        int64_t valueInMicros =
+            [adValue.value decimalNumberByMultiplyingByPowerOf10:6].longLongValue;
+        strongSelf.paidEventCallback(
+            strongSelf.interstitialClient, (int)adValue.precision, valueInMicros,
+            [adValue.currencyCode cStringUsingEncoding:NSUTF8StringEncoding]);
+      }
+    };
   }
   return self;
 }

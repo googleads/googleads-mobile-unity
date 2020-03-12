@@ -23,7 +23,7 @@ namespace GoogleMobileAds.iOS.Mediation.VerizonMedia
     internal class Externs
     {
         [DllImport("__Internal")]
-        internal static extern void GADUMVerizonMediaSetConsentData(IntPtr consentMap, bool restricted);
+        internal static extern void GADUMVerizonMediaSetPrivacyData(IntPtr privacyData);
 
         [DllImport("__Internal")]
         internal static extern string GADUMVerizonMediaGetVerizonIABConsentKey();

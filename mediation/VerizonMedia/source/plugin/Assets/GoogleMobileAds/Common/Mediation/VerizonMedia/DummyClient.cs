@@ -26,7 +26,7 @@ namespace GoogleMobileAds.Common.Mediation.VerizonMedia
             Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
         }
 
-        public void SetConsentData(Dictionary<string, string> consentMap, bool restricted)
+        public void SetPrivacyData(Dictionary<string, string> privacyData)
         {
             Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
         }

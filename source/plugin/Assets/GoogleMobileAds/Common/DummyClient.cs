@@ -47,8 +47,9 @@ namespace GoogleMobileAds.Common
 
         public event EventHandler<EventArgs> OnAdCompleted;
 
-        public event EventHandler<CustomNativeEventArgs> OnCustomNativeTemplateAdLoaded;
+        public event EventHandler<AdValueEventArgs> OnPaidEvent;
 
+        public event EventHandler<CustomNativeEventArgs> OnCustomNativeTemplateAdLoaded;
 #pragma warning restore 67
 
         public string UserId
@@ -73,6 +74,7 @@ namespace GoogleMobileAds.Common
         public void Initialize(Action<InitializationStatus> initCompleteAction)
         {
             Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
+            initCompleteAction(null);
         }
 
         public void SetApplicationMuted(bool muted)

@@ -14,6 +14,7 @@
 
 using System;
 
+using GoogleMobileAds;
 using GoogleMobileAds.Common;
 
 namespace GoogleMobileAds.Api
@@ -27,6 +28,7 @@ namespace GoogleMobileAds.Api
         public event EventHandler<EventArgs> OnAdOpening;
         public event EventHandler<EventArgs> OnAdClosed;
         public event EventHandler<Reward> OnUserEarnedReward;
+        public event EventHandler<AdValueEventArgs> OnPaidEvent;
 
         private IRewardedAdClient client;
 
@@ -41,6 +43,7 @@ namespace GoogleMobileAds.Api
             client.OnAdOpening += (sender, args) => ExecuteEvent(this, OnAdOpening, args);
             client.OnUserEarnedReward += (sender, args) => ExecuteEvent(this, OnUserEarnedReward, args);
             client.OnAdClosed += (sender, args) => ExecuteEvent(this, OnAdClosed, args);
+            client.OnPaidEvent += (sender, args) => ExecuteEvent(this, OnPaidEvent, args);
         }
 
         /// <summary>

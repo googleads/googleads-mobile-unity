@@ -12,8 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#if UNITY_ANDROID
-
 using UnityEngine;
 using System;
 using System.Collections.Generic;
@@ -84,6 +82,10 @@ namespace GoogleMobileAds.Android
         public const string UnityAdLoaderListenerClassName =
             "com.google.unity.ads.UnityAdLoaderListener";
 
+        public const string UnityPaidEventListenerClassName =
+            "com.google.unity.ads.UnityPaidEventListener";
+
+
         public const string PluginUtilsClassName = "com.google.unity.ads.PluginUtils";
 
         #endregion
@@ -110,15 +112,10 @@ namespace GoogleMobileAds.Android
         {
             switch (adSize.AdType) {
                 case AdSize.Type.SmartBanner:
-  #if UNITY_2019_2_OR_NEWER
                     // AndroidJavaClass.GetStatic<AndroidJavaObject>() returns null since Unity 2019.2.
                     // Creates an AdSize object by directly calling the constructor, as a workaround.
                     return new AndroidJavaObject(AdSizeClassName, -1, -2)
                             .GetStatic<AndroidJavaObject>("SMART_BANNER");
-  #else
-                    return new AndroidJavaClass(AdSizeClassName)
-                            .GetStatic<AndroidJavaObject>("SMART_BANNER");
-  #endif
                 case AdSize.Type.AnchoredAdaptive:
                     AndroidJavaClass adSizeClass = new AndroidJavaClass(AdSizeClassName);
                     AndroidJavaClass playerClass = new AndroidJavaClass(Utils.UnityActivityClassName);
@@ -143,8 +140,8 @@ namespace GoogleMobileAds.Android
         }
 
         internal static int GetScreenWidth() {
-          int width = GoogleMobileAds.Common.Utils.IsLandscape ? DisplayMetrics.HeightPixels : DisplayMetrics.WidthPixels;
-          return (int) (width / DisplayMetrics.Density);
+          DisplayMetrics metrics = new DisplayMetrics();
+          return (int) (metrics.WidthPixels / metrics.Density);
         }
 
         public static AndroidJavaObject GetAdRequestJavaObject(AdRequest request)
@@ -266,4 +263,3 @@ namespace GoogleMobileAds.Android
         #endregion
     }
 }
-#endif

@@ -14,11 +14,12 @@
 
 using System;
 
+using GoogleMobileAds;
 using GoogleMobileAds.Common;
 
 namespace GoogleMobileAds.Api
 {
-    public class InterstitialAd : AdvertisingBase
+    public class InterstitialAd
     {
         // These are the ad callback events that can be hooked into.
         public event EventHandler<EventArgs> OnAdLoaded;
@@ -26,6 +27,7 @@ namespace GoogleMobileAds.Api
         public event EventHandler<EventArgs> OnAdOpening;
         public event EventHandler<EventArgs> OnAdClosed;
         public event EventHandler<EventArgs> OnAdLeavingApplication;
+        public event EventHandler<AdValueEventArgs> OnPaidEvent;
 
         private IInterstitialClient client;
 
@@ -43,6 +45,7 @@ namespace GoogleMobileAds.Api
             client.OnAdOpening += (sender, args) => ExecuteEvent(this, OnAdOpening, args);
             client.OnAdClosed += (sender, args) => ExecuteEvent(this, OnAdClosed, args);
             client.OnAdLeavingApplication += (sender, args) => ExecuteEvent(this, OnAdLeavingApplication, args);
+            client.OnPaidEvent += (sender, args) => ExecuteEvent(this, OnPaidEvent, args);
         }
 
         /// <summary>

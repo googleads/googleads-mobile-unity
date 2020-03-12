@@ -29,6 +29,9 @@ namespace GoogleMobileAds.Common {
         event EventHandler<EventArgs> OnAdClosed;
         // Ad event fired when the interstitial ad is leaving the application.
         event EventHandler<EventArgs> OnAdLeavingApplication;
+        // Ad event fired when the interstitial ad is estimated to have earned money.
+        event EventHandler<AdValueEventArgs> OnPaidEvent;
+
 
         // Creates an InterstitialAd.
         void CreateInterstitialAd(string adUnitId);

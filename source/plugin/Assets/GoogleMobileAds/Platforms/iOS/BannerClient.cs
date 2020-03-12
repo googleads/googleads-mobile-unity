@@ -12,8 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#if UNITY_IOS
-
 using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
@@ -42,6 +40,9 @@ namespace GoogleMobileAds.iOS
 
         internal delegate void GADUAdViewWillLeaveApplicationCallback(IntPtr bannerClient);
 
+        internal delegate void GADUAdViewPaidEventCallback(
+            IntPtr bannerClient, int precision, long value, string currencyCode);
+
 #endregion
 
         public event EventHandler<EventArgs> OnAdLoaded;
@@ -53,6 +54,9 @@ namespace GoogleMobileAds.iOS
         public event EventHandler<EventArgs> OnAdClosed;
 
         public event EventHandler<EventArgs> OnAdLeavingApplication;
+
+        public event EventHandler<AdValueEventArgs> OnPaidEvent;
+
 
         // This property should be used when setting the bannerViewPtr.
         private IntPtr BannerViewPtr
@@ -103,7 +107,9 @@ namespace GoogleMobileAds.iOS
                     AdViewDidFailToReceiveAdWithErrorCallback,
                     AdViewWillPresentScreenCallback,
                     AdViewDidDismissScreenCallback,
-                    AdViewWillLeaveApplicationCallback);
+                    AdViewWillLeaveApplicationCallback,
+                    AdViewPaidEventCallback
+                    );
         }
 
         public void CreateBannerView(string adUnitId, AdSize adSize, int x, int y)
@@ -147,7 +153,9 @@ namespace GoogleMobileAds.iOS
                 AdViewDidFailToReceiveAdWithErrorCallback,
                 AdViewWillPresentScreenCallback,
                 AdViewDidDismissScreenCallback,
-                AdViewWillLeaveApplicationCallback);
+                AdViewWillLeaveApplicationCallback,
+                AdViewPaidEventCallback
+                );
         }
 
         // Loads an ad.
@@ -277,6 +285,27 @@ namespace GoogleMobileAds.iOS
             }
         }
 
+        [MonoPInvokeCallback(typeof(GADUAdViewPaidEventCallback))]
+        private static void AdViewPaidEventCallback(
+            IntPtr bannerClient, int precision, long value, string currencyCode)
+        {
+            BannerClient client = IntPtrToBannerClient(bannerClient);
+            if (client.OnPaidEvent != null)
+            {
+                AdValue adValue = new AdValue()
+                {
+                    Precision = (AdValue.PrecisionType)precision,
+                    Value = value,
+                    CurrencyCode = currencyCode
+                };
+                AdValueEventArgs args = new AdValueEventArgs() {
+                    AdValue = adValue
+                };
+
+                client.OnPaidEvent(client, args);
+            }
+        }
+
         private static BannerClient IntPtrToBannerClient(IntPtr bannerClient)
         {
             GCHandle handle = (GCHandle)bannerClient;
@@ -287,4 +316,4 @@ namespace GoogleMobileAds.iOS
     }
 }
 
-#endif
+

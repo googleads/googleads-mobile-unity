@@ -14,6 +14,7 @@
 
 using System;
 
+using GoogleMobileAds;
 using GoogleMobileAds.Common;
 
 namespace GoogleMobileAds.Api
@@ -26,6 +27,7 @@ namespace GoogleMobileAds.Api
         public event EventHandler<EventArgs> OnAdOpening;
         public event EventHandler<EventArgs> OnAdClosed;
         public event EventHandler<EventArgs> OnAdLeavingApplication;
+        public event EventHandler<AdValueEventArgs> OnPaidEvent;
 
         private IBannerClient client;
 
@@ -135,6 +137,7 @@ namespace GoogleMobileAds.Api
             client.OnAdOpening += (sender, args) => OnAdOpening?.Invoke(this, args);
             client.OnAdClosed += (sender, args) => OnAdClosed?.Invoke(this, args);
             client.OnAdLeavingApplication += (sender, args) => OnAdLeavingApplication?.Invoke(this, args);
+            client.OnPaidEvent += (sender, args) => OnPaidEvent?.Invoke(this, args);
         }
 
         /// <summary>

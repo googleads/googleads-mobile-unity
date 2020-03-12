@@ -12,8 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#if UNITY_IOS
-
 using System;
 using System.Runtime.InteropServices;
 
@@ -154,7 +152,9 @@ namespace GoogleMobileAds.iOS
             BannerClient.GADUAdViewDidFailToReceiveAdWithErrorCallback adFailedCallback,
             BannerClient.GADUAdViewWillPresentScreenCallback willPresentCallback,
             BannerClient.GADUAdViewDidDismissScreenCallback didDismissCallback,
-            BannerClient.GADUAdViewWillLeaveApplicationCallback willLeaveCallback);
+            BannerClient.GADUAdViewWillLeaveApplicationCallback willLeaveCallback,
+            BannerClient.GADUAdViewPaidEventCallback paidEventCallback
+        );
 
         [DllImport("__Internal")]
         internal static extern void GADUHideBannerView(IntPtr bannerView);
@@ -200,7 +200,9 @@ namespace GoogleMobileAds.iOS
             InterstitialClient.GADUInterstitialWillPresentScreenCallback willPresentCallback,
             InterstitialClient.GADUInterstitialDidDismissScreenCallback didDismissCallback,
             InterstitialClient.GADUInterstitialWillLeaveApplicationCallback
-                        willLeaveCallback);
+                        willLeaveCallback,
+            InterstitialClient.GADUInterstitialPaidEventCallback paidEventCallback
+        );
 
         [DllImport("__Internal")]
         internal static extern bool GADUInterstitialReady(IntPtr interstitial);
@@ -280,7 +282,9 @@ namespace GoogleMobileAds.iOS
                     adFailedToShowCallback,
             RewardedAdClient.GADURewardedAdDidOpenCallback didOpenCallback,
             RewardedAdClient.GADURewardedAdDidCloseCallback didCloseCallback,
-            RewardedAdClient.GADUUserEarnedRewardCallback userEarnedRewardCallback);
+            RewardedAdClient.GADUUserEarnedRewardCallback userEarnedRewardCallback,
+            RewardedAdClient.GADURewardedAdPaidEventCallback paidEventCallback
+        );
 
         [DllImport("__Internal")]
         internal static extern IntPtr GADUCreateServerSideVerificationOptions();
@@ -370,5 +374,3 @@ namespace GoogleMobileAds.iOS
         #endregion
     }
 }
-
-#endif

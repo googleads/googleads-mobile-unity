@@ -17,10 +17,11 @@ package com.google.unity.ads;
 
 import android.app.Activity;
 import android.util.Log;
-
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdValue;
 import com.google.android.gms.ads.InterstitialAd;
+import com.google.android.gms.ads.OnPaidEventListener;
 
 /**
  * Native interstitial implementation for the Google Mobile Ads Unity plugin.
@@ -63,79 +64,112 @@ public class Interstitial {
             public void run() {
                 interstitial = new InterstitialAd(activity);
                 interstitial.setAdUnitId(adUnitId);
-                interstitial.setAdListener(new AdListener() {
-                    @Override
-                    public void onAdLoaded() {
-                        isLoaded = true;
-                        if (adListener != null) {
-                            new Thread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    if (adListener != null) {
-                                        adListener.onAdLoaded();
-                                    }
+                interstitial.setAdListener(
+                        new AdListener() {
+                            @Override
+                            public void onAdLoaded() {
+                                isLoaded = true;
+                                if (adListener != null) {
+                                    new Thread(
+                                            new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    if (adListener != null) {
+                                                        adListener.onAdLoaded();
+                                                    }
+                                                }
+                                            })
+                                            .start();
                                 }
-                            }).start();
-                        }
-                    }
+                            }
 
-                    @Override
-                    public void onAdFailedToLoad(final int errorCode) {
-                        if (adListener != null) {
-                            new Thread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    if (adListener != null) {
-                                        adListener.onAdFailedToLoad(
-                                            PluginUtils.getErrorReason(errorCode));
-                                    }
+                            @Override
+                            public void onAdFailedToLoad(final int errorCode) {
+                                if (adListener != null) {
+                                    new Thread(
+                                            new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    if (adListener != null) {
+                                                        adListener.onAdFailedToLoad(
+                                                                PluginUtils.getErrorReason(
+                                                                        errorCode));
+                                                    }
+                                                }
+                                            })
+                                            .start();
                                 }
-                            }).start();
-                        }
-                    }
+                            }
 
-                    @Override
-                    public void onAdOpened() {
-                        if (adListener != null) {
-                            new Thread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    if (adListener != null) {
-                                        adListener.onAdOpened();
-                                    }
+                            @Override
+                            public void onAdOpened() {
+                                if (adListener != null) {
+                                    new Thread(
+                                            new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    if (adListener != null) {
+                                                        adListener.onAdOpened();
+                                                    }
+                                                }
+                                            })
+                                            .start();
                                 }
-                            }).start();
-                        }
-                    }
+                            }
 
-                    @Override
-                    public void onAdClosed() {
-                        if (adListener != null) {
-                            new Thread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    if (adListener != null) {
-                                        adListener.onAdClosed();
-                                    }
+                            @Override
+                            public void onAdClosed() {
+                                if (adListener != null) {
+                                    new Thread(
+                                            new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    if (adListener != null) {
+                                                        adListener.onAdClosed();
+                                                    }
+                                                }
+                                            })
+                                            .start();
                                 }
-                            }).start();
-                        }
-                    }
+                            }
 
-                    @Override
-                    public void onAdLeftApplication() {
-                        if (adListener != null) {
-                            new Thread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    if (adListener != null) {
-                                        adListener.onAdLeftApplication();
-                                    }
+                            @Override
+                            public void onAdLeftApplication() {
+                                if (adListener != null) {
+                                    new Thread(
+                                            new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    if (adListener != null) {
+                                                        adListener.onAdLeftApplication();
+                                                    }
+                                                }
+                                            })
+                                            .start();
                                 }
-                            }).start();
-                        }
-                    }
-                });
+                            }
+                        });
+                interstitial.setOnPaidEventListener(
+                        new OnPaidEventListener() {
+                            @Override
+                            public void onPaidEvent(final AdValue adValue) {
+                                if (adListener != null) {
+                                    new Thread(
+                                            new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    if (adListener != null) {
+                                                        adListener.onPaidEvent(
+                                                                adValue.getPrecisionType(),
+                                                                adValue.getValueMicros(),
+                                                                adValue.getCurrencyCode());
+                                                    }
+                                                }
+                                            })
+                                            .start();
+                                }
+                            }
+                        });
             }
         });
     }

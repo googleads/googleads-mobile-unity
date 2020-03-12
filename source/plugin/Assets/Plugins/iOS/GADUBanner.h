@@ -70,6 +70,9 @@
 /// The will leave application callback into Unity.
 @property(nonatomic, assign) GADUAdViewWillLeaveApplicationCallback willLeaveCallback;
 
+/// The paid event callback into Unity.
+@property(nonatomic, assign) GADUAdViewPaidEventCallback paidEventCallback;
+
 // Returns the mediation adapter class name.
 @property(nonatomic, readonly, copy) NSString *mediationAdapterClassName;
 
