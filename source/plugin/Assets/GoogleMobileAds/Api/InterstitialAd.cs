@@ -14,12 +14,12 @@
 
 using System;
 
-using GoogleMobileAds;
 using GoogleMobileAds.Common;
+using UnityEngine;
 
 namespace GoogleMobileAds.Api
 {
-    public class InterstitialAd
+    public class InterstitialAd : AdvertisingBase
     {
         // These are the ad callback events that can be hooked into.
         public event EventHandler<EventArgs> OnAdLoaded;
@@ -55,6 +55,9 @@ namespace GoogleMobileAds.Api
         public override void LoadAd(AdRequest request)
         {
             client.LoadAd(request);
+
+            if (MobileAds.IsDebugging)
+                Debug.Log("Loading interstitial ad...");
         }
 
         /// <summary>

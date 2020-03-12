@@ -14,8 +14,8 @@
 
 using System;
 
-using GoogleMobileAds;
 using GoogleMobileAds.Common;
+using UnityEngine;
 
 namespace GoogleMobileAds.Api
 {
@@ -53,6 +53,9 @@ namespace GoogleMobileAds.Api
         public override void LoadAd(AdRequest request)
         {
             client.LoadAd(request);
+
+            if (MobileAds.IsDebugging)
+                Debug.Log("Loading rewarded ad...");
         }
 
         /// <summary>
@@ -97,9 +100,9 @@ namespace GoogleMobileAds.Api
         /// Returns the mediation adapter class name.
         /// </summary>
         /// <returns></returns>
-        public string MediationAdapterClassName()
+        public override string MediationAdapterClassName()
         {
-            return this.client.MediationAdapterClassName();
+            return client.MediationAdapterClassName();
         }
     }
 }

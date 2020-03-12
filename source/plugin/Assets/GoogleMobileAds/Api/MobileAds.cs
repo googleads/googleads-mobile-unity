@@ -38,9 +38,10 @@ namespace GoogleMobileAds.Api
             /// <returns></returns>
             public static int GetDeviceSafeWidth() {
                 return client.GetDeviceSafeWidth();
-        }
+            }
         }
         private static readonly IMobileAdsClient client = GetMobileAdsClient();
+        internal static bool IsDebugging { get; private set; }
 
         public static void Initialize(string appId, bool debug = false)
         {
