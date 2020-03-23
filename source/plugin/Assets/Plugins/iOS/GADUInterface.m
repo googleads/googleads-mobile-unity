@@ -10,6 +10,7 @@
 #import "GADURequest.h"
 #import "GADURewardBasedVideoAd.h"
 #import "GADURewardedAd.h"
+#import "GADURequestConfiguration.h"
 #import <GoogleMobileAds/GoogleMobileAds.h>
 
 #import "GADUTypes.h"
@@ -465,6 +466,44 @@ double GADURewardedAdGetRewardAmount(GADUTypeRewardedAdRef rewardedAd) {
   GADAdReward *reward = internalRewardedAd.rewardedAd.reward;
   return reward.amount.doubleValue;
 }
+
+/// Create an empty CreateRequestConfiguration 
+GADUTypeRequestConfigurationRef GADUCreateRequestConfiguration() {
+  GADURequestConfiguration *requestConfiguration = [[GADURequestConfiguration alloc] init];
+  GADUObjectCache *cache = [GADUObjectCache sharedInstance];
+  [cache.references setObject:requestConfiguration forKey:[requestConfiguration gadu_referenceKey]];
+  return (__bridge GADUTypeRequestConfigurationRef)(requestConfiguration);
+}
+
+void GADUSetRequestConfiguration(GADUTypeRequestConfigurationRef requestConfiguration, BOOL tagForUnderAgeOfConsent, BOOL tagForChildDirectedTreatment) {
+  GADURequestConfiguration *internalRequestConfiguration = (__bridge GADURequestConfiguration *)requestConfiguration;
+  GADMobileAds.sharedInstance.requestConfiguration.maxAdContentRating = internalRequestConfiguration.maxAdContentRating;
+  GADMobileAds.sharedInstance.requestConfiguration.testDeviceIdentifiers = internalRequestConfiguration.testDeviceIdentifiers;
+  [GADMobileAds.sharedInstance.requestConfiguration tagForUnderAgeOfConsent:tagForUnderAgeOfConsent];
+  [GADMobileAds.sharedInstance.requestConfiguration tagForChildDirectedTreatment:tagForChildDirectedTreatment];
+}
+
+void GADUSetRequestConfigurationMaxAdContentRating(GADUTypeRequestConfigurationRef requestConfiguration, const char *maxAdContentRating) {
+  GADURequestConfiguration *internalRequestConfiguration = (__bridge GADURequestConfiguration *)requestConfiguration;
+  [internalRequestConfiguration setMaxAdContentRating:GADUStringFromUTF8String(maxAdContentRating)];
+}
+
+// void GADUSetRequestConfigurationTagForChildDirectedTreatment(GADUTypeRequestConfigurationRef requestConfiguration, BOOL tagForChildDirectedTreatment) {
+//   GADURequestConfiguration *internalRequestConfiguration = (__bridge GADURequestConfiguration *)requestConfiguration;
+//   [internalRequestConfiguration tagForChildDirectedTreatment:tagForChildDirectedTreatment];
+// }
+
+// void GADUSetRequestConfigurationTagForUnderAgeOfConsent(GADUTypeRequestConfigurationRef requestConfiguration, BOOL tagForUnderAgeOfConsent) {
+//   GADURequestConfiguration *internalRequestConfiguration = (__bridge GADURequestConfiguration *)requestConfiguration;
+//   [internalRequestConfiguration tagForUnderAgeOfConsent:tagForUnderAgeOfConsent];
+// }
+
+void GADUSetRequestConfigurationTestDeviceIdentifiers(GADUTypeRequestConfigurationRef requestConfiguration,  NSArray<NSString *> *testDeviceIdentifiers) {
+  GADURequestConfiguration *internalRequestConfiguration = (__bridge GADURequestConfiguration *)requestConfiguration;
+  //[internalRequestConfiguration setTestDeviceIdentifiers:testDeviceIdentifiers];
+}
+
+
 
 /// Creates an empty GADRequest and returns its reference.
 GADUTypeRequestRef GADUCreateRequest() {
