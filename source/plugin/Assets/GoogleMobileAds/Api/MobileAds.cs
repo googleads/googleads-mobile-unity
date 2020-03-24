@@ -22,14 +22,17 @@ namespace GoogleMobileAds.Api
 {
     public class MobileAds
     {
-        public static class Utils {
+        public static class Utils
+        {
             // Returns the device's scale.
-            public static float GetDeviceScale() {
+            public static float GetDeviceScale()
+            {
                 return client.GetDeviceScale();
             }
 
             // Returns the safe width for the current device.
-            public static int GetDeviceSafeWidth() {
+            public static int GetDeviceSafeWidth()
+            {
                 return client.GetDeviceSafeWidth();
             }
         }
@@ -51,6 +54,17 @@ namespace GoogleMobileAds.Api
         {
             client.SetApplicationMuted(muted);
         }
+        public static void SetRequestConfiguration(RequestConfiguration requestConfiguration)
+        {
+            client.SetRequestConfiguration(requestConfiguration);
+        }
+        public static RequestConfiguration GetRequestConfiguration()
+        {
+
+            return client.GetRequestConfiguration();
+        }
+
+
 
         public static void SetApplicationVolume(float volume)
         {
@@ -64,7 +78,7 @@ namespace GoogleMobileAds.Api
 
         private static IMobileAdsClient GetMobileAdsClient()
         {
-          return GoogleMobileAdsClientFactory.MobileAdsInstance();
+            return GoogleMobileAdsClientFactory.MobileAdsInstance();
         }
     }
 }
