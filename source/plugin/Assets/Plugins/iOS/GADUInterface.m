@@ -10,6 +10,7 @@
 #import "GADURequest.h"
 #import "GADURewardBasedVideoAd.h"
 #import "GADURewardedAd.h"
+#import "GADURequestConfiguration.h"
 #import <GoogleMobileAds/GoogleMobileAds.h>
 
 #import "GADUTypes.h"
@@ -464,6 +465,50 @@ double GADURewardedAdGetRewardAmount(GADUTypeRewardedAdRef rewardedAd) {
   GADURewardedAd *internalRewardedAd = (__bridge GADURewardedAd *)rewardedAd;
   GADAdReward *reward = internalRewardedAd.rewardedAd.reward;
   return reward.amount.doubleValue;
+}
+
+/// Create an empty CreateRequestConfiguration 
+GADUTypeRequestConfigurationRef GADUCreateRequestConfiguration() {
+  GADURequestConfiguration *requestConfiguration = [[GADURequestConfiguration alloc] init];
+  GADUObjectCache *cache = [GADUObjectCache sharedInstance];
+  [cache.references setObject:requestConfiguration forKey:[requestConfiguration gadu_referenceKey]];
+  return (__bridge GADUTypeRequestConfigurationRef)(requestConfiguration);
+}
+
+void GADUSetRequestConfiguration(GADUTypeRequestConfigurationRef requestConfiguration, BOOL tagForUnderAgeOfConsent, BOOL tagForChildDirectedTreatment) {
+  GADURequestConfiguration *internalRequestConfiguration = (__bridge GADURequestConfiguration *)requestConfiguration;
+  GADMobileAds.sharedInstance.requestConfiguration.maxAdContentRating = internalRequestConfiguration.maxAdContentRating;
+  GADMobileAds.sharedInstance.requestConfiguration.testDeviceIdentifiers = internalRequestConfiguration.testDeviceIdentifiers;
+  [GADMobileAds.sharedInstance.requestConfiguration tagForUnderAgeOfConsent:tagForUnderAgeOfConsent];
+  [GADMobileAds.sharedInstance.requestConfiguration tagForChildDirectedTreatment:tagForChildDirectedTreatment];
+}
+
+void GADUSetRequestConfigurationMaxAdContentRating(GADUTypeRequestConfigurationRef requestConfiguration, const char *maxAdContentRating) {
+  GADURequestConfiguration *internalRequestConfiguration = (__bridge GADURequestConfiguration *)requestConfiguration;
+  [internalRequestConfiguration setMaxAdContentRating:GADUStringFromUTF8String(maxAdContentRating)];
+}
+
+void GADUSetRequestConfigurationTestDeviceIdentifiers(
+    GADUTypeRequestConfigurationRef requestConfiguration, const char **testDeviceIDs,
+    NSInteger testDeviceIDLength) {
+  GADURequestConfiguration *internalRequestConfiguration = (__bridge GADURequestConfiguration *)requestConfiguration;
+  NSMutableArray *testDeviceIDsArray = [[NSMutableArray alloc] init];
+  for (int i = 0; i < testDeviceIDLength; i++) {
+    [testDeviceIDsArray addObject:GADUStringFromUTF8String(testDeviceIDs[i])];
+  }
+  [internalRequestConfiguration setTestDeviceIdentifiers:testDeviceIDsArray];
+}
+const char GADUGetMaxAdContentRating(GADUTypeRequestConfigurationRef requestConfiguration) {
+  GADURequestConfiguration *internalRequestConfiguration =
+      (__bridge GADURequestConfiguration *)requestConfiguration;
+  return cStringCopy(internalRequestConfiguration.maxAdContentRating.UTF8String);
+  ;
+}
+const char **GADUGetTestDeviceIdentifiers(GADUTypeRequestConfigurationRef requestConfiguration) {
+  GADURequestConfiguration *internalRequestConfiguration =
+      (__bridge GADURequestConfiguration *)requestConfiguration;
+  NSArray<NSString *> *testDeviceIDs = internalRequestConfiguration.testDeviceIdentifiers;
+  return cStringArrayCopy(testDeviceIDs);
 }
 
 /// Creates an empty GADRequest and returns its reference.

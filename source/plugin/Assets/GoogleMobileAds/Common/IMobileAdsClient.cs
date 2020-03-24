@@ -45,5 +45,8 @@ namespace GoogleMobileAds.Common
 
         // Returns the safe width for the current device.
         int GetDeviceSafeWidth();
+
+        void SetRequestConfiguration(RequestConfiguration requestConfiguration);
+        RequestConfiguration GetRequestConfiguration();
     }
 }

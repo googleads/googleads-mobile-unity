@@ -61,6 +61,15 @@ namespace GoogleMobileAds.iOS
         {
             Externs.GADUSetApplicationMuted(muted);
         }
+        public void SetRequestConfiguration(RequestConfiguration requestConfiguration)
+        {
+            RequestConfigurationClient.SetRequestConfiguration(requestConfiguration);
+
+        }
+        public RequestConfiguration GetRequestConfiguration()
+        {
+            return RequestConfigurationClient.GetRequestConfiguration();
+        }
 
         public void SetiOSAppPauseOnBackground(bool pause)
         {
