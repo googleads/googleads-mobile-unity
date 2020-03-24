@@ -51,6 +51,17 @@ namespace GoogleMobileAds.Api
         {
             client.SetApplicationMuted(muted);
         }
+        public static void SetRequestConfiguration(RequestConfiguration requestConfiguration)
+        {
+            client.SetRequestConfiguration(requestConfiguration);
+        }
+         public static RequestConfiguration GetRequestConfiguration()
+        {
+
+            return client.GetRequestConfiguration();
+        }
+
+        
 
         public static void SetApplicationVolume(float volume)
         {

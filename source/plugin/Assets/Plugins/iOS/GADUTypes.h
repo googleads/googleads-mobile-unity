@@ -70,6 +70,9 @@ typedef const void *GADUTypeNativeCustomTemplateAdRef;
 /// Type representing a GADURequest.
 typedef const void *GADUTypeRequestRef;
 
+/// Type representing a GADUTypeRequestConfigurationRef
+typedef const void *GADUTypeRequestConfigurationRef;
+
 /// Type representing a NSMutableDictionary of extras.
 typedef const void *GADUTypeMutableDictionaryRef;
 
