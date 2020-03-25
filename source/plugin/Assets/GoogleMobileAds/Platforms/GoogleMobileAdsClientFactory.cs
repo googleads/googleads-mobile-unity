@@ -11,14 +11,20 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+// Attention Unity 2018 & 2019 Managed Stripping Level "Medium" or "High" Required Preserve Attributes.
+// Also Ads Not Showing After Build. Managed Stripping Level "Disabled" or "Low" Not Required Preserve Attributes.
 
 using UnityEngine;
 using GoogleMobileAds;
 using GoogleMobileAds.Api;
 using GoogleMobileAds.Common;
+using UnityEngine.Scripting;
 
+[assembly: Preserve]
 namespace GoogleMobileAds
 {
+
+    [Preserve]
     public class GoogleMobileAdsClientFactory
     {
         public static IBannerClient BuildBannerClient()
@@ -37,6 +43,8 @@ namespace GoogleMobileAds
             }
         }
 
+
+        [Preserve]
         public static IInterstitialClient BuildInterstitialClient()
         {
           if (Application.platform == RuntimePlatform.Android)
@@ -53,6 +61,8 @@ namespace GoogleMobileAds
           }
         }
 
+
+        [Preserve]
         public static IRewardBasedVideoAdClient BuildRewardBasedVideoAdClient()
         {
           if (Application.platform == RuntimePlatform.Android)
@@ -69,6 +79,8 @@ namespace GoogleMobileAds
           }
         }
 
+
+        [Preserve]
         public static IRewardedAdClient BuildRewardedAdClient()
         {
           if (Application.platform == RuntimePlatform.Android)
@@ -85,6 +97,8 @@ namespace GoogleMobileAds
           }
         }
 
+
+        [Preserve]
         public static IAdLoaderClient BuildAdLoaderClient(AdLoader adLoader)
         {
           if (Application.platform == RuntimePlatform.Android)
@@ -101,6 +115,7 @@ namespace GoogleMobileAds
           }
         }
 
+        [Preserve]
         public static IMobileAdsClient MobileAdsInstance()
         {
           if (Application.platform == RuntimePlatform.Android)
