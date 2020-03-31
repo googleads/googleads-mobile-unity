@@ -35,14 +35,18 @@ namespace GoogleMobileAds.Api
             this.MediationExtras = builder.MediationExtras;
         }
 
+        [Obsolete("This property is obsolete. Use RequestConfiguration instead.")]
         public List<string> TestDevices { get; private set; }
 
         public HashSet<string> Keywords { get; private set; }
 
+        [Obsolete("This property is obsolete. No replacement.")]
         public DateTime? Birthday { get; private set; }
 
+        [Obsolete("This property is obsolete. No replacement.")]
         public Gender? Gender { get; private set; }
 
+        [Obsolete("This property is obsolete. Use RequestConfiguration instead.")]
         public bool? TagForChildDirectedTreatment { get; private set; }
 
         public Dictionary<string, string> Extras { get; private set; }
@@ -82,6 +86,7 @@ namespace GoogleMobileAds.Api
                 return this;
             }
 
+            [Obsolete("This method is obsolete. Use RequestConfiguration instead.")]
             public Builder AddTestDevice(string deviceId)
             {
                 this.TestDevices.Add(deviceId);
@@ -93,12 +98,14 @@ namespace GoogleMobileAds.Api
                 return new AdRequest(this);
             }
 
+            [Obsolete("This method is obsolete. No replacement.")]
             public Builder SetBirthday(DateTime birthday)
             {
                 this.Birthday = birthday;
                 return this;
             }
 
+            [Obsolete("This method is obsolete. No replacement.")]
             public Builder SetGender(Gender gender)
             {
                 this.Gender = gender;
@@ -111,6 +118,7 @@ namespace GoogleMobileAds.Api
                 return this;
             }
 
+            [Obsolete("This method is obsolete. Use RequestConfiguration instead.")]
             public Builder TagForChildDirectedTreatment(bool tagForChildDirectedTreatment)
             {
                 this.ChildDirectedTreatmentTag = tagForChildDirectedTreatment;

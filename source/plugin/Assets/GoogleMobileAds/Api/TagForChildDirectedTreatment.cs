@@ -1,4 +1,4 @@
-// Copyright (C) 2015 Google, Inc.
+// Copyright (C) 2020 Google, Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,12 +14,12 @@
 
 namespace GoogleMobileAds.Api
 {
-    // The gender of the user.
-    [System.Obsolete("This enum is obsolete. No replacement.")]
-    public enum Gender
+    public enum TagForChildDirectedTreatment
     {
-        Unknown = 0,
-        Male = 1,
-        Female = 2
+        Unspecified = -1,
+        False = 0,
+        True = 1,
+
     }
+
 }

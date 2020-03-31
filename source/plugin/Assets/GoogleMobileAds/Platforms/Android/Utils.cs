@@ -45,6 +45,10 @@ namespace GoogleMobileAds.Android
 
         public const string MobileAdsClassName = "com.google.android.gms.ads.MobileAds";
 
+        public const string RequestConfigurationClassName = "com.google.android.gms.ads.RequestConfiguration";
+
+        public const string RequestConfigurationBuilderClassName = "com.google.android.gms.ads.RequestConfiguration$Builder";
+
         public const string ServerSideVerificationOptionsClassName =
             "com.google.android.gms.ads.rewarded.ServerSideVerificationOptions";
 
@@ -110,7 +114,8 @@ namespace GoogleMobileAds.Android
 
         public static AndroidJavaObject GetAdSizeJavaObject(AdSize adSize)
         {
-            switch (adSize.AdType) {
+            switch (adSize.AdType)
+            {
                 case AdSize.Type.SmartBanner:
                     // AndroidJavaClass.GetStatic<AndroidJavaObject>() returns null since Unity 2019.2.
                     // Creates an AdSize object by directly calling the constructor, as a workaround.
@@ -136,12 +141,13 @@ namespace GoogleMobileAds.Android
                     return new AndroidJavaObject(AdSizeClassName, adSize.Width, adSize.Height);
                 default:
                     throw new ArgumentException("Invalid AdSize.Type provided for ad size.");
-  }
+            }
         }
 
-        internal static int GetScreenWidth() {
-          DisplayMetrics metrics = new DisplayMetrics();
-          return (int) (metrics.WidthPixels / metrics.Density);
+        internal static int GetScreenWidth()
+        {
+            DisplayMetrics metrics = new DisplayMetrics();
+            return (int)(metrics.WidthPixels / metrics.Density);
         }
 
         public static AndroidJavaObject GetAdRequestJavaObject(AdRequest request)
@@ -250,6 +256,28 @@ namespace GoogleMobileAds.Android
             }
 
             return adRequestBuilder.Call<AndroidJavaObject>("build");
+        }
+        public static AndroidJavaObject GetJavaListObject(List<String> csTypeList)
+        {
+
+            AndroidJavaObject javaTypeArrayList = new AndroidJavaObject("java.util.ArrayList");
+            foreach (string itemList in csTypeList)
+            {
+                javaTypeArrayList.Call<bool>("add", itemList);
+            }
+            return javaTypeArrayList;
+        }
+
+        public static List<String> GetCsTypeList(AndroidJavaObject javaTypeList)
+        {
+            List<String> csTypeList = new List<String>();
+            int length = javaTypeList.Call<int>("size");
+            for (int i = 0; i < length; i++)
+            {
+                csTypeList.Add(javaTypeList.Call<string>("get", i));
+            }
+
+            return csTypeList;
         }
 
         public static AndroidJavaObject GetServerSideVerificationOptionsJavaObject(ServerSideVerificationOptions serverSideVerificationOptions)

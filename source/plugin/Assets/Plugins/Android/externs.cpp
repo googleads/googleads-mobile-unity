@@ -292,6 +292,44 @@ extern "C" {
     #pragma mark - Other methods
     void GADURelease(void *ref) {}
 
+    void * GADUCreateRequestConfiguration() {
+      return NULL;
+    }
+
+    void GADUSetRequestConfiguration(void * requestConfiguration) {}
+
+    void * GADUGetRequestConfiguration() {
+      return NULL;
+    }
+
+    void GADUSetRequestConfigurationTestDeviceIdentifiers(void * requestConfiguration, char** testDeviceIDs, int testDeviceIDLength) {}
+
+    void GADUSetRequestConfigurationMaxAdContentRating(void * requestConfiguration, char* maxAdContentRating) {}
+
+    void GADUSetRequestConfigurationTagForUnderAgeOfConsent(void * requestConfiguration, int tagForUnderAgeOfConsent) {}
+
+    void GADUSetRequestConfigurationTagForChildDirectedTreatment(void * requestConfiguration, int tagForChildDirectedTreatment) {}
+
+    void * GADUGetTestDeviceIdentifiers(void * request) {
+      return NULL;
+    }
+
+    int GADUGetTestDeviceIdentifiersCount(void * request) {
+      return 0;
+    }
+
+    char* GADUGetMaxAdContentRating(void * requestConfiguration) {
+      return NULL;
+    }
+
+    int GADUGetRequestConfigurationTagForUnderAgeOfConsent(void * requestConfiguration) {
+      return 0;
+    }
+
+    int GADUGetRequestConfigurationTagForChildDirectedTreatment(void * requestConfiguration) {
+      return 0;
+    }
+
     const char *GADUMediationAdapterClassNameForBannerView(void *bannerView) {
         return NULL;
     }
