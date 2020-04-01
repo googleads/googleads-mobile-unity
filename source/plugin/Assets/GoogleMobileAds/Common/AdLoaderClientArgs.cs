@@ -16,6 +16,8 @@ using System.Collections.Generic;
 
 using GoogleMobileAds.Api;
 
+[assembly: System.Runtime.CompilerServices.InternalsVisibleTo("GoogleMobileAds")]
+[assembly: System.Runtime.CompilerServices.InternalsVisibleTo("GoogleMobileAds.Platforms")]
 namespace GoogleMobileAds.Common {
 
     public class AdLoaderClientArgs {

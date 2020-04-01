@@ -1,0 +1,15 @@
+{
+    "name": "GoogleMobileAds.Common",
+    "references": [
+        "GUID:9f42753104dc14868b1ecbdfd1154f9c"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

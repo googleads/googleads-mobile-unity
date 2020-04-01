@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project baseDir="z:\tmp\Confuser\" outputDir="z:\tmp\Confuser\output" xmlns="http://confuser.codeplex.com">
+    <rule preset="none" pattern="true">
+        <protection id="anti ildasm" />
+        <protection id="constants" />
+        <protection id="ctrl flow" />
+        <protection id="rename">
+            <argument name="mode" value="decodable" />
+        </protection>
+    </rule>
+    <module path="z:\tmp\Confuser\<!--%FILE_NAME%-->" />
+</project>

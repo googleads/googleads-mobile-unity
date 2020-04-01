@@ -204,7 +204,7 @@ namespace GoogleMobileAds.Common
             Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
         }
 
-        public void CreateAdLoader(AdLoader.Builder builder)
+        public void CreateAdLoader(AdLoaderClientArgs args)
         {
             Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
         }

@@ -1,0 +1,20 @@
+{
+    "name": "GoogleMobileAds.Platforms",
+    "references": [
+        "GUID:9f42753104dc14868b1ecbdfd1154f9c",
+        "GUID:44be7e69f084941dfb3f8bde949c3b43",
+        "GUID:cbd95936179f8440ca978ceb80820a15"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [
+      "iOS",
+      "macOSStandalone"
+    ],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
