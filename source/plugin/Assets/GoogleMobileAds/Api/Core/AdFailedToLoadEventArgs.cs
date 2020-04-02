@@ -14,8 +14,6 @@
 
 using System;
 
-using GoogleMobileAds.Common;
-
 namespace GoogleMobileAds.Api
 {
     // Event that occurs when an ad fails to load.

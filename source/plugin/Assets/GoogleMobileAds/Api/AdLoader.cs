@@ -21,11 +21,6 @@ using GoogleMobileAds.Common;
 
 namespace GoogleMobileAds.Api
 {
-    public enum NativeAdType
-    {
-        CustomTemplate
-    }
-
     public class AdLoader
     {
         private IAdLoaderClient adLoaderClient;
