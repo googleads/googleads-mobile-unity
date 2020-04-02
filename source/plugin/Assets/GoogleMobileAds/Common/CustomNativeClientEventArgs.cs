@@ -1,4 +1,6 @@
-﻿// Licensed under the Apache License, Version 2.0 (the "License");
+// Copyright (C) 2020 Google, Inc.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
 //
@@ -12,18 +14,13 @@
 
 using System;
 
-using GoogleMobileAds.Api;
-
 namespace GoogleMobileAds.Common
 {
-    public interface IAdLoaderClient
-    {
-        event EventHandler<AdFailedToLoadEventArgs> OnAdFailedToLoad;
+  // Event that occurs when a custom native template ad loads in a client.
+  public class CustomNativeClientEventArgs : EventArgs
+  {
+      internal ICustomNativeTemplateClient nativeAdClient { get; set; }
 
-        event EventHandler<CustomNativeClientEventArgs> OnCustomNativeTemplateAdLoaded;
-
-        event EventHandler<CustomNativeClientEventArgs> OnCustomNativeTemplateAdClicked;
-
-        void LoadAd(AdRequest request);
-    }
+      internal string assetName { get; set; }
+  }
 }

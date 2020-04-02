@@ -85,15 +85,15 @@ namespace GoogleMobileAds
           }
         }
 
-        public static IAdLoaderClient BuildAdLoaderClient(AdLoader adLoader)
+        public static IAdLoaderClient BuildAdLoaderClient(AdLoaderClientArgs args)
         {
           if (Application.platform == RuntimePlatform.Android)
           {
-              return new GoogleMobileAds.Android.AdLoaderClient(adLoader);
+              return new GoogleMobileAds.Android.AdLoaderClient(args);
           }
           else if (Application.platform == RuntimePlatform.IPhonePlayer)
           {
-              return new GoogleMobileAds.iOS.AdLoaderClient(adLoader);
+              return new GoogleMobileAds.iOS.AdLoaderClient(args);
           }
           else
           {
