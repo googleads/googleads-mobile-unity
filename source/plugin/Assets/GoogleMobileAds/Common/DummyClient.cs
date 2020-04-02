@@ -73,7 +73,7 @@ namespace GoogleMobileAds.Common
             Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
         }
 
-        public void Initialize(Action<InitializationStatus> initCompleteAction)
+        public void Initialize(Action<IInitializationStatusClient> initCompleteAction)
         {
             Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
             initCompleteAction(null);

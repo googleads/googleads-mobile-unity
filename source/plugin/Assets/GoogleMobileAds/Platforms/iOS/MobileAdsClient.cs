@@ -24,7 +24,7 @@ namespace GoogleMobileAds.iOS
     public class MobileAdsClient : IMobileAdsClient
     {
         private static MobileAdsClient instance = new MobileAdsClient();
-        private Action<InitializationStatus> initCompleteAction;
+        private Action<IInitializationStatusClient> initCompleteAction;
         private IntPtr mobileAdsClientPtr;
         internal delegate void GADUInitializationCompleteCallback(IntPtr mobileAdsClient, IntPtr initStatusClient);
 
@@ -46,7 +46,7 @@ namespace GoogleMobileAds.iOS
             Externs.GADUInitialize(appId);
         }
 
-        public void Initialize(Action<InitializationStatus> initCompleteAction)
+        public void Initialize(Action<IInitializationStatusClient> initCompleteAction)
         {
             this.initCompleteAction = initCompleteAction;
             Externs.GADUInitializeWithCallback(this.mobileAdsClientPtr, InitializationCompleteCallback);
@@ -83,8 +83,8 @@ namespace GoogleMobileAds.iOS
             MobileAdsClient client = IntPtrToMobileAdsClient(mobileAdsClient);
             if (client.initCompleteAction != null)
             {
-                InitializationStatus status = new InitializationStatus(new InitializationStatusClient(initStatus));
-                client.initCompleteAction(status);
+                IInitializationStatusClient statusClient = new InitializationStatusClient(initStatus);
+                client.initCompleteAction(statusClient);
             }
         }
 
@@ -105,5 +105,3 @@ namespace GoogleMobileAds.iOS
         }
     }
 }
-
-

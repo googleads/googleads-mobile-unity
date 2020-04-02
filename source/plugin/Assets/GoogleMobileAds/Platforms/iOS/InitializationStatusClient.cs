@@ -21,7 +21,7 @@ using GoogleMobileAds.Common;
 
 namespace GoogleMobileAds.iOS
 {
-    internal class InitializationStatusClient : IInitializationStatusClient
+    public class InitializationStatusClient : IInitializationStatusClient
     {
         private IntPtr status;
 
@@ -72,5 +72,3 @@ namespace GoogleMobileAds.iOS
         }
     }
 }
-
-

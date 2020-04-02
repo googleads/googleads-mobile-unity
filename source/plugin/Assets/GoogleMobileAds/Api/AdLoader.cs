@@ -46,7 +46,7 @@ namespace GoogleMobileAds.Api
             AdLoaderClientArgs clientArgs = new AdLoaderClientArgs(){
                   AdUnitId = this.AdUnitId,
                   AdTypes = this.AdTypes,
-                  TemplateIds = templateIdsDictionary,
+                  TemplateIds = templateIdsDictionary
               };
             this.adLoaderClient = GoogleMobileAdsClientFactory.BuildAdLoaderClient(clientArgs);
 
