@@ -4,15 +4,15 @@
 - Supports [Facebook Android adapter version 5.8.0.0](https://github.com/googleads/googleads-mobile-android-mediation/blob/master/ThirdPartyAdapters/facebook/CHANGELOG.md#5800).
 - Supports [Facebook iOS adapter version 5.8.0.1](https://github.com/googleads/googleads-mobile-ios-mediation/blob/master/adapters/Facebook/CHANGELOG.md#version-5801).
 
-#### Version 2.7.1
+#### Version 2.7.1 (Deprecated, use 2.8.0 or newer)
 - Supports [Facebook Android adapter version 5.7.1.0](https://github.com/googleads/googleads-mobile-android-mediation/blob/master/ThirdPartyAdapters/facebook/CHANGELOG.md#5710).
 - Supports [Facebook iOS adapter version 5.7.1.1](https://github.com/googleads/googleads-mobile-ios-mediation/blob/master/adapters/Facebook/CHANGELOG.md#version-5711).
 
-#### Version 2.7.0
+#### Version 2.7.0 (Deprecated, use 2.8.0 or newer)
 - Supports [Facebook Android adapter version 5.7.0.0](https://github.com/googleads/googleads-mobile-android-mediation/blob/master/ThirdPartyAdapters/facebook/CHANGELOG.md#5700).
 - Supports [Facebook iOS adapter version 5.7.0.0](https://github.com/googleads/googleads-mobile-ios-mediation/blob/master/adapters/Facebook/CHANGELOG.md#version-5700).
 
-#### Version 2.6.1
+#### Version 2.6.1 (Deprecated, use 2.8.0 or newer)
 - Supports [Facebook Android adapter version 5.6.1.0](https://github.com/googleads/googleads-mobile-android-mediation/blob/master/ThirdPartyAdapters/facebook/CHANGELOG.md#5610).
 - Supports [Facebook iOS adapter version 5.6.1.0](https://github.com/googleads/googleads-mobile-ios-mediation/blob/master/adapters/Facebook/CHANGELOG.md#version-5610).
 
