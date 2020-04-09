@@ -21,15 +21,19 @@ namespace GoogleMobileAds.Api
 {
     public class MobileAds
     {
-        public static class Utils {
+        public static class Utils
+        {
             // Returns the device's scale.
-            public static float GetDeviceScale() {
+            public static float GetDeviceScale()
+            {
                 return Instance.client.GetDeviceScale();
             }
 
             // Returns the safe width for the current device.
-            public static int GetDeviceSafeWidth() {
+            public static int GetDeviceSafeWidth()
+            {
                 return Instance.client.GetDeviceSafeWidth();
+
             }
         }
 
@@ -57,7 +61,9 @@ namespace GoogleMobileAds.Api
 
         public static void Initialize(Action<InitializationStatus> initCompleteAction)
         {
-            Instance.client.Initialize((initStatusClient) => {
+            Instance.client.Initialize((initStatusClient) =>
+            {
+
                 if (initCompleteAction != null)
                 {
                     initCompleteAction.Invoke(new InitializationStatus(initStatusClient));
@@ -69,6 +75,17 @@ namespace GoogleMobileAds.Api
         public static void SetApplicationMuted(bool muted)
         {
             Instance.client.SetApplicationMuted(muted);
+        }
+
+        public static void SetRequestConfiguration(RequestConfiguration requestConfiguration)
+        {
+            Instance.client.SetRequestConfiguration(requestConfiguration);
+        }
+
+        public static RequestConfiguration GetRequestConfiguration()
+        {
+
+            return Instance.client.GetRequestConfiguration();
         }
 
         public static void SetApplicationVolume(float volume)
@@ -83,7 +100,7 @@ namespace GoogleMobileAds.Api
 
         private static IMobileAdsClient GetMobileAdsClient()
         {
-          return GoogleMobileAdsClientFactory.MobileAdsInstance();
+            return GoogleMobileAdsClientFactory.MobileAdsInstance();
         }
     }
 }

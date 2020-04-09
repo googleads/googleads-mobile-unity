@@ -84,6 +84,18 @@ namespace GoogleMobileAds.Common
             Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
         }
 
+        public void SetRequestConfiguration(RequestConfiguration requestConfiguration)
+        {
+            Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
+        }
+
+         public RequestConfiguration GetRequestConfiguration()
+        {
+            Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
+            return null;
+
+        }
+
         public void SetApplicationVolume(float volume)
         {
             Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
