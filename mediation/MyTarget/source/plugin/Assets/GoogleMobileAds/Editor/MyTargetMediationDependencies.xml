@@ -1,19 +1,17 @@
 <dependencies>
   <androidPackages>
-    <androidPackage spec="com.google.ads.mediation:mytarget:5.4.6.0">
+    <androidPackage spec="com.google.ads.mediation:mytarget:5.6.3.0">
       <repositories>
         <repository>https://google.bintray.com/mobile-ads-adapters-android</repository>
-        <repository>https://dl.bintray.com/mytarget/maven/</repository>
       </repositories>
     </androidPackage>
   </androidPackages>
 
   <iosPods>
-    <iosPod name="GoogleMobileAdsMediationMyTarget" version="5.3.3.0">
+    <iosPod name="GoogleMobileAdsMediationMyTarget" version="5.4.9.0">
       <sources>
         <source>https://github.com/CocoaPods/Specs</source>
       </sources>
     </iosPod>
   </iosPods>
 </dependencies>
-
