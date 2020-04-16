@@ -493,14 +493,20 @@ void GADUSetRequestConfiguration(GADUTypeRequestConfigurationRef requestConfigur
       [GADMobileAds.sharedInstance.requestConfiguration tagForUnderAgeOfConsent:false];
       break;
     }
+    case (kGADURequestConfigurationTagForUnderAgeOfConsentUnspecified): {
+      break;
+    }
   }
   switch (internalRequestConfiguration.tagForChildDirectedTreatment) {
-    case (kGADURequestConfigurationTagForUnderAgeOfConsentTrue): {
+    case (kGADURequestConfigurationTagForChildDirectedTreatmentTrue): {
       [GADMobileAds.sharedInstance.requestConfiguration tagForChildDirectedTreatment:true];
       break;
     }
-    case (kGADURequestConfigurationTagForUnderAgeOfConsentFalse): {
+    case (kGADURequestConfigurationTagForChildDirectedTreatmentFalse): {
       [GADMobileAds.sharedInstance.requestConfiguration tagForChildDirectedTreatment:false];
+      break;
+    }
+    case (kGADURequestConfigurationTagForChildDirectedTreatmentUnspecified): {
       break;
     }
   }
