@@ -9,6 +9,9 @@
 /// Returns YES if the operating system is at least the supplied major version.
 BOOL GADUIsOperatingSystemAtLeastVersion(NSInteger majorVersion);
 
+/// Returns the full available safe width of the device (excludes safe areas).
+int GADUDeviceSafeWidth();
+
 @interface GADUPluginUtil : NSObject
 
 /// Whether the Unity app should be paused when a full screen ad is displayed.
