@@ -100,7 +100,7 @@ task exportPackage() {
                  "-exportPackage",
                  "Assets/GoogleMobileAds",
                  "Assets/Plugins",
-                 "Assets/PlayServicesResolver",
+                 "Assets/ExternalDependencyManager",
                  "${exportPath}",
                  "-quit"
         }
