@@ -1,3 +1,4 @@
+#if UNITY_IOS
 // Copyright (C) 2015 Google, Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -20,3 +21,4 @@ public sealed class MonoPInvokeCallbackAttribute : Attribute
 {
     public MonoPInvokeCallbackAttribute(Type type) {}
 }
+#endif

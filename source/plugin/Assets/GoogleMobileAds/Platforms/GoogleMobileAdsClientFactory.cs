@@ -1,3 +1,4 @@
+#if !UNITY_IOS
 // Copyright (C) 2015 Google, Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -27,10 +28,6 @@ namespace GoogleMobileAds
             {
                 return new GoogleMobileAds.Android.BannerClient();
             }
-            else if (Application.platform == RuntimePlatform.IPhonePlayer)
-            {
-                return new GoogleMobileAds.iOS.BannerClient();
-            }
             else
             {
               return new GoogleMobileAds.Common.DummyClient();
@@ -42,10 +39,6 @@ namespace GoogleMobileAds
           if (Application.platform == RuntimePlatform.Android)
           {
               return new GoogleMobileAds.Android.InterstitialClient();
-          }
-          else if (Application.platform == RuntimePlatform.IPhonePlayer)
-          {
-              return new GoogleMobileAds.iOS.InterstitialClient();
           }
           else
           {
@@ -59,10 +52,6 @@ namespace GoogleMobileAds
           {
               return new GoogleMobileAds.Android.RewardBasedVideoAdClient();
           }
-          else if (Application.platform == RuntimePlatform.IPhonePlayer)
-          {
-              return new GoogleMobileAds.iOS.RewardBasedVideoAdClient();
-          }
           else
           {
             return new GoogleMobileAds.Common.DummyClient();
@@ -74,10 +63,6 @@ namespace GoogleMobileAds
           if (Application.platform == RuntimePlatform.Android)
           {
               return new GoogleMobileAds.Android.RewardedAdClient();
-          }
-          else if (Application.platform == RuntimePlatform.IPhonePlayer)
-          {
-              return new GoogleMobileAds.iOS.RewardedAdClient();
           }
           else
           {
@@ -91,11 +76,6 @@ namespace GoogleMobileAds
           {
               return new GoogleMobileAds.Android.AdLoaderClient(args);
           }
-          else if (Application.platform == RuntimePlatform.IPhonePlayer)
-          {
-              return new GoogleMobileAds.iOS.AdLoaderClient(args);
-          }
-          else
           {
             return new GoogleMobileAds.Common.DummyClient();
           }
@@ -107,10 +87,6 @@ namespace GoogleMobileAds
           {
               return GoogleMobileAds.Android.MobileAdsClient.Instance;
           }
-          else if (Application.platform == RuntimePlatform.IPhonePlayer)
-          {
-              return GoogleMobileAds.iOS.MobileAdsClient.Instance;
-          }
           else
           {
             return new GoogleMobileAds.Common.DummyClient();
@@ -118,3 +94,4 @@ namespace GoogleMobileAds
         }
     }
 }
+#endif
