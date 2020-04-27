@@ -59,6 +59,11 @@ namespace GoogleMobileAds.Android
                                 .GetStatic<int>("TAG_FOR_UNDER_AGE_OF_CONSENT_UNSPECIFIED");
                         break;
                 }
+                // Unity 2019.2 has a bug where calling AndroidJavaClass.GetStatic
+                // returns null, hence we assign the value directly (they are the same).
+#if UNITY_2019_2
+                tagForUnderAgeOfConsentCode = (int)requestConfiguration.TagForUnderAgeOfConsent.GetValueOrDefault();
+#endif
 
                 if (tagForUnderAgeOfConsentCode.HasValue)
                 {
@@ -84,6 +89,11 @@ namespace GoogleMobileAds.Android
                                 .GetStatic<int>("TAG_FOR_UNDER_AGE_OF_CONSENT_UNSPECIFIED");
                         break;
                 }
+                // Unity 2019.2 has a bug where calling AndroidJavaClass.GetStatic
+                // returns null, hence we assign the value directly (they are the same).
+#if UNITY_2019_2
+                tagForChildDirectedTreatmentCode = (int)requestConfiguration.TagForChildDirectedTreatment.GetValueOrDefault();
+#endif
 
                 if (tagForChildDirectedTreatmentCode.HasValue)
                 {
