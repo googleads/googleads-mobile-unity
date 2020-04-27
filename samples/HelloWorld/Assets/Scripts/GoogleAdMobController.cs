@@ -1,8 +1,10 @@
 using UnityEngine.Events;
 using UnityEngine;
 using GoogleMobileAds.Api;
+using GoogleMobileAds.Common;
 using UnityEngine.UI;
 using System;
+using System.Collections.Generic;
 
 public class GoogleAdMobController : MonoBehaviour
 {
@@ -28,15 +30,37 @@ public class GoogleAdMobController : MonoBehaviour
     {
         MobileAds.SetiOSAppPauseOnBackground(true);
 
+        List<String> deviceIds = new List<String>() { AdRequest.TestDeviceSimulator };
+
+        // Add some test device IDs (replace with your own device IDs).
+#if UNITY_IPHONE
+        deviceIds.Add("96e23e80653bb28980d3f40beb58915c");
+#elif UNITY_ANDROID
+        deviceIds.Add("75EF8D155528C04DACBBA6F36F433035");
+#endif
+
+        // Configure TagForChildDirectedTreatment and test device IDs.
+        RequestConfiguration requestConfiguration =
+            new RequestConfiguration.Builder()
+            .SetTagForChildDirectedTreatment(TagForChildDirectedTreatment.Unspecified)
+            .SetTestDeviceIds(deviceIds).build();
+
+        MobileAds.SetRequestConfiguration(requestConfiguration);
+
         // Initialize the Google Mobile Ads SDK.
         MobileAds.Initialize(HandleInitCompleteAction);
-
-        RequestAndLoadRewardedAd();
     }
 
-    private void HandleInitCompleteAction(InitializationStatus initStatus)
+    private void HandleInitCompleteAction(InitializationStatus initstatus)
     {
-        statusText.text = "Initialization complete";
+        // Callbacks from GoogleMobileAds are not guaranteed to be called on
+        // main thread.
+        // In this example we use MobileAdsEventExecutor to schedule these calls on
+        // the next Update() loop.
+        MobileAdsEventExecutor.ExecuteInUpdate(() => {
+            statusText.text = "Initialization complete";
+            RequestBannerAd();
+        });
     }
 
     private void Update()
