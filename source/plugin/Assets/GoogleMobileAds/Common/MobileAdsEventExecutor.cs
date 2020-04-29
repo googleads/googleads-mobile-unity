@@ -78,7 +78,10 @@ namespace GoogleMobileAds.Common
 
             foreach (Action stagedEvent in stagedAdEventsQueue)
             {
-                stagedEvent.Invoke();
+                if (stagedEvent.Target != null)
+                {
+                    stagedEvent.Invoke();
+                }
             }
         }
 
