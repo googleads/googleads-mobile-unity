@@ -20,7 +20,9 @@ namespace GoogleMobileAds.Common
     {
         event EventHandler<AdFailedToLoadEventArgs> OnAdFailedToLoad;
 
-        event EventHandler<CustomNativeEventArgs> OnCustomNativeTemplateAdLoaded;
+        event EventHandler<CustomNativeClientEventArgs> OnCustomNativeTemplateAdLoaded;
+
+        event EventHandler<CustomNativeClientEventArgs> OnCustomNativeTemplateAdClicked;
 
         void LoadAd(AdRequest request);
     }

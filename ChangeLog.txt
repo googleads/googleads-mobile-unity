@@ -1,6 +1,26 @@
 Google Mobile Ads Unity Plugin Change Log
 
 **************
+Version 5.1.0
+**************
+
+Plugin:
+  - Added RequestConfiguration class. See
+  https://developers.google.com/admob/unity/targeting for usage details.
+  - Fixed issue with building for IL2CPP in versions of Unity 2017 and earlier.
+  - Adding missing imports for Unity 5.6 build (Thanks @EldersJavas !).
+  - Added GoogleMobileAds assembly definition.
+  - Added thread safety to GADUObjectCache in iOS plugin.
+  - Revised project structure. If upgrading from a previous version, delete
+  your GoogleMobileAds/ folder before importing this plugin.
+
+Built and tested with:
+- Google Play services 19.1.0
+- Google Mobile Ads iOS SDK 7.58.0
+- Unity Jar Resolver 1.2.152
+
+
+**************
 Version 5.0.1
 **************
 

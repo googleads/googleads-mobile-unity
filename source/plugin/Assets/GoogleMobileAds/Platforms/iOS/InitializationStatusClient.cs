@@ -1,3 +1,4 @@
+#if UNITY_IOS
 // Copyright (C) 2018 Google, Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -21,7 +22,7 @@ using GoogleMobileAds.Common;
 
 namespace GoogleMobileAds.iOS
 {
-    internal class InitializationStatusClient : IInitializationStatusClient
+    public class InitializationStatusClient : IInitializationStatusClient
     {
         private IntPtr status;
 
@@ -72,5 +73,4 @@ namespace GoogleMobileAds.iOS
         }
     }
 }
-
-
+#endif

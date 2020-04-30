@@ -13,9 +13,10 @@
 // limitations under the License.
 
 using System;
-
-using GoogleMobileAds.Common;
 using UnityEngine;
+
+using GoogleMobileAds;
+using GoogleMobileAds.Common;
 
 namespace GoogleMobileAds.Api
 {
@@ -27,6 +28,9 @@ namespace GoogleMobileAds.Api
         public event EventHandler<EventArgs> OnAdOpening;
         public event EventHandler<EventArgs> OnAdClosed;
         public event EventHandler<EventArgs> OnAdLeavingApplication;
+        /// <summary>
+        /// Called when the ad is estimated to have earned money.
+        /// </summary>
         public event EventHandler<AdValueEventArgs> OnPaidEvent;
 
         private IInterstitialClient client;

@@ -8,29 +8,19 @@ using UnityEngine;
 
 namespace GoogleMobileAds.Editor
 {
-
     internal class GoogleMobileAdsSettings : ScriptableObject
     {
+        [SerializeField] private bool isAdManagerEnabled = false;
+        [SerializeField] private bool isAdMobEnabled = false;
+        [SerializeField] private string adMobAndroidAppId = string.Empty;
+        [SerializeField] private string adMobIOSAppId = string.Empty;
+        [SerializeField] private bool delayAppMeasurementInit = false;
+
         private const string MobileAdsSettingsDir = "Assets/GoogleMobileAds/Editor";
         private const string MobileAdsSettingsResDir = MobileAdsSettingsDir + "/Resources";
         private const string MobileAdsSettingsFile = MobileAdsSettingsResDir + "/GoogleMobileAdsSettings.asset";
 
         private static GoogleMobileAdsSettings instance;
-
-        [SerializeField]
-        private bool isAdManagerEnabled = false;
-
-        [SerializeField]
-        private bool isAdMobEnabled = false;
-
-        [SerializeField]
-        private string adMobAndroidAppId = string.Empty;
-
-        [SerializeField]
-        private string adMobIOSAppId = string.Empty;
-
-        [SerializeField]
-        private bool delayAppMeasurementInit = false;
 
         public bool IsAdManagerEnabled
         {
@@ -113,7 +103,7 @@ namespace GoogleMobileAds.Editor
 
                     if (instance == null)
                     {
-                        instance = ScriptableObject.CreateInstance<GoogleMobileAdsSettings>();
+                        instance = CreateInstance<GoogleMobileAdsSettings>();
                         AssetDatabase.CreateAsset(instance, MobileAdsSettingsFile);
                     }
                 }

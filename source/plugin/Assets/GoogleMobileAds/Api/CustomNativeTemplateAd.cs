@@ -40,8 +40,8 @@ namespace GoogleMobileAds.Api
         }
 
         /// <summary>
-        /// Get image asset corresponding to the key parameter of custom native template ad as a
-        /// Texture2D. If the asset key does not map to an existing asset, a null object will be returned.
+        /// Get image asset corresponding to the key parameter of custom native template ad as a Texture2D.
+        /// If the asset key does not map to an existing asset, a null object will be returned.
         /// </summary>
         /// <param name="key"></param>
         /// <returns></returns>

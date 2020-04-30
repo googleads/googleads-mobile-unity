@@ -24,7 +24,7 @@ namespace GoogleMobileAds.Common
         void Initialize(string appId);
 
         // Initialize the Mobile Ads SDK and mediation adapters.
-        void Initialize(Action<InitializationStatus> initCompleteAction);
+        void Initialize(Action<IInitializationStatusClient> initCompleteAction);
 
         // The application’s audio volume. Affects audio volumes of all ads relative
         // to other audio output. Valid ad volume values range from 0.0 (silent) to 1.0
@@ -45,5 +45,11 @@ namespace GoogleMobileAds.Common
 
         // Returns the safe width for the current device.
         int GetDeviceSafeWidth();
+
+        // Set Global Request Configuration to Mobile Ads SDK
+        void SetRequestConfiguration(RequestConfiguration requestConfiguration);
+
+        // Get Mobile Ads SDK's Global Request Configuration
+        RequestConfiguration GetRequestConfiguration();
     }
 }

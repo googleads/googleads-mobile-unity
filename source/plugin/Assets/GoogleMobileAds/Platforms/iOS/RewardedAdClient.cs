@@ -1,3 +1,4 @@
+#if UNITY_IOS
 // Copyright (C) 2018 Google, Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -280,3 +281,4 @@ namespace GoogleMobileAds.iOS
         #endregion
     }
 }
+#endif

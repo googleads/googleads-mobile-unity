@@ -14,38 +14,33 @@
 
 using System;
 
-using UnityEngine;
-
+using GoogleMobileAds;
 using GoogleMobileAds.Common;
 
 namespace GoogleMobileAds.Api
 {
     public class MobileAds
     {
-        public static class Utils
-        {
-            /// <summary>
-            /// Returns the device's scale.
-            /// </summary>
-            /// <returns></returns>
-            public static float GetDeviceScale() {
-                return client.GetDeviceScale();
-            }
-
-            /// <summary>
-            /// Returns the safe width for the current device.
-            /// </summary>
-            /// <returns></returns>
-            public static int GetDeviceSafeWidth() {
-                return client.GetDeviceSafeWidth();
-            }
-        }
-        private static readonly IMobileAdsClient client = GetMobileAdsClient();
         internal static bool IsDebugging { get; private set; }
 
+        private readonly IMobileAdsClient client = GetMobileAdsClient();
+        private static MobileAds instance;
+
+        public static MobileAds Instance
+        {
+            get
+            {
+                if (instance == null)
+                {
+                    instance = new MobileAds();
+                }
+                return instance;
+            }
+        }
+        [Obsolete("Initialize(string appId) is deprecated, use Initialize(Action<InitializationStatus> initCompleteAction) instead.")]
         public static void Initialize(string appId, bool debug = false)
         {
-            client.Initialize(appId);
+            Instance.client.Initialize(appId);
             MobileAdsEventExecutor.Initialize();
 
             IsDebugging = debug;
@@ -53,30 +48,62 @@ namespace GoogleMobileAds.Api
 
         public static void Initialize(Action<InitializationStatus> initCompleteAction, bool debug = false)
         {
-            client.Initialize(initCompleteAction);
+            Instance.client.Initialize((initStatusClient) 
+                => initCompleteAction?.Invoke(new InitializationStatus(initStatusClient)));
             MobileAdsEventExecutor.Initialize();
-
             IsDebugging = debug;
         }
 
         public static void SetApplicationMuted(bool muted)
         {
-            client.SetApplicationMuted(muted);
+            Instance.client.SetApplicationMuted(muted);
+        }
+
+        public static void SetRequestConfiguration(RequestConfiguration requestConfiguration)
+        {
+            Instance.client.SetRequestConfiguration(requestConfiguration);
+        }
+
+        public static RequestConfiguration GetRequestConfiguration()
+        {
+
+            return Instance.client.GetRequestConfiguration();
         }
 
         public static void SetApplicationVolume(float volume)
         {
-            client.SetApplicationVolume(volume);
+            Instance.client.SetApplicationVolume(volume);
         }
 
         public static void SetiOSAppPauseOnBackground(bool pause)
         {
-            client.SetiOSAppPauseOnBackground(pause);
+            Instance.client.SetiOSAppPauseOnBackground(pause);
         }
 
         private static IMobileAdsClient GetMobileAdsClient()
         {
             return GoogleMobileAdsClientFactory.MobileAdsInstance();
+        }
+
+        public static class Utils
+        {
+            /// <summary>
+            /// Returns the device's scale.
+            /// </summary>
+            /// <returns></returns>
+            public static float GetDeviceScale()
+            {
+                return Instance.client.GetDeviceScale();
+            }
+
+            /// <summary>
+            /// Returns the safe width for the current device.
+            /// </summary>
+            /// <returns></returns>
+            public static int GetDeviceSafeWidth()
+            {
+                return Instance.client.GetDeviceSafeWidth();
+            }
         }
     }
 }

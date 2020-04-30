@@ -1,3 +1,4 @@
+#if UNITY_IOS
 // Copyright (C) 2017 Google, Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -24,7 +25,7 @@ namespace GoogleMobileAds.iOS
     public class MobileAdsClient : IMobileAdsClient
     {
         private static MobileAdsClient instance = new MobileAdsClient();
-        private Action<InitializationStatus> initCompleteAction;
+        private Action<IInitializationStatusClient> initCompleteAction;
         private IntPtr mobileAdsClientPtr;
         internal delegate void GADUInitializationCompleteCallback(IntPtr mobileAdsClient, IntPtr initStatusClient);
 
@@ -46,7 +47,7 @@ namespace GoogleMobileAds.iOS
             Externs.GADUInitialize(appId);
         }
 
-        public void Initialize(Action<InitializationStatus> initCompleteAction)
+        public void Initialize(Action<IInitializationStatusClient> initCompleteAction)
         {
             this.initCompleteAction = initCompleteAction;
             Externs.GADUInitializeWithCallback(this.mobileAdsClientPtr, InitializationCompleteCallback);
@@ -60,6 +61,17 @@ namespace GoogleMobileAds.iOS
         public void SetApplicationMuted(bool muted)
         {
             Externs.GADUSetApplicationMuted(muted);
+        }
+
+        public void SetRequestConfiguration(RequestConfiguration requestConfiguration)
+        {
+            RequestConfigurationClient.SetRequestConfiguration(requestConfiguration);
+
+        }
+
+        public RequestConfiguration GetRequestConfiguration()
+        {
+            return RequestConfigurationClient.GetRequestConfiguration();
         }
 
         public void SetiOSAppPauseOnBackground(bool pause)
@@ -83,8 +95,8 @@ namespace GoogleMobileAds.iOS
             MobileAdsClient client = IntPtrToMobileAdsClient(mobileAdsClient);
             if (client.initCompleteAction != null)
             {
-                InitializationStatus status = new InitializationStatus(new InitializationStatusClient(initStatus));
-                client.initCompleteAction(status);
+                IInitializationStatusClient statusClient = new InitializationStatusClient(initStatus);
+                client.initCompleteAction(statusClient);
             }
         }
 
@@ -105,5 +117,4 @@ namespace GoogleMobileAds.iOS
         }
     }
 }
-
-
+#endif

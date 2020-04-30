@@ -1,3 +1,4 @@
+#if UNITY_IOS
 // Copyright (C) 2016 Google, Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -24,9 +25,9 @@ namespace GoogleMobileAds.iOS
 {
     internal class CustomNativeTemplateClient : ICustomNativeTemplateClient, IDisposable
     {
+        public Action<string> clickHandler;
         private IntPtr customNativeAdPtr;
         private IntPtr customNativeTemplateAdClientPtr;
-        private Action<CustomNativeTemplateAd, string> clickHandler;
 
         // This property should be used when setting the customNativeAdPtr.
         private IntPtr CustomNativeAdPtr
@@ -44,10 +45,9 @@ namespace GoogleMobileAds.iOS
         }
 
         public CustomNativeTemplateClient(
-            IntPtr customNativeAd, Action<CustomNativeTemplateAd, string> clickHandler)
+            IntPtr customNativeAd)
         {
             this.customNativeAdPtr = customNativeAd;
-            this.clickHandler = clickHandler;
 
             this.customNativeTemplateAdClientPtr = (IntPtr)GCHandle.Alloc(this);
 
@@ -128,16 +128,15 @@ namespace GoogleMobileAds.iOS
         private static void NativeCustomTemplateDidReceiveClickCallback(
             IntPtr nativeCustomAd, string assetName)
         {
-            CustomNativeTemplateClient client = IntPtrToAdLoaderClient(nativeCustomAd);
+            CustomNativeTemplateClient client = IntPtrToCustomTemplateAdClient(nativeCustomAd);
             if (client.clickHandler != null)
             {
-                CustomNativeTemplateAd nativeAd = new CustomNativeTemplateAd(client);
-                client.clickHandler(nativeAd, assetName);
+                client.clickHandler(assetName);
             }
 
         }
 
-        private static CustomNativeTemplateClient IntPtrToAdLoaderClient(
+        private static CustomNativeTemplateClient IntPtrToCustomTemplateAdClient(
             IntPtr customNativeTemplateAd)
         {
             GCHandle handle = (GCHandle)customNativeTemplateAd;
@@ -145,5 +144,4 @@ namespace GoogleMobileAds.iOS
         }
     }
 }
-
-
+#endif

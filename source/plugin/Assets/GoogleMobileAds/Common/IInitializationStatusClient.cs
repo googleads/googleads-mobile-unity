@@ -17,7 +17,7 @@ using GoogleMobileAds.Api;
 
 namespace GoogleMobileAds.Common
 {
-    internal interface IInitializationStatusClient
+    public interface IInitializationStatusClient
     {
         AdapterStatus getAdapterStatusForClassName(string className);
         Dictionary<string, AdapterStatus> getAdapterStatusMap();
