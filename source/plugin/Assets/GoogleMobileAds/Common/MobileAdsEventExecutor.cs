@@ -60,6 +60,7 @@ namespace GoogleMobileAds.Common
                 adEventsQueueEmpty = false;
             }
         }
+
         public void Update()
         {
             if (adEventsQueueEmpty)

@@ -26,7 +26,7 @@ namespace GoogleMobileAds.Api
         // Creates an InterstitialAd.
         public InterstitialAd(string adUnitId)
         {
-            this.client = GoogleMobileAdsClientFactory.BuildInterstitialClient();
+            this.client = MobileAds.GetClientFactory().BuildInterstitialClient();
             client.CreateInterstitialAd(adUnitId);
 
             this.client.OnAdLoaded += (sender, args) =>

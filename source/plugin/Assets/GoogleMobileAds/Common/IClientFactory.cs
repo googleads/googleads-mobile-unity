@@ -12,15 +12,24 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System;
+using UnityEngine;
+using GoogleMobileAds;
+using GoogleMobileAds.Common;
 
-namespace GoogleMobileAds.Common
+namespace GoogleMobileAds
 {
-  // Event that occurs when a custom native template ad loads in a client.
-  public class CustomNativeClientEventArgs : EventArgs
-  {
-      internal ICustomNativeTemplateClient nativeAdClient { get; set; }
+    public interface IClientFactory
+    {
+        IBannerClient BuildBannerClient();
 
-      internal string assetName { get; set; }
-  }
+        IInterstitialClient BuildInterstitialClient();
+
+        IRewardBasedVideoAdClient BuildRewardBasedVideoAdClient();
+
+        IRewardedAdClient BuildRewardedAdClient();
+
+        IAdLoaderClient BuildAdLoaderClient(AdLoaderClientArgs args);
+
+        IMobileAdsClient MobileAdsInstance();
+    }
 }

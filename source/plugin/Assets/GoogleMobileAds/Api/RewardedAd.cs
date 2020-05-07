@@ -25,7 +25,7 @@ namespace GoogleMobileAds.Api
 
         public RewardedAd(string adUnitId)
         {
-            this.client = GoogleMobileAdsClientFactory.BuildRewardedAdClient();
+            this.client = MobileAds.GetClientFactory().BuildRewardedAdClient();
             client.CreateRewardedAd(adUnitId);
 
             this.client.OnAdLoaded += (sender, args) =>

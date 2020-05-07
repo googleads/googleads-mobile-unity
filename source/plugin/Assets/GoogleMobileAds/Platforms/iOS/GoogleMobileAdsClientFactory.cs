@@ -1,5 +1,5 @@
 #if UNITY_IOS
-// Copyright (C) 2020 Google, Inc.
+// Copyright (C) 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,37 +17,39 @@ using UnityEngine;
 using GoogleMobileAds;
 using GoogleMobileAds.Api;
 using GoogleMobileAds.Common;
+using UnityEngine.Scripting;
 
 namespace GoogleMobileAds
 {
-    public class GoogleMobileAdsClientFactory
+    [Preserve]
+    public class GoogleMobileAdsClientFactory: IClientFactory
     {
-        public static IBannerClient BuildBannerClient()
+        public IBannerClient BuildBannerClient()
         {
             return new GoogleMobileAds.iOS.BannerClient();
         }
 
-        public static IInterstitialClient BuildInterstitialClient()
+        public IInterstitialClient BuildInterstitialClient()
         {
           return new GoogleMobileAds.iOS.InterstitialClient();
         }
 
-        public static IRewardBasedVideoAdClient BuildRewardBasedVideoAdClient()
+        public IRewardBasedVideoAdClient BuildRewardBasedVideoAdClient()
         {
           return new GoogleMobileAds.iOS.RewardBasedVideoAdClient();
         }
 
-        public static IRewardedAdClient BuildRewardedAdClient()
+        public IRewardedAdClient BuildRewardedAdClient()
         {
           return new GoogleMobileAds.iOS.RewardedAdClient();
         }
 
-        public static IAdLoaderClient BuildAdLoaderClient(AdLoaderClientArgs args)
+        public IAdLoaderClient BuildAdLoaderClient(AdLoaderClientArgs args)
         {
           return new GoogleMobileAds.iOS.AdLoaderClient(args);
         }
 
-        public static IMobileAdsClient MobileAdsInstance()
+        public IMobileAdsClient MobileAdsInstance()
         {
           return GoogleMobileAds.iOS.MobileAdsClient.Instance;
         }
