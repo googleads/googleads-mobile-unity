@@ -1,6 +1,6 @@
 <dependencies>
   <androidPackages>
-    <androidPackage spec="com.google.ads.mediation:applovin:9.12.3.0">
+    <androidPackage spec="com.google.ads.mediation:applovin:9.12.4.0">
       <repositories>
         <repository>https://jcenter.bintray.com/</repository>
       </repositories>
@@ -8,7 +8,7 @@
   </androidPackages>
 
   <iosPods>
-    <iosPod name="GoogleMobileAdsMediationAppLovin" version="6.12.3.0">
+    <iosPod name="GoogleMobileAdsMediationAppLovin" version="6.12.4.0">
       <sources>
         <source>https://github.com/CocoaPods/Specs</source>
       </sources>
