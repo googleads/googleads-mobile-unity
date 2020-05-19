@@ -62,6 +62,10 @@
   return self.interstitial.responseInfo.adNetworkClassName;
 }
 
+- (GADResponseInfo *)responseInfo {
+  return self.interstitial.responseInfo;
+}
+
 #pragma mark GADInterstitialDelegate implementation
 
 - (void)interstitialDidReceiveAd:(GADInterstitial *)ad {

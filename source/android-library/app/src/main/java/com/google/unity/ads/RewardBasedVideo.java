@@ -87,7 +87,7 @@ public class RewardBasedVideo {
                                 public void run() {
                                     if (adListener != null) {
                                         adListener.onAdFailedToLoad(
-                                            PluginUtils.getErrorReason(errorCode));
+                                                PluginUtils.getErrorReason(errorCode));
                                     }
                                 }
                             }).start();
@@ -144,7 +144,7 @@ public class RewardBasedVideo {
                                 public void run() {
                                     if (adListener != null) {
                                         adListener.onAdRewarded(reward.getType(),
-                                            reward.getAmount());
+                                                reward.getAmount());
                                     }
                                 }
                             }).start();

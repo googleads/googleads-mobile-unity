@@ -75,6 +75,10 @@
   return self.rewardedAd.responseInfo.adNetworkClassName;
 }
 
+- (GADResponseInfo *)responseInfo {
+  return self.rewardedAd.responseInfo;
+}
+
 - (void)rewardedAd:(nonnull GADRewardedAd *)rewardedAd
     userDidEarnReward:(nonnull GADAdReward *)reward {
   if (self.didEarnRewardCallback) {

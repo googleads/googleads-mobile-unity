@@ -192,6 +192,10 @@
   return self.bannerView.responseInfo.adNetworkClassName;
 }
 
+- (GADResponseInfo *)responseInfo {
+  return self.bannerView.responseInfo;
+}
+
 - (CGFloat)heightInPixels {
   return CGRectGetHeight(CGRectStandardize(self.bannerView.frame)) * [UIScreen mainScreen].scale;
 }
