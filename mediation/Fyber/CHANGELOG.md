@@ -1,5 +1,9 @@
 ## Fyber Unity Mediation Plugin Changelog
 
+#### Version 1.2.0
+- Supports [Fyber Android adapter version 7.5.0.0](https://github.com/googleads/googleads-mobile-android-mediation/blob/master/ThirdPartyAdapters/fyber/CHANGELOG.md#version-7500).
+- Supports [Fyber iOS adapter version 7.5.1.0](https://github.com/googleads/googleads-mobile-ios-mediation/blob/master/adapters/Fyber/CHANGELOG.md#version-7510).
+
 #### Version 1.1.0
 - Added the following methods to the `Fyber` class to support GDPR requirements:
   * `SetGDPRConsent()`
