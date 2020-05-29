@@ -82,38 +82,14 @@ namespace GoogleMobileAds.Api
                 return this;
             }
 
-            public Builder AddTestDevice(string deviceId)
-            {
-                this.TestDevices.Add(deviceId);
-                return this;
-            }
-
             public AdRequest Build()
             {
                 return new AdRequest(this);
             }
 
-            public Builder SetBirthday(DateTime birthday)
-            {
-                this.Birthday = birthday;
-                return this;
-            }
-
-            public Builder SetGender(Gender gender)
-            {
-                this.Gender = gender;
-                return this;
-            }
-
             public Builder AddMediationExtras(MediationExtras extras)
             {
                 this.MediationExtras.Add(extras);
-                return this;
-            }
-
-            public Builder TagForChildDirectedTreatment(bool tagForChildDirectedTreatment)
-            {
-                this.ChildDirectedTreatmentTag = tagForChildDirectedTreatment;
                 return this;
             }
 
