@@ -7,8 +7,8 @@ import com.vungle.mediation.VungleAdapter;
  */
 public class VungleUnityRewardedVideoExtrasBuilder extends VungleUnityExtrasBuilder {
 
-    @Override
-    public Class getAdapterClass() {
-        return VungleAdapter.class;
-    }
+  @Override
+  public Class getAdapterClass() {
+    return VungleAdapter.class;
+  }
 }

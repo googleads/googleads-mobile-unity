@@ -1,5 +1,9 @@
 ## AdColony Unity Mediation Plugin Changelog
 
+#### Next Version
+- Repackaged `adcolony-extras-library.jar` to `adcolony-unity-android-library.aar`, using a `.aar` build to support Unity 2020.
+  * When upgrading to this version, please remove `adcolony-extras-library.jar` from your project.
+
 #### Version 2.0.2
 - Supports [AdColony Android adapter version 4.1.4.1](https://github.com/googleads/googleads-mobile-android-mediation/blob/master/ThirdPartyAdapters/adcolony/CHANGELOG.md#version-4141).
 - Supports [AdColony iOS adapter version 4.1.4.1](https://github.com/googleads/googleads-mobile-ios-mediation/blob/master/adapters/AdColony/CHANGELOG.md#version-4141).
