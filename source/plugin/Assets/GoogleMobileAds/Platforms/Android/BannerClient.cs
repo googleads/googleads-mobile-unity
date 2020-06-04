@@ -115,7 +115,13 @@ namespace GoogleMobileAds.Android
             return this.bannerView.Call<string>("getMediationAdapterClassName");
         }
 
-#region Callbacks from UnityBannerAdListener.
+        public IResponseInfoClient GetResponseInfoClient()
+        {
+
+            return new ResponseInfoClient(this.bannerView);
+        }
+
+        #region Callbacks from UnityBannerAdListener.
 
         public void onAdLoaded()
         {
@@ -165,23 +171,22 @@ namespace GoogleMobileAds.Android
         {
             if (this.OnPaidEvent != null)
             {
-              AdValue adValue = new AdValue()
-              {
-                  Precision = (AdValue.PrecisionType)precision,
-                  Value = valueInMicros,
-                  CurrencyCode = currencyCode
-              };
-              AdValueEventArgs args = new AdValueEventArgs() {
-                  AdValue = adValue
-              };
+                AdValue adValue = new AdValue()
+                {
+                    Precision = (AdValue.PrecisionType)precision,
+                    Value = valueInMicros,
+                    CurrencyCode = currencyCode
+                };
+                AdValueEventArgs args = new AdValueEventArgs()
+                {
+                    AdValue = adValue
+                };
 
-              this.OnPaidEvent(this, args);
+                this.OnPaidEvent(this, args);
             }
         }
 
 
-#endregion
+        #endregion
     }
 }
-
-

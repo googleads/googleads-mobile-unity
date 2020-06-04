@@ -55,5 +55,8 @@ namespace GoogleMobileAds.Common
 
         // Sets the server side verification options
         void SetServerSideVerificationOptions(ServerSideVerificationOptions serverSideVerificationOptions);
+
+        // Returns ad request Response info client.
+        IResponseInfoClient GetResponseInfoClient();
     }
 }

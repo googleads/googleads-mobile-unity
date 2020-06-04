@@ -217,6 +217,15 @@ namespace GoogleMobileAds.iOS
         [DllImport("__Internal")]
         internal static extern IntPtr GADUMediationAdapterClassNameForBannerView(IntPtr bannerView);
 
+        [DllImport("__Internal")]
+        internal static extern IntPtr GADUGetResponseInfo(IntPtr adFormat);
+
+        [DllImport("__Internal")]
+        internal static extern string GADUResponseInfoMediationAdapterClassName(IntPtr responseInfo);
+
+        [DllImport("__Internal")]
+        internal static extern string GADUResponseInfoResponseId(IntPtr responseInfo);
+
         #endregion
 
         #region Interstitial externs

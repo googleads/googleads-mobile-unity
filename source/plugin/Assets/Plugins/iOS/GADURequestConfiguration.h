@@ -1,14 +1,14 @@
 #import <Foundation/Foundation.h>
 #import <GoogleMobileAds/GoogleMobileAds.h>
 typedef NS_ENUM(NSInteger, GADURequestConfigurationTagForChildDirectedTreatment) {
-  kGADURequestConfigurationTagForChildDirectedTreatmentTrue = 0,          // true.
-  kGADURequestConfigurationTagForChildDirectedTreatmentFalse = 1,         /// false
+  kGADURequestConfigurationTagForChildDirectedTreatmentTrue = 1,          // true.
+  kGADURequestConfigurationTagForChildDirectedTreatmentFalse = 0,         /// false
   kGADURequestConfigurationTagForChildDirectedTreatmentUnspecified = -1,  // Unspecified
 };
 
 typedef NS_ENUM(NSInteger, GADURequestConfigurationTagForUnderAgeOfConsent) {
-  kGADURequestConfigurationTagForUnderAgeOfConsentTrue = 0,          // true.
-  kGADURequestConfigurationTagForUnderAgeOfConsentFalse = 1,         /// false
+  kGADURequestConfigurationTagForUnderAgeOfConsentTrue = 1,          // true.
+  kGADURequestConfigurationTagForUnderAgeOfConsentFalse = 0,         /// false
   kGADURequestConfigurationTagForUnderAgeOfConsentUnspecified = -1,  // Unspecified
 };
 

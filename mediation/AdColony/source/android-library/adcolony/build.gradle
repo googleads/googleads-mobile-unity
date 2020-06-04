@@ -4,15 +4,16 @@ android {
     compileSdkVersion 28
 
     defaultConfig {
-        minSdkVersion 14
+        minSdkVersion 16
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
+        consumerProguardFiles 'proguard-rules.pgcfg'
     }
     buildTypes {
         release {
             minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pgcfg'
         }
     }
 
@@ -23,18 +24,18 @@ android {
 
 dependencies {
     api project(':app')
-    api 'com.google.ads.mediation:adcolony:4.1.0.0'
+    api 'com.google.ads.mediation:adcolony:4.1.4.1'
 }
 
-task clearJar(type: Delete) {
-    delete 'build/libs/adcolony-extras-library.jar'
+task clearAar(type: Delete) {
+    delete 'build/libs/adcolony-unity-android-library.aar'
 }
 
-task makeJar(type: Copy) {
-    from('build/intermediates/bundles/release/')
+task makeAar(type: Copy) {
+    from('build/outputs/aar/')
     into('build/libs/')
-    include('classes.jar')
-    rename('classes.jar', 'adcolony-extras-library.jar')
+    include('adcolony-release.aar')
+    rename('adcolony-release.aar', 'adcolony-unity-android-library.aar')
 }
 
-makeJar.dependsOn(clearJar, build)
+makeAar.dependsOn(clearAar, build)

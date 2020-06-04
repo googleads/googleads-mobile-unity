@@ -25,7 +25,7 @@ namespace GoogleMobileAds.Api
 
         public RewardedAd(string adUnitId)
         {
-            this.client = GoogleMobileAdsClientFactory.BuildRewardedAdClient();
+            this.client = MobileAds.GetClientFactory().BuildRewardedAdClient();
             client.CreateRewardedAd(adUnitId);
 
             this.client.OnAdLoaded += (sender, args) =>
@@ -129,16 +129,25 @@ namespace GoogleMobileAds.Api
         // Returns the reward item for the loaded rewarded ad.
         public Reward GetRewardItem()
         {
-            if (client.IsLoaded()) {
-              return client.GetRewardItem();
+            if (client.IsLoaded())
+            {
+                return client.GetRewardItem();
             }
             return null;
         }
 
         // Returns the mediation adapter class name.
+        [Obsolete("MediationAdapterClassName() is deprecated, use GetResponseInfo.MediationAdapterClassName() instead.")]
         public string MediationAdapterClassName()
         {
             return this.client.MediationAdapterClassName();
         }
+
+        // Returns ad request response info.
+        public ResponseInfo GetResponseInfo()
+        {
+            return new ResponseInfo(this.client.GetResponseInfoClient());
+        }
+
     }
 }

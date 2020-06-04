@@ -17,12 +17,14 @@ using UnityEngine;
 using GoogleMobileAds;
 using GoogleMobileAds.Api;
 using GoogleMobileAds.Common;
+using UnityEngine.Scripting;
 
 namespace GoogleMobileAds
 {
-    public class GoogleMobileAdsClientFactory
+    [Preserve]
+    public class GoogleMobileAdsClientFactory: IClientFactory
     {
-        public static IBannerClient BuildBannerClient()
+        public IBannerClient BuildBannerClient()
         {
             if (Application.platform == RuntimePlatform.Android)
             {
@@ -34,7 +36,7 @@ namespace GoogleMobileAds
             }
         }
 
-        public static IInterstitialClient BuildInterstitialClient()
+        public IInterstitialClient BuildInterstitialClient()
         {
           if (Application.platform == RuntimePlatform.Android)
           {
@@ -46,7 +48,7 @@ namespace GoogleMobileAds
           }
         }
 
-        public static IRewardBasedVideoAdClient BuildRewardBasedVideoAdClient()
+        public IRewardBasedVideoAdClient BuildRewardBasedVideoAdClient()
         {
           if (Application.platform == RuntimePlatform.Android)
           {
@@ -58,7 +60,7 @@ namespace GoogleMobileAds
           }
         }
 
-        public static IRewardedAdClient BuildRewardedAdClient()
+        public IRewardedAdClient BuildRewardedAdClient()
         {
           if (Application.platform == RuntimePlatform.Android)
           {
@@ -70,7 +72,7 @@ namespace GoogleMobileAds
           }
         }
 
-        public static IAdLoaderClient BuildAdLoaderClient(AdLoaderClientArgs args)
+        public IAdLoaderClient BuildAdLoaderClient(AdLoaderClientArgs args)
         {
           if (Application.platform == RuntimePlatform.Android)
           {
@@ -81,7 +83,7 @@ namespace GoogleMobileAds
           }
         }
 
-        public static IMobileAdsClient MobileAdsInstance()
+        public IMobileAdsClient MobileAdsInstance()
         {
           if (Application.platform == RuntimePlatform.Android)
           {
