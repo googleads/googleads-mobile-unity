@@ -76,9 +76,6 @@ namespace GoogleMobileAds.Api
         {
             get
             {
-                if (width == FullWidth) {
-                    return MobileAds.Utils.GetDeviceSafeWidth();
-                }
                 return width;
             }
         }
@@ -119,11 +116,21 @@ namespace GoogleMobileAds.Api
 
         public static bool operator ==(AdSize a, AdSize b)
         {
+            if ((object)a == null)
+            {
+                return (object)b == null;
+            }
+
             return a.Equals(b);
         }
 
         public static bool operator !=(AdSize a, AdSize b)
         {
+            if ((object)a == null)
+            {
+                return (object)b != null;
+            }
+
             return !a.Equals(b);
         }
 

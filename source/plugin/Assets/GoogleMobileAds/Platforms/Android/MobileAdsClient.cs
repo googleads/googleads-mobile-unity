@@ -68,6 +68,21 @@ namespace GoogleMobileAds.Android
             mobileAdsClass.CallStatic("setAppMuted", muted);
         }
 
+        public void SetRequestConfiguration(RequestConfiguration requestConfiguration)
+        {
+            AndroidJavaClass mobileAdsClass = new AndroidJavaClass(Utils.MobileAdsClassName);
+            AndroidJavaObject requestConfigurationAndroidObject = RequestConfigurationClient.BuildRequestConfiguration(requestConfiguration);
+            mobileAdsClass.CallStatic("setRequestConfiguration", requestConfigurationAndroidObject);
+        }
+
+        public RequestConfiguration GetRequestConfiguration()
+        {
+            AndroidJavaClass mobileAdsClass = new AndroidJavaClass(Utils.MobileAdsClassName);
+            AndroidJavaObject androidRequestConfiguration = mobileAdsClass.CallStatic<AndroidJavaObject>("getRequestConfiguration");
+            RequestConfiguration requestConfiguration = RequestConfigurationClient.GetRequestConfiguration(androidRequestConfiguration);
+            return requestConfiguration;
+        }
+
         public void SetiOSAppPauseOnBackground(bool pause)
         {
             // Do nothing on Android. Default behavior is to pause when app is backgrounded.

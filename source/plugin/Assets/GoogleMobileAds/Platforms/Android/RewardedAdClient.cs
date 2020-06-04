@@ -81,23 +81,31 @@ namespace GoogleMobileAds.Android
         // Returns the reward item for the loaded rewarded ad.
         public Reward GetRewardItem()
         {
-          AndroidJavaObject rewardItem = this.androidRewardedAd.Call<AndroidJavaObject>("getRewardItem");
-          if (rewardItem == null) {
-            return null;
-          }
-          string type = rewardItem.Call<string>("getType");
-          int amount = rewardItem.Call<int>("getAmount");
-          return new Reward()
-          {
-              Type = type,
-              Amount = (double) amount
-          };
+            AndroidJavaObject rewardItem = this.androidRewardedAd.Call<AndroidJavaObject>("getRewardItem");
+            if (rewardItem == null)
+            {
+                return null;
+            }
+            string type = rewardItem.Call<string>("getType");
+            int amount = rewardItem.Call<int>("getAmount");
+            return new Reward()
+            {
+                Type = type,
+                Amount = (double)amount
+            };
         }
 
         // Returns the mediation adapter class name.
         public string MediationAdapterClassName()
         {
             return this.androidRewardedAd.Call<string>("getMediationAdapterClassName");
+        }
+
+        // Returns ad request response info
+        public IResponseInfoClient GetResponseInfoClient()
+        {
+
+            return new ResponseInfoClient(this.androidRewardedAd);
         }
 
         #endregion
@@ -170,17 +178,18 @@ namespace GoogleMobileAds.Android
         {
             if (this.OnPaidEvent != null)
             {
-              AdValue adValue = new AdValue()
-              {
-                  Precision = (AdValue.PrecisionType)precision,
-                  Value = valueInMicros,
-                  CurrencyCode = currencyCode
-              };
-              AdValueEventArgs args = new AdValueEventArgs() {
-                  AdValue = adValue
-              };
+                AdValue adValue = new AdValue()
+                {
+                    Precision = (AdValue.PrecisionType)precision,
+                    Value = valueInMicros,
+                    CurrencyCode = currencyCode
+                };
+                AdValueEventArgs args = new AdValueEventArgs()
+                {
+                    AdValue = adValue
+                };
 
-              this.OnPaidEvent(this, args);
+                this.OnPaidEvent(this, args);
             }
         }
 
@@ -188,5 +197,3 @@ namespace GoogleMobileAds.Android
         #endregion
     }
 }
-
-

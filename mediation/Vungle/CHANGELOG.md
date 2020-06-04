@@ -1,5 +1,15 @@
 ## Vungle Unity Mediation Plugin Changelog
 
+#### Version 3.3.1
+- Repackaged `vungle-extras-library.jar` to `vungle-unity-android-library.aar`, using a `.aar` build to support Unity 2020.
+  * When upgrading to this version, please remove `vungle-extras-library.jar` from your project.
+- Supports [Vungle Android adapter version 6.5.3.0](https://github.com/googleads/googleads-mobile-android-mediation/blob/master/ThirdPartyAdapters/vungle/CHANGELOG.md#version-6530).
+- Supports [Vungle iOS adapter version 6.5.3.0](https://github.com/googleads/googleads-mobile-ios-mediation/blob/master/adapters/Vungle/CHANGELOG.md#version-6530).
+
+#### Version 3.3.0
+- Supports [Vungle Android adapter version 6.5.3.0](https://github.com/googleads/googleads-mobile-android-mediation/blob/master/ThirdPartyAdapters/vungle/CHANGELOG.md#version-6530).
+- Supports [Vungle iOS adapter version 6.5.3.0](https://github.com/googleads/googleads-mobile-ios-mediation/blob/master/adapters/Vungle/CHANGELOG.md#version-6530).
+
 #### Version 3.2.0
 - Supports [Vungle Android adapter version 6.4.11.1](https://github.com/googleads/googleads-mobile-android-mediation/blob/master/ThirdPartyAdapters/vungle/CHANGELOG.md#version-64111).
 - Supports [Vungle iOS adapter version 6.4.6.0](https://github.com/googleads/googleads-mobile-ios-mediation/blob/master/adapters/Vungle/CHANGELOG.md#version-6460).

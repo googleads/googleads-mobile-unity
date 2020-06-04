@@ -70,7 +70,7 @@
     didFailToLoadWithError:(NSError *)error {
   if (self.adFailedCallback) {
     NSString *errorMsg = [NSString
-        stringWithFormat:@"Failed to receive ad with error: %@", [error localizedFailureReason]];
+        stringWithFormat:@"Failed to receive ad with error: %@", [error localizedDescription]];
     self.adFailedCallback(self.rewardBasedVideoAdClient,
                           [errorMsg cStringUsingEncoding:NSUTF8StringEncoding]);
   }

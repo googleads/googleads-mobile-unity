@@ -7,8 +7,8 @@ import com.vungle.mediation.VungleInterstitialAdapter;
  */
 public class VungleUnityInterstitialExtrasBuilder extends VungleUnityExtrasBuilder {
 
-    @Override
-    public Class getAdapterClass() {
-        return VungleInterstitialAdapter.class;
-    }
+  @Override
+  public Class getAdapterClass() {
+    return VungleInterstitialAdapter.class;
+  }
 }

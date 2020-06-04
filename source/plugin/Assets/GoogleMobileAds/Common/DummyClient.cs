@@ -84,6 +84,18 @@ namespace GoogleMobileAds.Common
             Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
         }
 
+        public void SetRequestConfiguration(RequestConfiguration requestConfiguration)
+        {
+            Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
+        }
+
+        public RequestConfiguration GetRequestConfiguration()
+        {
+            Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
+            return null;
+
+        }
+
         public void SetApplicationVolume(float volume)
         {
             Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
@@ -204,7 +216,7 @@ namespace GoogleMobileAds.Common
             Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
         }
 
-        public void CreateAdLoader(AdLoader.Builder builder)
+        public void CreateAdLoader(AdLoaderClientArgs args)
         {
             Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
         }
@@ -220,6 +232,12 @@ namespace GoogleMobileAds.Common
         }
 
         public string MediationAdapterClassName()
+        {
+            Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
+            return null;
+        }
+
+        public IResponseInfoClient GetResponseInfoClient()
         {
             Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
             return null;

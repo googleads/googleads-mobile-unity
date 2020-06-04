@@ -1,3 +1,4 @@
+#if !UNITY_IOS
 // Copyright (C) 2015 Google, Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,20 +17,18 @@ using UnityEngine;
 using GoogleMobileAds;
 using GoogleMobileAds.Api;
 using GoogleMobileAds.Common;
+using UnityEngine.Scripting;
 
 namespace GoogleMobileAds
 {
-    public class GoogleMobileAdsClientFactory
+    [Preserve]
+    public class GoogleMobileAdsClientFactory: IClientFactory
     {
-        public static IBannerClient BuildBannerClient()
+        public IBannerClient BuildBannerClient()
         {
             if (Application.platform == RuntimePlatform.Android)
             {
                 return new GoogleMobileAds.Android.BannerClient();
-            }
-            else if (Application.platform == RuntimePlatform.IPhonePlayer)
-            {
-                return new GoogleMobileAds.iOS.BannerClient();
             }
             else
             {
@@ -37,47 +36,35 @@ namespace GoogleMobileAds
             }
         }
 
-        public static IInterstitialClient BuildInterstitialClient()
+        public IInterstitialClient BuildInterstitialClient()
         {
           if (Application.platform == RuntimePlatform.Android)
           {
               return new GoogleMobileAds.Android.InterstitialClient();
           }
-          else if (Application.platform == RuntimePlatform.IPhonePlayer)
-          {
-              return new GoogleMobileAds.iOS.InterstitialClient();
-          }
           else
           {
             return new GoogleMobileAds.Common.DummyClient();
           }
         }
 
-        public static IRewardBasedVideoAdClient BuildRewardBasedVideoAdClient()
+        public IRewardBasedVideoAdClient BuildRewardBasedVideoAdClient()
         {
           if (Application.platform == RuntimePlatform.Android)
           {
               return new GoogleMobileAds.Android.RewardBasedVideoAdClient();
           }
-          else if (Application.platform == RuntimePlatform.IPhonePlayer)
-          {
-              return new GoogleMobileAds.iOS.RewardBasedVideoAdClient();
-          }
           else
           {
             return new GoogleMobileAds.Common.DummyClient();
           }
         }
 
-        public static IRewardedAdClient BuildRewardedAdClient()
+        public IRewardedAdClient BuildRewardedAdClient()
         {
           if (Application.platform == RuntimePlatform.Android)
           {
               return new GoogleMobileAds.Android.RewardedAdClient();
-          }
-          else if (Application.platform == RuntimePlatform.IPhonePlayer)
-          {
-              return new GoogleMobileAds.iOS.RewardedAdClient();
           }
           else
           {
@@ -85,31 +72,22 @@ namespace GoogleMobileAds
           }
         }
 
-        public static IAdLoaderClient BuildAdLoaderClient(AdLoaderClientArgs args)
+        public IAdLoaderClient BuildAdLoaderClient(AdLoaderClientArgs args)
         {
           if (Application.platform == RuntimePlatform.Android)
           {
               return new GoogleMobileAds.Android.AdLoaderClient(args);
           }
-          else if (Application.platform == RuntimePlatform.IPhonePlayer)
-          {
-              return new GoogleMobileAds.iOS.AdLoaderClient(args);
-          }
-          else
           {
             return new GoogleMobileAds.Common.DummyClient();
           }
         }
 
-        public static IMobileAdsClient MobileAdsInstance()
+        public IMobileAdsClient MobileAdsInstance()
         {
           if (Application.platform == RuntimePlatform.Android)
           {
               return GoogleMobileAds.Android.MobileAdsClient.Instance;
-          }
-          else if (Application.platform == RuntimePlatform.IPhonePlayer)
-          {
-              return GoogleMobileAds.iOS.MobileAdsClient.Instance;
           }
           else
           {
@@ -118,3 +96,4 @@ namespace GoogleMobileAds
         }
     }
 }
+#endif

@@ -1,3 +1,4 @@
+#if UNITY_IOS
 // Copyright (C) 2017 Google, Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -62,6 +63,17 @@ namespace GoogleMobileAds.iOS
             Externs.GADUSetApplicationMuted(muted);
         }
 
+        public void SetRequestConfiguration(RequestConfiguration requestConfiguration)
+        {
+            RequestConfigurationClient.SetRequestConfiguration(requestConfiguration);
+
+        }
+
+        public RequestConfiguration GetRequestConfiguration()
+        {
+            return RequestConfigurationClient.GetRequestConfiguration();
+        }
+
         public void SetiOSAppPauseOnBackground(bool pause)
         {
             Externs.GADUSetiOSAppPauseOnBackground(pause);
@@ -105,3 +117,4 @@ namespace GoogleMobileAds.iOS
         }
     }
 }
+#endif
