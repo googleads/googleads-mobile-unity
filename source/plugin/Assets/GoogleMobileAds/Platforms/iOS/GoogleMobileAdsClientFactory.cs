@@ -5,7 +5,7 @@
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
 //
-//      http://www.apache.org/licenses/LICENSE-2.0
+//    http://www.apache.org/licenses/LICENSE-2.0
 //
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
@@ -21,38 +21,62 @@ using UnityEngine.Scripting;
 
 namespace GoogleMobileAds
 {
-    [Preserve]
-    public class GoogleMobileAdsClientFactory: IClientFactory
+  [Preserve]
+  public class GoogleMobileAdsClientFactory: IClientFactory
+  {
+    public IBannerClient BuildBannerClient()
     {
-        public IBannerClient BuildBannerClient()
-        {
-            return new GoogleMobileAds.iOS.BannerClient();
-        }
-
-        public IInterstitialClient BuildInterstitialClient()
-        {
-          return new GoogleMobileAds.iOS.InterstitialClient();
-        }
-
-        public IRewardBasedVideoAdClient BuildRewardBasedVideoAdClient()
-        {
-          return new GoogleMobileAds.iOS.RewardBasedVideoAdClient();
-        }
-
-        public IRewardedAdClient BuildRewardedAdClient()
-        {
-          return new GoogleMobileAds.iOS.RewardedAdClient();
-        }
-
-        public IAdLoaderClient BuildAdLoaderClient(AdLoaderClientArgs args)
-        {
-          return new GoogleMobileAds.iOS.AdLoaderClient(args);
-        }
-
-        public IMobileAdsClient MobileAdsInstance()
-        {
-          return GoogleMobileAds.iOS.MobileAdsClient.Instance;
-        }
+      if (Application.platform == RuntimePlatform.IPhonePlayer)
+      {
+        return new GoogleMobileAds.iOS.BannerClient();
+      }
+      return new GoogleMobileAds.Common.DummyClient();
     }
+
+    public IInterstitialClient BuildInterstitialClient()
+    {
+      if (Application.platform == RuntimePlatform.IPhonePlayer)
+      {
+        return new GoogleMobileAds.iOS.InterstitialClient();
+      }
+      return new GoogleMobileAds.Common.DummyClient();
+    }
+
+    public IRewardBasedVideoAdClient BuildRewardBasedVideoAdClient()
+    {
+      if (Application.platform == RuntimePlatform.IPhonePlayer)
+      {
+        return new GoogleMobileAds.iOS.RewardBasedVideoAdClient();
+      }
+      return new GoogleMobileAds.Common.DummyClient();
+    }
+
+    public IRewardedAdClient BuildRewardedAdClient()
+    {
+      if (Application.platform == RuntimePlatform.IPhonePlayer)
+      {
+        return new GoogleMobileAds.iOS.RewardedAdClient();
+      }
+      return new GoogleMobileAds.Common.RewardedAdDummyClient();
+    }
+
+    public IAdLoaderClient BuildAdLoaderClient(AdLoaderClientArgs args)
+    {
+      if (Application.platform == RuntimePlatform.IPhonePlayer)
+      {
+        return new GoogleMobileAds.iOS.AdLoaderClient(args);
+      }
+      return new GoogleMobileAds.Common.DummyClient();
+   }
+
+    public IMobileAdsClient MobileAdsInstance()
+    {
+      if (Application.platform == RuntimePlatform.IPhonePlayer)
+      {
+        return GoogleMobileAds.iOS.MobileAdsClient.Instance;
+      }
+      return new GoogleMobileAds.Common.DummyClient();
+    }
+  }
 }
 #endif
