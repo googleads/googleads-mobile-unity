@@ -855,12 +855,6 @@ const GADUTypeResponseInfoRef GADUGetResponseInfo(GADUTypeRef adFormat) {
       GADURewardedAd *internalRewardedAd = (GADURewardedAd *)internalAd;
       responseInfo =  internalRewardedAd.responseInfo;
   }
-  // copybara:begin_strip
-  else if ([internalAd isKindOfClass:[GADUUnifiedNativeAd class]]){
-      GADUUnifiedNativeAd *internalNativeAd = (GADUUnifiedNativeAd *)internalAd;
-      responseInfo =  internalNativeAd.responseInfo;
-  }
-  // copybara:end_strip
   GADUObjectCache *cache = [GADUObjectCache sharedInstance];
   cache[responseInfo.gadu_referenceKey] = responseInfo;
   return (__bridge GADUTypeResponseInfoRef)(responseInfo);
