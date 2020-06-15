@@ -876,6 +876,11 @@ const char *GADUResponseInfoResponseId(GADUTypeResponseInfoRef responseInfo){
   return cStringCopy(internalResponseInfo.responseIdentifier.UTF8String);
 }
 
+const char *GADUGetResponseInfoDescription(GADUTypeResponseInfoRef responseInfo){
+  GADResponseInfo *internalResponseInfo = (__bridge GADResponseInfo *)responseInfo;
+  return cStringCopy(internalResponseInfo.description.UTF8String);
+}
+
 #pragma mark - Other methods
 /// Removes an object from the cache.
 void GADURelease(GADUTypeRef ref) {

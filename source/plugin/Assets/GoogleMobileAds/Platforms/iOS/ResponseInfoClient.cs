@@ -51,6 +51,11 @@ namespace GoogleMobileAds.iOS
             }
             return null;
         }
+
+        public override string ToString()
+        {
+            return Externs.GADUGetResponseInfoDescription(iosResponseInfo);
+        }
     }
 }
 #endif

@@ -226,6 +226,9 @@ namespace GoogleMobileAds.iOS
         [DllImport("__Internal")]
         internal static extern string GADUResponseInfoResponseId(IntPtr responseInfo);
 
+        [DllImport("__Internal")]
+        internal static extern string GADUGetResponseInfoDescription(IntPtr responseInfo);
+
         #endregion
 
         #region Interstitial externs

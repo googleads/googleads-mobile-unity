@@ -30,4 +30,9 @@ public class ResponseInfo
     {
         return client.GetResponseId();
     }
+
+    public override string ToString()
+    {
+        return client.ToString();
+    }
 }
