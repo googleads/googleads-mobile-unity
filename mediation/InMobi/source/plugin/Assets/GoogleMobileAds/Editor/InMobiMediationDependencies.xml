@@ -1,6 +1,6 @@
 <dependencies>
   <androidPackages>
-    <androidPackage spec="com.google.ads.mediation:inmobi:9.0.6.0">
+    <androidPackage spec="com.google.ads.mediation:inmobi:9.0.7.0">
       <repositories>
         <repository>https://jcenter.bintray.com/</repository>
       </repositories>
