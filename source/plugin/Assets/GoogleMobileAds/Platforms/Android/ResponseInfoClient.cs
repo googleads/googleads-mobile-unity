@@ -50,7 +50,7 @@ namespace GoogleMobileAds.Android
 
         public override string ToString()
         {
-            return androidResponseInfo.Call<string>("toString()");
+            return androidResponseInfo.Call<string>("toString");
         }
     }
 }
