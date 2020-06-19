@@ -73,6 +73,10 @@ namespace GoogleMobileAds.Api
             });
             MobileAdsEventExecutor.Initialize();
         }
+        public static void DisableMediationInitialization()
+        {
+            Instance.client.DisableMediationInitialization();
+        }
 
         public static void SetApplicationMuted(bool muted)
         {

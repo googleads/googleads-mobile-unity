@@ -31,6 +31,9 @@ namespace GoogleMobileAds.iOS
             IntPtr mobileAdsClient, MobileAdsClient.GADUInitializationCompleteCallback callback);
 
         [DllImport("__Internal")]
+        internal static extern void GADUDisableMediationInitialization();
+
+        [DllImport("__Internal")]
         internal static extern IntPtr GADUGetInitDescription(IntPtr status, string className);
 
         [DllImport("__Internal")]

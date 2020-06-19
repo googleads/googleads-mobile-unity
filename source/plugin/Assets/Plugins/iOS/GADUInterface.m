@@ -64,6 +64,10 @@ void GADUInitializeWithCallback(GADUTypeMobileAdsClientRef *mobileAdsClientRef,
       }];
 }
 
+void GADUDisableMediationInitialization() {
+  [[GADMobileAds sharedInstance] disableMediationInitialization];
+}
+
 const char *GADUGetInitDescription(GADUTypeInitializationStatusRef statusRef,
                                    const char *className) {
   GADInitializationStatus *status = (__bridge GADInitializationStatus *)statusRef;

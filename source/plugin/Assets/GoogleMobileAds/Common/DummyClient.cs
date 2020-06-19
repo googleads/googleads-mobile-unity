@@ -79,6 +79,11 @@ namespace GoogleMobileAds.Common
             initCompleteAction(null);
         }
 
+        public void DisableMediationInitialization()
+        {
+            Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
+        }
+
         public void SetApplicationMuted(bool muted)
         {
             Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
