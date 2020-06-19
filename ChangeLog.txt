@@ -1,6 +1,30 @@
 Google Mobile Ads Unity Plugin Change Log
 
 **************
+Version 5.2.0
+**************
+
+Plugin:
+  - Added ResponseInfo class. See
+  https://developers.google.com/admob/unity/response-info for usage details.
+  - Fixes #1307 - issue with running in Unity Editor when targeting iOS platform.
+  - Fixes #1287 - issue where a crash is caused in equality check when AdSize is
+  null.
+  - Moved GoogleMobileAdsPlugin to GoogleMobileAdsPlugin.androidlib to ensure manifest
+  is picked up when building android app in Unity 2020. Fixes issue #1310. Thanks @pipe-alt!
+  - Fix error messages for iOS plugin.
+  - Added the DisableMediationInitialization() method to MobileAds.
+   Warning: Calling this method may negatively impact your Google mediation performance.
+   This method should only be called if you include Google mediation adapters in your app, but you
+    won't use mediate through Google during a particular app session (for example, you are running
+     an A/B mediation test).
+
+Built and tested with:
+- Google Play services 19.2.0
+- Google Mobile Ads iOS SDK 7.60.0
+- External Dependency Manager for Unity 1.2.156.
+
+**************
 Version 5.1.0
 **************
 
