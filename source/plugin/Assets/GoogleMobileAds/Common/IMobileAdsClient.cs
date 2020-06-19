@@ -26,7 +26,7 @@ namespace GoogleMobileAds.Common
         // Initialize the Mobile Ads SDK and mediation adapters.
         void Initialize(Action<IInitializationStatusClient> initCompleteAction);
 
-        // Initialization of mediation adapters by the Mobile Ads SDK.
+        // Disable initialization of mediation adapters by the Mobile Ads SDK.
         void DisableMediationInitialization();
 
         // The application’s audio volume. Affects audio volumes of all ads relative
