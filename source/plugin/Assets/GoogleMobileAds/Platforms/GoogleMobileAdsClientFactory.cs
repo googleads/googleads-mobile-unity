@@ -72,18 +72,6 @@ namespace GoogleMobileAds
           }
         }
 
-        public IRewardedInterstitialAdClient BuildRewardedInterstitialAdClient()
-        {
-          if (Application.platform == RuntimePlatform.Android)
-          {
-            return null;
-          }
-          else
-          {
-            return new GoogleMobileAds.Common.RewardedInterstitialAdDummyClient();
-          }
-        }
-
         public IAdLoaderClient BuildAdLoaderClient(AdLoaderClientArgs args)
         {
           if (Application.platform == RuntimePlatform.Android)
