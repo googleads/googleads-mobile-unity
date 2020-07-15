@@ -1,6 +1,6 @@
 <dependencies>
   <androidPackages>
-    <androidPackage spec="com.google.ads.mediation:facebook:5.9.1.0">
+    <androidPackage spec="com.google.ads.mediation:facebook:5.10.0.0">
       <repositories>
         <repository>https://jcenter.bintray.com/</repository>
       </repositories>
@@ -8,7 +8,7 @@
   </androidPackages>
 
   <iosPods>
-    <iosPod name="GoogleMobileAdsMediationFacebook" version="5.9.0.1">
+    <iosPod name="GoogleMobileAdsMediationFacebook" version="5.10.0.0">
       <sources>
         <source>https://github.com/CocoaPods/Specs</source>
       </sources>
