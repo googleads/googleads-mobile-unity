@@ -1,6 +1,6 @@
 <dependencies>
   <androidPackages>
-    <androidPackage spec="com.google.ads.mediation:mopub:5.13.0.0">
+    <androidPackage spec="com.google.ads.mediation:mopub:5.13.1.0">
       <repositories>
         <repository>https://jcenter.bintray.com/</repository>
         <repository>https://s3.amazonaws.com/moat-sdk-builds</repository>
@@ -9,7 +9,7 @@
   </androidPackages>
 
   <iosPods>
-    <iosPod name="GoogleMobileAdsMediationMoPub" version="5.13.0.0">
+    <iosPod name="GoogleMobileAdsMediationMoPub" version="5.13.1.0">
       <sources>
         <source>https://github.com/CocoaPods/Specs</source>
       </sources>
