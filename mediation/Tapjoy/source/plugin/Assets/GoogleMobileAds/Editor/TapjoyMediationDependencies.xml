@@ -1,6 +1,6 @@
 <dependencies>
   <androidPackages>
-    <androidPackage spec="com.google.ads.mediation:tapjoy:12.4.2.1">
+    <androidPackage spec="com.google.ads.mediation:tapjoy:12.6.0.0">
       <repositories>
         <repository>https://jcenter.bintray.com/</repository>
       </repositories>
@@ -8,7 +8,7 @@
   </androidPackages>
 
   <iosPods>
-    <iosPod name="GoogleMobileAdsMediationTapjoy" version="12.4.2.1">
+    <iosPod name="GoogleMobileAdsMediationTapjoy" version="12.6.0.0">
       <sources>
         <source>https://github.com/CocoaPods/Specs</source>
       </sources>
