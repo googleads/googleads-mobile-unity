@@ -1,0 +1,60 @@
+// Copyright (C) 2015 Google, Inc.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+using System;
+
+using GoogleMobileAds.Api;
+using GoogleMobileAds.Common;
+using UnityEngine;
+
+namespace GoogleMobileAds.Unity
+{
+    public class InterstitialClient : IInterstitialClient
+    {
+        // Ad event fired when the interstitial ad has been received.
+        public event EventHandler<EventArgs> OnAdLoaded;
+        // Ad event fired when the interstitial ad has failed to load.
+        public event EventHandler<AdFailedToLoadEventArgs> OnAdFailedToLoad;
+        // Ad event fired when the interstitial ad is opened.
+        public event EventHandler<EventArgs> OnAdOpening;
+        // Ad event fired when the interstitial ad is closed.
+        public event EventHandler<EventArgs> OnAdClosed;
+        // Ad event fired when the interstitial ad is leaving the application.
+        public event EventHandler<EventArgs> OnAdLeavingApplication;
+        // Ad event fired when the interstitial ad is estimated to have earned money.
+        public event EventHandler<AdValueEventArgs> OnPaidEvent;
+
+
+        // Creates an InterstitialAd.
+        public void CreateInterstitialAd(string adUnitId) { }
+
+        // Loads a new interstitial request.
+        public void LoadAd(AdRequest request) { }
+
+        // Determines whether the interstitial has loaded.
+        public bool IsLoaded() { return true; }
+
+        // Shows the InterstitialAd.
+        public void ShowInterstitial() { }
+
+        // Destroys an InterstitialAd.
+        public void DestroyInterstitial() { }
+
+        // Returns the mediation adapter class name.
+        public string MediationAdapterClassName() { }
+
+        // Returns ad request Response info client.
+        public IResponseInfoClient GetResponseInfoClient() { }
+    }
+}
