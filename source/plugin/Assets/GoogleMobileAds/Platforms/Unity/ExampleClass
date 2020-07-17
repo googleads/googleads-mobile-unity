@@ -1,3 +1,5 @@
+// Copyright (C) 2020 Google LLC.
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -10,25 +12,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System;
-
+using System.Collections.Generic;
 using GoogleMobileAds.Api;
 using GoogleMobileAds.Common;
-using UnityEngine;
+using UnityEngine; 
 
 namespace GoogleMobileAds.Unity
 {
-    public class AdLoaderClient : IAdLoaderClient
+    public class ExampleClass
     {
-        public event EventHandler<AdFailedToLoadEventArgs> OnAdFailedToLoad;
-
-        public event EventHandler<CustomNativeClientEventArgs> OnCustomNativeTemplateAdLoaded;
-
-        public event EventHandler<CustomNativeClientEventArgs> OnCustomNativeTemplateAdClicked;
-
-        public void LoadAd(AdRequest request)
-        {
-
-        }
+       // Empty Class to use in InitializationStatusClient
     }
 }

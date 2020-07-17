@@ -1,4 +1,4 @@
-// Copyright (C) 2015 Google, Inc.
+// Copyright (C) 2020 Google LLC.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -76,7 +76,8 @@ namespace GoogleMobileAds.Common
         public void Initialize(Action<IInitializationStatusClient> initCompleteAction)
         {
             Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
-            initCompleteAction(null);
+            var initStatusClient = new GoogleMobileAds.Unity.InitializationStatusClient();
+            initCompleteAction(initStatusClient);
         }
 
         public void DisableMediationInitialization()

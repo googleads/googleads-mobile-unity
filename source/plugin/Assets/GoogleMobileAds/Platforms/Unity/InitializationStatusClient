@@ -1,4 +1,4 @@
-// Copyright (C) 2018 Google, Inc.
+// Copyright (C) 2020 Google LLC.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -22,15 +22,16 @@ namespace GoogleMobileAds.Unity
     public class InitializationStatusClient : IInitializationStatusClient
     {
         public AdapterStatus getAdapterStatusForClassName(string className) {
-            adapterStatus adapterState = adapterStatus.Ready;
-            String testDescription = "Ready";
+            AdapterStatus adapterState = adapterStatus.Ready;
+            string testDescription = "Ready";
             int testLatency = 0;
             return new AdapterStatus(adapterState, testDescription, testLatency);
         }
 
         public Dictionary<string, AdapterStatus> getAdapterStatusMap() {
-            Dictionary<string, AdapterStatus> dummyD = new Dictionary<string, AdapterStatus>();
-            return dummyD;
+            Dictionary<string, AdapterStatus> dummyDictionary = new Dictionary<string,AdapterStatus>();
+            dummyDictionary.Add("ExampleClass",getAdapterStatusForClassName("ExampleClass"));
+            return dummyDictionary;
         }
     }
 }
