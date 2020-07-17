@@ -21,10 +21,11 @@ namespace GoogleMobileAds.Unity
 {
     public class InitializationStatusClient : IInitializationStatusClient
     {
-        //Not sure what goes in here 
         public AdapterStatus getAdapterStatusForClassName(string className) {
-            AdapterStatus dummyMap = new AdapterStatus(AdapterState.Ready,"dummy",0);
-            return dummyMap;
+            adapterStatus adapterState = adapterStatus.Ready;
+            String testDescription = "Ready";
+            int testLatency = 0;
+            return new AdapterStatus(adapterState, testDescription, testLatency);
         }
 
         public Dictionary<string, AdapterStatus> getAdapterStatusMap() {
