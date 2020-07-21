@@ -19,7 +19,7 @@ using UnityEngine;
 
 namespace GoogleMobileAds.Unity
 {
-    public class InitializationStatusClient : IInitializationStatusClient
+    public class InitializationStatusDummyClient : IInitializationStatusClient
     {
         public AdapterStatus getAdapterStatusForClassName(string className)
         {
