@@ -15,6 +15,7 @@
 using System;
 using System.Reflection;
 
+using GoogleMobileAds.Unity;
 using GoogleMobileAds.Api;
 using UnityEngine;
 
@@ -76,7 +77,8 @@ namespace GoogleMobileAds.Common
         public void Initialize(Action<IInitializationStatusClient> initCompleteAction)
         {
             Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
-            initCompleteAction(null);
+            var initStatusClient = new InitializationStatusDummyClient();
+            initCompleteAction(initStatusClient);
         }
 
         public void DisableMediationInitialization()
