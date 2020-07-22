@@ -77,7 +77,7 @@ namespace GoogleMobileAds.Common
         public void Initialize(Action<IInitializationStatusClient> initCompleteAction)
         {
             Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
-            var initStatusClient = new InitializationStatusClient();
+            var initStatusClient = new InitializationStatusDummyClient();
             initCompleteAction(initStatusClient);
         }
 
