@@ -26,8 +26,8 @@ public class DummyAdBehaviour : MonoBehaviour
             Image myImage = dummyAd.GetComponentInChildren<Image>();
             RectTransform rect = myImage.GetComponent<RectTransform>();
 
-            float x = rect.sizeDelta.x/2;
-            float y = rect.sizeDelta.y/2;
+            float x = (float)rect.sizeDelta.x/2;
+            float y = (float)rect.sizeDelta.y/2;
         
             
             switch (position)

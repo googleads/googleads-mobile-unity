@@ -28,12 +28,12 @@ namespace GoogleMobileAds.Common
     public class DummyClient : IBannerClient, IInterstitialClient, IRewardBasedVideoAdClient,
             IAdLoaderClient, IMobileAdsClient
     {
-        private bool isOpen;
         public GameObject dummyAd;
         private bool inUnityEditor = (Application.platform == RuntimePlatform.OSXEditor) || (Application.platform == RuntimePlatform.WindowsEditor);
-
+        private const float timeDelay = 1000;
         private static GameObject myObject = new GameObject();
         private DummyAdBehaviour AdBehaviour = myObject.AddComponent<DummyAdBehaviour>();
+        private string form;
          private Dictionary<AdSize, string> prefabAds = new Dictionary<AdSize, string>()
         {
             {AdSize.Banner, "DummyAds/Banners/BANNER"},
@@ -48,7 +48,7 @@ namespace GoogleMobileAds.Common
         public DummyClient()
         {
             Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
-            isOpen = false;
+            form = null;
             dummyAd = null;
         }
 
@@ -154,6 +154,7 @@ namespace GoogleMobileAds.Common
             if (inUnityEditor) {
                 dummyAd = Resources.Load(prefabAds[adSize]) as GameObject;
                 AdBehaviour.AnchorAd(dummyAd,position);
+                form = "BANNER";
             }
         }
 
@@ -166,6 +167,7 @@ namespace GoogleMobileAds.Common
                 Image myImage = dummyAd.GetComponentInChildren<Image>();
                 RectTransform rect = myImage.GetComponent<RectTransform>();
                 rect.anchoredPosition = new Vector3(positionX, positionY, 1);
+                form = "BANNER";
             }
         }
 
@@ -174,7 +176,18 @@ namespace GoogleMobileAds.Common
             Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
             if (inUnityEditor)
             {
-                Task.Delay(1000).ContinueWith(_ => MobileAdsEventExecutor.ExecuteInUpdate(ShowBannerView));
+                 if (form == "BANNER")
+                {
+                    Task.Delay(timeDelay).ContinueWith(_ => MobileAdsEventExecutor.ExecuteInUpdate(ShowBannerView));
+                }
+                else if (form == "INTERSTITIAL")
+                {
+                    Task.Delay(timeDelay).ContinueWith(_ => MobileAdsEventExecutor.ExecuteInUpdate(ShowInterstitial));
+                }
+                else if (form == "REWARDED")
+                {
+                    Task.Delay(timeDelay).ContinueWith(_ => MobileAdsEventExecutor.ExecuteInUpdate(ShowRewardBasedVideoAd));
+                }
             }
         }
 
@@ -186,34 +199,24 @@ namespace GoogleMobileAds.Common
                 Image myImage = dummyAd.GetComponentInChildren<Image>();
                 RectTransform rect = myImage.GetComponent<RectTransform>();
                 AdBehaviour.ShowAd(dummyAd, rect.anchoredPosition);
-                isOpen = true;
             }
         }
 
         public void HideBannerView()
         {
             Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
-            if (inUnityEditor && isOpen)
+            if (inUnityEditor && (dummyAd != null))
             {
                 AdBehaviour.DestroyAd(dummyAd);
-                isOpen = false;
             }
         }
 
         public void DestroyBannerView()
         {
             Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
-            if (inUnityEditor && isOpen)
+            if (inUnityEditor && (dummyAd != null))
             {
-                if (isOpen)
-                {
-                    AdBehaviour.DestroyAd(dummyAd);
-                }
-                else
-                {
-                    isOpen = false;
-                }
-
+                adBehaviour.DestroyAd(dummyAd);
             }
         }
 
