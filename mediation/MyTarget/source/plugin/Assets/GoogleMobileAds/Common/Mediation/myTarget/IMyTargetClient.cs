@@ -1,4 +1,4 @@
-﻿// Copyright 2018 Google LLC
+// Copyright 2018 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -26,7 +26,7 @@ namespace GoogleMobileAds.Common.Mediation.MyTarget
         void SetUserAgeRestricted (bool userAgeRestricted);
 
         // Gets the user's current consent status
-        bool IsUserConsent ();
+        bool IsConsent ();
 
         // Gets the flag indicating that the user is known to be in
         // an age-restricted category (i.e., under the age of 16)
