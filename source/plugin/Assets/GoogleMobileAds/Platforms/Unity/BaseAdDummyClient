@@ -18,21 +18,11 @@ using GoogleMobileAds.Api;
 
 namespace GoogleMobileAds.Unity
 {
-    public class DummyUtils
+    public class BaseAdDummyClient
     {
-        protected bool inUnityEditor = (Application.platform == RuntimePlatform.OSXEditor) || (Application.platform == RuntimePlatform.WindowsEditor);
         protected const int timeDelay = 1000;
         
         protected static AdBehaviourDummyClient AdBehaviour = new GameObject().AddComponent<AdBehaviourDummyClient>();
         
-        protected Dictionary<AdSize, string> prefabAds = new Dictionary<AdSize, string>()
-        {
-            {AdSize.Banner, "DummyAds/Banners/BANNER"},
-            {AdSize.SmartBanner, "DummyAds/Banners/SMART_BANNER" },
-            {AdSize.MediumRectangle, "DummyAds/Banners/MEDIUM_RECTANGLE" },
-            {AdSize.IABBanner, "DummyAds/Banners/FULL_BANNER" },
-            {AdSize.Leaderboard, "DummyAds/Banners/LEADERBOARD" },
-            {new AdSize (320,100), "DummyAds/Banners/LARGE_BANNER" }
-        };
     }
 }

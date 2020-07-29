@@ -22,7 +22,7 @@ using UnityEngine.UI;
 
 namespace GoogleMobileAds.Unity
 {
-    public class BannerClient : DummyUtils, IBannerClient
+    public class BannerClient : BaseAdDummyClient, IBannerClient
     {
         // Ad event fired when the banner ad has been received.
         public event EventHandler<EventArgs> OnAdLoaded;
@@ -38,6 +38,16 @@ namespace GoogleMobileAds.Unity
         public event EventHandler<AdValueEventArgs> OnPaidEvent;
 
         public GameObject prefabAd, dummyAd;
+
+        private Dictionary<AdSize, string> prefabAds = new Dictionary<AdSize, string>()
+        {
+            {AdSize.Banner, "DummyAds/Banners/BANNER"},
+            {AdSize.SmartBanner, "DummyAds/Banners/SMART_BANNER" },
+            {AdSize.MediumRectangle, "DummyAds/Banners/MEDIUM_RECTANGLE" },
+            {AdSize.IABBanner, "DummyAds/Banners/FULL_BANNER" },
+            {AdSize.Leaderboard, "DummyAds/Banners/LEADERBOARD" },
+            {new AdSize (320,100), "DummyAds/Banners/LARGE_BANNER" }
+        };
         
         public BannerClient()
         {
@@ -66,62 +76,55 @@ namespace GoogleMobileAds.Unity
         public void CreateBannerView(string adUnitId, AdSize adSize, int x, int y)
         {
             Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
-            if (inUnityEditor)
-            {
-                prefabAd = Resources.Load(prefabAds[adSize]) as GameObject;
-                Image myImage = prefabAd.GetComponentInChildren<Image>();
-                RectTransform rect = myImage.GetComponent<RectTransform>();
+            
+            prefabAd = Resources.Load(prefabAds[adSize]) as GameObject;
+            Image myImage = prefabAd.GetComponentInChildren<Image>();
+            RectTransform rect = myImage.GetComponent<RectTransform>();
 
-                if (adSize == AdSize.SmartBanner)
-                {
-                    AdBehaviour.SetAndStretchAd(prefabAd, 0);
-                    rect.anchoredPosition = new Vector3(0, y, 1);
-                }
-                else
-                {
-                    rect.anchoredPosition = new Vector3(x, y, 1);
-                }
+            if (adSize == AdSize.SmartBanner)
+            {
+                AdBehaviour.SetAndStretchAd(prefabAd, 0);
+                rect.anchoredPosition = new Vector3(0, y, 1);
             }
+            else
+            {
+                rect.anchoredPosition = new Vector3(x, y, 1);
+            }
+            
         }
 
         // Requests a new ad for the banner view.
         public void LoadAd(AdRequest request)
         {
             Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
-            if (inUnityEditor)
-            { 
-                ShowBannerView();
-            }
+            ShowBannerView();
+            
         }
 
         // Shows the banner view on the screen.
         public void ShowBannerView()
         {
             Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
-            if (inUnityEditor)
-            {
-                Image myImage = prefabAd.GetComponentInChildren<Image>();
-                RectTransform rect = myImage.GetComponent<RectTransform>();
-                dummyAd = AdBehaviour.ShowAd(prefabAd, rect.anchoredPosition);
-            }
+            
+            Image myImage = prefabAd.GetComponentInChildren<Image>();
+            RectTransform rect = myImage.GetComponent<RectTransform>();
+            dummyAd = AdBehaviour.ShowAd(prefabAd, rect.anchoredPosition);
+            
         }
 
         // Hides the banner view from the screen.
         public void HideBannerView()
         {
             Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
-            if (inUnityEditor && (dummyAd != null))
-            {
-                AdBehaviour.DestroyAd(dummyAd);
-
-            }
+            
+            AdBehaviour.DestroyAd(dummyAd);
         }
 
         // Destroys a banner view.
         public void DestroyBannerView()
         {
             Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
-            if (inUnityEditor && (dummyAd != null))
+            if (dummyAd != null)
             {
                 AdBehaviour.DestroyAd(dummyAd);
             }
@@ -157,7 +160,7 @@ namespace GoogleMobileAds.Unity
         public string MediationAdapterClassName()
         {
             Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
-            return "Example";
+            return null;
         }
 
         // Returns ad request Response info client.
