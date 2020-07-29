@@ -134,14 +134,18 @@ namespace GoogleMobileAds.Unity
         public float GetHeightInPixels()
         {
             Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
-            return 0;
+            Image myImage = prefabAd.GetComponentInChildren<Image>();
+            RectTransform rect = myImage.GetComponent<RectTransform>();
+            return rect.sizeDelta.y;
         }
 
         // Returns the width of the BannerView in pixels.
         public float GetWidthInPixels()
         {
             Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
-            return 0;
+            Image myImage = prefabAd.GetComponentInChildren<Image>();
+            RectTransform rect = myImage.GetComponent<RectTransform>();
+            return rect.sizeDelta.x;
         }
 
         // Set the position of the banner view using standard position.
@@ -168,70 +172,6 @@ namespace GoogleMobileAds.Unity
         {
             Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
             return null;
-        }
-
-        //Event Callbacks
-        public void onAdLoaded()
-        {
-            if (this.OnAdLoaded != null)
-            {
-                this.OnAdLoaded(this, EventArgs.Empty);
-            }
-        }
-
-        public void onAdFailedToLoad(string errorReason)
-        {
-            if (this.OnAdFailedToLoad != null)
-            {
-                AdFailedToLoadEventArgs args = new AdFailedToLoadEventArgs()
-                {
-                    Message = errorReason
-                };
-                OnAdFailedToLoad(this, args);
-            }
-        }
-
-        public void onAdOpened()
-        {
-            if (this.OnAdOpening != null)
-            {
-                this.OnAdOpening(this, EventArgs.Empty);
-            }
-        }
-
-        public void onAdClosed()
-        {
-            if (this.OnAdClosed != null)
-            {
-                this.OnAdClosed(this, EventArgs.Empty);
-            }
-        }
-
-        public void onAdLeftApplication()
-        {
-            if (this.OnAdLeavingApplication != null)
-            {
-                this.OnAdLeavingApplication(this, EventArgs.Empty);
-            }
-        }
-
-        public void onPaidEvent(int precision, long valueInMicros, string currencyCode)
-        {
-            if (this.OnPaidEvent != null)
-            {
-                AdValue adValue = new AdValue()
-                {
-                    Precision = (AdValue.PrecisionType)precision,
-                    Value = valueInMicros,
-                    CurrencyCode = currencyCode
-                };
-                AdValueEventArgs args = new AdValueEventArgs()
-                {
-                    AdValue = adValue
-                };
-
-                this.OnPaidEvent(this, args);
-            }
         }
 
     }
