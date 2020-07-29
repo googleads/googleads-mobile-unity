@@ -1,6 +1,6 @@
 ## myTarget Unity Mediation Plugin Changelog
 
-#### Next Version
+#### Version 3.6.1
 - Renamed the `MyTarget.IsUserConsent()` method to `MyTarget.IsConsent()`.
 - Supports [myTarget Android adapter version 5.9.1.0](https://github.com/googleads/googleads-mobile-android-mediation/blob/master/ThirdPartyAdapters/mytarget/CHANGELOG.md#version-5910).
 - Supports [myTarget iOS adapter version 5.7.2.0](https://github.com/googleads/googleads-mobile-ios-mediation/blob/master/adapters/MyTarget/CHANGELOG.md#version-5720).
