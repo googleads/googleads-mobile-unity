@@ -20,6 +20,34 @@ using GoogleMobileAds.Api;
 public class DummyAdBehaviour : MonoBehaviour
 {
 
+    public void SetAndStretchAd(GameObject dummyAd, AdPosition pos)
+    {
+        if (dummyAd != null) {
+            Image myImage = dummyAd.GetComponentInChildren<Image>();
+            RectTransform rect = myImage.GetComponent<RectTransform>();
+
+            rect.pivot = new Vector2(0.5f, 0.5f);
+
+            if (pos == AdPosition.Bottom || pos == AdPosition.BottomLeft || pos == AdPosition.BottomRight)
+            {
+                rect.SetInsetAndSizeFromParentEdge(RectTransform.Edge.Bottom, 0, rect.sizeDelta.y);
+                rect.anchoredPosition = new Vector2(0, (float)rect.sizeDelta.y/2);
+            } else if (pos == AdPosition.Top || pos == AdPosition.TopLeft || pos == AdPosition.TopRight)
+            {
+                rect.SetInsetAndSizeFromParentEdge(RectTransform.Edge.Top, 0, rect.sizeDelta.y);
+                rect.anchoredPosition = new Vector2(0, -(float)rect.sizeDelta.y/2);
+            } else if (pos == AdPosition.Center)
+            {
+                rect.anchoredPosition = new Vector2(0, 0);
+            } else
+            {
+                rect.anchoredPosition = rect.position;
+            }
+        } else {
+            Debug.Log("Invalid Dummy Ad");
+        }
+    }
+
     public void AnchorAd(GameObject dummyAd, AdPosition position)
     {
         if (dummyAd != null) {
@@ -80,13 +108,9 @@ public class DummyAdBehaviour : MonoBehaviour
         }
     }
 
-    public void ShowAd(GameObject dummyAd, Vector3 position)
+    public GameObject ShowAd(GameObject dummyAd, Vector3 position)
     { 
-        if (dummyAd != null) {
-            Instantiate(dummyAd, position, Quaternion.identity);
-        } else {
-            Debug.Log("Invalid Dummy Ad");
-        }
+        return Instantiate(dummyAd, position, Quaternion.identity) as GameObject;
     }
 
     public void DestroyAd(GameObject dummyAd)

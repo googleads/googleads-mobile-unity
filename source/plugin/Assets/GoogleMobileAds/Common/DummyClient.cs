@@ -14,42 +14,20 @@
 
 using System;
 using System.Reflection;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 using GoogleMobileAds.Unity;
 using GoogleMobileAds.Api;
 
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace GoogleMobileAds.Common
 {
     public class DummyClient : IBannerClient, IInterstitialClient, IRewardBasedVideoAdClient,
             IAdLoaderClient, IMobileAdsClient
     {
-        public GameObject dummyAd;
-        private bool inUnityEditor = (Application.platform == RuntimePlatform.OSXEditor) || (Application.platform == RuntimePlatform.WindowsEditor);
-        private const float timeDelay = 1000;
-        private static GameObject myObject = new GameObject();
-        private DummyAdBehaviour AdBehaviour = myObject.AddComponent<DummyAdBehaviour>();
-        private string form;
-         private Dictionary<AdSize, string> prefabAds = new Dictionary<AdSize, string>()
-        {
-            {AdSize.Banner, "DummyAds/Banners/BANNER"},
-            {AdSize.SmartBanner, "DummyAds/Banners/BANNER"},
-            {AdSize.MediumRectangle, "DummyAds/Banners/MEDIUM_RECTANGLE" },
-            {AdSize.IABBanner, "DummyAds/Banners/FULL_BANNER" },
-            {AdSize.Leaderboard, "DummyAds/Banners/LEADERBOARD" },
-            {new AdSize (320,100), "DummyAds/Banners/LARGE_BANNER" },
-            {new AdSize (480,32), "DummyAds/Banners/BANNER_480x32"}
-        };
-
         public DummyClient()
         {
             Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
-            form = null;
-            dummyAd = null;
         }
 
         // Disable warnings for unused dummy ad events.
@@ -151,73 +129,31 @@ namespace GoogleMobileAds.Common
         public void CreateBannerView(string adUnitId, AdSize adSize, AdPosition position)
         {
             Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
-            if (inUnityEditor) {
-                dummyAd = Resources.Load(prefabAds[adSize]) as GameObject;
-                AdBehaviour.AnchorAd(dummyAd,position);
-                form = "BANNER";
-            }
         }
 
         public void CreateBannerView(string adUnitId, AdSize adSize, int positionX, int positionY)
         {
             Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
-            if (inUnityEditor)
-            { 
-                dummyAd = Resources.Load(prefabAds[adSize]) as GameObject;
-                Image myImage = dummyAd.GetComponentInChildren<Image>();
-                RectTransform rect = myImage.GetComponent<RectTransform>();
-                rect.anchoredPosition = new Vector3(positionX, positionY, 1);
-                form = "BANNER";
-            }
         }
 
         public void LoadAd(AdRequest request)
         {
             Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
-            if (inUnityEditor)
-            {
-                 if (form == "BANNER")
-                {
-                    Task.Delay(timeDelay).ContinueWith(_ => MobileAdsEventExecutor.ExecuteInUpdate(ShowBannerView));
-                }
-                else if (form == "INTERSTITIAL")
-                {
-                    Task.Delay(timeDelay).ContinueWith(_ => MobileAdsEventExecutor.ExecuteInUpdate(ShowInterstitial));
-                }
-                else if (form == "REWARDED")
-                {
-                    Task.Delay(timeDelay).ContinueWith(_ => MobileAdsEventExecutor.ExecuteInUpdate(ShowRewardBasedVideoAd));
-                }
-            }
         }
 
         public void ShowBannerView()
         {
             Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
-            if (inUnityEditor)
-            {
-                Image myImage = dummyAd.GetComponentInChildren<Image>();
-                RectTransform rect = myImage.GetComponent<RectTransform>();
-                AdBehaviour.ShowAd(dummyAd, rect.anchoredPosition);
-            }
         }
 
         public void HideBannerView()
         {
             Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
-            if (inUnityEditor && (dummyAd != null))
-            {
-                AdBehaviour.DestroyAd(dummyAd);
-            }
         }
 
         public void DestroyBannerView()
         {
             Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
-            if (inUnityEditor && (dummyAd != null))
-            {
-                adBehaviour.DestroyAd(dummyAd);
-            }
         }
 
         public float GetHeightInPixels()
