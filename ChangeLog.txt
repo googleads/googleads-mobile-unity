@@ -1,6 +1,19 @@
 Google Mobile Ads Unity Plugin Change Log
 
 **************
+Version 5.3.0
+**************
+
+Plugin:
+- Add InitializationStatusClient for Init callback in Unity Editor. Fixes #1394.
+- Update to Android SDK version 19.3.0
+
+Built and tested with:
+- Google Play services 19.3.0
+- Google Mobile Ads iOS SDK 7.63.0
+- External Dependency Manager for Unity 1.2.156.
+
+**************
 Version 5.2.0
 **************
 
