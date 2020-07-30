@@ -1,0 +1,15 @@
+using UnityEngine;
+using GoogleMobileAds.Unity;
+
+public class BannerButtonBehaviour : MonoBehaviour
+{
+    public void OpenURL()
+    {
+        Debug.Log("Opened URL");
+        Application.OpenURL("http://google.com");
+
+        BannerClient banner = new BannerClient();
+        banner.onAdOpened();
+        banner.onAdLeftApplication();
+    }
+}

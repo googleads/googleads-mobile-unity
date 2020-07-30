@@ -47,12 +47,6 @@ namespace GoogleMobileAds.Unity
             {AdSize.Leaderboard, "DummyAds/Banners/LEADERBOARD" },
             {new AdSize (320,100), "DummyAds/Banners/LARGE_BANNER" }
         };
-        
-        public BannerClient()
-        {
-            prefabAd = null;
-            dummyAd = null;
-        }
 
         // Creates a banner view and adds it to the view hierarchy.
         public void CreateBannerView(string adUnitId, AdSize adSize, AdPosition position)
@@ -97,7 +91,13 @@ namespace GoogleMobileAds.Unity
         public void LoadAd(AdRequest request)
         {
             Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
-            ShowBannerView();
+            if (prefabAd != null) {
+                ShowBannerView();
+                OnAdLoaded?.Invoke(this, EventArgs.Empty);
+            } else {
+                OnAdFailedToLoad?.Invoke(dummyAd, new AdFailedToLoadEventArgs());
+            }
+            
             
         }
 
@@ -107,6 +107,10 @@ namespace GoogleMobileAds.Unity
             Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
             
             dummyAd = AdBehaviour.ShowAd(prefabAd, getRectTransform(prefabAd).anchoredPosition);
+            if (dummyAd != null)
+            {
+                OnAdOpening?.Invoke(dummyAd, new EventArgs());
+            }
             
         }
 
@@ -150,12 +154,27 @@ namespace GoogleMobileAds.Unity
         public void SetPosition(AdPosition adPosition)
         {
             Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
+            if (dummyAd != null)
+            {
+                AdBehaviour.AnchorAd(dummyAd, adPosition);
+            } else
+            {
+                Debug.Log("No existing banner in game");
+            }
         }
 
         // Set the position of the banner view using custom position.
         public void SetPosition(int x, int y)
         {
             Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
+            if (dummyAd != null)
+            {
+                RectTransform rect = getRectTransfrom(dummyAd);
+                rect.anchoredPosition = new Vector2(x, y);
+            } else
+            {
+                Debug.Log("No existing banner in game");
+            }
         }
 
         // Returns the mediation adapter class name.
@@ -170,6 +189,16 @@ namespace GoogleMobileAds.Unity
         {
             Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
             return null;
+        }
+
+        public void onAdOpened()
+        {
+            OnAdOpening?.Invoke(dummyAd, EventArgs.Empty);
+        }
+
+        public void onAdLeftApplication()
+        {
+            OnAdLeavingApplication?.Invoke(dummyAd, EventArgs.Empty);
         }
 
     }
