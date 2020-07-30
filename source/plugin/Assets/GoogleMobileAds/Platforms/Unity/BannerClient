@@ -14,6 +14,7 @@
 
 using System;
 using System.Reflection;
+using System.Collections.Generic;
 using GoogleMobileAds.Api;
 using GoogleMobileAds.Common;
 
@@ -37,8 +38,6 @@ namespace GoogleMobileAds.Unity
         // Ad event fired when the banner ad is estimated to have earned money.
         public event EventHandler<AdValueEventArgs> OnPaidEvent;
 
-        public GameObject prefabAd, dummyAd;
-
         private Dictionary<AdSize, string> prefabAds = new Dictionary<AdSize, string>()
         {
             {AdSize.Banner, "DummyAds/Banners/BANNER"},
@@ -59,16 +58,17 @@ namespace GoogleMobileAds.Unity
         public void CreateBannerView(string adUnitId, AdSize adSize, AdPosition position)
         {
             Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
-            prefabAd = Resources.Load(prefabAds[adSize]) as GameObject;
+            setPrefabAd(prefabAds[adSize]);
+            if (prefabAd != null) {
+                if (adSize == AdSize.SmartBanner)
+                {
+                    AdBehaviour.SetAndStretchAd(prefabAd, position);
 
-            if (adSize == AdSize.SmartBanner)
-            {
-                AdBehaviour.SetAndStretchAd(prefabAd, position);
-
-            }
-            else
-            {
-                AdBehaviour.AnchorAd(prefabAd, position);
+                }
+                else
+                {
+                    AdBehaviour.AnchorAd(prefabAd, position);
+                }
             }
         }
     
@@ -77,20 +77,20 @@ namespace GoogleMobileAds.Unity
         {
             Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
             
-            prefabAd = Resources.Load(prefabAds[adSize]) as GameObject;
-            Image myImage = prefabAd.GetComponentInChildren<Image>();
-            RectTransform rect = myImage.GetComponent<RectTransform>();
+            setPrefabAd(prefabAds[adSize]);
+            if (prefabAd != null) {
+                RectTransform rect = getRectTransform(prefabAd);
 
-            if (adSize == AdSize.SmartBanner)
-            {
-                AdBehaviour.SetAndStretchAd(prefabAd, 0);
-                rect.anchoredPosition = new Vector3(0, y, 1);
+                if (adSize == AdSize.SmartBanner)
+                {
+                    AdBehaviour.SetAndStretchAd(prefabAd, 0);
+                    rect.anchoredPosition = new Vector3(0, y, 1);
+                }
+                else
+                {
+                    rect.anchoredPosition = new Vector3(x, y, 1);
+                }
             }
-            else
-            {
-                rect.anchoredPosition = new Vector3(x, y, 1);
-            }
-            
         }
 
         // Requests a new ad for the banner view.
@@ -106,9 +106,7 @@ namespace GoogleMobileAds.Unity
         {
             Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
             
-            Image myImage = prefabAd.GetComponentInChildren<Image>();
-            RectTransform rect = myImage.GetComponent<RectTransform>();
-            dummyAd = AdBehaviour.ShowAd(prefabAd, rect.anchoredPosition);
+            dummyAd = AdBehaviour.ShowAd(prefabAd, getRectTransform(prefabAd).anchoredPosition);
             
         }
 
@@ -134,18 +132,18 @@ namespace GoogleMobileAds.Unity
         public float GetHeightInPixels()
         {
             Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
-            Image myImage = prefabAd.GetComponentInChildren<Image>();
-            RectTransform rect = myImage.GetComponent<RectTransform>();
-            return rect.sizeDelta.y;
+            if (prefabAd != null) { 
+                return getRectTransform(prefabAd).sizeDelta.y;
+            }
         }
 
         // Returns the width of the BannerView in pixels.
         public float GetWidthInPixels()
         {
             Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
-            Image myImage = prefabAd.GetComponentInChildren<Image>();
-            RectTransform rect = myImage.GetComponent<RectTransform>();
-            return rect.sizeDelta.x;
+            if (prefabAd != null) {
+                return getRectTransform(prefabAd).sizeDelta.x;
+            }
         }
 
         // Set the position of the banner view using standard position.

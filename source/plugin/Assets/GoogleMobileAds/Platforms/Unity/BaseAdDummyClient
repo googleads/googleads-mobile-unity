@@ -23,6 +23,15 @@ namespace GoogleMobileAds.Unity
         protected const int timeDelay = 1000;
         
         protected static AdBehaviourDummyClient AdBehaviour = new GameObject().AddComponent<AdBehaviourDummyClient>();
+        protected static GameObject prefabAd, dummyAd;
         
+        public GameObject setPrefabAd(string prefabName) {
+            prefab = Resources.Load(prefabName) as GameObject;
+        } 
+
+        public RectTransform getRectTransfrom(GameObject prefabAd) {
+            Image myImage = prefabAd.GetComponentInChildren<Image>();
+            return myImage.GetComponent<RectTransform>();
+        }
     }
 }
