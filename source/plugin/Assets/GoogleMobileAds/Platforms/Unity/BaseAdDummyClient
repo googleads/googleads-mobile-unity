@@ -20,12 +20,10 @@ namespace GoogleMobileAds.Unity
 {
     public class BaseAdDummyClient
     {
-        protected const int timeDelay = 1000;
-        
         protected static AdBehaviourDummyClient AdBehaviour = new GameObject().AddComponent<AdBehaviourDummyClient>();
         protected static GameObject prefabAd, dummyAd = null;
         
-        public GameObject setPrefabAd(string prefabName) {
+        public GameObject LoadAndSetPrefabAd(string prefabName) {
             prefabAd = Resources.Load(prefabName) as GameObject;
             if (prefabAd == null) {
                 Debug.Log ("No Prefab found")

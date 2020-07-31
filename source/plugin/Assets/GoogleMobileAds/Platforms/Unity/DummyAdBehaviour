@@ -108,6 +108,11 @@ public class DummyAdBehaviour : MonoBehaviour
         }
     }
 
+    public ButtonBehaviour GetButtonBehaviour(GameObject dummyAd)
+    {
+        return dummyAd.GetComponentInChildren<ButtonBehaviour>();
+    }
+
     public GameObject ShowAd(GameObject dummyAd, Vector3 position)
     { 
         return Instantiate(dummyAd, position, Quaternion.identity) as GameObject;
