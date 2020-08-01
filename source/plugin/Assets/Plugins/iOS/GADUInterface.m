@@ -64,6 +64,10 @@ void GADUInitializeWithCallback(GADUTypeMobileAdsClientRef *mobileAdsClientRef,
       }];
 }
 
+void GADUDisableMediationInitialization() {
+  [[GADMobileAds sharedInstance] disableMediationInitialization];
+}
+
 const char *GADUGetInitDescription(GADUTypeInitializationStatusRef statusRef,
                                    const char *className) {
   GADInitializationStatus *status = (__bridge GADInitializationStatus *)statusRef;
@@ -840,6 +844,39 @@ void GADUSetNativeCustomTemplateAdCallbacks(
   GADUNativeCustomTemplateAd *internalNativeCustomTemplateAd =
       (__bridge GADUNativeCustomTemplateAd *)nativeCustomTemplateAd;
   internalNativeCustomTemplateAd.didReceiveClickCallback = adClickedCallback;
+}
+
+const GADUTypeResponseInfoRef GADUGetResponseInfo(GADUTypeRef adFormat) {
+  id internalAd = (__bridge id)adFormat;
+  GADResponseInfo *responseInfo;
+  if ([internalAd isKindOfClass:[GADUBanner class]]){
+      GADUBanner *internalBanner = (GADUBanner *)internalAd;
+      responseInfo = internalBanner.responseInfo;
+  }else if ([internalAd isKindOfClass:[GADUInterstitial class]]) {
+      GADUInterstitial *internalInterstitial = (GADUInterstitial *)internalAd;
+      responseInfo =  internalInterstitial.responseInfo;
+  }else if ([internalAd isKindOfClass:[GADURewardedAd class]]){
+      GADURewardedAd *internalRewardedAd = (GADURewardedAd *)internalAd;
+      responseInfo =  internalRewardedAd.responseInfo;
+  }
+  GADUObjectCache *cache = [GADUObjectCache sharedInstance];
+  cache[responseInfo.gadu_referenceKey] = responseInfo;
+  return (__bridge GADUTypeResponseInfoRef)(responseInfo);
+}
+
+const char *GADUResponseInfoMediationAdapterClassName(GADUTypeResponseInfoRef responseInfo){
+  GADResponseInfo *internalResponseInfo = (__bridge GADResponseInfo *)responseInfo;
+  return cStringCopy(internalResponseInfo.adNetworkClassName.UTF8String);
+}
+
+const char *GADUResponseInfoResponseId(GADUTypeResponseInfoRef responseInfo){
+  GADResponseInfo *internalResponseInfo = (__bridge GADResponseInfo *)responseInfo;
+  return cStringCopy(internalResponseInfo.responseIdentifier.UTF8String);
+}
+
+const char *GADUGetResponseInfoDescription(GADUTypeResponseInfoRef responseInfo){
+  GADResponseInfo *internalResponseInfo = (__bridge GADResponseInfo *)responseInfo;
+  return cStringCopy(internalResponseInfo.description.UTF8String);
 }
 
 #pragma mark - Other methods

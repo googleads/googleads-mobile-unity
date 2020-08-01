@@ -1,4 +1,4 @@
-﻿// Copyright 2018 Google LLC
+// Copyright 2018 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -35,21 +35,17 @@ namespace GoogleMobileAds.iOS.Mediation.MyTarget
 
         public void SetUserConsent(bool userConsent)
         {
-            string parameterString = (userConsent == true ? "YES" : "NO");
-            MonoBehaviour.print ("Calling '[MTRGPrivacy setUserConsent:]' with argument: " + parameterString);
             Externs.GADUMMyTargetSetUserConsent (userConsent);
         }
 
         public void SetUserAgeRestricted(bool userAgeRestricted)
         {
-            string parameterString = (userAgeRestricted == true ? "YES" : "NO");
-            MonoBehaviour.print ("Calling '[MTRGPrivacy setUserAgeRestricted:]' with argument: " + parameterString);
             Externs.GADUMMyTargetSetUserAgeRestricted (userAgeRestricted);
         }
 
-        public bool IsUserConsent()
+        public bool IsConsent()
         {
-            return Externs.GADUMMyTargetIsUserConsent ();
+            return Externs.GADUMMyTargetIsConsent ();
         }
 
         public bool IsUserAgeRestricted()

@@ -1,6 +1,6 @@
 <dependencies>
   <androidPackages>
-    <androidPackage spec="com.google.ads.mediation:ironsource:6.16.0.0">
+    <androidPackage spec="com.google.ads.mediation:ironsource:6.17.0.0">
       <repositories>
         <repository>https://jcenter.bintray.com/</repository>
         <repository>https://dl.bintray.com/ironsource-mobile/android-sdk</repository>
@@ -9,7 +9,7 @@
   </androidPackages>
 
   <iosPods>
-    <iosPod name="GoogleMobileAdsMediationIronSource" version="6.16.0.0">
+    <iosPod name="GoogleMobileAdsMediationIronSource" version="6.16.3.0">
       <sources>
         <source>https://github.com/CocoaPods/Specs</source>
       </sources>

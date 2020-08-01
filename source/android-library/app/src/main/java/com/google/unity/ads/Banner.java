@@ -32,6 +32,7 @@ import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.AdValue;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.OnPaidEventListener;
+import com.google.android.gms.ads.ResponseInfo;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.FutureTask;
@@ -542,5 +543,32 @@ public class Banner {
    */
   public String getMediationAdapterClassName() {
     return mAdView != null ? mAdView.getMediationAdapterClassName() : null;
+  }
+
+  /**
+   * Returns the request response info.
+   */
+  public ResponseInfo getResponseInfo() {
+    FutureTask<ResponseInfo> task = new FutureTask<>(new Callable<ResponseInfo>() {
+      @Override
+      public ResponseInfo call() {
+        return mAdView.getResponseInfo();
+      }
+    });
+    mUnityPlayerActivity.runOnUiThread(task);
+
+    ResponseInfo result = null;
+    try {
+      result = task.get();
+    } catch (InterruptedException exception) {
+      Log.e(PluginUtils.LOGTAG,
+              String.format("Unable to check banner response info: %s",
+                      exception.getLocalizedMessage()));
+    } catch (ExecutionException exception) {
+      Log.e(PluginUtils.LOGTAG,
+              String.format("Unable to check banner response info: %s",
+                      exception.getLocalizedMessage()));
+    }
+    return result;
   }
 }

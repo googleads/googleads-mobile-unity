@@ -54,7 +54,7 @@ namespace GoogleMobileAds.Api
                 AdTypes = AdTypes,
                 TemplateIds = templateIdsDictionary
             };
-            adLoaderClient = GoogleMobileAdsClientFactory.BuildAdLoaderClient(clientArgs);
+            adLoaderClient = MobileAds.GetClientFactory().BuildAdLoaderClient(clientArgs);
 
             Utils.CheckInitialization();
 

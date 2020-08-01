@@ -24,6 +24,9 @@ namespace GoogleMobileAds.Api
         internal static bool IsDebugging { get; private set; }
 
         private readonly IMobileAdsClient client = GetMobileAdsClient();
+
+        private static IClientFactory clientFactory;
+
         private static MobileAds instance;
 
         public static MobileAds Instance
@@ -42,7 +45,6 @@ namespace GoogleMobileAds.Api
         {
             Instance.client.Initialize(appId);
             MobileAdsEventExecutor.Initialize();
-
             IsDebugging = debug;
         }
 
@@ -52,6 +54,11 @@ namespace GoogleMobileAds.Api
                 => initCompleteAction?.Invoke(new InitializationStatus(initStatusClient)));
             MobileAdsEventExecutor.Initialize();
             IsDebugging = debug;
+        }
+
+        public static void DisableMediationInitialization()
+        {
+            Instance.client.DisableMediationInitialization();
         }
 
         public static void SetApplicationMuted(bool muted)
@@ -80,9 +87,16 @@ namespace GoogleMobileAds.Api
             Instance.client.SetiOSAppPauseOnBackground(pause);
         }
 
+        internal static IClientFactory GetClientFactory() 
+        {
+            if (clientFactory == null)
+                clientFactory = new GoogleMobileAdsClientFactory();
+            return clientFactory;
+        }
+
         private static IMobileAdsClient GetMobileAdsClient()
         {
-            return GoogleMobileAdsClientFactory.MobileAdsInstance();
+            return GetClientFactory().MobileAdsInstance();
         }
 
         public static class Utils

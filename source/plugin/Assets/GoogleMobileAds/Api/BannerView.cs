@@ -42,7 +42,7 @@ namespace GoogleMobileAds.Api
         /// <param name="position"></param>
         public BannerView(string adUnitId, AdSize adSize, AdPosition position)
         {
-            client = GoogleMobileAdsClientFactory.BuildBannerClient();
+            client = MobileAds.GetClientFactory().BuildBannerClient();
             client.CreateBannerView(adUnitId, adSize, position);
 
             ConfigureBannerEvents();
@@ -57,7 +57,7 @@ namespace GoogleMobileAds.Api
         /// <param name="y"></param>
         public BannerView(string adUnitId, AdSize adSize, int x, int y)
         {
-            client = GoogleMobileAdsClientFactory.BuildBannerClient();
+            client = MobileAds.GetClientFactory().BuildBannerClient();
             client.CreateBannerView(adUnitId, adSize, x, y);
 
             ConfigureBannerEvents();
@@ -147,9 +147,19 @@ namespace GoogleMobileAds.Api
         /// Returns the mediation adapter class name.
         /// </summary>
         /// <returns></returns>
+        [Obsolete("MediationAdapterClassName() is deprecated, use GetResponseInfo.MediationAdapterClassName() instead.")]
         public string MediationAdapterClassName()
         {
             return client.MediationAdapterClassName();
+        }
+
+        /// <summary>
+        /// Returns ad request response info.
+        /// </summary>
+        /// <returns></returns>
+        public ResponseInfo GetResponseInfo()
+        {
+            return new ResponseInfo(client.GetResponseInfoClient());
         }
     }
 }

@@ -41,7 +41,7 @@ namespace GoogleMobileAds.Api
         /// <param name="adUnitId"></param>
         public InterstitialAd(string adUnitId)
         {
-            client = GoogleMobileAdsClientFactory.BuildInterstitialClient();
+            client = MobileAds.GetClientFactory().BuildInterstitialClient();
             client.CreateInterstitialAd(adUnitId);
 
             client.OnAdLoaded += (sender, args) => ExecuteEvent(this, OnAdLoaded, args);
@@ -93,9 +93,19 @@ namespace GoogleMobileAds.Api
         /// Returns the mediation adapter class name.
         /// </summary>
         /// <returns></returns>
+        [Obsolete("MediationAdapterClassName() is deprecated, use GetResponseInfo.MediationAdapterClassName() instead.")]
         public override string MediationAdapterClassName()
         {
             return client.MediationAdapterClassName();
+        }
+
+        /// <summary>
+        /// Returns ad request response info.
+        /// </summary>
+        /// <returns></returns>
+        public override ResponseInfo GetResponseInfo()
+        {
+            return new ResponseInfo(client.GetResponseInfoClient());
         }
     }
 }

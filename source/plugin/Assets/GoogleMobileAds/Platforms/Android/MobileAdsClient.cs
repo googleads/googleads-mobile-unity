@@ -62,6 +62,15 @@ namespace GoogleMobileAds.Android
             mobileAdsClass.CallStatic("setAppVolume", volume);
         }
 
+        public void DisableMediationInitialization()
+        {
+            AndroidJavaClass playerClass = new AndroidJavaClass(Utils.UnityActivityClassName);
+            AndroidJavaObject activity =
+                    playerClass.GetStatic<AndroidJavaObject>("currentActivity");
+            AndroidJavaClass mobileAdsClass = new AndroidJavaClass(Utils.MobileAdsClassName);
+            mobileAdsClass.CallStatic("disableMediationAdapterInitialization", activity);
+        }
+
         public void SetApplicationMuted(bool muted)
         {
             AndroidJavaClass mobileAdsClass = new AndroidJavaClass(Utils.MobileAdsClassName);
@@ -100,7 +109,7 @@ namespace GoogleMobileAds.Android
 
         public int GetDeviceSafeWidth()
         {
-          return Utils.GetScreenWidth();
+            return Utils.GetScreenWidth();
         }
 
         #region Callbacks from OnInitializationCompleteListener.

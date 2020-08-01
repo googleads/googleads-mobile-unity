@@ -1,5 +1,23 @@
 ## Unity Ads Unity Mediation Plugin Changelog
 
+#### Version 2.4.6
+- Supports [Unity Ads Android adapter version 3.4.6.1](https://github.com/googleads/googleads-mobile-android-mediation/blob/master/ThirdPartyAdapters/unity/CHANGELOG.md#version-3461).
+- Supports [Unity Ads iOS adapter version 3.4.6.0](https://github.com/googleads/googleads-mobile-ios-mediation/blob/master/adapters/Unity/CHANGELOG.md#version-3460).
+- Publishers now have an option to use the Unity Ads Services when mediating on Unity.
+  * See the `Assets/GoogleMobileAds/Editor/UnityMediationDependencies.xml` file for additional details.
+
+#### Version 2.4.5
+- Supports [Unity Ads Android adapter version 3.4.6.0](https://github.com/googleads/googleads-mobile-android-mediation/blob/master/ThirdPartyAdapters/unity/CHANGELOG.md#version-3460).
+- Supports [Unity Ads iOS adapter version 3.4.6.0](https://github.com/googleads/googleads-mobile-ios-mediation/blob/master/adapters/Unity/CHANGELOG.md#version-3460).
+
+#### Version 2.4.4
+- Supports [Unity Ads Android adapter version 3.4.2.3](https://github.com/googleads/googleads-mobile-android-mediation/blob/master/ThirdPartyAdapters/unity/CHANGELOG.md#version-3423).
+- Supports [Unity Ads iOS adapter version 3.4.2.2](https://github.com/googleads/googleads-mobile-ios-mediation/blob/master/adapters/Unity/CHANGELOG.md#version-3422).
+
+#### Version 2.4.3
+- Supports [Unity Ads Android adapter version 3.4.2.2](https://github.com/googleads/googleads-mobile-android-mediation/blob/master/ThirdPartyAdapters/unity/CHANGELOG.md#version-3422).
+- Supports [Unity Ads iOS adapter version 3.4.2.1](https://github.com/googleads/googleads-mobile-ios-mediation/blob/master/adapters/Unity/CHANGELOG.md#version-3421).
+
 #### Version 2.4.2
 - Supports [Unity Ads Android adapter version 3.4.2.1](https://github.com/googleads/googleads-mobile-android-mediation/blob/master/ThirdPartyAdapters/unity/CHANGELOG.md#version-3421).
 - Supports [Unity Ads iOS adapter version 3.4.2.1](https://github.com/googleads/googleads-mobile-ios-mediation/blob/master/adapters/Unity/CHANGELOG.md#version-3421).

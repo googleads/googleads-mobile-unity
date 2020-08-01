@@ -15,6 +15,7 @@
 using System;
 using System.Reflection;
 
+using GoogleMobileAds.Unity;
 using GoogleMobileAds.Api;
 using UnityEngine;
 
@@ -76,7 +77,13 @@ namespace GoogleMobileAds.Common
         public void Initialize(Action<IInitializationStatusClient> initCompleteAction)
         {
             Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
-            initCompleteAction(null);
+            var initStatusClient = new InitializationStatusDummyClient();
+            initCompleteAction(initStatusClient);
+        }
+
+        public void DisableMediationInitialization()
+        {
+            Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
         }
 
         public void SetApplicationMuted(bool muted)
@@ -89,7 +96,7 @@ namespace GoogleMobileAds.Common
             Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
         }
 
-         public RequestConfiguration GetRequestConfiguration()
+        public RequestConfiguration GetRequestConfiguration()
         {
             Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
             return null;
@@ -232,6 +239,12 @@ namespace GoogleMobileAds.Common
         }
 
         public string MediationAdapterClassName()
+        {
+            Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
+            return null;
+        }
+
+        public IResponseInfoClient GetResponseInfoClient()
         {
             Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
             return null;

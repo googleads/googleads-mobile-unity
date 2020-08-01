@@ -29,7 +29,7 @@ namespace GoogleMobileAds.Api
         public Dictionary<string, string> Extras { get; private set; }
         public List<MediationExtras> MediationExtras { get; private set; }
 
-        public const string Version = "5.1.0";
+        public const string Version = "5.3.0";
         public const string TestDeviceSimulator = "SIMULATOR";
 
         private AdRequest(Builder builder)

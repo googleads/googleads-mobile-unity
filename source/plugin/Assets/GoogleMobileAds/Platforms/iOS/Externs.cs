@@ -31,6 +31,9 @@ namespace GoogleMobileAds.iOS
             IntPtr mobileAdsClient, MobileAdsClient.GADUInitializationCompleteCallback callback);
 
         [DllImport("__Internal")]
+        internal static extern void GADUDisableMediationInitialization();
+
+        [DllImport("__Internal")]
         internal static extern IntPtr GADUGetInitDescription(IntPtr status, string className);
 
         [DllImport("__Internal")]
@@ -216,6 +219,18 @@ namespace GoogleMobileAds.iOS
 
         [DllImport("__Internal")]
         internal static extern IntPtr GADUMediationAdapterClassNameForBannerView(IntPtr bannerView);
+
+        [DllImport("__Internal")]
+        internal static extern IntPtr GADUGetResponseInfo(IntPtr adFormat);
+
+        [DllImport("__Internal")]
+        internal static extern string GADUResponseInfoMediationAdapterClassName(IntPtr responseInfo);
+
+        [DllImport("__Internal")]
+        internal static extern string GADUResponseInfoResponseId(IntPtr responseInfo);
+
+        [DllImport("__Internal")]
+        internal static extern string GADUGetResponseInfoDescription(IntPtr responseInfo);
 
         #endregion
 
