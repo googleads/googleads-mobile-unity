@@ -55,12 +55,12 @@ namespace GoogleMobileAds.Unity
             if (prefabAd != null) {
                 if (adSize == AdSize.SmartBanner)
                 {
-                    AdBehaviour.SetAndStretchAd(prefabAd, position);
+                    SetAndStretchAd(prefabAd, position);
 
                 }
                 else
                 {
-                    AdBehaviour.AnchorAd(prefabAd, position);
+                    AnchorAd(prefabAd, position);
                 }
             }
         }
@@ -76,7 +76,7 @@ namespace GoogleMobileAds.Unity
 
                 if (adSize == AdSize.SmartBanner)
                 {
-                    AdBehaviour.SetAndStretchAd(prefabAd, 0);
+                    SetAndStretchAd(prefabAd, 0);
                     rect.anchoredPosition = new Vector3(0, y, 1);
                 }
                 else
@@ -153,7 +153,7 @@ namespace GoogleMobileAds.Unity
             Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
             if (dummyAd != null)
             {
-                AdBehaviour.AnchorAd(dummyAd, adPosition);
+                AnchorAd(dummyAd, adPosition);
             } else
             {
                 Debug.Log("No existing banner in game");
