@@ -26,12 +26,12 @@ namespace GoogleMobileAds.Unity
         public GameObject LoadAndSetPrefabAd(string prefabName) {
             prefabAd = Resources.Load(prefabName) as GameObject;
             if (prefabAd == null) {
-                Debug.Log ("No Prefab found")
+                Debug.Log ("No Prefab found");
             }
             
         } 
 
-        public RectTransform getRectTransfrom(GameObject prefabAd) {
+        public RectTransform getRectTransform(GameObject prefabAd) {
             Image myImage = prefabAd.GetComponentInChildren<Image>();
             return myImage.GetComponent<RectTransform>();
         }
