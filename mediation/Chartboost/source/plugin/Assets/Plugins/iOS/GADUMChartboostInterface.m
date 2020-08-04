@@ -14,6 +14,44 @@
 
 #import <Chartboost/Chartboost.h>
 
-void GADUMRestrictDataCollection(BOOL shouldRestrict) {
-  [Chartboost restrictDataCollection:shouldRestrict];
+void GADUMChartboostAddGDPRDataUseConsent(int GDPRConsent) {
+  CHBGDPRDataUseConsent *chbGDPRconsent;
+  switch (GDPRConsent) {
+    case CHBGDPRConsentNonBehavioral:
+      chbGDPRconsent = [CHBGDPRDataUseConsent gdprConsent:CHBGDPRConsentNonBehavioral];
+      break;
+    case CHBGDPRConsentBehavioral:
+      chbGDPRconsent = [CHBGDPRDataUseConsent gdprConsent:CHBGDPRConsentBehavioral];
+      break;
+    default:
+      NSLog(@"Invalid Chartboost GDPR consent value.");
+      return;
+  }
+
+  [Chartboost addDataUseConsent:chbGDPRconsent];
+}
+
+void GADUMChartboostAddCCPADataUseConsent(int CCPAConsent) {
+  CHBCCPADataUseConsent *chbCCPAconsent;
+  switch (CCPAConsent) {
+    case CHBCCPAConsentOptOutSale:
+      chbCCPAconsent = [CHBCCPADataUseConsent ccpaConsent:CHBCCPAConsentOptOutSale];
+      break;
+    case CHBCCPAConsentOptInSale:
+      chbCCPAconsent = [CHBCCPADataUseConsent ccpaConsent:CHBCCPAConsentOptInSale];
+      break;
+    default:
+      NSLog(@"Invalid Chartboost CCPA consent value.");
+      return;
+  }
+
+  [Chartboost addDataUseConsent:chbCCPAconsent];
+}
+
+void GADUMChartboostAddCustomDataUseConsent(const char *_Nonnull customConsentName,
+                                            const char *_Nonnull customConsentValue) {
+  CHBCustomDataUseConsent *customDataConsent =
+      [CHBCustomDataUseConsent customConsentWithPrivacyStandard:@(customConsentName)
+                                                        consent:@(customConsentValue)];
+  [Chartboost addDataUseConsent:customDataConsent];
 }

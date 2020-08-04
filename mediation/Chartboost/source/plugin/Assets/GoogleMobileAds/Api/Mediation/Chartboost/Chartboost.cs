@@ -19,18 +19,46 @@ using GoogleMobileAds.Mediation;
 
 namespace GoogleMobileAds.Api.Mediation.Chartboost
 {
+    public enum CBGDPRDataUseConsent
+    {
+        NonBehavioral = 0,
+        Behavioral,
+    }
+
+    public enum CBCCPADataUseConsent
+    {
+        OptOutSale = 0,
+        OptInSale,
+    }
+
     public class Chartboost
     {
         public static readonly IChartboostClient client = GetChartboostClient();
 
-        public static void RestrictDataCollection(bool shouldRestrict)
-        {
-            client.RestrictDataCollection (shouldRestrict);
-        }
-
         private static IChartboostClient GetChartboostClient()
         {
             return ChartboostClientFactory.ChartboostInstance ();
+        }
+
+        public static void AddDataUseConsent(CBGDPRDataUseConsent gdprConsent)
+        {
+            client.AddDataUseConsent(gdprConsent);
+        }
+
+        public static void AddDataUseConsent(CBCCPADataUseConsent ccpaConsent)
+        {
+            client.AddDataUseConsent(ccpaConsent);
+        }
+
+        public static void AddDataUseConsent(string customConsentName, string customConsentValue)
+        {
+            if (customConsentName == null || customConsentValue == null)
+            {
+                Debug.Log("Invalid custom consent name or value.");
+                return;
+            }
+
+            client.AddDataUseConsent(customConsentName, customConsentValue);
         }
     }
 }

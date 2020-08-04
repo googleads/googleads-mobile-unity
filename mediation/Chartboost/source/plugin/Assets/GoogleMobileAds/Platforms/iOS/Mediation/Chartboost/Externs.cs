@@ -1,4 +1,4 @@
-﻿// Copyright 2018 Google LLC
+// Copyright 2018 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -23,7 +23,13 @@ namespace GoogleMobileAds.iOS.Mediation.Chartboost
     internal class Externs
     {
         [DllImport("__Internal")]
-        internal static extern void GADUMRestrictDataCollection(bool shouldRestrict);
+        internal static extern void GADUMChartboostAddGDPRDataUseConsent(int gdprConsent);
+
+        [DllImport("__Internal")]
+        internal static extern void GADUMChartboostAddCCPADataUseConsent(int ccpaConsent);
+
+        [DllImport("__Internal")]
+        internal static extern void GADUMChartboostAddCustomDataUseConsent(string customConsentName, string customConsentValue);
     }
 }
 

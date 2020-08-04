@@ -1,4 +1,4 @@
-﻿// Copyright 2018 Google LLC
+// Copyright 2018 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,8 +15,8 @@
 #if UNITY_ANDROID
 
 using UnityEngine;
-using System.Reflection;
 
+using GoogleMobileAds.Api.Mediation.Chartboost;
 using GoogleMobileAds.Common.Mediation.Chartboost;
 
 namespace GoogleMobileAds.Android.Mediation.Chartboost
@@ -34,15 +34,63 @@ namespace GoogleMobileAds.Android.Mediation.Chartboost
             }
         }
 
-        public void RestrictDataCollection(bool shouldRestrict)
+        public void AddDataUseConsent(CBGDPRDataUseConsent gdprConsent)
         {
-            AndroidJavaClass unityPlayer = new AndroidJavaClass ("com.unity3d.player.UnityPlayer");
-            AndroidJavaObject currentActivity = unityPlayer.GetStatic<AndroidJavaObject> ("currentActivity");
-            AndroidJavaClass chartboost = new AndroidJavaClass ("com.chartboost.sdk.Chartboost");
+            AndroidJavaClass chartboostGDPRConsentEnum = new AndroidJavaClass("com.chartboost.sdk.Privacy.model.GDPR$GDPR_CONSENT");
+            AndroidJavaObject gdprConsentObject;
+            if (gdprConsent == CBGDPRDataUseConsent.NonBehavioral)
+            {
+                gdprConsentObject = chartboostGDPRConsentEnum.GetStatic<AndroidJavaObject>("NON_BEHAVIORAL");
+            }
+            else if (gdprConsent == CBGDPRDataUseConsent.Behavioral)
+            {
+                gdprConsentObject = chartboostGDPRConsentEnum.GetStatic<AndroidJavaObject>("BEHAVIORAL");
+            }
+            else
+            {
+                MonoBehaviour.print("Invalid Chartboost GDPR consent configuration.");
+                return;
+            }
 
-            string parameterString = (shouldRestrict == true ? "true" : "false");
-            MonoBehaviour.print ("Calling 'Chartboost.restrictDataCollection()' with argument: " + parameterString);
-            chartboost.CallStatic ("restrictDataCollection", currentActivity, shouldRestrict);
+            AndroidJavaClass unityPlayer = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
+            AndroidJavaObject currentActivity = unityPlayer.GetStatic<AndroidJavaObject>("currentActivity");
+            AndroidJavaObject dataUseConsent = new AndroidJavaObject("com.chartboost.sdk.Privacy.model.GDPR", gdprConsentObject);
+            AndroidJavaClass chartboost = new AndroidJavaClass("com.chartboost.sdk.Chartboost");
+            chartboost.CallStatic("addDataUseConsent", currentActivity, dataUseConsent);
+        }
+
+        public void AddDataUseConsent(CBCCPADataUseConsent ccpaConsent)
+        {
+            AndroidJavaClass chartboostCCPAConsentEnum = new AndroidJavaClass("com.chartboost.sdk.Privacy.model.CCPA$CCPA_CONSENT");
+            AndroidJavaObject ccpaConsentObject;
+            if (ccpaConsent == CBCCPADataUseConsent.OptOutSale)
+            {
+                ccpaConsentObject = chartboostCCPAConsentEnum.GetStatic<AndroidJavaObject>("OPT_OUT_SALE");
+            }
+            else if (ccpaConsent == CBCCPADataUseConsent.OptInSale)
+            {
+                ccpaConsentObject = chartboostCCPAConsentEnum.GetStatic<AndroidJavaObject>("OPT_IN_SALE");
+            }
+            else
+            {
+                MonoBehaviour.print("Invalid Chartboost CCPA consent configuration.");
+                return;
+            }
+
+            AndroidJavaClass unityPlayer = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
+            AndroidJavaObject currentActivity = unityPlayer.GetStatic<AndroidJavaObject>("currentActivity");
+            AndroidJavaObject dataUseConsent = new AndroidJavaObject("com.chartboost.sdk.Privacy.model.CCPA", ccpaConsentObject);
+            AndroidJavaClass chartboost = new AndroidJavaClass("com.chartboost.sdk.Chartboost");
+            chartboost.CallStatic("addDataUseConsent", currentActivity, dataUseConsent);
+        }
+
+        public void AddDataUseConsent(string customConsentName, string customConsentValue)
+        {
+            AndroidJavaClass unityPlayer = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
+            AndroidJavaObject currentActivity = unityPlayer.GetStatic<AndroidJavaObject>("currentActivity");
+            AndroidJavaObject dataUseConsent = new AndroidJavaObject("com.chartboost.sdk.Privacy.model.Custom", customConsentName, customConsentValue);
+            AndroidJavaClass chartboost = new AndroidJavaClass("com.chartboost.sdk.Chartboost");
+            chartboost.CallStatic("addDataUseConsent", currentActivity, dataUseConsent);
         }
     }
 }

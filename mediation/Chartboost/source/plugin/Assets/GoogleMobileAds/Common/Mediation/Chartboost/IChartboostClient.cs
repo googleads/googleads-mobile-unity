@@ -1,4 +1,4 @@
-﻿// Copyright 2018 Google LLC
+// Copyright 2018 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,11 +14,19 @@
 
 using System;
 
+using GoogleMobileAds.Api.Mediation.Chartboost;
+
 namespace GoogleMobileAds.Common.Mediation.Chartboost
 {
     public interface IChartboostClient
     {
-        // Enable GDPR data collection restrictions for the Chartboost SDK.
-        void RestrictDataCollection(bool shouldRestrict);
+        // Sets GDPR consent for the Chartboost SDK.
+        void AddDataUseConsent(CBGDPRDataUseConsent gdprConsent);
+
+        // Sets CCPA consent for the Chartboost SDK.
+        void AddDataUseConsent(CBCCPADataUseConsent ccpaConsent);
+
+        // Sets a custom data use consent for the Chartboost SDK.
+        void AddDataUseConsent(string customConsentName, string customConsentValue);
     }
 }
