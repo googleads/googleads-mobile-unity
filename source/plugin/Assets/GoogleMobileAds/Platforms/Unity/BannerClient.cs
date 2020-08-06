@@ -70,7 +70,6 @@ namespace GoogleMobileAds.Unity
         public void CreateBannerView(string adUnitId, AdSize adSize, int x, int y)
         {
             Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
-
             LoadAndSetPrefabAd(prefabAds[adSize]);
             if (prefabAd != null) {
                 RectTransform rect = getRectTransform(prefabAd);
@@ -106,15 +105,12 @@ namespace GoogleMobileAds.Unity
                   });
                 }
             }
-
-
         }
 
         // Shows the banner view on the screen.
         public void ShowBannerView()
         {
             Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
-
             dummyAd = AdBehaviour.ShowAd(prefabAd, getRectTransform(prefabAd).anchoredPosition);
             ButtonBehaviour buttonBehaviour = dummyAd.GetComponentInChildren<ButtonBehaviour>();
             buttonBehaviour.OnAdOpening += OnAdOpening;
@@ -126,7 +122,6 @@ namespace GoogleMobileAds.Unity
         {
             Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
             AdBehaviour.DestroyAd(dummyAd);
-
         }
 
         // Destroys a banner view.
@@ -233,7 +228,6 @@ namespace GoogleMobileAds.Unity
 
                 float x = (float)rect.sizeDelta.x/2;
                 float y = (float)rect.sizeDelta.y/2;
-
 
                 switch (position)
                 {

@@ -10,7 +10,6 @@ public class ButtonBehaviour : MonoBehaviour
     {
         Debug.Log("Opened URL");
         Application.OpenURL("http://google.com");
-
         if (OnAdOpening != null)
         {
             OnAdOpening.Invoke(this, new EventArgs());
