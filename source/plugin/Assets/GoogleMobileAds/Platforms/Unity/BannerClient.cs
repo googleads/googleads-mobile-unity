@@ -120,7 +120,7 @@ namespace GoogleMobileAds.Unity
         // Hides the banner view from the screen.
         public void HideBannerView()
         {
-            Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);         
+            Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
             AdBehaviour.DestroyAd(dummyAd);
         }
 
