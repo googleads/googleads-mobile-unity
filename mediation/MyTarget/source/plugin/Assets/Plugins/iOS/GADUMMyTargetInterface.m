@@ -22,10 +22,10 @@ void GADUMMyTargetSetUserAgeRestricted(BOOL userAgeRestricted) {
   [MTRGPrivacy setUserAgeRestricted:userAgeRestricted];
 }
 
-BOOL GADUMMyTargetIsUserConsent() {
-  return [MTRGPrivacy userConsent];
+BOOL GADUMMyTargetIsConsent() {
+  return [MTRGPrivacy currentPrivacy].isConsent;
 }
 
 BOOL GADUMMyTargetIsUserAgeRestricted() {
-  return [MTRGPrivacy userAgeRestricted];
+  return [MTRGPrivacy currentPrivacy].userAgeRestricted;
 }

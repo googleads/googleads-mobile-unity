@@ -1,4 +1,4 @@
-﻿// Copyright 2018 Google LLC
+// Copyright 2018 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -38,9 +38,9 @@ namespace GoogleMobileAds.Api.Mediation.MyTarget
             client.SetUserAgeRestricted (userAgeRestricted);
         }
 
-        public static bool IsUserConsent()
+        public static bool IsConsent()
         {
-            return client.IsUserConsent ();
+            return client.IsConsent ();
         }
 
         public static bool IsUserAgeRestricted()

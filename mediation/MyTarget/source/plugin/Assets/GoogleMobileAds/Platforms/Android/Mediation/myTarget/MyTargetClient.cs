@@ -1,4 +1,4 @@
-﻿// Copyright 2018 Google LLC
+// Copyright 2018 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -36,32 +36,28 @@ namespace GoogleMobileAds.Android.Mediation.MyTarget
 
         public void SetUserConsent(bool userConsent)
         {
-            AndroidJavaClass myTarget = new AndroidJavaClass ("com.my.target.common.MyTargetPrivacy");
-
-            string parameterString = (userConsent == true ? "true" : "false");
-            MonoBehaviour.print ("Calling 'MyTargetPrivacy.setUserConsent()' with argument: " + parameterString);
-            myTarget.CallStatic ("setUserConsent", userConsent);
+            AndroidJavaClass myTarget = new AndroidJavaClass("com.my.target.common.MyTargetPrivacy");
+            myTarget.CallStatic("setUserConsent", userConsent);
         }
 
         public void SetUserAgeRestricted(bool userAgeRestricted)
         {
             AndroidJavaClass myTarget = new AndroidJavaClass ("com.my.target.common.MyTargetPrivacy");
-
-            string parameterString = (userAgeRestricted == true ? "true" : "false");
-            MonoBehaviour.print ("Calling 'MyTargetPrivacy.setUserAgeRestricted()' with argument: " + parameterString);
-            myTarget.CallStatic ("setUserAgeRestricted", userAgeRestricted);
+            myTarget.CallStatic("setUserAgeRestricted", userAgeRestricted);
         }
 
-        public bool IsUserConsent()
+        public bool IsConsent()
         {
-            AndroidJavaClass myTarget = new AndroidJavaClass ("com.my.target.common.MyTargetPrivacy");
-            return myTarget.CallStatic<bool> ("isUserConsent");
+            AndroidJavaClass myTarget = new AndroidJavaClass("com.my.target.common.MyTargetPrivacy");
+            AndroidJavaObject myTargetCurrentPrivacy = myTarget.CallStatic<AndroidJavaObject>("currentPrivacy");
+            return myTargetCurrentPrivacy.Call<bool>("isConsent");
         }
 
         public bool IsUserAgeRestricted()
         {
-            AndroidJavaClass myTarget = new AndroidJavaClass ("com.my.target.common.MyTargetPrivacy");
-            return myTarget.CallStatic<bool> ("isUserAgeRestricted");
+            AndroidJavaClass myTarget = new AndroidJavaClass("com.my.target.common.MyTargetPrivacy");
+            AndroidJavaObject myTargetCurrentPrivacy = myTarget.CallStatic<AndroidJavaObject>("currentPrivacy");
+            return myTargetCurrentPrivacy.Get<bool>("userAgeRestricted");
         }
     }
 }

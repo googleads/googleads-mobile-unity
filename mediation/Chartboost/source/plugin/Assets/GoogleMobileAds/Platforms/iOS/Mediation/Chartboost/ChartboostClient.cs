@@ -1,4 +1,4 @@
-﻿// Copyright 2018 Google LLC
+// Copyright 2018 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,6 +16,7 @@
 
 using UnityEngine;
 
+using GoogleMobileAds.Api.Mediation.Chartboost;
 using GoogleMobileAds.Common.Mediation.Chartboost;
 
 namespace GoogleMobileAds.iOS.Mediation.Chartboost
@@ -33,11 +34,19 @@ namespace GoogleMobileAds.iOS.Mediation.Chartboost
             }
         }
 
-        public void RestrictDataCollection(bool shouldRestrict)
+        public void AddDataUseConsent(CBGDPRDataUseConsent gdprConsent)
         {
-            string parameterString = (shouldRestrict == true ? "@YES" : "@NO");
-            MonoBehaviour.print ("Calling '[Chartboost restrictDataCollection:]' with argument: " + parameterString);
-            Externs.GADUMRestrictDataCollection (shouldRestrict);
+            Externs.GADUMChartboostAddGDPRDataUseConsent((int)gdprConsent);
+        }
+
+        public void AddDataUseConsent(CBCCPADataUseConsent ccpaConsent)
+        {
+            Externs.GADUMChartboostAddCCPADataUseConsent((int)ccpaConsent);
+        }
+
+        public void AddDataUseConsent(string customConsentName, string customConsentValue)
+        {
+            Externs.GADUMChartboostAddCustomDataUseConsent(customConsentName, customConsentValue);
         }
     }
 }

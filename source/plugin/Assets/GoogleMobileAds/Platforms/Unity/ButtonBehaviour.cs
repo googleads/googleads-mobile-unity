@@ -10,8 +10,13 @@ public class ButtonBehaviour : MonoBehaviour
     {
         Debug.Log("Opened URL");
         Application.OpenURL("http://google.com");
-       
-        OnAdOpening?.Invoke(this, new EventArgs());
-        OnLeavingApplication?.Invoke(this, new EventArgs());
+        if (OnAdOpening != null)
+        {
+            OnAdOpening.Invoke(this, new EventArgs());
+        }
+        if (OnLeavingApplication != null)
+        {
+            OnLeavingApplication.Invoke(this, new EventArgs());
+        }
     }
 }

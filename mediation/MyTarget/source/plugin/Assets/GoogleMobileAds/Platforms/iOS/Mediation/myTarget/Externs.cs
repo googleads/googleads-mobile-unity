@@ -1,4 +1,4 @@
-﻿// Copyright 2018 Google LLC
+// Copyright 2018 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -29,7 +29,7 @@ namespace GoogleMobileAds.iOS.Mediation.MyTarget
         internal static extern void GADUMMyTargetSetUserAgeRestricted(bool userAgeRestricted);
 
         [DllImport("__Internal")]
-        internal static extern bool GADUMMyTargetIsUserConsent();
+        internal static extern bool GADUMMyTargetIsConsent();
 
         [DllImport("__Internal")]
         internal static extern bool GADUMMyTargetIsUserAgeRestricted();
