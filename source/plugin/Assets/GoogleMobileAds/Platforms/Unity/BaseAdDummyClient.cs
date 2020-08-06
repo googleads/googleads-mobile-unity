@@ -14,22 +14,24 @@
 
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+
 using GoogleMobileAds.Api;
+
 
 namespace GoogleMobileAds.Unity
 {
     public class BaseAdDummyClient
     {
-        protected static AdBehaviourDummyClient AdBehaviour = new GameObject().AddComponent<AdBehaviourDummyClient>();
+        protected static DummyAdBehaviour AdBehaviour = new GameObject().AddComponent<DummyAdBehaviour>();
         protected static GameObject prefabAd, dummyAd = null;
-        
-        public GameObject LoadAndSetPrefabAd(string prefabName) {
+
+        public void LoadAndSetPrefabAd(string prefabName) {
             prefabAd = Resources.Load(prefabName) as GameObject;
             if (prefabAd == null) {
                 Debug.Log ("No Prefab found");
             }
-            
-        } 
+        }
 
         public RectTransform getRectTransform(GameObject prefabAd) {
             Image myImage = prefabAd.GetComponentInChildren<Image>();

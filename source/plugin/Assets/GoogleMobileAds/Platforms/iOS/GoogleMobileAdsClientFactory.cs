@@ -30,6 +30,10 @@ namespace GoogleMobileAds
       {
         return new GoogleMobileAds.iOS.BannerClient();
       }
+      else if (Application.platform == RuntimePlatform.OSXEditor || Application.platform == RuntimePlatform.WindowsEditor)
+      {
+        return new GoogleMobileAds.Unity.BannerClient();
+      }
       return new GoogleMobileAds.Common.DummyClient();
     }
 
