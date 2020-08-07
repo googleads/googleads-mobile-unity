@@ -182,14 +182,14 @@ namespace GoogleMobileAds.Unity
         public string MediationAdapterClassName()
         {
             Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
-            return null;
+            return new ResponseInfoDummyClient().GetMediationAdapterClassName();
         }
 
         // Returns ad request Response info client.
         public IResponseInfoClient GetResponseInfoClient()
         {
             Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
-            return null;
+            return new ResponseInfoDummyClient();
         }
 
         private void SetAndStretchAd(GameObject dummyAd, AdPosition pos)
