@@ -61,7 +61,7 @@ namespace GoogleMobileAds.Unity
                     LoadAndSetPrefabAd(prefabAds[new AdSize(1024, 768)]);
                 }
                 else
-                { 
+                {
                     LoadAndSetPrefabAd(prefabAds[new AdSize(480, 320)]);
                 }
             } else
@@ -115,7 +115,6 @@ namespace GoogleMobileAds.Unity
         {
             Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
             AdBehaviour.DestroyAd(dummyAd);
-            
         }
 
         // Returns the mediation adapter class name.
