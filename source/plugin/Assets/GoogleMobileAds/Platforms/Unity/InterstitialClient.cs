@@ -48,7 +48,12 @@ namespace GoogleMobileAds.Unity
         public void CreateInterstitialAd(string adUnitId)
         {
             Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
-            Debug.Log("Width: " + Screen.width + "Height: " + Screen.height);
+        }
+
+        // Loads a new interstitial request.
+        public void LoadAd(AdRequest request)
+        {
+            Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
             if (Screen.width > Screen.height) //Landscape
             {
                 if (Screen.width > 800)
@@ -70,12 +75,6 @@ namespace GoogleMobileAds.Unity
                     LoadAndSetPrefabAd(prefabAds[new AdSize(768, 1024)]);
                 }
             }
-        }
-
-        // Loads a new interstitial request.
-        public void LoadAd(AdRequest request)
-        {
-            Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
             if (OnAdLoaded != null)
             {
                 OnAdLoaded.Invoke(this, EventArgs.Empty);
@@ -86,7 +85,11 @@ namespace GoogleMobileAds.Unity
         public bool IsLoaded()
         {
             Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
-            return true;
+            if (prefabAd != null) {
+                return true;
+            } else {
+                return false;
+            }
         }
 
         // Shows the InterstitialAd.
