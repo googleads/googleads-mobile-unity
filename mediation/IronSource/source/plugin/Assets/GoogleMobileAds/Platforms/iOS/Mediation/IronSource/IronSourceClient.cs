@@ -1,4 +1,4 @@
-﻿// Copyright 2018 Google LLC
+// Copyright 2018 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -35,8 +35,6 @@ namespace GoogleMobileAds.iOS.Mediation.IronSource
 
         public void SetConsent(bool consent)
         {
-            string parameterString = (consent == true ? "YES" : "NO");
-            MonoBehaviour.print ("Calling '[IronSource setConsent:]' with argument: " + parameterString);
             Externs.GADUMIronSourceSetConsent (consent);
         }
     }
