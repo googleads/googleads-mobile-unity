@@ -15,7 +15,6 @@
 using UnityEngine;
 using System;
 
-
 public class DummyAdBehaviour : MonoBehaviour
 {
     public event EventHandler<EventArgs> OnAdClosed;
