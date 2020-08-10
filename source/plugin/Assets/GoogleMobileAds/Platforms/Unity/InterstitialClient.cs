@@ -96,7 +96,7 @@ namespace GoogleMobileAds.Unity
         public void ShowInterstitial()
         {
             Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
-            if (prefabAd != null)
+            if (IsLoaded() == true)
             {
                 dummyAd = AdBehaviour.ShowAd(prefabAd, new Vector3(0, 0, 0));
                 buttonBehaviour = dummyAd.GetComponentInChildren<ButtonBehaviour>();
@@ -133,3 +133,4 @@ namespace GoogleMobileAds.Unity
 
     }
 }
+
