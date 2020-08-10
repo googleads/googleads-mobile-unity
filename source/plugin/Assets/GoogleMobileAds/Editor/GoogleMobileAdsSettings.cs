@@ -9,7 +9,8 @@ using UnityEngine;
 namespace GoogleMobileAds.Editor
 {
 
-    internal class GoogleMobileAdsSettings : ScriptableObject
+    //make it a public class so we can set game id on the scriptable object using c# remove the comment after you fixed it.
+    public class GoogleMobileAdsSettings : ScriptableObject
     {
         private const string MobileAdsSettingsDir = "Assets/GoogleMobileAds";
 
