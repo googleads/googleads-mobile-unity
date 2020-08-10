@@ -21,7 +21,7 @@ using UnityEngine;
 
 namespace GoogleMobileAds.Unity
 {
-    public class InterstitialClient : BaseDummyAdClient, IInterstitialClient
+    public class InterstitialClient : BaseAdDummyClient, IInterstitialClient
     {
         // Ad event fired when the interstitial ad has been received.
         public event EventHandler<EventArgs> OnAdLoaded;

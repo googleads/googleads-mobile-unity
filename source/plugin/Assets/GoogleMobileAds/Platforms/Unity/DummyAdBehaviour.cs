@@ -13,23 +13,43 @@
 // limitations under the License.
 
 using UnityEngine;
-using UnityEngine.UI;
-using GoogleMobileAds.Api;
+using System;
 
 
 public class DummyAdBehaviour : MonoBehaviour
 {
+    public event EventHandler<EventArgs> OnAdClosed;
+    public static DummyAdBehaviour instance;
+
+    public void Awake()
+    {
+        instance = this;
+    }
+
+    public void PauseGame()
+    {
+        Time.timeScale = 0;
+        Debug.Log("Pause Game");
+    }
+
+    public void ResumeGame()
+    {
+        Time.timeScale = 1;
+        Debug.Log("Resume Game");
+    }
+
     public GameObject ShowAd(GameObject dummyAd, Vector3 position)
-    { 
-        return Instantiate(dummyAd, position, Quaternion.identity) as GameObject;
+    {
+       return Instantiate(dummyAd, position, Quaternion.identity) as GameObject;  
     }
 
     public void DestroyAd(GameObject dummyAd)
     {
-       if (dummyAd != null) {
-            Destroy(dummyAd);
-       } else {
-           Debug.Log("Invalid Dummy Ad");
-       }
+        if (OnAdClosed != null)
+        {
+            OnAdClosed.Invoke(this, new EventArgs());
+        }
+        Destroy(dummyAd);
     }
+
 }
