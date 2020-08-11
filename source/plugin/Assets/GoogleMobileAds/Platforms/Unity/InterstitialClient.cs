@@ -66,6 +66,7 @@ namespace GoogleMobileAds.Unity
                 }
             } else
             {
+                Debug.Log("Hello");
                 if (Screen.height < 1080)
                 {
                     LoadAndSetPrefabAd(prefabAds[new AdSize(320, 480)]);
@@ -98,7 +99,7 @@ namespace GoogleMobileAds.Unity
             Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
             if (IsLoaded() == true)
             {
-                dummyAd = AdBehaviour.ShowAd(prefabAd, new Vector3(0, 0, 0));
+                dummyAd = AdBehaviour.ShowAd(prefabAd, new Vector3(0, 0, 1));
                 buttonBehaviour = dummyAd.GetComponentInChildren<ButtonBehaviour>();
                 buttonBehaviour.OnAdOpening += OnAdOpening;
                 buttonBehaviour.OnLeavingApplication += OnAdLeavingApplication;

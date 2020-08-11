@@ -57,7 +57,6 @@ namespace GoogleMobileAds.Unity
                 if (adSize == AdSize.SmartBanner)
                 {
                     SetAndStretchAd(prefabAd, position);
-
                 }
                 else
                 {

@@ -32,11 +32,11 @@ namespace GoogleMobileAds
             }
             else if (Application.platform == RuntimePlatform.OSXEditor || Application.platform == RuntimePlatform.WindowsEditor)
             {
-              return new GoogleMobileAds.Unity.BannerClient();
+                return new GoogleMobileAds.Unity.BannerClient();
             } 
             else 
             {
-              return new GoogleMobileAds.Common.DummyClient();
+                return new GoogleMobileAds.Common.DummyClient();
             }
         }
 
@@ -44,11 +44,15 @@ namespace GoogleMobileAds
         {
           if (Application.platform == RuntimePlatform.Android)
           {
-              return new GoogleMobileAds.Android.InterstitialClient();
+                return new GoogleMobileAds.Android.InterstitialClient();
           }
-          else
+          else if (Application.platform == RuntimePlatform.OSXEditor || Application.platform == RuntimePlatform.WindowsEditor)
           {
-            return new GoogleMobileAds.Common.DummyClient();
+                return new GoogleMobileAds.Unity.InterstitialClient();
+          }
+          else 
+          {
+                return new GoogleMobileAds.Common.DummyClient();
           }
         }
 
