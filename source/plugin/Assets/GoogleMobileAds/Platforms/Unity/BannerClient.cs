@@ -195,7 +195,7 @@ namespace GoogleMobileAds.Unity
         {
             if (dummyAd != null) {
                 Image myImage = dummyAd.GetComponentInChildren<Image>();
-                RectTransform rect = myImage.GetComponent<RectTransform>();
+                RectTransform rect = myImage.GetComponentInChildren<RectTransform>();
 
                 rect.pivot = new Vector2(0.5f, 0.5f);
 
@@ -223,7 +223,7 @@ namespace GoogleMobileAds.Unity
         {
             if (dummyAd != null) {
                 Image myImage = dummyAd.GetComponentInChildren<Image>();
-                RectTransform rect = myImage.GetComponent<RectTransform>();
+                RectTransform rect = myImage.GetComponentInChildren<RectTransform>();
 
                 float x = (float)rect.sizeDelta.x/2;
                 float y = (float)rect.sizeDelta.y/2;

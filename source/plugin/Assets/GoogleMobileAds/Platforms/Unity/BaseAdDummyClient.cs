@@ -35,7 +35,7 @@ namespace GoogleMobileAds.Unity
 
         public RectTransform getRectTransform(GameObject prefabAd) {
             Image myImage = prefabAd.GetComponentInChildren<Image>();
-            return myImage.GetComponent<RectTransform>();
+            return prefabAd.GetComponent<RectTransform>();
         }
     }
 }

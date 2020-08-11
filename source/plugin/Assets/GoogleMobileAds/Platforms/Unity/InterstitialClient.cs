@@ -66,7 +66,6 @@ namespace GoogleMobileAds.Unity
                 }
             } else
             {
-                Debug.Log("Hello");
                 if (Screen.height < 1080)
                 {
                     LoadAndSetPrefabAd(prefabAds[new AdSize(320, 480)]);
