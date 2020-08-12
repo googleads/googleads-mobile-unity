@@ -47,11 +47,11 @@ namespace GoogleMobileAds.Unity
             {AdSize.Leaderboard, "DummyAds/Banners/LEADERBOARD" },
             {new AdSize (320,100), "DummyAds/Banners/LARGE_BANNER" }
         };
+
         private ButtonBehaviour buttonBehaviour;
 
         private void AddClickBehavior(GameObject dummyAd)
         {
-            Debug.Log("Dummy Add Click");
             Image myImage = dummyAd.GetComponentInChildren<Image>();
             Button button = myImage.GetComponentInChildren<Button>();
             button.onClick.AddListener(() => {
@@ -70,11 +70,19 @@ namespace GoogleMobileAds.Unity
         public void CreateBannerView(string adUnitId, AdSize adSize, AdPosition position)
         {
             Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
-            LoadAndSetPrefabAd(prefabAds[adSize]);
+            if (adSize.AdType == AdSize.Type.AnchoredAdaptive)
+            {
+                LoadAndSetPrefabAd("DummyAds/Banners/ADAPTIVE");
+            }
+            else
+            {
+                LoadAndSetPrefabAd(prefabAds[adSize]);
+            }
+            
             if (prefabAd != null) {
-                if (adSize == AdSize.SmartBanner)
+                if (adSize == AdSize.SmartBanner || adSize.AdType == AdSize.Type.AnchoredAdaptive)
                 {
-                    SetAndStretchAd(prefabAd, position);
+                    SetAndStretchAd(prefabAd, position, adSize);
                 }
                 else
                 {
@@ -94,7 +102,7 @@ namespace GoogleMobileAds.Unity
 
                 if (adSize == AdSize.SmartBanner)
                 {
-                    SetAndStretchAd(prefabAd, 0);
+                    SetAndStretchAd(prefabAd, 0, adSize);
                     rect.anchoredPosition = new Vector3(0, y, 1);
                 }
                 else
@@ -209,7 +217,7 @@ namespace GoogleMobileAds.Unity
             return new ResponseInfoDummyClient();
         }
 
-        private void SetAndStretchAd(GameObject dummyAd, AdPosition pos)
+        private void SetAndStretchAd(GameObject dummyAd, AdPosition pos, AdSize adSize)
         {
             if (dummyAd != null) {
                 Image myImage = dummyAd.GetComponentInChildren<Image>();
@@ -227,7 +235,23 @@ namespace GoogleMobileAds.Unity
                     rect.anchoredPosition = new Vector2(0, -(float)rect.sizeDelta.y/2);
                 } else if (pos == AdPosition.Center)
                 {
-                    rect.anchoredPosition = new Vector2(0, 0);
+                    LoadAndSetPrefabAd("DummyAds/Banners/CENTER");
+                    if (adSize.AdType == AdSize.Type.AnchoredAdaptive)
+                    {
+                        LoadAndSetPrefabAd("DummyAds/Banners/CENTER");
+                        Text adText = prefabAd.GetComponentInChildren<Image>().GetComponentInChildren<Text>();
+                        adText.text = "This is a Test Adaptive Banner";
+                    }
+                    else if (adSize == AdSize.SmartBanner)
+                    {
+                        LoadAndSetPrefabAd("DummyAds/Banners/CENTER");
+                        Text adText = prefabAd.GetComponentInChildren<Image>().GetComponentInChildren<Text>();
+                        adText.text = "This is a Test Smart Banner";
+                    }
+                    else
+                    {
+                        rect.anchoredPosition = new Vector2(0, 0);
+                    }
                 } else
                 {
                     rect.anchoredPosition = rect.position;

@@ -48,14 +48,13 @@ namespace GoogleMobileAds.Unity
 
         private void AddClickBehavior(GameObject dummyAd)
         {
-            Debug.Log("Dummy Add Click");
             Image myImage = dummyAd.GetComponentInChildren<Image>();
             Button button = myImage.GetComponentInChildren<Button>();
             button.onClick.AddListener(() => {
                 buttonBehaviour.OpenURL();
             });
             Button[] innerButtons = dummyAd.GetComponentsInChildren<Button>();
-         
+
             innerButtons[1].onClick.AddListener(() =>
             {
                 Debug.Log("Clicked");
