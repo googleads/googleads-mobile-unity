@@ -47,11 +47,11 @@ namespace GoogleMobileAds.Unity
             {AdSize.Leaderboard, "DummyAds/Banners/LEADERBOARD" },
             {new AdSize (320,100), "DummyAds/Banners/LARGE_BANNER" }
         };
-        private ButtonBehaviour buttonBehaviour;
+
+        private Button buttonBehaviour;
 
         private void AddClickBehavior(GameObject dummyAd)
         {
-            Debug.Log("Dummy Add Click");
             Image myImage = dummyAd.GetComponentInChildren<Image>();
             Button button = myImage.GetComponentInChildren<Button>();
             button.onClick.AddListener(() => {
