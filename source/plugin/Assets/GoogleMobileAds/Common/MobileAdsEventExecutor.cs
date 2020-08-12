@@ -15,8 +15,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace GoogleMobileAds.Common
 {
@@ -59,6 +59,14 @@ namespace GoogleMobileAds.Common
                 adEventsQueue.Add(action);
                 adEventsQueueEmpty = false;
             }
+        }
+
+        public static void InvokeInUpdate(UnityEvent eventParam)
+        {
+          ExecuteInUpdate(() =>
+          {
+              eventParam.Invoke();
+          });
         }
 
         public void Update()
