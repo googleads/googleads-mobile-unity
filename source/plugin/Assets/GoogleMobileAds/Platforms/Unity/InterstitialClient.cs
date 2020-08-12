@@ -18,6 +18,7 @@ using System.Collections.Generic;
 using GoogleMobileAds.Api;
 using GoogleMobileAds.Common;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace GoogleMobileAds.Unity
 {
@@ -36,7 +37,6 @@ namespace GoogleMobileAds.Unity
         // Ad event fired when the interstitial ad is estimated to have earned money.
         public event EventHandler<AdValueEventArgs> OnPaidEvent;
 
-        private ButtonBehaviour buttonBehaviour;
         private Dictionary<AdSize, string> prefabAds = new Dictionary<AdSize, string>() {
             {new AdSize (320,480), "DummyAds/Interstitials/320x480" },
             {new AdSize (480,320), "DummyAds/Interstitials/480x320"},
@@ -44,10 +44,39 @@ namespace GoogleMobileAds.Unity
             {new AdSize (1024,768), "DummyAds/Interstitials/1024x768"}
         };
 
+        private ButtonBehaviour buttonBehaviour;
+
+        private void AddClickBehavior(GameObject dummyAd)
+        {
+            Debug.Log("Dummy Add Click");
+            Image myImage = dummyAd.GetComponentInChildren<Image>();
+            Button button = myImage.GetComponentInChildren<Button>();
+            button.onClick.AddListener(() => {
+                buttonBehaviour.OpenURL();
+            });
+            Button[] innerButtons = dummyAd.GetComponentsInChildren<Button>();
+         
+            innerButtons[1].onClick.AddListener(() =>
+            {
+                Debug.Log("Clicked");
+                AdBehaviour.DestroyAd(dummyAd);
+                AdBehaviour.ResumeGame();
+            });
+        }
+
+        private void CreateButtonBehavior()
+        {
+            buttonBehaviour = new ButtonBehaviour();
+            buttonBehaviour.OnAdOpening += OnAdOpening;
+            buttonBehaviour.OnLeavingApplication += OnAdLeavingApplication;
+            DummyAdBehaviour.instance.OnAdClosed += OnAdClosed;
+        }
+
         // Creates an InterstitialAd.
         public void CreateInterstitialAd(string adUnitId)
         {
             Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
+            CreateButtonBehavior();
         }
 
         // Loads a new interstitial request.
@@ -75,6 +104,7 @@ namespace GoogleMobileAds.Unity
                     LoadAndSetPrefabAd(prefabAds[new AdSize(768, 1024)]);
                 }
             }
+
             if (OnAdLoaded != null)
             {
                 OnAdLoaded.Invoke(this, EventArgs.Empty);
@@ -99,10 +129,7 @@ namespace GoogleMobileAds.Unity
             if (IsLoaded() == true)
             {
                 dummyAd = AdBehaviour.ShowAd(prefabAd, new Vector3(0, 0, 1));
-                buttonBehaviour = dummyAd.GetComponentInChildren<ButtonBehaviour>();
-                buttonBehaviour.OnAdOpening += OnAdOpening;
-                buttonBehaviour.OnLeavingApplication += OnAdLeavingApplication;
-                DummyAdBehaviour.instance.OnAdClosed += OnAdClosed;
+                AddClickBehavior(dummyAd);
                 AdBehaviour.PauseGame();
             } else
             {

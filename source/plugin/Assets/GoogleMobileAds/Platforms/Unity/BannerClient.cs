@@ -47,6 +47,24 @@ namespace GoogleMobileAds.Unity
             {AdSize.Leaderboard, "DummyAds/Banners/LEADERBOARD" },
             {new AdSize (320,100), "DummyAds/Banners/LARGE_BANNER" }
         };
+        private ButtonBehaviour buttonBehaviour;
+
+        private void AddClickBehavior(GameObject dummyAd)
+        {
+            Debug.Log("Dummy Add Click");
+            Image myImage = dummyAd.GetComponentInChildren<Image>();
+            Button button = myImage.GetComponentInChildren<Button>();
+            button.onClick.AddListener(() => {
+                buttonBehaviour.OpenURL();
+            });
+        }
+
+        private void CreateButtonBehavior()
+        {
+            buttonBehaviour = new ButtonBehaviour();
+            buttonBehaviour.OnAdOpening += OnAdOpening;
+            buttonBehaviour.OnLeavingApplication += OnAdLeavingApplication;
+        }
 
         // Creates a banner view and adds it to the view hierarchy.
         public void CreateBannerView(string adUnitId, AdSize adSize, AdPosition position)
@@ -62,6 +80,7 @@ namespace GoogleMobileAds.Unity
                 {
                     AnchorAd(prefabAd, position);
                 }
+                CreateButtonBehavior();
             }
         }
 
@@ -82,6 +101,7 @@ namespace GoogleMobileAds.Unity
                 {
                     rect.anchoredPosition = new Vector3(x, y, 1);
                 }
+                CreateButtonBehavior();
             }
         }
 
@@ -111,9 +131,7 @@ namespace GoogleMobileAds.Unity
         {
             Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
             dummyAd = AdBehaviour.ShowAd(prefabAd, getRectTransform(prefabAd).anchoredPosition);
-            ButtonBehaviour buttonBehaviour = dummyAd.GetComponentInChildren<ButtonBehaviour>();
-            buttonBehaviour.OnAdOpening += OnAdOpening;
-            buttonBehaviour.OnLeavingApplication += OnAdLeavingApplication;
+            AddClickBehavior(dummyAd);
         }
 
         // Hides the banner view from the screen.

@@ -43,8 +43,16 @@ namespace GoogleMobileAds
       {
         return new GoogleMobileAds.iOS.InterstitialClient();
       }
-      return new GoogleMobileAds.Common.DummyClient();
-    }
+      else if (Application.platform == RuntimePlatform.OSXEditor || Application.platform == RuntimePlatform.WindowsEditor)
+      {
+        return new GoogleMobileAds.Unity.InterstitialClient();
+      }
+      else
+      {
+        return new GoogleMobileAds.Common.DummyClient();
+      }
+
+     }
 
     public IRewardBasedVideoAdClient BuildRewardBasedVideoAdClient()
     {
