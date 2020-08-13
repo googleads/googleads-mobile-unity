@@ -71,8 +71,6 @@ namespace GoogleMobileAds.Unity
             buttonBehaviour = new ButtonBehaviour();
             buttonBehaviour.OnAdOpening += OnAdOpening;
             buttonBehaviour.OnLeavingApplication += OnAdLeavingApplication;
-            OnAdClosed += OnAdClosed;
-            //.OnAdClosed += OnAdClosed;
         }
 
         // Creates an InterstitialAd.
