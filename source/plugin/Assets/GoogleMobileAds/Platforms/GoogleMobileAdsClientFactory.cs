@@ -74,11 +74,7 @@ namespace GoogleMobileAds
           {
              return new GoogleMobileAds.Android.RewardedAdClient();
           }
-          else if (Application.platform == RuntimePlatform.OSXEditor || Application.platform == RuntimePlatform.WindowsEditor)
-          {
-             return new GoogleMobileAds.Unity.RewardedAdClient();
-          }
-            else
+          else
           {
              return new GoogleMobileAds.Common.RewardedAdDummyClient();
           }
