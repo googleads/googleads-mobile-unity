@@ -16,15 +16,7 @@ using UnityEngine;
 using System;
 
 public class DummyAdBehaviour : MonoBehaviour
-{
-    public event EventHandler<EventArgs> OnAdClosed;
-    public static DummyAdBehaviour instance;
-
-    public void Awake()
-    {
-        instance = this;
-    }
-
+{ 
     public void PauseGame()
     {
         Time.timeScale = 0;
@@ -44,10 +36,6 @@ public class DummyAdBehaviour : MonoBehaviour
 
     public void DestroyAd(GameObject dummyAd)
     {
-        if (OnAdClosed != null)
-        {
-            OnAdClosed.Invoke(this, new EventArgs());
-        }
         Destroy(dummyAd);
     }
 }

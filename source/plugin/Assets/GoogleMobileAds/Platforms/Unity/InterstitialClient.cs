@@ -57,8 +57,11 @@ namespace GoogleMobileAds.Unity
 
             innerButtons[1].onClick.AddListener(() =>
             {
-                Debug.Log("Clicked");
                 AdBehaviour.DestroyAd(dummyAd);
+                if (OnAdClosed != null)
+                {
+                    OnAdClosed.Invoke(this, new EventArgs());
+                }
                 AdBehaviour.ResumeGame();
             });
         }
@@ -68,7 +71,8 @@ namespace GoogleMobileAds.Unity
             buttonBehaviour = new ButtonBehaviour();
             buttonBehaviour.OnAdOpening += OnAdOpening;
             buttonBehaviour.OnLeavingApplication += OnAdLeavingApplication;
-            DummyAdBehaviour.instance.OnAdClosed += OnAdClosed;
+            OnAdClosed += OnAdClosed;
+            //.OnAdClosed += OnAdClosed;
         }
 
         // Creates an InterstitialAd.
