@@ -78,7 +78,7 @@ namespace GoogleMobileAds.Unity
             {
                 LoadAndSetPrefabAd(prefabAds[adSize]);
             }
-            
+
             if (prefabAd != null) {
                 if (adSize == AdSize.SmartBanner || adSize.AdType == AdSize.Type.AnchoredAdaptive)
                 {

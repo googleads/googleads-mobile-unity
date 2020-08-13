@@ -33,8 +33,8 @@ namespace GoogleMobileAds
             else if (Application.platform == RuntimePlatform.OSXEditor || Application.platform == RuntimePlatform.WindowsEditor)
             {
                 return new GoogleMobileAds.Unity.BannerClient();
-            } 
-            else 
+            }
+            else
             {
                 return new GoogleMobileAds.Common.DummyClient();
             }
@@ -50,7 +50,7 @@ namespace GoogleMobileAds
           {
                 return new GoogleMobileAds.Unity.InterstitialClient();
           }
-          else 
+          else
           {
                 return new GoogleMobileAds.Common.DummyClient();
           }
@@ -64,7 +64,7 @@ namespace GoogleMobileAds
           }
           else
           {
-            return new GoogleMobileAds.Common.DummyClient();
+                return new GoogleMobileAds.Common.DummyClient();
           }
         }
 
@@ -72,11 +72,15 @@ namespace GoogleMobileAds
         {
           if (Application.platform == RuntimePlatform.Android)
           {
-              return new GoogleMobileAds.Android.RewardedAdClient();
+             return new GoogleMobileAds.Android.RewardedAdClient();
           }
-          else
+          else if (Application.platform == RuntimePlatform.OSXEditor || Application.platform == RuntimePlatform.WindowsEditor)
           {
-            return new GoogleMobileAds.Common.RewardedAdDummyClient();
+             return new GoogleMobileAds.Unity.RewardedAdClient();
+          }
+            else
+          {
+             return new GoogleMobileAds.Common.RewardedAdDummyClient();
           }
         }
 
@@ -86,6 +90,7 @@ namespace GoogleMobileAds
           {
               return new GoogleMobileAds.Android.AdLoaderClient(args);
           }
+          else
           {
             return new GoogleMobileAds.Common.DummyClient();
           }
