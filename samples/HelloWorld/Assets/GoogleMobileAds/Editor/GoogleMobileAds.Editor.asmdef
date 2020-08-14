@@ -1,0 +1,10 @@
+{
+    "name": "GoogleMobileAds.Editor",
+    "references": [
+        "GoogleMobileAds"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": []
+}

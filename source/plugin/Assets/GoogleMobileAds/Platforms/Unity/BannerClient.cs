@@ -70,15 +70,7 @@ namespace GoogleMobileAds.Unity
         public void CreateBannerView(string adUnitId, AdSize adSize, AdPosition position)
         {
             Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
-            if (adSize.AdType == AdSize.Type.AnchoredAdaptive)
-            {
-                LoadAndSetPrefabAd("DummyAds/Banners/ADAPTIVE");
-            }
-            else
-            {
-                LoadAndSetPrefabAd(prefabAds[adSize]);
-            }
-
+            LoadAndSetPrefabAd(prefabAds[adSize]);
             if (prefabAd != null) {
                 if (adSize == AdSize.SmartBanner || adSize.AdType == AdSize.Type.AnchoredAdaptive)
                 {
@@ -117,6 +109,7 @@ namespace GoogleMobileAds.Unity
         public void LoadAd(AdRequest request)
         {
             Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
+
             if (prefabAd != null) {
                 ShowBannerView();
                 if (OnAdLoaded != null)
@@ -235,14 +228,7 @@ namespace GoogleMobileAds.Unity
                     rect.anchoredPosition = new Vector2(0, -(float)rect.sizeDelta.y/2);
                 } else if (pos == AdPosition.Center)
                 {
-                    LoadAndSetPrefabAd("DummyAds/Banners/CENTER");
-                    if (adSize.AdType == AdSize.Type.AnchoredAdaptive)
-                    {
-                        LoadAndSetPrefabAd("DummyAds/Banners/CENTER");
-                        Text adText = prefabAd.GetComponentInChildren<Image>().GetComponentInChildren<Text>();
-                        adText.text = "This is a Test Adaptive Banner";
-                    }
-                    else if (adSize == AdSize.SmartBanner)
+                    if (adSize == AdSize.SmartBanner)
                     {
                         LoadAndSetPrefabAd("DummyAds/Banners/CENTER");
                         Text adText = prefabAd.GetComponentInChildren<Image>().GetComponentInChildren<Text>();

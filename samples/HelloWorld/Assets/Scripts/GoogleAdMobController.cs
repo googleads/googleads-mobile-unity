@@ -59,7 +59,7 @@ public class GoogleAdMobController : MonoBehaviour
         // the next Update() loop.
         MobileAdsEventExecutor.ExecuteInUpdate(() => {
             statusText.text = "Initialization complete";
-            RequestBannerAd();
+            //RequestBannerAd();
         });
     }
 
