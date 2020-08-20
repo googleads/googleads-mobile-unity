@@ -53,12 +53,15 @@ namespace GoogleMobileAds.Unity
             button.onClick.AddListener(() => {
                 buttonBehaviour.OpenURL();
             });
-            Button[] buttons = dummyAd.GetComponentsInChildren<Button>();
-         
-            buttons[1].onClick.AddListener(() =>
+            Button[] innerButtons = dummyAd.GetComponentsInChildren<Button>();
+
+            innerButtons[1].onClick.AddListener(() =>
             {
-                Debug.Log("Clicked");
                 AdBehaviour.DestroyAd(dummyAd);
+                if (OnAdClosed != null)
+                {
+                    OnAdClosed.Invoke(this, new EventArgs());
+                }
                 AdBehaviour.ResumeGame();
             });
         }
@@ -68,7 +71,6 @@ namespace GoogleMobileAds.Unity
             buttonBehaviour = new ButtonBehaviour();
             buttonBehaviour.OnAdOpening += OnAdOpening;
             buttonBehaviour.OnLeavingApplication += OnAdLeavingApplication;
-            DummyAdBehaviour.instance.OnAdClosed += OnAdClosed;
         }
 
         // Creates an InterstitialAd.
@@ -128,6 +130,7 @@ namespace GoogleMobileAds.Unity
             if (IsLoaded() == true)
             {
                 dummyAd = AdBehaviour.ShowAd(prefabAd, new Vector3(0, 0, 1));
+                RectTransform rect = dummyAd.GetComponentInChildren<Image>().GetComponentInChildren<RectTransform>();
                 AddClickBehavior(dummyAd);
                 AdBehaviour.PauseGame();
             } else

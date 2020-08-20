@@ -17,14 +17,6 @@ using System;
 
 public class DummyAdBehaviour : MonoBehaviour
 {
-    public event EventHandler<EventArgs> OnAdClosed;
-    public static DummyAdBehaviour instance;
-
-    public void Awake()
-    {
-        instance = this;
-    }
-
     public void PauseGame()
     {
         Time.timeScale = 0;
