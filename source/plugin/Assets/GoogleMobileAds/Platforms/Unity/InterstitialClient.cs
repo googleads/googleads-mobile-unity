@@ -130,6 +130,7 @@ namespace GoogleMobileAds.Unity
             if (IsLoaded() == true)
             {
                 dummyAd = AdBehaviour.ShowAd(prefabAd, new Vector3(0, 0, 1));
+                RectTransform rect = dummyAd.GetComponentInChildren<Image>().GetComponentInChildren<RectTransform>();
                 AddClickBehavior(dummyAd);
                 AdBehaviour.PauseGame();
             } else
@@ -143,6 +144,7 @@ namespace GoogleMobileAds.Unity
         {
             Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
             AdBehaviour.DestroyAd(dummyAd);
+            prefabAd = null;
         }
 
         // Returns the mediation adapter class name.
