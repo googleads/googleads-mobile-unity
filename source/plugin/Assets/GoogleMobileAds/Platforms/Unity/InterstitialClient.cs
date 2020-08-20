@@ -141,6 +141,7 @@ namespace GoogleMobileAds.Unity
         {
             Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
             AdBehaviour.DestroyAd(dummyAd);
+            prefabAd = null;
         }
 
         // Returns the mediation adapter class name.

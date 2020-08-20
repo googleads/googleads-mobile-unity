@@ -48,7 +48,7 @@ namespace GoogleMobileAds.Unity
             {new AdSize (320,100), "DummyAds/Banners/LARGE_BANNER" }
         };
 
-        private Button buttonBehaviour;
+        private ButtonBehaviour buttonBehaviour;
 
         private void AddClickBehavior(GameObject dummyAd)
         {
@@ -78,7 +78,6 @@ namespace GoogleMobileAds.Unity
             {
                 LoadAndSetPrefabAd(prefabAds[adSize]);
             }
-            
             if (prefabAd != null) {
                 if (adSize == AdSize.SmartBanner || adSize.AdType == AdSize.Type.AnchoredAdaptive)
                 {
@@ -154,6 +153,7 @@ namespace GoogleMobileAds.Unity
         {
             Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
             AdBehaviour.DestroyAd(dummyAd);
+            prefabAd = null;
         }
 
         // Returns the height of the BannerView in pixels.
