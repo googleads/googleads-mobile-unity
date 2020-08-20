@@ -32,11 +32,11 @@ namespace GoogleMobileAds
             }
             else if (Application.platform == RuntimePlatform.OSXEditor || Application.platform == RuntimePlatform.WindowsEditor)
             {
-              return new GoogleMobileAds.Unity.BannerClient();
-            } 
-            else 
+                return new GoogleMobileAds.Unity.BannerClient();
+            }
+            else
             {
-              return new GoogleMobileAds.Common.DummyClient();
+                return new GoogleMobileAds.Common.DummyClient();
             }
         }
 
@@ -44,11 +44,15 @@ namespace GoogleMobileAds
         {
           if (Application.platform == RuntimePlatform.Android)
           {
-              return new GoogleMobileAds.Android.InterstitialClient();
+                return new GoogleMobileAds.Android.InterstitialClient();
+          }
+          else if (Application.platform == RuntimePlatform.OSXEditor || Application.platform == RuntimePlatform.WindowsEditor)
+          {
+                return new GoogleMobileAds.Unity.InterstitialClient();
           }
           else
           {
-            return new GoogleMobileAds.Common.DummyClient();
+                return new GoogleMobileAds.Common.DummyClient();
           }
         }
 
@@ -60,7 +64,7 @@ namespace GoogleMobileAds
           }
           else
           {
-            return new GoogleMobileAds.Common.DummyClient();
+                return new GoogleMobileAds.Common.DummyClient();
           }
         }
 
@@ -68,11 +72,11 @@ namespace GoogleMobileAds
         {
           if (Application.platform == RuntimePlatform.Android)
           {
-              return new GoogleMobileAds.Android.RewardedAdClient();
+             return new GoogleMobileAds.Android.RewardedAdClient();
           }
           else
           {
-            return new GoogleMobileAds.Common.RewardedAdDummyClient();
+             return new GoogleMobileAds.Common.RewardedAdDummyClient();
           }
         }
 
@@ -82,6 +86,7 @@ namespace GoogleMobileAds
           {
               return new GoogleMobileAds.Android.AdLoaderClient(args);
           }
+          else
           {
             return new GoogleMobileAds.Common.DummyClient();
           }

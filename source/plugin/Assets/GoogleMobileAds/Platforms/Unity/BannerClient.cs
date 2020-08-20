@@ -48,21 +48,47 @@ namespace GoogleMobileAds.Unity
             {new AdSize (320,100), "DummyAds/Banners/LARGE_BANNER" }
         };
 
+        private ButtonBehaviour buttonBehaviour;
+
+        private void AddClickBehavior(GameObject dummyAd)
+        {
+            Image myImage = dummyAd.GetComponentInChildren<Image>();
+            Button button = myImage.GetComponentInChildren<Button>();
+            button.onClick.AddListener(() => {
+                buttonBehaviour.OpenURL();
+            });
+        }
+
+        private void CreateButtonBehavior()
+        {
+            buttonBehaviour = new ButtonBehaviour();
+            buttonBehaviour.OnAdOpening += OnAdOpening;
+            buttonBehaviour.OnLeavingApplication += OnAdLeavingApplication;
+        }
+
         // Creates a banner view and adds it to the view hierarchy.
         public void CreateBannerView(string adUnitId, AdSize adSize, AdPosition position)
         {
             Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
-            LoadAndSetPrefabAd(prefabAds[adSize]);
-            if (prefabAd != null) {
-                if (adSize == AdSize.SmartBanner)
-                {
-                    SetAndStretchAd(prefabAd, position);
+            if (adSize.AdType == AdSize.Type.AnchoredAdaptive)
+            {
+                LoadAndSetPrefabAd("DummyAds/Banners/ADAPTIVE");
+            }
+            else
+            {
+                LoadAndSetPrefabAd(prefabAds[adSize]);
+            }
 
+            if (prefabAd != null) {
+                if (adSize == AdSize.SmartBanner || adSize.AdType == AdSize.Type.AnchoredAdaptive)
+                {
+                    SetAndStretchAd(prefabAd, position, adSize);
                 }
                 else
                 {
                     AnchorAd(prefabAd, position);
                 }
+                CreateButtonBehavior();
             }
         }
 
@@ -76,13 +102,14 @@ namespace GoogleMobileAds.Unity
 
                 if (adSize == AdSize.SmartBanner)
                 {
-                    SetAndStretchAd(prefabAd, 0);
+                    SetAndStretchAd(prefabAd, 0, adSize);
                     rect.anchoredPosition = new Vector3(0, y, 1);
                 }
                 else
                 {
                     rect.anchoredPosition = new Vector3(x, y, 1);
                 }
+                CreateButtonBehavior();
             }
         }
 
@@ -112,9 +139,7 @@ namespace GoogleMobileAds.Unity
         {
             Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
             dummyAd = AdBehaviour.ShowAd(prefabAd, getRectTransform(prefabAd).anchoredPosition);
-            ButtonBehaviour buttonBehaviour = dummyAd.GetComponentInChildren<ButtonBehaviour>();
-            buttonBehaviour.OnAdOpening += OnAdOpening;
-            buttonBehaviour.OnLeavingApplication += OnAdLeavingApplication;
+            AddClickBehavior(dummyAd);
         }
 
         // Hides the banner view from the screen.
@@ -182,21 +207,21 @@ namespace GoogleMobileAds.Unity
         public string MediationAdapterClassName()
         {
             Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
-            return null;
+            return new ResponseInfoDummyClient().GetMediationAdapterClassName();
         }
 
         // Returns ad request Response info client.
         public IResponseInfoClient GetResponseInfoClient()
         {
             Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
-            return null;
+            return new ResponseInfoDummyClient();
         }
 
-        private void SetAndStretchAd(GameObject dummyAd, AdPosition pos)
+        private void SetAndStretchAd(GameObject dummyAd, AdPosition pos, AdSize adSize)
         {
             if (dummyAd != null) {
                 Image myImage = dummyAd.GetComponentInChildren<Image>();
-                RectTransform rect = myImage.GetComponent<RectTransform>();
+                RectTransform rect = myImage.GetComponentInChildren<RectTransform>();
 
                 rect.pivot = new Vector2(0.5f, 0.5f);
 
@@ -210,7 +235,23 @@ namespace GoogleMobileAds.Unity
                     rect.anchoredPosition = new Vector2(0, -(float)rect.sizeDelta.y/2);
                 } else if (pos == AdPosition.Center)
                 {
-                    rect.anchoredPosition = new Vector2(0, 0);
+                    LoadAndSetPrefabAd("DummyAds/Banners/CENTER");
+                    if (adSize.AdType == AdSize.Type.AnchoredAdaptive)
+                    {
+                        LoadAndSetPrefabAd("DummyAds/Banners/CENTER");
+                        Text adText = prefabAd.GetComponentInChildren<Image>().GetComponentInChildren<Text>();
+                        adText.text = "This is a Test Adaptive Banner";
+                    }
+                    else if (adSize == AdSize.SmartBanner)
+                    {
+                        LoadAndSetPrefabAd("DummyAds/Banners/CENTER");
+                        Text adText = prefabAd.GetComponentInChildren<Image>().GetComponentInChildren<Text>();
+                        adText.text = "This is a Test Smart Banner";
+                    }
+                    else
+                    {
+                        rect.anchoredPosition = new Vector2(0, 0);
+                    }
                 } else
                 {
                     rect.anchoredPosition = rect.position;
@@ -224,7 +265,7 @@ namespace GoogleMobileAds.Unity
         {
             if (dummyAd != null) {
                 Image myImage = dummyAd.GetComponentInChildren<Image>();
-                RectTransform rect = myImage.GetComponent<RectTransform>();
+                RectTransform rect = myImage.GetComponentInChildren<RectTransform>();
 
                 float x = (float)rect.sizeDelta.x/2;
                 float y = (float)rect.sizeDelta.y/2;

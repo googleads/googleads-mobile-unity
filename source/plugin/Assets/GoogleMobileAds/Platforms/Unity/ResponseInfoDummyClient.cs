@@ -12,30 +12,20 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using UnityEngine;
-using System;
+using GoogleMobileAds.Common;
 
-public class DummyAdBehaviour : MonoBehaviour
+namespace GoogleMobileAds.Unity
 {
-    public void PauseGame()
+    public class ResponseInfoDummyClient : IResponseInfoClient
     {
-        Time.timeScale = 0;
-        Debug.Log("Pause Game");
-    }
+        public string GetMediationAdapterClassName()
+        {
+            return "Dummy Mediation Adapter Class Name";
+        }
 
-    public void ResumeGame()
-    {
-        Time.timeScale = 1;
-        Debug.Log("Resume Game");
-    }
-
-    public GameObject ShowAd(GameObject dummyAd, Vector3 position)
-    {
-       return Instantiate(dummyAd, position, Quaternion.identity) as GameObject;
-    }
-
-    public void DestroyAd(GameObject dummyAd)
-    {
-        Destroy(dummyAd);
+        public string GetResponseId()
+        {
+            return "Dummy Response ID";
+        }
     }
 }
