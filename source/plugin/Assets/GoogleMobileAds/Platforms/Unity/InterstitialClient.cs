@@ -130,7 +130,6 @@ namespace GoogleMobileAds.Unity
             if (IsLoaded() == true)
             {
                 dummyAd = AdBehaviour.ShowAd(prefabAd, new Vector3(0, 0, 1));
-                RectTransform rect = dummyAd.GetComponentInChildren<Image>().GetComponentInChildren<RectTransform>();
                 AddClickBehavior(dummyAd);
                 AdBehaviour.PauseGame();
             } else
