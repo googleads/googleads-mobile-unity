@@ -40,7 +40,7 @@ namespace GoogleMobileAds.Unity
         // Ad event fired when the rewarded ad is estimated to have earned money.
         public event EventHandler<AdValueEventArgs> OnPaidEvent;
 
-        private Dictionary<AdSize, string> prefabAds = new Dictionary<AdSize, string>() {
+        private static readonly Dictionary<AdSize, string> prefabAds = new Dictionary<AdSize, string>() {
             {new AdSize (320,480), "DummyAds/Rewarded/320x480" },
             {new AdSize (480,320), "DummyAds/Rewarded/480x320"},
             {new AdSize (768,1024), "DummyAds/Rewarded/768x1024" },
@@ -63,9 +63,13 @@ namespace GoogleMobileAds.Unity
                 AdBehaviour.DestroyAd(dummyAd);
                 if (OnAdClosed != null)
                 {
-                    OnAdClosed.Invoke(this, new EventArgs());
+                    OnAdClosed.Invoke(this, EventArgs.Empty);
                 }
                 AdBehaviour.ResumeGame();
+                if (OnUserEarnedReward != null)
+                {
+                    OnUserEarnedReward.Invoke(this, GetRewardItem());
+                }
             });
         }
 
@@ -108,14 +112,6 @@ namespace GoogleMobileAds.Unity
                     LoadAndSetPrefabAd(prefabAds[new AdSize(768, 1024)]);
                 }
             }
-
-
-
-            if (OnAdLoaded != null)
-            {
-                OnAdLoaded.Invoke(this, EventArgs.Empty);
-            }
-            Show();
         }
 
         // Determines whether the rewarded ad has loaded.
@@ -124,10 +120,21 @@ namespace GoogleMobileAds.Unity
             Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
             if (prefabAd != null)
             {
+                if (OnAdLoaded != null)
+                {
+                    OnAdLoaded.Invoke(this, EventArgs.Empty);
+                }
                 return true;
             }
             else
             {
+                if (OnAdFailedToLoad != null)
+                {
+                    OnAdFailedToLoad.Invoke(this, new AdErrorEventArgs()
+                    {
+                        Message = "Prefab Ad is Null"
+                    });
+                }
                 return false;
             }
         }
@@ -142,7 +149,11 @@ namespace GoogleMobileAds.Unity
         public Reward GetRewardItem()
         {
             Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
-            return null;
+            return new Reward()
+            {
+                Type = "Dummy Reward",
+                Amount = 10
+            };
         }
 
         // Shows the rewarded ad on the screen.
@@ -158,7 +169,13 @@ namespace GoogleMobileAds.Unity
             }
             else
             {
-                Debug.Log("No Ad Loaded");
+                if (OnAdFailedToShow != null)
+                {
+                    OnAdFailedToShow.Invoke(this, new AdErrorEventArgs()
+                    {
+                        Message = "No Ad Loaded"
+                    });
+                }
             }
         }
 

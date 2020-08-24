@@ -16,7 +16,7 @@ using UnityEngine;
 using System;
 
 public class DummyAdBehaviour : MonoBehaviour
-{ 
+{
     public void PauseGame()
     {
         Time.timeScale = 0;
