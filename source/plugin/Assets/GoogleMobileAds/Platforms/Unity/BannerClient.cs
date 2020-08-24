@@ -95,11 +95,18 @@ namespace GoogleMobileAds.Unity
         public void CreateBannerView(string adUnitId, AdSize adSize, int x, int y)
         {
             Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
-            LoadAndSetPrefabAd(prefabAds[adSize]);
+            if (adSize.AdType == AdSize.Type.AnchoredAdaptive)
+            {
+                LoadAndSetPrefabAd("DummyAds/Banners/ADAPTIVE");
+            }
+            else
+            {
+                LoadAndSetPrefabAd(prefabAds[adSize]);
+            }
             if (prefabAd != null) {
                 RectTransform rect = getRectTransform(prefabAd);
 
-                if (adSize == AdSize.SmartBanner)
+                if (adSize == AdSize.SmartBanner || adSize.AdType == AdSize.Type.AnchoredAdaptive)
                 {
                     SetAndStretchAd(prefabAd, 0, adSize);
                     rect.anchoredPosition = new Vector3(0, y, 1);
