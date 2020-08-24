@@ -57,7 +57,7 @@ namespace GoogleMobileAds.Unity
 
             innerButtons[1].onClick.AddListener(() =>
             {
-                AdBehaviour.DestroyAd(dummyAd);
+                AdBehaviour.DestroyInterstitial();
                 if (OnAdClosed != null)
                 {
                     OnAdClosed.Invoke(this, new EventArgs());
@@ -143,6 +143,7 @@ namespace GoogleMobileAds.Unity
         {
             Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
             AdBehaviour.DestroyAd(dummyAd);
+            prefabAd = null;
         }
 
         // Returns the mediation adapter class name.

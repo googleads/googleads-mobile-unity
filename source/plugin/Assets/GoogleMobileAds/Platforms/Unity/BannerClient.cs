@@ -78,7 +78,6 @@ namespace GoogleMobileAds.Unity
             {
                 LoadAndSetPrefabAd(prefabAds[adSize]);
             }
-
             if (prefabAd != null) {
                 if (adSize == AdSize.SmartBanner || adSize.AdType == AdSize.Type.AnchoredAdaptive)
                 {
@@ -117,6 +116,7 @@ namespace GoogleMobileAds.Unity
         public void LoadAd(AdRequest request)
         {
             Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
+
             if (prefabAd != null) {
                 ShowBannerView();
                 if (OnAdLoaded != null)
@@ -154,6 +154,7 @@ namespace GoogleMobileAds.Unity
         {
             Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
             AdBehaviour.DestroyAd(dummyAd);
+            prefabAd = null;
         }
 
         // Returns the height of the BannerView in pixels.

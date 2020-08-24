@@ -61,6 +61,7 @@ namespace GoogleMobileAds.Unity
             innerButtons[1].onClick.AddListener(() =>
             {
                 AdBehaviour.DestroyAd(dummyAd);
+                prefabAd = null;
                 if (OnAdClosed != null)
                 {
                     OnAdClosed.Invoke(this, EventArgs.Empty);
@@ -165,7 +166,7 @@ namespace GoogleMobileAds.Unity
                 dummyAd = AdBehaviour.ShowAd(prefabAd, new Vector3(0, 0, 1));
                 AdBehaviour.PauseGame();
                 AddClickBehavior(dummyAd);
-                dummyAd.AddComponent<Countdown>(); 
+                dummyAd.AddComponent<Countdown>();
             }
             else
             {
