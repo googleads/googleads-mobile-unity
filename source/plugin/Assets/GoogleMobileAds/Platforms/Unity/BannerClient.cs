@@ -236,7 +236,6 @@ namespace GoogleMobileAds.Unity
                     rect.anchoredPosition = new Vector2(0, -(float)rect.sizeDelta.y/2);
                 } else if (pos == AdPosition.Center)
                 {
-                    if (adSize == AdSize.SmartBanner)
                     LoadAndSetPrefabAd("DummyAds/Banners/CENTER");
                     if (adSize.AdType == AdSize.Type.AnchoredAdaptive)
                     {
