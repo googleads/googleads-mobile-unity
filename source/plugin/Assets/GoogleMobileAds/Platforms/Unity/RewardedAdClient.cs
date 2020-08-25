@@ -1,4 +1,4 @@
-// Copyright (C) 2020 Google LLC.
+﻿// Copyright (C) 2020 Google LLC.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,36 +12,39 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System;
 using System.Reflection;
+using System;
 using System.Collections.Generic;
-using GoogleMobileAds.Api;
-using GoogleMobileAds.Common;
 using UnityEngine;
 using UnityEngine.UI;
+using GoogleMobileAds;
+using GoogleMobileAds.Api;
+using GoogleMobileAds.Common;
 
 namespace GoogleMobileAds.Unity
 {
-    public class InterstitialClient : BaseAdDummyClient, IInterstitialClient
+    public class RewardedAdClient : BaseAdDummyClient, IRewardedAdClient
     {
-        // Ad event fired when the interstitial ad has been received.
+        // Ad event fired when the rewarded ad has been received.
         public event EventHandler<EventArgs> OnAdLoaded;
-        // Ad event fired when the interstitial ad has failed to load.
-        public event EventHandler<AdFailedToLoadEventArgs> OnAdFailedToLoad;
-        // Ad event fired when the interstitial ad is opened.
+        // Ad event fired when the rewarded ad has failed to load.
+        public event EventHandler<AdErrorEventArgs> OnAdFailedToLoad;
+        // Ad event fired when the rewarded ad has failed to show.
+        public event EventHandler<AdErrorEventArgs> OnAdFailedToShow;
+        // Ad event fired when the rewarded ad is opened.
         public event EventHandler<EventArgs> OnAdOpening;
-        // Ad event fired when the interstitial ad is closed.
+        // Ad event fired when the rewarded ad has rewarded the user.
+        public event EventHandler<Reward> OnUserEarnedReward;
+        // Ad event fired when the rewarded ad is closed.
         public event EventHandler<EventArgs> OnAdClosed;
-        // Ad event fired when the interstitial ad is leaving the application.
-        public event EventHandler<EventArgs> OnAdLeavingApplication;
-        // Ad event fired when the interstitial ad is estimated to have earned money.
+        // Ad event fired when the rewarded ad is estimated to have earned money.
         public event EventHandler<AdValueEventArgs> OnPaidEvent;
 
-        private Dictionary<AdSize, string> prefabAds = new Dictionary<AdSize, string>() {
-            {new AdSize (320,480), "DummyAds/Interstitials/320x480" },
-            {new AdSize (480,320), "DummyAds/Interstitials/480x320"},
-            {new AdSize (768,1024), "DummyAds/Interstitials/768x1024" },
-            {new AdSize (1024,768), "DummyAds/Interstitials/1024x768"}
+        private static readonly Dictionary<AdSize, string> prefabAds = new Dictionary<AdSize, string>() {
+            {new AdSize (320,480), "DummyAds/Rewarded/320x480" },
+            {new AdSize (480,320), "DummyAds/Rewarded/480x320"},
+            {new AdSize (768,1024), "DummyAds/Rewarded/768x1024" },
+            {new AdSize (1024,768), "DummyAds/Rewarded/1024x768"}
         };
 
         private ButtonBehaviour buttonBehaviour;
@@ -57,12 +60,17 @@ namespace GoogleMobileAds.Unity
 
             innerButtons[1].onClick.AddListener(() =>
             {
-                AdBehaviour.DestroyInterstitial();
+                AdBehaviour.DestroyAd(dummyAd);
+                prefabAd = null;
                 if (OnAdClosed != null)
                 {
-                    OnAdClosed.Invoke(this, new EventArgs());
+                    OnAdClosed.Invoke(this, EventArgs.Empty);
                 }
                 AdBehaviour.ResumeGame();
+                if (OnUserEarnedReward != null)
+                {
+                    OnUserEarnedReward.Invoke(this, GetRewardItem());
+                }
             });
         }
 
@@ -70,16 +78,16 @@ namespace GoogleMobileAds.Unity
         {
             buttonBehaviour = new ButtonBehaviour();
             buttonBehaviour.OnAdOpening += OnAdOpening;
-            buttonBehaviour.OnLeavingApplication += OnAdLeavingApplication;
         }
 
-        // Creates an InterstitialAd.
-        public void CreateInterstitialAd(string adUnitId)
+        // Creates a rewarded ad.
+        public void CreateRewardedAd(string adUnitId)
         {
             Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
+            CreateButtonBehavior();
         }
 
-        // Loads a new interstitial request.
+        // Load a rewarded ad.
         public void LoadAd(AdRequest request)
         {
             Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
@@ -93,7 +101,8 @@ namespace GoogleMobileAds.Unity
                 {
                     LoadAndSetPrefabAd(prefabAds[new AdSize(480, 320)]);
                 }
-            } else
+            }
+            else
             {
                 if (Screen.height < 1080)
                 {
@@ -104,53 +113,77 @@ namespace GoogleMobileAds.Unity
                     LoadAndSetPrefabAd(prefabAds[new AdSize(768, 1024)]);
                 }
             }
-
-            if (OnAdLoaded != null)
-            {
-                OnAdLoaded.Invoke(this, EventArgs.Empty);
-            }
         }
 
-        // Determines whether the interstitial has loaded.
+        // Determines whether the rewarded ad has loaded.
         public bool IsLoaded()
         {
             Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
-            if (prefabAd != null) {
+            if (prefabAd != null)
+            {
+                if (OnAdLoaded != null)
+                {
+                    OnAdLoaded.Invoke(this, EventArgs.Empty);
+                }
                 return true;
-            } else {
+            }
+            else
+            {
+                if (OnAdFailedToLoad != null)
+                {
+                    OnAdFailedToLoad.Invoke(this, new AdErrorEventArgs()
+                    {
+                        Message = "Prefab Ad is Null"
+                    });
+                }
                 return false;
             }
-        }
-
-        // Shows the InterstitialAd.
-        public void ShowInterstitial()
-        {
-            Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
-            if (IsLoaded() == true)
-            {
-                dummyAd = AdBehaviour.ShowAd(prefabAd, new Vector3(0, 0, 1));
-                CreateButtonBehavior();
-                AddClickBehavior(dummyAd);
-                AdBehaviour.PauseGame();
-            } else
-            {
-                Debug.Log("No Ad Loaded");
-            }
-        }
-
-        // Destroys an InterstitialAd.
-        public void DestroyInterstitial()
-        {
-            Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
-            AdBehaviour.DestroyAd(dummyAd);
-            prefabAd = null;
         }
 
         // Returns the mediation adapter class name.
         public string MediationAdapterClassName()
         {
-            Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
             return new ResponseInfoDummyClient().GetMediationAdapterClassName();
+        }
+
+        // Returns the reward item for the loaded rewarded ad.
+        public Reward GetRewardItem()
+        {
+            Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
+            return new Reward()
+            {
+                Type = "Dummy Reward",
+                Amount = 10
+            };
+        }
+
+        // Shows the rewarded ad on the screen.
+        public void Show()
+        {
+            Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
+            if (IsLoaded() == true)
+            {
+                dummyAd = AdBehaviour.ShowAd(prefabAd, new Vector3(0, 0, 1));
+                AdBehaviour.PauseGame();
+                AddClickBehavior(dummyAd);
+                dummyAd.AddComponent<Countdown>();
+            }
+            else
+            {
+                if (OnAdFailedToShow != null)
+                {
+                    OnAdFailedToShow.Invoke(this, new AdErrorEventArgs()
+                    {
+                        Message = "No Ad Loaded"
+                    });
+                }
+            }
+        }
+
+        // Sets the server side verification options
+        public void SetServerSideVerificationOptions(ServerSideVerificationOptions serverSideVerificationOptions)
+        {
+            Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
         }
 
         // Returns ad request Response info client.
@@ -159,7 +192,5 @@ namespace GoogleMobileAds.Unity
             Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
             return new ResponseInfoDummyClient();
         }
-
     }
 }
-
