@@ -60,7 +60,15 @@ namespace GoogleMobileAds.Unity
             });
             Button[] innerButtons = dummyAd.GetComponentsInChildren<Button>();
 
-            innerButtons[1].onClick.AddListener(() =>
+            if (innerButtons.Length < 2)
+            {
+                Debug.Log("Invalid Prefab");
+                return;
+            }
+
+            Button closeButton = innerButtons[1];
+
+            closeButton.onClick.AddListener(() =>
             {
                 AdBehaviour.DestroyAd(dummyAd);
                 prefabAd = null;
@@ -85,13 +93,12 @@ namespace GoogleMobileAds.Unity
         // Creates a rewarded ad.
         public void CreateRewardedAd(string adUnitId)
         {
-            Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
+
         }
 
         // Load a rewarded ad.
         public void LoadAd(AdRequest request)
         {
-            Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
             if (Screen.width > Screen.height) //Landscape
             {
                 if (Screen.width >= 1080)
@@ -137,7 +144,6 @@ namespace GoogleMobileAds.Unity
         // Determines whether the rewarded ad has loaded.
         public bool IsLoaded()
         {
-            Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
             if (prefabAd != null)
             {
                 return true;
@@ -157,10 +163,9 @@ namespace GoogleMobileAds.Unity
         // Returns the reward item for the loaded rewarded ad.
         public Reward GetRewardItem()
         {
-            Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
             return new Reward()
             {
-                Type = "Dummy Reward",
+                Type = "Reward",
                 Amount = 10
             };
         }
@@ -168,7 +173,6 @@ namespace GoogleMobileAds.Unity
         // Shows the rewarded ad on the screen.
         public void Show()
         {
-            Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
             if (IsLoaded() == true)
             {
                 dummyAd = AdBehaviour.ShowAd(prefabAd, new Vector3(0, 0, 1));
@@ -189,16 +193,15 @@ namespace GoogleMobileAds.Unity
             }
         }
 
-        // Sets the server side verification options
+        // Sets the server side verification options.
         public void SetServerSideVerificationOptions(ServerSideVerificationOptions serverSideVerificationOptions)
         {
-            Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
+
         }
 
         // Returns ad request Response info client.
         public IResponseInfoClient GetResponseInfoClient()
         {
-            Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
             return new ResponseInfoDummyClient();
         }
     }

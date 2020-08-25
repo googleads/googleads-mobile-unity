@@ -26,28 +26,42 @@ public class Countdown : MonoBehaviour
 
     private float currentTime = 0f;
     private float startingTime = 5f;
-    private Text[] countdownText;
+    private Text[] texts;
     private Button[] buttons;
+    private Button closeButton;
+    private Text countdownText;
 
     public void Start()
     {
-        countdownText = this.GetComponentsInChildren<Text>();
+        texts = this.GetComponentsInChildren<Text>();
         buttons = this.GetComponentsInChildren<Button>();
-        buttons[1].gameObject.SetActive(false);
+
+        if (texts.Length < 2 || buttons.Length < 2)
+        {
+            Debug.Log("Invalid Prefab");
+            return;
+        }
+
+        closeButton = buttons[1];
+        countdownText = texts[1];
+        closeButton.gameObject.SetActive(false);
         currentTime = startingTime;
     }
 
     // Update is called once per frame
     public void Update()
     {
-        currentTime -= Time.unscaledDeltaTime;
-        countdownText[1].text = Mathf.Round(currentTime).ToString() + " seconds remaining";
-
         if (currentTime <= 0)
         {
-            currentTime = 0;
-            countdownText[1].enabled = false;
-            buttons[1].gameObject.SetActive(true);
+            countdownText.enabled = false;
+            closeButton.gameObject.SetActive(true);
+            return;
+        }
+
+        currentTime -= Time.unscaledDeltaTime;
+        if (currentTime > 0)
+        {
+            countdownText.text = Mathf.Round(currentTime).ToString() + " second(s) remaining";
         }
     }
 }
