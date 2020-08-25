@@ -34,10 +34,7 @@ namespace GoogleMobileAds
       {
         return new GoogleMobileAds.Unity.BannerClient();
       }
-      else
-      {
-        return new GoogleMobileAds.Common.DummyClient();
-      }
+      return new GoogleMobileAds.Common.DummyClient();
     }
 
     public IInterstitialClient BuildInterstitialClient()
@@ -50,11 +47,7 @@ namespace GoogleMobileAds
       {
         return new GoogleMobileAds.Unity.InterstitialClient();
       }
-      else
-      {
-        return new GoogleMobileAds.Common.DummyClient();
-      }
-
+      return new GoogleMobileAds.Common.DummyClient();
      }
 
     public IRewardBasedVideoAdClient BuildRewardBasedVideoAdClient()
@@ -76,10 +69,7 @@ namespace GoogleMobileAds
       {
         return new GoogleMobileAds.Unity.RewardedAdClient();
       }
-      else
-      {
-        return new GoogleMobileAds.Common.RewardedAdDummyClient();
-      }
+      return new GoogleMobileAds.Common.RewardedAdDummyClient();
     }
 
     public IAdLoaderClient BuildAdLoaderClient(AdLoaderClientArgs args)

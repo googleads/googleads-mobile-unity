@@ -40,7 +40,8 @@ namespace GoogleMobileAds.Unity
         // Ad event fired when the rewarded ad is estimated to have earned money.
         public event EventHandler<AdValueEventArgs> OnPaidEvent;
 
-        private static readonly Dictionary<AdSize, string> prefabAds = new Dictionary<AdSize, string>() {
+        private static readonly Dictionary<AdSize, string> prefabAds = new Dictionary<AdSize, string>()
+        {
             {new AdSize (320,480), "DummyAds/Rewarded/320x480" },
             {new AdSize (480,320), "DummyAds/Rewarded/480x320"},
             {new AdSize (768,1024), "DummyAds/Rewarded/768x1024" },
@@ -53,7 +54,8 @@ namespace GoogleMobileAds.Unity
         {
             Image myImage = dummyAd.GetComponentInChildren<Image>();
             Button button = myImage.GetComponentInChildren<Button>();
-            button.onClick.AddListener(() => {
+            button.onClick.AddListener(() =>
+            {
                 buttonBehaviour.OpenURL();
             });
             Button[] innerButtons = dummyAd.GetComponentsInChildren<Button>();
