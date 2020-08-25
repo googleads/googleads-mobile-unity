@@ -77,7 +77,6 @@ namespace GoogleMobileAds.Unity
         public void CreateInterstitialAd(string adUnitId)
         {
             Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
-            CreateButtonBehavior();
         }
 
         // Loads a new interstitial request.
@@ -130,6 +129,7 @@ namespace GoogleMobileAds.Unity
             if (IsLoaded() == true)
             {
                 dummyAd = AdBehaviour.ShowAd(prefabAd, new Vector3(0, 0, 1));
+                CreateButtonBehavior();
                 AddClickBehavior(dummyAd);
                 AdBehaviour.PauseGame();
             } else
