@@ -24,7 +24,8 @@ namespace GoogleMobileAds.Unity
     public class BaseAdDummyClient
     {
         protected static DummyAdBehaviour AdBehaviour = new GameObject().AddComponent<DummyAdBehaviour>();
-        protected static GameObject prefabAd, dummyAd = null;
+
+        protected GameObject prefabAd, dummyAd = null;
 
         public void LoadAndSetPrefabAd(string prefabName) {
             prefabAd = Resources.Load(prefabName) as GameObject;

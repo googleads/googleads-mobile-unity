@@ -78,7 +78,6 @@ namespace GoogleMobileAds.Unity
             {
                 LoadAndSetPrefabAd(prefabAds[adSize]);
             }
-
             if (prefabAd != null) {
                 if (adSize == AdSize.SmartBanner || adSize.AdType == AdSize.Type.AnchoredAdaptive)
                 {
@@ -96,11 +95,18 @@ namespace GoogleMobileAds.Unity
         public void CreateBannerView(string adUnitId, AdSize adSize, int x, int y)
         {
             Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
-            LoadAndSetPrefabAd(prefabAds[adSize]);
+            if (adSize.AdType == AdSize.Type.AnchoredAdaptive)
+            {
+                LoadAndSetPrefabAd("DummyAds/Banners/ADAPTIVE");
+            }
+            else
+            {
+                LoadAndSetPrefabAd(prefabAds[adSize]);
+            }
             if (prefabAd != null) {
                 RectTransform rect = getRectTransform(prefabAd);
 
-                if (adSize == AdSize.SmartBanner)
+                if (adSize == AdSize.SmartBanner || adSize.AdType == AdSize.Type.AnchoredAdaptive)
                 {
                     SetAndStretchAd(prefabAd, 0, adSize);
                     rect.anchoredPosition = new Vector3(0, y, 1);
@@ -117,6 +123,7 @@ namespace GoogleMobileAds.Unity
         public void LoadAd(AdRequest request)
         {
             Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
+
             if (prefabAd != null) {
                 ShowBannerView();
                 if (OnAdLoaded != null)
@@ -154,6 +161,7 @@ namespace GoogleMobileAds.Unity
         {
             Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
             AdBehaviour.DestroyAd(dummyAd);
+            prefabAd = null;
         }
 
         // Returns the height of the BannerView in pixels.
