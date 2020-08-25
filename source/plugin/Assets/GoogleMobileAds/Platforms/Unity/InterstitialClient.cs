@@ -57,7 +57,7 @@ namespace GoogleMobileAds.Unity
 
             innerButtons[1].onClick.AddListener(() =>
             {
-                AdBehaviour.DestroyInterstitial();
+                DestroyInterstitial();
                 if (OnAdClosed != null)
                 {
                     OnAdClosed.Invoke(this, new EventArgs());
@@ -85,7 +85,7 @@ namespace GoogleMobileAds.Unity
             Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
             if (Screen.width > Screen.height) //Landscape
             {
-                if (Screen.width > 800)
+                if (Screen.width >= 1080)
                 {
                     LoadAndSetPrefabAd(prefabAds[new AdSize(1024, 768)]);
                 }

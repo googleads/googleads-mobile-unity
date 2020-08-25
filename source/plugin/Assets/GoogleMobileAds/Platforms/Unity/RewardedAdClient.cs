@@ -84,7 +84,6 @@ namespace GoogleMobileAds.Unity
         public void CreateRewardedAd(string adUnitId)
         {
             Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
-            CreateButtonBehavior();
         }
 
         // Load a rewarded ad.
@@ -93,7 +92,7 @@ namespace GoogleMobileAds.Unity
             Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
             if (Screen.width > Screen.height) //Landscape
             {
-                if (Screen.width > 800)
+                if (Screen.width >= 1080)
                 {
                     LoadAndSetPrefabAd(prefabAds[new AdSize(1024, 768)]);
                 }
@@ -113,19 +112,13 @@ namespace GoogleMobileAds.Unity
                     LoadAndSetPrefabAd(prefabAds[new AdSize(768, 1024)]);
                 }
             }
-        }
 
-        // Determines whether the rewarded ad has loaded.
-        public bool IsLoaded()
-        {
-            Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
             if (prefabAd != null)
             {
                 if (OnAdLoaded != null)
                 {
                     OnAdLoaded.Invoke(this, EventArgs.Empty);
                 }
-                return true;
             }
             else
             {
@@ -136,6 +129,19 @@ namespace GoogleMobileAds.Unity
                         Message = "Prefab Ad is Null"
                     });
                 }
+            }
+        }
+
+        // Determines whether the rewarded ad has loaded.
+        public bool IsLoaded()
+        {
+            Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
+            if (prefabAd != null)
+            {
+                return true;
+            }
+            else
+            {
                 return false;
             }
         }
@@ -165,6 +171,7 @@ namespace GoogleMobileAds.Unity
             {
                 dummyAd = AdBehaviour.ShowAd(prefabAd, new Vector3(0, 0, 1));
                 AdBehaviour.PauseGame();
+                CreateButtonBehavior();
                 AddClickBehavior(dummyAd);
                 dummyAd.AddComponent<Countdown>();
             }
