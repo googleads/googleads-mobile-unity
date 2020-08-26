@@ -26,15 +26,13 @@ public class Countdown : MonoBehaviour
 
     private float currentTime = 0f;
     private float startingTime = 5f;
-    private Text[] texts;
-    private Button[] buttons;
     private Button closeButton;
     private Text countdownText;
 
     public void Start()
     {
-        texts = this.GetComponentsInChildren<Text>();
-        buttons = this.GetComponentsInChildren<Button>();
+        Text[] texts = this.GetComponentsInChildren<Text>();
+        Button[] buttons = this.GetComponentsInChildren<Button>();
 
         if (texts.Length < 2 || buttons.Length < 2)
         {
@@ -53,7 +51,6 @@ public class Countdown : MonoBehaviour
     {
         if (countdownText == null || closeButton == null)
         {
-            Debug.Log("Invalid Prefab");
             return;
         }
 
