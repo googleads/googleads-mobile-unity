@@ -51,10 +51,14 @@ public class Countdown : MonoBehaviour
     // Update is called once per frame
     public void Update()
     {
+        if (countdownText == null || closeButton == null)
+        {
+            Debug.Log("Invalid Prefab");
+            return;
+        }
+
         if (currentTime <= 0)
         {
-            countdownText.enabled = false;
-            closeButton.gameObject.SetActive(true);
             return;
         }
 
@@ -62,6 +66,11 @@ public class Countdown : MonoBehaviour
         if (currentTime > 0)
         {
             countdownText.text = Mathf.Round(currentTime).ToString() + " second(s) remaining";
+        }
+        else
+        {
+            countdownText.enabled = false;
+            closeButton.gameObject.SetActive(true);
         }
     }
 }
