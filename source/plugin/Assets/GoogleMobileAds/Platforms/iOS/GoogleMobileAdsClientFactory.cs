@@ -47,11 +47,7 @@ namespace GoogleMobileAds
       {
         return new GoogleMobileAds.Unity.InterstitialClient();
       }
-      else
-      {
-        return new GoogleMobileAds.Common.DummyClient();
-      }
-
+      return new GoogleMobileAds.Common.DummyClient();
      }
 
     public IRewardBasedVideoAdClient BuildRewardBasedVideoAdClient()
@@ -68,6 +64,10 @@ namespace GoogleMobileAds
       if (Application.platform == RuntimePlatform.IPhonePlayer)
       {
         return new GoogleMobileAds.iOS.RewardedAdClient();
+      }
+      else if (Application.platform == RuntimePlatform.OSXEditor || Application.platform == RuntimePlatform.WindowsEditor)
+      {
+        return new GoogleMobileAds.Unity.RewardedAdClient();
       }
       return new GoogleMobileAds.Common.RewardedAdDummyClient();
     }

@@ -57,7 +57,7 @@ namespace GoogleMobileAds.Unity
 
             innerButtons[1].onClick.AddListener(() =>
             {
-                AdBehaviour.DestroyAd(dummyAd);
+                DestroyInterstitial();
                 if (OnAdClosed != null)
                 {
                     OnAdClosed.Invoke(this, new EventArgs());
@@ -77,7 +77,6 @@ namespace GoogleMobileAds.Unity
         public void CreateInterstitialAd(string adUnitId)
         {
             Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
-            CreateButtonBehavior();
         }
 
         // Loads a new interstitial request.
@@ -86,7 +85,13 @@ namespace GoogleMobileAds.Unity
             Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
             if (Screen.width > Screen.height) //Landscape
             {
-                if (Screen.width > 800)
+                /** The value of 1080 that is being compared is an arbitrary value that
+                    is being used to determine the proper size image would best fit the
+                    resolution being tested on. The image ad will then stretch to the size
+                    of the screen so it is best if the appropriate size is used to avoid an
+                    obvious stretched look.
+                **/
+                if (Screen.width >= 1080)
                 {
                     LoadAndSetPrefabAd(prefabAds[new AdSize(1024, 768)]);
                 }
@@ -130,6 +135,7 @@ namespace GoogleMobileAds.Unity
             if (IsLoaded() == true)
             {
                 dummyAd = AdBehaviour.ShowAd(prefabAd, new Vector3(0, 0, 1));
+                CreateButtonBehavior();
                 AddClickBehavior(dummyAd);
                 AdBehaviour.PauseGame();
             } else

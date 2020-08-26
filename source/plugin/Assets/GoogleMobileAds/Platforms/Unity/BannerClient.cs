@@ -87,7 +87,6 @@ namespace GoogleMobileAds.Unity
                 {
                     AnchorAd(prefabAd, position);
                 }
-                CreateButtonBehavior();
             }
         }
 
@@ -115,7 +114,6 @@ namespace GoogleMobileAds.Unity
                 {
                     rect.anchoredPosition = new Vector3(x, y, 1);
                 }
-                CreateButtonBehavior();
             }
         }
 
@@ -146,6 +144,7 @@ namespace GoogleMobileAds.Unity
         {
             Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
             dummyAd = AdBehaviour.ShowAd(prefabAd, getRectTransform(prefabAd).anchoredPosition);
+            CreateButtonBehavior();
             AddClickBehavior(dummyAd);
         }
 
