@@ -69,7 +69,6 @@ namespace GoogleMobileAds.Unity
         // Creates a banner view and adds it to the view hierarchy.
         public void CreateBannerView(string adUnitId, AdSize adSize, AdPosition position)
         {
-            Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
             if (adSize.AdType == AdSize.Type.AnchoredAdaptive)
             {
                 LoadAndSetPrefabAd("DummyAds/Banners/ADAPTIVE");
@@ -93,7 +92,6 @@ namespace GoogleMobileAds.Unity
         // Creates a banner view and adds it to the view hierarchy with a custom position.
         public void CreateBannerView(string adUnitId, AdSize adSize, int x, int y)
         {
-            Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
             if (adSize.AdType == AdSize.Type.AnchoredAdaptive)
             {
                 LoadAndSetPrefabAd("DummyAds/Banners/ADAPTIVE");
@@ -120,7 +118,6 @@ namespace GoogleMobileAds.Unity
         // Requests a new ad for the banner view.
         public void LoadAd(AdRequest request)
         {
-            Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
 
             if (prefabAd != null) {
                 ShowBannerView();
@@ -142,7 +139,6 @@ namespace GoogleMobileAds.Unity
         // Shows the banner view on the screen.
         public void ShowBannerView()
         {
-            Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
             dummyAd = AdBehaviour.ShowAd(prefabAd, getRectTransform(prefabAd).anchoredPosition);
             CreateButtonBehavior();
             AddClickBehavior(dummyAd);
@@ -151,14 +147,12 @@ namespace GoogleMobileAds.Unity
         // Hides the banner view from the screen.
         public void HideBannerView()
         {
-            Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
             AdBehaviour.DestroyAd(dummyAd);
         }
 
         // Destroys a banner view.
         public void DestroyBannerView()
         {
-            Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
             AdBehaviour.DestroyAd(dummyAd);
             prefabAd = null;
         }
@@ -166,7 +160,6 @@ namespace GoogleMobileAds.Unity
         // Returns the height of the BannerView in pixels.
         public float GetHeightInPixels()
         {
-            Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
             if (prefabAd != null) {
                 return getRectTransform(prefabAd).sizeDelta.y;
             }
@@ -176,7 +169,6 @@ namespace GoogleMobileAds.Unity
         // Returns the width of the BannerView in pixels.
         public float GetWidthInPixels()
         {
-            Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
             if (prefabAd != null) {
                 return getRectTransform(prefabAd).sizeDelta.x;
             }
@@ -186,7 +178,6 @@ namespace GoogleMobileAds.Unity
         // Set the position of the banner view using standard position.
         public void SetPosition(AdPosition adPosition)
         {
-            Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
             if (dummyAd != null)
             {
                 AnchorAd(dummyAd, adPosition);
@@ -199,7 +190,6 @@ namespace GoogleMobileAds.Unity
         // Set the position of the banner view using custom position.
         public void SetPosition(int x, int y)
         {
-            Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
             if (dummyAd != null)
             {
                 RectTransform rect = getRectTransform(dummyAd);
@@ -213,14 +203,12 @@ namespace GoogleMobileAds.Unity
         // Returns the mediation adapter class name.
         public string MediationAdapterClassName()
         {
-            Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
             return new ResponseInfoDummyClient().GetMediationAdapterClassName();
         }
 
         // Returns ad request Response info client.
         public IResponseInfoClient GetResponseInfoClient()
         {
-            Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
             return new ResponseInfoDummyClient();
         }
 
