@@ -91,9 +91,22 @@ namespace GoogleMobileAds.Unity
                 LoadAndSetPrefabAd(prefabAds[new AdSize(768, 1024)]);
             }
 
-            if (OnAdLoaded != null)
+            if (prefabAd != null)
             {
-                OnAdLoaded.Invoke(this, EventArgs.Empty);
+                if (OnAdLoaded != null)
+                {
+                    OnAdLoaded.Invoke(this, EventArgs.Empty);
+                }
+            }
+            else
+            {
+                if (OnAdFailedToLoad != null)
+                {
+                    OnAdFailedToLoad.Invoke(this, new AdFailedToLoadEventArgs()
+                    {
+                        Message = "Prefab Ad is Null"
+                    });
+                }
             }
         }
 
