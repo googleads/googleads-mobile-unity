@@ -41,7 +41,7 @@ GameObject:
   - component: {fileID: 114572656286436090}
   - component: {fileID: 114715352366433274}
   m_Layer: 5
-  m_Name: 768x1024 1
+  m_Name: 768x1024
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -185,7 +185,7 @@ MonoBehaviour:
   m_Name:
   m_EditorClassIdentifier:
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 0.578}
+  m_Color: {r: 0, g: 0, b: 0, a: 0.80784315}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:

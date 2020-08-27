@@ -59,7 +59,7 @@ GameObject:
   - component: {fileID: 114420769206196330}
   - component: {fileID: 114535206133587424}
   m_Layer: 5
-  m_Name: 1024x768 1
+  m_Name: 1024x768
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
