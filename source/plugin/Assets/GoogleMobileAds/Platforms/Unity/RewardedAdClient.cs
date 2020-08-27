@@ -42,8 +42,8 @@ namespace GoogleMobileAds.Unity
 
         private static readonly Dictionary<AdSize, string> prefabAds = new Dictionary<AdSize, string>()
         {
-            {new AdSize (768,1024), "DummyAds/Rewarded/768x1024 1" },
-            {new AdSize (1024,768), "DummyAds/Rewarded/1024x768 1"}
+            {new AdSize (768,1024), "DummyAds/Rewarded/768x1024" },
+            {new AdSize (1024,768), "DummyAds/Rewarded/1024x768"}
         };
 
         private ButtonBehaviour buttonBehaviour;
