@@ -38,22 +38,22 @@ namespace GoogleMobileAds.Unity
         public event EventHandler<AdValueEventArgs> OnPaidEvent;
 
         private Dictionary<AdSize, string> prefabAds = new Dictionary<AdSize, string>() {
-            {new AdSize (320,480), "DummyAds/Interstitials/320x480" },
-            {new AdSize (480,320), "DummyAds/Interstitials/480x320"},
-            {new AdSize (768,1024), "DummyAds/Interstitials/768x1024" },
-            {new AdSize (1024,768), "DummyAds/Interstitials/1024x768"}
+            {new AdSize (768,1024), "DummyAds/Interstitials/768x1024 1" },
+            {new AdSize (1024,768), "DummyAds/Interstitials/1024x768 1"}
         };
 
         private ButtonBehaviour buttonBehaviour;
 
         private void AddClickBehavior(GameObject dummyAd)
         {
-            Image myImage = dummyAd.GetComponentInChildren<Image>();
-            Button button = myImage.GetComponentInChildren<Button>();
+            Image[] images = dummyAd.GetComponentsInChildren<Image>();
+            Image adImage = images[1];
+            Button button = adImage.GetComponentInChildren<Button>();
             button.onClick.AddListener(() => {
                 buttonBehaviour.OpenURL();
             });
-            Button[] innerButtons = dummyAd.GetComponentsInChildren<Button>();
+
+            Button[] innerButtons = adImage.GetComponentsInChildren<Button>();
 
             innerButtons[1].onClick.AddListener(() =>
             {
@@ -76,39 +76,19 @@ namespace GoogleMobileAds.Unity
         // Creates an InterstitialAd.
         public void CreateInterstitialAd(string adUnitId)
         {
-            Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
+
         }
 
         // Loads a new interstitial request.
         public void LoadAd(AdRequest request)
         {
-            Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
             if (Screen.width > Screen.height) //Landscape
             {
-                /** The value of 1080 that is being compared is an arbitrary value that
-                    is being used to determine the proper size image would best fit the
-                    resolution being tested on. The image ad will then stretch to the size
-                    of the screen so it is best if the appropriate size is used to avoid an
-                    obvious stretched look.
-                **/
-                if (Screen.width >= 1080)
-                {
-                    LoadAndSetPrefabAd(prefabAds[new AdSize(1024, 768)]);
-                }
-                else
-                {
-                    LoadAndSetPrefabAd(prefabAds[new AdSize(480, 320)]);
-                }
-            } else
+                LoadAndSetPrefabAd(prefabAds[new AdSize(1024, 768)]);
+            }
+            else
             {
-                if (Screen.height < 1080)
-                {
-                    LoadAndSetPrefabAd(prefabAds[new AdSize(320, 480)]);
-                }
-                else
-                {
-                    LoadAndSetPrefabAd(prefabAds[new AdSize(768, 1024)]);
-                }
+                LoadAndSetPrefabAd(prefabAds[new AdSize(768, 1024)]);
             }
 
             if (OnAdLoaded != null)
@@ -120,7 +100,6 @@ namespace GoogleMobileAds.Unity
         // Determines whether the interstitial has loaded.
         public bool IsLoaded()
         {
-            Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
             if (prefabAd != null) {
                 return true;
             } else {
@@ -131,7 +110,6 @@ namespace GoogleMobileAds.Unity
         // Shows the InterstitialAd.
         public void ShowInterstitial()
         {
-            Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
             if (IsLoaded() == true)
             {
                 dummyAd = AdBehaviour.ShowAd(prefabAd, new Vector3(0, 0, 1));
@@ -147,7 +125,6 @@ namespace GoogleMobileAds.Unity
         // Destroys an InterstitialAd.
         public void DestroyInterstitial()
         {
-            Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
             AdBehaviour.DestroyAd(dummyAd);
             prefabAd = null;
         }
@@ -155,14 +132,12 @@ namespace GoogleMobileAds.Unity
         // Returns the mediation adapter class name.
         public string MediationAdapterClassName()
         {
-            Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
             return new ResponseInfoDummyClient().GetMediationAdapterClassName();
         }
 
         // Returns ad request Response info client.
         public IResponseInfoClient GetResponseInfoClient()
         {
-            Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
             return new ResponseInfoDummyClient();
         }
 

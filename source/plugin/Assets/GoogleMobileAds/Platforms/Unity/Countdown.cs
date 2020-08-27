@@ -31,6 +31,7 @@ public class Countdown : MonoBehaviour
 
     public void Start()
     {
+        //Image adImage = this.GetComponentsInChildren<Image>()[1];
         Text[] texts = this.GetComponentsInChildren<Text>();
         Button[] buttons = this.GetComponentsInChildren<Button>();
 
