@@ -12,7 +12,6 @@
 #import "GADURequestConfiguration.h"
 #import "GADURewardBasedVideoAd.h"
 #import "GADURewardedAd.h"
-
 #import "GADUTypes.h"
 
 /// Returns an NSString copying the characters from |bytes|, a C array of UTF8-encoded bytes.
@@ -369,7 +368,6 @@ void GADUSetRewardedAdCallbacks(
   internalRewardedAd.didOpenCallback = didOpenCallback;
   internalRewardedAd.didCloseCallback = didCloseCallback;
   internalRewardedAd.didEarnRewardCallback = didEarnRewardCallback;
-
   internalRewardedAd.paidEventCallback = paidEventCallback;
 }
 
