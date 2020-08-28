@@ -42,8 +42,6 @@ namespace GoogleMobileAds.Unity
 
         private static readonly Dictionary<AdSize, string> prefabAds = new Dictionary<AdSize, string>()
         {
-            {new AdSize (320,480), "DummyAds/Rewarded/320x480" },
-            {new AdSize (480,320), "DummyAds/Rewarded/480x320"},
             {new AdSize (768,1024), "DummyAds/Rewarded/768x1024" },
             {new AdSize (1024,768), "DummyAds/Rewarded/1024x768"}
         };
@@ -52,13 +50,14 @@ namespace GoogleMobileAds.Unity
 
         private void AddClickBehavior(GameObject dummyAd)
         {
-            Image myImage = dummyAd.GetComponentInChildren<Image>();
-            Button button = myImage.GetComponentInChildren<Button>();
+            Image[] images = dummyAd.GetComponentsInChildren<Image>();
+            Image adImage = images[1];
+            Button button = adImage.GetComponentInChildren<Button>();
             button.onClick.AddListener(() =>
             {
                 buttonBehaviour.OpenURL();
             });
-            Button[] innerButtons = dummyAd.GetComponentsInChildren<Button>();
+            Button[] innerButtons = adImage.GetComponentsInChildren<Button>();
 
             if (innerButtons.Length < 2)
             {
@@ -101,25 +100,11 @@ namespace GoogleMobileAds.Unity
         {
             if (Screen.width > Screen.height) //Landscape
             {
-                if (Screen.width >= 1080)
-                {
-                    LoadAndSetPrefabAd(prefabAds[new AdSize(1024, 768)]);
-                }
-                else
-                {
-                    LoadAndSetPrefabAd(prefabAds[new AdSize(480, 320)]);
-                }
+                LoadAndSetPrefabAd(prefabAds[new AdSize(1024, 768)]);
             }
             else
             {
-                if (Screen.height < 1080)
-                {
-                    LoadAndSetPrefabAd(prefabAds[new AdSize(320, 480)]);
-                }
-                else
-                {
-                    LoadAndSetPrefabAd(prefabAds[new AdSize(768, 1024)]);
-                }
+                LoadAndSetPrefabAd(prefabAds[new AdSize(768, 1024)]);
             }
 
             if (prefabAd != null)
