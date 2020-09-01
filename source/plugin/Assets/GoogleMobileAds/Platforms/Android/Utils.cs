@@ -91,7 +91,6 @@ namespace GoogleMobileAds.Android
         public const string UnityPaidEventListenerClassName =
             "com.google.unity.ads.UnityPaidEventListener";
 
-
         public const string PluginUtilsClassName = "com.google.unity.ads.PluginUtils";
 
         #endregion

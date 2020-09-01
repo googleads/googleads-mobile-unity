@@ -72,6 +72,13 @@ namespace GoogleMobileAds
       return new GoogleMobileAds.Common.RewardedAdDummyClient();
     }
 
+    public IRewardedInterstitialAdClient BuildRewardedInterstitialAdClient() {
+      if (Application.platform == RuntimePlatform.IPhonePlayer) {
+        return new GoogleMobileAds.iOS.RewardedInterstitialAdClient();
+      }
+      return new GoogleMobileAds.Common.RewardedInterstitialAdDummyClient();
+    }
+
     public IAdLoaderClient BuildAdLoaderClient(AdLoaderClientArgs args)
     {
       if (Application.platform == RuntimePlatform.IPhonePlayer)
