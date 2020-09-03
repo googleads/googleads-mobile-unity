@@ -1,6 +1,19 @@
 Google Mobile Ads Unity Plugin Change Log
 
 **************
+Version 5.4.0
+**************
+
+Plugin:
+- Added the RewardedInterstitialAd format. This feature is currently in private beta. Reach out to your account manager to request access.
+- Added mock ad views to enable developers to test ad placement and callback logic within the Unity editor.
+
+Built and tested with:
+- Google Play services 19.3.0
+- Google Mobile Ads iOS SDK 7.64.0
+- External Dependency Manager for Unity 1.2.156.
+
+**************
 Version 5.3.0
 **************
 
