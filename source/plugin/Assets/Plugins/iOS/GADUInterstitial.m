@@ -97,6 +97,13 @@
 }
 
 - (void)interstitialDidDismissScreen:(GADInterstitial *)ad {
+  extern bool _didResignActive;
+  if(_didResignActive) {
+    // We are in the middle of the shutdown sequence, and at this point unity runtime is already destroyed.
+    // We shall not call unity API, and definitely not script callbacks, so nothing to do here
+    return;
+  }
+
   if (UnityIsPaused()) {
     UnityPause(NO);
   }
