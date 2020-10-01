@@ -11,6 +11,11 @@ on Android and iOS apps without having to write Java or Objective-C code.
 The plugin provides a C# interface for requesting ads that is used by C#
 scripts in your Unity project.
 
+New features & announcements
+-----------------------------
+
+Please check out the new [features & announcements](https://support.google.com/google-ads/announcements/9048695?hl=en)
+
 Downloads
 ----------
 Please check out our
