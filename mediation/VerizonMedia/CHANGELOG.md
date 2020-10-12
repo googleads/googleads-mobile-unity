@@ -1,5 +1,9 @@
 ## Verizon Media Unity Mediation Plugin Changelog
 
+#### Version 1.6.0
+- Supports [Verizon Media Android adapter version 1.8.0.0](https://github.com/googleads/googleads-mobile-android-mediation/blob/master/ThirdPartyAdapters/verizonmedia/CHANGELOG.md#version-1800).
+- Supports [Verizon Media iOS adapter version 1.8.0.0](https://github.com/googleads/googleads-mobile-ios-mediation/blob/master/adapters/VerizonMedia/CHANGELOG.md#version-1800).
+
 #### Version 1.5.0
 - Supports [Verizon Media Android adapter version 1.7.0.0](https://github.com/googleads/googleads-mobile-android-mediation/blob/master/ThirdPartyAdapters/verizonmedia/CHANGELOG.md#version-1700).
 - Supports [Verizon Media iOS adapter version 1.7.0.0](https://github.com/googleads/googleads-mobile-ios-mediation/blob/master/adapters/VerizonMedia/CHANGELOG.md#version-1700).
