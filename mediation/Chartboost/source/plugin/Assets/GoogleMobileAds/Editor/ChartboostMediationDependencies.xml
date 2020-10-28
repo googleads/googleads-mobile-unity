@@ -9,7 +9,7 @@
   </androidPackages>
 
   <iosPods>
-    <iosPod name="GoogleMobileAdsMediationChartboost" version="8.2.0.0">
+    <iosPod name="GoogleMobileAdsMediationChartboost" version="8.3.1.0">
       <sources>
         <source>https://github.com/CocoaPods/Specs</source>
       </sources>

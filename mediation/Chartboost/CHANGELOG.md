@@ -1,5 +1,9 @@
 ## Chartboost Unity Mediation Plugin Changelog
 
+#### Version 3.2.0
+- Supports [Chartboost Android adapter version 8.1.0.0](https://github.com/googleads/googleads-mobile-android-mediation/blob/master/ThirdPartyAdapters/chartboost/CHANGELOG.md#version-8100).
+- Supports [Chartboost iOS adapter version 8.3.1.0](https://github.com/googleads/googleads-mobile-ios-mediation/blob/master/adapters/Chartboost/CHANGELOG.md#version-8310).
+
 #### Version 3.1.0
 - Removed `RestrictDataCollection()` method from the `Chartboost` class.
 - Added `AddDataUseConsent()` helper methods to pass GDPR and CCPA information to Chartboost.
