@@ -857,9 +857,14 @@ const GADUTypeResponseInfoRef GADUGetResponseInfo(GADUTypeRef adFormat) {
       GADURewardedAd *internalRewardedAd = (GADURewardedAd *)internalAd;
       responseInfo =  internalRewardedAd.responseInfo;
   }
-  GADUObjectCache *cache = [GADUObjectCache sharedInstance];
-  cache[responseInfo.gadu_referenceKey] = responseInfo;
-  return (__bridge GADUTypeResponseInfoRef)(responseInfo);
+  if (responseInfo){
+    GADUObjectCache *cache = [GADUObjectCache sharedInstance];
+    cache[responseInfo.gadu_referenceKey] = responseInfo;
+    return (__bridge GADUTypeResponseInfoRef)(responseInfo);
+  }else {
+    return nil;
+  }
+
 }
 
 const char *GADUResponseInfoMediationAdapterClassName(GADUTypeResponseInfoRef responseInfo){
