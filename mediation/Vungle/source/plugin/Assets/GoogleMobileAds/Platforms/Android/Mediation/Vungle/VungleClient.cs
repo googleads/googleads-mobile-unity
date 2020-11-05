@@ -51,21 +51,15 @@ namespace GoogleMobileAds.Android.Mediation.Vungle
                 consentMessageVersion = "";
             }
 
-            AndroidJavaClass vungleConsentClass = new AndroidJavaClass("com.vungle.mediation.VungleConsent");
-            AndroidJavaClass vungleConsentEnum = new AndroidJavaClass("com.vungle.warren.Vungle$Consent");
-
-            string parameterString = "";
             AndroidJavaObject vungleConsentObject;
+            AndroidJavaClass vungleConsentEnum = new AndroidJavaClass("com.vungle.warren.Vungle$Consent");
             if (consentStatus == VungleConsent.ACCEPTED) {
-                parameterString = "Vungle.Consent.OPTED_IN";
                 vungleConsentObject = vungleConsentEnum.GetStatic<AndroidJavaObject>("OPTED_IN");
             } else {
-                parameterString = "Vungle.Consent.OPTED_OUT";
                 vungleConsentObject = vungleConsentEnum.GetStatic<AndroidJavaObject>("OPTED_OUT");
             }
-            parameterString += ", '" + consentMessageVersion + "'";
 
-            MonoBehaviour.print("Calling 'VungleConsent.updateConsentStatus()' with argument: " + parameterString);
+            AndroidJavaClass vungleConsentClass = new AndroidJavaClass("com.vungle.mediation.VungleConsent");
             vungleConsentClass.CallStatic("updateConsentStatus", vungleConsentObject, consentMessageVersion);
         }
 

@@ -42,14 +42,6 @@ namespace GoogleMobileAds.iOS.Mediation.Vungle
                 return;
             }
 
-            string parameterString = "";
-            if (consentStatus == VungleConsent.ACCEPTED) {
-                parameterString = "VungleConsentAccepted";
-            } else if (consentStatus == VungleConsent.DENIED) {
-                parameterString = "VungleConsentDenied";
-            }
-
-            MonoBehaviour.print ("Calling '[VungleRouterConsent updateConsentStatus:]' with arguments: " + parameterString);
             Externs.GADUMUpdateConsentStatus( (int)consentStatus );
         }
 
