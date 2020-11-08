@@ -358,6 +358,40 @@ namespace GoogleMobileAds.iOS
 
         #endregion
 
+        #region RewardedInterstitialAd externs
+
+        [DllImport("__Internal")]
+        internal static extern IntPtr GADUCreateRewardedInterstitialAd(IntPtr rewardedInterstitialAd);
+
+        [DllImport("__Internal")]
+        internal static extern IntPtr GADULoadRewardedInterstitialAd(IntPtr rewardedInterstitialAd, string adUnitID, IntPtr request);
+
+        [DllImport("__Internal")]
+        internal static extern void GADUShowRewardedInterstitialAd(IntPtr rewardedInterstitialAd);
+
+        [DllImport("__Internal")]
+        internal static extern void GADUSetRewardedInterstitialAdCallbacks(
+            IntPtr rewardedInterstitialAd,
+            RewardedInterstitialAdClient.GADURewardedInterstitialAdLoadedCallback adLoadedCallback,
+            RewardedInterstitialAdClient.GADURewardedInterstitialAdFailedToLoadCallback adFailedToLoadCallback,
+            RewardedInterstitialAdClient.GADUUserEarnedRewardCallback adDidEarnRewardCallback,
+            RewardedInterstitialAdClient.GADURewardedInterstitialAdPaidEventCallback paidEventCallback,
+            RewardedInterstitialAdClient.GADUFailedToPresentFullScreenContentCallback adFailToPresentFullScreenContentCallback,
+            RewardedInterstitialAdClient.GADUDidPresentFullScreenContentCallback adDidPresentFullScreenContentCallback,
+            RewardedInterstitialAdClient.GADUDidDismissFullScreenContentCallback adDidDismissFullScreenContentCallback
+        );
+
+        [DllImport("__Internal")]
+        internal static extern void GADURewardedInterstitialAdSetServerSideVerificationOptions(IntPtr rewardedAd, IntPtr options);
+
+        [DllImport("__Internal")]
+        internal static extern string GADURewardedInterstitialAdGetRewardType(IntPtr rewardedInterstitialAd);
+
+        [DllImport("__Internal")]
+        internal static extern double GADURewardedInterstitialAdGetRewardAmount(IntPtr rewardedInterstitialAd);
+
+        #endregion
+
         #region AdLoader externs
 
         [DllImport("__Internal")]

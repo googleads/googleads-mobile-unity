@@ -12,6 +12,7 @@
 #import "GADURequestConfiguration.h"
 #import "GADURewardBasedVideoAd.h"
 #import "GADURewardedAd.h"
+#import "GADURewardedInterstitialAd.h"
 #import "GADUTypes.h"
 
 /// Returns an NSString copying the characters from |bytes|, a C array of UTF8-encoded bytes.
@@ -268,6 +269,16 @@ GADUTypeRewardedAdRef GADUCreateRewardedAd(GADUTypeRewardedAdClientRef *rewarded
   return (__bridge GADUTypeRewardedAdRef)rewardedAd;
 }
 
+/// Creates a GADURewardedInterstitialAd and returns its reference.
+GADUTypeRewardedInterstitialAdRef GADUCreateRewardedInterstitialAd(
+    GADUTypeRewardedInterstitialAdClientRef *rewardedInterstitialAdClient) {
+  GADURewardedInterstitialAd *rewardedInterstitialAd = [[GADURewardedInterstitialAd alloc]
+      initWithRewardedInterstitialAdClientReference:rewardedInterstitialAdClient];
+  GADUObjectCache *cache = [GADUObjectCache sharedInstance];
+  cache[rewardedInterstitialAd.gadu_referenceKey] = rewardedInterstitialAd;
+  return (__bridge GADUTypeRewardedInterstitialAdRef)rewardedInterstitialAd;
+}
+
 /// Creates a GADUAdLoader and returns its reference.
 GADUTypeAdLoaderRef GADUCreateAdLoader(GADUTypeAdLoaderClientRef *adLoaderClient,
                                        const char *adUnitID,
@@ -371,6 +382,31 @@ void GADUSetRewardedAdCallbacks(
   internalRewardedAd.paidEventCallback = paidEventCallback;
 }
 
+/// Sets the rewarded interstitial ad callback methods to be invoked during rewarded interstitial ad
+/// events.
+void GADUSetRewardedInterstitialAdCallbacks(
+    GADUTypeRewardedInterstitialAdRef rewardedInterstitialAd,
+    GADURewardedInterstitialAdLoadedCallback adLoadedCallback,
+    GADURewardedInterstitialAdFailedToLoadCallback adFailedToLoadCallback,
+    GADUUserEarnedRewardCallback didEarnRewardCallback,
+    GADURewardedInterstitialAdPaidEventCallback paidEventCallback,
+    GADUFailedToPresentFullScreenContentCallback adFailToPresentFullScreenContentCallback,
+    GADUDidPresentFullScreenContentCallback adDidPresentFullScreenContentCallback,
+    GADUDidDismissFullScreenContentCallback adDidDismissFullScreenContentCallback) {
+  GADURewardedInterstitialAd *internalRewardedInterstitialAd =
+      (__bridge GADURewardedInterstitialAd *)rewardedInterstitialAd;
+  internalRewardedInterstitialAd.adLoadedCallback = adLoadedCallback;
+  internalRewardedInterstitialAd.adFailedToLoadCallback = adFailedToLoadCallback;
+  internalRewardedInterstitialAd.didEarnRewardCallback = didEarnRewardCallback;
+  internalRewardedInterstitialAd.paidEventCallback = paidEventCallback;
+  internalRewardedInterstitialAd.adFailedToPresentFullScreenContentCallback =
+      adFailToPresentFullScreenContentCallback;
+  internalRewardedInterstitialAd.adDidPresentFullScreenContentCallback =
+      adDidPresentFullScreenContentCallback;
+  internalRewardedInterstitialAd.adDidDismissFullScreenContentCallback =
+      adDidDismissFullScreenContentCallback;
+}
+
 /// Sets the banner callback methods to be invoked during native ad events.
 void GADUSetAdLoaderCallbacks(
     GADUTypeAdLoaderRef adLoader,
@@ -466,6 +502,31 @@ const char *GADURewardedAdGetRewardType(GADUTypeRewardedAdRef rewardedAd) {
 double GADURewardedAdGetRewardAmount(GADUTypeRewardedAdRef rewardedAd) {
   GADURewardedAd *internalRewardedAd = (__bridge GADURewardedAd *)rewardedAd;
   GADAdReward *reward = internalRewardedAd.rewardedAd.reward;
+  return reward.amount.doubleValue;
+}
+
+/// Shows the GADRewardedInterstitialAd.
+void GADUShowRewardedInterstitialAd(GADUTypeRewardedInterstitialAdRef rewardedInterstitialAd) {
+  GADURewardedInterstitialAd *internalRewardedInterstitialAd =
+      (__bridge GADURewardedInterstitialAd *)rewardedInterstitialAd;
+  [internalRewardedInterstitialAd show];
+}
+
+/// Returns the type of the reward.
+const char *GADURewardedInterstitialAdGetRewardType(
+    GADUTypeRewardedInterstitialAdRef rewardedInterstitialAd) {
+  GADURewardedInterstitialAd *internalRewardedInterstitialAd =
+      (__bridge GADURewardedInterstitialAd *)rewardedInterstitialAd;
+  GADAdReward *reward = internalRewardedInterstitialAd.rewardedInterstitialAd.adReward;
+  return cStringCopy(reward.type.UTF8String);
+}
+
+/// Returns the amount of the reward.
+double GADURewardedInterstitialAdGetRewardAmount(
+    GADUTypeRewardedInterstitialAdRef rewardedInterstitialAd) {
+  GADURewardedInterstitialAd *internalRewardedInterstitialAd =
+      (__bridge GADURewardedInterstitialAd *)rewardedInterstitialAd;
+  GADAdReward *reward = internalRewardedInterstitialAd.rewardedInterstitialAd.adReward;
   return reward.amount.doubleValue;
 }
 
@@ -746,6 +807,16 @@ void GADURequestRewardedAd(GADUTypeRewardedAdRef rewardedAd, GADUTypeRequestRef 
   [internalRewardedAd loadRequest:[internalRequest request]];
 }
 
+/// Makes a rewarded interstitial ad request.
+void GADULoadRewardedInterstitialAd(GADUTypeRewardedInterstitialAdRef rewardedInterstitialAd,
+                                    const char *adUnitID, GADUTypeRequestRef request) {
+  GADURewardedInterstitialAd *internalRewardedInterstitialAd =
+      (__bridge GADURewardedInterstitialAd *)rewardedInterstitialAd;
+  GADURequest *internalRequest = (__bridge GADURequest *)request;
+  [internalRewardedInterstitialAd loadWithAdUnitID:GADUStringFromUTF8String(adUnitID)
+                                           request:[internalRequest request]];
+}
+
 /// Makes a native ad request.
 void GADURequestNativeAd(GADUTypeAdLoaderRef adLoader, GADUTypeRequestRef request) {
   GADUAdLoader *internalAdLoader = (__bridge GADUAdLoader *)adLoader;
@@ -760,6 +831,17 @@ void GADURewardedAdSetServerSideVerificationOptions(
   GADServerSideVerificationOptions *internalOptions =
       (__bridge GADServerSideVerificationOptions *)options;
   [internalRewardedAd setServerSideVerificationOptions:internalOptions];
+}
+
+/// Sets the GADServerSideVerificationOptions on GADURewardedInterstitialAd
+void GADURewardedInterstitialAdSetServerSideVerificationOptions(
+    GADUTypeRewardedInterstitialAdRef rewardedInterstitialAd,
+    GADUTypeServerSideVerificationOptionsRef options) {
+  GADURewardedInterstitialAd *internalRewardedInterstitialAd =
+      (__bridge GADURewardedInterstitialAd *)rewardedInterstitialAd;
+  GADServerSideVerificationOptions *internalOptions =
+      (__bridge GADServerSideVerificationOptions *)options;
+  [internalRewardedInterstitialAd setServerSideVerificationOptions:internalOptions];
 }
 
 #pragma mark - Native Custom Template Ad methods
