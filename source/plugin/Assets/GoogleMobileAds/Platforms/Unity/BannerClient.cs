@@ -200,18 +200,6 @@ namespace GoogleMobileAds.Unity
             }
         }
 
-        // Returns the mediation adapter class name.
-        public string MediationAdapterClassName()
-        {
-            return new ResponseInfoDummyClient().GetMediationAdapterClassName();
-        }
-
-        // Returns ad request Response info client.
-        public IResponseInfoClient GetResponseInfoClient()
-        {
-            return new ResponseInfoDummyClient();
-        }
-
         private void SetAndStretchAd(GameObject dummyAd, AdPosition pos, AdSize adSize)
         {
             if (dummyAd != null) {

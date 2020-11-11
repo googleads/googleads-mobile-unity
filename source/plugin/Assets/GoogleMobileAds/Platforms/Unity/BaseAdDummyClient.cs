@@ -17,7 +17,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 using GoogleMobileAds.Api;
-
+using GoogleMobileAds.Common;
 
 namespace GoogleMobileAds.Unity
 {
@@ -35,6 +35,18 @@ namespace GoogleMobileAds.Unity
         public RectTransform getRectTransform(GameObject prefabAd) {
             Image myImage = prefabAd.GetComponentInChildren<Image>();
             return myImage.GetComponent<RectTransform>();
+        }
+
+        // Returns the mediation adapter class name.
+        public string MediationAdapterClassName()
+        {
+            return new ResponseInfoDummyClient().GetMediationAdapterClassName();
+        }
+
+        // Returns ad request Response info client.
+        public IResponseInfoClient GetResponseInfoClient()
+        {
+            return new ResponseInfoDummyClient();
         }
     }
 }

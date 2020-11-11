@@ -66,6 +66,11 @@ namespace GoogleMobileAds {
       if (Application.platform == RuntimePlatform.Android) {
         return new GoogleMobileAds.Android.RewardedInterstitialAdClient();
       }
+      else if (Application.platform == RuntimePlatform.OSXEditor ||
+                  Application.platform == RuntimePlatform.WindowsEditor)
+      {
+        return new GoogleMobileAds.Unity.RewardedInterstitialAdClient();
+      }
       return new GoogleMobileAds.Common.RewardedInterstitialAdDummyClient();
     }
 

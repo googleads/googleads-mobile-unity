@@ -69,7 +69,6 @@ namespace GoogleMobileAds.Unity
         private void CreateButtonBehavior()
         {
             buttonBehaviour = new ButtonBehaviour();
-            buttonBehaviour.OnAdOpening += OnAdOpening;
             buttonBehaviour.OnLeavingApplication += OnAdLeavingApplication;
         }
 
@@ -129,6 +128,10 @@ namespace GoogleMobileAds.Unity
                 CreateButtonBehavior();
                 AddClickBehavior(dummyAd);
                 AdBehaviour.PauseGame();
+                if (OnAdOpening != null)
+                {
+                  OnAdOpening.Invoke(this, EventArgs.Empty);
+                }
             } else
             {
                 Debug.Log("No Ad Loaded");
@@ -142,18 +145,5 @@ namespace GoogleMobileAds.Unity
             prefabAd = null;
         }
 
-        // Returns the mediation adapter class name.
-        public string MediationAdapterClassName()
-        {
-            return new ResponseInfoDummyClient().GetMediationAdapterClassName();
-        }
-
-        // Returns ad request Response info client.
-        public IResponseInfoClient GetResponseInfoClient()
-        {
-            return new ResponseInfoDummyClient();
-        }
-
     }
 }
-
