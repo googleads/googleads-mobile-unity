@@ -44,6 +44,7 @@
           return;
         }
         strongSelf.rewardedInterstitialAd = rewardedInterstitialAd;
+        strongSelf.rewardedInterstitialAd.fullScreenContentDelegate = strongSelf;
         strongSelf.rewardedInterstitialAd.paidEventHandler = ^void(GADAdValue *_Nonnull adValue) {
           GADURewardedInterstitialAd *strongSecondSelf = weakSelf;
           if (strongSecondSelf.paidEventCallback) {
@@ -98,9 +99,9 @@
 - (void)adDidPresentFullScreenContent:(nonnull id<GADFullScreenPresentingAd>)ad {
   if (GADUPluginUtil.pauseOnBackground) {
     UnityPause(YES);
-    if (self.adDidPresentFullScreenContentCallback) {
-      self.adDidPresentFullScreenContentCallback(self.rewardedInterstitialAdClient);
-    }
+  }
+  if (self.adDidPresentFullScreenContentCallback) {
+    self.adDidPresentFullScreenContentCallback(self.rewardedInterstitialAdClient);
   }
 }
 
