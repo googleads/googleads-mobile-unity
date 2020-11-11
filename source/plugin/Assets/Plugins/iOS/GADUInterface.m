@@ -932,12 +932,15 @@ const GADUTypeResponseInfoRef GADUGetResponseInfo(GADUTypeRef adFormat) {
   if ([internalAd isKindOfClass:[GADUBanner class]]){
       GADUBanner *internalBanner = (GADUBanner *)internalAd;
       responseInfo = internalBanner.responseInfo;
-  }else if ([internalAd isKindOfClass:[GADUInterstitial class]]) {
+  } else if ([internalAd isKindOfClass:[GADUInterstitial class]]) {
       GADUInterstitial *internalInterstitial = (GADUInterstitial *)internalAd;
       responseInfo =  internalInterstitial.responseInfo;
-  }else if ([internalAd isKindOfClass:[GADURewardedAd class]]){
+  } else if ([internalAd isKindOfClass:[GADURewardedAd class]]){
       GADURewardedAd *internalRewardedAd = (GADURewardedAd *)internalAd;
       responseInfo =  internalRewardedAd.responseInfo;
+  } else if ([internalAd isKindOfClass:[GADURewardedInterstitialAd class]]){
+    GADURewardedInterstitialAd *internalRewardedInterstitialAd = (GADURewardedInterstitialAd *)internalAd;
+    responseInfo =  internalRewardedInterstitialAd.responseInfo;
   }
   if (responseInfo){
     GADUObjectCache *cache = [GADUObjectCache sharedInstance];
