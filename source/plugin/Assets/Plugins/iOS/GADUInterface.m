@@ -938,8 +938,9 @@ const GADUTypeResponseInfoRef GADUGetResponseInfo(GADUTypeRef adFormat) {
   } else if ([internalAd isKindOfClass:[GADURewardedAd class]]){
       GADURewardedAd *internalRewardedAd = (GADURewardedAd *)internalAd;
       responseInfo =  internalRewardedAd.responseInfo;
-  } else if ([internalAd isKindOfClass:[GADURewardedInterstitialAd class]]){
-    GADURewardedInterstitialAd *internalRewardedInterstitialAd = (GADURewardedInterstitialAd *)internalAd;
+  } else if ([internalAd isKindOfClass:[GADURewardedInterstitialAd class]]) {
+    GADURewardedInterstitialAd *internalRewardedInterstitialAd =
+    (GADURewardedInterstitialAd *)internalAd;
     responseInfo =  internalRewardedInterstitialAd.responseInfo;
   }
   if (responseInfo){
@@ -996,3 +997,4 @@ const char *GADUMediationAdapterClassNameForInterstitial(GADUTypeInterstitialRef
   GADUInterstitial *interstitialAd = (__bridge GADUInterstitial *)interstitial;
   return cStringCopy(interstitialAd.mediationAdapterClassName.UTF8String);
 }
+

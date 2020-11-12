@@ -1,6 +1,25 @@
 Google Mobile Ads Unity Plugin Change Log
 
 **************
+Version 5.5.0
+**************
+
+Plugin:
+- Add support for iOS14 with Googles `SKAdNetwork` identifiers automatically included in
+  `Info.plist`.
+- Added APIs for the RewardedInterstitialAd format. Rewarded interstitial ads
+  are currently in private beta. Reach out to your account manager to request
+  access.
+- Added fix for crash that occurs when attempting to show interstitial when app is closing.
+- Added fix for crash that occurs when calling `GetResponseInfo()` on iOS before ad is loaded.
+
+Built and tested with:
+- Google Play services 19.5.0
+- Google Mobile Ads iOS SDK 7.68.0
+- External Dependency Manager for Unity 1.2.161.
+
+
+**************
 Version 5.4.0
 **************
 
