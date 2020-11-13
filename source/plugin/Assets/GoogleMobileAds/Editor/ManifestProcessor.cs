@@ -38,7 +38,7 @@ public class ManifestProcessor : IPreprocessBuild
 #endif
     {
         string manifestPath = Path.Combine(
-                Application.dataPath, "Plugins/Android/GoogleMobileAdsPlugin.androidlib/AndroidManifest.xml");
+                Application.dataPath, "Plugins/Android/GoogleMobileAdsPlugin/AndroidManifest.xml");
 
         XDocument manifest = null;
         try
