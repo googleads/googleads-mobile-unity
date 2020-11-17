@@ -1,7 +1,8 @@
 // Copyright 2014 Google Inc. All Rights Reserved.
+#import <Foundation/Foundation.h>
 
 /// Positions to place an ad.
-typedef NS_ENUM(NSUInteger, GADAdPosition) {
+typedef NS_ENUM(NSInteger, GADAdPosition) {
   kGADAdPositionCustom = -1,              ///< Custom ad position.
   kGADAdPositionTopOfScreen = 0,          ///< Top of screen.
   kGADAdPositionBottomOfScreen = 1,       ///< Bottom of screen.
