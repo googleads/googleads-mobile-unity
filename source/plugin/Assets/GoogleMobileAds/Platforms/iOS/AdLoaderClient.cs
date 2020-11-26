@@ -73,13 +73,13 @@ namespace GoogleMobileAds.iOS
             IntPtr adLoader, IntPtr nativeCustomTemplateAd, string templateID);
 
         internal delegate void GADUAdLoaderDidFailToReceiveAdWithErrorCallback(
-            IntPtr AdLoader, string error);
+            IntPtr AdLoader, IntPtr error);
 
         public event EventHandler<CustomNativeClientEventArgs> OnCustomNativeTemplateAdLoaded;
 
         public event EventHandler<CustomNativeClientEventArgs> OnCustomNativeTemplateAdClicked;
 
-        public event EventHandler<AdFailedToLoadEventArgs> OnAdFailedToLoad;
+        public event EventHandler<LoadAdErrorClientEventArgs> OnAdFailedToLoad;
 
         // This property should be used when setting the adLoaderPtr.
         private IntPtr AdLoaderPtr
@@ -159,14 +159,15 @@ namespace GoogleMobileAds.iOS
 
         [MonoPInvokeCallback(typeof(GADUAdLoaderDidFailToReceiveAdWithErrorCallback))]
         private static void AdLoaderDidFailToReceiveAdWithErrorCallback(
-            IntPtr adLoader, string error)
+            IntPtr adLoader, IntPtr error)
         {
             AdLoaderClient client = IntPtrToAdLoaderClient(adLoader);
             if (client.OnAdFailedToLoad != null)
             {
-                AdFailedToLoadEventArgs args = new AdFailedToLoadEventArgs()
+                LoadAdErrorClientEventArgs args = new LoadAdErrorClientEventArgs()
                 {
-                    Message = error
+                    LoadAdErrorClient = new LoadAdErrorClient(error),
+                    Message = Externs.GADUGetAdErrorMessage(error)
                 };
                 client.OnAdFailedToLoad(client, args);
             }

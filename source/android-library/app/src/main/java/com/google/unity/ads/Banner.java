@@ -31,6 +31,7 @@ import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.AdValue;
 import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.LoadAdError;
 import com.google.android.gms.ads.OnPaidEventListener;
 import com.google.android.gms.ads.ResponseInfo;
 import java.util.concurrent.Callable;
@@ -171,14 +172,14 @@ public class Banner {
           }
 
           @Override
-          public void onAdFailedToLoad(final int errorCode) {
+          public void onAdFailedToLoad(final LoadAdError error) {
             if (mUnityListener != null) {
               new Thread(
                       new Runnable() {
                         @Override
                         public void run() {
                           if (mUnityListener != null) {
-                            mUnityListener.onAdFailedToLoad(PluginUtils.getErrorReason(errorCode));
+                            mUnityListener.onAdFailedToLoad(error);
                           }
                         }
                       })

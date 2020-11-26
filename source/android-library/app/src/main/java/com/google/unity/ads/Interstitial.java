@@ -21,6 +21,7 @@ import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdValue;
 import com.google.android.gms.ads.InterstitialAd;
+import com.google.android.gms.ads.LoadAdError;
 import com.google.android.gms.ads.OnPaidEventListener;
 import com.google.android.gms.ads.ResponseInfo;
 import java.util.concurrent.Callable;
@@ -88,16 +89,14 @@ public class Interstitial {
                             }
 
                             @Override
-                            public void onAdFailedToLoad(final int errorCode) {
+                            public void onAdFailedToLoad(final LoadAdError error) {
                                 if (adListener != null) {
                                     new Thread(
                                             new Runnable() {
                                                 @Override
                                                 public void run() {
                                                     if (adListener != null) {
-                                                        adListener.onAdFailedToLoad(
-                                                                PluginUtils.getErrorReason(
-                                                                        errorCode));
+                                                        adListener.onAdFailedToLoad(error);
                                                     }
                                                 }
                                             })

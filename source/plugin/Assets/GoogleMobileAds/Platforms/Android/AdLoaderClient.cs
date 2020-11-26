@@ -24,7 +24,7 @@ namespace GoogleMobileAds.Android
     public class AdLoaderClient : AndroidJavaProxy, IAdLoaderClient
     {
         private AndroidJavaObject adLoader;
-        public event EventHandler<AdFailedToLoadEventArgs> OnAdFailedToLoad;
+        public event EventHandler<LoadAdErrorClientEventArgs> OnAdFailedToLoad;
         public event EventHandler<CustomNativeClientEventArgs> OnCustomNativeTemplateAdLoaded;
         public event EventHandler<CustomNativeClientEventArgs> OnCustomNativeTemplateAdClicked;
 
@@ -73,11 +73,12 @@ namespace GoogleMobileAds.Android
             }
         }
 
-        void onAdFailedToLoad(string errorReason)
+        void onAdFailedToLoad(AndroidJavaObject error)
         {
-            AdFailedToLoadEventArgs args = new AdFailedToLoadEventArgs()
+            LoadAdErrorClientEventArgs args = new LoadAdErrorClientEventArgs()
             {
-                Message = errorReason
+                LoadAdErrorClient = (ILoadAdErrorClient) new LoadAdErrorClient(error),
+                Message = error.Call<string>("getMessage")
             };
             OnAdFailedToLoad(this, args);
         }

@@ -19,5 +19,6 @@ namespace GoogleMobileAds.Common
         string GetMediationAdapterClassName();
 
         string GetResponseId();
+
     }
 }

@@ -18,7 +18,7 @@ namespace GoogleMobileAds.Common
 {
     public interface IAdLoaderClient
     {
-        event EventHandler<AdFailedToLoadEventArgs> OnAdFailedToLoad;
+        event EventHandler<LoadAdErrorClientEventArgs> OnAdFailedToLoad;
 
         event EventHandler<CustomNativeClientEventArgs> OnCustomNativeTemplateAdLoaded;
 

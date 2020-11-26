@@ -32,9 +32,9 @@ namespace GoogleMobileAds.Common
 
         public event EventHandler<EventArgs> OnAdLoaded;
 
-        public event EventHandler<AdErrorEventArgs> OnAdFailedToLoad;
+        public event EventHandler<LoadAdErrorClientEventArgs> OnAdFailedToLoad;
 
-        public event EventHandler<AdErrorEventArgs> OnAdFailedToShow;
+        public event EventHandler<AdErrorClientEventArgs> OnAdFailedToShow;
 
         public event EventHandler<EventArgs> OnAdOpening;
 

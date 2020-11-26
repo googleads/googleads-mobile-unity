@@ -25,7 +25,7 @@ namespace GoogleMobileAds.Android
         private AndroidJavaObject androidRewardBasedVideo;
 
         public event EventHandler<EventArgs> OnAdLoaded = delegate { };
-        public event EventHandler<AdFailedToLoadEventArgs> OnAdFailedToLoad = delegate { };
+        public event EventHandler<LoadAdErrorClientEventArgs> OnAdFailedToLoad = delegate { };
         public event EventHandler<EventArgs> OnAdOpening = delegate { };
         public event EventHandler<EventArgs> OnAdStarted = delegate { };
         public event EventHandler<EventArgs> OnAdClosed = delegate { };
@@ -96,8 +96,9 @@ namespace GoogleMobileAds.Android
         {
             if (this.OnAdFailedToLoad != null)
             {
-                AdFailedToLoadEventArgs args = new AdFailedToLoadEventArgs()
+                LoadAdErrorClientEventArgs args = new LoadAdErrorClientEventArgs()
                 {
+                    LoadAdErrorClient = null,
                     Message = errorReason
                 };
                 this.OnAdFailedToLoad(this, args);

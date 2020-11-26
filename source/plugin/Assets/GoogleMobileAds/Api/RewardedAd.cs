@@ -13,8 +13,6 @@
 // limitations under the License.
 
 using System;
-
-using GoogleMobileAds;
 using GoogleMobileAds.Common;
 
 namespace GoogleMobileAds.Api
@@ -40,7 +38,12 @@ namespace GoogleMobileAds.Api
             {
                 if (this.OnAdFailedToLoad != null)
                 {
-                    this.OnAdFailedToLoad(this, args);
+                    LoadAdError loadAdError = new LoadAdError(args.LoadAdErrorClient);
+                    this.OnAdFailedToLoad(this, new AdFailedToLoadEventArgs()
+                    {
+                        LoadAdError = loadAdError,
+                        Message = loadAdError.GetMessage()
+                    });
                 }
             };
 
@@ -48,7 +51,13 @@ namespace GoogleMobileAds.Api
             {
                 if (this.OnAdFailedToShow != null)
                 {
-                    this.OnAdFailedToShow(this, args);
+                    AdError adError = new AdError(args.AdErrorClient);
+
+                    this.OnAdFailedToShow(this, new AdErrorEventArgs()
+                    {
+                        AdError = adError,
+                        Message = adError.GetMessage()
+                    });
                 }
             };
 
@@ -89,7 +98,7 @@ namespace GoogleMobileAds.Api
         // These are the ad callback events that can be hooked into.
         public event EventHandler<EventArgs> OnAdLoaded;
 
-        public event EventHandler<AdErrorEventArgs> OnAdFailedToLoad;
+        public event EventHandler<AdFailedToLoadEventArgs> OnAdFailedToLoad;
 
         public event EventHandler<AdErrorEventArgs> OnAdFailedToShow;
 

@@ -28,11 +28,11 @@ namespace GoogleMobileAds.iOS
         private IntPtr rewardedInterstitialAdClientPtr;
         private IntPtr rewardedInterstitialAdPtr;
 
-        #region rewarded interstitial ad callback types
+#region rewarded interstitial ad callback types
 
         internal delegate void GADURewardedInterstitialAdLoadedCallback(IntPtr rewardedInterstitialAdClient);
 
-        internal delegate void GADURewardedInterstitialAdFailedToLoadCallback(IntPtr rewardedInterstitialAdClient, string error);
+        internal delegate void GADURewardedInterstitialAdFailedToLoadCallback(IntPtr rewardedInterstitialAdClient, IntPtr error);
 
         internal delegate void GADUUserEarnedRewardCallback(
             IntPtr rewardedInterstitialAdClient, string rewardType, double rewardAmount);
@@ -40,33 +40,33 @@ namespace GoogleMobileAds.iOS
         internal delegate void GADURewardedInterstitialAdPaidEventCallback(
             IntPtr rewardedInterstitialAdClient, int precision, long value, string currencyCode);
 
-        #endregion
+#endregion
 
-        #region full screen content callback types
+#region full screen content callback types
 
-        internal delegate void GADUFailedToPresentFullScreenContentCallback(IntPtr rewardedInterstitialAdClient, string error);
+        internal delegate void GADUFailedToPresentFullScreenContentCallback(IntPtr rewardedInterstitialAdClient, IntPtr error);
 
         internal delegate void GADUDidPresentFullScreenContentCallback(IntPtr rewardedInterstitialAdClient);
 
         internal delegate void GADUDidDismissFullScreenContentCallback(IntPtr rewardedInterstitialAdClient);
 
-        #endregion
+#endregion
 
         public event EventHandler<EventArgs> OnAdLoaded;
 
-        public event EventHandler<AdFailedToLoadEventArgs> OnAdFailedToLoad;
+        public event EventHandler<LoadAdErrorClientEventArgs> OnAdFailedToLoad;
 
         public event EventHandler<Reward> OnUserEarnedReward;
 
         public event EventHandler<AdValueEventArgs> OnPaidEvent;
 
-        public event EventHandler<AdErrorEventArgs> OnAdFailedToPresentFullScreenContent;
+        public event EventHandler<AdErrorClientEventArgs> OnAdFailedToPresentFullScreenContent;
 
         public event EventHandler<EventArgs> OnAdDidPresentFullScreenContent;
 
         public event EventHandler<EventArgs> OnAdDidDismissFullScreenContent;
 
-        #region IRewardedInterstitialAdClient implementation
+#region IRewardedInterstitialAdClient implementation
 
         public void CreateRewardedInterstitialAd()
         {
@@ -118,7 +118,7 @@ namespace GoogleMobileAds.iOS
 
         public IResponseInfoClient GetResponseInfoClient()
         {
-            return new ResponseInfoClient(this.rewardedInterstitialAdPtr);
+            return new ResponseInfoClient(ResponseInfoClientType.AdLoaded, this.rewardedInterstitialAdPtr);
         }
 
         // Destroys the rewarded interstitial ad.
@@ -138,9 +138,9 @@ namespace GoogleMobileAds.iOS
             this.Dispose();
         }
 
-        #endregion
+#endregion
 
-        #region rewarded interstitial ad callback methods
+#region rewarded interstitial ad callback methods
 
         [MonoPInvokeCallback(typeof(GADURewardedInterstitialAdLoadedCallback))]
         private static void RewardedInterstitialAdLoadedCallback(IntPtr rewardedInterstitialAdClient)
@@ -152,17 +152,17 @@ namespace GoogleMobileAds.iOS
             }
         }
 
-
         [MonoPInvokeCallback(typeof(GADURewardedInterstitialAdFailedToLoadCallback))]
         private static void RewardedInterstitialAdFailedToLoadCallback(
-            IntPtr rewardedInterstitialAdClient, string error)
+            IntPtr rewardedInterstitialAdClient, IntPtr error)
         {
             RewardedInterstitialAdClient client = IntPtrToRewardedInterstitialAdClient(rewardedInterstitialAdClient);
             if (client.OnAdFailedToLoad != null)
             {
-                AdFailedToLoadEventArgs args = new AdFailedToLoadEventArgs()
+                LoadAdErrorClientEventArgs args = new LoadAdErrorClientEventArgs()
                 {
-                    Message = error
+                    LoadAdErrorClient = new LoadAdErrorClient(error),
+                    Message = Externs.GADUGetAdErrorMessage(error)
                 };
                 client.OnAdFailedToLoad(client, args);
             }
@@ -208,14 +208,15 @@ namespace GoogleMobileAds.iOS
         }
 
         [MonoPInvokeCallback(typeof(GADUFailedToPresentFullScreenContentCallback))]
-        private static void AdFailedToPresentFullScreenContentCallback(IntPtr rewardedInterstitialAdClient, string error)
+        private static void AdFailedToPresentFullScreenContentCallback(IntPtr rewardedInterstitialAdClient, IntPtr error)
         {
             RewardedInterstitialAdClient client = IntPtrToRewardedInterstitialAdClient(rewardedInterstitialAdClient);
             if (client.OnAdFailedToPresentFullScreenContent != null)
             {
-                AdErrorEventArgs args = new AdErrorEventArgs()
+                AdErrorClientEventArgs args = new AdErrorClientEventArgs()
                 {
-                    Message = error
+                    AdErrorClient = new AdErrorClient(error),
+                    Message = Externs.GADUGetAdErrorMessage(error)
                 };
                 client.OnAdFailedToPresentFullScreenContent(client, args);
             }
@@ -248,7 +249,7 @@ namespace GoogleMobileAds.iOS
             return handle.Target as RewardedInterstitialAdClient;
         }
 
-        #endregion
+#endregion
     }
 }
 #endif

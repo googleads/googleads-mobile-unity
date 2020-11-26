@@ -38,8 +38,7 @@
         if (error || !rewardedInterstitialAd) {
           if (strongSelf.adFailedToLoadCallback) {
             strongSelf.adFailedToLoadCallback(
-                strongSelf.rewardedInterstitialAdClient,
-                [error.localizedDescription cStringUsingEncoding:NSUTF8StringEncoding]);
+                strongSelf.rewardedInterstitialAdClient, (__bridge GADUTypeErrorRef)error);
           }
           return;
         }
@@ -92,7 +91,7 @@
   if (self.adFailedToPresentFullScreenContentCallback) {
     self.adFailedToPresentFullScreenContentCallback(
         self.rewardedInterstitialAdClient,
-        [error.localizedDescription cStringUsingEncoding:NSUTF8StringEncoding]);
+        (__bridge GADUTypeErrorRef)error);
   }
 }
 

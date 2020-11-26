@@ -3,8 +3,10 @@ package com.google.unity.ads;
 import android.app.Activity;
 import android.util.Log;
 import androidx.annotation.NonNull;
+import com.google.android.gms.ads.AdError;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdValue;
+import com.google.android.gms.ads.LoadAdError;
 import com.google.android.gms.ads.OnPaidEventListener;
 import com.google.android.gms.ads.ResponseInfo;
 import com.google.android.gms.ads.rewarded.RewardItem;
@@ -86,6 +88,7 @@ public class UnityRewardedAd {
             @Override
             public void run() {
                 rewardedAd.loadAd(request, new RewardedAdLoadCallback() {
+                    @Override
                     public void onRewardedAdLoaded() {
                         if (callback != null) {
                             new Thread(new Runnable() {
@@ -99,15 +102,14 @@ public class UnityRewardedAd {
                         }
                     }
 
-
-                    public void onRewardedAdFailedToLoad(final int errorCode) {
+                    @Override
+                    public void onRewardedAdFailedToLoad(final LoadAdError error) {
                         if (callback != null) {
                             new Thread(new Runnable() {
                                 @Override
                                 public void run() {
                                     if (callback != null) {
-                                        callback.onRewardedAdFailedToLoad(
-                                                PluginUtils.getErrorReason(errorCode));
+                                        callback.onRewardedAdFailedToLoad(error);
                                     }
                                 }
                             }).start();
@@ -154,6 +156,7 @@ public class UnityRewardedAd {
             public void run() {
                 if (rewardedAd.isLoaded()) {
                     rewardedAd.show(activity, new RewardedAdCallback() {
+                        @Override
                         public void onRewardedAdOpened() {
                             if (callback != null) {
                                 new Thread(new Runnable() {
@@ -167,6 +170,7 @@ public class UnityRewardedAd {
                             }
                         }
 
+                        @Override
                         public void onRewardedAdClosed() {
                             if (callback != null) {
                                 new Thread(new Runnable() {
@@ -180,6 +184,7 @@ public class UnityRewardedAd {
                             }
                         }
 
+                        @Override
                         public void onUserEarnedReward(@NonNull final RewardItem reward) {
                             if (callback != null) {
                                 new Thread(new Runnable() {
@@ -194,14 +199,14 @@ public class UnityRewardedAd {
                             }
                         }
 
-                        public void onRewardedAdFailedToShow(final int errorCode) {
+                        @Override
+                        public void onRewardedAdFailedToShow(final AdError error) {
                             if (callback != null) {
                                 new Thread(new Runnable() {
                                     @Override
                                     public void run() {
                                         if (callback != null) {
-                                            callback.onRewardedAdFailedToShow(
-                                                    PluginUtils.getErrorReason(errorCode));
+                                            callback.onRewardedAdFailedToShow(error);
                                         }
                                     }
                                 }).start();

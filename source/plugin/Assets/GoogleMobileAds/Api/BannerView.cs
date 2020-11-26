@@ -112,12 +112,16 @@ namespace GoogleMobileAds.Api
                     this.OnAdLoaded(this, args);
                 }
             };
-
             this.client.OnAdFailedToLoad += (sender, args) =>
             {
                 if (this.OnAdFailedToLoad != null)
                 {
-                    this.OnAdFailedToLoad(this, args);
+                    LoadAdError loadAdError = new LoadAdError(args.LoadAdErrorClient);
+                    this.OnAdFailedToLoad(this, new AdFailedToLoadEventArgs()
+                    {
+                        LoadAdError = loadAdError,
+                        Message = loadAdError.GetMessage()
+                    });
                 }
             };
 

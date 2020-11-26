@@ -23,6 +23,7 @@ import com.google.android.gms.ads.AdError;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdValue;
 import com.google.android.gms.ads.FullScreenContentCallback;
+import com.google.android.gms.ads.LoadAdError;
 import com.google.android.gms.ads.OnPaidEventListener;
 import com.google.android.gms.ads.OnUserEarnedRewardListener;
 import com.google.android.gms.ads.ResponseInfo;
@@ -95,14 +96,13 @@ public class UnityRewardedInterstitialAd {
                     rewardedInterstitialAd.setFullScreenContentCallback(
                         new FullScreenContentCallback() {
                           @Override
-                          public void onAdFailedToShowFullScreenContent(final AdError adError) {
+                          public void onAdFailedToShowFullScreenContent(final AdError error) {
                             new Thread(
                                     new Runnable() {
                                       @Override
                                       public void run() {
                                         if (callback != null) {
-                                          callback.onAdFailedToShowFullScreenContent(
-                                              adError.getMessage());
+                                          callback.onAdFailedToShowFullScreenContent(error);
                                         }
                                       }
                                     })
@@ -151,14 +151,13 @@ public class UnityRewardedInterstitialAd {
                   }
 
                   @Override
-                  public void onRewardedInterstitialAdFailedToLoad(final int errorCode) {
+                  public void onRewardedInterstitialAdFailedToLoad(final LoadAdError error) {
                     new Thread(
                             new Runnable() {
                               @Override
                               public void run() {
                                 if (callback != null) {
-                                  callback.onRewardedInterstitialAdFailedToLoad(
-                                      PluginUtils.getErrorReason(errorCode));
+                                  callback.onRewardedInterstitialAdFailedToLoad(error);
                                 }
                               }
                             })

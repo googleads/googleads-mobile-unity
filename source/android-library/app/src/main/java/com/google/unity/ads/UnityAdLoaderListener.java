@@ -15,12 +15,14 @@
  */
 package com.google.unity.ads;
 
+import com.google.android.gms.ads.LoadAdError;
+
 /**
  * An interface form of {@link UnityAdLoaderListener} that can be implemented via
  * {@code AndroidJavaProxy} in Unity to receive ad events synchronously.
  */
 public interface UnityAdLoaderListener {
-    void onAdFailedToLoad(String errorReason);
+    void onAdFailedToLoad(LoadAdError error);
     void onCustomTemplateAdLoaded(CustomNativeAd ad);
     void onCustomClick(CustomNativeAd ad, String assetName);
 }

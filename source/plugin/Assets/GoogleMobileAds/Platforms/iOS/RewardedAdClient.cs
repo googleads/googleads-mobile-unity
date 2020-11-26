@@ -28,16 +28,16 @@ namespace GoogleMobileAds.iOS
         private IntPtr rewardedAdPtr;
         private IntPtr rewardedAdClientPtr;
 
-        #region rewarded callback types
+#region rewarded callback types
 
         internal delegate void GADURewardedAdDidReceiveAdCallback(
             IntPtr rewardedAdClient);
 
         internal delegate void GADURewardedAdDidFailToReceiveAdWithErrorCallback(
-            IntPtr rewardedAdClient, string error);
+            IntPtr rewardedAdClient, IntPtr error);
 
         internal delegate void GADURewardedAdDidFailToShowAdWithErrorCallback(
-            IntPtr rewardedAdClient, string error);
+            IntPtr rewardedAdClient, IntPtr error);
 
         internal delegate void GADURewardedAdDidOpenCallback(
             IntPtr rewardedAdClient);
@@ -52,13 +52,13 @@ namespace GoogleMobileAds.iOS
         internal delegate void GADURewardedAdPaidEventCallback(
             IntPtr rewardedAdClient, int precision, long value, string currencyCode);
 
-        #endregion
+#endregion
 
         public event EventHandler<EventArgs> OnAdLoaded;
 
-        public event EventHandler<AdErrorEventArgs> OnAdFailedToLoad;
+        public event EventHandler<LoadAdErrorClientEventArgs> OnAdFailedToLoad;
 
-        public event EventHandler<AdErrorEventArgs> OnAdFailedToShow;
+        public event EventHandler<AdErrorClientEventArgs> OnAdFailedToShow;
 
         public event EventHandler<EventArgs> OnAdOpening;
 
@@ -83,7 +83,7 @@ namespace GoogleMobileAds.iOS
             }
         }
 
-        #region IGoogleMobileAdsRewardedAdClient implementation
+#region IGoogleMobileAdsRewardedAdClient implementation
 
         // Creates a rewarded ad.
         public void CreateRewardedAd(string adUnitId)
@@ -151,7 +151,7 @@ namespace GoogleMobileAds.iOS
 
         public IResponseInfoClient GetResponseInfoClient()
         {
-            return new ResponseInfoClient(this.RewardedAdPtr);
+            return new ResponseInfoClient(ResponseInfoClientType.AdLoaded, this.RewardedAdPtr);
         }
 
         // Destroys the rewarded ad.
@@ -171,9 +171,9 @@ namespace GoogleMobileAds.iOS
             this.Dispose();
         }
 
-        #endregion
+#endregion
 
-        #region Rewarded ad callback methods
+#region Rewarded ad callback methods
 
         [MonoPInvokeCallback(typeof(GADURewardedAdDidReceiveAdCallback))]
         private static void RewardedAdDidReceiveAdCallback(IntPtr rewardedAdClient)
@@ -187,14 +187,15 @@ namespace GoogleMobileAds.iOS
 
         [MonoPInvokeCallback(typeof(GADURewardedAdDidFailToReceiveAdWithErrorCallback))]
         private static void RewardedAdDidFailToReceiveAdWithErrorCallback(
-            IntPtr rewardedAdClient, string error)
+            IntPtr rewardedAdClient, IntPtr error)
         {
             RewardedAdClient client = IntPtrToRewardedAdClient(rewardedAdClient);
             if (client.OnAdFailedToLoad != null)
             {
-                AdErrorEventArgs args = new AdErrorEventArgs()
+                LoadAdErrorClientEventArgs args = new LoadAdErrorClientEventArgs()
                 {
-                    Message = error
+                    LoadAdErrorClient = new LoadAdErrorClient(error),
+                    Message = Externs.GADUGetAdErrorMessage(error)
                 };
                 client.OnAdFailedToLoad(client, args);
             }
@@ -202,14 +203,15 @@ namespace GoogleMobileAds.iOS
 
         [MonoPInvokeCallback(typeof(GADURewardedAdDidFailToShowAdWithErrorCallback))]
         private static void RewardedAdDidFailToShowAdWithErrorCallback(
-            IntPtr rewardedAdClient, string error)
+            IntPtr rewardedAdClient, IntPtr error)
         {
             RewardedAdClient client = IntPtrToRewardedAdClient(rewardedAdClient);
             if (client.OnAdFailedToShow != null)
             {
-                AdErrorEventArgs args = new AdErrorEventArgs()
+                AdErrorClientEventArgs args = new AdErrorClientEventArgs()
                 {
-                    Message = error
+                    AdErrorClient = new AdErrorClient(error),
+                    Message = Externs.GADUGetAdErrorMessage(error)
                 };
                 client.OnAdFailedToShow(client, args);
             }
@@ -284,7 +286,7 @@ namespace GoogleMobileAds.iOS
             return handle.Target as RewardedAdClient;
         }
 
-        #endregion
+#endregion
     }
 }
 #endif

@@ -28,7 +28,7 @@ namespace GoogleMobileAds.Unity
         // Ad event fired when the banner ad has been received.
         public event EventHandler<EventArgs> OnAdLoaded;
         // Ad event fired when the banner ad has failed to load.
-        public event EventHandler<AdFailedToLoadEventArgs> OnAdFailedToLoad;
+        public event EventHandler<LoadAdErrorClientEventArgs> OnAdFailedToLoad;
         // Ad event fired when the banner ad is opened.
         public event EventHandler<EventArgs> OnAdOpening;
         // Ad event fired when the banner ad is closed.
@@ -128,8 +128,9 @@ namespace GoogleMobileAds.Unity
             } else {
                 if (OnAdFailedToLoad != null)
                 {
-                  OnAdFailedToLoad.Invoke(this, new AdFailedToLoadEventArgs()
+                  OnAdFailedToLoad.Invoke(this, new LoadAdErrorClientEventArgs()
                   {
+                      LoadAdErrorClient = new LoadAdErrorClient(),
                       Message = "Prefab Ad is Null"
                   });
                 }

@@ -36,9 +36,9 @@ namespace GoogleMobileAds.Android
 
         public event EventHandler<EventArgs> OnAdLoaded;
 
-        public event EventHandler<AdErrorEventArgs> OnAdFailedToLoad;
+        public event EventHandler<LoadAdErrorClientEventArgs> OnAdFailedToLoad;
 
-        public event EventHandler<AdErrorEventArgs> OnAdFailedToShow;
+        public event EventHandler<AdErrorClientEventArgs> OnAdFailedToShow;
 
         public event EventHandler<EventArgs> OnAdOpening;
 
@@ -105,7 +105,7 @@ namespace GoogleMobileAds.Android
         public IResponseInfoClient GetResponseInfoClient()
         {
 
-            return new ResponseInfoClient(this.androidRewardedAd);
+            return new ResponseInfoClient(ResponseInfoClientType.AdLoaded, this.androidRewardedAd);
         }
 
         #endregion
@@ -120,26 +120,29 @@ namespace GoogleMobileAds.Android
             }
         }
 
-        void onRewardedAdFailedToLoad(string errorReason)
+        void onRewardedAdFailedToLoad(AndroidJavaObject error)
         {
             if (this.OnAdFailedToLoad != null)
             {
-                AdErrorEventArgs args = new AdErrorEventArgs()
+                LoadAdErrorClientEventArgs args = new LoadAdErrorClientEventArgs()
                 {
-                    Message = errorReason
+                    LoadAdErrorClient = new LoadAdErrorClient(error),
+                    Message = error.Call<string>("getMessage")
                 };
                 this.OnAdFailedToLoad(this, args);
             }
         }
 
-        void onRewardedAdFailedToShow(string errorReason)
+        void onRewardedAdFailedToShow(AndroidJavaObject error)
         {
             if (this.OnAdFailedToShow != null)
             {
-                AdErrorEventArgs args = new AdErrorEventArgs()
+                AdErrorClientEventArgs args = new AdErrorClientEventArgs()
                 {
-                    Message = errorReason
+                    AdErrorClient = new AdErrorClient(error),
+                    Message = error.Call<string>("getMessage")
                 };
+
                 this.OnAdFailedToShow(this, args);
             }
         }

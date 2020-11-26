@@ -33,7 +33,12 @@ namespace GoogleMobileAds.Api
             {
                 if (this.OnAdFailedToPresentFullScreenContent != null)
                 {
-                    this.OnAdFailedToPresentFullScreenContent(this, args);
+                    AdError adError = new AdError(args.AdErrorClient);
+                    this.OnAdFailedToPresentFullScreenContent(this, new AdErrorEventArgs()
+                    {
+                        AdError = adError,
+                        Message = adError.GetMessage()
+                    });
                 }
             };
 
@@ -67,7 +72,7 @@ namespace GoogleMobileAds.Api
 
         // Loads a new rewarded interstitial ad.
         // TODO(jillsong): Apply AdError.
-        public static void LoadAd(string adUnitID, AdRequest request, Action<RewardedInterstitialAd, string> adLoadCallback)
+        public static void LoadAd(string adUnitID, AdRequest request, Action<RewardedInterstitialAd, AdFailedToLoadEventArgs> adLoadCallback)
         {
             IRewardedInterstitialAdClient client = MobileAds.GetClientFactory().BuildRewardedInterstitialAdClient();
             loadingClients.Add(client);
@@ -86,7 +91,12 @@ namespace GoogleMobileAds.Api
             {
                 if (adLoadCallback != null)
                 {
-                    adLoadCallback(null, args.Message);
+                    LoadAdError loadAdError = new LoadAdError(args.LoadAdErrorClient);
+                    adLoadCallback(null, new AdFailedToLoadEventArgs()
+                    {
+                        LoadAdError = loadAdError,
+                        Message = loadAdError.GetMessage()
+                    });
                     loadingClients.Remove(client);
                 }
             };

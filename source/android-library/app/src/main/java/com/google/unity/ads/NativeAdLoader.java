@@ -19,6 +19,7 @@ import android.app.Activity;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdLoader;
 import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.LoadAdError;
 import com.google.android.gms.ads.formats.NativeCustomTemplateAd;
 
 /**
@@ -105,8 +106,8 @@ public class NativeAdLoader {
                                 }, clickListener)
                         .withAdListener(new AdListener() {
                             @Override
-                            public void onAdFailedToLoad(int errorCode) {
-                                mListener.onAdFailedToLoad(PluginUtils.getErrorReason(errorCode));
+                            public void onAdFailedToLoad(LoadAdError error) {
+                                mListener.onAdFailedToLoad(error);
                             }
                         });
             }

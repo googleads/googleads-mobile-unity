@@ -22,12 +22,11 @@ namespace GoogleMobileAds.Android
 {
     internal class ResponseInfoClient : IResponseInfoClient
     {
-        private AndroidJavaObject adFormat;
         private AndroidJavaObject androidResponseInfo;
-        public ResponseInfoClient(AndroidJavaObject adFormat)
+
+        public ResponseInfoClient(ResponseInfoClientType type, AndroidJavaObject androidJavaObject)
         {
-            this.adFormat = adFormat;
-            androidResponseInfo = this.adFormat.Call<AndroidJavaObject>("getResponseInfo");
+            androidResponseInfo = androidJavaObject.Call<AndroidJavaObject>("getResponseInfo");
         }
 
         public string GetMediationAdapterClassName()

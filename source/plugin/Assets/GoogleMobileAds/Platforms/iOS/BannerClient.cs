@@ -28,12 +28,12 @@ namespace GoogleMobileAds.iOS
 
         private IntPtr bannerClientPtr;
 
-        #region Banner callback types
+#region Banner callback types
 
         internal delegate void GADUAdViewDidReceiveAdCallback(IntPtr bannerClient);
 
         internal delegate void GADUAdViewDidFailToReceiveAdWithErrorCallback(
-                IntPtr bannerClient, string error);
+                IntPtr bannerClient, IntPtr error);
 
         internal delegate void GADUAdViewWillPresentScreenCallback(IntPtr bannerClient);
 
@@ -44,11 +44,11 @@ namespace GoogleMobileAds.iOS
         internal delegate void GADUAdViewPaidEventCallback(
             IntPtr bannerClient, int precision, long value, string currencyCode);
 
-        #endregion
+#endregion
 
         public event EventHandler<EventArgs> OnAdLoaded;
 
-        public event EventHandler<AdFailedToLoadEventArgs> OnAdFailedToLoad;
+        public event EventHandler<LoadAdErrorClientEventArgs> OnAdFailedToLoad;
 
         public event EventHandler<EventArgs> OnAdOpening;
 
@@ -74,7 +74,7 @@ namespace GoogleMobileAds.iOS
             }
         }
 
-        #region IBannerClient implementation
+#region IBannerClient implementation
 
         // Creates a banner view.
         public void CreateBannerView(string adUnitId, AdSize adSize, AdPosition position)
@@ -220,7 +220,7 @@ namespace GoogleMobileAds.iOS
 
         public IResponseInfoClient GetResponseInfoClient()
         {
-            return new ResponseInfoClient(this.BannerViewPtr);
+            return new ResponseInfoClient(ResponseInfoClientType.AdLoaded, this.BannerViewPtr);
         }
 
         public void Dispose()
@@ -234,9 +234,9 @@ namespace GoogleMobileAds.iOS
             this.Dispose();
         }
 
-        #endregion
+#endregion
 
-        #region Banner callback methods
+#region Banner callback methods
 
         [MonoPInvokeCallback(typeof(GADUAdViewDidReceiveAdCallback))]
         private static void AdViewDidReceiveAdCallback(IntPtr bannerClient)
@@ -250,14 +250,15 @@ namespace GoogleMobileAds.iOS
 
         [MonoPInvokeCallback(typeof(GADUAdViewDidFailToReceiveAdWithErrorCallback))]
         private static void AdViewDidFailToReceiveAdWithErrorCallback(
-                IntPtr bannerClient, string error)
+                IntPtr bannerClient, IntPtr error)
         {
             BannerClient client = IntPtrToBannerClient(bannerClient);
             if (client.OnAdFailedToLoad != null)
             {
-                AdFailedToLoadEventArgs args = new AdFailedToLoadEventArgs()
+                LoadAdErrorClientEventArgs args = new LoadAdErrorClientEventArgs()
                 {
-                    Message = error
+                    LoadAdErrorClient = new LoadAdErrorClient(error),
+                    Message = Externs.GADUGetAdErrorMessage(error)
                 };
                 client.OnAdFailedToLoad(client, args);
             }
@@ -321,7 +322,7 @@ namespace GoogleMobileAds.iOS
             return handle.Target as BannerClient;
         }
 
-        #endregion
+#endregion
     }
 }
 #endif

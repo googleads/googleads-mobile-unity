@@ -35,7 +35,7 @@ namespace GoogleMobileAds.Android
 
         public event EventHandler<EventArgs> OnAdLoaded;
 
-        public event EventHandler<AdFailedToLoadEventArgs> OnAdFailedToLoad;
+        public event EventHandler<LoadAdErrorClientEventArgs> OnAdFailedToLoad;
 
         public event EventHandler<EventArgs> OnAdOpening;
 
@@ -87,7 +87,7 @@ namespace GoogleMobileAds.Android
         public IResponseInfoClient GetResponseInfoClient()
         {
 
-            return new ResponseInfoClient(this.interstitial);
+            return new ResponseInfoClient(ResponseInfoClientType.AdLoaded, this.interstitial);
         }
 
         #endregion
@@ -102,13 +102,14 @@ namespace GoogleMobileAds.Android
             }
         }
 
-        public void onAdFailedToLoad(string errorReason)
+        public void onAdFailedToLoad(AndroidJavaObject error)
         {
             if (this.OnAdFailedToLoad != null)
             {
-                AdFailedToLoadEventArgs args = new AdFailedToLoadEventArgs()
+                LoadAdErrorClientEventArgs args = new LoadAdErrorClientEventArgs()
                 {
-                    Message = errorReason
+                    LoadAdErrorClient = new LoadAdErrorClient(error),
+                    Message = error.Call<string>("getMessage")
                 };
                 this.OnAdFailedToLoad(this, args);
             }

@@ -232,6 +232,24 @@ namespace GoogleMobileAds.iOS
         [DllImport("__Internal")]
         internal static extern string GADUGetResponseInfoDescription(IntPtr responseInfo);
 
+        [DllImport("__Internal")]
+        internal static extern int GADUGetAdErrorCode(IntPtr error);
+
+        [DllImport("__Internal")]
+        internal static extern string GADUGetAdErrorDomain(IntPtr error);
+
+        [DllImport("__Internal")]
+        internal static extern string GADUGetAdErrorMessage(IntPtr error);
+
+        [DllImport("__Internal")]
+        internal static extern IntPtr GADUGetAdErrorUnderLyingError(IntPtr error);
+
+        [DllImport("__Internal")]
+        internal static extern IntPtr GADUGetAdErrorResponseInfo(IntPtr error);
+
+        [DllImport("__Internal")]
+        internal static extern string GADUGetAdErrorDescription(IntPtr error);
+
         #endregion
 
         #region Interstitial externs

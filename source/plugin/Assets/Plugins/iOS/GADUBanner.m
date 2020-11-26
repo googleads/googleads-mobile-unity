@@ -251,9 +251,7 @@
 
 - (void)adView:(GADBannerView *)view didFailToReceiveAdWithError:(GADRequestError *)error {
   if (self.adFailedCallback) {
-    NSString *errorMsg = [NSString
-        stringWithFormat:@"Failed to receive ad with error: %@", [error localizedDescription]];
-    self.adFailedCallback(self.bannerClient, [errorMsg cStringUsingEncoding:NSUTF8StringEncoding]);
+    self.adFailedCallback(self.bannerClient, (__bridge GADUTypeErrorRef)error);
   }
 }
 

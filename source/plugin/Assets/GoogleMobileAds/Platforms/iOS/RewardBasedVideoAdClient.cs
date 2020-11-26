@@ -58,7 +58,7 @@ namespace GoogleMobileAds.iOS
 
         public event EventHandler<EventArgs> OnAdLoaded;
 
-        public event EventHandler<AdFailedToLoadEventArgs> OnAdFailedToLoad;
+        public event EventHandler<LoadAdErrorClientEventArgs> OnAdFailedToLoad;
 
         public event EventHandler<EventArgs> OnAdOpening;
 
@@ -178,8 +178,9 @@ namespace GoogleMobileAds.iOS
                 rewardBasedVideoAdClient);
             if (client.OnAdFailedToLoad != null)
             {
-                AdFailedToLoadEventArgs args = new AdFailedToLoadEventArgs()
+                LoadAdErrorClientEventArgs args = new LoadAdErrorClientEventArgs()
                 {
+                    LoadAdErrorClient = null,
                     Message = error
                 };
                 client.OnAdFailedToLoad(client, args);

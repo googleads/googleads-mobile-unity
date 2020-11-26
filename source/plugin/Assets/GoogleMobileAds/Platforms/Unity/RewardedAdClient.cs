@@ -30,9 +30,9 @@ namespace GoogleMobileAds.Unity
         // Ad event fired when the rewarded ad is closed.
         public event EventHandler<EventArgs> OnAdClosed;
         // Ad event fired when the rewarded ad has failed to load.
-        public new event EventHandler<AdErrorEventArgs> OnAdFailedToLoad;
+        public new event EventHandler<LoadAdErrorClientEventArgs> OnAdFailedToLoad;
         // Ad event fired when the rewarded ad has failed to show.
-        public event EventHandler<AdErrorEventArgs> OnAdFailedToShow;
+        public event EventHandler<AdErrorClientEventArgs> OnAdFailedToShow;
 
         // Load a rewarded ad.
         public override void LoadAd(AdRequest request)

@@ -72,11 +72,16 @@ namespace GoogleMobileAds.Api
                 }
             };
             this.adLoaderClient.OnAdFailedToLoad += delegate (
-                object sender, AdFailedToLoadEventArgs args)
+                object sender, LoadAdErrorClientEventArgs args)
             {
                 if (this.OnAdFailedToLoad != null)
                 {
-                    this.OnAdFailedToLoad(this, args);
+                    LoadAdError loadAdError = new LoadAdError(args.LoadAdErrorClient);
+                    this.OnAdFailedToLoad(this, new AdFailedToLoadEventArgs()
+                    {
+                        LoadAdError = loadAdError,
+                        Message = loadAdError.GetMessage()
+                    });
                 }
             };
         }

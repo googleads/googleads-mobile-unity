@@ -26,10 +26,17 @@ namespace GoogleMobileAds.iOS
         private IntPtr adFormat;
         private IntPtr iosResponseInfo;
 
-        public ResponseInfoClient(IntPtr adFormat)
+        public ResponseInfoClient(ResponseInfoClientType type, IntPtr ptr)
         {
-            this.adFormat = adFormat;
-            iosResponseInfo = Externs.GADUGetResponseInfo(adFormat);
+            if(type == ResponseInfoClientType.AdLoaded)
+            {
+                this.adFormat = adFormat;
+                iosResponseInfo = Externs.GADUGetResponseInfo(ptr);
+            }
+            else if(type == ResponseInfoClientType.AdError)
+            {
+                iosResponseInfo = Externs.GADUGetAdErrorResponseInfo(ptr);
+            }
 
         }
 

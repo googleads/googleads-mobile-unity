@@ -50,7 +50,11 @@ namespace GoogleMobileAds.Api
             {
                 if (this.OnAdFailedToLoad != null)
                 {
-                    this.OnAdFailedToLoad(this, args);
+                    this.OnAdFailedToLoad(this, new AdFailedToLoadEventArgs()
+                    {
+                        LoadAdError = null,
+                        Message = args.Message
+                    });
                 }
             };
 

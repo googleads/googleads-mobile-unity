@@ -968,6 +968,39 @@ const char *GADUGetResponseInfoDescription(GADUTypeResponseInfoRef responseInfo)
   return cStringCopy(internalResponseInfo.description.UTF8String);
 }
 
+const int GADUGetAdErrorCode(GADUTypeErrorRef error) {
+    GADRequestError *internalError = (__bridge GADRequestError *) error;
+    return internalError.code;
+}
+
+const char *GADUGetAdErrorDomain(GADUTypeErrorRef error) {
+    GADRequestError *internalError = (__bridge GADRequestError *) error;
+    return cStringCopy(internalError.domain.UTF8String);
+}
+
+const char *GADUGetAdErrorMessage(GADUTypeErrorRef error) {
+    GADRequestError *internalError = (__bridge GADRequestError *) error;
+    return cStringCopy(internalError.localizedDescription.UTF8String);
+}
+
+const GADUTypeErrorRef GADUGetAdErrorUnderLyingError(GADUTypeErrorRef error){
+  GADRequestError *internalError = (__bridge GADRequestError *) error;
+  NSError *underlyingError = internalError.userInfo[NSUnderlyingErrorKey];
+  return (__bridge GADUTypeErrorRef)(underlyingError);
+}
+
+const GADUTypeResponseInfoRef GADUGetAdErrorResponseInfo(GADUTypeErrorRef error){
+  GADRequestError *internalError = (__bridge GADRequestError *) error;
+  GADResponseInfo *responseInfo = internalError.userInfo[GADErrorUserInfoKeyResponseInfo];
+  return (__bridge GADUTypeResponseInfoRef)(responseInfo);
+
+}
+
+const char *GADUGetAdErrorDescription(GADUTypeErrorRef error){
+  GADRequestError *internalError = (__bridge GADRequestError *)error;
+  return cStringCopy(internalError.description.UTF8String);
+}
+
 #pragma mark - Other methods
 /// Removes an object from the cache.
 void GADURelease(GADUTypeRef ref) {

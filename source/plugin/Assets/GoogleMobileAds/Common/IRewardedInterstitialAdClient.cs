@@ -23,14 +23,14 @@ namespace GoogleMobileAds.Common
         // Ad event fired when the rewarded interstitial ad has been received.
         event EventHandler<EventArgs> OnAdLoaded;
         // Ad event fired when the rewarded interstitial ad has failed to load.
-        event EventHandler<AdFailedToLoadEventArgs> OnAdFailedToLoad;
+        event EventHandler<LoadAdErrorClientEventArgs> OnAdFailedToLoad;
         // Ad event fired when the rewarded interstitial ad is estimated to have earned money.
         event EventHandler<AdValueEventArgs> OnPaidEvent;
         // Ad event fired when the rewarded interstitial ad has rewarded the user.
         event EventHandler<Reward> OnUserEarnedReward;
 
         // Full screen content events
-        event EventHandler<AdErrorEventArgs> OnAdFailedToPresentFullScreenContent;
+        event EventHandler<AdErrorClientEventArgs> OnAdFailedToPresentFullScreenContent;
 
         event EventHandler<EventArgs> OnAdDidPresentFullScreenContent;
 

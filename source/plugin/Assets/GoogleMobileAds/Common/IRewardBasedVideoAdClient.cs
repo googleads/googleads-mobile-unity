@@ -23,7 +23,7 @@ namespace GoogleMobileAds.Common
         // Ad event fired when the reward based video ad has been received.
         event EventHandler<EventArgs> OnAdLoaded;
         // Ad event fired when the reward based video ad has failed to load.
-        event EventHandler<AdFailedToLoadEventArgs> OnAdFailedToLoad;
+        event EventHandler<LoadAdErrorClientEventArgs> OnAdFailedToLoad;
         // Ad event fired when the reward based video ad is opened.
         event EventHandler<EventArgs> OnAdOpening;
         // Ad event fired when the reward based video ad has started playing.
