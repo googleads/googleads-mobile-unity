@@ -5,7 +5,7 @@
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
 //
-//    http://www.apache.org/licenses/LICENSE-2.0
+//      http://www.apache.org/licenses/LICENSE-2.0
 //
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
@@ -82,15 +82,6 @@ namespace GoogleMobileAds
       }
       return new GoogleMobileAds.Common.RewardedInterstitialAdDummyClient();
     }
-
-    public IAdLoaderClient BuildAdLoaderClient(AdLoaderClientArgs args)
-    {
-      if (Application.platform == RuntimePlatform.IPhonePlayer)
-      {
-        return new GoogleMobileAds.iOS.AdLoaderClient(args);
-      }
-      return new GoogleMobileAds.Common.DummyClient();
-   }
 
     public IMobileAdsClient MobileAdsInstance()
     {

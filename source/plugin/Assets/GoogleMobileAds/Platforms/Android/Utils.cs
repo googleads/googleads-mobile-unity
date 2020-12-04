@@ -69,8 +69,6 @@ namespace GoogleMobileAds.Android
 
         public const string UnityRewardedAdClassName = "com.google.unity.ads.UnityRewardedAd";
 
-        public const string NativeAdLoaderClassName = "com.google.unity.ads.NativeAdLoader";
-
         public const string UnityAdListenerClassName = "com.google.unity.ads.UnityAdListener";
 
         public const string UnityRewardBasedVideoAdListenerClassName =

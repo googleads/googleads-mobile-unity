@@ -118,4 +118,4 @@ task clearTempBuildFolder(type:Delete) {
 
 exportPackage.dependsOn(createTempBuildFolder, copyAndroidLibraryAar,
                         downloadResolver)
-exportPackage.finalizedBy(clearTempBuildFolder)
+// exportPackage.finalizedBy(clearTempBuildFolder)
