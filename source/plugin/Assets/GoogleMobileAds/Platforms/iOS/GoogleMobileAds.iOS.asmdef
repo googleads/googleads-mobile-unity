@@ -1,0 +1,20 @@
+{
+    "name": "GoogleMobileAds.iOS",
+    "references": [
+        "GoogleMobileAds.Common",
+        "GoogleMobileAds.Core",
+        "GoogleMobileAds.Api.Mediation",
+        "GoogleMobileAds.Unity"
+    ],
+    "includePlatforms": [
+        "iOS"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

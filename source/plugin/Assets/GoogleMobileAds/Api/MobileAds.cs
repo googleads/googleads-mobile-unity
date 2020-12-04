@@ -13,6 +13,9 @@
 // limitations under the License.
 
 using System;
+using UnityEngine;
+using System.Reflection;
+using System.Runtime;
 
 using GoogleMobileAds;
 using GoogleMobileAds.Common;
@@ -107,7 +110,14 @@ namespace GoogleMobileAds.Api
 
         internal static IClientFactory GetClientFactory() {
           if (clientFactory == null) {
-            clientFactory = new GoogleMobileAdsClientFactory();
+            String typeName = null;
+            if (Application.platform == RuntimePlatform.IPhonePlayer) {
+              typeName = "GoogleMobileAds.GoogleMobileAdsClientFactory,GoogleMobileAds.iOS";
+            } else {
+              typeName = "GoogleMobileAds.GoogleMobileAdsClientFactory,GoogleMobileAds.Platforms";
+            }
+            Type type = Type.GetType(typeName);
+            clientFactory = (IClientFactory)System.Activator.CreateInstance(type);
           }
           return clientFactory;
         }

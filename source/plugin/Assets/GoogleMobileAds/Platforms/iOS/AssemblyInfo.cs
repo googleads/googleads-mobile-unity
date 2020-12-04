@@ -17,13 +17,5 @@
 using System.Reflection;
 using System.Runtime.CompilerServices;
 
-[assembly: AssemblyTitle("Google Mobile Ads Unity plugin")]
-[assembly: AssemblyDescription("A plugin for displaying Google Ads in Unity apps for iOS and Android")]
-[assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Google LLC")]
-[assembly: AssemblyProduct("GoogleMobileAds")]
-[assembly: AssemblyCopyright("Copyright 2020 Google LLC. All Rights Reserved.")]
-[assembly: AssemblyTrademark("")]
-[assembly: AssemblyCulture("")]
-
+[assembly: InternalsVisibleTo("GoogleMobileAds")]
 [assembly: InternalsVisibleTo("GoogleMobileAdsNative")]

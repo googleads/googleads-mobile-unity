@@ -1,9 +1,8 @@
 {
-    "name": "GoogleMobileAds",
+    "name": "GoogleMobileAds.Common",
     "references": [
-        "GoogleMobileAds.Api.Mediation",
         "GoogleMobileAds.Core",
-        "GoogleMobileAds.Common"
+        "GoogleMobileAds.Unity"
     ],
     "includePlatforms": [],
     "excludePlatforms": []

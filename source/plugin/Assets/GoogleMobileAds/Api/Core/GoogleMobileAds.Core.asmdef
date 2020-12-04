@@ -1,0 +1,8 @@
+{
+    "name": "GoogleMobileAds.Core",
+    "references": [
+        "GoogleMobileAds.Api.Mediation"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": []
+}
