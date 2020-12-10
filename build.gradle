@@ -11,9 +11,9 @@ project.ext {
     if (sdk_root == null || sdk_root.isEmpty()) {
         sdk_root = System.getenv("ANDROID_HOME")
     }
-    unity_exe = System.getProperty("UNITY_EXE")
+    unity_exe = System.getProperty("UNITY_PATH")
     if (unity_exe == null || unity_exe.isEmpty()) {
-        unity_exe = System.getenv("UNITY_EXE")
+        unity_exe = System.getenv("UNITY_PATH")
     }
     if (unity_exe == null || unity_exe.isEmpty()) {
         unity_exe ='/Applications/Unity/Unity.app/Contents/MacOS/Unity'
@@ -59,20 +59,22 @@ copyAndroidLibraryAar.dependsOn(clearAar, buildAndroidPluginAar)
 
 task downloadResolver() {
     description = "Download the Play Services Resolver"
-    if (resolverPackageUri != null) {
-        mkdir("${resolverDir}")
-        def resolver = new File("${resolverDir}/resolver.unitypackage")
-        new URL("${resolverPackageUri}").withInputStream {
-            inputStream -> resolver.withOutputStream { it << inputStream }
-        }
-    } else {
-        println 'clone ' + jarResolverRepo
-        def result = exec {
-            executable "${git_exe}"
-            args "clone", jarResolverRepo, "${resolverDir}"
-        }
-        if (result.exitValue == 0) {
-            println "Downloaded resolver from " + jarResolverRepo
+    doLast {
+        if (resolverPackageUri != null) {
+            mkdir("${resolverDir}")
+            def resolver = new File("${resolverDir}/resolver.unitypackage")
+            new URL("${resolverPackageUri}").withInputStream {
+                inputStream -> resolver.withOutputStream { it << inputStream }
+            }
+        } else {
+            println 'clone ' + jarResolverRepo
+            def result = exec {
+                executable "${git_exe}"
+                args "clone", jarResolverRepo, "${resolverDir}"
+            }
+            if (result.exitValue == 0) {
+                println "Downloaded resolver from " + jarResolverRepo
+            }
         }
     }
 }
@@ -92,18 +94,19 @@ task exportPackage() {
 
         exec {
             executable "${unity_exe}"
-            args "-g.building",
-                 "-batchmode",
-                 "-projectPath", "${pluginBuildDir}",
-                 "-logFile", "temp/unity.log",
+            args "-batchmode",
+                 "-nographics",
+                 "-quit",
+                 "-projectPath", "temp/plugin-build-dir",
+                 "-logFile", "/dev/stdout",
                  "-importPackage", "${jarresolver_package}",
                  "-exportPackage",
                  "Assets/GoogleMobileAds",
                  "Assets/Plugins",
                  "Assets/ExternalDependencyManager",
-                 "${exportPath}",
-                 "-quit"
+                 "${exportPath}"
         }
+        println "Complate building at ${pluginBuildDir}/GoogleMobileAds.unitypackage"
     }
 }
 
@@ -118,4 +121,4 @@ task clearTempBuildFolder(type:Delete) {
 
 exportPackage.dependsOn(createTempBuildFolder, copyAndroidLibraryAar,
                         downloadResolver)
-// exportPackage.finalizedBy(clearTempBuildFolder)
+exportPackage.finalizedBy(clearTempBuildFolder)
