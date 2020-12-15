@@ -1,0 +1,17 @@
+{
+    "name": "GoogleMobileAds.Unity",
+    "references": [
+        "GoogleMobileAds.Common",
+        "GoogleMobileAds.Core",
+        "GoogleMobileAds.Api.Mediation"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
