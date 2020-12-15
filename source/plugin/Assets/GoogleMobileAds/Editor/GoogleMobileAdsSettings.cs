@@ -106,6 +106,11 @@ namespace GoogleMobileAds.Editor
             {
                 if (instance == null)
                 {
+                    if (!AssetDatabase.IsValidFolder(MobileAdsSettingsDir))
+                    {
+                        AssetDatabase.CreateFolder("Assets", "GoogleMobileAds");
+                    }
+
                     if (!AssetDatabase.IsValidFolder(MobileAdsSettingsResDir))
                     {
                         AssetDatabase.CreateFolder(MobileAdsSettingsDir, "Resources");

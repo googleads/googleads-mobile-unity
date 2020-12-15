@@ -17,6 +17,8 @@ public static class PListProcessor
 
     private const string KEY_SK_ADNETWORK_ID = "SKAdNetworkIdentifier";
 
+    private const string SKADNETWORKS_RELATIVE_PATH = "GoogleMobileAds/Editor/GoogleMobileAdsSKAdNetworkItems.xml";
+
     [PostProcessBuild]
     public static void OnPostProcessBuild(BuildTarget buildTarget, string path)
     {
@@ -92,8 +94,11 @@ public static class PListProcessor
     {
         List<string> skAdNetworkItems = new List<string>();
 
-        string path = Path.Combine(Application.dataPath,
-            "GoogleMobileAds/Editor/GoogleMobileAdsSKAdNetworkItems.xml");
+        string path = Path.Combine(Application.dataPath, SKADNETWORKS_RELATIVE_PATH);
+        if (AssetDatabase.IsValidFolder("Packages/com.google.ads.mobile"))
+        {
+            path = Path.Combine("Packages/com.google.ads.mobile", SKADNETWORKS_RELATIVE_PATH);
+        }
 
         try
         {
