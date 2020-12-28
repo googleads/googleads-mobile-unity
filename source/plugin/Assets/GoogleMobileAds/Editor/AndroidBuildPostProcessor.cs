@@ -11,15 +11,10 @@ public static class AndroidBuildPostProcessor
     [PostProcessBuild]
     public static void OnPostProcessBuild(BuildTarget buildTarget, string path)
     {
-        if (!GoogleMobileAdsSettings.Instance.IsAdManagerEnabled && !GoogleMobileAdsSettings.Instance.IsAdMobEnabled)
-        {
-            NotifyBuildFailure("Neither Ad Manager nor AdMob is enabled yet.");
-        }
-
-        if (GoogleMobileAdsSettings.Instance.IsAdMobEnabled && GoogleMobileAdsSettings.Instance.AdMobAndroidAppId.Length == 0)
+        if (GoogleMobileAdsSettings.Instance.GoogleMobileAdsAndroidAppId.Length == 0)
         {
             NotifyBuildFailure(
-                "Android AdMob app ID is empty. Please enter a valid app ID to run ads properly.");
+                "Android Google Mobile Ads app ID is empty. Please enter a valid app ID to run ads properly.");
         }
     }
 

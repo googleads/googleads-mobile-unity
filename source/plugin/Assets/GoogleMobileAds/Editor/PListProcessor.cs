@@ -26,28 +26,15 @@ public static class PListProcessor
         PlistDocument plist = new PlistDocument();
         plist.ReadFromFile(plistPath);
 
-        if (!GoogleMobileAdsSettings.Instance.IsAdManagerEnabled && !GoogleMobileAdsSettings.Instance.IsAdMobEnabled)
+        string appId = GoogleMobileAdsSettings.Instance.GoogleMobileAdsIOSAppId;
+        if (appId.Length == 0)
         {
-            NotifyBuildFailure("Neither Ad Manager nor AdMob is enabled yet.");
+            NotifyBuildFailure(
+                "iOS Google Mobile Ads app ID is empty. Please enter a valid app ID to run ads properly.");
         }
-
-        if (GoogleMobileAdsSettings.Instance.IsAdManagerEnabled)
+        else
         {
-            plist.root.SetBoolean("GADIsAdManagerApp", true);
-        }
-
-        if (GoogleMobileAdsSettings.Instance.IsAdMobEnabled)
-        {
-            string appId = GoogleMobileAdsSettings.Instance.AdMobIOSAppId;
-            if (appId.Length == 0)
-            {
-                NotifyBuildFailure(
-                    "iOS AdMob app ID is empty. Please enter a valid app ID to run ads properly.");
-            }
-            else
-            {
-                plist.root.SetString("GADApplicationIdentifier", appId);
-            }
+            plist.root.SetString("GADApplicationIdentifier", appId);
         }
 
         if (GoogleMobileAdsSettings.Instance.DelayAppMeasurementInit)

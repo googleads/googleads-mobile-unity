@@ -20,8 +20,6 @@ public class ManifestProcessor : IPreprocessBuildWithReport
 public class ManifestProcessor : IPreprocessBuild
 #endif
 {
-    private const string META_AD_MANAGER_APP = "com.google.android.gms.ads.AD_MANAGER_APP";
-
     private const string META_APPLICATION_ID  = "com.google.android.gms.ads.APPLICATION_ID";
 
     private const string MANIFEST_RELATIVE_PATH = "Plugins/Android/GoogleMobileAdsPlugin.androidlib/AndroidManifest.xml";
@@ -70,62 +68,27 @@ public class ManifestProcessor : IPreprocessBuild
             StopBuildWithMessage("AndroidManifest.xml is not valid. Try re-importing the plugin.");
         }
 
-        if (!GoogleMobileAdsSettings.Instance.IsAdManagerEnabled && !GoogleMobileAdsSettings.Instance.IsAdMobEnabled)
-        {
-            GoogleMobileAdsSettingsEditor.OpenInspector();
-            StopBuildWithMessage("Neither Ad Manager nor AdMob is enabled yet.");
-        }
-
         IEnumerable<XElement> metas = elemApplication.Descendants()
                 .Where( elem => elem.Name.LocalName.Equals("meta-data"));
 
-        XElement elemAdManagerEnabled = GetMetaElement(metas, META_AD_MANAGER_APP);
-        if (GoogleMobileAdsSettings.Instance.IsAdManagerEnabled)
+        XElement elemGMAEnabled = GetMetaElement(metas, META_APPLICATION_ID);
+        string appId = GoogleMobileAdsSettings.Instance.GoogleMobileAdsAndroidAppId;
+
+        if (appId.Length == 0)
         {
-            if (elemAdManagerEnabled == null)
-            {
-                elemApplication.Add(CreateMetaElement(META_AD_MANAGER_APP, true));
-            }
-            else
-            {
-                elemAdManagerEnabled.SetAttributeValue(ns + "value", true);
-            }
+            StopBuildWithMessage(
+                "Android Google Mobile Ads app ID is empty. Please enter a valid app ID to run ads properly.");
+        }
+
+        if (elemGMAEnabled == null)
+        {
+            elemApplication.Add(CreateMetaElement(META_APPLICATION_ID, appId));
         }
         else
         {
-            if (elemAdManagerEnabled != null)
-            {
-                elemAdManagerEnabled.Remove();
-            }
+            elemGMAEnabled.SetAttributeValue(ns + "value", appId);
         }
 
-        XElement elemAdMobEnabled = GetMetaElement(metas, META_APPLICATION_ID);
-        if (GoogleMobileAdsSettings.Instance.IsAdMobEnabled)
-        {
-            string appId = GoogleMobileAdsSettings.Instance.AdMobAndroidAppId;
-
-            if (appId.Length == 0)
-            {
-                StopBuildWithMessage(
-                    "Android AdMob app ID is empty. Please enter a valid app ID to run ads properly.");
-            }
-
-            if (elemAdMobEnabled == null)
-            {
-                elemApplication.Add(CreateMetaElement(META_APPLICATION_ID, appId));
-            }
-            else
-            {
-                elemAdMobEnabled.SetAttributeValue(ns + "value", appId);
-            }
-        }
-        else
-        {
-            if (elemAdMobEnabled != null)
-            {
-                elemAdMobEnabled.Remove();
-            }
-        }
 
         XElement elemDelayAppMeasurementInit =
                 GetMetaElement(metas, META_DELAY_APP_MEASUREMENT_INIT);
@@ -177,11 +140,11 @@ public class ManifestProcessor : IPreprocessBuild
     private void StopBuildWithMessage(string message)
     {
         string prefix = "[GoogleMobileAds] ";
-#if UNITY_2017_1_OR_NEWER
+    #if UNITY_2017_1_OR_NEWER
         throw new BuildPlayerWindow.BuildMethodException(prefix + message);
-#else
+    #else
         throw new OperationCanceledException(prefix + message);
-#endif
+    #endif
     }
 }
 
