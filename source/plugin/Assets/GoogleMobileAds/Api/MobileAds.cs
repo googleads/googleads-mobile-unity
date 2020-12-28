@@ -113,8 +113,10 @@ namespace GoogleMobileAds.Api
             String typeName = null;
             if (Application.platform == RuntimePlatform.IPhonePlayer) {
               typeName = "GoogleMobileAds.GoogleMobileAdsClientFactory,GoogleMobileAds.iOS";
-            } else {
+            } else if (Application.platform == RuntimePlatform.Android) {
               typeName = "GoogleMobileAds.GoogleMobileAdsClientFactory,GoogleMobileAds.Platforms";
+            } else {
+              typeName = "GoogleMobileAds.GoogleMobileAdsClientFactory,GoogleMobileAds.Unity";
             }
             Type type = Type.GetType(typeName);
             clientFactory = (IClientFactory)System.Activator.CreateInstance(type);

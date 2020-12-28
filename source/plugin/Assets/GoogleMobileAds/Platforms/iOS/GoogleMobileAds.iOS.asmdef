@@ -3,8 +3,7 @@
     "references": [
         "GoogleMobileAds.Common",
         "GoogleMobileAds.Core",
-        "GoogleMobileAds.Api.Mediation",
-        "GoogleMobileAds.Unity"
+        "GoogleMobileAds.Api.Mediation"
     ],
     "includePlatforms": [
         "iOS"

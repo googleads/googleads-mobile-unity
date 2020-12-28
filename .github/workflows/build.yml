@@ -1,0 +1,50 @@
+name: Build Status
+
+# Step 1: Build on pull-requests or pushes to master
+on:
+  push:
+    branches:
+    - master
+  pull_request:
+    branches:
+    - master
+
+jobs:
+  # Step 2: Build the samples
+  build-java:
+    name: Build
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        unity-version: [2018.4.12f1, 2019.2.13f1, 2019.4.16f1, 2020.1.0a14]
+    steps:
+      - name: Set up JDK 1.8
+        uses: actions/setup-java@v1
+        with:
+          java-version: 1.8
+
+      - name: Clone Repo
+        uses: actions/checkout@v1
+
+      - name: Setup Unity
+        uses: kuler90/setup-unity@v1
+        with:
+          unity-version: ${{ matrix.unity-version }}
+
+      - name: Activate Unity
+        uses: kuler90/activate-unity@v1
+        with:
+          unity-username: ${{ secrets.UNITY_USERNAME }}
+          unity-password: ${{ secrets.UNITY_PASSWORD }}
+          unity-authenticator-key: ${{ secrets.UNITY_AUTHENTICATOR_KEY }}
+
+      - name: Build
+        run: |
+          sudo chmod +x gradlew
+          ./gradlew
+
+      - uses: actions/upload-artifact@v1
+        with:
+          name: "GoogleMobileAds-${{ matrix.unity-version }}.unitypackage"
+          path: "GoogleMobileAds.unitypackage"

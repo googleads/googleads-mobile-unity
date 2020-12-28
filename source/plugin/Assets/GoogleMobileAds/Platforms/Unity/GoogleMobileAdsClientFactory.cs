@@ -26,53 +26,46 @@ namespace GoogleMobileAds
   {
     public IBannerClient BuildBannerClient()
     {
-      if (Application.platform == RuntimePlatform.IPhonePlayer)
+      if (Application.platform == RuntimePlatform.OSXEditor || Application.platform == RuntimePlatform.WindowsEditor)
       {
-        return new GoogleMobileAds.iOS.BannerClient();
+        return new GoogleMobileAds.Unity.BannerClient();
       }
       return new GoogleMobileAds.Common.DummyClient();
     }
 
     public IInterstitialClient BuildInterstitialClient()
     {
-      if (Application.platform == RuntimePlatform.IPhonePlayer)
+      if (Application.platform == RuntimePlatform.OSXEditor || Application.platform == RuntimePlatform.WindowsEditor)
       {
-        return new GoogleMobileAds.iOS.InterstitialClient();
+        return new GoogleMobileAds.Unity.InterstitialClient();
       }
       return new GoogleMobileAds.Common.DummyClient();
      }
 
     public IRewardBasedVideoAdClient BuildRewardBasedVideoAdClient()
     {
-      if (Application.platform == RuntimePlatform.IPhonePlayer)
-      {
-        return new GoogleMobileAds.iOS.RewardBasedVideoAdClient();
-      }
       return new GoogleMobileAds.Common.DummyClient();
     }
 
     public IRewardedAdClient BuildRewardedAdClient()
     {
-      if (Application.platform == RuntimePlatform.IPhonePlayer)
+      if (Application.platform == RuntimePlatform.OSXEditor || Application.platform == RuntimePlatform.WindowsEditor)
       {
-        return new GoogleMobileAds.iOS.RewardedAdClient();
+        return new GoogleMobileAds.Unity.RewardedAdClient();
       }
       return new GoogleMobileAds.Common.RewardedAdDummyClient();
     }
 
     public IRewardedInterstitialAdClient BuildRewardedInterstitialAdClient() {
-      if (Application.platform == RuntimePlatform.IPhonePlayer) {
-        return new GoogleMobileAds.iOS.RewardedInterstitialAdClient();
+      if (Application.platform == RuntimePlatform.OSXEditor || Application.platform == RuntimePlatform.WindowsEditor)
+      {
+        return new GoogleMobileAds.Unity.RewardedInterstitialAdClient();
       }
       return new GoogleMobileAds.Common.RewardedInterstitialAdDummyClient();
     }
 
     public IMobileAdsClient MobileAdsInstance()
     {
-      if (Application.platform == RuntimePlatform.IPhonePlayer)
-      {
-        return GoogleMobileAds.iOS.MobileAdsClient.Instance;
-      }
       return new GoogleMobileAds.Common.DummyClient();
     }
   }
