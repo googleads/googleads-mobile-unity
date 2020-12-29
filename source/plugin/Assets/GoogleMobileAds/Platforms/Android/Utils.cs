@@ -71,9 +71,6 @@ namespace GoogleMobileAds.Android
 
         public const string UnityAdListenerClassName = "com.google.unity.ads.UnityAdListener";
 
-        public const string UnityRewardBasedVideoAdListenerClassName =
-            "com.google.unity.ads.UnityRewardBasedVideoAdListener";
-
         public const string UnityRewardedAdCallbackClassName =
             "com.google.unity.ads.UnityRewardedAdCallback";
 

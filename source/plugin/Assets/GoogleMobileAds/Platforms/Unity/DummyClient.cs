@@ -20,7 +20,7 @@ using UnityEngine;
 
 namespace GoogleMobileAds.Common
 {
-    public class DummyClient : IBannerClient, IInterstitialClient, IRewardBasedVideoAdClient,
+    public class DummyClient : IBannerClient, IInterstitialClient,
             IMobileAdsClient
     {
         public DummyClient()
@@ -195,27 +195,12 @@ namespace GoogleMobileAds.Common
             Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
         }
 
-        public void CreateRewardBasedVideoAd()
-        {
-            Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
-        }
-
         public void SetUserId(string userId)
         {
             Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
         }
 
         public void LoadAd(AdRequest request, string adUnitId)
-        {
-            Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
-        }
-
-        public void DestroyRewardBasedVideoAd()
-        {
-            Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
-        }
-
-        public void ShowRewardBasedVideoAd()
         {
             Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
         }

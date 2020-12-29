@@ -285,44 +285,6 @@ namespace GoogleMobileAds.iOS
 
         #endregion
 
-        #region Reward based video externs
-
-        [DllImport("__Internal")]
-        internal static extern IntPtr GADUCreateRewardBasedVideoAd(IntPtr rewardBasedVideo);
-
-        [DllImport("__Internal")]
-        internal static extern bool GADURewardBasedVideoAdReady(IntPtr rewardBasedVideo);
-
-        [DllImport("__Internal")]
-        internal static extern void GADUShowRewardBasedVideoAd(IntPtr rewardBasedVideo);
-
-        [DllImport("__Internal")]
-        internal static extern void GADUSetRewardBasedVideoAdUserId(IntPtr rewardBasedVideo, string userId);
-
-        [DllImport("__Internal")]
-        internal static extern void GADURequestRewardBasedVideoAd(
-            IntPtr bannerView, IntPtr request, string adUnitId);
-
-        [DllImport("__Internal")]
-        internal static extern void GADUSetRewardBasedVideoAdCallbacks(
-            IntPtr rewardBasedVideo,
-            RewardBasedVideoAdClient.GADURewardBasedVideoAdDidReceiveAdCallback
-                    adReceivedCallback,
-            RewardBasedVideoAdClient.GADURewardBasedVideoAdDidFailToReceiveAdWithErrorCallback
-                    adFailedCallback,
-            RewardBasedVideoAdClient.GADURewardBasedVideoAdDidOpenCallback didOpenCallback,
-            RewardBasedVideoAdClient.GADURewardBasedVideoAdDidStartCallback didStartCallback,
-            RewardBasedVideoAdClient.GADURewardBasedVideoAdDidCloseCallback didCloseCallback,
-            RewardBasedVideoAdClient.GADURewardBasedVideoAdDidRewardCallback didRewardcallback,
-            RewardBasedVideoAdClient.GADURewardBasedVideoAdWillLeaveApplicationCallback
-                    willLeaveCallback,
-            RewardBasedVideoAdClient.GADURewardBasedVideoAdDidCompleteCallback didCompleteCallback);
-
-        [DllImport("__Internal")]
-        internal static extern IntPtr GADUMediationAdapterClassNameForRewardedVideo(IntPtr rewardedVideo);
-
-        #endregion
-
         #region RewardedAd externs
 
         [DllImport("__Internal")]

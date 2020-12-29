@@ -2,8 +2,6 @@
 
 #import "GADUPluginUtil.h"
 
-#import "UnityAppController.h"
-
 @interface UIView (unityStub)
 @property UILayoutGuide *safeAreaLayoutGuide;
 @end
@@ -59,7 +57,11 @@ static BOOL _pauseOnBackground = NO;
 }
 
 + (UIViewController *)unityGLViewController {
-  return ((UnityAppController *)[UIApplication sharedApplication].delegate).rootViewController;
+  id<UIApplicationDelegate> appDelegate = [UIApplication sharedApplication].delegate;
+  if ([appDelegate respondsToSelector:@selector(rootViewController)]) {
+    return [[UIApplication sharedApplication].delegate rootViewController];
+  }
+  return nil;
 }
 
 + (void)positionView:(UIView *)view
