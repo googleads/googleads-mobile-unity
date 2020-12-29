@@ -1,5 +1,5 @@
 {
-    "name": "GoogleMobileAds.Platforms",
+    "name": "GoogleMobileAds.Android",
     "references": [
         "GoogleMobileAds.Core",
         "GoogleMobileAds.Common",
