@@ -899,4 +899,3 @@ const char *GADUMediationAdapterClassNameForInterstitial(GADUTypeInterstitialRef
   GADUInterstitial *interstitialAd = (__bridge GADUInterstitial *)interstitial;
   return cStringCopy(interstitialAd.mediationAdapterClassName.UTF8String);
 }
-

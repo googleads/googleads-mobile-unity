@@ -19,7 +19,6 @@ import android.content.res.Resources;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
-
 import com.google.android.gms.ads.AdRequest;
 
 /**

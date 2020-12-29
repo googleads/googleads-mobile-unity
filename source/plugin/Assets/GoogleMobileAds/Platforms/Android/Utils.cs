@@ -225,6 +225,9 @@ namespace GoogleMobileAds.Android
 
             bundle.Call("putString", "is_unity", "1");
 
+            // Makes ads that contain WebP ad assets ineligible.
+            bundle.Call("putString", "adw", "true");
+
             AndroidJavaObject extras = new AndroidJavaObject(AdMobExtrasClassName, bundle);
             adRequestBuilder.Call<AndroidJavaObject>("addNetworkExtras", extras);
 

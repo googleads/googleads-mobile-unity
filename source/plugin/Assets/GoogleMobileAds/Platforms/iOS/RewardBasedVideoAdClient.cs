@@ -272,5 +272,3 @@ namespace GoogleMobileAds.iOS
     }
 }
 #endif
-
-

@@ -64,6 +64,9 @@ namespace GoogleMobileAds.iOS
 
             Externs.GADUSetExtra(requestPtr, "is_unity", "1");
 
+            // Makes ads that contain WebP ad assets ineligible.
+            Externs.GADUSetExtra(requestPtr, "adw", "true");
+
             foreach (MediationExtras mediationExtra in request.MediationExtras)
             {
                 IntPtr mutableDictionaryPtr = Externs.GADUCreateMutableDictionary();
@@ -120,5 +123,3 @@ namespace GoogleMobileAds.iOS
     }
 }
 #endif
-
-
