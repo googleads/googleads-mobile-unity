@@ -3,12 +3,10 @@
     "references": [
         "GoogleMobileAds.Core",
         "GoogleMobileAds.Common",
-        "GoogleMobileAds.Api.Mediation",
-        "GoogleMobileAds.Unity"
+        "GoogleMobileAds.Api.Mediation"
     ],
     "includePlatforms": [
-        "Android",
-        "Editor"
+        "Android"
     ],
     "excludePlatforms": [],
     "allowUnsafeCode": false,

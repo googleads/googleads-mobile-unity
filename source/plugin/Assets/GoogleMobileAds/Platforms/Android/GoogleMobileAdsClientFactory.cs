@@ -13,11 +13,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System;
+using System.Reflection;
 using UnityEngine;
+using UnityEngine.Scripting;
 using GoogleMobileAds;
 using GoogleMobileAds.Api;
 using GoogleMobileAds.Common;
-using UnityEngine.Scripting;
 
 namespace GoogleMobileAds {
     [Preserve]
@@ -29,14 +31,8 @@ namespace GoogleMobileAds {
             {
                 return new GoogleMobileAds.Android.BannerClient();
             }
-            else if (Application.platform == RuntimePlatform.OSXEditor ||
-                       Application.platform == RuntimePlatform.WindowsEditor) {
-                return new GoogleMobileAds.Unity.BannerClient();
-            }
-            else
-            {
-                return new GoogleMobileAds.Common.DummyClient();
-            }
+            throw new InvalidOperationException(@"Called " + MethodBase.GetCurrentMethod().Name +
+            " on non-Android runtime");
         }
 
         public IInterstitialClient BuildInterstitialClient()
@@ -45,15 +41,8 @@ namespace GoogleMobileAds {
             {
                 return new GoogleMobileAds.Android.InterstitialClient();
             }
-            else if (Application.platform == RuntimePlatform.OSXEditor ||
-                       Application.platform == RuntimePlatform.WindowsEditor)
-                       {
-                return new GoogleMobileAds.Unity.InterstitialClient();
-            }
-            else
-            {
-                return new GoogleMobileAds.Common.DummyClient();
-            }
+            throw new InvalidOperationException(@"Called " + MethodBase.GetCurrentMethod().Name +
+            " on non-Android runtime");
         }
 
         public IRewardBasedVideoAdClient BuildRewardBasedVideoAdClient()
@@ -62,7 +51,8 @@ namespace GoogleMobileAds {
             {
                 return new GoogleMobileAds.Android.RewardBasedVideoAdClient();
             }
-            return new GoogleMobileAds.Common.DummyClient();
+            throw new InvalidOperationException(@"Called " + MethodBase.GetCurrentMethod().Name +
+            " on non-Android runtime");
         }
 
         public IRewardedAdClient BuildRewardedAdClient()
@@ -71,15 +61,8 @@ namespace GoogleMobileAds {
             {
                 return new GoogleMobileAds.Android.RewardedAdClient();
             }
-            else if (Application.platform == RuntimePlatform.OSXEditor ||
-                       Application.platform == RuntimePlatform.WindowsEditor)
-                       {
-                return new GoogleMobileAds.Unity.RewardedAdClient();
-            }
-            else
-            {
-                return new GoogleMobileAds.Common.RewardedAdDummyClient();
-            }
+            throw new InvalidOperationException(@"Called " + MethodBase.GetCurrentMethod().Name +
+            " on non-Android runtime");
         }
 
         public IRewardedInterstitialAdClient BuildRewardedInterstitialAdClient()
@@ -88,12 +71,8 @@ namespace GoogleMobileAds {
             {
                 return new GoogleMobileAds.Android.RewardedInterstitialAdClient();
             }
-            else if (Application.platform == RuntimePlatform.OSXEditor ||
-                        Application.platform == RuntimePlatform.WindowsEditor)
-            {
-                return new GoogleMobileAds.Unity.RewardedInterstitialAdClient();
-            }
-            return new GoogleMobileAds.Common.RewardedInterstitialAdDummyClient();
+            throw new InvalidOperationException(@"Called " + MethodBase.GetCurrentMethod().Name +
+            " on non-Android runtime");
         }
 
 
@@ -103,7 +82,8 @@ namespace GoogleMobileAds {
             {
                 return GoogleMobileAds.Android.MobileAdsClient.Instance;
             }
-            return new GoogleMobileAds.Common.DummyClient();
+            throw new InvalidOperationException(@"Called " + MethodBase.GetCurrentMethod().Name +
+            " on non-Android runtime");
         }
     }
 }
