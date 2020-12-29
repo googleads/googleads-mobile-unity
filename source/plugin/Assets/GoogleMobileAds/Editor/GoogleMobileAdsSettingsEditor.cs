@@ -1,5 +1,3 @@
-using System.IO;
-
 using UnityEditor;
 using UnityEngine;
 
@@ -14,11 +12,13 @@ namespace GoogleMobileAds.Editor
         public static void OpenInspector()
         {
             Selection.activeObject = GoogleMobileAdsSettings.Instance;
+            GoogleMobileAdsAnalytics.ReportSettingsOpened();
         }
 
         public override void OnInspectorGUI()
         {
-            EditorGUILayout.LabelField("Google Mobile Ads App ID");
+            EditorGUILayout.LabelField("Google Mobile Ads App ID", EditorStyles.boldLabel);
+            EditorGUI.indentLevel++;
 
             GoogleMobileAdsSettings.Instance.GoogleMobileAdsAndroidAppId =
                     EditorGUILayout.TextField("Android",
@@ -32,15 +32,59 @@ namespace GoogleMobileAds.Editor
                     "Google Mobile  Ads App ID will look similar to this sample ID: ca-app-pub-3940256099942544~3347511713",
                     MessageType.Info);
 
+            EditorGUI.indentLevel--;
             EditorGUILayout.Separator();
 
+            EditorGUILayout.LabelField("AdMob-specific settings", EditorStyles.boldLabel);
+            EditorGUI.indentLevel++;
+
+            EditorGUI.BeginChangeCheck();
+
             GoogleMobileAdsSettings.Instance.DelayAppMeasurementInit =
-                    EditorGUILayout.Toggle(new GUIContent("Delay app measurement (AdMob only)"),
+                    EditorGUILayout.Toggle(new GUIContent("Delay app measurement"),
                     GoogleMobileAdsSettings.Instance.DelayAppMeasurementInit);
+            if (EditorGUI.EndChangeCheck())
+            {
+                GoogleMobileAdsAnalytics.ReportSettingsDelayAppMeasurementEnabled(
+                        GoogleMobileAdsSettings.Instance.DelayAppMeasurementInit);
+            }
+
             if (GoogleMobileAdsSettings.Instance.DelayAppMeasurementInit) {
-                    EditorGUILayout.HelpBox(
-                            "Delays app measurement until you explicitly initialize the Mobile Ads SDK or load an ad.",
-                            MessageType.Info);
+                EditorGUILayout.HelpBox(
+                        "Delays app measurement until you explicitly initialize the Mobile Ads SDK or load an ad.",
+                        MessageType.Info);
+            }
+
+            EditorGUI.indentLevel--;
+            EditorGUILayout.Separator();
+
+            EditorGUILayout.LabelField("Misc", EditorStyles.boldLabel);
+
+            EditorGUI.indentLevel++;
+            EditorGUI.BeginChangeCheck();
+
+            bool analyticsEnabled = EditorGUILayout.Toggle(
+                    new GUIContent("Send plugin usage statistics"), GoogleMobileAdsAnalytics.analytics.Enabled);
+
+            if (analyticsEnabled)
+            {
+                EditorGUILayout.HelpBox(
+                        "Sends the usage statistics to Google to gather reports on the failures and to inform future improvements of the Google Mobile Ads Unity plugin.",
+                        MessageType.Info);
+            }
+
+            if (EditorGUI.EndChangeCheck())
+            {
+                if (analyticsEnabled)
+                {
+                    GoogleMobileAdsAnalytics.analytics.PromptToEnable(() => {
+                        GoogleMobileAdsAnalytics.analytics.Enabled = true;
+                    });
+                }
+                else
+                {
+                    GoogleMobileAdsAnalytics.analytics.Enabled = false;
+                }
             }
 
             if (GUI.changed)

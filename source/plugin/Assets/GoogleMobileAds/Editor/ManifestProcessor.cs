@@ -1,5 +1,18 @@
+// Copyright (C) 2020 Google LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
 #if UNITY_ANDROID
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -37,6 +50,8 @@ public class ManifestProcessor : IPreprocessBuild
     public void OnPreprocessBuild(BuildTarget target, string path)
 #endif
     {
+        GoogleMobileAdsAnalytics.ReportProcessManifestStarted();
+
         string manifestPath = Path.Combine(
                 Application.dataPath, MANIFEST_RELATIVE_PATH);
         if (AssetDatabase.IsValidFolder("Packages/com.google.ads.mobile"))
@@ -53,18 +68,21 @@ public class ManifestProcessor : IPreprocessBuild
         catch (IOException e)
         #pragma warning restore 0168
         {
+            GoogleMobileAdsAnalytics.ReportProcessManifestFailedMissingFile();
             StopBuildWithMessage("AndroidManifest.xml is missing. Try re-importing the plugin.");
         }
 
         XElement elemManifest = manifest.Element("manifest");
         if (elemManifest == null)
         {
+            GoogleMobileAdsAnalytics.ReportProcessManifestFailedInvalidFile();
             StopBuildWithMessage("AndroidManifest.xml is not valid. Try re-importing the plugin.");
         }
 
         XElement elemApplication = elemManifest.Element("application");
         if (elemApplication == null)
         {
+            GoogleMobileAdsAnalytics.ReportProcessManifestFailedInvalidFile();
             StopBuildWithMessage("AndroidManifest.xml is not valid. Try re-importing the plugin.");
         }
 
@@ -76,6 +94,7 @@ public class ManifestProcessor : IPreprocessBuild
 
         if (appId.Length == 0)
         {
+            GoogleMobileAdsAnalytics.ReportProcessManifestFailedEmptyGoogleMobileAdsAppId();
             StopBuildWithMessage(
                 "Android Google Mobile Ads app ID is empty. Please enter a valid app ID to run ads properly.");
         }
@@ -112,6 +131,7 @@ public class ManifestProcessor : IPreprocessBuild
         }
 
         elemManifest.Save(manifestPath);
+        GoogleMobileAdsAnalytics.ReportProcessManifestSuccessful();
     }
 
     private XElement CreateMetaElement(string name, object value)

@@ -1,3 +1,17 @@
+// Copyright (C) 2020 Google LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
 #if UNITY_IPHONE || UNITY_IOS
 using System;
 using System.Collections.Generic;
@@ -22,6 +36,7 @@ public static class PListProcessor
     [PostProcessBuild]
     public static void OnPostProcessBuild(BuildTarget buildTarget, string path)
     {
+        GoogleMobileAdsAnalytics.ReportProcessPlistStarted();
         string plistPath = Path.Combine(path, "Info.plist");
         PlistDocument plist = new PlistDocument();
         plist.ReadFromFile(plistPath);
@@ -29,6 +44,7 @@ public static class PListProcessor
         string appId = GoogleMobileAdsSettings.Instance.GoogleMobileAdsIOSAppId;
         if (appId.Length == 0)
         {
+            GoogleMobileAdsAnalytics.ReportProcessPlistFailedEmptyGoogleMobileAdsAppId();
             NotifyBuildFailure(
                 "iOS Google Mobile Ads app ID is empty. Please enter a valid app ID to run ads properly.");
         }
@@ -49,6 +65,7 @@ public static class PListProcessor
         }
 
         File.WriteAllText(plistPath, plist.WriteToString());
+        GoogleMobileAdsAnalytics.ReportProcessPlistSuccessful();
     }
 
     private static PlistElementArray GetSKAdNetworkItemsArray(PlistDocument document)
@@ -91,7 +108,7 @@ public static class PListProcessor
         {
             if (!File.Exists(path))
             {
-                throw new IOException();
+                throw new FileNotFoundException();
             }
             using (FileStream fs = File.OpenRead(path))
             {
@@ -107,8 +124,16 @@ public static class PListProcessor
                 }
             }
         }
+        #pragma warning disable 0168
+        catch (FileNotFoundException e)
+        #pragma warning restore 0168
+        {
+            GoogleMobileAdsAnalytics.ReportProcessPlistFailedMissingSKAdNetworkIds();
+            NotifyBuildFailure("GoogleMobileAdsSKAdNetworkItems.xml not found", false);
+        }
         catch (IOException e)
         {
+            GoogleMobileAdsAnalytics.ReportProcessPlistFailedSKAdNetworkIdsIoError();
             NotifyBuildFailure("Failed to read GoogleMobileAdsSKAdNetworkIds.xml: " + e.Message, false);
         }
 
@@ -131,6 +156,7 @@ public static class PListProcessor
         }
         else
         {
+            GoogleMobileAdsAnalytics.ReportProcessPlistFailedInvalidSKAdNetworkIds();
             NotifyBuildFailure("SKAdNetworkItems element already exists in Info.plist, but is not an array.", false);
         }
     }
