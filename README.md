@@ -27,15 +27,15 @@ Be sure to also join the developer community on
 
 ## Analytics
 
-Google Mobile Ads Unity plugin logs usage to Google Analytics.
+You can help improve the Google Mobile Ads Unity plugin by opting-in to sending
+usage data to Google.
 
-The purpose of the logging is to quantitatively measure the usage of
-functionality, to gather reports on the failures and to inform future
-improvements to the developer experience of the Google Mobile Ads Unity plugin.
+The data collected is general information about how you are using the plugin
+(such as ad unit creation and processing errors).
 
-You can change analytics settings in the Google Mobile Ads plugin settings,
-which is available from **Assets > Google Mobile Ads > Settings** in Unity
-Editor.
+You can enable/disable analytics settings in the Google Mobile Ads plugin
+settings, which is available from **Assets > Google Mobile Ads > Settings**
+in the Unity Editor.
 
 ## Suggesting improvements
 

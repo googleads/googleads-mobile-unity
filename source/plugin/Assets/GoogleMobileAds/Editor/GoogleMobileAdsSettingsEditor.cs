@@ -64,7 +64,7 @@ namespace GoogleMobileAds.Editor
             EditorGUI.BeginChangeCheck();
 
             bool analyticsEnabled = EditorGUILayout.Toggle(
-                    new GUIContent("Send plugin usage statistics"), GoogleMobileAdsAnalytics.analytics.Enabled);
+                    new GUIContent("Send plugin usage statistics"), GoogleMobileAdsAnalytics.IsAnalyticsEnabled());
 
             if (analyticsEnabled)
             {
@@ -75,16 +75,7 @@ namespace GoogleMobileAds.Editor
 
             if (EditorGUI.EndChangeCheck())
             {
-                if (analyticsEnabled)
-                {
-                    GoogleMobileAdsAnalytics.analytics.PromptToEnable(() => {
-                        GoogleMobileAdsAnalytics.analytics.Enabled = true;
-                    });
-                }
-                else
-                {
-                    GoogleMobileAdsAnalytics.analytics.Enabled = false;
-                }
+                GoogleMobileAdsAnalytics.SetAnalyticsEnabled(analyticsEnabled);
             }
 
             if (GUI.changed)
