@@ -7,7 +7,6 @@ validate_template=true
 template_path=.github/ISSUE_TEMPLATE/bug_report.md
 -->
 ### Step 0: Are you in the right place?
-
   * For general technical questions, or help with project-specific issues like setting up ads in
    your app, reach out to our support team on the
    [Developer Forum](https://groups.google.com/forum/#!categories/google-admob-ads-sdk/game-engines).
@@ -21,6 +20,7 @@ template_path=.github/ISSUE_TEMPLATE/bug_report.md
   * Once you've read this section and determined that your issue is appropriate for
     this repository, **please delete this section**.
 
+
 ### [REQUIRED] Step 1: Describe your environment
 
   * Unity version: _____
@@ -29,7 +29,6 @@ template_path=.github/ISSUE_TEMPLATE/bug_report.md
   * Platform OS version: _____ (eg iOS 10, Android 9)
   * Any specific devices issue occurs on: _____
   * Mediation ad networks used, and their versions: _____
-
 
 
 ### [REQUIRED] Step 2: Describe the problem
