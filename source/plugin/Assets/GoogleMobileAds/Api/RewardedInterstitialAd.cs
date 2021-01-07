@@ -57,6 +57,14 @@ namespace GoogleMobileAds.Api
                    this.OnAdDidDismissFullScreenContent(this, args);
                 }
             };
+
+            this.rewardedInterstitialAdClient.OnPaidEvent += (sender, args) =>
+            {
+                if (this.OnPaidEvent != null)
+                {
+                    this.OnPaidEvent(this, args);
+                }
+            };
         }
 
         // Called when the ad is estimated to have earned money.
@@ -71,7 +79,6 @@ namespace GoogleMobileAds.Api
 
 
         // Loads a new rewarded interstitial ad.
-        // TODO(jillsong): Apply AdError.
         public static void LoadAd(string adUnitID, AdRequest request, Action<RewardedInterstitialAd, AdFailedToLoadEventArgs> adLoadCallback)
         {
             IRewardedInterstitialAdClient client = MobileAds.GetClientFactory().BuildRewardedInterstitialAdClient();
