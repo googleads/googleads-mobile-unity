@@ -50,8 +50,6 @@ public class ManifestProcessor : IPreprocessBuild
     public void OnPreprocessBuild(BuildTarget target, string path)
 #endif
     {
-        GoogleMobileAdsAnalytics.ReportProcessManifestStarted();
-
         string manifestPath = Path.Combine(
                 Application.dataPath, MANIFEST_RELATIVE_PATH);
         if (AssetDatabase.IsValidFolder("Packages/com.google.ads.mobile"))
@@ -68,21 +66,18 @@ public class ManifestProcessor : IPreprocessBuild
         catch (IOException e)
         #pragma warning restore 0168
         {
-            GoogleMobileAdsAnalytics.ReportProcessManifestFailedMissingFile();
             StopBuildWithMessage("AndroidManifest.xml is missing. Try re-importing the plugin.");
         }
 
         XElement elemManifest = manifest.Element("manifest");
         if (elemManifest == null)
         {
-            GoogleMobileAdsAnalytics.ReportProcessManifestFailedInvalidFile();
             StopBuildWithMessage("AndroidManifest.xml is not valid. Try re-importing the plugin.");
         }
 
         XElement elemApplication = elemManifest.Element("application");
         if (elemApplication == null)
         {
-            GoogleMobileAdsAnalytics.ReportProcessManifestFailedInvalidFile();
             StopBuildWithMessage("AndroidManifest.xml is not valid. Try re-importing the plugin.");
         }
 
@@ -94,7 +89,6 @@ public class ManifestProcessor : IPreprocessBuild
 
         if (appId.Length == 0)
         {
-            GoogleMobileAdsAnalytics.ReportProcessManifestFailedEmptyGoogleMobileAdsAppId();
             StopBuildWithMessage(
                 "Android Google Mobile Ads app ID is empty. Please enter a valid app ID to run ads properly.");
         }
@@ -131,7 +125,6 @@ public class ManifestProcessor : IPreprocessBuild
         }
 
         elemManifest.Save(manifestPath);
-        GoogleMobileAdsAnalytics.ReportProcessManifestSuccessful();
     }
 
     private XElement CreateMetaElement(string name, object value)

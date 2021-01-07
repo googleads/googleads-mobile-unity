@@ -36,7 +36,6 @@ public static class PListProcessor
     [PostProcessBuild]
     public static void OnPostProcessBuild(BuildTarget buildTarget, string path)
     {
-        GoogleMobileAdsAnalytics.ReportProcessPlistStarted();
         string plistPath = Path.Combine(path, "Info.plist");
         PlistDocument plist = new PlistDocument();
         plist.ReadFromFile(plistPath);
@@ -44,7 +43,6 @@ public static class PListProcessor
         string appId = GoogleMobileAdsSettings.Instance.GoogleMobileAdsIOSAppId;
         if (appId.Length == 0)
         {
-            GoogleMobileAdsAnalytics.ReportProcessPlistFailedEmptyGoogleMobileAdsAppId();
             NotifyBuildFailure(
                 "iOS Google Mobile Ads app ID is empty. Please enter a valid app ID to run ads properly.");
         }
@@ -65,7 +63,6 @@ public static class PListProcessor
         }
 
         File.WriteAllText(plistPath, plist.WriteToString());
-        GoogleMobileAdsAnalytics.ReportProcessPlistSuccessful();
     }
 
     private static PlistElementArray GetSKAdNetworkItemsArray(PlistDocument document)
@@ -128,12 +125,10 @@ public static class PListProcessor
         catch (FileNotFoundException e)
         #pragma warning restore 0168
         {
-            GoogleMobileAdsAnalytics.ReportProcessPlistFailedMissingSKAdNetworkIds();
             NotifyBuildFailure("GoogleMobileAdsSKAdNetworkItems.xml not found", false);
         }
         catch (IOException e)
         {
-            GoogleMobileAdsAnalytics.ReportProcessPlistFailedSKAdNetworkIdsIoError();
             NotifyBuildFailure("Failed to read GoogleMobileAdsSKAdNetworkIds.xml: " + e.Message, false);
         }
 
@@ -156,7 +151,6 @@ public static class PListProcessor
         }
         else
         {
-            GoogleMobileAdsAnalytics.ReportProcessPlistFailedInvalidSKAdNetworkIds();
             NotifyBuildFailure("SKAdNetworkItems element already exists in Info.plist, but is not an array.", false);
         }
     }
