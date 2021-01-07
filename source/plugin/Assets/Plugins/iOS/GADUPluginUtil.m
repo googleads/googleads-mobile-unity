@@ -2,10 +2,12 @@
 
 #import "GADUPluginUtil.h"
 
-#import "UnityAppController.h"
-
 @interface UIView (unityStub)
 @property UILayoutGuide *safeAreaLayoutGuide;
+@end
+
+@interface NSObject (unityStub) <UIApplicationDelegate>
+@property UIViewController *rootViewController;
 @end
 
 BOOL GADUIsOperatingSystemAtLeastVersion(NSInteger majorVersion) {
@@ -23,7 +25,7 @@ BOOL GADUIsOperatingSystemAtLeastVersion(NSInteger majorVersion) {
 static CGFloat GADUSafeWidthLandscape(void) {
   CGRect screenBounds = [UIScreen mainScreen].bounds;
   if (GADUIsOperatingSystemAtLeastVersion(11)) {
-    CGRect safeFrame = [UIApplication sharedApplication].keyWindow.safeAreaLayoutGuide.layoutFrame;
+    CGRect safeFrame = UIApplication.sharedApplication.keyWindow.safeAreaLayoutGuide.layoutFrame;
     if (!CGSizeEqualToSize(safeFrame.size, CGSizeZero)) {
       screenBounds = safeFrame;
     }
@@ -59,7 +61,11 @@ static BOOL _pauseOnBackground = NO;
 }
 
 + (UIViewController *)unityGLViewController {
-  return ((UnityAppController *)[UIApplication sharedApplication].delegate).rootViewController;
+  NSObject<UIApplicationDelegate> *appDelegate = UIApplication.sharedApplication.delegate;
+  if ([appDelegate respondsToSelector:@selector(rootViewController)]) {
+    return [appDelegate rootViewController];
+  }
+  return nil;
 }
 
 + (void)positionView:(UIView *)view
@@ -140,7 +146,7 @@ static BOOL _pauseOnBackground = NO;
 
 + (GADAdSize)adSizeForWidth:(CGFloat)width height:(CGFloat)height {
   UIInterfaceOrientation currentOrientation =
-      [UIApplication sharedApplication].statusBarOrientation;
+      UIApplication.sharedApplication.statusBarOrientation;
 
   if (width == kGADUAdSizeUseFullWidth && UIInterfaceOrientationIsPortrait(currentOrientation)) {
     return GADAdSizeFullWidthPortraitWithHeight(height);

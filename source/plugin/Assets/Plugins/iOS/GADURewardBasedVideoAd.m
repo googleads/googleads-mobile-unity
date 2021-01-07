@@ -6,18 +6,11 @@
 #import <UIKit/UIKit.h>
 
 #import "GADUPluginUtil.h"
-#import "UnityAppController.h"
-#import "UnityInterface.h"
 
 @interface GADURewardBasedVideoAd () <GADRewardBasedVideoAdDelegate>
 @end
 
 @implementation GADURewardBasedVideoAd
-
-+ (UIViewController *)unityGLViewController {
-  UnityAppController *applicationDelegate = [UIApplication sharedApplication].delegate;
-  return applicationDelegate.rootViewController;
-}
 
 - (instancetype)initWithRewardBasedVideoClientReference:
     (GADUTypeRewardBasedVideoAdClientRef *)rewardBasedVideoAdClient {
@@ -44,7 +37,7 @@
 
 - (void)show {
   if ([self.rewardBasedVideo isReady]) {
-    UIViewController *unityController = [GADURewardBasedVideoAd unityGLViewController];
+    UIViewController *unityController = [GADUPluginUtil unityGLViewController];
     [self.rewardBasedVideo presentFromRootViewController:unityController];
   } else {
     NSLog(@"GoogleMobileAdsPlugin: Reward based video ad is not ready to be shown.");
