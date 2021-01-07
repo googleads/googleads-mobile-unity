@@ -6,18 +6,12 @@
 #import <UIKit/UIKit.h>
 
 #import "GADUPluginUtil.h"
-#import "UnityAppController.h"
 #import "UnityInterface.h"
 
 @interface GADURewardedInterstitialAd () <GADFullScreenContentDelegate>
 @end
 
 @implementation GADURewardedInterstitialAd
-
-+ (UIViewController *)unityGLViewController {
-  UnityAppController *applicationDelegate = [UIApplication sharedApplication].delegate;
-  return applicationDelegate.rootViewController;
-}
 
 - (instancetype)initWithRewardedInterstitialAdClientReference:
     (GADUTypeRewardedInterstitialAdClientRef *)rewardedInterstitialAdClient {
@@ -61,7 +55,7 @@
 }
 
 - (void)show {
-  UIViewController *unityController = [GADURewardedInterstitialAd unityGLViewController];
+  UIViewController *unityController = [GADUPluginUtil unityGLViewController];
   __weak GADURewardedInterstitialAd *weakSelf = self;
 
   [self.rewardedInterstitialAd

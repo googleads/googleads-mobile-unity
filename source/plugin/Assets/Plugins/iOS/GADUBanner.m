@@ -6,7 +6,6 @@
 #import <UIKit/UIKit.h>
 
 #import "GADUPluginUtil.h"
-#import "UnityAppController.h"
 
 @interface GADUBanner () <GADBannerViewDelegate>
 

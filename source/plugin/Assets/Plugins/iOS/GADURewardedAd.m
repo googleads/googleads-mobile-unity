@@ -6,18 +6,12 @@
 #import <UIKit/UIKit.h>
 
 #import "GADUPluginUtil.h"
-#import "UnityAppController.h"
 #import "UnityInterface.h"
 
 @interface GADURewardedAd () <GADRewardedAdDelegate>
 @end
 
 @implementation GADURewardedAd
-
-+ (UIViewController *)unityGLViewController {
-  UnityAppController *applicationDelegate = [UIApplication sharedApplication].delegate;
-  return applicationDelegate.rootViewController;
-}
 
 - (instancetype)initWithRewardedAdClientReference:(GADUTypeRewardedAdClientRef *)rewardedAdClient
                                          adUnitID:(NSString *)adUnitID {
@@ -64,7 +58,7 @@
 
 - (void)show {
   if ([self.rewardedAd isReady]) {
-    UIViewController *unityController = [GADURewardedAd unityGLViewController];
+    UIViewController *unityController = [GADUPluginUtil unityGLViewController];
     [self.rewardedAd presentFromRootViewController:unityController delegate:self];
   } else {
     NSLog(@"GoogleMobileAdsPlugin: Rewarded ad is not ready to be shown.");

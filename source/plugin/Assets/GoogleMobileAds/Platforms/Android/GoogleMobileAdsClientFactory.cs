@@ -45,16 +45,6 @@ namespace GoogleMobileAds {
             " on non-Android runtime");
         }
 
-        public IRewardBasedVideoAdClient BuildRewardBasedVideoAdClient()
-        {
-            if (Application.platform == RuntimePlatform.Android)
-            {
-                return new GoogleMobileAds.Android.RewardBasedVideoAdClient();
-            }
-            throw new InvalidOperationException(@"Called " + MethodBase.GetCurrentMethod().Name +
-            " on non-Android runtime");
-        }
-
         public IRewardedAdClient BuildRewardedAdClient()
         {
             if (Application.platform == RuntimePlatform.Android)

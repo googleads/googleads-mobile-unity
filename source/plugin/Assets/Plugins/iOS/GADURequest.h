@@ -2,7 +2,7 @@
 
 #import <Foundation/Foundation.h>
 
-#import <GoogleMobileAds/GoogleMobileAds.h>
+#import "GoogleMobileAds.h"
 
 /// Genders to help deliver more relevant ads.
 typedef NS_ENUM(NSInteger, GADUGender) {

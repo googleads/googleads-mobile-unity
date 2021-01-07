@@ -24,8 +24,6 @@ namespace GoogleMobileAds
 
         IInterstitialClient BuildInterstitialClient();
 
-        IRewardBasedVideoAdClient BuildRewardBasedVideoAdClient();
-
         IRewardedAdClient BuildRewardedAdClient();
 
         IRewardedInterstitialAdClient BuildRewardedInterstitialAdClient();
