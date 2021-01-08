@@ -1,7 +1,7 @@
 <dependencies>
   <androidPackages>
 
-    <androidPackage spec="com.google.ads.mediation:unity:3.5.1.1">
+    <androidPackage spec="com.google.ads.mediation:unity:3.6.0.0">
       <repositories>
         <repository>https://jcenter.bintray.com/</repository>
       </repositories>
@@ -10,7 +10,7 @@
     <!-- If using the Unity Ads Service from Unity3D, use this dependency instead to exclude the
     Unity Ads SDK and avoid conflicting dependency issues. -->
     <!--
-    <androidPackage spec="com.google.ads.mediation:unity-adapter-only:3.5.1.1">
+    <androidPackage spec="com.google.ads.mediation:unity-adapter-only:3.6.0.0">
       <repositories>
         <repository>https://jcenter.bintray.com/</repository>
         <repository>https://google.bintray.com/mobile-ads-adapters-android</repository>
@@ -21,7 +21,7 @@
   </androidPackages>
 
   <iosPods>
-    <iosPod name="GoogleMobileAdsMediationUnity" version="3.5.1.1">
+    <iosPod name="GoogleMobileAdsMediationUnity" version="3.6.0.0">
       <sources>
         <source>https://github.com/CocoaPods/Specs</source>
       </sources>
