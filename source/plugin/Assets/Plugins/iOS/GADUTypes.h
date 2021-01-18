@@ -38,9 +38,6 @@ typedef const void *GADUTypeBannerClientRef;
 /// Type representing a Unity interstitial client.
 typedef const void *GADUTypeInterstitialClientRef;
 
-/// Type representing a Unity reward based video client.
-typedef const void *GADUTypeRewardBasedVideoAdClientRef;
-
 /// Type representing a Unity rewarded ad client.
 typedef const void *GADUTypeRewardedAdClientRef;
 
@@ -55,9 +52,6 @@ typedef const void *GADUTypeBannerRef;
 
 /// Type representing a GADUInterstitial.
 typedef const void *GADUTypeInterstitialRef;
-
-/// Type representing a GADURewardBasedVideoAd.
-typedef const void *GADUTypeRewardBasedVideoAdRef;
 
 /// Type representing a GADURewardedAd.
 typedef const void *GADUTypeRewardedAdRef;
@@ -134,40 +128,6 @@ typedef void (*GADUInterstitialWillLeaveApplicationCallback)(
 typedef void (*GADUInterstitialPaidEventCallback)(GADUTypeInterstitialClientRef *interstitialClient,
                                                   int precision, int64_t value,
                                                   const char *currencyCode);
-
-/// Callback for when a reward based video ad request was successfully loaded.
-typedef void (*GADURewardBasedVideoAdDidReceiveAdCallback)(
-    GADUTypeRewardBasedVideoAdClientRef *rewardBasedVideoClient);
-
-/// Callback for when a reward based video ad request failed.
-typedef void (*GADURewardBasedVideoAdDidFailToReceiveAdWithErrorCallback)(
-    GADUTypeRewardBasedVideoAdClientRef *rewardBasedVideoClient, const char *error);
-
-/// Callback for when a reward based video is opened.
-typedef void (*GADURewardBasedVideoAdDidOpenCallback)(
-    GADUTypeRewardBasedVideoAdClientRef *rewardBasedVideoClient);
-
-/// Callback for when a reward based video has started to play.
-typedef void (*GADURewardBasedVideoAdDidStartPlayingCallback)(
-    GADUTypeRewardBasedVideoAdClientRef *rewardBasedVideoClient);
-
-/// Callback for when a reward based video is closed.
-typedef void (*GADURewardBasedVideoAdDidCloseCallback)(
-    GADUTypeRewardBasedVideoAdClientRef *rewardBasedVideoClient);
-
-/// Callback for when a user is rewarded by a reward based video.
-typedef void (*GADURewardBasedVideoAdDidRewardCallback)(
-    GADUTypeRewardBasedVideoAdClientRef *rewardBasedVideoClient, const char *rewardType,
-    double rewardAmount);
-
-/// Callback for when an application will background or terminate because of an reward based video
-/// click.
-typedef void (*GADURewardBasedVideoAdWillLeaveApplicationCallback)(
-    GADUTypeRewardBasedVideoAdClientRef *rewardBasedVideoClient);
-
-/// Callback for when a reward based video ad completes playing.
-typedef void (*GADURewardBasedVideoAdDidCompleteCallback)(
-    GADUTypeRewardBasedVideoAdClientRef *rewardBasedVideoClient);
 
 /// Callback for when a rewarded ad request was successfully loaded.
 typedef void (*GADURewardedAdDidReceiveAdCallback)(GADUTypeRewardedAdClientRef *rewardedAdClient);

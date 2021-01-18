@@ -73,11 +73,6 @@ namespace GoogleMobileAds.Android
             androidRewardedAd.Call("setServerSideVerificationOptions", Utils.GetServerSideVerificationOptionsJavaObject(serverSideVerificationOptions));
         }
 
-        public void DestroyRewardBasedVideoAd()
-        {
-            androidRewardedAd.Call("destroy");
-        }
-
         // Returns the reward item for the loaded rewarded ad.
         public Reward GetRewardItem()
         {
@@ -110,7 +105,7 @@ namespace GoogleMobileAds.Android
 
         #endregion
 
-        #region Callbacks from UnityRewardBasedVideoAdListener.
+        #region Callbacks from UnityRewardedAdListener.
 
         void onRewardedAdLoaded()
         {

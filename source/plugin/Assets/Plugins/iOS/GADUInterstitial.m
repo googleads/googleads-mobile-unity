@@ -6,6 +6,7 @@
 #import <UIKit/UIKit.h>
 
 #import "GADUPluginUtil.h"
+#import "UnityInterface.h"
 
 @interface GADUInterstitial () <GADInterstitialDelegate>
 @end
