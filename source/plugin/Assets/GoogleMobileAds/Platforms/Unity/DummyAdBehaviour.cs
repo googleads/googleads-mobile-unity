@@ -31,7 +31,9 @@ public class DummyAdBehaviour : MonoBehaviour
 
     public GameObject ShowAd(GameObject dummyAd, Vector3 position)
     {
-       return Instantiate(dummyAd, position, Quaternion.identity) as GameObject;
+       var ad = Instantiate(dummyAd, position, Quaternion.identity) as GameObject;
+       ad.GetComponent<Canvas>().sortingOrder = 32767;
+       return ad;
     }
 
     public void DestroyAd(GameObject dummyAd)
