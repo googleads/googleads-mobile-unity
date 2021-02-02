@@ -1,4 +1,4 @@
-// Copyright (C) 2015 Google, Inc.
+// Copyright (C) 2019 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,18 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System;
+
+using UnityEngine.Events;
+
 namespace GoogleMobileAds.Api
 {
-    // The position of the ad on the screen.
-    public enum AdPosition
-    {
-        Custom = -1,
-        Top = 0,
-        Bottom = 1,
-        TopLeft = 2,
-        TopRight = 3,
-        BottomLeft = 4,
-        BottomRight = 5,
-        Center = 6
-    }
+    [Serializable]
+    class AdFailedToLoadEvent : UnityEvent<string> { }
 }
