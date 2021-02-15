@@ -192,15 +192,6 @@ public class Interstitial {
     }
 
     /**
-     * Returns the mediation adapter class name. In the case of a mediated ad response, this is the
-     * name of the class that was responsible for performing the ad request and rendering the ad.
-     * For non-mediated responses, this value will be {@code null}.
-     */
-    public String getMediationAdapterClassName() {
-        return interstitial != null ? interstitial.getMediationAdapterClassName() : null;
-    }
-
-    /**
      * Returns the request response info.
      */
     public ResponseInfo getResponseInfo() {

@@ -59,7 +59,7 @@ static BOOL _pauseOnBackground = NO;
 + (UIViewController *)unityGLViewController {
   id<UIApplicationDelegate> appDelegate = [UIApplication sharedApplication].delegate;
   if ([appDelegate respondsToSelector:@selector(rootViewController)]) {
-    return [[UIApplication sharedApplication].delegate rootViewController];
+    return [[[UIApplication sharedApplication].delegate window] rootViewController];
   }
   return nil;
 }

@@ -2,7 +2,7 @@
 
 #import <Foundation/Foundation.h>
 
-#import "GoogleMobileAds.h"
+#import <GoogleMobileAds/GoogleMobileAds.h>
 
 #import "GADUTypes.h"
 
@@ -39,9 +39,6 @@
 
 /// The paid event callback into Unity.
 @property(nonatomic, assign) GADURewardedAdPaidEventCallback paidEventCallback;
-
-// Returns the mediation adapter class name.
-@property(nonatomic, readonly, copy) NSString *mediationAdapterClassName;
 
 // Returns the rewarded ad response info.
 @property(nonatomic, readonly, copy) GADResponseInfo *responseInfo;

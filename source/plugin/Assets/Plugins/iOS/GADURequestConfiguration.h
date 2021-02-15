@@ -1,5 +1,5 @@
 #import <Foundation/Foundation.h>
-#import "GoogleMobileAds.h"
+#import <GoogleMobileAds/GoogleMobileAds.h>
 typedef NS_ENUM(NSInteger, GADURequestConfigurationTagForChildDirectedTreatment) {
   kGADURequestConfigurationTagForChildDirectedTreatmentTrue = 1,          // true.
   kGADURequestConfigurationTagForChildDirectedTreatmentFalse = 0,         /// false

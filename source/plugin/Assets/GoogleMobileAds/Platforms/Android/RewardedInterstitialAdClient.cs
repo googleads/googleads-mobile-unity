@@ -100,8 +100,7 @@ namespace GoogleMobileAds.Android
             {
                 LoadAdErrorClientEventArgs args = new LoadAdErrorClientEventArgs()
                 {
-                    LoadAdErrorClient = new LoadAdErrorClient(error),
-                    Message = error.Call<string>("getMessage")
+                    LoadAdErrorClient = new LoadAdErrorClient(error)
                 };
                 this.OnAdFailedToLoad(this, args);
             }
@@ -114,7 +113,6 @@ namespace GoogleMobileAds.Android
                 AdErrorClientEventArgs args = new AdErrorClientEventArgs()
                 {
                     AdErrorClient = new AdErrorClient(error),
-                    Message = error.Call<string>("getMessage")
                 };
                 this.OnAdFailedToPresentFullScreenContent(this, args);
             }

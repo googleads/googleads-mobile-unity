@@ -2,7 +2,7 @@
 
 #import <Foundation/Foundation.h>
 
-#import "GoogleMobileAds.h"
+#import <GoogleMobileAds/GoogleMobileAds.h>
 
 #import "GADUTypes.h"
 

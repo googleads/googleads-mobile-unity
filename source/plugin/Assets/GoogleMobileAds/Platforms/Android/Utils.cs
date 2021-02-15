@@ -156,60 +156,6 @@ namespace GoogleMobileAds.Android
                 adRequestBuilder.Call<AndroidJavaObject>("addKeyword", keyword);
             }
 
-            foreach (string deviceId in request.TestDevices)
-            {
-                if (deviceId == AdRequest.TestDeviceSimulator)
-                {
-                    string emulatorDeviceId = new AndroidJavaClass(AdRequestClassName)
-                            .GetStatic<string>("DEVICE_ID_EMULATOR");
-                    adRequestBuilder.Call<AndroidJavaObject>("addTestDevice", emulatorDeviceId);
-                }
-                else
-                {
-                    adRequestBuilder.Call<AndroidJavaObject>("addTestDevice", deviceId);
-                }
-            }
-
-            if (request.Birthday.HasValue)
-            {
-                DateTime birthday = request.Birthday.GetValueOrDefault();
-                AndroidJavaObject birthdayObject = new AndroidJavaObject(
-                        DateClassName, birthday.Year, birthday.Month, birthday.Day);
-                adRequestBuilder.Call<AndroidJavaObject>("setBirthday", birthdayObject);
-            }
-
-            if (request.Gender.HasValue)
-            {
-                int? genderCode = null;
-                switch (request.Gender.GetValueOrDefault())
-                {
-                    case Api.Gender.Unknown:
-                        genderCode = new AndroidJavaClass(AdRequestClassName)
-                                .GetStatic<int>("GENDER_UNKNOWN");
-                        break;
-                    case Api.Gender.Male:
-                        genderCode = new AndroidJavaClass(AdRequestClassName)
-                                .GetStatic<int>("GENDER_MALE");
-                        break;
-                    case Api.Gender.Female:
-                        genderCode = new AndroidJavaClass(AdRequestClassName)
-                                .GetStatic<int>("GENDER_FEMALE");
-                        break;
-                }
-
-                if (genderCode.HasValue)
-                {
-                    adRequestBuilder.Call<AndroidJavaObject>("setGender", genderCode);
-                }
-            }
-
-            if (request.TagForChildDirectedTreatment.HasValue)
-            {
-                adRequestBuilder.Call<AndroidJavaObject>(
-                        "tagForChildDirectedTreatment",
-                        request.TagForChildDirectedTreatment.GetValueOrDefault());
-            }
-
             // Denote that the request is coming from this Unity plugin.
             adRequestBuilder.Call<AndroidJavaObject>(
                     "setRequestAgent",

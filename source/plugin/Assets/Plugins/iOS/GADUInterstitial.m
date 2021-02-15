@@ -57,10 +57,6 @@
   }
 }
 
-- (NSString *)mediationAdapterClassName {
-  return self.interstitial.responseInfo.adNetworkClassName;
-}
-
 - (GADResponseInfo *)responseInfo {
   return self.interstitial.responseInfo;
 }
@@ -106,12 +102,6 @@
 
   if (self.didDismissCallback) {
     self.didDismissCallback(self.interstitialClient);
-  }
-}
-
-- (void)interstitialWillLeaveApplication:(GADInterstitial *)ad {
-  if (self.willLeaveCallback) {
-    self.willLeaveCallback(self.interstitialClient);
   }
 }
 

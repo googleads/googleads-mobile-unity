@@ -1,14 +1,10 @@
 // Copyright 2016 Google Inc. All Rights Reserved.
 
 #import <Foundation/Foundation.h>
-#import <UIKit/UIKit.h>
+
 #import <GoogleMobileAds/GoogleMobileAds.h>
 
 #import "GADUTypes.h"
-
-// Externally defined Unity methods.
-extern BOOL UnityIsPaused();
-extern void UnityPause(BOOL pause);
 
 /// Returns YES if the operating system is at least the supplied major version.
 BOOL GADUIsOperatingSystemAtLeastVersion(NSInteger majorVersion);

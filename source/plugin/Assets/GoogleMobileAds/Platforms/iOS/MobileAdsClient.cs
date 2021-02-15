@@ -42,11 +42,6 @@ namespace GoogleMobileAds.iOS
             }
         }
 
-        public void Initialize(string appId)
-        {
-            Externs.GADUInitialize(appId);
-        }
-
         public void Initialize(Action<IInitializationStatusClient> initCompleteAction)
         {
             this.initCompleteAction = initCompleteAction;

@@ -142,13 +142,6 @@ namespace GoogleMobileAds.iOS
             };
         }
 
-        // Returns the mediation adapter class name.
-        public string MediationAdapterClassName()
-        {
-            return Utils.PtrToString(
-                Externs.GADUMediationAdapterClassNameForRewardedAd(this.RewardedAdPtr));
-        }
-
         public IResponseInfoClient GetResponseInfoClient()
         {
             return new ResponseInfoClient(ResponseInfoClientType.AdLoaded, this.RewardedAdPtr);
@@ -194,8 +187,7 @@ namespace GoogleMobileAds.iOS
             {
                 LoadAdErrorClientEventArgs args = new LoadAdErrorClientEventArgs()
                 {
-                    LoadAdErrorClient = new LoadAdErrorClient(error),
-                    Message = Externs.GADUGetAdErrorMessage(error)
+                    LoadAdErrorClient = new LoadAdErrorClient(error)
                 };
                 client.OnAdFailedToLoad(client, args);
             }
@@ -210,8 +202,7 @@ namespace GoogleMobileAds.iOS
             {
                 AdErrorClientEventArgs args = new AdErrorClientEventArgs()
                 {
-                    AdErrorClient = new AdErrorClient(error),
-                    Message = Externs.GADUGetAdErrorMessage(error)
+                    AdErrorClient = new AdErrorClient(error)
                 };
                 client.OnAdFailedToShow(client, args);
             }

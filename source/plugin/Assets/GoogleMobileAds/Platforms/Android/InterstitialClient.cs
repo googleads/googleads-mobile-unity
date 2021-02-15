@@ -41,7 +41,6 @@ namespace GoogleMobileAds.Android
 
         public event EventHandler<EventArgs> OnAdClosed;
 
-        public event EventHandler<EventArgs> OnAdLeavingApplication;
 
         public event EventHandler<AdValueEventArgs> OnPaidEvent;
 
@@ -77,12 +76,6 @@ namespace GoogleMobileAds.Android
             this.interstitial.Call("destroy");
         }
 
-        // Returns the mediation adapter class name.
-        public string MediationAdapterClassName()
-        {
-            return this.interstitial.Call<string>("getMediationAdapterClassName");
-        }
-
         // Returns ad request response info
         public IResponseInfoClient GetResponseInfoClient()
         {
@@ -108,8 +101,7 @@ namespace GoogleMobileAds.Android
             {
                 LoadAdErrorClientEventArgs args = new LoadAdErrorClientEventArgs()
                 {
-                    LoadAdErrorClient = new LoadAdErrorClient(error),
-                    Message = error.Call<string>("getMessage")
+                    LoadAdErrorClient = new LoadAdErrorClient(error)
                 };
                 this.OnAdFailedToLoad(this, args);
             }
@@ -128,14 +120,6 @@ namespace GoogleMobileAds.Android
             if (this.OnAdClosed != null)
             {
                 this.OnAdClosed(this, EventArgs.Empty);
-            }
-        }
-
-        public void onAdLeftApplication()
-        {
-            if (this.OnAdLeavingApplication != null)
-            {
-                this.OnAdLeavingApplication(this, EventArgs.Empty);
             }
         }
 

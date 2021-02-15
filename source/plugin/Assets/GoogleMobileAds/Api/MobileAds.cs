@@ -57,12 +57,6 @@ namespace GoogleMobileAds.Api
                 return instance;
             }
         }
-        [Obsolete("Initialize(string appId) is deprecated, use Initialize(Action<InitializationStatus> initCompleteAction) instead.")]
-        public static void Initialize(string appId)
-        {
-            Instance.client.Initialize(appId);
-            MobileAdsEventExecutor.Initialize();
-        }
 
         public static void Initialize(Action<InitializationStatus> initCompleteAction)
         {

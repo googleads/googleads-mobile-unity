@@ -39,9 +39,6 @@ namespace GoogleMobileAds.iOS
 
         internal delegate void GADUInterstitialDidDismissScreenCallback(IntPtr interstitialClient);
 
-        internal delegate void GADUInterstitialWillLeaveApplicationCallback(
-                IntPtr interstitialClient);
-
         internal delegate void GADUInterstitialPaidEventCallback(
             IntPtr interstitialClient, int precision, long value, string currencyCode);
 
@@ -54,8 +51,6 @@ namespace GoogleMobileAds.iOS
         public event EventHandler<EventArgs> OnAdOpening;
 
         public event EventHandler<EventArgs> OnAdClosed;
-
-        public event EventHandler<EventArgs> OnAdLeavingApplication;
 
         public event EventHandler<AdValueEventArgs> OnPaidEvent;
 
@@ -88,9 +83,6 @@ namespace GoogleMobileAds.iOS
                     InterstitialDidFailToReceiveAdWithErrorCallback,
                     InterstitialWillPresentScreenCallback,
                     InterstitialDidDismissScreenCallback,
-                    InterstitialWillLeaveApplicationCallback
-
-                    , // NO_LINT
                     InterstitialPaidEventCallback
 
                 );
@@ -120,12 +112,6 @@ namespace GoogleMobileAds.iOS
         public void DestroyInterstitial()
         {
             this.InterstitialPtr = IntPtr.Zero;
-        }
-
-        // Returns the mediation adapter class name.
-        public string MediationAdapterClassName()
-        {
-            return Utils.PtrToString(Externs.GADUMediationAdapterClassNameForInterstitial(this.InterstitialPtr));
         }
 
         public IResponseInfoClient GetResponseInfoClient()
@@ -167,8 +153,7 @@ namespace GoogleMobileAds.iOS
             {
                 LoadAdErrorClientEventArgs args = new LoadAdErrorClientEventArgs()
                 {
-                    LoadAdErrorClient = new LoadAdErrorClient(error),
-                    Message = Externs.GADUGetAdErrorMessage(error)
+                    LoadAdErrorClient = new LoadAdErrorClient(error)
                 };
                 client.OnAdFailedToLoad(client, args);
             }
@@ -191,16 +176,6 @@ namespace GoogleMobileAds.iOS
             if (client.OnAdClosed != null)
             {
                 client.OnAdClosed(client, EventArgs.Empty);
-            }
-        }
-
-        [MonoPInvokeCallback(typeof(GADUInterstitialWillLeaveApplicationCallback))]
-        private static void InterstitialWillLeaveApplicationCallback(IntPtr interstitialClient)
-        {
-            InterstitialClient client = IntPtrToInterstitialClient(interstitialClient);
-            if (client.OnAdLeavingApplication != null)
-            {
-                client.OnAdLeavingApplication(client, EventArgs.Empty);
             }
         }
 

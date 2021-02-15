@@ -20,8 +20,6 @@ namespace GoogleMobileAds.Common
 {
     public interface IMobileAdsClient
     {
-        // Initialize the Mobile Ads SDK.
-        void Initialize(string appId);
 
         // Initialize the Mobile Ads SDK and mediation adapters.
         void Initialize(Action<IInitializationStatusClient> initCompleteAction);

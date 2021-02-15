@@ -1,5 +1,6 @@
 // Copyright 2014 Google Inc. All Rights Reserved.
 
+#import <GoogleMobileAds/GoogleMobileAds.h>
 #import "GADUAdNetworkExtras.h"
 #import "GADUBanner.h"
 #import "GADUInterstitial.h"
@@ -10,7 +11,6 @@
 #import "GADURewardedAd.h"
 #import "GADURewardedInterstitialAd.h"
 #import "GADUTypes.h"
-#import "GoogleMobileAds.h"
 
 /// Returns an NSString copying the characters from |bytes|, a C array of UTF8-encoded bytes.
 /// Returns nil if |bytes| is NULL.
@@ -39,11 +39,6 @@ static const char **cStringArrayCopy(NSArray *array) {
     stringArray[i] = cStringCopy([array[i] UTF8String]);
   }
   return stringArray;
-}
-
-/// Configures the SDK using the settings associated with the given application ID.
-void GADUInitialize(const char *appId) {
-  [GADMobileAds configureWithApplicationID:GADUStringFromUTF8String(appId)];
 }
 
 void GADUInitializeWithCallback(GADUTypeMobileAdsClientRef *mobileAdsClientRef,
@@ -267,14 +262,12 @@ void GADUSetBannerCallbacks(GADUTypeBannerRef banner,
                             GADUAdViewDidFailToReceiveAdWithErrorCallback adFailedCallback,
                             GADUAdViewWillPresentScreenCallback willPresentCallback,
                             GADUAdViewDidDismissScreenCallback didDismissCallback,
-                            GADUAdViewWillLeaveApplicationCallback willLeaveCallback,
                             GADUAdViewPaidEventCallback paidEventCallback) {
   GADUBanner *internalBanner = (__bridge GADUBanner *)banner;
   internalBanner.adReceivedCallback = adReceivedCallback;
   internalBanner.adFailedCallback = adFailedCallback;
   internalBanner.willPresentCallback = willPresentCallback;
   internalBanner.didDismissCallback = didDismissCallback;
-  internalBanner.willLeaveCallback = willLeaveCallback;
 
   internalBanner.paidEventCallback = paidEventCallback;
 }
@@ -285,15 +278,12 @@ void GADUSetInterstitialCallbacks(
     GADUInterstitialDidFailToReceiveAdWithErrorCallback adFailedCallback,
     GADUInterstitialWillPresentScreenCallback willPresentCallback,
     GADUInterstitialDidDismissScreenCallback didDismissCallback,
-    GADUInterstitialWillLeaveApplicationCallback willLeaveCallback,
     GADUInterstitialPaidEventCallback paidEventCallback) {
   GADUInterstitial *internalInterstitial = (__bridge GADUInterstitial *)interstitial;
   internalInterstitial.adReceivedCallback = adReceivedCallback;
   internalInterstitial.adFailedCallback = adFailedCallback;
   internalInterstitial.willPresentCallback = willPresentCallback;
   internalInterstitial.didDismissCallback = didDismissCallback;
-  internalInterstitial.willLeaveCallback = willLeaveCallback;
-
   internalInterstitial.paidEventCallback = paidEventCallback;
 }
 
@@ -560,12 +550,6 @@ GADUTypeRequestRef GADUCreateRequest() {
   return (__bridge GADUTypeRequestRef)(request);
 }
 
-/// Adds a test device to the GADRequest.
-void GADUAddTestDevice(GADUTypeRequestRef request, const char *deviceID) {
-  GADURequest *internalRequest = (__bridge GADURequest *)request;
-  [internalRequest addTestDevice:GADUStringFromUTF8String(deviceID)];
-}
-
 /// Adds a keyword to the GADRequest.
 void GADUAddKeyword(GADUTypeRequestRef request, const char *keyword) {
   GADURequest *internalRequest = (__bridge GADURequest *)request;
@@ -576,26 +560,6 @@ void GADUAddKeyword(GADUTypeRequestRef request, const char *keyword) {
 void GADUSetRequestAgent(GADUTypeRequestRef request, const char *requestAgent) {
   GADURequest *internalRequest = (__bridge GADURequest *)request;
   [internalRequest setRequestAgent:GADUStringFromUTF8String(requestAgent)];
-}
-
-/// Sets the user's birthday on the GADRequest.
-void GADUSetBirthday(GADUTypeRequestRef request, NSInteger year, NSInteger month, NSInteger day) {
-  GADURequest *internalRequest = (__bridge GADURequest *)request;
-  [internalRequest setBirthdayWithMonth:month day:day year:year];
-}
-
-/// Sets the user's gender on the GADRequest.
-void GADUSetGender(GADUTypeRequestRef request, NSInteger genderCode) {
-  GADURequest *internalRequest = (__bridge GADURequest *)request;
-  [internalRequest setGenderWithCode:genderCode];
-}
-
-/// Tags a GADRequest to specify whether it should be treated as child-directed for purposes of the
-/// Children’s Online Privacy Protection Act (COPPA) -
-/// http://business.ftc.gov/privacy-and-security/childrens-privacy.
-void GADUTagForChildDirectedTreatment(GADUTypeRequestRef request, BOOL childDirectedTreatment) {
-  GADURequest *internalRequest = (__bridge GADURequest *)request;
-  internalRequest.tagForChildDirectedTreatment = childDirectedTreatment;
 }
 
 /// Creates an empty GADServerSideVerificationOptions and returns its reference.
@@ -811,19 +775,4 @@ void GADURelease(GADUTypeRef ref) {
     GADUObjectCache *cache = [GADUObjectCache sharedInstance];
     [cache removeObjectForKey:[(__bridge NSObject *)ref gadu_referenceKey]];
   }
-}
-
-const char *GADUMediationAdapterClassNameForBannerView(GADUTypeBannerRef bannerView) {
-  GADUBanner *banner = (__bridge GADUBanner *)bannerView;
-  return cStringCopy(banner.mediationAdapterClassName.UTF8String);
-}
-
-const char *GADUMediationAdapterClassNameForRewardedAd(GADUTypeRewardedAdRef rewardedAd) {
-  GADURewardedAd *rewarded = (__bridge GADURewardedAd *)rewardedAd;
-  return cStringCopy(rewarded.mediationAdapterClassName.UTF8String);
-}
-
-const char *GADUMediationAdapterClassNameForInterstitial(GADUTypeInterstitialRef interstitial) {
-  GADUInterstitial *interstitialAd = (__bridge GADUInterstitial *)interstitial;
-  return cStringCopy(interstitialAd.mediationAdapterClassName.UTF8String);
 }

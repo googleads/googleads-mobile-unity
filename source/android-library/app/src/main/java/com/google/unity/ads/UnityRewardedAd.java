@@ -232,30 +232,6 @@ public class UnityRewardedAd {
             });
     }
 
-    public String getMediationAdapterClassName() {
-        FutureTask<String> task = new FutureTask<>(new Callable<String>() {
-            @Override
-            public String call() {
-                return rewardedAd.getMediationAdapterClassName();
-            }
-        });
-        activity.runOnUiThread(task);
-
-        String result = null;
-        try {
-            result = task.get();
-        } catch (InterruptedException e) {
-            Log.e(PluginUtils.LOGTAG,
-                    String.format("Unable to check rewarded ad adapter class name: %s",
-                            e.getLocalizedMessage()));
-        } catch (ExecutionException e) {
-            Log.e(PluginUtils.LOGTAG,
-                    String.format("Unable to check rewarded ad adapter class name: %s",
-                            e.getLocalizedMessage()));
-        }
-        return result;
-    }
-
     /**
      * Returns the request response info.
      */

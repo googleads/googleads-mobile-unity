@@ -28,8 +28,6 @@ namespace GoogleMobileAds.Common
         event EventHandler<EventArgs> OnAdOpening;
         // Ad event fired when the banner ad is closed.
         event EventHandler<EventArgs> OnAdClosed;
-        // Ad event fired when the banner ad is leaving the application.
-        event EventHandler<EventArgs> OnAdLeavingApplication;
         // Ad event fired when the banner ad is estimated to have earned money.
         event EventHandler<AdValueEventArgs> OnPaidEvent;
 
@@ -62,9 +60,6 @@ namespace GoogleMobileAds.Common
 
         // Set the position of the banner view using custom position.
         void SetPosition(int x, int y);
-
-        // Returns the mediation adapter class name.
-        string MediationAdapterClassName();
 
         // Returns ad request Response info client.
         IResponseInfoClient GetResponseInfoClient();

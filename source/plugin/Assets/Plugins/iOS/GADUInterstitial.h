@@ -2,7 +2,7 @@
 
 #import <Foundation/Foundation.h>
 
-#import "GoogleMobileAds.h"
+#import <GoogleMobileAds/GoogleMobileAds.h>
 
 #import "GADUTypes.h"
 
@@ -32,14 +32,8 @@
 /// The did dismiss screen callback into Unity.
 @property(nonatomic, assign) GADUInterstitialDidDismissScreenCallback didDismissCallback;
 
-/// The will leave application callback into Unity.
-@property(nonatomic, assign) GADUInterstitialWillLeaveApplicationCallback willLeaveCallback;
-
 /// The paid event callback into Unity.
 @property(nonatomic, assign) GADUInterstitialPaidEventCallback paidEventCallback;
-
-// Returns the mediation adapter class name.
-@property(nonatomic, readonly, copy) NSString *mediationAdapterClassName;
 
 // Returns the interstitial ad response info.
 @property(nonatomic, readonly, copy) GADResponseInfo *responseInfo;

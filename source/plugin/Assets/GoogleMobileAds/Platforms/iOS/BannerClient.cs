@@ -39,8 +39,6 @@ namespace GoogleMobileAds.iOS
 
         internal delegate void GADUAdViewDidDismissScreenCallback(IntPtr bannerClient);
 
-        internal delegate void GADUAdViewWillLeaveApplicationCallback(IntPtr bannerClient);
-
         internal delegate void GADUAdViewPaidEventCallback(
             IntPtr bannerClient, int precision, long value, string currencyCode);
 
@@ -53,8 +51,6 @@ namespace GoogleMobileAds.iOS
         public event EventHandler<EventArgs> OnAdOpening;
 
         public event EventHandler<EventArgs> OnAdClosed;
-
-        public event EventHandler<EventArgs> OnAdLeavingApplication;
 
         public event EventHandler<AdValueEventArgs> OnPaidEvent;
 
@@ -109,7 +105,6 @@ namespace GoogleMobileAds.iOS
                     AdViewDidFailToReceiveAdWithErrorCallback,
                     AdViewWillPresentScreenCallback,
                     AdViewDidDismissScreenCallback,
-                    AdViewWillLeaveApplicationCallback,
                     AdViewPaidEventCallback
                     );
         }
@@ -156,7 +151,6 @@ namespace GoogleMobileAds.iOS
                 AdViewDidFailToReceiveAdWithErrorCallback,
                 AdViewWillPresentScreenCallback,
                 AdViewDidDismissScreenCallback,
-                AdViewWillLeaveApplicationCallback,
                 AdViewPaidEventCallback
                 );
         }
@@ -212,12 +206,6 @@ namespace GoogleMobileAds.iOS
             Externs.GADUSetBannerViewCustomPosition(this.BannerViewPtr, x, y);
         }
 
-        // Returns the mediation adapter class name.
-        public string MediationAdapterClassName()
-        {
-            return Utils.PtrToString(Externs.GADUMediationAdapterClassNameForBannerView(this.BannerViewPtr));
-        }
-
         public IResponseInfoClient GetResponseInfoClient()
         {
             return new ResponseInfoClient(ResponseInfoClientType.AdLoaded, this.BannerViewPtr);
@@ -257,8 +245,7 @@ namespace GoogleMobileAds.iOS
             {
                 LoadAdErrorClientEventArgs args = new LoadAdErrorClientEventArgs()
                 {
-                    LoadAdErrorClient = new LoadAdErrorClient(error),
-                    Message = Externs.GADUGetAdErrorMessage(error)
+                    LoadAdErrorClient = new LoadAdErrorClient(error)
                 };
                 client.OnAdFailedToLoad(client, args);
             }
@@ -281,16 +268,6 @@ namespace GoogleMobileAds.iOS
             if (client.OnAdClosed != null)
             {
                 client.OnAdClosed(client, EventArgs.Empty);
-            }
-        }
-
-        [MonoPInvokeCallback(typeof(GADUAdViewWillLeaveApplicationCallback))]
-        private static void AdViewWillLeaveApplicationCallback(IntPtr bannerClient)
-        {
-            BannerClient client = IntPtrToBannerClient(bannerClient);
-            if (client.OnAdLeavingApplication != null)
-            {
-                client.OnAdLeavingApplication(client, EventArgs.Empty);
             }
         }
 

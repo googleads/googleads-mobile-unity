@@ -44,9 +44,6 @@ namespace GoogleMobileAds.Common
         // Determines whether the rewarded ad has loaded.
         bool IsLoaded();
 
-        // Returns the mediation adapter class name.
-        string MediationAdapterClassName();
-
         // Returns the reward item for the loaded rewarded ad.
         Reward GetRewardItem();
 

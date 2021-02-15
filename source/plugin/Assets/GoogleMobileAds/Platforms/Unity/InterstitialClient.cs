@@ -32,8 +32,6 @@ namespace GoogleMobileAds.Unity
         public event EventHandler<EventArgs> OnAdOpening;
         // Ad event fired when the interstitial ad is closed.
         public event EventHandler<EventArgs> OnAdClosed;
-        // Ad event fired when the interstitial ad is leaving the application.
-        public event EventHandler<EventArgs> OnAdLeavingApplication;
         // Ad event fired when the interstitial ad is estimated to have earned money.
         public event EventHandler<AdValueEventArgs> OnPaidEvent;
 
@@ -69,7 +67,6 @@ namespace GoogleMobileAds.Unity
         private void CreateButtonBehavior()
         {
             buttonBehaviour = new ButtonBehaviour();
-            buttonBehaviour.OnLeavingApplication += OnAdLeavingApplication;
         }
 
         // Creates an InterstitialAd.
@@ -103,8 +100,7 @@ namespace GoogleMobileAds.Unity
                 {
                     OnAdFailedToLoad.Invoke(this, new LoadAdErrorClientEventArgs()
                     {
-                        LoadAdErrorClient = new LoadAdErrorClient(),
-                        Message = "Prefab Ad is Null"
+                        LoadAdErrorClient = new LoadAdErrorClient()
                     });
                 }
             }

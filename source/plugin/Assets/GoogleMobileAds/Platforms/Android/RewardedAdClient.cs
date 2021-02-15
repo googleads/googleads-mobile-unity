@@ -90,12 +90,6 @@ namespace GoogleMobileAds.Android
             };
         }
 
-        // Returns the mediation adapter class name.
-        public string MediationAdapterClassName()
-        {
-            return this.androidRewardedAd.Call<string>("getMediationAdapterClassName");
-        }
-
         // Returns ad request response info
         public IResponseInfoClient GetResponseInfoClient()
         {
@@ -105,8 +99,7 @@ namespace GoogleMobileAds.Android
 
         #endregion
 
-        #region Callbacks from UnityRewardedAdListener.
-
+        #region Callbacks from UnityRewardedAdCallback
         void onRewardedAdLoaded()
         {
             if (this.OnAdLoaded != null)
@@ -121,8 +114,7 @@ namespace GoogleMobileAds.Android
             {
                 LoadAdErrorClientEventArgs args = new LoadAdErrorClientEventArgs()
                 {
-                    LoadAdErrorClient = new LoadAdErrorClient(error),
-                    Message = error.Call<string>("getMessage")
+                    LoadAdErrorClient = new LoadAdErrorClient(error)
                 };
                 this.OnAdFailedToLoad(this, args);
             }
@@ -134,8 +126,7 @@ namespace GoogleMobileAds.Android
             {
                 AdErrorClientEventArgs args = new AdErrorClientEventArgs()
                 {
-                    AdErrorClient = new AdErrorClient(error),
-                    Message = error.Call<string>("getMessage")
+                    AdErrorClient = new AdErrorClient(error)
                 };
 
                 this.OnAdFailedToShow(this, args);

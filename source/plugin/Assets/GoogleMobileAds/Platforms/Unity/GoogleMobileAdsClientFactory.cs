@@ -41,11 +41,6 @@ namespace GoogleMobileAds
       return new GoogleMobileAds.Common.DummyClient();
      }
 
-    public IRewardBasedVideoAdClient BuildRewardBasedVideoAdClient()
-    {
-      return new GoogleMobileAds.Common.DummyClient();
-    }
-
     public IRewardedAdClient BuildRewardedAdClient()
     {
       if (Application.platform == RuntimePlatform.OSXEditor || Application.platform == RuntimePlatform.WindowsEditor)

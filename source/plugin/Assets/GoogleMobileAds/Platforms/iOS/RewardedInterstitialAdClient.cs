@@ -161,8 +161,7 @@ namespace GoogleMobileAds.iOS
             {
                 LoadAdErrorClientEventArgs args = new LoadAdErrorClientEventArgs()
                 {
-                    LoadAdErrorClient = new LoadAdErrorClient(error),
-                    Message = Externs.GADUGetAdErrorMessage(error)
+                    LoadAdErrorClient = new LoadAdErrorClient(error)
                 };
                 client.OnAdFailedToLoad(client, args);
             }
@@ -215,8 +214,7 @@ namespace GoogleMobileAds.iOS
             {
                 AdErrorClientEventArgs args = new AdErrorClientEventArgs()
                 {
-                    AdErrorClient = new AdErrorClient(error),
-                    Message = Externs.GADUGetAdErrorMessage(error)
+                    AdErrorClient = new AdErrorClient(error)
                 };
                 client.OnAdFailedToPresentFullScreenContent(client, args);
             }

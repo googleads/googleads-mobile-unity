@@ -115,8 +115,7 @@ namespace GoogleMobileAds.Unity
                 {
                     OnAdFailedToLoad.Invoke(this, new LoadAdErrorClientEventArgs()
                     {
-                        LoadAdErrorClient = new LoadAdErrorClient(),
-                        Message = "Prefab Ad is Null"
+                        LoadAdErrorClient = new LoadAdErrorClient()
                     });
                 }
             }
@@ -166,8 +165,7 @@ namespace GoogleMobileAds.Unity
                 {
                     OnAdFailedToPresentFullScreenContent.Invoke(this, new AdErrorClientEventArgs()
                     {
-                        AdErrorClient = new AdErrorClient(),
-                        Message = "No Ad Loaded"
+                        AdErrorClient = new AdErrorClient()
                     });
                 }
             }

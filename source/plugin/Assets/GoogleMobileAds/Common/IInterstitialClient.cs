@@ -28,8 +28,6 @@ namespace GoogleMobileAds.Common
         event EventHandler<EventArgs> OnAdOpening;
         // Ad event fired when the interstitial ad is closed.
         event EventHandler<EventArgs> OnAdClosed;
-        // Ad event fired when the interstitial ad is leaving the application.
-        event EventHandler<EventArgs> OnAdLeavingApplication;
         // Ad event fired when the interstitial ad is estimated to have earned money.
         event EventHandler<AdValueEventArgs> OnPaidEvent;
 
@@ -48,9 +46,6 @@ namespace GoogleMobileAds.Common
 
         // Destroys an InterstitialAd.
         void DestroyInterstitial();
-
-        // Returns the mediation adapter class name.
-        string MediationAdapterClassName();
 
         // Returns ad request Response info client.
         IResponseInfoClient GetResponseInfoClient();

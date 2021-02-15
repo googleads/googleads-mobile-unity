@@ -44,8 +44,7 @@ namespace GoogleMobileAds.Api
                     LoadAdError loadAdError = new LoadAdError(args.LoadAdErrorClient);
                     this.OnAdFailedToLoad(this, new AdFailedToLoadEventArgs()
                     {
-                        LoadAdError = loadAdError,
-                        Message = loadAdError.GetMessage()
+                        LoadAdError = loadAdError
                     });
                 }
             };
@@ -63,14 +62,6 @@ namespace GoogleMobileAds.Api
                 if (this.OnAdClosed != null)
                 {
                     this.OnAdClosed(this, args);
-                }
-            };
-
-            this.client.OnAdLeavingApplication += (sender, args) =>
-            {
-                if (this.OnAdLeavingApplication != null)
-                {
-                    this.OnAdLeavingApplication(this, args);
                 }
             };
 
@@ -93,7 +84,6 @@ namespace GoogleMobileAds.Api
 
         public event EventHandler<EventArgs> OnAdClosed;
 
-        public event EventHandler<EventArgs> OnAdLeavingApplication;
 
         // Called when the ad is estimated to have earned money.
         public event EventHandler<AdValueEventArgs> OnPaidEvent;
@@ -120,13 +110,6 @@ namespace GoogleMobileAds.Api
         public void Destroy()
         {
             client.DestroyInterstitial();
-        }
-
-        // Returns the mediation adapter class name.
-        [Obsolete("MediationAdapterClassName() is deprecated, use GetResponseInfo.MediationAdapterClassName() instead.")]
-        public string MediationAdapterClassName()
-        {
-            return this.client.MediationAdapterClassName();
         }
 
         // Returns ad request response info.

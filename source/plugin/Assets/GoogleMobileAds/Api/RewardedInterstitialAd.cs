@@ -36,8 +36,7 @@ namespace GoogleMobileAds.Api
                     AdError adError = new AdError(args.AdErrorClient);
                     this.OnAdFailedToPresentFullScreenContent(this, new AdErrorEventArgs()
                     {
-                        AdError = adError,
-                        Message = adError.GetMessage()
+                        AdError = adError
                     });
                 }
             };
@@ -101,8 +100,7 @@ namespace GoogleMobileAds.Api
                     LoadAdError loadAdError = new LoadAdError(args.LoadAdErrorClient);
                     adLoadCallback(null, new AdFailedToLoadEventArgs()
                     {
-                        LoadAdError = loadAdError,
-                        Message = loadAdError.GetMessage()
+                        LoadAdError = loadAdError
                     });
                     loadingClients.Remove(client);
                 }

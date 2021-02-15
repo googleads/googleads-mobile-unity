@@ -120,10 +120,6 @@ typedef void (*GADUInterstitialWillDismissScreenCallback)(
 typedef void (*GADUInterstitialDidDismissScreenCallback)(
     GADUTypeInterstitialClientRef *interstitialClient);
 
-/// Callback for when an application will background or terminate because of an interstitial click.
-typedef void (*GADUInterstitialWillLeaveApplicationCallback)(
-    GADUTypeInterstitialClientRef *interstitialClient);
-
 /// Callback when an interstitial ad is estimated to have earned money.
 typedef void (*GADUInterstitialPaidEventCallback)(GADUTypeInterstitialClientRef *interstitialClient,
                                                   int precision, int64_t value,

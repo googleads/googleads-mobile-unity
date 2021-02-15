@@ -26,24 +26,12 @@ namespace GoogleMobileAds.Api
 
         private AdRequest(Builder builder)
         {
-            this.TestDevices = new List<string>(builder.TestDevices);
             this.Keywords = new HashSet<string>(builder.Keywords);
-            this.Birthday = builder.Birthday;
-            this.Gender = builder.Gender;
-            this.TagForChildDirectedTreatment = builder.ChildDirectedTreatmentTag;
             this.Extras = new Dictionary<string, string>(builder.Extras);
             this.MediationExtras = builder.MediationExtras;
         }
 
-        public List<string> TestDevices { get; private set; }
-
         public HashSet<string> Keywords { get; private set; }
-
-        public DateTime? Birthday { get; private set; }
-
-        public Gender? Gender { get; private set; }
-
-        public bool? TagForChildDirectedTreatment { get; private set; }
 
         public Dictionary<string, string> Extras { get; private set; }
 
@@ -53,24 +41,12 @@ namespace GoogleMobileAds.Api
         {
             public Builder()
             {
-                this.TestDevices = new List<string>();
                 this.Keywords = new HashSet<string>();
-                this.Birthday = null;
-                this.Gender = null;
-                this.ChildDirectedTreatmentTag = null;
                 this.Extras = new Dictionary<string, string>();
                 this.MediationExtras = new List<MediationExtras>();
             }
 
-            internal List<string> TestDevices { get; private set; }
-
             internal HashSet<string> Keywords { get; private set; }
-
-            internal DateTime? Birthday { get; private set; }
-
-            internal Gender? Gender { get; private set; }
-
-            internal bool? ChildDirectedTreatmentTag { get; private set; }
 
             internal Dictionary<string, string> Extras { get; private set; }
 
@@ -82,38 +58,14 @@ namespace GoogleMobileAds.Api
                 return this;
             }
 
-            public Builder AddTestDevice(string deviceId)
-            {
-                this.TestDevices.Add(deviceId);
-                return this;
-            }
-
             public AdRequest Build()
             {
                 return new AdRequest(this);
             }
 
-            public Builder SetBirthday(DateTime birthday)
-            {
-                this.Birthday = birthday;
-                return this;
-            }
-
-            public Builder SetGender(Gender gender)
-            {
-                this.Gender = gender;
-                return this;
-            }
-
             public Builder AddMediationExtras(MediationExtras extras)
             {
                 this.MediationExtras.Add(extras);
-                return this;
-            }
-
-            public Builder TagForChildDirectedTreatment(bool tagForChildDirectedTreatment)
-            {
-                this.ChildDirectedTreatmentTag = tagForChildDirectedTreatment;
                 return this;
             }
 

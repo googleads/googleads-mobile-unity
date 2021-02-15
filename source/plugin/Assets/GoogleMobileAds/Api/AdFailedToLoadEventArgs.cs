@@ -20,8 +20,5 @@ namespace GoogleMobileAds.Api
     public class AdFailedToLoadEventArgs : EventArgs
     {
         public LoadAdError LoadAdError { get; set; }
-
-        [Obsolete ("Use LoadAdError.GetMessage() instead.")]
-        public string Message { get; set; }
     }
 }

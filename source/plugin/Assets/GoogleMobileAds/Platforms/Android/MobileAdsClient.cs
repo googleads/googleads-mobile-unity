@@ -36,15 +36,6 @@ namespace GoogleMobileAds.Android
             }
         }
 
-        public void Initialize(string appId)
-        {
-            AndroidJavaClass playerClass = new AndroidJavaClass(Utils.UnityActivityClassName);
-            AndroidJavaObject activity =
-                    playerClass.GetStatic<AndroidJavaObject>("currentActivity");
-            AndroidJavaClass mobileAdsClass = new AndroidJavaClass(Utils.MobileAdsClassName);
-            mobileAdsClass.CallStatic("initialize", activity, appId);
-        }
-
         public void Initialize(Action<IInitializationStatusClient> initCompleteAction)
         {
             this.initCompleteAction = initCompleteAction;

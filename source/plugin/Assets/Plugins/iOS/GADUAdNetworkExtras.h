@@ -1,6 +1,6 @@
 // Copyright 2016 Google Inc. All Rights Reserved.
 
-#import "GoogleMobileAds.h"
+#import <GoogleMobileAds/GoogleMobileAds.h>
 
 @protocol GADUAdNetworkExtras <NSObject>
 

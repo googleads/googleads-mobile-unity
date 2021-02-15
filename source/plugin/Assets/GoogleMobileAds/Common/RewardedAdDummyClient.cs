@@ -73,12 +73,6 @@ namespace GoogleMobileAds.Common
             Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
         }
 
-        public string MediationAdapterClassName()
-        {
-            Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
-            return null;
-        }
-
         public Reward GetRewardItem()
         {
             Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);

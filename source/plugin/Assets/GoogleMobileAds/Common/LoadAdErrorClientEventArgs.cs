@@ -20,7 +20,6 @@ namespace GoogleMobileAds.Common
     public class LoadAdErrorClientEventArgs : EventArgs
     {
         public ILoadAdErrorClient LoadAdErrorClient { get; set;}
-        public string Message {get; set;}
 
     }
 }
