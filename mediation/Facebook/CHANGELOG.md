@@ -1,5 +1,8 @@
 ## Facebook Unity Mediation Plugin Changelog
 
+#### Next Version
+- Added `Facebook.SetAdvertiserTrackingEnabled()` method to support iOS 14 requirements.
+
 #### Version 3.2.0
 - Supports [Facebook Android adapter version 6.2.0.1](https://github.com/googleads/googleads-mobile-android-mediation/blob/master/ThirdPartyAdapters/facebook/CHANGELOG.md#6201).
 - Supports [Facebook iOS adapter version 6.2.1.0](https://github.com/googleads/googleads-mobile-ios-mediation/blob/master/adapters/Facebook/CHANGELOG.md#version-6210).
