@@ -1,0 +1,11 @@
+syntax: regexp
+
+# Android plugin local settings
+^google3/java/com/google/android/libraries/admob/demo/unity/googlemobileads/source/android-library/local.properties
+
+# Android plugin generated files
+^google3/java/com/google/android/libraries/admob/demo/unity/googlemobileads/source/android-library/build/.*
+^google3/java/com/google/android/libraries/admob/demo/unity/googlemobileads/source/android-library/app/build/.*
+
+# Plugin settings file
+^google3/java/com/google/android/libraries/admob/demo/unity/googlemobileads/source/plugin/Assets/GoogleMobileAds/Resources/GoogleMobileAdsSettings\.(asset|meta)
