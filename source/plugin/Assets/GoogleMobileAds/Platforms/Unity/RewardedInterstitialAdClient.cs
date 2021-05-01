@@ -25,17 +25,14 @@ namespace GoogleMobileAds.Unity
 {
     public class RewardedInterstitialAdClient : RewardingAdBaseClient, IRewardedInterstitialAdClient
     {
-
-        // Creates a rewarded ad.
         public void CreateRewardedInterstitialAd()
         {
-
+            // No op.
         }
 
-        // Load a rewarded interstial ad.
-        public void LoadAd(string adUnitID, AdRequest request)
+        public void DestroyRewardedInterstitialAd()
         {
-            base.LoadAd(request);
+            // No op.
         }
     }
 }

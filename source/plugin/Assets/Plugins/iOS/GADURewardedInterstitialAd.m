@@ -114,4 +114,10 @@
   }
 }
 
+- (void)adDidRecordImpression:(nonnull id<GADFullScreenPresentingAd>)ad {
+  if (self.adDidRecordImpressionCallback) {
+    self.adDidRecordImpressionCallback(self.rewardedInterstitialAdClient);
+  }
+}
+
 @end

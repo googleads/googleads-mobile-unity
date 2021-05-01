@@ -1,4 +1,4 @@
-// Copyright (C) 2015 Google, Inc.
+// Copyright 2015-2021 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -24,30 +24,30 @@ namespace GoogleMobileAds.Common
         event EventHandler<EventArgs> OnAdLoaded;
         // Ad event fired when the interstitial ad has failed to load.
         event EventHandler<LoadAdErrorClientEventArgs> OnAdFailedToLoad;
-        // Ad event fired when the interstitial ad is opened.
-        event EventHandler<EventArgs> OnAdOpening;
-        // Ad event fired when the interstitial ad is closed.
-        event EventHandler<EventArgs> OnAdClosed;
         // Ad event fired when the interstitial ad is estimated to have earned money.
         event EventHandler<AdValueEventArgs> OnPaidEvent;
+        // Ad event fired when the full screen content has failed to be presented.
+        event EventHandler<AdErrorClientEventArgs> OnAdFailedToPresentFullScreenContent;
+        // Ad event fired when the full screen content has been presented.
+        event EventHandler<EventArgs> OnAdDidPresentFullScreenContent;
+        // Ad event fired when the full screen content has been dismissed.
+        event EventHandler<EventArgs> OnAdDidDismissFullScreenContent;
+        // Ad event fired when an ad impression has been recorded.
+        event EventHandler<EventArgs> OnAdDidRecordImpression;
 
+        // Creates an interstitial ad.
+        void CreateInterstitialAd();
 
-        // Creates an InterstitialAd.
-        void CreateInterstitialAd(string adUnitId);
+        // Loads an interstitial ad.
+        void LoadAd(string adUnitID, AdRequest request);
 
-        // Loads a new interstitial request.
-        void LoadAd(AdRequest request);
-
-        // Determines whether the interstitial has loaded.
-        bool IsLoaded();
-
-        // Shows the InterstitialAd.
-        void ShowInterstitial();
-
-        // Destroys an InterstitialAd.
-        void DestroyInterstitial();
+        // Shows the interstitial ad on the screen.
+        void Show();
 
         // Returns ad request Response info client.
         IResponseInfoClient GetResponseInfoClient();
+
+        // Destroys the interstitial ad.
+        void DestroyInterstitial();
     }
 }

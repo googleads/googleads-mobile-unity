@@ -25,39 +25,15 @@ namespace GoogleMobileAds.Unity
 {
     public class RewardedAdClient : RewardingAdBaseClient, IRewardedAdClient
     {
-        // Ad event fired when the rewarded ad is opened.
-        public event EventHandler<EventArgs> OnAdOpening;
-        // Ad event fired when the rewarded ad is closed.
-        public event EventHandler<EventArgs> OnAdClosed;
-        // Ad event fired when the rewarded ad has failed to load.
-        public new event EventHandler<LoadAdErrorClientEventArgs> OnAdFailedToLoad;
-        // Ad event fired when the rewarded ad has failed to show.
-        public event EventHandler<AdErrorClientEventArgs> OnAdFailedToShow;
-
-        // Load a rewarded ad.
-        public override void LoadAd(AdRequest request)
+        public void CreateRewardedAd()
         {
-            base.LoadAd(request);
-            if (OnAdOpening != null)
-            {
-                OnAdDidPresentFullScreenContent += OnAdOpening;
-            }
-            if (OnAdClosed != null)
-            {
-                OnAdDidDismissFullScreenContent += OnAdClosed;
-            }
-            if (OnAdFailedToShow != null)
-            {
-                OnAdFailedToPresentFullScreenContent += OnAdFailedToShow;
-            }
+            // No op.
         }
 
-        // Creates a rewarded ad.
-        public void CreateRewardedAd(string adUnitId)
+        public void DestroyRewardedAd()
         {
-
+            // No op.
         }
-
 
     }
 }

@@ -34,13 +34,14 @@ namespace GoogleMobileAds.Unity
         public event EventHandler<AdValueEventArgs> OnPaidEvent;
         // Ad event fired when the rewarding ad has rewarded the user.
         public event EventHandler<Reward> OnUserEarnedReward;
-
-        // Full screen content events
+        // Ad event fired when the full screen content has failed to be presented.
         public event EventHandler<AdErrorClientEventArgs> OnAdFailedToPresentFullScreenContent;
-
+        // Ad event fired when the full screen content has been presented.
         public event EventHandler<EventArgs> OnAdDidPresentFullScreenContent;
-
+        // Ad event fired when the full screen content has been dismissed.
         public event EventHandler<EventArgs> OnAdDidDismissFullScreenContent;
+        // Ad event fired when an ad impression has been recorded.
+        public event EventHandler<EventArgs> OnAdDidRecordImpression;
 
         internal static readonly Dictionary<AdSize, string> prefabAds = new Dictionary<AdSize, string>()
         {
@@ -91,7 +92,7 @@ namespace GoogleMobileAds.Unity
         }
 
         // Load a rewarding ad.
-        public virtual void LoadAd(AdRequest request)
+        public void LoadAd(string adUnitId, AdRequest request)
         {
             if (Screen.width > Screen.height) //Landscape
             {
@@ -121,19 +122,6 @@ namespace GoogleMobileAds.Unity
             }
         }
 
-        // Determines whether the rewarded ad has loaded.
-        public bool IsLoaded()
-        {
-            if (prefabAd != null)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-
         // Returns the reward item for the loaded rewarded ad.
         public Reward GetRewardItem()
         {
@@ -147,7 +135,7 @@ namespace GoogleMobileAds.Unity
         // Shows the rewarding ad on the screen.
         public void Show()
         {
-            if (IsLoaded() == true)
+            if (prefabAd != null)
             {
                 dummyAd = AdBehaviour.ShowAd(prefabAd, new Vector3(0, 0, 1));
                 AdBehaviour.PauseGame();

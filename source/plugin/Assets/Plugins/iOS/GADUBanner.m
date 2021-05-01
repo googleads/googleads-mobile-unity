@@ -225,12 +225,12 @@
 
 #pragma mark GADBannerViewDelegate implementation
 
-- (void)adViewDidReceiveAd:(GADBannerView *)adView {
+- (void)bannerViewDidReceiveAd:(GADBannerView *)bannerView {
   // Remove existing banner view from superview.
   [self.bannerView removeFromSuperview];
 
   // Add the new banner view.
-  self.bannerView = adView;
+  self.bannerView = bannerView;
 
   /// Align the bannerView in the Unity view bounds.
   UIView *unityView = [GADUPluginUtil unityGLViewController].view;
@@ -244,23 +244,23 @@
   }
 }
 
-- (void)adView:(GADBannerView *)view didFailToReceiveAdWithError:(GADRequestError *)error {
+- (void)bannerView:(GADBannerView *)view didFailToReceiveAdWithError:(NSError *)error {
   if (self.adFailedCallback) {
     self.adFailedCallback(self.bannerClient, (__bridge GADUTypeErrorRef)error);
   }
 }
 
-- (void)adViewWillPresentScreen:(GADBannerView *)adView {
+- (void)bannerViewWillPresentScreen:(GADBannerView *)bannerView {
   if (self.willPresentCallback) {
     self.willPresentCallback(self.bannerClient);
   }
 }
 
-- (void)adViewWillDismissScreen:(GADBannerView *)adView {
+- (void)bannerViewWillDismissScreen:(GADBannerView *)bannerView {
   // Callback is not forwarded to Unity.
 }
 
-- (void)adViewDidDismissScreen:(GADBannerView *)adView {
+- (void)bannerViewDidDismissScreen:(GADBannerView *)bannerView {
   if (self.didDismissCallback) {
     self.didDismissCallback(self.bannerClient);
   }

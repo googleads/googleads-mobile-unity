@@ -44,6 +44,8 @@ namespace GoogleMobileAds.Common
 
         public event EventHandler<EventArgs> OnAdDidDismissFullScreenContent;
 
+        public event EventHandler<EventArgs> OnAdDidRecordImpression;
+
 
 #pragma warning restore 67
 
@@ -69,6 +71,11 @@ namespace GoogleMobileAds.Common
         }
 
         public void SetServerSideVerificationOptions(ServerSideVerificationOptions serverSideVerificationOptions)
+        {
+          Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
+        }
+
+        public void DestroyRewardedInterstitialAd()
         {
           Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
         }

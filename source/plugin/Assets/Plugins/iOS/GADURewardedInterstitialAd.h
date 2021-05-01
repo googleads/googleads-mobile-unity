@@ -25,19 +25,24 @@
 @property(nonatomic, assign) GADURewardedInterstitialAdFailedToLoadCallback adFailedToLoadCallback;
 
 /// The ad failed to present full screen content callback into Unity.
-@property(nonatomic, assign)
-    GADUFailedToPresentFullScreenContentCallback adFailedToPresentFullScreenContentCallback;
+@property(nonatomic, assign) GADURewardedInterstitialAdFailedToPresentFullScreenContentCallback
+    adFailedToPresentFullScreenContentCallback;
 
 /// The ad presented full screen content callback into Unity.
-@property(nonatomic, assign)
-    GADUDidPresentFullScreenContentCallback adDidPresentFullScreenContentCallback;
+@property(nonatomic, assign) GADURewardedInterstitialAdDidPresentFullScreenContentCallback
+    adDidPresentFullScreenContentCallback;
 
 /// The ad dismissed full screen content callback into Unity.
+@property(nonatomic, assign) GADURewardedInterstitialAdDidDismissFullScreenContentCallback
+    adDidDismissFullScreenContentCallback;
+
+/// The ad impression callback into Unity.
 @property(nonatomic, assign)
-    GADUDidDismissFullScreenContentCallback adDidDismissFullScreenContentCallback;
+    GADURewardedInterstitialAdDidRecordImpressionCallback adDidRecordImpressionCallback;
 
 /// The user was rewarded callback into Unity.
-@property(nonatomic, assign) GADUUserEarnedRewardCallback didEarnRewardCallback;
+@property(nonatomic, assign)
+    GADURewardedInterstitialAdUserEarnedRewardCallback didEarnRewardCallback;
 
 /// The paid event callback into Unity.
 @property(nonatomic, assign) GADURewardedInterstitialAdPaidEventCallback paidEventCallback;

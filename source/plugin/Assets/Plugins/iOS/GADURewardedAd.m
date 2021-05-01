@@ -8,61 +8,64 @@
 #import "GADUPluginUtil.h"
 #import "UnityInterface.h"
 
-@interface GADURewardedAd () <GADRewardedAdDelegate>
+@interface GADURewardedAd () <GADFullScreenContentDelegate>
 @end
 
 @implementation GADURewardedAd
 
-- (instancetype)initWithRewardedAdClientReference:(GADUTypeRewardedAdClientRef *)rewardedAdClient
-                                         adUnitID:(NSString *)adUnitID {
+- (instancetype)initWithRewardedAdClientReference:(GADUTypeRewardedAdClientRef *)rewardedAdClient {
   self = [super init];
-  if (self) {
-    _rewardedAdClient = rewardedAdClient;
-    _rewardedAd = [[GADRewardedAd alloc] initWithAdUnitID:adUnitID];
-
-    __weak GADURewardedAd *weakSelf = self;
-    _rewardedAd.paidEventHandler = ^void(GADAdValue *_Nonnull adValue) {
-      GADURewardedAd *strongSelf = weakSelf;
-      if (strongSelf.paidEventCallback) {
-        int64_t valueInMicros =
-            [adValue.value decimalNumberByMultiplyingByPowerOf10:6].longLongValue;
-        strongSelf.paidEventCallback(
-            strongSelf.rewardedAdClient, (int)adValue.precision, valueInMicros,
-            [adValue.currencyCode cStringUsingEncoding:NSUTF8StringEncoding]);
-      }
-    };
-  }
+  _rewardedAdClient = rewardedAdClient;
   return self;
 }
 
-- (void)loadRequest:(GADRequest *)request {
-  [self.rewardedAd loadRequest:request
-             completionHandler:^(GADRequestError *_Nullable error) {
-               if (error) {
-                 if (self.adFailedToLoadCallback) {
+- (void)loadWithAdUnitID:(NSString *)adUnitID request:(GADRequest *)request {
+  __weak GADURewardedAd *weakSelf = self;
 
-                   self.adFailedToLoadCallback(self.rewardedAdClient,
-                        (__bridge GADUTypeErrorRef)error);
-                 }
-               } else {
-                 if (self.adReceivedCallback) {
-                   self.adReceivedCallback(self.rewardedAdClient);
-                 }
-               }
-             }];
-}
-
-- (BOOL)isReady {
-  return [self.rewardedAd isReady];
+  [GADRewardedAd loadWithAdUnitID:adUnitID
+                          request:request
+                completionHandler:^(GADRewardedAd *_Nullable rewardedAd, NSError *_Nullable error) {
+                  GADURewardedAd *strongSelf = weakSelf;
+                  if (error || !rewardedAd) {
+                    if (strongSelf.adFailedToLoadCallback) {
+                      strongSelf.adFailedToLoadCallback(strongSelf.rewardedAdClient,
+                                                        (__bridge GADUTypeErrorRef)error);
+                    }
+                    return;
+                  }
+                  strongSelf.rewardedAd = rewardedAd;
+                  rewardedAd.fullScreenContentDelegate = strongSelf;
+                  rewardedAd.paidEventHandler = ^void(GADAdValue *_Nonnull adValue) {
+                    GADURewardedAd *strongSecondSelf = weakSelf;
+                    if (strongSecondSelf.paidEventCallback) {
+                      int64_t valueInMicros =
+                          [adValue.value decimalNumberByMultiplyingByPowerOf10:6].longLongValue;
+                      strongSecondSelf.paidEventCallback(
+                          strongSecondSelf.rewardedAdClient, (int)adValue.precision, valueInMicros,
+                          [adValue.currencyCode cStringUsingEncoding:NSUTF8StringEncoding]);
+                    }
+                  };
+                  if (strongSelf.adLoadedCallback) {
+                    strongSelf.adLoadedCallback(self.rewardedAdClient);
+                  }
+                }];
 }
 
 - (void)show {
-  if ([self.rewardedAd isReady]) {
-    UIViewController *unityController = [GADUPluginUtil unityGLViewController];
-    [self.rewardedAd presentFromRootViewController:unityController delegate:self];
-  } else {
-    NSLog(@"GoogleMobileAdsPlugin: Rewarded ad is not ready to be shown.");
-  }
+  UIViewController *unityController = [GADUPluginUtil unityGLViewController];
+  __weak GADURewardedAd *weakSelf = self;
+
+  [self.rewardedAd
+      presentFromRootViewController:unityController
+           userDidEarnRewardHandler:^void() {
+             GADURewardedAd *strongSelf = weakSelf;
+             if (strongSelf.didEarnRewardCallback) {
+               strongSelf.didEarnRewardCallback(
+                   strongSelf.rewardedAdClient,
+                   [strongSelf.rewardedAd.adReward.type cStringUsingEncoding:NSUTF8StringEncoding],
+                   strongSelf.rewardedAd.adReward.amount.doubleValue);
+             }
+           }];
 }
 
 - (GADResponseInfo *)responseInfo {
@@ -80,36 +83,43 @@
   }
 }
 
-- (void)rewardedAd:(nonnull GADRewardedAd *)rewardedAd
-    didFailToPresentWithError:(nonnull GADRequestError *)error {
-  if (self.adFailedToShowCallback) {
-    self.adFailedToShowCallback(self.rewardedAdClient, (__bridge GADUTypeErrorRef)error);
+- (void)ad:(nonnull id<GADFullScreenPresentingAd>)ad
+    didFailToPresentFullScreenContentWithError:(nonnull NSError *)error {
+  if (self.adFailedToPresentFullScreenContentCallback) {
+    self.adFailedToPresentFullScreenContentCallback(self.rewardedAdClient,
+                                                    (__bridge GADUTypeErrorRef)error);
   }
 }
 
-- (void)rewardedAdDidPresent:(nonnull GADRewardedAd *)rewardedAd {
-  if ([GADUPluginUtil pauseOnBackground]) {
+- (void)adDidPresentFullScreenContent:(nonnull id<GADFullScreenPresentingAd>)ad {
+  if (GADUPluginUtil.pauseOnBackground) {
     UnityPause(YES);
   }
-
-  if (self.didOpenCallback) {
-    self.didOpenCallback(self.rewardedAdClient);
+  if (self.adDidPresentFullScreenContentCallback) {
+    self.adDidPresentFullScreenContentCallback(self.rewardedAdClient);
   }
 }
 
-- (void)rewardedAdDidDismiss:(nonnull GADRewardedAd *)rewardedAd {
+- (void)adDidDismissFullScreenContent:(nonnull id<GADFullScreenPresentingAd>)ad {
   extern bool _didResignActive;
   if(_didResignActive) {
-       // We are in the middle of the shutdown sequence, and at this point unity runtime is already destroyed.
-       // We shall not call unity API, and definitely not script callbacks, so nothing to do here
+    // We are in the middle of the shutdown sequence, and at this point unity runtime is already
+    // destroyed. We shall not call unity API, and definitely not script callbacks, so nothing to do
+    // here
     return;
   }
   if (UnityIsPaused()) {
     UnityPause(NO);
   }
 
-  if (self.didCloseCallback) {
-    self.didCloseCallback(self.rewardedAdClient);
+  if (self.adDidDismissFullScreenContentCallback) {
+    self.adDidDismissFullScreenContentCallback(self.rewardedAdClient);
+  }
+}
+
+- (void)adDidRecordImpression:(nonnull id<GADFullScreenPresentingAd>)ad {
+  if (self.adDidRecordImpressionCallback) {
+    self.adDidRecordImpressionCallback(self.rewardedAdClient);
   }
 }
 

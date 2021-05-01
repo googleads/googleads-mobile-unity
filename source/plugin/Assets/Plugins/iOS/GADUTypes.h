@@ -100,56 +100,69 @@ typedef void (*GADUAdViewWillLeaveApplicationCallback)(GADUTypeBannerClientRef *
 typedef void (*GADUAdViewPaidEventCallback)(GADUTypeBannerClientRef *bannerClient, int precision,
                                             int64_t value, const char *currencyCode);
 
+// MARK: - GADUInterstitial
+
 /// Callback for when a interstitial ad request was successfully loaded.
-typedef void (*GADUInterstitialDidReceiveAdCallback)(
-    GADUTypeInterstitialClientRef *interstitialClient);
+typedef void (*GADUInterstitialAdLoadedCallback)(GADUTypeInterstitialClientRef *interstitialClient);
 
 /// Callback for when an interstitial ad request failed.
-typedef void (*GADUInterstitialDidFailToReceiveAdWithErrorCallback)(
+typedef void (*GADUInterstitialAdFailedToLoadCallback)(
     GADUTypeInterstitialClientRef *interstitialClient, const char *error);
 
-/// Callback for when an interstitial is about to be presented.
-typedef void (*GADUInterstitialWillPresentScreenCallback)(
-    GADUTypeInterstitialClientRef *interstitialClient);
+/// Callback when an interstitial ad failed to present full screen content.
+typedef void (*GADUInterstitialAdFailedToPresentFullScreenContentCallback)(
+    GADUTypeInterstitialRef *interstitialClient, const char *error);
 
-/// Callback for when an interstitial is about to be dismissed.
-typedef void (*GADUInterstitialWillDismissScreenCallback)(
-    GADUTypeInterstitialClientRef *interstitialClient);
+/// Callback when an interstitial ad presented full screen content.
+typedef void (*GADUInterstitialAdDidPresentFullScreenContentCallback)(
+    GADUTypeInterstitialRef *interstitialClient);
 
-/// Callback for when an interstitial has just been dismissed.
-typedef void (*GADUInterstitialDidDismissScreenCallback)(
-    GADUTypeInterstitialClientRef *interstitialClient);
+/// Callback when an interstitial ad dismissed full screen content.
+typedef void (*GADUInterstitialAdDidDismissFullScreenContentCallback)(
+    GADUTypeInterstitialRef *interstitialClient);
+
+/// Callback when an interstitial ad has made an impression.
+typedef void (*GADUInterstitialAdDidRecordImpressionCallback)(
+    GADUTypeInterstitialRef *interstitialClient);
 
 /// Callback when an interstitial ad is estimated to have earned money.
 typedef void (*GADUInterstitialPaidEventCallback)(GADUTypeInterstitialClientRef *interstitialClient,
                                                   int precision, int64_t value,
                                                   const char *currencyCode);
+// MARK: - GADURewarded
 
 /// Callback for when a rewarded ad request was successfully loaded.
-typedef void (*GADURewardedAdDidReceiveAdCallback)(GADUTypeRewardedAdClientRef *rewardedAdClient);
+typedef void (*GADURewardedAdLoadedCallback)(GADUTypeRewardedAdClientRef *rewardedAdClient);
 
 /// Callback for when a rewarded ad request failed.
-typedef void (*GADURewardedAdDidFailToReceiveAdWithErrorCallback)(
-    GADUTypeRewardedAdClientRef *rewardedAdClient, const char *error);
+typedef void (*GADURewardedAdFailedToLoadCallback)(GADUTypeRewardedAdClientRef *rewardedAdClient,
+                                                   const char *error);
 
-/// Callback for when a rewarded ad failed to show.
-typedef void (*GADURewardedAdDidFailToShowAdWithErrorCallback)(
-    GADUTypeRewardedAdClientRef *rewardedAdClient, const GADUTypeErrorRef error);
+/// Callback when a rewarded ad failed to present full screen content.
+typedef void (*GADURewardedAdFailedToPresentFullScreenContentCallback)(
+    GADUTypeRewardedAdRef *rewardedAdClient, const char *error);
 
-/// Callback for when a rewarded ad is opened.
-typedef void (*GADURewardedAdDidOpenCallback)(GADUTypeRewardedAdClientRef *rewardedAdClient);
+/// Callback when a rewarded ad presented full screen content.
+typedef void (*GADURewardedAdDidPresentFullScreenContentCallback)(
+    GADUTypeRewardedAdRef *rewardedAdClient);
 
-/// Callback for when a rewarded ad is closed.
-typedef void (*GADURewardedAdDidCloseCallback)(GADUTypeRewardedAdClientRef *rewardedAdClient);
+/// Callback when a rewarded ad dismissed full screen content.
+typedef void (*GADURewardedAdDidDismissFullScreenContentCallback)(
+    GADUTypeRewardedAdRef *rewardedAdClient);
+
+/// Callback when a rewarded ad has made an impression.
+typedef void (*GADURewardedAdDidRecordImpressionCallback)(GADUTypeRewardedAdRef *rewardedAdClient);
 
 /// Callback for when a user earned a reward.
-typedef void (*GADUUserEarnedRewardCallback)(GADUTypeRewardedAdClientRef *rewardBasedVideoClient,
-                                             const char *rewardType, double rewardAmount);
+typedef void (*GADURewardedAdUserEarnedRewardCallback)(
+    GADUTypeRewardedAdClientRef *rewardBasedVideoClient, const char *rewardType,
+    double rewardAmount);
 
 /// Callback for when a rewarded ad is estimated to have earned money.
 typedef void (*GADURewardedAdPaidEventCallback)(GADUTypeRewardedAdClientRef *rewardedAdClient,
                                                 int precision, int64_t value,
                                                 const char *currencyCode);
+// MARK: - GADRewardedInterstitial
 
 /// Callback for when a rewarded interstitial ad is loaded.
 typedef void (*GADURewardedInterstitialAdLoadedCallback)(
@@ -160,7 +173,7 @@ typedef void (*GADURewardedInterstitialAdFailedToLoadCallback)(
     GADUTypeRewardedInterstitialAdClientRef *rewardedAdClient, const char *error);
 
 /// Callback for when a user earned a reward.
-typedef void (*GADUUserEarnedRewardCallback)(
+typedef void (*GADURewardedInterstitialAdUserEarnedRewardCallback)(
     GADUTypeRewardedInterstitialAdClientRef *rewardedInterstitialAdClient, const char *rewardType,
     double rewardAmount);
 
@@ -169,14 +182,18 @@ typedef void (*GADURewardedInterstitialAdPaidEventCallback)(
     GADUTypeRewardedInterstitialAdClientRef *rewardedInterstitialAdClient, int precision,
     int64_t value, const char *currencyCode);
 
-/// Callback when an ad failed to present full screen content.
-typedef void (*GADUFailedToPresentFullScreenContentCallback)(
+/// Callback when a rewarded interstitial ad failed to present full screen content.
+typedef void (*GADURewardedInterstitialAdFailedToPresentFullScreenContentCallback)(
     GADUTypeRewardedInterstitialAdRef *rewardedInterstitialAdClient, const char *error);
 
-/// Callback when an ad presented full screen content.
-typedef void (*GADUDidPresentFullScreenContentCallback)(
+/// Callback when a rewarded interstitial ad presented full screen content.
+typedef void (*GADURewardedInterstitialAdDidPresentFullScreenContentCallback)(
     GADUTypeRewardedInterstitialAdRef *rewardedInterstitialAdClient);
 
-/// Callback when an ad dismissed full screen content.
-typedef void (*GADUDidDismissFullScreenContentCallback)(
+/// Callback when a rewarded interstitial ad dismissed full screen content.
+typedef void (*GADURewardedInterstitialAdDidDismissFullScreenContentCallback)(
+    GADUTypeRewardedInterstitialAdRef *rewardedInterstitialAdClient);
+
+/// Callback when a rewarded interstitial ad has made an impression.
+typedef void (*GADURewardedInterstitialAdDidRecordImpressionCallback)(
     GADUTypeRewardedInterstitialAdRef *rewardedInterstitialAdClient);

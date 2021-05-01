@@ -49,6 +49,14 @@ namespace GoogleMobileAds.Common
 
         public event EventHandler<AdValueEventArgs> OnPaidEvent;
 
+        public event EventHandler<AdErrorClientEventArgs> OnAdFailedToPresentFullScreenContent;
+
+        public event EventHandler<EventArgs> OnAdDidPresentFullScreenContent;
+
+        public event EventHandler<EventArgs> OnAdDidDismissFullScreenContent;
+
+        public event EventHandler<EventArgs> OnAdDidRecordImpression;
+
 
 #pragma warning restore 67
 
@@ -174,18 +182,12 @@ namespace GoogleMobileAds.Common
             Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
         }
 
-        public void CreateInterstitialAd(string adUnitId)
+        public void CreateInterstitialAd()
         {
             Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
         }
 
-        public bool IsLoaded()
-        {
-            Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
-            return true;
-        }
-
-        public void ShowInterstitial()
+        public void Show()
         {
             Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
         }
@@ -200,7 +202,7 @@ namespace GoogleMobileAds.Common
             Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
         }
 
-        public void LoadAd(AdRequest request, string adUnitId)
+        public void LoadAd(string adUnitId, AdRequest request)
         {
             Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
         }
@@ -225,6 +227,11 @@ namespace GoogleMobileAds.Common
         {
             Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
             return null;
+        }
+
+        public void SetServerSideVerificationOptions(ServerSideVerificationOptions serverSideVerificationOptions)
+        {
+            Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
         }
 
     }

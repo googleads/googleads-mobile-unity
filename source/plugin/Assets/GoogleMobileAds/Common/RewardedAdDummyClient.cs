@@ -34,25 +34,27 @@ namespace GoogleMobileAds.Common
 
         public event EventHandler<LoadAdErrorClientEventArgs> OnAdFailedToLoad;
 
-        public event EventHandler<AdErrorClientEventArgs> OnAdFailedToShow;
-
-        public event EventHandler<EventArgs> OnAdOpening;
-
-        public event EventHandler<EventArgs> OnAdClosed;
-
         public event EventHandler<Reward> OnUserEarnedReward;
 
         public event EventHandler<AdValueEventArgs> OnPaidEvent;
 
+        public event EventHandler<AdErrorClientEventArgs> OnAdFailedToPresentFullScreenContent;
+
+        public event EventHandler<EventArgs> OnAdDidPresentFullScreenContent;
+
+        public event EventHandler<EventArgs> OnAdDidDismissFullScreenContent;
+
+        public event EventHandler<EventArgs> OnAdDidRecordImpression;
+
 
 #pragma warning restore 67
 
-        public void CreateRewardedAd(string adUnitId)
+        public void CreateRewardedAd()
         {
             Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
         }
 
-        public void LoadAd(AdRequest request)
+        public void LoadAd(string adUnitId, AdRequest request)
         {
             Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
 
@@ -60,12 +62,6 @@ namespace GoogleMobileAds.Common
             {
                 OnAdLoaded(this, EventArgs.Empty);
             }
-        }
-
-        public bool IsLoaded()
-        {
-            Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
-            return true;
         }
 
         public void Show()
@@ -80,6 +76,11 @@ namespace GoogleMobileAds.Common
         }
 
         public void SetServerSideVerificationOptions(ServerSideVerificationOptions serverSideVerificationOptions)
+        {
+            Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
+        }
+
+        public void DestroyRewardedAd()
         {
             Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
         }

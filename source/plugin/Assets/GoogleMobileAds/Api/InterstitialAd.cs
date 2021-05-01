@@ -22,15 +22,20 @@ namespace GoogleMobileAds.Api
     public class InterstitialAd
     {
         private IInterstitialClient client;
+        private string adUnitId;
+        private bool isLoaded;
 
         // Creates an InterstitialAd.
         public InterstitialAd(string adUnitId)
         {
             this.client = MobileAds.GetClientFactory().BuildInterstitialClient();
-            client.CreateInterstitialAd(adUnitId);
+            this.adUnitId = adUnitId;
+            this.isLoaded = false;
+            client.CreateInterstitialAd();
 
             this.client.OnAdLoaded += (sender, args) =>
             {
+                this.isLoaded = true;
                 if (this.OnAdLoaded != null)
                 {
                     this.OnAdLoaded(this, args);
@@ -49,7 +54,7 @@ namespace GoogleMobileAds.Api
                 }
             };
 
-            this.client.OnAdOpening += (sender, args) =>
+            this.client.OnAdDidPresentFullScreenContent += (sender, args) =>
             {
                 if (this.OnAdOpening != null)
                 {
@@ -57,11 +62,31 @@ namespace GoogleMobileAds.Api
                 }
             };
 
-            this.client.OnAdClosed += (sender, args) =>
+            this.client.OnAdDidDismissFullScreenContent += (sender, args) =>
             {
                 if (this.OnAdClosed != null)
                 {
                     this.OnAdClosed(this, args);
+                }
+            };
+
+            this.client.OnAdFailedToPresentFullScreenContent += (sender, args) =>
+            {
+                if (this.OnAdFailedToShow != null)
+                {
+                    AdError adError = new AdError(args.AdErrorClient);
+                    this.OnAdFailedToShow(this, new AdErrorEventArgs()
+                    {
+                        AdError = adError
+                    });
+                }
+            };
+
+            this.client.OnAdDidRecordImpression += (sender, args) =>
+            {
+                if (this.OnAdDidRecordImpression != null)
+                {
+                    this.OnAdDidRecordImpression(this, args);
                 }
             };
 
@@ -84,6 +109,9 @@ namespace GoogleMobileAds.Api
 
         public event EventHandler<EventArgs> OnAdClosed;
 
+        public event EventHandler<AdErrorEventArgs> OnAdFailedToShow;
+
+        public event EventHandler<EventArgs> OnAdDidRecordImpression;
 
         // Called when the ad is estimated to have earned money.
         public event EventHandler<AdValueEventArgs> OnPaidEvent;
@@ -91,19 +119,20 @@ namespace GoogleMobileAds.Api
         // Loads an InterstitialAd.
         public void LoadAd(AdRequest request)
         {
-            client.LoadAd(request);
+            client.LoadAd(this.adUnitId, request);
         }
 
         // Determines whether the InterstitialAd has loaded.
         public bool IsLoaded()
         {
-            return client.IsLoaded();
+            return this.isLoaded;
         }
 
         // Displays the InterstitialAd.
         public void Show()
         {
-            client.ShowInterstitial();
+            this.isLoaded = false;
+            client.Show();
         }
 
         // Destroys the InterstitialAd.

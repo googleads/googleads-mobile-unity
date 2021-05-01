@@ -28,13 +28,14 @@ namespace GoogleMobileAds.Common
         event EventHandler<AdValueEventArgs> OnPaidEvent;
         // Ad event fired when the rewarded interstitial ad has rewarded the user.
         event EventHandler<Reward> OnUserEarnedReward;
-
-        // Full screen content events
+        // Ad event fired when the rewarded interstitial ad has failed to present the full screen content.
         event EventHandler<AdErrorClientEventArgs> OnAdFailedToPresentFullScreenContent;
-
+        // Ad event fired when the rewarded interstitial ad has presented the full screen content.
         event EventHandler<EventArgs> OnAdDidPresentFullScreenContent;
-
+        // Ad event fired when the rewarded interstitial ad has dismissed the full screen content.
         event EventHandler<EventArgs> OnAdDidDismissFullScreenContent;
+        // Ad event fired when the rewarded interstitial ad has recorded an impression.
+        event EventHandler<EventArgs> OnAdDidRecordImpression;
 
         // Creates a rewarded interstitial ad.
         void CreateRewardedInterstitialAd();
@@ -53,5 +54,8 @@ namespace GoogleMobileAds.Common
 
         // Returns ad request Response info client.
         IResponseInfoClient GetResponseInfoClient();
+
+        // Destroys the rewarded interstitial ad.
+        void DestroyRewardedInterstitialAd();
     }
 }
