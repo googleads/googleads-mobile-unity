@@ -20,10 +20,10 @@ public class GoogleAdMobController : MonoBehaviour
     public UnityEvent OnAdFailedToShowEvent;
     public UnityEvent OnUserEarnedRewardEvent;
     public UnityEvent OnAdClosedEvent;
-    public UnityEvent OnAdLeavingApplicationEvent;
     public bool showFpsMeter = true;
     public Text fpsMeter;
     public Text statusText;
+
 
     #region UNITY MONOBEHAVIOR METHODS
 
@@ -58,7 +58,8 @@ public class GoogleAdMobController : MonoBehaviour
         // main thread.
         // In this example we use MobileAdsEventExecutor to schedule these calls on
         // the next Update() loop.
-        MobileAdsEventExecutor.ExecuteInUpdate(() => {
+        MobileAdsEventExecutor.ExecuteInUpdate(() =>
+        {
             statusText.text = "Initialization complete";
             RequestBannerAd();
         });
@@ -86,11 +87,7 @@ public class GoogleAdMobController : MonoBehaviour
     private AdRequest CreateAdRequest()
     {
         return new AdRequest.Builder()
-            .AddTestDevice(AdRequest.TestDeviceSimulator)
-            .AddTestDevice("0123456789ABCDEF0123456789ABCDEF")
             .AddKeyword("unity-admob-sample")
-            .TagForChildDirectedTreatment(false)
-            .AddExtra("color_bg", "9B30FF")
             .Build();
     }
 
@@ -125,7 +122,6 @@ public class GoogleAdMobController : MonoBehaviour
         bannerView.OnAdFailedToLoad += (sender, args) => OnAdFailedToLoadEvent.Invoke();
         bannerView.OnAdOpening += (sender, args) => OnAdOpeningEvent.Invoke();
         bannerView.OnAdClosed += (sender, args) => OnAdClosedEvent.Invoke();
-        bannerView.OnAdLeavingApplication += (sender, args) => OnAdLeavingApplicationEvent.Invoke();
 
         // Load a banner ad
         bannerView.LoadAd(CreateAdRequest());
@@ -169,7 +165,6 @@ public class GoogleAdMobController : MonoBehaviour
         interstitialAd.OnAdFailedToLoad += (sender, args) => OnAdFailedToLoadEvent.Invoke();
         interstitialAd.OnAdOpening += (sender, args) => OnAdOpeningEvent.Invoke();
         interstitialAd.OnAdClosed += (sender, args) => OnAdClosedEvent.Invoke();
-        interstitialAd.OnAdLeavingApplication += (sender, args) => OnAdLeavingApplicationEvent.Invoke();
 
         // Load an interstitial ad
         interstitialAd.LoadAd(CreateAdRequest());
