@@ -1,20 +1,20 @@
 ## AdColony Unity Mediation Plugin Changelog
 
-#### Version 2.2.0
+#### [Version 2.2.0](https://dl.google.com/googleadmobadssdk/mediation/unity/adcolony/AdColonyUnityAdapter-2.2.0.zip)
 - Supports [AdColony Android adapter version 4.2.4.0](https://github.com/googleads/googleads-mobile-android-mediation/blob/master/ThirdPartyAdapters/adcolony/CHANGELOG.md#version-4240).
 - Supports [AdColony iOS adapter version 4.4.1.0](https://github.com/googleads/googleads-mobile-ios-mediation/blob/master/adapters/AdColony/CHANGELOG.md#version-4410).
 
-#### Version 2.1.0
+#### [Version 2.1.0](https://dl.google.com/googleadmobadssdk/mediation/unity/adcolony/AdColonyUnityAdapter-2.1.0.zip)
 - Supports [AdColony Android adapter version 4.2.0.0](https://github.com/googleads/googleads-mobile-android-mediation/blob/master/ThirdPartyAdapters/adcolony/CHANGELOG.md#version-4200).
 - Supports [AdColony iOS adapter version 4.3.0.0](https://github.com/googleads/googleads-mobile-ios-mediation/blob/master/adapters/AdColony/CHANGELOG.md#version-4300).
 
-#### Version 2.0.3
+#### [Version 2.0.3](https://dl.google.com/googleadmobadssdk/mediation/unity/adcolony/AdColonyUnityAdapter-2.0.3.zip)
 - Repackaged `adcolony-extras-library.jar` to `adcolony-unity-android-library.aar`, using a `.aar` build to support Unity 2020.
   * When upgrading to this version, please remove `adcolony-extras-library.jar` from your project.
 - Supports [AdColony Android adapter version 4.1.4.1](https://github.com/googleads/googleads-mobile-android-mediation/blob/master/ThirdPartyAdapters/adcolony/CHANGELOG.md#version-4141).
 - Supports [AdColony iOS adapter version 4.1.5.0](https://github.com/googleads/googleads-mobile-ios-mediation/blob/master/adapters/AdColony/CHANGELOG.md#version-4150).
 
-#### Version 2.0.2
+#### [Version 2.0.2](https://dl.google.com/googleadmobadssdk/mediation/unity/adcolony/AdColonyUnityAdapter-2.0.2.zip)
 - Supports [AdColony Android adapter version 4.1.4.1](https://github.com/googleads/googleads-mobile-android-mediation/blob/master/ThirdPartyAdapters/adcolony/CHANGELOG.md#version-4141).
 - Supports [AdColony iOS adapter version 4.1.4.1](https://github.com/googleads/googleads-mobile-ios-mediation/blob/master/adapters/AdColony/CHANGELOG.md#version-4141).
 

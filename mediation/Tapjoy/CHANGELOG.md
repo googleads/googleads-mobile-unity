@@ -1,18 +1,18 @@
 ## Tapjoy Unity Mediation Plugin Changelog
 
-#### Version 2.6.1
+#### [Version 2.6.1](https://dl.google.com/googleadmobadssdk/mediation/unity/tapjoy/TapjoyUnityAdapter-2.6.1.zip)
 - Supports [Tapjoy Android adapter version 12.7.1.0](https://github.com/googleads/googleads-mobile-android-mediation/blob/master/ThirdPartyAdapters/tapjoy/CHANGELOG.md#version-12710).
 - Supports [Tapjoy iOS adapter version 12.7.1.0](https://github.com/googleads/googleads-mobile-ios-mediation/blob/master/adapters/Tapjoy/CHANGELOG.md#version-12710).
 
-#### Version 2.6.0
+#### [Version 2.6.0](https://dl.google.com/googleadmobadssdk/mediation/unity/tapjoy/TapjoyUnityAdapter-2.6.0.zip)
 - Supports [Tapjoy Android adapter version 12.7.0.0](https://github.com/googleads/googleads-mobile-android-mediation/blob/master/ThirdPartyAdapters/tapjoy/CHANGELOG.md#version-12700).
 - Supports [Tapjoy iOS adapter version 12.7.0.0](https://github.com/googleads/googleads-mobile-ios-mediation/blob/master/adapters/Tapjoy/CHANGELOG.md#version-12700).
 
-#### Version 2.5.1
+#### [Version 2.5.1](https://dl.google.com/googleadmobadssdk/mediation/unity/tapjoy/TapjoyUnityAdapter-2.5.1.zip)
 - Supports [Tapjoy Android adapter version 12.6.1.0](https://github.com/googleads/googleads-mobile-android-mediation/blob/master/ThirdPartyAdapters/tapjoy/CHANGELOG.md#version-12610).
 - Supports [Tapjoy iOS adapter version 12.6.1.0](https://github.com/googleads/googleads-mobile-ios-mediation/blob/master/adapters/Tapjoy/CHANGELOG.md#version-12610).
 
-#### Version 2.5.0
+#### [Version 2.5.0](https://dl.google.com/googleadmobadssdk/mediation/unity/tapjoy/TapjoyUnityAdapter-2.5.0.zip)
 - Supports [Tapjoy Android adapter version 12.6.0.0](https://github.com/googleads/googleads-mobile-android-mediation/blob/master/ThirdPartyAdapters/tapjoy/CHANGELOG.md#version-12600).
 - Supports [Tapjoy iOS adapter version 12.6.0.0](https://github.com/googleads/googleads-mobile-ios-mediation/blob/master/adapters/Tapjoy/CHANGELOG.md#version-12600).
 
