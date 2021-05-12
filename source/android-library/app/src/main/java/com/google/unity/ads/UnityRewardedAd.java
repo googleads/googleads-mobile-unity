@@ -276,11 +276,11 @@ public class UnityRewardedAd {
     } catch (InterruptedException e) {
       Log.e(
           PluginUtils.LOGTAG,
-          String.format("Unable to get rewarded ad reward item: %s", e.getLocalizedMessage()));
+          String.format("Unable to get reward item: %s", e.getLocalizedMessage()));
     } catch (ExecutionException e) {
       Log.e(
           PluginUtils.LOGTAG,
-          String.format("Unable to get rewarded ad reward item: %s", e.getLocalizedMessage()));
+          String.format("Unable to get reward item: %s", e.getLocalizedMessage()));
     }
     return result;
   }

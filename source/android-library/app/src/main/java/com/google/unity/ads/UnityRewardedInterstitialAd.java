@@ -194,8 +194,8 @@ public class UnityRewardedInterstitialAd {
    */
   public void show() {
     if (rewardedInterstitialAd == null) {
-      Log.e(PluginUtils.LOGTAG, "Tried to show rewarded ad before it was ready. This should "
-          + "in theory never happen. If it does, please contact the plugin owners.");
+      Log.e(PluginUtils.LOGTAG, "Tried to show rewarded interstitial ad before it was ready. "
+          + "This should in theory never happen. If it does, please contact the plugin owners.");
       return;
     }
     activity.runOnUiThread(
@@ -267,13 +267,13 @@ public class UnityRewardedInterstitialAd {
       Log.e(
           PluginUtils.LOGTAG,
           String.format(
-              "Unable to check unity rewarded ad response info: %s",
+              "Unable to check unity rewarded interstitial ad response info: %s",
               exception.getLocalizedMessage()));
     } catch (ExecutionException exception) {
       Log.e(
           PluginUtils.LOGTAG,
           String.format(
-              "Unable to check unity rewarded ad response info: %s",
+              "Unable to check unity rewarded interstitial ad response info: %s",
               exception.getLocalizedMessage()));
     }
     return result;
@@ -301,11 +301,11 @@ public class UnityRewardedInterstitialAd {
     } catch (InterruptedException e) {
       Log.e(
           PluginUtils.LOGTAG,
-          String.format("Unable to get rewarded ad reward item: %s", e.getLocalizedMessage()));
+          String.format("Unable to get reward item: %s", e.getLocalizedMessage()));
     } catch (ExecutionException e) {
       Log.e(
           PluginUtils.LOGTAG,
-          String.format("Unable to get rewarded ad reward item: %s", e.getLocalizedMessage()));
+          String.format("Unable to get reward item: %s", e.getLocalizedMessage()));
     }
     return result;
   }
