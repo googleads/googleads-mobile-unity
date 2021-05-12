@@ -14,7 +14,7 @@
 - (id)initWithInterstitialClientReference:(GADUTypeInterstitialClientRef *)interstitialClient;
 
 /// The interstitial ad.
-@property(nonatomic, strong) GADInterstitialAd *interstitialAd;
+@property(nonatomic, strong) GADInterstitial *interstitialAd;
 
 /// A reference to the Unity interstitial client.
 @property(nonatomic, assign) GADUTypeInterstitialClientRef *interstitialClient;
