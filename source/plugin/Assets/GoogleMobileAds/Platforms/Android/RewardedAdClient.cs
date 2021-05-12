@@ -38,29 +38,26 @@ namespace GoogleMobileAds.Android
 
         public event EventHandler<LoadAdErrorClientEventArgs> OnAdFailedToLoad;
 
-        public event EventHandler<AdErrorClientEventArgs> OnAdFailedToShow;
-
-        public event EventHandler<EventArgs> OnAdOpening;
-
         public event EventHandler<Reward> OnUserEarnedReward;
-
-        public event EventHandler<EventArgs> OnAdClosed;
 
         public event EventHandler<AdValueEventArgs> OnPaidEvent;
 
-        public void CreateRewardedAd(string adUnitId)
+        public event EventHandler<AdErrorClientEventArgs> OnAdFailedToPresentFullScreenContent;
+
+        public event EventHandler<EventArgs> OnAdDidPresentFullScreenContent;
+
+        public event EventHandler<EventArgs> OnAdDidDismissFullScreenContent;
+
+        public event EventHandler<EventArgs> OnAdDidRecordImpression;
+
+        public void CreateRewardedAd()
         {
-            androidRewardedAd.Call("create", adUnitId);
+            // No op.
         }
 
-        public void LoadAd(AdRequest request)
+        public void LoadAd(string adUnitId, AdRequest request)
         {
-            androidRewardedAd.Call("loadAd", Utils.GetAdRequestJavaObject(request));
-        }
-
-        public bool IsLoaded()
-        {
-            return androidRewardedAd.Call<bool>("isLoaded");
+            androidRewardedAd.Call("loadAd", adUnitId, Utils.GetAdRequestJavaObject(request));
         }
 
         public void Show()
@@ -97,6 +94,12 @@ namespace GoogleMobileAds.Android
             return new ResponseInfoClient(ResponseInfoClientType.AdLoaded, this.androidRewardedAd);
         }
 
+        // Destroy the rewarded ad.
+        public void DestroyRewardedAd()
+        {
+            this.androidRewardedAd.Call("destroy");
+        }
+
         #endregion
 
         #region Callbacks from UnityRewardedAdCallback
@@ -120,33 +123,40 @@ namespace GoogleMobileAds.Android
             }
         }
 
-        void onRewardedAdFailedToShow(AndroidJavaObject error)
+        void onAdFailedToShowFullScreenContent(AndroidJavaObject error)
         {
-            if (this.OnAdFailedToShow != null)
+            if (this.OnAdFailedToPresentFullScreenContent != null)
             {
                 AdErrorClientEventArgs args = new AdErrorClientEventArgs()
                 {
                     AdErrorClient = new AdErrorClient(error)
                 };
-
-                this.OnAdFailedToShow(this, args);
+                this.OnAdFailedToPresentFullScreenContent(this, args);
             }
         }
 
-        void onRewardedAdOpened()
+        void onAdShowedFullScreenContent()
         {
-            if (this.OnAdOpening != null)
+            if (this.OnAdDidPresentFullScreenContent != null)
             {
-                this.OnAdOpening(this, EventArgs.Empty);
+                this.OnAdDidPresentFullScreenContent(this, EventArgs.Empty);
             }
         }
 
 
-        void onRewardedAdClosed()
+        void onAdDismissedFullScreenContent()
         {
-            if (this.OnAdClosed != null)
+            if (this.OnAdDidDismissFullScreenContent != null)
             {
-                this.OnAdClosed(this, EventArgs.Empty);
+                this.OnAdDidDismissFullScreenContent(this, EventArgs.Empty);
+            }
+        }
+
+        void onAdImpression()
+        {
+            if (this.OnAdDidRecordImpression != null)
+            {
+                this.OnAdDidRecordImpression(this, EventArgs.Empty);
             }
         }
 
@@ -181,7 +191,6 @@ namespace GoogleMobileAds.Android
                 this.OnPaidEvent(this, args);
             }
         }
-
 
         #endregion
     }

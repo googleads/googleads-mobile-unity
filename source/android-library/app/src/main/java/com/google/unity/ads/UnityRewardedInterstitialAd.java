@@ -35,16 +35,24 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.FutureTask;
 
-/** Native rewarded interstitial ad implementation for the Google Mobile Ads Unity plugin. */
+/**
+ * Native rewarded interstitial ad implementation for the Google Mobile Ads Unity plugin.
+ */
 public class UnityRewardedInterstitialAd {
 
-  /** The {@link RewardedInterstitialAd}. */
+  /**
+   * The {@link RewardedInterstitialAd}.
+   */
   private RewardedInterstitialAd rewardedInterstitialAd;
 
-  /** The {@code Activity} on which the rewarded ad will display. */
+  /**
+   * The {@code Activity} on which the rewarded ad will display.
+   */
   private Activity activity;
 
-  /** A callback implemented in Unity via {@code AndroidJavaProxy} to receive ad events. */
+  /**
+   * A callback implemented in Unity via {@code AndroidJavaProxy} to receive ad events.
+   */
   private UnityRewardedInterstitialAdCallback callback;
 
   public UnityRewardedInterstitialAd(
@@ -70,7 +78,7 @@ public class UnityRewardedInterstitialAd {
                 request,
                 new RewardedInterstitialAdLoadCallback() {
                   @Override
-                  public void onRewardedInterstitialAdLoaded(@NonNull RewardedInterstitialAd ad) {
+                  public void onAdLoaded(@NonNull RewardedInterstitialAd ad) {
                     rewardedInterstitialAd = ad;
 
                     rewardedInterstitialAd.setOnPaidEventListener(
@@ -78,18 +86,18 @@ public class UnityRewardedInterstitialAd {
                           @Override
                           public void onPaidEvent(final AdValue adValue) {
                             new Thread(
-                                    new Runnable() {
-                                      @Override
-                                      public void run() {
-                                        if (callback != null) {
-                                          callback.onPaidEvent(
-                                              adValue.getPrecisionType(),
-                                              adValue.getValueMicros(),
-                                              adValue.getCurrencyCode());
-                                        }
-                                      }
-                                    })
-                                .start();
+                                new Runnable() {
+                                  @Override
+                                  public void run() {
+                                    if (callback != null) {
+                                      callback.onPaidEvent(
+                                          adValue.getPrecisionType(),
+                                          adValue.getValueMicros(),
+                                          adValue.getCurrencyCode());
+                                    }
+                                  }
+                                }
+                            ).start();
                           }
                         });
 
@@ -98,79 +106,96 @@ public class UnityRewardedInterstitialAd {
                           @Override
                           public void onAdFailedToShowFullScreenContent(final AdError error) {
                             new Thread(
-                                    new Runnable() {
-                                      @Override
-                                      public void run() {
-                                        if (callback != null) {
-                                          callback.onAdFailedToShowFullScreenContent(error);
-                                        }
-                                      }
-                                    })
+                                new Runnable() {
+                                  @Override
+                                  public void run() {
+                                    if (callback != null) {
+                                      callback.onAdFailedToShowFullScreenContent(error);
+                                    }
+                                  }
+                                })
                                 .start();
                           }
 
                           @Override
                           public void onAdShowedFullScreenContent() {
                             new Thread(
-                                    new Runnable() {
-                                      @Override
-                                      public void run() {
-                                        if (callback != null) {
-                                          callback.onAdShowedFullScreenContent();
-                                        }
-                                      }
-                                    })
+                                new Runnable() {
+                                  @Override
+                                  public void run() {
+                                    if (callback != null) {
+                                      callback.onAdShowedFullScreenContent();
+                                    }
+                                  }
+                                })
                                 .start();
                           }
 
                           @Override
                           public void onAdDismissedFullScreenContent() {
                             new Thread(
-                                    new Runnable() {
-                                      @Override
-                                      public void run() {
-                                        if (callback != null) {
-                                          callback.onAdDismissedFullScreenContent();
-                                        }
-                                      }
-                                    })
+                                new Runnable() {
+                                  @Override
+                                  public void run() {
+                                    if (callback != null) {
+                                      callback.onAdDismissedFullScreenContent();
+                                    }
+                                  }
+                                })
+                                .start();
+                          }
+
+                          @Override
+                          public void onAdImpression() {
+                            new Thread(
+                                new Runnable() {
+                                  @Override
+                                  public void run() {
+                                    if (callback != null) {
+                                      callback.onAdImpression();
+                                    }
+                                  }
+                                })
                                 .start();
                           }
                         });
 
                     new Thread(
-                            new Runnable() {
-                              @Override
-                              public void run() {
-                                if (callback != null) {
-                                  callback.onRewardedInterstitialAdLoaded();
-                                }
-                              }
-                            })
+                        new Runnable() {
+                          @Override
+                          public void run() {
+                            if (callback != null) {
+                              callback.onRewardedInterstitialAdLoaded();
+                            }
+                          }
+                        })
                         .start();
                   }
 
                   @Override
-                  public void onRewardedInterstitialAdFailedToLoad(final LoadAdError error) {
+                  public void onAdFailedToLoad(final LoadAdError error) {
                     new Thread(
-                            new Runnable() {
-                              @Override
-                              public void run() {
-                                if (callback != null) {
-                                  callback.onRewardedInterstitialAdFailedToLoad(error);
-                                }
-                              }
-                            })
-                        .start();
+                        new Runnable() {
+                          @Override
+                          public void run() {
+                            if (callback != null) {
+                              callback.onRewardedInterstitialAdFailedToLoad(error);
+                            }
+                          }
+                        }).start();
                   }
                 });
           }
         });
   }
 
-  /** Shows the rewarded interstitial ad if it has loaded. */
+  /**
+   * Shows the rewarded interstitial ad if it has loaded.
+   */
   public void show() {
     if (rewardedInterstitialAd == null) {
+      Log.e(PluginUtils.LOGTAG, "Tried to show rewarded ad before it was ready. This should "
+          + "in theory never happen. If it does, please contact the plugin owners.");
       return;
     }
     activity.runOnUiThread(
@@ -183,15 +208,15 @@ public class UnityRewardedInterstitialAd {
                   @Override
                   public void onUserEarnedReward(@NonNull final RewardItem rewardItem) {
                     new Thread(
-                            new Runnable() {
-                              @Override
-                              public void run() {
-                                if (callback != null) {
-                                  callback.onUserEarnedReward(
-                                      rewardItem.getType(), rewardItem.getAmount());
-                                }
-                              }
-                            })
+                        new Runnable() {
+                          @Override
+                          public void run() {
+                            if (callback != null) {
+                              callback.onUserEarnedReward(
+                                  rewardItem.getType(), rewardItem.getAmount());
+                            }
+                          }
+                        })
                         .start();
                   }
                 });
@@ -199,10 +224,14 @@ public class UnityRewardedInterstitialAd {
         });
   }
 
-  /** Sets server side verification options. */
+  /**
+   * Sets server side verification options.
+   */
   public void setServerSideVerificationOptions(
       final ServerSideVerificationOptions serverSideVerificationOptions) {
     if (rewardedInterstitialAd == null) {
+      Log.e(PluginUtils.LOGTAG, "Tried set server side verification before it was ready. "
+          + "This should in theory never happen. If it does, please contact the plugin owners.");
       return;
     }
     activity.runOnUiThread(
@@ -214,7 +243,9 @@ public class UnityRewardedInterstitialAd {
         });
   }
 
-  /** Returns the request response info. */
+  /**
+   * Returns the request response info.
+   */
   public ResponseInfo getResponseInfo() {
     if (rewardedInterstitialAd == null) {
       return null;
@@ -250,6 +281,8 @@ public class UnityRewardedInterstitialAd {
 
   public RewardItem getRewardItem() {
     if (rewardedInterstitialAd == null) {
+      Log.e(PluginUtils.LOGTAG, "Tried to get reward item before it was ready. This should "
+          + "in theory never happen. If it does, please contact the plugin owners.");
       return null;
     }
     FutureTask<RewardItem> task =
@@ -275,5 +308,13 @@ public class UnityRewardedInterstitialAd {
           String.format("Unable to get rewarded ad reward item: %s", e.getLocalizedMessage()));
     }
     return result;
+  }
+
+  /**
+   * Destroys the {@link RewardedInterstitialAd}.
+   */
+  public void destroy() {
+    // Currently there is no rewardedInterstitialAd.destroy() method. This method is a placeholder
+    // in case there is any cleanup to do here in the future.
   }
 }

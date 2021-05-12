@@ -45,6 +45,8 @@ namespace GoogleMobileAds.Android
 
         public event EventHandler<EventArgs> OnAdDidDismissFullScreenContent;
 
+        public event EventHandler<EventArgs> OnAdDidRecordImpression;
+
         public void CreateRewardedInterstitialAd()
         {
             // Do nothing.
@@ -84,6 +86,11 @@ namespace GoogleMobileAds.Android
         public IResponseInfoClient GetResponseInfoClient()
         {
             return new ResponseInfoClient(ResponseInfoClientType.AdLoaded, this.androidRewardedInterstitialAd);
+        }
+
+        public void DestroyRewardedInterstitialAd()
+        {
+            this.androidRewardedInterstitialAd.Call("destroy");
         }
 
         void onRewardedInterstitialAdLoaded()
@@ -132,6 +139,14 @@ namespace GoogleMobileAds.Android
             if (this.OnAdDidDismissFullScreenContent != null)
             {
                 this.OnAdDidDismissFullScreenContent(this, EventArgs.Empty);
+            }
+        }
+
+        void onAdImpression()
+        {
+            if (this.OnAdDidRecordImpression != null)
+            {
+                this.OnAdDidRecordImpression(this, EventArgs.Empty);
             }
         }
 

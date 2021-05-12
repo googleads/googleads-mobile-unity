@@ -74,6 +74,10 @@ namespace GoogleMobileAds.Android
         public const string UnityRewardedAdCallbackClassName =
             "com.google.unity.ads.UnityRewardedAdCallback";
 
+        public const string UnityInterstitialAdCallbackClassName = "com.google.unity.ads.UnityInterstitialAdCallback";
+
+        public const string UnityFullScreenContentCallbackClassName = "com.google.unity.ads.UnityFullScreenContentCallback";
+
         public const string UnityAdapterStatusEnumName =
                 "com.google.android.gms.ads.initialization.AdapterStatus$State";
 

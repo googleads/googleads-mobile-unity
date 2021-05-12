@@ -218,22 +218,6 @@ public class Banner {
                   .start();
             }
           }
-
-          @Override
-          public void onAdLeftApplication() {
-            if (mUnityListener != null) {
-              new Thread(
-                      new Runnable() {
-                        @Override
-                        public void run() {
-                          if (mUnityListener != null) {
-                            mUnityListener.onAdLeftApplication();
-                          }
-                        }
-                      })
-                  .start();
-            }
-          }
         });
 
 

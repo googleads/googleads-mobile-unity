@@ -16,23 +16,17 @@
 
 package com.google.unity.ads;
 
-import com.google.android.gms.ads.AdError;
 import com.google.android.gms.ads.LoadAdError;
 
 /**
  * Rewarded interstitial ad events that can be implemented via {@code AndroidJavaProxy} in Unity.
  */
-public interface UnityRewardedInterstitialAdCallback extends UnityPaidEventListener {
+public interface UnityRewardedInterstitialAdCallback extends UnityPaidEventListener,
+    UnityFullScreenContentCallback {
 
   void onRewardedInterstitialAdLoaded();
 
   void onRewardedInterstitialAdFailedToLoad(LoadAdError error);
 
   void onUserEarnedReward(String type, float amount);
-
-  void onAdFailedToShowFullScreenContent(AdError error);
-
-  void onAdShowedFullScreenContent();
-
-  void onAdDismissedFullScreenContent();
 }
