@@ -6,7 +6,6 @@
 #import <UIKit/UIKit.h>
 
 #import "GADUPluginUtil.h"
-#import "UnityInterface.h"
 
 @interface GADURewardedInterstitialAd () <GADFullScreenContentDelegate>
 @end
