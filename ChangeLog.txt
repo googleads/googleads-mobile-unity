@@ -1,7 +1,7 @@
 Google Mobile Ads Unity Plugin Change Log
 
 **************
-Version 6.0.0 (in progress)
+Version 6.0.0
 **************
 
 Plugin:
@@ -17,7 +17,11 @@ Plugin:
 - Removed RewardBasedVideoAd in favor of RewardedAd.
 - Added support for ad load errors, please see https://developers.google.com/admob/unity/ad-load-errors for details.
 - Ad Manager integration now requires providing the app ID in the Unity Editor.
-- Changed package format to contain compiled assemblies in DLL format in place of the uncompiled code.
+- Changed package format to contain compiled assemblies in DLL format in place
+  of the uncompiled code.
+- You need to disable "Add use_frameworks!" and "Always add the main target to
+  Podfile" in Unity Editor -> Assets -> External Dependency Manager -> iOS
+  Resolver -> Settings, or else the GMA plugin does not work.
 
 Built and tested with:
 - Google Play services 20.0.0
