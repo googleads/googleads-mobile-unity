@@ -1,14 +1,15 @@
 <dependencies>
   <androidPackages>
-    <androidPackage spec="com.google.ads.mediation:applovin:9.14.6.0">
+    <androidPackage spec="com.google.ads.mediation:applovin:10.1.2.0">
       <repositories>
-        <repository>https://jcenter.bintray.com/</repository>
+        <repository>https://repo.maven.apache.org/maven2/</repository>
+        <repository>https://dl.google.com/dl/android/maven2/</repository>
       </repositories>
     </androidPackage>
   </androidPackages>
 
   <iosPods>
-    <iosPod name="GoogleMobileAdsMediationAppLovin" version="6.14.6.0">
+    <iosPod name="GoogleMobileAdsMediationAppLovin" version="10.2.1.0">
       <sources>
         <source>https://github.com/CocoaPods/Specs</source>
       </sources>
