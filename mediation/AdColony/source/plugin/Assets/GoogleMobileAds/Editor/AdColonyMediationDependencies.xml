@@ -1,14 +1,15 @@
 <dependencies>
   <androidPackages>
-    <androidPackage spec="com.google.ads.mediation:adcolony:4.2.4.0">
+    <androidPackage spec="com.google.ads.mediation:adcolony:4.5.0.0">
       <repositories>
-        <repository>https://adcolony.bintray.com/AdColony</repository>
+        <repository>https://repo.maven.apache.org/maven2/</repository>
+        <repository>https://dl.google.com/dl/android/maven2/</repository>
       </repositories>
     </androidPackage>
   </androidPackages>
 
   <iosPods>
-    <iosPod name="GoogleMobileAdsMediationAdColony" version="4.4.1.0">
+    <iosPod name="GoogleMobileAdsMediationAdColony" version="4.6.1.0">
       <sources>
         <source>https://github.com/CocoaPods/Specs</source>
       </sources>

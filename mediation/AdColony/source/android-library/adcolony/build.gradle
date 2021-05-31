@@ -1,11 +1,10 @@
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion 28
-
+    compileSdkVersion 30
     defaultConfig {
         minSdkVersion 16
-        targetSdkVersion 28
+        targetSdkVersion 30
         versionCode 1
         versionName "1.0"
         consumerProguardFiles 'proguard-rules.pgcfg'
@@ -16,15 +15,11 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pgcfg'
         }
     }
-
-    lintOptions {
-        abortOnError false
-    }
 }
 
 dependencies {
     api project(':app')
-    api 'com.google.ads.mediation:adcolony:4.1.4.1'
+    api 'com.google.ads.mediation:adcolony:4.5.0.0'
 }
 
 task clearAar(type: Delete) {
