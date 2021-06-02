@@ -267,9 +267,6 @@ namespace GoogleMobileAds.iOS
         [DllImport("__Internal")]
         internal static extern void GADUShowInterstitial(IntPtr interstitial);
 
-        [DllImport("__Internal")]
-        internal static extern void GADURequestInterstitial(IntPtr interstitial, IntPtr request);
-
         #endregion
 
         #region RewardedAd externs
