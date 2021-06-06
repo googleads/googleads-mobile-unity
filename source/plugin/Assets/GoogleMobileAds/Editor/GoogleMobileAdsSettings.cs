@@ -1,3 +1,4 @@
+using System.IO;
 using UnityEditor;
 using UnityEngine;
 
@@ -10,8 +11,9 @@ namespace GoogleMobileAds.Editor
 
         private const string MobileAdsSettingsResDir = "Assets/GoogleMobileAds/Resources";
 
-        private const string MobileAdsSettingsFile =
-            "Assets/GoogleMobileAds/Resources/GoogleMobileAdsSettings.asset";
+        private const string MobileAdsSettingsFile = "GoogleMobileAdsSettings";
+
+        private const string MobileAdsSettingsExtension = ".asset";
 
         private static GoogleMobileAdsSettings instance;
 
@@ -67,6 +69,8 @@ namespace GoogleMobileAds.Editor
         {
             get
             {
+                instance = Resources.Load<GoogleMobileAdsSettings>(MobileAdsSettingsFile);
+
                 if (instance == null)
                 {
                     if (!AssetDatabase.IsValidFolder(MobileAdsSettingsDir))
@@ -79,13 +83,10 @@ namespace GoogleMobileAds.Editor
                         AssetDatabase.CreateFolder(MobileAdsSettingsDir, "Resources");
                     }
 
-                    instance = (GoogleMobileAdsSettings) AssetDatabase.LoadAssetAtPath(
-                        MobileAdsSettingsFile, typeof(GoogleMobileAdsSettings));
-
                     if (instance == null)
                     {
                         instance = ScriptableObject.CreateInstance<GoogleMobileAdsSettings>();
-                        AssetDatabase.CreateAsset(instance, MobileAdsSettingsFile);
+                        AssetDatabase.CreateAsset(instance, Path.Combine(MobileAdsSettingsResDir, MobileAdsSettingsFile + MobileAdsSettingsExtension));
                     }
                 }
                 return instance;
