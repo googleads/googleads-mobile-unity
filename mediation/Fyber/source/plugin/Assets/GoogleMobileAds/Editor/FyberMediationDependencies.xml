@@ -1,14 +1,15 @@
 <dependencies>
   <androidPackages>
-    <androidPackage spec="com.google.ads.mediation:fyber:7.7.4.0">
+    <androidPackage spec="com.google.ads.mediation:fyber:7.8.2.0">
       <repositories>
-        <repository>https://fyber.bintray.com/marketplace</repository>
+        <repository>https://repo.maven.apache.org/maven2/</repository>
+        <repository>https://dl.google.com/dl/android/maven2/</repository>
       </repositories>
     </androidPackage>
   </androidPackages>
 
   <iosPods>
-    <iosPod name="GoogleMobileAdsMediationFyber" version="7.7.3.0">
+    <iosPod name="GoogleMobileAdsMediationFyber" version="7.8.5.0">
       <sources>
         <source>https://github.com/CocoaPods/Specs</source>
       </sources>
