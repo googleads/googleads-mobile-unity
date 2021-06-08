@@ -1,6 +1,6 @@
 ## Fyber Unity Mediation Plugin Changelog
 
-#### Version 1.6.0 (In Progress)
+#### [Version 1.6.0](https://dl.google.com/googleadmobadssdk/mediation/unity/fyber/FyberUnityAdapter-1.6.0.zip)
 - Supports [Fyber Android adapter version 7.8.2.0](https://github.com/googleads/googleads-mobile-android-mediation/blob/master/ThirdPartyAdapters/fyber/CHANGELOG.md#version-7820).
 - Supports [Fyber iOS adapter version 7.8.5.0](https://github.com/googleads/googleads-mobile-ios-mediation/blob/master/adapters/Fyber/CHANGELOG.md#version-7850).
 
