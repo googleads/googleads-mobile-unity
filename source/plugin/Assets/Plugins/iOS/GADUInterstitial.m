@@ -47,7 +47,7 @@
 }
 
 - (NSString *)mediationAdapterClassName {
-  return [self.interstitial adNetworkClassName];
+  return self.interstitial.responseInfo.adNetworkClassName;
 }
 
 #pragma mark GADInterstitialDelegate implementation

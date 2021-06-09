@@ -140,7 +140,8 @@ static BOOL _pauseOnBackground = NO;
 }
 
 + (GADAdSize)adSizeForWidth:(CGFloat)width height:(CGFloat)height {
-  UIDeviceOrientation currentOrientation = [UIApplication sharedApplication].statusBarOrientation;
+  UIInterfaceOrientation currentOrientation =
+      [UIApplication sharedApplication].statusBarOrientation;
 
   if (width == kGADUAdSizeUseFullWidth && UIInterfaceOrientationIsPortrait(currentOrientation)) {
     return GADAdSizeFullWidthPortraitWithHeight(height);
@@ -149,6 +150,17 @@ static BOOL _pauseOnBackground = NO;
     return GADAdSizeFromCGSize(CGSizeMake(FullSafeWidthLandscape(), height));
   }
   return GADAdSizeFromCGSize(CGSizeMake(width, height));
+}
+
++ (GADAdSize)adaptiveAdSizeForWidth:(CGFloat)width orientation:(GADUBannerOrientation)orientation {
+  switch (orientation) {
+    case kGADUBannerOrientationCurrent:
+      return GADCurrentOrientationAnchoredAdaptiveBannerAdSizeWithWidth(width);
+    case kGADUBannerOrientationLandscape:
+      return GADLandscapeAnchoredAdaptiveBannerAdSizeWithWidth(width);
+    case kGADUBannerOrientationPortrait:
+      return GADPortraitAnchoredAdaptiveBannerAdSizeWithWidth(width);
+  }
 }
 
 @end

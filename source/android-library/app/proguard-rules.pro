@@ -1,6 +1,6 @@
 # Add project specific ProGuard rules here.
 # By default, the flags in this file are appended to flags specified
-# in /Users/rampara/Library/Android/sdk/tools/proguard/proguard-android.txt
+# in ~/Library/Android/sdk/tools/proguard/proguard-android.txt
 # You can edit the include path and order by changing the proguardFiles
 # directive in build.gradle.
 #
@@ -15,3 +15,16 @@
 #-keepclassmembers class fqcn.of.javascript.interface.for.webview {
 #   public *;
 #}
+
+# Keep Google Mobile Ads Unity plugin classes.
+-keep class com.google.unity.ads.** {
+   *;
+}
+
+# Keep Google Mobile Ads Android classes.
+-keep class com.google.android.gms.ads.** {
+   public *;
+}
+-keep public class com.google.ads.** {
+   public *;
+}

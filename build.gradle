@@ -37,26 +37,25 @@ project.ext {
     resolverDir = file("${tempPath}/jarresolver").absolutePath
 }
 
-// Delete existing android plugin jar file.
-task clearJar(type: Delete) {
-    delete 'source/android-library/app/build/intermediates/bundles/release/unity-plugin-library.jar'
+// Delete existing android plugin aar file.
+task clearAar(type: Delete) {
+    delete 'source/android-library/app/build/libs/googlemobileads-unity.aar'
 }
 
 // Build jar from android plugin source files using existing Gradle build file.
-task buildAndroidPluginJar(type: GradleBuild) {
+task buildAndroidPluginAar(type: GradleBuild) {
     buildFile = 'source/android-library/app/build.gradle'
-    tasks = ['build']
+    tasks = ['makeAar']
 }
 
 // Move android plugin jar to temporary build directory.
-task copyAndroidLibraryJar(type: Copy) {
-    from("source/android-library/app/build/intermediates/intermediate-jars/release/")
-    into("${pluginBuildDir}/Assets/Plugins/Android/GoogleMobileAdsPlugin/libs")
-    include('classes.jar')
-    rename('classes.jar', 'unity-plugin-library.jar')
+task copyAndroidLibraryAar(type: Copy) {
+    from("source/android-library/app/build/libs")
+    into("${pluginBuildDir}/Assets/Plugins/Android")
+    include('googlemobileads-unity.aar')
 }
 
-copyAndroidLibraryJar.dependsOn(clearJar, buildAndroidPluginJar)
+copyAndroidLibraryAar.dependsOn(clearAar, buildAndroidPluginAar)
 
 task downloadResolver() {
     description = "Download the Play Services Resolver"
@@ -117,6 +116,6 @@ task clearTempBuildFolder(type:Delete) {
   delete {"${tempPath}"}
 }
 
-exportPackage.dependsOn(createTempBuildFolder, copyAndroidLibraryJar,
+exportPackage.dependsOn(createTempBuildFolder, copyAndroidLibraryAar,
                         downloadResolver)
 exportPackage.finalizedBy(clearTempBuildFolder)

@@ -8,6 +8,7 @@ android {
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
+        consumerProguardFiles 'proguard-rules.pro'
     }
     buildTypes {
         release {
@@ -27,15 +28,15 @@ dependencies {
     implementation 'com.google.android.gms:play-services-ads:18.1.0'
 }
 
-task clearJar(type: Delete) {
-    delete 'build/libs/unity-plugin-library.jar'
+task clearAar(type: Delete) {
+    delete 'build/libs/googlemobileads-unity.aar'
 }
 
-task makeJar(type: Copy) {
-    from('build/intermediates/intermediate-jars/release/')
+task makeAar(type: Copy) {
+    from('build/outputs/aar/')
     into('build/libs/')
-    include('classes.jar')
-    rename('classes.jar', 'unity-plugin-library.jar')
+    include('app.aar')
+    rename('app.aar', 'googlemobileads-unity.aar')
 }
 
-makeJar.dependsOn(clearJar, build)
+makeAar.dependsOn(clearAar, build)

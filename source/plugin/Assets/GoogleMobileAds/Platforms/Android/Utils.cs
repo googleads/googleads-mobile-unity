@@ -107,15 +107,38 @@ namespace GoogleMobileAds.Android
 
         public static AndroidJavaObject GetAdSizeJavaObject(AdSize adSize)
         {
-            if (adSize.IsSmartBanner)
-            {
-                return new AndroidJavaClass(AdSizeClassName)
-                        .GetStatic<AndroidJavaObject>("SMART_BANNER");
-            }
-            else
-            {
-                return new AndroidJavaObject(AdSizeClassName, adSize.Width, adSize.Height);
-            }
+            switch (adSize.AdType) {
+                case AdSize.Type.SmartBanner:
+  #if UNITY_2019_2_OR_NEWER
+                    // AndroidJavaClass.GetStatic<AndroidJavaObject>() returns null since Unity 2019.2.
+                    // Creates an AdSize object by directly calling the constructor, as a workaround.
+                    return new AndroidJavaObject(AdSizeClassName, -1, -2)
+                            .GetStatic<AndroidJavaObject>("SMART_BANNER");
+  #else
+                    return new AndroidJavaClass(AdSizeClassName)
+                            .GetStatic<AndroidJavaObject>("SMART_BANNER");
+  #endif
+                case AdSize.Type.AnchoredAdaptive:
+                    AndroidJavaClass adSizeClass = new AndroidJavaClass(AdSizeClassName);
+                    AndroidJavaClass playerClass = new AndroidJavaClass(Utils.UnityActivityClassName);
+                    AndroidJavaObject activity =
+                        playerClass.GetStatic<AndroidJavaObject>("currentActivity");
+                    switch (adSize.Orientation)
+                    {
+                        case Orientation.Landscape:
+                            return adSizeClass.CallStatic<AndroidJavaObject>("getLandscapeBannerAdSizeWithWidth", activity, adSize.Width);
+                        case Orientation.Portrait:
+                            return adSizeClass.CallStatic<AndroidJavaObject>("getPortaitBannerAdSizeWithWidth", activity, adSize.Width);
+                        case Orientation.Current:
+                            return adSizeClass.CallStatic<AndroidJavaObject>("getCurrentOrientationBannerAdSizeWithWidth", activity, adSize.Width);
+                        default:
+                            throw new ArgumentException("Invalid Orientation provided for ad size.");
+                    }
+                case AdSize.Type.Standard:
+                    return new AndroidJavaObject(AdSizeClassName, adSize.Width, adSize.Height);
+                default:
+                    throw new ArgumentException("Invalid AdSize.Type provided for ad size.");
+  }
         }
 
         public static AndroidJavaObject GetAdRequestJavaObject(AdRequest request)

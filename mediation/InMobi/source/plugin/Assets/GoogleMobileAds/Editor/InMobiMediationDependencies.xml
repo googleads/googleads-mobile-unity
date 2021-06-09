@@ -1,26 +1,6 @@
 <dependencies>
   <androidPackages>
-    <androidPackage spec="com.inmobi.monetization:inmobi-ads:7.2.7">
-      <repositories>
-        <repository>https://jcenter.bintray.com/</repository>
-      </repositories>
-    </androidPackage>
-    <androidPackage spec="com.google.ads.mediation:inmobi:7.2.7.0">
-      <repositories>
-        <repository>https://jcenter.bintray.com/</repository>
-      </repositories>
-    </androidPackage>
-    <androidPackage spec="com.squareup.picasso:picasso:2.5.2">
-      <repositories>
-        <repository>https://jcenter.bintray.com/</repository>
-      </repositories>
-    </androidPackage>
-    <androidPackage spec="com.android.support:recyclerview-v7:27.1.0">
-      <repositories>
-        <repository>https://jcenter.bintray.com/</repository>
-      </repositories>
-    </androidPackage>
-    <androidPackage spec="com.google.android.gms:play-services-location:16.0.0">
+    <androidPackage spec="com.google.ads.mediation:inmobi:7.2.9.0">
       <repositories>
         <repository>https://jcenter.bintray.com/</repository>
       </repositories>
@@ -28,7 +8,7 @@
   </androidPackages>
 
   <iosPods>
-    <iosPod name="GoogleMobileAdsMediationInMobi" version="7.2.7.0">
+    <iosPod name="GoogleMobileAdsMediationInMobi" version="7.3.2.0">
       <sources>
         <source>https://github.com/CocoaPods/Specs</source>
       </sources>
