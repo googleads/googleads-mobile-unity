@@ -5,7 +5,9 @@
         "GoogleMobileAds.Core",
         "GoogleMobileAds.Api.Mediation"
     ],
-    "includePlatforms": [],
+    "includePlatforms": [
+        "Editor"
+    ],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": false,
