@@ -23,6 +23,15 @@ namespace GoogleMobileAds
   [Preserve]
   public class GoogleMobileAdsClientFactory: IClientFactory
   {
+    public IAppOpenAdClient BuildAppOpenAdClient()
+    {
+      if (Application.platform == RuntimePlatform.OSXEditor || Application.platform == RuntimePlatform.WindowsEditor)
+      {
+        return new GoogleMobileAds.Unity.AppOpenAdClient();
+      }
+      return new GoogleMobileAds.Common.AppOpenAdAdDummyClient();
+    }
+
     public IBannerClient BuildBannerClient()
     {
       if (Application.platform == RuntimePlatform.OSXEditor || Application.platform == RuntimePlatform.WindowsEditor)

@@ -6,8 +6,8 @@
         "GoogleMobileAds.Api.Mediation"
     ],
     "includePlatforms": [
-        "iOS",
-        "Editor"
+        "Editor",
+        "iOS"
     ],
     "excludePlatforms": [],
     "allowUnsafeCode": false,

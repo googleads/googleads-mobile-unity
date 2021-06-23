@@ -29,6 +29,20 @@ static CGFloat GADUSafeWidthLandscape(void) {
   return MAX(CGRectGetWidth(screenBounds), CGRectGetHeight(screenBounds));
 }
 
+UIInterfaceOrientation GADUUIInterfaceOrientationForGADUScreenOrientation(
+    GADUScreenOrientation orientation) {
+  UIInterfaceOrientation uiOrientation;
+  switch (orientation) {
+    case kGADUScreenOrientationLandscapeLeft:
+    case kGADUScreenOrientationLandscapeRight:
+      uiOrientation = UIInterfaceOrientationLandscapeLeft;
+      break;
+    default:
+      uiOrientation = UIInterfaceOrientationPortrait;
+  }
+  return uiOrientation;
+}
+
 @implementation GADUPluginUtil
 
 static BOOL _pauseOnBackground = NO;
@@ -141,8 +155,7 @@ static BOOL _pauseOnBackground = NO;
 }
 
 + (GADAdSize)adSizeForWidth:(CGFloat)width height:(CGFloat)height {
-  UIInterfaceOrientation currentOrientation =
-      UIApplication.sharedApplication.statusBarOrientation;
+  UIInterfaceOrientation currentOrientation = UIApplication.sharedApplication.statusBarOrientation;
 
   if (width == kGADUAdSizeUseFullWidth && UIInterfaceOrientationIsPortrait(currentOrientation)) {
     return GADAdSizeFullWidthPortraitWithHeight(height);

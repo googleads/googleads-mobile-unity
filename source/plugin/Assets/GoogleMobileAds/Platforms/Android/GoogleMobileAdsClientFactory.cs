@@ -25,6 +25,16 @@ namespace GoogleMobileAds {
     [Preserve]
     public class GoogleMobileAdsClientFactory : IClientFactory
     {
+        public IAppOpenAdClient BuildAppOpenAdClient()
+        {
+            if (Application.platform == RuntimePlatform.Android)
+            {
+                return new GoogleMobileAds.Android.AppOpenAdClient();
+            }
+            throw new InvalidOperationException(@"Called " + MethodBase.GetCurrentMethod().Name +
+            " on non-Android runtime");
+        }
+
         public IBannerClient BuildBannerClient()
         {
             if (Application.platform == RuntimePlatform.Android)

@@ -12,6 +12,10 @@ BOOL GADUIsOperatingSystemAtLeastVersion(NSInteger majorVersion);
 /// Returns the full available safe width of the device (excludes safe areas).
 int GADUDeviceSafeWidth();
 
+/// Returns a UIInterfaceOrientation for given GADUScreenOrientation.
+UIInterfaceOrientation GADUUIInterfaceOrientationForGADUScreenOrientation(
+    GADUScreenOrientation orientation);
+
 @interface GADUPluginUtil : NSObject
 
 /// Whether the Unity app should be paused when a full screen ad is displayed.

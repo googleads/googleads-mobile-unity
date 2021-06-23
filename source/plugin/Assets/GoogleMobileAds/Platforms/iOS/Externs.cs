@@ -132,6 +132,36 @@ namespace GoogleMobileAds.iOS
 
         #endregion
 
+        #region AppOpenAd externs
+
+        [DllImport("__Internal")]
+        internal static extern IntPtr GADUCreateAppOpenAd(IntPtr appOpenAdClient);
+
+        [DllImport("__Internal")]
+        internal static extern void GADULoadAppOpenAd(
+            IntPtr appOpenAd, string adUnitID, int orientation, IntPtr request);
+
+        [DllImport("__Internal")]
+        internal static extern void GADUShowAppOpenAd(IntPtr appOpenAd);
+
+        [DllImport("__Internal")]
+        internal static extern void GADUSetAppOpenAdCallbacks(
+            IntPtr appOpenAd,
+            AppOpenAdClient.GADUAppOpenAdLoadedCallback adLoadedCallback,
+            AppOpenAdClient.GADUAppOpenAdFailToLoadCallback adFailedToLoadCallback,
+            AppOpenAdClient.GADUAppOpenAdPaidEventCallback paidEventCallback,
+            AppOpenAdClient.GADUAppOpenAdFailedToPresentFullScreenContentCallback
+                    adFailToPresentFullScreenContentCallback,
+            AppOpenAdClient.GADUAppOpenAdDidPresentFullScreenContentCallback
+                    adDidPresentFullScreenContentCallback,
+            AppOpenAdClient.GADUAppOpenAdDidDismissFullScreenContentCallback
+                    adDidDismissFullScreenContentCallback,
+            AppOpenAdClient.GADUAppOpenAdDidRecordImpressionCallback
+                    adDidRecordImpressionCallback
+        );
+
+        #endregion
+
         #region Banner externs
 
         [DllImport("__Internal")]

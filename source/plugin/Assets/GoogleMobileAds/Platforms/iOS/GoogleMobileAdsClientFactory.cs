@@ -23,7 +23,18 @@ using GoogleMobileAds.Common;
 
 namespace GoogleMobileAds {
   [Preserve]
-  public class GoogleMobileAdsClientFactory : IClientFactory {
+  public class GoogleMobileAdsClientFactory : IClientFactory
+  {
+    public IAppOpenAdClient BuildAppOpenAdClient()
+    {
+      if (Application.platform == RuntimePlatform.IPhonePlayer)
+      {
+        return new GoogleMobileAds.iOS.AppOpenAdClient();
+      }
+      throw new InvalidOperationException(@"Called " + MethodBase.GetCurrentMethod().Name +
+                                          " on non-iOS runtime");
+    }
+
     public IBannerClient BuildBannerClient()
     {
       if (Application.platform == RuntimePlatform.IPhonePlayer)

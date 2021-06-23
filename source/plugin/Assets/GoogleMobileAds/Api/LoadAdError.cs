@@ -15,29 +15,30 @@
 
 using GoogleMobileAds.Common;
 
-namespace GoogleMobileAds.Api {
+namespace GoogleMobileAds.Api
+{
     public class LoadAdError : AdError
     {
-       ILoadAdErrorClient client;
+        ILoadAdErrorClient client;
 
-       public LoadAdError(ILoadAdErrorClient client) : base(client)
-       {
-          this.client = client;
-       }
+        public LoadAdError(ILoadAdErrorClient client) : base(client)
+        {
+            this.client = client;
+        }
 
-      /// <summary>
-      /// Gets ResponseInfo Object for the failed request.
-      /// See https://developers.google.com/admob/unity/response-info
-      /// for more inforomation about Response Info.
-      /// <summary>
-      /// <returns>ResponseInfo Object</returns>
-       public ResponseInfo GetResponseInfo()
-       {
-          return new ResponseInfo(client.GetResponseInfoClient());
-       }
+        /// <summary>
+        /// Gets ResponseInfo Object for the failed request.
+        /// See https://developers.google.com/admob/unity/response-info
+        /// for more inforomation about Response Info.
+        /// <summary>
+        /// <returns>ResponseInfo Object</returns>
+        public ResponseInfo GetResponseInfo()
+        {
+            return new ResponseInfo(client.GetResponseInfoClient());
+        }
 
-       public override string ToString()
-       {
+        public override string ToString()
+        {
             return client.ToString();
         }
     }

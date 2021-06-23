@@ -40,6 +40,9 @@ namespace GoogleMobileAds.Android
         public const string AdMobExtrasClassName =
                 "com.google.android.gms.ads.mediation.admob.AdMobExtras";
 
+        public const string AppOpenAdClassName =
+                "com.google.android.gms.ads.appopen.AppOpenAd";
+
         public const string PlayStorePurchaseListenerClassName =
             "com.google.android.gms.ads.purchase.PlayStorePurchaseListener";
 
@@ -80,6 +83,11 @@ namespace GoogleMobileAds.Android
 
         public const string UnityAdapterStatusEnumName =
                 "com.google.android.gms.ads.initialization.AdapterStatus$State";
+
+        public const string UnityAppOpenAdClassName = "com.google.unity.ads.UnityAppOpenAd";
+
+        public const string UnityAppOpenAdCallbackClassName =
+                "com.google.unity.ads.UnityAppOpenAdCallback";
 
         public const string OnInitializationCompleteListenerClassName =
             "com.google.android.gms.ads.initialization.OnInitializationCompleteListener";
@@ -144,6 +152,24 @@ namespace GoogleMobileAds.Android
                 default:
                     throw new ArgumentException("Invalid AdSize.Type provided for ad size.");
             }
+        }
+
+        public static int GetAppOpenAdOrientation(ScreenOrientation orientation)
+        {
+            string orientationFieldName;
+            switch (orientation)
+            {
+                case ScreenOrientation.Landscape:
+                case ScreenOrientation.LandscapeRight:
+                    orientationFieldName = "APP_OPEN_AD_ORIENTATION_LANDSCAPE";
+                    break;
+                default:
+                    orientationFieldName = "APP_OPEN_AD_ORIENTATION_PORTRAIT";
+                    break;
+            }
+
+            AndroidJavaClass appOpenAdClass = new AndroidJavaClass(AppOpenAdClassName);
+            return appOpenAdClass.GetStatic<int>(orientationFieldName);
         }
 
         internal static int GetScreenWidth()

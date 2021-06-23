@@ -13,6 +13,17 @@ typedef NS_ENUM(NSInteger, GADAdPosition) {
   kGADAdPositionCenterOfScreen = 6        ///< Bottom right of screen.
 };
 
+/// Screen orientation that matches to Unity's ScreenOrientation enum values.
+/// (See https://docs.unity3d.com/ScriptReference/ScreenOrientation.html)
+typedef NS_ENUM(NSUInteger, GADUScreenOrientation) {
+  kGADUScreenOrientationUnknown = 0,
+  kGADUScreenOrientationPortrait = 1,            ///< Portrait.
+  kGADUScreenOrientationPortraitUpsideDown = 2,  ///< Portrait, upside down.
+  kGADUScreenOrientationLandscapeLeft = 3,       ///< Landscape, CCW from the portrait.
+  kGADUScreenOrientationLandscapeRight = 4,      ///< Landscape, CW from the portrait.
+  kGADUScreenOrientationAutoRotation = 5,        ///< Auto rotate mode.
+};
+
 /// Orientation for an adaptive banner.
 typedef NS_ENUM(NSUInteger, GADUBannerOrientation) {
   kGADUBannerOrientationCurrent = 0,    ///< Current Orientation.
@@ -32,6 +43,9 @@ typedef const void *GADUTypeInitializationStatusRef;
 typedef void (*GADUInitializationCompleteCallback)(GADUTypeMobileAdsClientRef *clientRef,
                                                    GADUTypeInitializationStatusRef statusRef);
 
+/// Type representing a Unity app open client.
+typedef const void *GADUTypeAppOpenAdClientRef;
+
 /// Type representing a Unity banner client.
 typedef const void *GADUTypeBannerClientRef;
 
@@ -46,6 +60,9 @@ typedef const void *GADUTypeRewardedInterstitialAdRef;
 
 /// Type representing a Unity rewarded interstitial ad client.
 typedef const void *GADUTypeRewardedInterstitialAdClientRef;
+
+/// Type representing a GADUAppOpenAd.
+typedef const void *GADUTypeAppOpenAdRef;
 
 /// Type representing a GADUBanner.
 typedef const void *GADUTypeBannerRef;
@@ -76,6 +93,38 @@ typedef const void *GADUTypeAdNetworkExtrasRef;
 
 /// Type representing a GADUServerSideVerificationOptions.
 typedef const void *GADUTypeServerSideVerificationOptionsRef;
+
+// MARK: - GADUAppOpenAd
+
+/// Callback for when an app open ad is loaded.
+typedef void (*GADUAppOpenAdLoadedCallback)(GADUTypeAppOpenAdClientRef *appOpenAdClient);
+
+/// Callback for when an app open ad request failed to load.
+typedef void (*GADUAppOpenAdFailedToLoadCallback)(GADUTypeAppOpenAdClientRef *appOpenAdClient,
+                                                  const char *error);
+
+/// Callback when an app open ad failed to present full screen content.
+typedef void (*GADUAppOpenAdFailedToPresentFullScreenContentCallback)(
+    GADUTypeAppOpenAdClientRef *appOpenAdClient, const char *error);
+
+/// Callback when an app open ad presented full screen content.
+typedef void (*GADUAppOpenAdDidPresentFullScreenContentCallback)(
+    GADUTypeAppOpenAdClientRef *appOpenAdClient);
+
+/// Callback when an ad impression has been recorded for the app open ad.
+typedef void (*GADUAppOpenAdDidRecordImpressionCallback)(
+    GADUTypeAppOpenAdClientRef *appOpenAdClient);
+
+/// Callback when an app open ad dismissed full screen content.
+typedef void (*GADUAppOpenAdDidDismissFullScreenContentCallback)(
+    GADUTypeAppOpenAdClientRef *appOpenAdClient);
+
+/// Callback when an app open ad is estimated to have earned money.
+typedef void (*GADUAppOpenAdPaidEventCallback)(GADUTypeAppOpenAdClientRef *appOpenAdClient,
+                                               int precision, int64_t value,
+                                               const char *currencyCode);
+
+// MARK: - GADUAdView
 
 /// Callback for when a banner ad request was successfully loaded.
 typedef void (*GADUAdViewDidReceiveAdCallback)(GADUTypeBannerClientRef *bannerClient);

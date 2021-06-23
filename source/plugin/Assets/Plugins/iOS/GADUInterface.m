@@ -2,6 +2,7 @@
 
 #import <GoogleMobileAds/GoogleMobileAds.h>
 #import "GADUAdNetworkExtras.h"
+#import "GADUAppOpenAd.h"
 #import "GADUBanner.h"
 #import "GADUInterstitial.h"
 #import "GADUObjectCache.h"
@@ -128,6 +129,15 @@ int GADUDeviceSafeWidth() {
   return (int)CGRectGetWidth(screenBounds);
 }
 
+/// Creates a GADUAppOpenAd and returns its reference.
+GADUTypeAppOpenAdRef GADUCreateAppOpenAd(GADUTypeAppOpenAdClientRef *appOpenAdClient) {
+  GADUAppOpenAd *appOpenAd =
+      [[GADUAppOpenAd alloc] initWithAppOpenAdClientReference:appOpenAdClient];
+  GADUObjectCache *cache = [GADUObjectCache sharedInstance];
+  cache[appOpenAd.gadu_referenceKey] = appOpenAd;
+  return (__bridge GADUTypeAppOpenAdRef)appOpenAd;
+}
+
 /// Creates a GADBannerView with the specified width, height, and position. Returns a reference to
 /// the GADUBannerView.
 GADUTypeBannerRef GADUCreateBannerView(GADUTypeBannerClientRef *bannerClient, const char *adUnitID,
@@ -252,6 +262,28 @@ GADUTypeRewardedInterstitialAdRef GADUCreateRewardedInterstitialAd(
   return (__bridge GADUTypeRewardedInterstitialAdRef)rewardedInterstitialAd;
 }
 
+/// Sets the app open ad callback methods to be invoked during app open ad
+/// events.
+void GADUSetAppOpenAdCallbacks(
+    GADUTypeAppOpenAdRef appOpenAd,
+    GADUAppOpenAdLoadedCallback adLoadedCallback,
+    GADUAppOpenAdFailedToLoadCallback adFailedToLoadCallback,
+    GADUAppOpenAdPaidEventCallback paidEventCallback,
+    GADUAppOpenAdFailedToPresentFullScreenContentCallback adFailToPresentFullScreenContentCallback,
+    GADUAppOpenAdDidPresentFullScreenContentCallback adDidPresentFullScreenContentCallback,
+    GADUAppOpenAdDidDismissFullScreenContentCallback adDidDismissFullScreenContentCallback,
+    GADUAppOpenAdDidRecordImpressionCallback adDidRecordImpressionCallback) {
+  GADUAppOpenAd *internalAppOpenAd = (__bridge GADUAppOpenAd *)appOpenAd;
+  internalAppOpenAd.adLoadedCallback = adLoadedCallback;
+  internalAppOpenAd.adFailedToLoadCallback = adFailedToLoadCallback;
+  internalAppOpenAd.paidEventCallback = paidEventCallback;
+  internalAppOpenAd.adFailedToPresentFullScreenContentCallback =
+      adFailToPresentFullScreenContentCallback;
+  internalAppOpenAd.adDidPresentFullScreenContentCallback = adDidPresentFullScreenContentCallback;
+  internalAppOpenAd.adDidDismissFullScreenContentCallback = adDidDismissFullScreenContentCallback;
+  internalAppOpenAd.adDidRecordImpressionCallback = adDidRecordImpressionCallback;
+}
+
 /// Sets the banner callback methods to be invoked during banner ad events.
 void GADUSetBannerCallbacks(GADUTypeBannerRef banner,
                             GADUAdViewDidReceiveAdCallback adReceivedCallback,
@@ -336,6 +368,12 @@ void GADUSetRewardedInterstitialAdCallbacks(
   internalRewardedInterstitialAd.adDidDismissFullScreenContentCallback =
       adDidDismissFullScreenContentCallback;
   internalRewardedInterstitialAd.adDidRecordImpressionCallback = adDidRecordImpressionCallback;
+}
+
+/// Shows the GADAppOpenAd.
+void GADUShowAppOpenAd(GADUTypeAppOpenAdRef appOpenAd) {
+  GADUAppOpenAd *internalAppOpenAd = (__bridge GADUAppOpenAd *)appOpenAd;
+  [internalAppOpenAd show];
 }
 
 /// Sets the GADBannerView's hidden property to YES.
@@ -660,6 +698,17 @@ void GADULoadRewardedAd(GADUTypeRewardedAdRef rewardedAd, const char *adUnitID,
   GADURequest *internalRequest = (__bridge GADURequest *)request;
   [internalRewardedAd loadWithAdUnitID:GADUStringFromUTF8String(adUnitID)
                                request:[internalRequest request]];
+}
+
+/// Makes an app open ad request.
+void GADULoadAppOpenAd(GADUTypeAppOpenAdRef appOpenAd, const char *adUnitID,
+                       int orientation, GADUTypeRequestRef request) {
+  GADUAppOpenAd *internalAppOpenAd = (__bridge GADUAppOpenAd *)appOpenAd;
+  GADURequest *internalRequest = (__bridge GADURequest *)request;
+
+  [internalAppOpenAd loadWithAdUnitID:GADUStringFromUTF8String(adUnitID)
+                          orientation:(GADUScreenOrientation)orientation
+                              request:[internalRequest request]];
 }
 
 /// Makes a rewarded interstitial ad request.
