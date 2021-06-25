@@ -1,6 +1,6 @@
 ## Chartboost Unity Mediation Plugin Changelog
 
-#### Version 3.3.1 (In Progress)
+#### [Version 3.3.1](https://dl.google.com/googleadmobadssdk/mediation/unity/chartboost/ChartboostUnityAdapter-3.3.1.zip)
 - Supports [Chartboost Android adapter version 8.2.1.0](https://github.com/googleads/googleads-mobile-android-mediation/blob/master/ThirdPartyAdapters/chartboost/CHANGELOG.md#version-8210).
 - Supports [Chartboost iOS adapter version 8.4.1.1](https://github.com/googleads/googleads-mobile-ios-mediation/blob/master/adapters/Chartboost/CHANGELOG.md#version-8411).
 
