@@ -12,11 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System;
 using UnityEngine;
 
 using GoogleMobileAds.Api;
-using GoogleMobileAds.Common;
 using System.Collections.Generic;
 
 namespace GoogleMobileAds.Android
@@ -100,6 +98,10 @@ namespace GoogleMobileAds.Android
                     requestConfigurationBuilder.Call<AndroidJavaObject>("setTagForChildDirectedTreatment",
                          tagForChildDirectedTreatmentCode);
                 }
+            }
+
+            if (requestConfiguration.SameAppKeyEnabled.HasValue) {
+              // SameAppKey feature is for iOS only. Do nothing on Android.
             }
 
             return requestConfigurationBuilder.Call<AndroidJavaObject>("build");

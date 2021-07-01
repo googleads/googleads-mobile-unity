@@ -24,30 +24,38 @@ namespace GoogleMobileAds.Api
         public TagForUnderAgeOfConsent? TagForUnderAgeOfConsent { get; private set; }
         public List<string> TestDeviceIds { get; private set; }
 
+        public bool? SameAppKeyEnabled { get; private set; }
+
         private RequestConfiguration(Builder builder)
         {
             this.MaxAdContentRating = builder.MaxAdContentRating;
             this.TagForChildDirectedTreatment = builder.TagForChildDirectedTreatment;
             this.TagForUnderAgeOfConsent = builder.TagForUnderAgeOfConsent;
             this.TestDeviceIds = builder.TestDeviceIds;
+            this.SameAppKeyEnabled = builder.SameAppKeyEnabled;
         }
 
         public Builder ToBuilder()
         {
-            return (new Builder()).
-            SetMaxAdContentRating(this.MaxAdContentRating).
-            SetTagForChildDirectedTreatment(this.TagForChildDirectedTreatment).
-            SetTagForUnderAgeOfConsent(this.TagForUnderAgeOfConsent).
-            SetTestDeviceIds(this.TestDeviceIds);
+          Builder builder = new Builder()
+              .SetMaxAdContentRating(this.MaxAdContentRating)
+              .SetTagForChildDirectedTreatment(this.TagForChildDirectedTreatment)
+              .SetTagForUnderAgeOfConsent(this.TagForUnderAgeOfConsent)
+              .SetTestDeviceIds(this.TestDeviceIds);
+          if (this.SameAppKeyEnabled.HasValue)
+          {
+              builder.SetSameAppKeyEnabled(this.SameAppKeyEnabled.Value);
+          }
+          return builder;
         }
 
         public class Builder
         {
-
             internal MaxAdContentRating MaxAdContentRating { get; private set; }
             internal TagForChildDirectedTreatment? TagForChildDirectedTreatment { get; private set; }
             internal TagForUnderAgeOfConsent? TagForUnderAgeOfConsent { get; private set; }
             internal List<string> TestDeviceIds { get; private set; }
+            internal bool? SameAppKeyEnabled { get; private set; }
 
             public Builder()
             {
@@ -55,6 +63,7 @@ namespace GoogleMobileAds.Api
                 this.TagForChildDirectedTreatment = null;
                 this.TagForUnderAgeOfConsent = null;
                 this.TestDeviceIds = new List<string>();
+                this.SameAppKeyEnabled = null;
             }
 
             public Builder SetMaxAdContentRating(MaxAdContentRating maxAdContentRating)
@@ -78,6 +87,13 @@ namespace GoogleMobileAds.Api
             {
                 this.TestDeviceIds = testDeviceIds;
                 return this;
+            }
+
+            // Controls whether the Google Mobile Ads SDK Same App Key is enabled.
+            // The value set persists across app sessions. The key is enabled by default. Applies to iOS only.
+            public Builder SetSameAppKeyEnabled(bool enabled) {
+              this.SameAppKeyEnabled = enabled;
+              return this;
             }
 
             public RequestConfiguration build()

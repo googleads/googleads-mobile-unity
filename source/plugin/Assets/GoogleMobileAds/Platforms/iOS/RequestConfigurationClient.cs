@@ -1,5 +1,5 @@
 #if UNITY_IOS
-﻿// Copyright (C) 2020 Google LLC
+// Copyright (C) 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -36,6 +36,7 @@ namespace GoogleMobileAds.iOS
             {
                 Externs.GADUSetRequestConfigurationMaxAdContentRating(requestConfigurationPtr, requestConfiguration.MaxAdContentRating.Value);
             }
+
             if (requestConfiguration.TestDeviceIds.Count > 0)
             {
                 string[] testDeviceIdsArray = new string[requestConfiguration.TestDeviceIds.Count];
@@ -49,12 +50,17 @@ namespace GoogleMobileAds.iOS
                 Externs.GADUSetRequestConfigurationTagForChildDirectedTreatment(requestConfigurationPtr, (int)tagForChildDirectedTreatment.GetValueOrDefault());
             }
 
-
             if (requestConfiguration.TagForUnderAgeOfConsent.HasValue)
             {
                 TagForUnderAgeOfConsent? TagForUnderAgeOfConsent = requestConfiguration.TagForUnderAgeOfConsent;
                 Externs.GADUSetRequestConfigurationTagForUnderAgeOfConsent(requestConfigurationPtr, (int)TagForUnderAgeOfConsent.GetValueOrDefault());
             }
+
+            if (requestConfiguration.SameAppKeyEnabled.HasValue) {
+              Externs.GADUSetRequestConfigurationSameAppKeyEnabled(
+                  requestConfigurationPtr, requestConfiguration.SameAppKeyEnabled.Value);
+            }
+
             Externs.GADUSetRequestConfiguration(requestConfigurationPtr);
 
         }
@@ -69,10 +75,15 @@ namespace GoogleMobileAds.iOS
             TagForChildDirectedTreatment TagForChildDirectedTreatment = (TagForChildDirectedTreatment)Externs.GADUGetRequestConfigurationTagForChildDirectedTreatment(requestConfigurationPtr);
             TagForUnderAgeOfConsent TagForUnderAgeOfConsent = (TagForUnderAgeOfConsent)Externs.GADUGetRequestConfigurationTagForUnderAgeOfConsent(requestConfigurationPtr);
 
+            bool sameAppKeyEnabled =
+                Externs.GADUGetRequestConfigurationSameAppKeyEnabled(requestConfigurationPtr);
+
             requestConfigurationBuilder.SetMaxAdContentRating(maxAdContentRating);
             requestConfigurationBuilder.SetTestDeviceIds(testDeviceIds);
             requestConfigurationBuilder.SetTagForChildDirectedTreatment(TagForChildDirectedTreatment);
             requestConfigurationBuilder.SetTagForUnderAgeOfConsent(TagForUnderAgeOfConsent);
+            requestConfigurationBuilder.SetSameAppKeyEnabled(sameAppKeyEnabled);
+
             return requestConfigurationBuilder.build();
         }
 
