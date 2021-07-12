@@ -19,6 +19,8 @@ namespace GoogleMobileAds.Editor
             EditorGUILayout.LabelField("Google Mobile Ads App ID", EditorStyles.boldLabel);
             EditorGUI.indentLevel++;
 
+            EditorGUI.BeginChangeCheck();
+
             GoogleMobileAdsSettings.Instance.GoogleMobileAdsAndroidAppId =
                     EditorGUILayout.TextField("Android",
                             GoogleMobileAdsSettings.Instance.GoogleMobileAdsAndroidAppId);
@@ -37,8 +39,6 @@ namespace GoogleMobileAds.Editor
             EditorGUILayout.LabelField("AdMob-specific settings", EditorStyles.boldLabel);
             EditorGUI.indentLevel++;
 
-            EditorGUI.BeginChangeCheck();
-
             GoogleMobileAdsSettings.Instance.DelayAppMeasurementInit =
                     EditorGUILayout.Toggle(new GUIContent("Delay app measurement"),
                     GoogleMobileAdsSettings.Instance.DelayAppMeasurementInit);
@@ -52,7 +52,7 @@ namespace GoogleMobileAds.Editor
             EditorGUI.indentLevel--;
             EditorGUILayout.Separator();
 
-            if (GUI.changed)
+            if (EditorGUI.EndChangeCheck())
             {
                 OnSettingsChanged();
             }
@@ -60,7 +60,7 @@ namespace GoogleMobileAds.Editor
 
         private void OnSettingsChanged()
         {
-            EditorUtility.SetDirty((GoogleMobileAdsSettings) target);
+            EditorUtility.SetDirty(target);
             GoogleMobileAdsSettings.Instance.WriteSettingsToFile();
         }
     }
