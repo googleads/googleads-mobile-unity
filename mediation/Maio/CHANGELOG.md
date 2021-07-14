@@ -1,6 +1,6 @@
 ## maio Unity Mediation Plugin Changelog
 
-#### Version 1.3.5 (In Progress)
+#### [Version 1.3.5](https://dl.google.com/googleadmobadssdk/mediation/unity/maio/MaioUnityAdapter-1.3.5.zip)
 - Supports [maio Android adapter version 1.1.15.0](https://github.com/googleads/googleads-mobile-android-mediation/blob/master/ThirdPartyAdapters/maio/CHANGELOG.md#version-11150).
 - Supports [maio iOS adapter version 1.5.6.1](https://github.com/googleads/googleads-mobile-ios-mediation/blob/master/adapters/Maio/CHANGELOG.md#version-1561).
 
