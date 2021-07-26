@@ -60,7 +60,10 @@ namespace GoogleMobileAds.Unity
             innerButtons[1].onClick.AddListener(() =>
             {
                 DestroyAppOpenAd();
-                OnAdDidDismissFullScreenContent?.Invoke(this, new EventArgs());
+                if(OnAdDidDismissFullScreenContent != null)
+                {
+                    OnAdDidDismissFullScreenContent.Invoke(this, new EventArgs());
+                }
                 AdBehaviour.ResumeGame();
             });
         }
@@ -88,14 +91,20 @@ namespace GoogleMobileAds.Unity
 
             if (prefabAd != null)
             {
-                OnAdLoaded?.Invoke(this, EventArgs.Empty);
+                if(OnAdLoaded != null)
+                {
+                    OnAdLoaded.Invoke(this, EventArgs.Empty);
+                }
             }
             else
             {
-                OnAdFailedToLoad?.Invoke(this, new LoadAdErrorClientEventArgs()
+                if(OnAdFailedToLoad != null)
                 {
-                    LoadAdErrorClient = new LoadAdErrorClient()
-                });
+                    OnAdFailedToLoad.Invoke(this, new LoadAdErrorClientEventArgs()
+                    {
+                        LoadAdErrorClient = new LoadAdErrorClient()
+                    });
+                }
             }
         }
 
@@ -109,7 +118,10 @@ namespace GoogleMobileAds.Unity
               CreateButtonBehavior();
               AddClickBehavior(dummyAd);
 
-              OnAdDidPresentFullScreenContent?.Invoke(this, EventArgs.Empty);
+              if(OnAdDidPresentFullScreenContent != null)
+              {
+                OnAdDidPresentFullScreenContent.Invoke(this, EventArgs.Empty);
+              }
           }
           else
           {
