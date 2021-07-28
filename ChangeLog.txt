@@ -1,6 +1,23 @@
 Google Mobile Ads Unity Plugin Change Log
 
 **************
+Version 6.1.0
+**************
+
+Plugin:
+- Added support for iOS GMA SDK v8.3.0. Requires using GMA iOS SDK v8.0.0 or higher.
+- Added support for iOS 14+ [same app key[ (https://developers.google.com/admob/ios/ios14)
+- Added the [app open ads] (https://developers.google.com/admob/unity/app-open-ads) format.
+
+Built and tested with:
+- Google Play services 20.0.0
+- Google Mobile Ads iOS SDK 8.3.0
+- External Dependency Manager for Unity 1.2.165.
+
+Known issue:
+- iOS Resolver library cannot be loaded in Unity 2021.1.11 and 2021.1.12. It can be loaded properly with Unity 2021.1.10. See https://github.com/googlesamples/unity-jar-resolver/issues/441 for more information.
+
+**************
 Version 6.0.1
 **************
 
