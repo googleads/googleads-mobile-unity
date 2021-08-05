@@ -12,7 +12,9 @@ public class GoogleAdMobController : MonoBehaviour
     private InterstitialAd interstitialAd;
     private RewardedAd rewardedAd;
     private RewardedInterstitialAd rewardedInterstitialAd;
+    private AppOpenAd appOpenAd;
     private float deltaTime;
+    private bool isShowingAppOpenAd;
 
     public UnityEvent OnAdLoadedEvent;
     public UnityEvent OnAdFailedToLoadEvent;
@@ -300,6 +302,104 @@ public class GoogleAdMobController : MonoBehaviour
         else
         {
             statusText.text = "Rewarded ad is not ready yet.";
+        }
+    }
+    #endregion
+
+    #region APPOPEN ADS
+
+    public void RequestAndLoadAppOpenAd()
+    {
+        statusText.text = "Requesting AppOpen Ad.";
+#if UNITY_EDITOR
+        string adUnitId = "unused";
+#elif UNITY_ANDROID
+        string adUnitId = "ca-app-pub-3940256099942544/3419835294";
+#elif UNITY_IPHONE
+        string adUnitId = "ca-app-pub-3940256099942544/5662855259";
+#else
+        string adUnitId = "unexpected_platform";
+#endif
+
+        // create new rewarded ad instance
+        AppOpenAd.LoadAd(adUnitId, ScreenOrientation.AutoRotation, CreateAdRequest(), (appOpenAd, error) =>
+        {
+            if (error != null)
+            {
+                MobileAdsEventExecutor.ExecuteInUpdate(() => {
+                    statusText.text = "AppOpenAd load failed, error: " + error;
+                });
+                return;
+            }
+
+            MobileAdsEventExecutor.ExecuteInUpdate(() => {
+                statusText.text = "AppOpenAdd loaded. Please Background the app and return.";
+            });
+
+            this.appOpenAd = appOpenAd;
+        });
+    }
+
+    public void ShowAppOpenAd()
+    {
+        if (isShowingAppOpenAd)
+        {
+            return;
+        }
+        if (appOpenAd == null)
+        {
+            statusText.text = "AppOpenAdd not loaded";
+            return;
+        }
+
+        // Register for ad events.
+        this.appOpenAd.OnAdDidDismissFullScreenContent += (sender, args) =>
+        {
+            MobileAdsEventExecutor.ExecuteInUpdate(() => {
+                Debug.Log("AppOpen dismissed.");
+                this.appOpenAd = null;
+                isShowingAppOpenAd = false;
+            });
+        };
+        this.appOpenAd.OnAdFailedToPresentFullScreenContent += (sender, args) =>
+        {
+            var msg = args.AdError.GetMessage();
+            MobileAdsEventExecutor.ExecuteInUpdate(() => {
+                statusText.text = "AppOpen present failed, error: " + msg;
+                this.appOpenAd = null;
+                isShowingAppOpenAd = false;
+            });
+        };
+        this.appOpenAd.OnAdDidPresentFullScreenContent += (sender, args) =>
+        {
+            MobileAdsEventExecutor.ExecuteInUpdate(() => {
+                Debug.Log("AppOpen presented.");
+                isShowingAppOpenAd = true;
+            });
+        };
+        this.appOpenAd.OnAdDidRecordImpression += (sender, args) =>
+        {
+            MobileAdsEventExecutor.ExecuteInUpdate(() => {
+                Debug.Log("AppOpen recorded an impression");
+            });
+        };
+        this.appOpenAd.OnPaidEvent += (sender, args) =>
+        {
+            MobileAdsEventExecutor.ExecuteInUpdate(() => {
+                statusText.text = string.Format("AppOpen received paid event. (currency: {0}, value: {1}", args.AdValue.CurrencyCode, args.AdValue.Value);
+
+            });
+        };
+
+        appOpenAd.Show();
+    }
+
+    public void OnApplicationPause(bool paused)
+    {
+        // Display the app open ad when the app is foregrounded.
+        if (!paused)
+        {
+            ShowAppOpenAd();
         }
     }
 
