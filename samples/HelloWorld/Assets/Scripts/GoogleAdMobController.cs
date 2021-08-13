@@ -12,8 +12,9 @@ public class GoogleAdMobController : MonoBehaviour
     private InterstitialAd interstitialAd;
     private RewardedAd rewardedAd;
     private RewardedInterstitialAd rewardedInterstitialAd;
+    private AppOpenAd appOpenAd;
     private float deltaTime;
-
+    private bool isShowingAppOpenAd;
     public UnityEvent OnAdLoadedEvent;
     public UnityEvent OnAdFailedToLoadEvent;
     public UnityEvent OnAdOpeningEvent;
@@ -23,35 +24,26 @@ public class GoogleAdMobController : MonoBehaviour
     public bool showFpsMeter = true;
     public Text fpsMeter;
     public Text statusText;
-
-
     #region UNITY MONOBEHAVIOR METHODS
-
     public void Start()
     {
         MobileAds.SetiOSAppPauseOnBackground(true);
-
         List<String> deviceIds = new List<String>() { AdRequest.TestDeviceSimulator };
-
         // Add some test device IDs (replace with your own device IDs).
 #if UNITY_IPHONE
         deviceIds.Add("96e23e80653bb28980d3f40beb58915c");
 #elif UNITY_ANDROID
         deviceIds.Add("75EF8D155528C04DACBBA6F36F433035");
 #endif
-
         // Configure TagForChildDirectedTreatment and test device IDs.
         RequestConfiguration requestConfiguration =
             new RequestConfiguration.Builder()
             .SetTagForChildDirectedTreatment(TagForChildDirectedTreatment.Unspecified)
             .SetTestDeviceIds(deviceIds).build();
-
         MobileAds.SetRequestConfiguration(requestConfiguration);
-
         // Initialize the Google Mobile Ads SDK.
         MobileAds.Initialize(HandleInitCompleteAction);
     }
-
     private void HandleInitCompleteAction(InitializationStatus initstatus)
     {
         // Callbacks from GoogleMobileAds are not guaranteed to be called on
@@ -64,7 +56,6 @@ public class GoogleAdMobController : MonoBehaviour
             RequestBannerAd();
         });
     }
-
     private void Update()
     {
         if (showFpsMeter)
@@ -79,22 +70,16 @@ public class GoogleAdMobController : MonoBehaviour
             fpsMeter.gameObject.SetActive(false);
         }
     }
-
     #endregion
-
     #region HELPER METHODS
-
     private AdRequest CreateAdRequest()
     {
         return new AdRequest.Builder()
             .AddKeyword("unity-admob-sample")
             .Build();
     }
-
     #endregion
-
     #region BANNER ADS
-
     public void RequestBannerAd()
     {
         statusText.text = "Requesting Banner Ad.";
@@ -113,20 +98,16 @@ public class GoogleAdMobController : MonoBehaviour
         {
             bannerView.Destroy();
         }
-
         // Create a 320x50 banner at top of the screen
         bannerView = new BannerView(adUnitId, AdSize.SmartBanner, AdPosition.Top);
-
         // Add Event Handlers
         bannerView.OnAdLoaded += (sender, args) => OnAdLoadedEvent.Invoke();
         bannerView.OnAdFailedToLoad += (sender, args) => OnAdFailedToLoadEvent.Invoke();
         bannerView.OnAdOpening += (sender, args) => OnAdOpeningEvent.Invoke();
         bannerView.OnAdClosed += (sender, args) => OnAdClosedEvent.Invoke();
-
         // Load a banner ad
         bannerView.LoadAd(CreateAdRequest());
     }
-
     public void DestroyBannerAd()
     {
         if (bannerView != null)
@@ -134,11 +115,8 @@ public class GoogleAdMobController : MonoBehaviour
             bannerView.Destroy();
         }
     }
-
     #endregion
-
     #region INTERSTITIAL ADS
-
     public void RequestAndLoadInterstitialAd()
     {
         statusText.text = "Requesting Interstitial Ad.";
@@ -151,25 +129,20 @@ public class GoogleAdMobController : MonoBehaviour
 #else
         string adUnitId = "unexpected_platform";
 #endif
-
         // Clean up interstitial before using it
         if (interstitialAd != null)
         {
             interstitialAd.Destroy();
         }
-
         interstitialAd = new InterstitialAd(adUnitId);
-
         // Add Event Handlers
         interstitialAd.OnAdLoaded += (sender, args) => OnAdLoadedEvent.Invoke();
         interstitialAd.OnAdFailedToLoad += (sender, args) => OnAdFailedToLoadEvent.Invoke();
         interstitialAd.OnAdOpening += (sender, args) => OnAdOpeningEvent.Invoke();
         interstitialAd.OnAdClosed += (sender, args) => OnAdClosedEvent.Invoke();
-
         // Load an interstitial ad
         interstitialAd.LoadAd(CreateAdRequest());
     }
-
     public void ShowInterstitialAd()
     {
         if (interstitialAd.IsLoaded())
@@ -181,7 +154,6 @@ public class GoogleAdMobController : MonoBehaviour
             statusText.text = "Interstitial ad is not ready yet";
         }
     }
-
     public void DestroyInterstitialAd()
     {
         if (interstitialAd != null)
@@ -190,9 +162,7 @@ public class GoogleAdMobController : MonoBehaviour
         }
     }
     #endregion
-
     #region REWARDED ADS
-
     public void RequestAndLoadRewardedAd()
     {
         statusText.text = "Requesting Rewarded Ad.";
@@ -205,10 +175,8 @@ public class GoogleAdMobController : MonoBehaviour
 #else
         string adUnitId = "unexpected_platform";
 #endif
-
         // create new rewarded ad instance
         rewardedAd = new RewardedAd(adUnitId);
-
         // Add Event Handlers
         rewardedAd.OnAdLoaded += (sender, args) => OnAdLoadedEvent.Invoke();
         rewardedAd.OnAdFailedToLoad += (sender, args) => OnAdFailedToLoadEvent.Invoke();
@@ -216,11 +184,9 @@ public class GoogleAdMobController : MonoBehaviour
         rewardedAd.OnAdFailedToShow += (sender, args) => OnAdFailedToShowEvent.Invoke();
         rewardedAd.OnAdClosed += (sender, args) => OnAdClosedEvent.Invoke();
         rewardedAd.OnUserEarnedReward += (sender, args) => OnUserEarnedRewardEvent.Invoke();
-
         // Create empty ad request
         rewardedAd.LoadAd(CreateAdRequest());
     }
-
     public void ShowRewardedAd()
     {
         if (rewardedAd != null)
@@ -232,25 +198,22 @@ public class GoogleAdMobController : MonoBehaviour
             statusText.text = "Rewarded ad is not ready yet.";
         }
     }
-
     public void RequestAndLoadRewardedInterstitialAd()
     {
         statusText.text = "Requesting Rewarded Interstitial Ad.";
         // These ad units are configured to always serve test ads.
-    #if UNITY_EDITOR
+#if UNITY_EDITOR
         string adUnitId = "unused";
-    #elif UNITY_ANDROID
+#elif UNITY_ANDROID
             string adUnitId = "ca-app-pub-3940256099942544/5354046379";
-    #elif UNITY_IPHONE
+#elif UNITY_IPHONE
             string adUnitId = "ca-app-pub-3940256099942544/6978759866";
-    #else
+#else
             string adUnitId = "unexpected_platform";
-    #endif
-
+#endif
         // Create an interstitial.
         RewardedInterstitialAd.LoadAd(adUnitId, CreateAdRequest(), (rewardedInterstitialAd, error) =>
         {
-
           if (error != null)
           {
             MobileAdsEventExecutor.ExecuteInUpdate(() => {
@@ -258,7 +221,6 @@ public class GoogleAdMobController : MonoBehaviour
             });
             return;
           }
-
           this.rewardedInterstitialAd = rewardedInterstitialAd;
           MobileAdsEventExecutor.ExecuteInUpdate(() => {
               statusText.text = "RewardedInterstitialAd loaded";
@@ -286,7 +248,6 @@ public class GoogleAdMobController : MonoBehaviour
           };
         });
     }
-
     public void ShowRewardedInterstitialAd()
     {
         if (rewardedInterstitialAd != null)
@@ -302,6 +263,93 @@ public class GoogleAdMobController : MonoBehaviour
             statusText.text = "Rewarded ad is not ready yet.";
         }
     }
-
+    #endregion
+    #region APPOPEN ADS
+    public void RequestAndLoadAppOpenAd()
+    {
+        statusText.text = "Requesting AppOpen Ad.";
+#if UNITY_EDITOR
+        string adUnitId = "unused";
+#elif UNITY_ANDROID
+        string adUnitId = "ca-app-pub-3940256099942544/3419835294";
+#elif UNITY_IPHONE
+        string adUnitId = "ca-app-pub-3940256099942544/5662855259";
+#else
+        string adUnitId = "unexpected_platform";
+#endif
+        // create new rewarded ad instance
+        AppOpenAd.LoadAd(adUnitId, ScreenOrientation.AutoRotation, CreateAdRequest(), (appOpenAd, error) =>
+        {
+            if (error != null)
+            {
+                MobileAdsEventExecutor.ExecuteInUpdate(() => {
+                    statusText.text = "AppOpenAd load failed, error: " + error;
+                });
+                return;
+            }
+            MobileAdsEventExecutor.ExecuteInUpdate(() => {
+                statusText.text = "AppOpenAdd loaded. Please Background the app and return.";
+            });
+            this.appOpenAd = appOpenAd;
+        });
+    }
+    public void ShowAppOpenAd()
+    {
+        if (isShowingAppOpenAd)
+        {
+            return;
+        }
+        if (appOpenAd == null)
+        {
+            statusText.text = "AppOpenAdd not loaded";
+            return;
+        }
+        // Register for ad events.
+        this.appOpenAd.OnAdDidDismissFullScreenContent += (sender, args) =>
+        {
+            MobileAdsEventExecutor.ExecuteInUpdate(() => {
+                Debug.Log("AppOpen dismissed.");
+                this.appOpenAd = null;
+                isShowingAppOpenAd = false;
+            });
+        };
+        this.appOpenAd.OnAdFailedToPresentFullScreenContent += (sender, args) =>
+        {
+            var msg = args.AdError.GetMessage();
+            MobileAdsEventExecutor.ExecuteInUpdate(() => {
+                statusText.text = "AppOpen present failed, error: " + msg;
+                this.appOpenAd = null;
+                isShowingAppOpenAd = false;
+            });
+        };
+        this.appOpenAd.OnAdDidPresentFullScreenContent += (sender, args) =>
+        {
+            MobileAdsEventExecutor.ExecuteInUpdate(() => {
+                Debug.Log("AppOpen presented.");
+                isShowingAppOpenAd = true;
+            });
+        };
+        this.appOpenAd.OnAdDidRecordImpression += (sender, args) =>
+        {
+            MobileAdsEventExecutor.ExecuteInUpdate(() => {
+                Debug.Log("AppOpen recorded an impression");
+            });
+        };
+        this.appOpenAd.OnPaidEvent += (sender, args) =>
+        {
+            MobileAdsEventExecutor.ExecuteInUpdate(() => {
+                statusText.text = string.Format("AppOpen received paid event. (currency: {0}, value: {1}", args.AdValue.CurrencyCode, args.AdValue.Value);
+            });
+        };
+        appOpenAd.Show();
+    }
+    public void OnApplicationPause(bool paused)
+    {
+        // Display the app open ad when the app is foregrounded.
+        if (!paused)
+        {
+            ShowAppOpenAd();
+        }
+    }
     #endregion
 }
