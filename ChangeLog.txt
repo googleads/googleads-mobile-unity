@@ -1,7 +1,7 @@
 Google Mobile Ads Unity Plugin Change Log
 
 **************
-Version 6.1.0 (In Progress)
+Version 6.1.0
 **************
 
 Plugin:
