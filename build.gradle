@@ -1,6 +1,6 @@
 /*
 *   Gradle file to build the Unity plugin for the Google Mobile Ads SDK.
-*   Useage: ./gradlew exportPackage
+*   Usage: ./gradlew exportPackage
 */
 
 defaultTasks 'exportPackage'
