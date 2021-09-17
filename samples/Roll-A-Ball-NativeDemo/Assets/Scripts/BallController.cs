@@ -1,4 +1,4 @@
-﻿// Copyright (C) 2015 Google, Inc.
+// Copyright (C) 2015 Google, Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -32,13 +32,18 @@ public class BallController : MonoBehaviour
     private bool gameOver;
     private int pickUpsRemaining;
     private List<GameObject> pickUps;
+    private AdsController controller;
 
-    public void Start()
+    /// <summary>
+    ///  Handles script startup
+    /// </summary>
+    private void Start()
     {
         this.rb = this.GetComponent<Rigidbody>();
         this.pickUps = new List<GameObject>();
+        this.controller = GameObject.FindObjectOfType<AdsController>();
 
-        for(int i = 1; i < 5; i++)
+        for (int i = 1; i < 5; i++)
         {
             this.pickUps.Add(GameObject.Find("Pick Up " + i));
         }
@@ -46,7 +51,10 @@ public class BallController : MonoBehaviour
         this.ResetGame();
     }
 
-    public void FixedUpdate()
+    /// <summary>
+    ///  Handles the unity UI render method
+    /// </summary>
+    private void FixedUpdate()
     {
         Vector3 movement = new Vector3(this.horizontalMovement, 0, this.verticalMovement);
         this.rb.AddForce(movement * this.Speed);
@@ -55,7 +63,10 @@ public class BallController : MonoBehaviour
         this.verticalMovement = 0;
     }
 
-    public void OnGUI()
+    /// <summary>
+    ///  Handles the unity UI render method
+    /// </summary>
+    private void OnGUI()
     {
         GUIStyle coinCountLabelStyle = new GUIStyle();
         Rect rect = new Rect(0, 0, Screen.width, Screen.height);
@@ -154,22 +165,23 @@ public class BallController : MonoBehaviour
     }
 
     /// <summary>
-    /// Handles the trigger enter event.
+    ///  Handles the unity trigger enter event
     /// </summary>
-    /// <param name="other">Collider of other GameObject in collision.</param>
-    public void OnTriggerEnter(Collider other)
+    private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.name.Contains("Pick Up"))
         {
             other.gameObject.SetActive(false);
             this.pickUpsRemaining--;
             this.coinCount++;
+            this.controller.RecordImpression();
         }
 
         if (this.pickUpsRemaining == 0)
         {
             this.gameOver = true;
             this.StopMovement();
+            this.controller.PerformClick();
         }
     }
 
@@ -222,7 +234,7 @@ public class BallController : MonoBehaviour
     }
 
     /// <summary>
-    /// Stops the movement of the ball.
+    ///  Stops movement of the ball
     /// </summary>
     private void StopMovement()
     {

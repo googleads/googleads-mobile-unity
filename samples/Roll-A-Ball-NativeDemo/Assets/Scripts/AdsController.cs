@@ -1,4 +1,4 @@
-﻿// Copyright (C) 2015 Google, Inc.
+// Copyright (C) 2015 Google, Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -23,91 +23,94 @@ using UnityEngine;
 /// </summary>
 public class AdsController : MonoBehaviour
 {
-    /// A test ad unit for custom native template ads.
+    /// A test ad unit for native ads.
     public const string AdUnitId = "/6499/example/unity-custom-native";
-    public const string TemplateId = "10085730";
+    public const string FormatId = "10085730";
     public Material GroundTextMaterial;
     public Material ErrorTextMaterial;
     public Font TextFont;
 
     private bool nativeAdLoaded;
-    private CustomNativeTemplateAd nativeAd;
+    private CustomNativeAd nativeAd;
     private GameObject errorMessage1;
     private GameObject errorMessage2;
 
     public void Start()
     {
-
-#if UNITY_ANDROID
-        string appId = "ca-app-pub-3940256099942544~3347511713";
-#elif UNITY_IPHONE
-        string appId = "ca-app-pub-3940256099942544~1458002511";
-#else
-        string appId = "unexpected_platform";
-#endif
-
-        // Initialize the Google Mobile Ads SDK.
-        MobileAds.Initialize(appId);
-
-        this.nativeAdLoaded = false;
-        this.RequestNativeAd();
+        // Initializes the Google Mobile Ads SDK.
+        MobileAds.Initialize(HandleInitCompleteAction);
     }
 
     public void Update()
     {
         if (this.nativeAdLoaded)
         {
-            if (this.errorMessage1 != null)
-            {
-                MonoBehaviour.Destroy(this.errorMessage1);
-            }
-
-            if (this.errorMessage2 != null)
-            {
-                MonoBehaviour.Destroy(this.errorMessage1);
-            }
-
-            Texture2D billboardTexture1 = this.nativeAd.GetTexture2D("Image1");
-            Texture2D billboardTexture2 = this.nativeAd.GetTexture2D("Image2");
-
-            for (int i = 1; i <= 6; i++)
-            {
-                if (i % 2 == 0)
-                {
-                    GameObject.Find("Billboard" + i.ToString())
-                            .GetComponent<Renderer>()
-                            .material
-                            .mainTexture = billboardTexture1;
-                }
-                else
-                {
-                    GameObject.Find("Billboard" + i.ToString())
-                            .GetComponent<Renderer>()
-                            .material
-                            .mainTexture = billboardTexture2;
-                }
-            }
-
-            GameObject textObject = new GameObject("GroundText");
-            GameObject ground = GameObject.Find("Ground");
-            textObject.transform.parent = ground.transform;
-            textObject.transform.position = new Vector3(0, 0.1f, 0);
-            textObject.AddComponent<TextMesh>();
-
-            TextMesh textMeshComponent = textObject.GetComponent<TextMesh>();
-            MeshRenderer meshRendererComponent = textObject.GetComponent<MeshRenderer>();
-
-            string adText = this.nativeAd.GetText("MainText").Replace('-', '\n');
-
-            textMeshComponent.text = adText;
-            textMeshComponent.fontSize = 8;
-            textMeshComponent.anchor = TextAnchor.MiddleCenter;
-            textMeshComponent.transform.Rotate(new Vector3(90, 0, 0));
-            textMeshComponent.font = this.TextFont;
-            meshRendererComponent.material = this.GroundTextMaterial;
-
             this.nativeAdLoaded = false;
+            CreateUnityAd();
         }
+    }
+
+    private void HandleInitCompleteAction(InitializationStatus initstatus)
+    {
+        MonoBehaviour.print("Initialization complete.");
+        this.nativeAdLoaded = false;
+        this.RequestNativeAd();
+    }
+
+
+    /// <summary>
+    /// Applies the Native Ad to the Unity GameObject.
+    /// </summary>
+    private void CreateUnityAd()
+    {
+        if (this.errorMessage1 != null)
+        {
+            MonoBehaviour.Destroy(this.errorMessage1);
+        }
+
+        if (this.errorMessage2 != null)
+        {
+            MonoBehaviour.Destroy(this.errorMessage1);
+        }
+
+        Texture2D billboardTexture1 = this.nativeAd.GetTexture2D("Image1");
+        Texture2D billboardTexture2 = this.nativeAd.GetTexture2D("Image2");
+
+        for (int i = 1; i <= 6; i++)
+        {
+            GameObject ad = GameObject.Find("Billboard" + i.ToString());
+            Renderer renderer = ad.GetComponent<Renderer>();
+
+            if (i % 2 == 0)
+            {
+                renderer.material.mainTexture = billboardTexture1;
+            }
+            else
+            {
+                renderer.material.mainTexture = billboardTexture2;
+            }
+        }
+
+        GameObject textObject = new GameObject("GroundText");
+        GameObject ground = GameObject.Find("Ground");
+        textObject.transform.parent = ground.transform;
+        textObject.transform.position = new Vector3(0, 0.1f, 0);
+        textObject.AddComponent<TextMesh>();
+
+        TextMesh textMeshComponent = textObject.GetComponent<TextMesh>();
+        MeshRenderer meshRendererComponent = textObject.GetComponent<MeshRenderer>();
+
+        string adText = this.nativeAd.GetText("MainText").Replace('-', '\n');
+
+        textMeshComponent.text = adText;
+        textMeshComponent.fontSize = 8;
+        textMeshComponent.anchor = TextAnchor.MiddleCenter;
+        textMeshComponent.transform.Rotate(new Vector3(90, 0, 0));
+        textMeshComponent.font = this.TextFont;
+        meshRendererComponent.material = this.GroundTextMaterial;
+
+        nativeAd.RecordImpression();
+        nativeAd.PerformClick("MainText");
     }
 
     /// <summary>
@@ -141,27 +144,28 @@ public class AdsController : MonoBehaviour
     }
 
     /// <summary>
-    /// Requests a CustomNativeTemplateAd.
+    /// Requests a NativeAd.
     /// </summary>
     private void RequestNativeAd()
     {
         AdLoader adLoader = new AdLoader.Builder(AdUnitId)
-            .ForCustomNativeAd(TemplateId)
+            .ForCustomNativeAd(FormatId)
             .Build();
-        adLoader.OnCustomNativeTemplateAdLoaded += this.HandleCustomNativeAdLoaded;
+        adLoader.OnCustomNativeAdLoaded += this.HandleNativeAdLoaded;
         adLoader.OnAdFailedToLoad += this.HandleNativeAdFailedToLoad;
         adLoader.LoadAd(new AdRequest.Builder().Build());
     }
 
     /// <summary>
-    /// Handles the ad event corresponding to a CustomNativeTemplateAd succesfully loading.
+    /// Handles the ad event corresponding to a NativeAd succesfully loading.
     /// </summary>
     /// <param name="sender">Sender.</param>
-    /// <param name="args">EventArgs wrapper for CustomNativeTemplateAd that loaded.</param>
-    private void HandleCustomNativeAdLoaded(object sender, CustomNativeEventArgs args)
+    /// <param name="args">EventArgs wrapper for NativeAd that loaded.</param>
+    private void HandleNativeAdLoaded(object sender, CustomNativeEventArgs args)
     {
         this.nativeAd = args.nativeAd;
         this.nativeAdLoaded = true;
+        MonoBehaviour.print("Ad Loader native ad loaded.");
     }
 
     /// <summary>
@@ -189,6 +193,7 @@ public class AdsController : MonoBehaviour
                     errorTextOffset);
         }
 
-        MonoBehaviour.print("Ad Loader fail event received with message: " + args.Message);
+        string message = args.LoadAdError.GetMessage();
+        MonoBehaviour.print("Ad Loader fail event received with message: " + message);
     }
 }
