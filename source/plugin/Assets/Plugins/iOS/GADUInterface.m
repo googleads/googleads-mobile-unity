@@ -113,9 +113,7 @@ void GADUSetApplicationMuted(BOOL muted) {
 // or rewarded video ad) is displayed.
 void GADUSetiOSAppPauseOnBackground(BOOL pause) { [GADUPluginUtil setPauseOnBackground:pause]; }
 
-float GADUDeviceScale() {
-  return UIScreen.mainScreen.scale;
-}
+float GADUDeviceScale() { return UIScreen.mainScreen.scale; }
 
 /// Returns the safe width of the device.
 int GADUDeviceSafeWidth() {
@@ -738,6 +736,19 @@ void GADULoadRewardedInterstitialAd(GADUTypeRewardedInterstitialAdRef rewardedIn
   GADURequest *internalRequest = (__bridge GADURequest *)request;
   [internalRewardedInterstitialAd loadWithAdUnitID:GADUStringFromUTF8String(adUnitID)
                                            request:[internalRequest request]];
+}
+
+/// Shows ad inspector UI.
+void GADUPresentAdInspector(GADUTypeMobileAdsClientRef *mobileAdsClientRef,
+                            GADUAdInspectorCompleteCallback adInspectorCompletionCallback) {
+  UIViewController *unityController = [GADUPluginUtil unityGLViewController];
+  [GADMobileAds.sharedInstance presentAdInspectorFromViewController:unityController
+                                            completionHandler:^(NSError *_Nullable error) {
+                                                if (adInspectorCompletionCallback) {
+                                                  adInspectorCompletionCallback(mobileAdsClientRef,
+                                                          (__bridge GADUTypeErrorRef) error);
+                                                }
+                                            }];
 }
 
 /// Sets the GADServerSideVerificationOptions on GADURewardedAd

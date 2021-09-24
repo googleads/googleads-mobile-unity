@@ -234,5 +234,10 @@ namespace GoogleMobileAds.Common
             Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
         }
 
+        public void OpenAdInspector(Action<AdInspectorErrorClientEventArgs> onAdInspectorClosed)
+        {
+            Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
+            onAdInspectorClosed(null);
+        }
     }
 }

@@ -246,3 +246,9 @@ typedef void (*GADURewardedInterstitialAdDidDismissFullScreenContentCallback)(
 /// Callback when a rewarded interstitial ad has made an impression.
 typedef void (*GADURewardedInterstitialAdDidRecordImpressionCallback)(
     GADUTypeRewardedInterstitialAdRef *rewardedInterstitialAdClient);
+
+// MARK: - GADUAdInspector
+
+/// Callback when ad inspector UI closes.
+typedef void (*GADUAdInspectorCompleteCallback)(GADUTypeMobileAdsClientRef *clientRef,
+                                                const char *error);

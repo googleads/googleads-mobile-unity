@@ -52,5 +52,11 @@ namespace GoogleMobileAds.Common
 
         // Get Mobile Ads SDK's Global Request Configuration
         RequestConfiguration GetRequestConfiguration();
+
+        /// <summary>
+        /// Opens the ad inspector UI.
+        /// </summary>
+        /// <param name="onAdInspectorClosed">Called when ad inspector UI closes.</param>
+        void OpenAdInspector(Action<AdInspectorErrorClientEventArgs> adInspectorClosedAction);
     }
 }

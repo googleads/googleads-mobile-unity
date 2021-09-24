@@ -88,6 +88,17 @@ namespace GoogleMobileAds.Android
             // Do nothing on Android. Default behavior is to pause when app is backgrounded.
         }
 
+        public void OpenAdInspector(Action<AdInspectorErrorClientEventArgs> onAdInspectorClosed)
+        {
+            AndroidJavaClass activityClass = new AndroidJavaClass(Utils.UnityActivityClassName);
+            AndroidJavaObject activity =
+                        activityClass.GetStatic<AndroidJavaObject>("currentActivity");
+            AndroidJavaClass adInspectorClass =
+                        new AndroidJavaClass(Utils.UnityAdInspectorClassName);
+            AdInspectorListener listener = new AdInspectorListener(onAdInspectorClosed);
+            adInspectorClass.CallStatic("openAdInspector", activity, listener);
+        }
+
         public float GetDeviceScale()
         {
             AndroidJavaClass playerClass = new AndroidJavaClass(Utils.UnityActivityClassName);

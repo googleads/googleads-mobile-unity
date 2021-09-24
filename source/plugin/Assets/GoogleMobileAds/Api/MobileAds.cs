@@ -26,13 +26,11 @@ namespace GoogleMobileAds.Api
     {
         public static class Utils
         {
-            // Returns the device's scale.
             public static float GetDeviceScale()
             {
                 return Instance.client.GetDeviceScale();
             }
 
-            // Returns the safe width for the current device.
             public static int GetDeviceSafeWidth()
             {
                 return Instance.client.GetDeviceSafeWidth();
@@ -100,6 +98,26 @@ namespace GoogleMobileAds.Api
         public static void SetiOSAppPauseOnBackground(bool pause)
         {
             Instance.client.SetiOSAppPauseOnBackground(pause);
+        }
+
+        /// <summary>
+        /// Opens ad inspector UI.
+        /// </summary>
+        /// <param name="adInspectorClosedAction">Called when ad inspector UI closes.</param>
+        public static void OpenAdInspector(Action<AdInspectorError> adInspectorClosedAction)
+        {
+            Instance.client.OpenAdInspector(args =>
+            {
+                if(adInspectorClosedAction != null)
+                {
+                    AdInspectorError error = null;
+                    if (args != null && args.AdErrorClient != null)
+                    {
+                        error = new AdInspectorError(args.AdErrorClient);
+                    }
+                    adInspectorClosedAction(error);
+                }
+            });
         }
 
         internal static IClientFactory GetClientFactory() {

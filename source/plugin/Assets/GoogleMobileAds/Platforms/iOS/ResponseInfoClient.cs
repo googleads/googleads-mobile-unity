@@ -52,7 +52,6 @@ namespace GoogleMobileAds.iOS
                 return Externs.GADUResponseInfoMediationAdapterClassName(iosResponseInfo);
             }
             return null;
-
         }
 
         public string GetResponseId()

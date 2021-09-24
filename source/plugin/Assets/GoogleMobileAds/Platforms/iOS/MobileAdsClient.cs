@@ -25,9 +25,13 @@ namespace GoogleMobileAds.iOS
     public class MobileAdsClient : IMobileAdsClient
     {
         private static MobileAdsClient instance = new MobileAdsClient();
+        private Action<AdInspectorErrorClientEventArgs> adInspectorClosedAction;
         private Action<IInitializationStatusClient> initCompleteAction;
         private IntPtr mobileAdsClientPtr;
-        internal delegate void GADUInitializationCompleteCallback(IntPtr mobileAdsClient, IntPtr initStatusClient);
+        internal delegate void GADUAdInspectorClosedCallback(IntPtr mobileAdsClient,
+                                                             IntPtr errorRef);
+        internal delegate void GADUInitializationCompleteCallback(IntPtr mobileAdsClient,
+                                                                  IntPtr initStatusClient);
 
         private MobileAdsClient()
         {
@@ -87,6 +91,32 @@ namespace GoogleMobileAds.iOS
         public int GetDeviceSafeWidth()
         {
             return Externs.GADUDeviceSafeWidth();
+        }
+
+        public void OpenAdInspector(Action<AdInspectorErrorClientEventArgs> onAdInspectorClosed)
+        {
+            adInspectorClosedAction = onAdInspectorClosed;
+            Externs.GADUPresentAdInspector(this.mobileAdsClientPtr, AdInspectorClosedCallback);
+        }
+
+        [MonoPInvokeCallback(typeof(GADUAdInspectorClosedCallback))]
+        private static void AdInspectorClosedCallback(IntPtr mobileAdsClient, IntPtr errorRef)
+        {
+            MobileAdsClient client = IntPtrToMobileAdsClient(mobileAdsClient);
+            if (client.adInspectorClosedAction == null)
+            {
+                return;
+            }
+
+            AdInspectorErrorClientEventArgs args = (errorRef == IntPtr.Zero)
+                ? null
+                : new AdInspectorErrorClientEventArgs
+                {
+                    AdErrorClient = new AdInspectorErrorClient(errorRef)
+                };
+
+            client.adInspectorClosedAction(args);
+            client.adInspectorClosedAction = null;
         }
 
         [MonoPInvokeCallback(typeof(GADUInitializationCompleteCallback))]
