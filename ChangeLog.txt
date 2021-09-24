@@ -1,6 +1,22 @@
 Google Mobile Ads Unity Plugin Change Log
 
 **************
+Version 6.1.1
+**************
+
+Plugin:
+- Added support for ad inspector.
+
+Built and tested with:
+- Google Play services 20.2.0
+- Google Mobile Ads iOS SDK 8.8.0
+- External Dependency Manager for Unity 1.2.165.
+
+Known issue:
+- iOS Resolver library cannot be loaded in Unity 2021.1.11 and 2021.1.12. It can be loaded properly with Unity 2021.1.10. See https://github.com/googlesamples/unity-jar-resolver/issues/441 for more information.
+
+
+**************
 Version 6.1.0
 **************
 
