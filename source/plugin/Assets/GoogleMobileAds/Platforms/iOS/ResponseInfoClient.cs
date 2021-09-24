@@ -47,7 +47,7 @@ namespace GoogleMobileAds.iOS
 
         public string GetMediationAdapterClassName()
         {
-            if (iosResponseInfo != null)
+            if (iosResponseInfo != IntPtr.Zero)
             {
                 return Externs.GADUResponseInfoMediationAdapterClassName(iosResponseInfo);
             }
@@ -56,7 +56,7 @@ namespace GoogleMobileAds.iOS
 
         public string GetResponseId()
         {
-            if (iosResponseInfo != null)
+            if (iosResponseInfo != IntPtr.Zero)
             {
                 return Externs.GADUResponseInfoResponseId(iosResponseInfo);
             }
