@@ -3,8 +3,7 @@ using UnityEngine;
 
 namespace GoogleMobileAds.Editor
 {
-
-    [InitializeOnLoad]
+    
     [CustomEditor(typeof(GoogleMobileAdsSettings))]
     public class GoogleMobileAdsSettingsEditor : UnityEditor.Editor
     {
@@ -16,6 +15,8 @@ namespace GoogleMobileAds.Editor
 
         public override void OnInspectorGUI()
         {
+            EditorGUI.BeginChangeCheck();
+            
             EditorGUILayout.LabelField("Google Mobile Ads App ID", EditorStyles.boldLabel);
             EditorGUI.indentLevel++;
 
@@ -37,8 +38,6 @@ namespace GoogleMobileAds.Editor
             EditorGUILayout.LabelField("AdMob-specific settings", EditorStyles.boldLabel);
             EditorGUI.indentLevel++;
 
-            EditorGUI.BeginChangeCheck();
-
             GoogleMobileAdsSettings.Instance.DelayAppMeasurementInit =
                     EditorGUILayout.Toggle(new GUIContent("Delay app measurement"),
                     GoogleMobileAdsSettings.Instance.DelayAppMeasurementInit);
@@ -52,7 +51,7 @@ namespace GoogleMobileAds.Editor
             EditorGUI.indentLevel--;
             EditorGUILayout.Separator();
 
-            if (GUI.changed)
+            if (EditorGUI.EndChangeCheck())
             {
                 OnSettingsChanged();
             }
