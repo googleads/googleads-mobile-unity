@@ -27,6 +27,15 @@ namespace GoogleMobileAds.Common
         // Disable initialization of mediation adapters by the Mobile Ads SDK.
         void DisableMediationInitialization();
 
+        /// <summary>
+        /// Policy changes in China will require that the Google Mobile Ads SDK
+        /// be configured specifically to operate in China.
+        /// </summary>
+        /// <remarks>
+        /// This must be done before MobileAds.Initialization
+        /// </remarks>
+        void SetAppPrimaryRegionChina(bool isPrimaryAppRegionChina);
+
         // The application’s audio volume. Affects audio volumes of all ads relative
         // to other audio output. Valid ad volume values range from 0.0 (silent) to 1.0
         // (current device volume). Use this method only if your application has its own

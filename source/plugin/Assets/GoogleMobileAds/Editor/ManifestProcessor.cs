@@ -40,6 +40,9 @@ public class ManifestProcessor : IPreprocessBuild
     private const string META_DELAY_APP_MEASUREMENT_INIT =
             "com.google.android.gms.ads.DELAY_APP_MEASUREMENT_INIT";
 
+    private const string META_DELAY_APP_PRIMARY_REGION_CHINA =
+            "com.google.android.gms.ads.APP_PRIMARY_REGION_CHINA";
+
     private XNamespace ns = "http://schemas.android.com/apk/res/android";
 
     public int callbackOrder { get { return 0; } }
@@ -102,6 +105,26 @@ public class ManifestProcessor : IPreprocessBuild
             elemGMAEnabled.SetAttributeValue(ns + "value", appId);
         }
 
+         XElement appPrimaryRegionChina =
+                GetMetaElement(metas, META_DELAY_APP_PRIMARY_REGION_CHINA);
+        if (GoogleMobileAdsSettings.Instance.AppPrimaryRegionChina)
+        {
+            if (appPrimaryRegionChina == null)
+            {
+                elemApplication.Add(CreateMetaElement(META_DELAY_APP_PRIMARY_REGION_CHINA, true));
+            }
+            else
+            {
+                appPrimaryRegionChina.SetAttributeValue(ns + "value", true);
+            }
+        }
+        else
+        {
+            if (appPrimaryRegionChina != null)
+            {
+                appPrimaryRegionChina.Remove();
+            }
+        }
 
         XElement elemDelayAppMeasurementInit =
                 GetMetaElement(metas, META_DELAY_APP_MEASUREMENT_INIT);
