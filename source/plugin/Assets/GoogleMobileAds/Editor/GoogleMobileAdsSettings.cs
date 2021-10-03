@@ -24,6 +24,11 @@ namespace GoogleMobileAds.Editor
         private string adMobIOSAppId = string.Empty;
 
         [SerializeField]
+        [Tooltip("Policy changes in China will require that the Google Mobile Ads SDK"+
+        "be configured specifically to operate in China.")]
+        private bool appPrimaryRegionChina = false;
+
+        [SerializeField]
         private bool delayAppMeasurementInit = false;
 
         public string GoogleMobileAdsAndroidAppId
@@ -38,6 +43,13 @@ namespace GoogleMobileAds.Editor
             get { return Instance.adMobIOSAppId; }
 
             set { Instance.adMobIOSAppId = value; }
+        }
+
+        public bool AppPrimaryRegionChina
+        {
+            get { return Instance.appPrimaryRegionChina; }
+
+            set { Instance.appPrimaryRegionChina = value; }
         }
 
         public bool DelayAppMeasurementInit
