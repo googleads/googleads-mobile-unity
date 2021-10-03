@@ -53,6 +53,13 @@ namespace GoogleMobileAds.Android
             mobileAdsClass.CallStatic("setAppVolume", volume);
         }
 
+        public void SetAppPrimaryRegionChina(bool isPrimaryAppRegionChina)
+        {
+            SharedPreferences sharedPref =
+                      context.getSharedPreferences("google_is_china_app", Context.MODE_PRIVATE);
+            sharedPref.edit().putBoolean("google_is_china_app", isPrimaryAppRegionChina).apply();
+        }
+
         public void DisableMediationInitialization()
         {
             AndroidJavaClass playerClass = new AndroidJavaClass(Utils.UnityActivityClassName);

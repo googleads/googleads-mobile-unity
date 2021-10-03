@@ -37,6 +37,10 @@ namespace GoogleMobileAds.Editor
             EditorGUILayout.LabelField("AdMob-specific settings", EditorStyles.boldLabel);
             EditorGUI.indentLevel++;
 
+            GoogleMobileAdsSettings.Instance.AppPrimaryRegionChina =
+                    EditorGUILayout.Toggle(new GUIContent("App Primary Region China"),
+                    GoogleMobileAdsSettings.Instance.AppPrimaryRegionChina);
+
             EditorGUI.BeginChangeCheck();
 
             GoogleMobileAdsSettings.Instance.DelayAppMeasurementInit =
