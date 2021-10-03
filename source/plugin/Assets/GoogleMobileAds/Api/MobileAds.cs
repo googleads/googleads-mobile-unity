@@ -79,6 +79,18 @@ namespace GoogleMobileAds.Api
             Instance.client.SetApplicationMuted(muted);
         }
 
+        /// <summary>
+        /// Policy changes in China will require that the Google Mobile Ads SDK
+        /// be configured specifically to operate in China.
+        /// </summary>
+        /// <remarks>
+        /// This must be done before MobileAds.Initialization
+        /// </remarks>
+        public static void SetAppPrimaryRegionChina(bool isPrimaryAppRegionChina)
+        {
+            Instance.client.SetAppPrimaryRegionChina(isPrimaryAppRegionChina);
+        }
+
         public static void SetRequestConfiguration(RequestConfiguration requestConfiguration)
         {
             Instance.client.SetRequestConfiguration(requestConfiguration);

@@ -96,6 +96,11 @@ namespace GoogleMobileAds.Common
             Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
         }
 
+        public void SetAppPrimaryRegionChina(bool isPrimaryAppRegionChina)
+        {
+            Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
+        }
+
         public void SetRequestConfiguration(RequestConfiguration requestConfiguration)
         {
             Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);

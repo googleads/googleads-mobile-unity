@@ -67,10 +67,13 @@ namespace GoogleMobileAds.iOS
             Externs.GADUSetApplicationMuted(muted);
         }
 
+        public void SetAppPrimaryRegionChina(bool isPrimaryAppRegionChina)
+        {
+        }
+
         public void SetRequestConfiguration(RequestConfiguration requestConfiguration)
         {
             RequestConfigurationClient.SetRequestConfiguration(requestConfiguration);
-
         }
 
         public RequestConfiguration GetRequestConfiguration()

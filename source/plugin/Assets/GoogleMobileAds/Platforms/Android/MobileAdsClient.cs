@@ -53,6 +53,10 @@ namespace GoogleMobileAds.Android
             mobileAdsClass.CallStatic("setAppVolume", volume);
         }
 
+        public void SetAppPrimaryRegionChina(bool isPrimaryAppRegionChina)
+        {
+        }
+
         public void DisableMediationInitialization()
         {
             AndroidJavaClass playerClass = new AndroidJavaClass(Utils.UnityActivityClassName);
