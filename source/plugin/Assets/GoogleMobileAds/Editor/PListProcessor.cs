@@ -51,6 +51,11 @@ public static class PListProcessor
             plist.root.SetString("GADApplicationIdentifier", appId);
         }
 
+        if (GoogleMobileAdsSettings.Instance.AppPrimaryRegionChina)
+        {
+            plist.root.SetBoolean("AppPrimaryRegionChina", true);
+        }
+
         if (GoogleMobileAdsSettings.Instance.DelayAppMeasurementInit)
         {
             plist.root.SetBoolean("GADDelayAppMeasurementInit", true);
