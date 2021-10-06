@@ -58,6 +58,11 @@ namespace GoogleMobileAds.Editor
 
                 instance = Resources.Load<GoogleMobileAdsSettings>(MobileAdsSettingsFile);
 
+                if (instance != null)
+                {
+                    return instance;
+                }
+                
                 Directory.CreateDirectory(MobileAdsSettingsResDir);
 
                 instance = ScriptableObject.CreateInstance<GoogleMobileAdsSettings>();
