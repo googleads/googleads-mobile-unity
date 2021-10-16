@@ -55,22 +55,22 @@ namespace GoogleMobileAds.Editor
                 {
                     return instance;
                 }
-
+                
                 instance = Resources.Load<GoogleMobileAdsSettings>(MobileAdsSettingsFile);
 
-                Directory.CreateDirectory(MobileAdsSettingsResDir);
-
-                instance = ScriptableObject.CreateInstance<GoogleMobileAdsSettings>();
-
-                string assetPath = Path.Combine(MobileAdsSettingsResDir, MobileAdsSettingsFile);
-                string assetPathWithExtension = Path.ChangeExtension(
-                                                        assetPath, MobileAdsSettingsFileExtension);
-                AssetDatabase.CreateAsset(instance, assetPathWithExtension);
+                if (!instance)
+                {
+                    Directory.CreateDirectory(MobileAdsSettingsResDir);
+                    instance = ScriptableObject.CreateInstance<GoogleMobileAdsSettings>();
+                    string assetPath = Path.Combine(MobileAdsSettingsResDir, MobileAdsSettingsFile);
+                    string assetPathWithExtension = Path.ChangeExtension(assetPath, MobileAdsSettingsFileExtension);
+                    AssetDatabase.CreateAsset(instance, assetPathWithExtension);
+                }
 
                 return instance;
             }
         }
-
+        
         internal void WriteSettingsToFile()
         {
             AssetDatabase.SaveAssets();
