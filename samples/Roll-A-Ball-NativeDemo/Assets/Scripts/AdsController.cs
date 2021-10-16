@@ -37,20 +37,8 @@ public class AdsController : MonoBehaviour
 
     public void Start()
     {
-
-#if UNITY_ANDROID
-        string appId = "ca-app-pub-3940256099942544~3347511713";
-#elif UNITY_IPHONE
-        string appId = "ca-app-pub-3940256099942544~1458002511";
-#else
-        string appId = "unexpected_platform";
-#endif
-
         // Initialize the Google Mobile Ads SDK.
-        MobileAds.Initialize(appId);
-
-        this.nativeAdLoaded = false;
-        this.RequestNativeAd();
+        MobileAds.Initialize(HandleInitCompleteAction);
     }
 
     public void Update()
@@ -141,6 +129,16 @@ public class AdsController : MonoBehaviour
     }
 
     /// <summary>
+    /// Called by MobileAds when initialization is completed.
+    /// </summary>
+    private void HandleInitCompleteAction(InitializationStatus initstatus)
+    {
+        MonoBehaviour.print("Initialization complete");
+        this.nativeAdLoaded = false;
+        this.RequestNativeAd();
+    }
+
+    /// <summary>
     /// Requests a CustomNativeTemplateAd.
     /// </summary>
     private void RequestNativeAd()
@@ -189,6 +187,7 @@ public class AdsController : MonoBehaviour
                     errorTextOffset);
         }
 
-        MonoBehaviour.print("Ad Loader fail event received with message: " + args.Message);
+        string message = args.LoadAdError.GetMessage();
+        MonoBehaviour.print("Ad Loader fail event received with message: " + message);
     }
 }
