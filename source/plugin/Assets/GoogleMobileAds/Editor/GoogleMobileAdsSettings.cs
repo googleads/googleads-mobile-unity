@@ -7,8 +7,6 @@ namespace GoogleMobileAds.Editor
 
     internal class GoogleMobileAdsSettings : ScriptableObject
     {
-        private const string MobileAdsSettingsDir = "Assets/GoogleMobileAds";
-
         private const string MobileAdsSettingsResDir = "Assets/GoogleMobileAds/Resources";
 
         private const string MobileAdsSettingsFile = "GoogleMobileAdsSettings";
@@ -58,6 +56,11 @@ namespace GoogleMobileAds.Editor
 
                 instance = Resources.Load<GoogleMobileAdsSettings>(MobileAdsSettingsFile);
 
+                if(instance != null)
+                {
+                    return instance;
+                }
+
                 Directory.CreateDirectory(MobileAdsSettingsResDir);
 
                 instance = ScriptableObject.CreateInstance<GoogleMobileAdsSettings>();
@@ -67,13 +70,10 @@ namespace GoogleMobileAds.Editor
                                                         assetPath, MobileAdsSettingsFileExtension);
                 AssetDatabase.CreateAsset(instance, assetPathWithExtension);
 
+                AssetDatabase.SaveAssets();
+
                 return instance;
             }
-        }
-
-        internal void WriteSettingsToFile()
-        {
-            AssetDatabase.SaveAssets();
         }
     }
 }
