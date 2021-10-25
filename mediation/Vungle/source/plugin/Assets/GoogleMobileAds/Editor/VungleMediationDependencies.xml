@@ -1,6 +1,6 @@
 <dependencies>
   <androidPackages>
-    <androidPackage spec="com.google.ads.mediation:vungle:6.9.1.1">
+    <androidPackage spec="com.google.ads.mediation:vungle:6.10.2.0">
       <repositories>
         <repository>https://repo.maven.apache.org/maven2/</repository>
         <repository>https://dl.google.com/dl/android/maven2/</repository>
@@ -9,7 +9,7 @@
   </androidPackages>
 
   <iosPods>
-    <iosPod name="GoogleMobileAdsMediationVungle" version="6.9.2.0">
+    <iosPod name="GoogleMobileAdsMediationVungle" version="6.10.3.0">
       <sources>
         <source>https://github.com/CocoaPods/Specs</source>
       </sources>
