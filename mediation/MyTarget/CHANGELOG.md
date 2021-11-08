@@ -1,5 +1,9 @@
 ## myTarget Unity Mediation Plugin Changelog
 
+#### Version 3.10.1 (In Progress)
+- Supports [myTarget Android adapter version 5.14.3.0](https://github.com/googleads/googleads-mobile-android-mediation/blob/master/ThirdPartyAdapters/mytarget/CHANGELOG.md#version-51430).
+- Supports [myTarget iOS adapter version 5.14.2.0](https://github.com/googleads/googleads-mobile-ios-mediation/blob/master/adapters/MyTarget/CHANGELOG.md#version-51420).
+
 #### [Version 3.10.0](https://dl.google.com/googleadmobadssdk/mediation/unity/mytarget/MyTargetUnityAdapter-3.10.0.zip)
 - Supports [myTarget Android adapter version 5.14.2.0](https://github.com/googleads/googleads-mobile-android-mediation/blob/master/ThirdPartyAdapters/mytarget/CHANGELOG.md#version-51420).
 - Supports [myTarget iOS adapter version 5.14.1.0](https://github.com/googleads/googleads-mobile-ios-mediation/blob/master/adapters/MyTarget/CHANGELOG.md#version-51410).
