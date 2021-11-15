@@ -1,6 +1,6 @@
 <dependencies>
   <androidPackages>
-    <androidPackage spec="com.google.ads.mediation:maio:1.1.15.0">
+    <androidPackage spec="com.google.ads.mediation:maio:1.1.16.0">
       <repositories>
         <repository>https://repo.maven.apache.org/maven2/</repository>
         <repository>https://dl.google.com/dl/android/maven2/</repository>
@@ -10,7 +10,7 @@
   </androidPackages>
 
   <iosPods>
-    <iosPod name="GoogleMobileAdsMediationMaio" version="1.5.6.1">
+    <iosPod name="GoogleMobileAdsMediationMaio" version="1.5.8.0">
       <sources>
         <source>https://github.com/CocoaPods/Specs</source>
       </sources>
