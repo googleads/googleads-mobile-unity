@@ -13,6 +13,7 @@
 // limitations under the License.
 
 using System;
+using System.Text;
 using System.Collections.Generic;
 
 using GoogleMobileAds.Api.Mediation;
@@ -21,8 +22,15 @@ namespace GoogleMobileAds.Api
 {
     public class AdRequest
     {
-        public const string Version = "6.1.2";
+        public static string Version { get; private set; }
+
         public const string TestDeviceSimulator = "SIMULATOR";
+
+        static AdRequest()
+        {
+            Version version = typeof(AdRequest).Assembly.GetName().Version;
+            Version = string.Format("{0}.{1}.{2}", version.Major, version.Minor, version.Revision);
+        }
 
         private AdRequest(Builder builder)
         {
@@ -36,6 +44,17 @@ namespace GoogleMobileAds.Api
         public Dictionary<string, string> Extras { get; private set; }
 
         public List<MediationExtras> MediationExtras { get; private set; }
+
+        internal static string BuildVersionString(string nativePluginVersion = null)
+        {
+            var versionBuilder = new StringBuilder("unity-");
+            versionBuilder.Append(AdRequest.Version);
+            if (!string.IsNullOrEmpty(nativePluginVersion)) {
+                versionBuilder.Append("-native-");
+                versionBuilder.Append(nativePluginVersion);
+            }
+            return versionBuilder.ToString();
+        }
 
         public class Builder
         {

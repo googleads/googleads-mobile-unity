@@ -25,8 +25,12 @@ namespace GoogleMobileAds.iOS
 {
     internal class Utils
     {
-        // Creates an ad request.
-        public static IntPtr BuildAdRequest(AdRequest request)
+        /// <summary>
+        /// Converts the plugin AdRequest object to a native ios proxy object for use by the sdk.
+        /// </summary>
+        /// <param name="AdRequest">the AdRequest from the unity plugin.</param>
+        /// <param name="nativePluginVersion">the version string of the native plugin.</param>
+        public static IntPtr BuildAdRequest(AdRequest request, string nativePluginVersion = null)
         {
             IntPtr requestPtr = Externs.GADUCreateRequest();
             foreach (string keyword in request.Keywords)
@@ -64,7 +68,7 @@ namespace GoogleMobileAds.iOS
                 }
             }
 
-            Externs.GADUSetRequestAgent(requestPtr, "unity-" + AdRequest.Version);
+            Externs.GADUSetRequestAgent(requestPtr, nativePluginVersion);
             return requestPtr;
         }
 

@@ -186,7 +186,13 @@ namespace GoogleMobileAds.Android
             return (int)(metrics.WidthPixels / metrics.Density);
         }
 
-        public static AndroidJavaObject GetAdRequestJavaObject(AdRequest request)
+        /// <summary>
+        /// Converts the plugin AdRequest object to a native java proxy object for use by the sdk.
+        /// </summary>
+        /// <param name="AdRequest">the AdRequest from the unity plugin.</param>
+        /// <param name="nativePluginVersion">the version string of the native plugin.</param>
+        public static AndroidJavaObject GetAdRequestJavaObject(AdRequest request,
+                                                               string nativePluginVersion = null)
         {
             AndroidJavaObject adRequestBuilder = new AndroidJavaObject(AdRequestBuilderClassName);
             foreach (string keyword in request.Keywords)
@@ -197,7 +203,7 @@ namespace GoogleMobileAds.Android
             // Denote that the request is coming from this Unity plugin.
             adRequestBuilder.Call<AndroidJavaObject>(
                     "setRequestAgent",
-                    "unity-" + AdRequest.Version);
+                    nativePluginVersion);
             AndroidJavaObject bundle = new AndroidJavaObject(BundleClassName);
             foreach (KeyValuePair<string, string> entry in request.Extras)
             {
