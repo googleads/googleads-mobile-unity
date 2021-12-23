@@ -25,6 +25,9 @@ For instructions on using the plugin, please refer to
 Be sure to also join the developer community on
 [our forum](//groups.google.com/forum/#!categories/google-admob-ads-sdk/game-engines).
 
+Native ads enable publishers to render ads that are seamless with content.
+For more information please visit the [AdMob native ads Devsite](https://developers.google.com/admob/unity/native-advanced-unified).
+
 ## Analytics
 
 You can help improve the Google Mobile Ads Unity plugin by opting-in to sending
