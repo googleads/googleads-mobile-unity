@@ -50,11 +50,12 @@ public class ManifestProcessor : IPreprocessBuild
     public void OnPreprocessBuild(BuildTarget target, string path)
 #endif
     {
-        string manifestPath = Path.Combine(
-                Application.dataPath, MANIFEST_RELATIVE_PATH);
+        string rootPluginDirectory = PluginSettingsProvider.Read().rootPluginDirectory;
+        
+        string manifestPath = Path.Combine(rootPluginDirectory, MANIFEST_RELATIVE_PATH);
         if (AssetDatabase.IsValidFolder("Packages/com.google.ads.mobile"))
         {
-            manifestPath = Path.Combine("Packages/com.google.ads.mobile", MANIFEST_RELATIVE_PATH);
+            manifestPath = Path.Combine("Packages/com.google.ads.mobile", rootPluginDirectory);
         }
 
         XDocument manifest = null;
