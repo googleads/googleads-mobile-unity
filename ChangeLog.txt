@@ -1,5 +1,17 @@
 Google Mobile Ads Unity Plugin Change Log
 
+***********
+Version 7.0.0
+***********
+
+Native plugin:
+- Added support for the [native plugin](https://developers.google.com/admob/unity/native-advanced-unified) version 7.0.0 or higher.
+
+Built and tested with:
+- Google Play services 20.2.0
+- Google Mobile Ads iOS SDK 8.8.0
+- External Dependency Manager for Unity 1.2.165.
+
 **************
 Version 6.1.2
 **************
