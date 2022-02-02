@@ -27,17 +27,25 @@
 @property(nonatomic, assign) GADURewardedAdFailedToPresentFullScreenContentCallback
     adFailedToPresentFullScreenContentCallback;
 
-/// The ad presented full screen content callback into Unity.
+/// The ad will present full screen content callback into Unity.
 @property(nonatomic, assign)
-    GADURewardedAdDidPresentFullScreenContentCallback adDidPresentFullScreenContentCallback;
+    GADURewardedAdWillPresentFullScreenContentCallback adWillPresentFullScreenContentCallback;
 
 /// The ad dismissed full screen content callback into Unity.
 @property(nonatomic, assign)
     GADURewardedAdDidDismissFullScreenContentCallback adDidDismissFullScreenContentCallback;
 
+/// The ad will dismiss full screen content callback into Unity.
+@property(nonatomic, assign)
+    GADURewardedAdWillDismissFullScreenContentCallback adWillDismissFullScreenContentCallback;
+
 /// The ad impression callback into Unity.
 @property(nonatomic, assign)
     GADURewardedAdDidRecordImpressionCallback adDidRecordImpressionCallback;
+
+/// The ad click callback into Unity.
+@property(nonatomic, assign)
+    GADURewardedAdDidRecordClickCallback adDidRecordClickCallback;
 
 /// The user was rewarded callback into Unity.
 @property(nonatomic, assign) GADURewardedAdUserEarnedRewardCallback didEarnRewardCallback;

@@ -66,6 +66,8 @@
   return self.appOpenAd.responseInfo;
 }
 
+#pragma mark GADFullScreenContentDelegate implementation
+
 - (void)ad:(nonnull id<GADFullScreenPresentingAd>)ad
     didFailToPresentFullScreenContentWithError:(nonnull NSError *)error {
   if (self.adFailedToPresentFullScreenContentCallback) {
@@ -74,19 +76,13 @@
   }
 }
 
-- (void)adDidPresentFullScreenContent:(nonnull id<GADFullScreenPresentingAd>)ad {
+- (void)adWillPresentFullScreenContent:(nonnull id<GADFullScreenPresentingAd>)ad {
   if (GADUPluginUtil.pauseOnBackground) {
     UnityPause(YES);
   }
 
-  if (self.adDidPresentFullScreenContentCallback) {
-    self.adDidPresentFullScreenContentCallback(self.appOpenAdClient);
-  }
-}
-
-- (void)adDidRecordImpression:(nonnull id<GADFullScreenPresentingAd>)ad {
-  if (self.adDidRecordImpressionCallback) {
-    self.adDidRecordImpressionCallback(self.appOpenAdClient);
+  if (self.adWillPresentFullScreenContentCallback) {
+    self.adWillPresentFullScreenContentCallback(self.appOpenAdClient);
   }
 }
 
@@ -106,6 +102,28 @@
   if (self.adDidDismissFullScreenContentCallback) {
     self.adDidDismissFullScreenContentCallback(self.appOpenAdClient);
   }
+}
+
+- (void)adWillDismissFullScreenContent:(nonnull id<GADFullScreenPresentingAd>)ad {
+  if (self.adWillDismissFullScreenContentCallback) {
+    self.adWillDismissFullScreenContentCallback(self.appOpenAdClient);
+  }
+}
+
+- (void)adDidRecordImpression:(nonnull id<GADFullScreenPresentingAd>)ad {
+  if (self.adDidRecordImpressionCallback) {
+    self.adDidRecordImpressionCallback(self.appOpenAdClient);
+  }
+}
+
+- (void)adDidRecordClick:(nonnull id<GADFullScreenPresentingAd>)ad {
+  if (self.adDidRecordClickCallback) {
+    self.adDidRecordClickCallback(self.appOpenAdClient);
+  }
+}
+
+- (void)setServerSideVerificationOptions:(GADServerSideVerificationOptions *)options {
+    //No serverSideVerificationOptions to set
 }
 
 @end

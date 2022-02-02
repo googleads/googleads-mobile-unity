@@ -27,4 +27,4 @@ using System.Runtime.CompilerServices;
 
 // Version scheme is {major}.{minor}.{revision|fix|build}
 // for more information see go/admob-unity-version
-[assembly: AssemblyVersion("7.0.1")]
+[assembly: AssemblyVersion("7.1.0")]
