@@ -257,7 +257,9 @@
 }
 
 - (void)bannerViewWillDismissScreen:(GADBannerView *)bannerView {
-  // Callback is not forwarded to Unity.
+  if (self.willDismissCallback) {
+    self.willDismissCallback(self.bannerClient);
+  }
 }
 
 - (void)bannerViewDidDismissScreen:(GADBannerView *)bannerView {
@@ -265,5 +267,18 @@
     self.didDismissCallback(self.bannerClient);
   }
 }
+
+- (void)bannerViewDidRecordImpression:(nonnull GADBannerView *)bannerView {
+  if (self.didRecordImpressionCallback) {
+    self.didRecordImpressionCallback(self.bannerClient);
+  }
+}
+
+- (void)bannerViewDidRecordClick:(nonnull GADBannerView *)bannerView {
+  if (self.didRecordClickCallback) {
+    self.didRecordClickCallback(self.bannerClient);
+  }
+}
+
 
 @end

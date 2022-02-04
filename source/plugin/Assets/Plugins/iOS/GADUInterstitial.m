@@ -72,12 +72,12 @@
   }
 }
 
-- (void)adDidPresentFullScreenContent:(nonnull id<GADFullScreenPresentingAd>)ad {
+- (void)adWillPresentFullScreenContent:(nonnull id<GADFullScreenPresentingAd>)ad {
   if (GADUPluginUtil.pauseOnBackground) {
     UnityPause(YES);
   }
-  if (self.adDidPresentFullScreenContentCallback) {
-    self.adDidPresentFullScreenContentCallback(self.interstitialClient);
+  if (self.adWillPresentFullScreenContentCallback) {
+    self.adWillPresentFullScreenContentCallback(self.interstitialClient);
   }
 }
 
@@ -97,10 +97,26 @@
   }
 }
 
+- (void)adWillDismissFullScreenContent:(nonnull id<GADFullScreenPresentingAd>)ad {
+  if (self.adWillDismissFullScreenContentCallback) {
+    self.adWillDismissFullScreenContentCallback(self.interstitialClient);
+  }
+}
+
 - (void)adDidRecordImpression:(nonnull id<GADFullScreenPresentingAd>)ad {
   if (self.adDidRecordImpressionCallback) {
     self.adDidRecordImpressionCallback(self.interstitialClient);
   }
+}
+
+- (void)adDidRecordClick:(nonnull id<GADFullScreenPresentingAd>)ad {
+  if (self.adDidRecordClickCallback) {
+    self.adDidRecordClickCallback(self.interstitialClient);
+  }
+}
+
+- (void)setServerSideVerificationOptions:(GADServerSideVerificationOptions *)options {
+    //No serverSideVerificationOptions to set
 }
 
 @end

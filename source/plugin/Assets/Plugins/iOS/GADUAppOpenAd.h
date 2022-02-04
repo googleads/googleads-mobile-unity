@@ -32,14 +32,21 @@
 
 /// The ad presented full screen content callback into Unity.
 @property(nonatomic, assign)
-    GADUAppOpenAdDidPresentFullScreenContentCallback adDidPresentFullScreenContentCallback;
+    GADUAppOpenAdWillPresentFullScreenContentCallback adWillPresentFullScreenContentCallback;
 
 /// The ad dismissed full screen content callback into Unity.
 @property(nonatomic, assign)
     GADUAppOpenAdDidDismissFullScreenContentCallback adDidDismissFullScreenContentCallback;
 
+/// The ad will dismiss full screen content callback into Unity.
+@property(nonatomic, assign)
+    GADUAppOpenAdWillDismissFullScreenContentCallback adWillDismissFullScreenContentCallback;
+
 /// The ad impression callback into Unity.
 @property(nonatomic, assign) GADUAppOpenAdDidRecordImpressionCallback adDidRecordImpressionCallback;
+
+/// The ad click callback into Unity.
+@property(nonatomic, assign) GADUAppOpenAdDidRecordClickCallback adDidRecordClickCallback;
 
 // The app open ad response info.
 @property(nonatomic, readonly, copy) GADResponseInfo *responseInfo;

@@ -64,8 +64,17 @@
 /// The will present screen callback into Unity.
 @property(nonatomic, assign) GADUAdViewWillPresentScreenCallback willPresentCallback;
 
+/// The will dismiss screen callback into Unity.
+@property(nonatomic, assign) GADUAdViewWillDismissScreenCallback willDismissCallback;
+
 /// The did dismiss screen callback into Unity.
 @property(nonatomic, assign) GADUAdViewDidDismissScreenCallback didDismissCallback;
+
+/// The did record impression callback into Unity.
+@property(nonatomic, assign) GADUAdViewDidRecordImpressionCallback didRecordImpressionCallback;
+
+/// The did record click callback into Unity.
+@property(nonatomic, assign) GADUAdViewDidRecordClickCallback didRecordClickCallback;
 
 /// The paid event callback into Unity.
 @property(nonatomic, assign) GADUAdViewPaidEventCallback paidEventCallback;
