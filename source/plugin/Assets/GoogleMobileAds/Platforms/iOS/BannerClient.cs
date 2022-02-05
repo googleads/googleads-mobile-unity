@@ -37,7 +37,13 @@ namespace GoogleMobileAds.iOS
 
         internal delegate void GADUAdViewWillPresentScreenCallback(IntPtr bannerClient);
 
+        internal delegate void GADUAdViewWillDismissScreenCallback(IntPtr bannerClient);
+
         internal delegate void GADUAdViewDidDismissScreenCallback(IntPtr bannerClient);
+
+        internal delegate void GADUAdViewRecordImpressionCallback(IntPtr bannerClient);
+
+        internal delegate void GADUAdViewRecordClickCallback(IntPtr bannerClient);
 
         internal delegate void GADUAdViewPaidEventCallback(
             IntPtr bannerClient, int precision, long value, string currencyCode);
@@ -100,13 +106,16 @@ namespace GoogleMobileAds.iOS
             }
 
             Externs.GADUSetBannerCallbacks(
-                    this.BannerViewPtr,
-                    AdViewDidReceiveAdCallback,
-                    AdViewDidFailToReceiveAdWithErrorCallback,
-                    AdViewWillPresentScreenCallback,
-                    AdViewDidDismissScreenCallback,
-                    AdViewPaidEventCallback
-                    );
+                this.BannerViewPtr,
+                AdViewDidReceiveAdCallback,
+                AdViewDidFailToReceiveAdWithErrorCallback,
+                AdViewWillPresentScreenCallback,
+                AdViewWillDismissScreenCallback,
+                AdViewDidDismissScreenCallback,
+                AdViewRecordImpressionCallback,
+                AdViewRecordClickCallback,
+                AdViewPaidEventCallback
+                );
         }
 
         public void CreateBannerView(string adUnitId, AdSize adSize, int x, int y)
@@ -146,13 +155,16 @@ namespace GoogleMobileAds.iOS
             }
 
             Externs.GADUSetBannerCallbacks(
-                this.BannerViewPtr,
-                AdViewDidReceiveAdCallback,
-                AdViewDidFailToReceiveAdWithErrorCallback,
-                AdViewWillPresentScreenCallback,
-                AdViewDidDismissScreenCallback,
-                AdViewPaidEventCallback
-                );
+                    this.BannerViewPtr,
+                    AdViewDidReceiveAdCallback,
+                    AdViewDidFailToReceiveAdWithErrorCallback,
+                    AdViewWillPresentScreenCallback,
+                    AdViewWillDismissScreenCallback,
+                    AdViewDidDismissScreenCallback,
+                    AdViewRecordImpressionCallback,
+                    AdViewRecordClickCallback,
+                    AdViewPaidEventCallback
+                    );
         }
 
         // Loads an ad.
@@ -259,6 +271,24 @@ namespace GoogleMobileAds.iOS
             {
                 client.OnAdOpening(client, EventArgs.Empty);
             }
+        }
+
+        [MonoPInvokeCallback(typeof(GADUAdViewWillDismissScreenCallback))]
+        private static void AdViewWillDismissScreenCallback(IntPtr bannerClient)
+        {
+            // This is not used because it is not exposed in the public api.
+        }
+
+        [MonoPInvokeCallback(typeof(GADUAdViewRecordImpressionCallback))]
+        private static void AdViewRecordImpressionCallback(IntPtr bannerClient)
+        {
+            // This is not used because it is not exposed in the public api.
+        }
+
+        [MonoPInvokeCallback(typeof(GADUAdViewRecordClickCallback))]
+        private static void AdViewRecordClickCallback(IntPtr bannerClient)
+        {
+            // This is not used because it is not exposed in the public api.
         }
 
         [MonoPInvokeCallback(typeof(GADUAdViewDidDismissScreenCallback))]

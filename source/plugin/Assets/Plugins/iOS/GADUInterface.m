@@ -287,14 +287,19 @@ void GADUSetBannerCallbacks(GADUTypeBannerRef banner,
                             GADUAdViewDidReceiveAdCallback adReceivedCallback,
                             GADUAdViewDidFailToReceiveAdWithErrorCallback adFailedCallback,
                             GADUAdViewWillPresentScreenCallback willPresentCallback,
+                            GADUAdViewWillDismissScreenCallback willDismissCallback,
                             GADUAdViewDidDismissScreenCallback didDismissCallback,
+                            GADUAdViewDidRecordImpressionCallback didRecordImpressionCallback,
+                            GADUAdViewDidRecordClickCallback didRecordClickCallback,
                             GADUAdViewPaidEventCallback paidEventCallback) {
   GADUBanner *internalBanner = (__bridge GADUBanner *)banner;
   internalBanner.adReceivedCallback = adReceivedCallback;
   internalBanner.adFailedCallback = adFailedCallback;
   internalBanner.willPresentCallback = willPresentCallback;
+  internalBanner.willDismissCallback = willDismissCallback;
   internalBanner.didDismissCallback = didDismissCallback;
-
+  internalBanner.didRecordImpressionCallback = didRecordImpressionCallback;
+  internalBanner.didRecordClickCallback = didRecordClickCallback;
   internalBanner.paidEventCallback = paidEventCallback;
 }
 

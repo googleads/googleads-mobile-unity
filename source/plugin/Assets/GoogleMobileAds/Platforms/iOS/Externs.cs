@@ -216,7 +216,10 @@ namespace GoogleMobileAds.iOS
             BannerClient.GADUAdViewDidReceiveAdCallback adReceivedCallback,
             BannerClient.GADUAdViewDidFailToReceiveAdWithErrorCallback adFailedCallback,
             BannerClient.GADUAdViewWillPresentScreenCallback willPresentCallback,
+            BannerClient.GADUAdViewWillDismissScreenCallback willDismissCallback,
             BannerClient.GADUAdViewDidDismissScreenCallback didDismissCallback,
+            BannerClient.GADUAdViewRecordImpressionCallback recordImpressionCallback,
+            BannerClient.GADUAdViewRecordClickCallback recordClickCallback,
             BannerClient.GADUAdViewPaidEventCallback paidEventCallback
         );
 

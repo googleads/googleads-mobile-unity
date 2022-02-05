@@ -142,8 +142,11 @@ typedef void (*GADUAdViewWillDismissScreenCallback)(GADUTypeBannerClientRef *ban
 /// Callback for when a full screen view has just been dismissed.
 typedef void (*GADUAdViewDidDismissScreenCallback)(GADUTypeBannerClientRef *bannerClient);
 
-/// Callback for when an application will background or terminate as a result of a banner click.
-typedef void (*GADUAdViewWillLeaveApplicationCallback)(GADUTypeBannerClientRef *bannerClient);
+/// Callback for when an ad has recorded an impression.
+typedef void (*GADUAdViewDidRecordImpressionCallback)(GADUTypeBannerClientRef *bannerClient);
+
+/// Callback for when an ad has recorded a click.
+typedef void (*GADUAdViewDidRecordClickCallback)(GADUTypeBannerClientRef *bannerClient);
 
 /// Callback for when an ad is estimated to have earned money.
 typedef void (*GADUAdViewPaidEventCallback)(GADUTypeBannerClientRef *bannerClient, int precision,
