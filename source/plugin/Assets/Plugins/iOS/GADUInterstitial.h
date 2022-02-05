@@ -31,15 +31,23 @@
 
 /// The ad presented full screen content callback into Unity.
 @property(nonatomic, assign)
-    GADUInterstitialAdDidPresentFullScreenContentCallback adDidPresentFullScreenContentCallback;
+    GADUInterstitialAdWillPresentFullScreenContentCallback adWillPresentFullScreenContentCallback;
 
 /// The ad dismissed full screen content callback into Unity.
 @property(nonatomic, assign)
     GADUInterstitialAdDidDismissFullScreenContentCallback adDidDismissFullScreenContentCallback;
 
+/// The ad will dismiss full screen content callback into Unity.
+@property(nonatomic, assign)
+    GADUInterstitialAdWillDismissFullScreenContentCallback adWillDismissFullScreenContentCallback;
+
 /// The ad impression callback into Unity.
 @property(nonatomic, assign)
     GADUInterstitialAdDidRecordImpressionCallback adDidRecordImpressionCallback;
+
+/// The ad click callback into Unity.
+@property(nonatomic, assign)
+    GADUInterstitialAdDidRecordClickCallback adDidRecordClickCallback;
 
 /// The paid event callback into Unity.
 @property(nonatomic, assign) GADUInterstitialPaidEventCallback paidEventCallback;

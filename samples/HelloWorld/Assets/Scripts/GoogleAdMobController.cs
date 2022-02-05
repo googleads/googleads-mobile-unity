@@ -61,6 +61,7 @@ public class GoogleAdMobController : MonoBehaviour
         MobileAdsEventExecutor.ExecuteInUpdate(() =>
         {
             statusText.text = "Initialization complete";
+            LogOnMainThread("GMA HandleInitCompleteAction");
             RequestBannerAd();
         });
     }
@@ -134,6 +135,13 @@ public class GoogleAdMobController : MonoBehaviour
         bannerView.OnAdOpening += (sender, args) => OnAdOpeningEvent.Invoke();
         bannerView.OnAdClosed += (sender, args) => OnAdClosedEvent.Invoke();
 
+        // Logging
+        bannerView.OnAdClosed += (sender, args) => LogOnMainThread("GMA BannerView OnAdClosed");
+        bannerView.OnAdFailedToLoad += (sender, args) => LogOnMainThread("GMA BannerView OnAdFailedToLoad");
+        bannerView.OnAdOpening += (sender, args) => LogOnMainThread("GMA BannerView OnAdOpening");
+        bannerView.OnAdLoaded += (sender, args) => LogOnMainThread("GMA BannerView OnAdLoaded");
+        bannerView.OnPaidEvent += (sender, args) => LogOnMainThread("GMA BannerView OnPaidEvent");
+
         // Load a banner ad
         bannerView.LoadAd(CreateAdRequest());
     }
@@ -176,6 +184,15 @@ public class GoogleAdMobController : MonoBehaviour
         interstitialAd.OnAdFailedToLoad += (sender, args) => OnAdFailedToLoadEvent.Invoke();
         interstitialAd.OnAdOpening += (sender, args) => OnAdOpeningEvent.Invoke();
         interstitialAd.OnAdClosed += (sender, args) => OnAdClosedEvent.Invoke();
+
+        // Logging
+        interstitialAd.OnAdClosed += (sender, args) => LogOnMainThread("GMA InterstitialAd OnAdClosed");
+        interstitialAd.OnAdFailedToLoad += (sender, args) => LogOnMainThread("GMA InterstitialAd OnAdFailedToLoad");
+        interstitialAd.OnAdOpening += (sender, args) => LogOnMainThread("GMA InterstitialAd OnAdOpening");
+        interstitialAd.OnAdLoaded += (sender, args) => LogOnMainThread("GMA InterstitialAd OnAdLoaded");
+        interstitialAd.OnPaidEvent += (sender, args) => LogOnMainThread("GMA InterstitialAd OnPaidEvent");
+        interstitialAd.OnAdDidRecordImpression += (sender, args) => LogOnMainThread("GMA InterstitialAd OnAdDidRecordImpression");
+        interstitialAd.OnAdFailedToShow += (sender, args) => LogOnMainThread("GMA InterstitialAd OnAdFailedToShow");
 
         // Load an interstitial ad
         interstitialAd.LoadAd(CreateAdRequest());
@@ -229,6 +246,17 @@ public class GoogleAdMobController : MonoBehaviour
         rewardedAd.OnAdClosed += (sender, args) => OnAdClosedEvent.Invoke();
         rewardedAd.OnUserEarnedReward += (sender, args) => OnUserEarnedRewardEvent.Invoke();
 
+        // Logging
+        LogOnMainThread("GMA RewardedInterstitial Opened");
+        rewardedAd.OnAdClosed += (sender, args) => LogOnMainThread("GMA RewardedAd OnAdClosed");
+        rewardedAd.OnAdFailedToLoad += (sender, args) => LogOnMainThread("GMA RewardedAd OnAdFailedToLoad");
+        rewardedAd.OnAdOpening += (sender, args) => LogOnMainThread("GMA RewardedAd OnAdOpening");
+        rewardedAd.OnAdLoaded += (sender, args) => LogOnMainThread("GMA RewardedAd OnAdLoaded");
+        rewardedAd.OnPaidEvent += (sender, args) => LogOnMainThread("GMA RewardedAd OnPaidEvent");
+        rewardedAd.OnAdDidRecordImpression += (sender, args) => LogOnMainThread("GMA RewardedAd OnAdDidRecordImpression");
+        rewardedAd.OnAdFailedToShow += (sender, args) => LogOnMainThread("GMA RewardedAd OnAdFailedToShow");
+        rewardedAd.OnUserEarnedReward += (sender, args) => LogOnMainThread("GMA RewardedAd OnUserEarnedReward");
+
         // Create empty ad request
         rewardedAd.LoadAd(CreateAdRequest());
     }
@@ -265,6 +293,7 @@ public class GoogleAdMobController : MonoBehaviour
         {
             if (error != null)
             {
+                LogOnMainThread("GMA RewardedInterstitial Failed");
                 MobileAdsEventExecutor.ExecuteInUpdate(() => {
                     statusText.text = "RewardedInterstitialAd load failed, error: " + error;
                 });
@@ -295,6 +324,14 @@ public class GoogleAdMobController : MonoBehaviour
                 });
                 this.rewardedInterstitialAd = null;
             };
+
+            // Logging
+            LogOnMainThread("GMA RewardedInterstitial Opened");
+            rewardedInterstitialAd.OnAdDidDismissFullScreenContent += (sender, args) => LogOnMainThread("GMA RewardedInterstitial OnAdDidDismissFullScreenContent");
+            rewardedInterstitialAd.OnAdDidPresentFullScreenContent += (sender, args) => LogOnMainThread("GMA RewardedInterstitial OnAdDidPresentFullScreenContent");
+            rewardedInterstitialAd.OnAdDidRecordImpression += (sender, args) => LogOnMainThread("GMA RewardedInterstitial OnAdDidRecordImpression");
+            rewardedInterstitialAd.OnAdFailedToPresentFullScreenContent += (sender, args) => LogOnMainThread("GMA RewardedInterstitialOnAdFailedToPresentFullScreenContent");
+            rewardedInterstitialAd.OnPaidEvent += (sender, args) => LogOnMainThread("GMA RewardedInterstitial OnPaidEvent");
         });
     }
 
@@ -305,6 +342,7 @@ public class GoogleAdMobController : MonoBehaviour
             rewardedInterstitialAd.Show((reward) => {
                 MobileAdsEventExecutor.ExecuteInUpdate(() => {
                     statusText.text = "User Rewarded: " + reward.Amount;
+                    LogOnMainThread("GMA RewardedInterstitia Rewarded " + reward.Amount);
                 });
             });
         }
@@ -335,6 +373,7 @@ public class GoogleAdMobController : MonoBehaviour
         {
             if (error != null)
             {
+                LogOnMainThread("GMA AppOpen Failed");
                 MobileAdsEventExecutor.ExecuteInUpdate(() => {
                     statusText.text = "AppOpenAd load failed, error: " + error;
                 });
@@ -344,6 +383,14 @@ public class GoogleAdMobController : MonoBehaviour
                 statusText.text = "AppOpenAd loaded. Please background the app and return.";
             });
             this.appOpenAd = appOpenAd;
+
+            // Logging
+            LogOnMainThread("GMA AppOpen Loaded");
+            appOpenAd.OnAdDidDismissFullScreenContent += (sender, args) => LogOnMainThread("GMA AppOpen OnAdDidDismissFullScreenContent");
+            appOpenAd.OnAdDidPresentFullScreenContent += (sender, args) => LogOnMainThread("GMA AppOpen OnAdDidPresentFullScreenContent");
+            appOpenAd.OnAdDidRecordImpression += (sender, args) => LogOnMainThread("GMA AppOpen OnAdDidRecordImpression");
+            appOpenAd.OnAdFailedToPresentFullScreenContent += (sender, args) => LogOnMainThread("GMA AppOpen OnAdFailedToPresentFullScreenContent");
+            appOpenAd.OnPaidEvent += (sender, args) => LogOnMainThread("GMA AppOpen OnPaidEvent");
         });
     }
 
@@ -422,6 +469,7 @@ public class GoogleAdMobController : MonoBehaviour
         {
             if (error != null)
             {
+                LogOnMainThread("GMA Ad Inspector failed to open.");
                 string errorMessage = error.GetMessage();
                 MobileAdsEventExecutor.ExecuteInUpdate(() => {
                     statusText.text = "Ad Inspector failed to open, error: " + errorMessage;
@@ -429,6 +477,7 @@ public class GoogleAdMobController : MonoBehaviour
             }
             else
             {
+                LogOnMainThread("GMA Ad Inspector closed.");
                 MobileAdsEventExecutor.ExecuteInUpdate(() => {
                     statusText.text = "Ad Inspector closed.";
                 });
@@ -437,4 +486,12 @@ public class GoogleAdMobController : MonoBehaviour
     }
 
     #endregion
+
+    #region Utility
+    private void LogOnMainThread(string message)
+    {
+        MobileAdsEventExecutor.ExecuteInUpdate(() => UnityEngine.Debug.Log(message));
+    }
+    #endregion
+
 }

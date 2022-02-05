@@ -76,9 +76,7 @@
   return self.rewardedInterstitialAd.responseInfo;
 }
 
-- (void)setServerSideVerificationOptions:(GADServerSideVerificationOptions *)options {
-  self.rewardedInterstitialAd.serverSideVerificationOptions = options;
-}
+#pragma mark GADFullScreenContentDelegate implementation
 
 - (void)ad:(nonnull id<GADFullScreenPresentingAd>)ad
     didFailToPresentFullScreenContentWithError:(nonnull NSError *)error {
@@ -89,12 +87,12 @@
   }
 }
 
-- (void)adDidPresentFullScreenContent:(nonnull id<GADFullScreenPresentingAd>)ad {
+- (void)adWillPresentFullScreenContent:(nonnull id<GADFullScreenPresentingAd>)ad {
   if (GADUPluginUtil.pauseOnBackground) {
     UnityPause(YES);
   }
-  if (self.adDidPresentFullScreenContentCallback) {
-    self.adDidPresentFullScreenContentCallback(self.rewardedInterstitialAdClient);
+  if (self.adWillPresentFullScreenContentCallback) {
+    self.adWillPresentFullScreenContentCallback(self.rewardedInterstitialAdClient);
   }
 }
 
@@ -114,10 +112,26 @@
   }
 }
 
+- (void)adWillDismissFullScreenContent:(nonnull id<GADFullScreenPresentingAd>)ad {
+  if (self.adWillDismissFullScreenContentCallback) {
+    self.adWillDismissFullScreenContentCallback(self.rewardedInterstitialAdClient);
+  }
+}
+
 - (void)adDidRecordImpression:(nonnull id<GADFullScreenPresentingAd>)ad {
   if (self.adDidRecordImpressionCallback) {
     self.adDidRecordImpressionCallback(self.rewardedInterstitialAdClient);
   }
+}
+
+- (void)adDidRecordClick:(nonnull id<GADFullScreenPresentingAd>)ad {
+  if (self.adDidRecordClickCallback) {
+    self.adDidRecordClickCallback(self.rewardedInterstitialAdClient);
+  }
+}
+
+- (void)setServerSideVerificationOptions:(GADServerSideVerificationOptions *)options {
+  self.rewardedInterstitialAd.serverSideVerificationOptions = options;
 }
 
 @end

@@ -46,11 +46,15 @@ namespace GoogleMobileAds.iOS
         internal delegate void GADUAppOpenAdFailedToPresentFullScreenContentCallback(
             IntPtr appOpenAdClient, IntPtr error);
 
-        internal delegate void GADUAppOpenAdDidPresentFullScreenContentCallback(IntPtr appOpenAdClient);
+        internal delegate void GADUAppOpenAdWillPresentFullScreenContentCallback(IntPtr appOpenAdClient);
+
+        internal delegate void GADUAppOpenAdWillDismissFullScreenContentCallback(IntPtr appOpenAdClient);
 
         internal delegate void GADUAppOpenAdDidDismissFullScreenContentCallback(IntPtr appOpenAdClient);
 
         internal delegate void GADUAppOpenAdDidRecordImpressionCallback(IntPtr appOpenAdClient);
+
+        internal delegate void GADUAppOpenAdDidRecordClickCallback(IntPtr appOpenAdClient);
 
         #endregion
 
@@ -67,6 +71,8 @@ namespace GoogleMobileAds.iOS
         public event EventHandler<EventArgs> OnAdDidRecordImpression;
 
         public event EventHandler<EventArgs> OnAdDidDismissFullScreenContent;
+
+        public event EventHandler<EventArgs> OnAdDidRecordClick;
 
         // This property should be used when setting the appOpenAdPtr.
         private IntPtr AppOpenAdPtr
@@ -96,9 +102,11 @@ namespace GoogleMobileAds.iOS
                     AppOpenAdFailedToLoadCallback,
                     AppOpenAdPaidEventCallback,
                     AdFailedToPresentFullScreenContentCallback,
-                    AdDidPresentFullScreenContentCallback,
+                    AdWillPresentFullScreenContentCallback,
                     AdDidDismissFullScreenContentCallback,
-                    AdDidRecordImpressionCallback);
+                    AdWillDismissFullScreenContentCallback,
+                    AdDidRecordImpressionCallback,
+                    AdDidRecordClickCallback);
         }
 
         // Load an ad.
@@ -203,14 +211,20 @@ namespace GoogleMobileAds.iOS
             }
         }
 
-        [MonoPInvokeCallback(typeof(GADUAppOpenAdDidPresentFullScreenContentCallback))]
-        private static void AdDidPresentFullScreenContentCallback(IntPtr appOpenAdClient)
+        [MonoPInvokeCallback(typeof(GADUAppOpenAdWillPresentFullScreenContentCallback))]
+        private static void AdWillPresentFullScreenContentCallback(IntPtr appOpenAdClient)
         {
             AppOpenAdClient client = IntPtrToAppOpenAdClient(appOpenAdClient);
             if (client.OnAdDidPresentFullScreenContent != null)
             {
                 client.OnAdDidPresentFullScreenContent(client, EventArgs.Empty);
             }
+        }
+
+        [MonoPInvokeCallback(typeof(GADUAppOpenAdWillDismissFullScreenContentCallback))]
+        private static void AdWillDismissFullScreenContentCallback(IntPtr appOpenAdClient)
+        {
+            // This is not used because it is not exposed in the Android SDK.
         }
 
         [MonoPInvokeCallback(typeof(GADUAppOpenAdDidDismissFullScreenContentCallback))]
@@ -230,6 +244,16 @@ namespace GoogleMobileAds.iOS
             if (client.OnAdDidRecordImpression != null)
             {
                 client.OnAdDidRecordImpression(client, EventArgs.Empty);
+            }
+        }
+
+        [MonoPInvokeCallback(typeof(GADUAppOpenAdDidRecordClickCallback))]
+        private static void AdDidRecordClickCallback(IntPtr appOpenAdClient)
+        {
+            AppOpenAdClient client = IntPtrToAppOpenAdClient(appOpenAdClient);
+            if (client.OnAdDidRecordClick != null)
+            {
+                client.OnAdDidRecordClick(client, EventArgs.Empty);
             }
         }
 
