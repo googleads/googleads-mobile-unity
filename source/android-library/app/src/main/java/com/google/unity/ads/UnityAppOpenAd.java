@@ -19,6 +19,7 @@ package com.google.unity.ads;
 import android.app.Activity;
 import android.util.Log;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import com.google.android.gms.ads.AdError;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdValue;
@@ -191,6 +192,7 @@ public class UnityAppOpenAd {
         });
   }
 
+  @Nullable
   public ResponseInfo getResponseInfo() {
     if (appOpenAd == null) {
       return null;

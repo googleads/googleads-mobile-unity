@@ -3,6 +3,7 @@ package com.google.unity.ads;
 import android.app.Activity;
 import android.util.Log;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import com.google.android.gms.ads.AdError;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdValue;
@@ -254,6 +255,7 @@ public class UnityRewardedAd {
     return result;
   }
 
+  @Nullable
   public RewardItem getRewardItem() {
     if (rewardedAd == null) {
       Log.e(PluginUtils.LOGTAG, "Tried to get reward item before it was ready. This should "
