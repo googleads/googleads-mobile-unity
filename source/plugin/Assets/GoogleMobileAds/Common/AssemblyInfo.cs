@@ -22,5 +22,8 @@ using System.Runtime.CompilerServices;
 [assembly: InternalsVisibleTo("GoogleMobileAds.iOS")]
 [assembly: InternalsVisibleTo("GoogleMobileAds.Unity")]
 [assembly: InternalsVisibleTo("GoogleMobileAdsNative")]
-[assembly: AssemblyVersion("7.0.1")]
-[assembly: AssemblyFileVersion("7.0.1")]
+
+// Version scheme is {major}.{minor}.{revision|fix|build}
+// for more information see go/admob-unity-version
+[assembly: AssemblyVersion("7.1.0")]
+

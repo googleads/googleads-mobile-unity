@@ -66,6 +66,8 @@
   return self.appOpenAd.responseInfo;
 }
 
+#pragma mark GADFullScreenContentDelegate implementation
+
 - (void)ad:(nonnull id<GADFullScreenPresentingAd>)ad
     didFailToPresentFullScreenContentWithError:(nonnull NSError *)error {
   if (self.adFailedToPresentFullScreenContentCallback) {
@@ -74,19 +76,13 @@
   }
 }
 
-- (void)adDidPresentFullScreenContent:(nonnull id<GADFullScreenPresentingAd>)ad {
+- (void)adWillPresentFullScreenContent:(nonnull id<GADFullScreenPresentingAd>)ad {
   if (GADUPluginUtil.pauseOnBackground) {
     UnityPause(YES);
   }
 
-  if (self.adDidPresentFullScreenContentCallback) {
-    self.adDidPresentFullScreenContentCallback(self.appOpenAdClient);
-  }
-}
-
-- (void)adDidRecordImpression:(nonnull id<GADFullScreenPresentingAd>)ad {
-  if (self.adDidRecordImpressionCallback) {
-    self.adDidRecordImpressionCallback(self.appOpenAdClient);
+  if (self.adWillPresentFullScreenContentCallback) {
+    self.adWillPresentFullScreenContentCallback(self.appOpenAdClient);
   }
 }
 
@@ -107,5 +103,14 @@
     self.adDidDismissFullScreenContentCallback(self.appOpenAdClient);
   }
 }
+
+- (void)adDidRecordImpression:(nonnull id<GADFullScreenPresentingAd>)ad {
+  if (self.adDidRecordImpressionCallback) {
+    self.adDidRecordImpressionCallback(self.appOpenAdClient);
+  }
+}
+
+// adWillDismissFullScreenContent and adDidRecordClick are not forwarded to Unity because
+// they are not present in the Android API and therefore not part of the public API.
 
 @end

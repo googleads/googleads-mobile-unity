@@ -72,12 +72,12 @@
   }
 }
 
-- (void)adDidPresentFullScreenContent:(nonnull id<GADFullScreenPresentingAd>)ad {
+- (void)adWillPresentFullScreenContent:(nonnull id<GADFullScreenPresentingAd>)ad {
   if (GADUPluginUtil.pauseOnBackground) {
     UnityPause(YES);
   }
-  if (self.adDidPresentFullScreenContentCallback) {
-    self.adDidPresentFullScreenContentCallback(self.interstitialClient);
+  if (self.adWillPresentFullScreenContentCallback) {
+    self.adWillPresentFullScreenContentCallback(self.interstitialClient);
   }
 }
 
@@ -102,5 +102,8 @@
     self.adDidRecordImpressionCallback(self.interstitialClient);
   }
 }
+
+// adWillDismissFullScreenContent and adDidRecordClick are not forwarded to Unity because
+// they are not present in the Android API and therefore not part of the public API.
 
 @end

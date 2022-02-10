@@ -155,17 +155,20 @@ namespace GoogleMobileAds.iOS
         [DllImport("__Internal")]
         internal static extern void GADUSetAppOpenAdCallbacks(
             IntPtr appOpenAd,
-            AppOpenAdClient.GADUAppOpenAdLoadedCallback adLoadedCallback,
-            AppOpenAdClient.GADUAppOpenAdFailToLoadCallback adFailedToLoadCallback,
-            AppOpenAdClient.GADUAppOpenAdPaidEventCallback paidEventCallback,
+            AppOpenAdClient.GADUAppOpenAdLoadedCallback
+            adLoadedCallback,
+            AppOpenAdClient.GADUAppOpenAdFailToLoadCallback
+            adFailedToLoadCallback,
+            AppOpenAdClient.GADUAppOpenAdPaidEventCallback
+            paidEventCallback,
             AppOpenAdClient.GADUAppOpenAdFailedToPresentFullScreenContentCallback
-                    adFailToPresentFullScreenContentCallback,
-            AppOpenAdClient.GADUAppOpenAdDidPresentFullScreenContentCallback
-                    adDidPresentFullScreenContentCallback,
+            adFailToPresentFullScreenContentCallback,
+            AppOpenAdClient.GADUAppOpenAdWillPresentFullScreenContentCallback
+            adWillPresentFullScreenContentCallback,
             AppOpenAdClient.GADUAppOpenAdDidDismissFullScreenContentCallback
-                    adDidDismissFullScreenContentCallback,
+            adDidDismissFullScreenContentCallback,
             AppOpenAdClient.GADUAppOpenAdDidRecordImpressionCallback
-                    adDidRecordImpressionCallback
+            adDidRecordImpressionCallback
         );
 
         #endregion
@@ -288,18 +291,20 @@ namespace GoogleMobileAds.iOS
         [DllImport("__Internal")]
         internal static extern void GADUSetInterstitialCallbacks(
             IntPtr interstitial,
-            InterstitialClient.GADUInterstitialAdLoadedCallback adReceivedCallback,
+            InterstitialClient.GADUInterstitialAdLoadedCallback
+            adReceivedCallback,
             InterstitialClient.GADUInterstitialAdFailedToLoadCallback
-                        adFailedCallback,
-            InterstitialClient.GADUInterstitialAdDidPresentFullScreenContentCallback
-                adDidPresentFullScreenContentCallback,
+            adFailedCallback,
             InterstitialClient.GADUInterstitialAdFailedToPresentFullScreenContentCallback
-                adFailToPresentFullScreenContentCallback,
+            adFailToPresentFullScreenContentCallback,
+            InterstitialClient.GADUInterstitialAdWillPresentFullScreenContentCallback
+            adWillPresentFullScreenContentCallback,
             InterstitialClient.GADUInterstitialAdDidDismissFullScreenContentCallback
-                adDidDismissFullScreenContentCallback,
+            adDidDismissFullScreenContentCallback,
             InterstitialClient.GADUInterstitialAdDidRecordImpressionCallback
-                adDidRecordImpressionCallback,
-            InterstitialClient.GADUInterstitialPaidEventCallback paidEventCallback
+            adDidRecordImpressionCallback,
+            InterstitialClient.GADUInterstitialPaidEventCallback
+            paidEventCallback
         );
 
         [DllImport("__Internal")]
@@ -313,7 +318,7 @@ namespace GoogleMobileAds.iOS
         internal static extern IntPtr GADUCreateRewardedAd(IntPtr rewardedAd);
 
         [DllImport("__Internal")]
-        internal static extern IntPtr GADULoadRewardedAd(IntPtr interstitialAd, string adUnitID, 
+        internal static extern IntPtr GADULoadRewardedAd(IntPtr interstitialAd, string adUnitID,
             IntPtr request);
 
         [DllImport("__Internal")]
@@ -322,19 +327,22 @@ namespace GoogleMobileAds.iOS
         [DllImport("__Internal")]
         internal static extern void GADUSetRewardedAdCallbacks(
             IntPtr rewardedAd,
-            RewardedAdClient.GADURewardedAdLoadedCallback adLoadedCallback,
-            RewardedAdClient.GADURewardedAdFailedToLoadCallback adFailedToLoadCallback,
-            RewardedAdClient.GADURewardedAdDidPresentFullScreenContentCallback
-                adDidPresentFullScreenContentCallback,
+            RewardedAdClient.GADURewardedAdLoadedCallback
+            adLoadedCallback,
+            RewardedAdClient.GADURewardedAdFailedToLoadCallback
+            adFailedToLoadCallback,
             RewardedAdClient.GADURewardedAdFailedToPresentFullScreenContentCallback
-                adFailToPresentFullScreenContentCallback,
+            adFailToPresentFullScreenContentCallback,
+            RewardedAdClient.GADURewardedAdWillPresentFullScreenContentCallback
+            adWillPresentFullScreenContentCallback,
             RewardedAdClient.GADURewardedAdDidDismissFullScreenContentCallback
-                adDidDismissFullScreenContentCallback,
+            adDidDismissFullScreenContentCallback,
             RewardedAdClient.GADURewardedAdDidRecordImpressionCallback
-                adDidRecordImpressionCallback,
-            RewardedAdClient.GADURewardedAdUserEarnedRewardCallback adDidEarnRewardCallback,
+            adDidRecordImpressionCallback,
+            RewardedAdClient.GADURewardedAdUserEarnedRewardCallback
+            adDidEarnRewardCallback,
             RewardedAdClient.GADURewardedAdPaidEventCallback
-                paidEventCallback
+            paidEventCallback
         );
 
         [DllImport("__Internal")]
@@ -376,20 +384,21 @@ namespace GoogleMobileAds.iOS
         internal static extern void GADUSetRewardedInterstitialAdCallbacks(
             IntPtr rewardedInterstitialAd,
             RewardedInterstitialAdClient.GADURewardedInterstitialAdLoadedCallback
-                adLoadedCallback,
+            adLoadedCallback,
             RewardedInterstitialAdClient.GADURewardedInterstitialAdFailedToLoadCallback
-                adFailedToLoadCallback,
-            RewardedInterstitialAdClient.GADURewardedInterstitialAdUserEarnedRewardCallback adDidEarnRewardCallback,
-            RewardedInterstitialAdClient.GADURewardedInterstitialAdPaidEventCallback
-                paidEventCallback,
+            adFailedToLoadCallback,
             RewardedInterstitialAdClient.GADURewardedInterstitialAdFailedToPresentFullScreenContentCallback
-                adFailToPresentFullScreenContentCallback,
-            RewardedInterstitialAdClient.GADURewardedInterstitialAdDidPresentFullScreenContentCallback
-                adDidPresentFullScreenContentCallback,
+            adFailToPresentFullScreenContentCallback,
+            RewardedInterstitialAdClient.GADURewardedInterstitialAdWillPresentFullScreenContentCallback
+            adWillPresentFullScreenContentCallback,
             RewardedInterstitialAdClient.GADURewardedInterstitialAdDidDismissFullScreenContentCallback
-                adDidDismissFullScreenContentCallback,
+            adUnitIDdDidDismissFullScreenContentCallback,
             RewardedInterstitialAdClient.GADURewardedInterstitialAdDidRecordImpressionCallback
-                adDidRecordImpressionCallback
+            adDidRecordImpressionCallback,
+            RewardedInterstitialAdClient.GADURewardedInterstitialAdUserEarnedRewardCallback
+            adDidEarnRewardCallback,
+            RewardedInterstitialAdClient.GADURewardedInterstitialAdPaidEventCallback
+            paidEventCallback
         );
 
         [DllImport("__Internal")]

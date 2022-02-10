@@ -267,8 +267,8 @@ void GADUSetAppOpenAdCallbacks(
     GADUAppOpenAdLoadedCallback adLoadedCallback,
     GADUAppOpenAdFailedToLoadCallback adFailedToLoadCallback,
     GADUAppOpenAdPaidEventCallback paidEventCallback,
-    GADUAppOpenAdFailedToPresentFullScreenContentCallback adFailToPresentFullScreenContentCallback,
-    GADUAppOpenAdDidPresentFullScreenContentCallback adDidPresentFullScreenContentCallback,
+    GADUAppOpenAdFailedToPresentFullScreenContentCallback adFailedToPresentFullScreenContentCallback,
+    GADUAppOpenAdWillPresentFullScreenContentCallback adWillPresentFullScreenContentCallback,
     GADUAppOpenAdDidDismissFullScreenContentCallback adDidDismissFullScreenContentCallback,
     GADUAppOpenAdDidRecordImpressionCallback adDidRecordImpressionCallback) {
   GADUAppOpenAd *internalAppOpenAd = (__bridge GADUAppOpenAd *)appOpenAd;
@@ -276,8 +276,8 @@ void GADUSetAppOpenAdCallbacks(
   internalAppOpenAd.adFailedToLoadCallback = adFailedToLoadCallback;
   internalAppOpenAd.paidEventCallback = paidEventCallback;
   internalAppOpenAd.adFailedToPresentFullScreenContentCallback =
-      adFailToPresentFullScreenContentCallback;
-  internalAppOpenAd.adDidPresentFullScreenContentCallback = adDidPresentFullScreenContentCallback;
+      adFailedToPresentFullScreenContentCallback;
+  internalAppOpenAd.adWillPresentFullScreenContentCallback = adWillPresentFullScreenContentCallback;
   internalAppOpenAd.adDidDismissFullScreenContentCallback = adDidDismissFullScreenContentCallback;
   internalAppOpenAd.adDidRecordImpressionCallback = adDidRecordImpressionCallback;
 }
@@ -300,39 +300,40 @@ void GADUSetBannerCallbacks(GADUTypeBannerRef banner,
 
 /// Sets the interstitial callback methods to be invoked during interstitial ad events.
 void GADUSetInterstitialCallbacks(
-    GADUTypeInterstitialRef interstitial, GADUInterstitialAdLoadedCallback adLoadedCallback,
+    GADUTypeInterstitialRef interstitial,
+    GADUInterstitialAdLoadedCallback adLoadedCallback,
     GADUInterstitialAdFailedToLoadCallback adFailedToLoadCallback,
-    GADUInterstitialAdDidPresentFullScreenContentCallback adDidPresentCallback,
-    GADUInterstitialAdFailedToPresentFullScreenContentCallback adFailedToPresentCallback,
-    GADUInterstitialAdDidDismissFullScreenContentCallback adDidDismissCallback,
+    GADUInterstitialAdFailedToPresentFullScreenContentCallback adFailedToPresentFullScreenContentCallback,
+    GADUInterstitialAdWillPresentFullScreenContentCallback adWillPresentFullScreenContentCallback,
+    GADUInterstitialAdDidDismissFullScreenContentCallback adDidDismissFullScreenContentCallback,
     GADUInterstitialAdDidRecordImpressionCallback adDidRecordImpressionCallback,
     GADUInterstitialPaidEventCallback paidEventCallback) {
   GADUInterstitial *internalInterstitial = (__bridge GADUInterstitial *)interstitial;
   internalInterstitial.adLoadedCallback = adLoadedCallback;
   internalInterstitial.adFailedToLoadCallback = adFailedToLoadCallback;
-  internalInterstitial.adDidPresentFullScreenContentCallback = adDidPresentCallback;
-  internalInterstitial.adFailedToPresentFullScreenContentCallback = adFailedToPresentCallback;
-  internalInterstitial.adDidDismissFullScreenContentCallback = adDidDismissCallback;
-  internalInterstitial.adDidRecordImpressionCallback = adDidRecordImpressionCallback;
+  internalInterstitial.adFailedToPresentFullScreenContentCallback = adFailedToPresentFullScreenContentCallback;
+  internalInterstitial.adWillPresentFullScreenContentCallback = adWillPresentFullScreenContentCallback;
+  internalInterstitial.adDidDismissFullScreenContentCallback = adDidDismissFullScreenContentCallback;
   internalInterstitial.paidEventCallback = paidEventCallback;
 }
 
 /// Sets the rewarded ad callback methods to be invoked during reward based video ad events.
 void GADUSetRewardedAdCallbacks(
-    GADUTypeRewardedAdRef rewardedAd, GADURewardedAdLoadedCallback adLoadedCallback,
+    GADUTypeRewardedAdRef rewardedAd,
+    GADURewardedAdLoadedCallback adLoadedCallback,
     GADURewardedAdFailedToLoadCallback adFailedToLoadCallback,
-    GADURewardedAdDidPresentFullScreenContentCallback adDidPresentCallback,
-    GADURewardedAdFailedToPresentFullScreenContentCallback adFailedToPresentCallback,
-    GADURewardedAdDidDismissFullScreenContentCallback adDidDismissCallback,
+    GADURewardedAdFailedToPresentFullScreenContentCallback adFailedToPresentFullScreenContentCallback,
+    GADURewardedAdWillPresentFullScreenContentCallback adWillPresentFullScreenContentCallback,
+    GADURewardedAdDidDismissFullScreenContentCallback adDidDismissFullScreenContentCallback,
     GADURewardedAdDidRecordImpressionCallback adDidRecordImpressionCallback,
     GADURewardedAdUserEarnedRewardCallback didEarnRewardCallback,
     GADURewardedAdPaidEventCallback paidEventCallback) {
   GADURewardedAd *internalRewardedAd = (__bridge GADURewardedAd *)rewardedAd;
   internalRewardedAd.adLoadedCallback = adLoadedCallback;
   internalRewardedAd.adFailedToLoadCallback = adFailedToLoadCallback;
-  internalRewardedAd.adDidPresentFullScreenContentCallback = adDidPresentCallback;
-  internalRewardedAd.adFailedToPresentFullScreenContentCallback = adFailedToPresentCallback;
-  internalRewardedAd.adDidDismissFullScreenContentCallback = adDidDismissCallback;
+  internalRewardedAd.adFailedToPresentFullScreenContentCallback = adFailedToPresentFullScreenContentCallback;
+  internalRewardedAd.adWillPresentFullScreenContentCallback = adWillPresentFullScreenContentCallback;
+  internalRewardedAd.adDidDismissFullScreenContentCallback = adDidDismissFullScreenContentCallback;
   internalRewardedAd.adDidRecordImpressionCallback = adDidRecordImpressionCallback;
   internalRewardedAd.didEarnRewardCallback = didEarnRewardCallback;
   internalRewardedAd.paidEventCallback = paidEventCallback;
@@ -344,28 +345,22 @@ void GADUSetRewardedInterstitialAdCallbacks(
     GADUTypeRewardedInterstitialAdRef rewardedInterstitialAd,
     GADURewardedInterstitialAdLoadedCallback adLoadedCallback,
     GADURewardedInterstitialAdFailedToLoadCallback adFailedToLoadCallback,
+    GADURewardedInterstitialAdFailedToPresentFullScreenContentCallback adFailedToPresentFullScreenContentCallback,
+    GADURewardedInterstitialAdWillPresentFullScreenContentCallback adWillPresentFullScreenContentCallback,
+    GADURewardedInterstitialAdDidDismissFullScreenContentCallback adDidDismissFullScreenContentCallback,
+    GADURewardedInterstitialAdDidRecordImpressionCallback adDidRecordImpressionCallback,
     GADURewardedInterstitialAdUserEarnedRewardCallback didEarnRewardCallback,
-    GADURewardedInterstitialAdPaidEventCallback paidEventCallback,
-    GADURewardedInterstitialAdFailedToPresentFullScreenContentCallback
-        adFailToPresentFullScreenContentCallback,
-    GADURewardedInterstitialAdDidPresentFullScreenContentCallback
-        adDidPresentFullScreenContentCallback,
-    GADURewardedInterstitialAdDidDismissFullScreenContentCallback
-        adDidDismissFullScreenContentCallback,
-    GADURewardedInterstitialAdDidRecordImpressionCallback adDidRecordImpressionCallback) {
+    GADURewardedInterstitialAdPaidEventCallback paidEventCallback) {
   GADURewardedInterstitialAd *internalRewardedInterstitialAd =
       (__bridge GADURewardedInterstitialAd *)rewardedInterstitialAd;
   internalRewardedInterstitialAd.adLoadedCallback = adLoadedCallback;
   internalRewardedInterstitialAd.adFailedToLoadCallback = adFailedToLoadCallback;
+  internalRewardedInterstitialAd.adFailedToPresentFullScreenContentCallback = adFailedToPresentFullScreenContentCallback;
+  internalRewardedInterstitialAd.adWillPresentFullScreenContentCallback = adWillPresentFullScreenContentCallback;
+  internalRewardedInterstitialAd.adDidDismissFullScreenContentCallback = adDidDismissFullScreenContentCallback;
+  internalRewardedInterstitialAd.adDidRecordImpressionCallback = adDidRecordImpressionCallback;
   internalRewardedInterstitialAd.didEarnRewardCallback = didEarnRewardCallback;
   internalRewardedInterstitialAd.paidEventCallback = paidEventCallback;
-  internalRewardedInterstitialAd.adFailedToPresentFullScreenContentCallback =
-      adFailToPresentFullScreenContentCallback;
-  internalRewardedInterstitialAd.adDidPresentFullScreenContentCallback =
-      adDidPresentFullScreenContentCallback;
-  internalRewardedInterstitialAd.adDidDismissFullScreenContentCallback =
-      adDidDismissFullScreenContentCallback;
-  internalRewardedInterstitialAd.adDidRecordImpressionCallback = adDidRecordImpressionCallback;
 }
 
 /// Shows the GADAppOpenAd.
