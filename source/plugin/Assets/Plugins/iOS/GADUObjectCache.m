@@ -58,7 +58,7 @@
 
 - (void)removeObjectForKey:(NSString *)key {
   dispatch_async(_lockQueue, ^{
-   [self->_internalReferences removeObjectForKey:key];
+    [self->_internalReferences removeObjectForKey:key];
   });
 }
 

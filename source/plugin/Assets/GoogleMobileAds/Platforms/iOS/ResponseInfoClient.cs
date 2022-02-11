@@ -19,54 +19,42 @@ using UnityEngine;
 using GoogleMobileAds.Api;
 using GoogleMobileAds.Common;
 
-namespace GoogleMobileAds.iOS
-{
-    internal class ResponseInfoClient : IResponseInfoClient
-    {
-        private IntPtr adFormat;
-        private IntPtr iosResponseInfo;
+namespace GoogleMobileAds.iOS {
+  internal class ResponseInfoClient : IResponseInfoClient {
+    private IntPtr adFormat;
+    private IntPtr iosResponseInfo;
 
-        public ResponseInfoClient(ResponseInfoClientType type, IntPtr ptr)
-        {
-            if(type == ResponseInfoClientType.AdLoaded)
-            {
-                this.adFormat = adFormat;
-                iosResponseInfo = Externs.GADUGetResponseInfo(ptr);
-            }
-            else if(type == ResponseInfoClientType.AdError)
-            {
-                iosResponseInfo = Externs.GADUGetAdErrorResponseInfo(ptr);
-            }
-        }
-
-        public ResponseInfoClient(IntPtr adFormat, IntPtr iOSClient)
-        {
-            this.adFormat = adFormat;
-            iosResponseInfo = iOSClient;
-        }
-
-        public string GetMediationAdapterClassName()
-        {
-            if (iosResponseInfo != IntPtr.Zero)
-            {
-                return Externs.GADUResponseInfoMediationAdapterClassName(iosResponseInfo);
-            }
-            return null;
-        }
-
-        public string GetResponseId()
-        {
-            if (iosResponseInfo != IntPtr.Zero)
-            {
-                return Externs.GADUResponseInfoResponseId(iosResponseInfo);
-            }
-            return null;
-        }
-
-        public override string ToString()
-        {
-            return Externs.GADUGetResponseInfoDescription(iosResponseInfo);
-        }
+    public ResponseInfoClient(ResponseInfoClientType type, IntPtr ptr) {
+      if (type == ResponseInfoClientType.AdLoaded) {
+        this.adFormat = adFormat;
+        iosResponseInfo = Externs.GADUGetResponseInfo(ptr);
+      } else if (type == ResponseInfoClientType.AdError) {
+        iosResponseInfo = Externs.GADUGetAdErrorResponseInfo(ptr);
+      }
     }
+
+    public ResponseInfoClient(IntPtr adFormat, IntPtr iOSClient) {
+      this.adFormat = adFormat;
+      iosResponseInfo = iOSClient;
+    }
+
+    public string GetMediationAdapterClassName() {
+      if (iosResponseInfo != IntPtr.Zero) {
+        return Externs.GADUResponseInfoMediationAdapterClassName(iosResponseInfo);
+      }
+      return null;
+    }
+
+    public string GetResponseId() {
+      if (iosResponseInfo != IntPtr.Zero) {
+        return Externs.GADUResponseInfoResponseId(iosResponseInfo);
+      }
+      return null;
+    }
+
+    public override string ToString() {
+      return Externs.GADUGetResponseInfoDescription(iosResponseInfo);
+    }
+  }
 }
 #endif

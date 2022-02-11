@@ -20,131 +20,104 @@ using UnityEngine;
 using GoogleMobileAds.Api;
 using GoogleMobileAds.Common;
 
-namespace GoogleMobileAds.iOS
-{
-    public class MobileAdsClient : IMobileAdsClient
-    {
-        private static MobileAdsClient instance = new MobileAdsClient();
-        private Action<AdInspectorErrorClientEventArgs> adInspectorClosedAction;
-        private Action<IInitializationStatusClient> initCompleteAction;
-        private IntPtr mobileAdsClientPtr;
-        internal delegate void GADUAdInspectorClosedCallback(IntPtr mobileAdsClient,
-                                                             IntPtr errorRef);
-        internal delegate void GADUInitializationCompleteCallback(IntPtr mobileAdsClient,
-                                                                  IntPtr initStatusClient);
+namespace GoogleMobileAds.iOS {
+  public class MobileAdsClient : IMobileAdsClient {
+    private static MobileAdsClient instance = new MobileAdsClient();
+    private Action<AdInspectorErrorClientEventArgs> adInspectorClosedAction;
+    private Action<IInitializationStatusClient> initCompleteAction;
+    private IntPtr mobileAdsClientPtr;
+    internal delegate void GADUAdInspectorClosedCallback(IntPtr mobileAdsClient, IntPtr errorRef);
+    internal delegate void GADUInitializationCompleteCallback(IntPtr mobileAdsClient,
+                                                              IntPtr initStatusClient);
 
-        private MobileAdsClient()
-        {
-            this.mobileAdsClientPtr = (IntPtr)GCHandle.Alloc(this);
-        }
-
-        public static MobileAdsClient Instance
-        {
-            get
-            {
-                return instance;
-            }
-        }
-
-        public void Initialize(Action<IInitializationStatusClient> initCompleteAction)
-        {
-            this.initCompleteAction = initCompleteAction;
-            Externs.GADUInitializeWithCallback(this.mobileAdsClientPtr, InitializationCompleteCallback);
-        }
-
-        public void DisableMediationInitialization()
-        {
-            Externs.GADUDisableMediationInitialization();
-        }
-
-        public void SetApplicationVolume(float volume)
-        {
-            Externs.GADUSetApplicationVolume(volume);
-        }
-
-        public void SetApplicationMuted(bool muted)
-        {
-            Externs.GADUSetApplicationMuted(muted);
-        }
-
-        public void SetRequestConfiguration(RequestConfiguration requestConfiguration)
-        {
-            RequestConfigurationClient.SetRequestConfiguration(requestConfiguration);
-
-        }
-
-        public RequestConfiguration GetRequestConfiguration()
-        {
-            return RequestConfigurationClient.GetRequestConfiguration();
-        }
-
-        public void SetiOSAppPauseOnBackground(bool pause)
-        {
-            Externs.GADUSetiOSAppPauseOnBackground(pause);
-        }
-
-        public float GetDeviceScale()
-        {
-            return Externs.GADUDeviceScale();
-        }
-
-        public int GetDeviceSafeWidth()
-        {
-            return Externs.GADUDeviceSafeWidth();
-        }
-
-        public void OpenAdInspector(Action<AdInspectorErrorClientEventArgs> onAdInspectorClosed)
-        {
-            adInspectorClosedAction = onAdInspectorClosed;
-            Externs.GADUPresentAdInspector(this.mobileAdsClientPtr, AdInspectorClosedCallback);
-        }
-
-        [MonoPInvokeCallback(typeof(GADUAdInspectorClosedCallback))]
-        private static void AdInspectorClosedCallback(IntPtr mobileAdsClient, IntPtr errorRef)
-        {
-            MobileAdsClient client = IntPtrToMobileAdsClient(mobileAdsClient);
-            if (client.adInspectorClosedAction == null)
-            {
-                return;
-            }
-
-            AdInspectorErrorClientEventArgs args = (errorRef == IntPtr.Zero)
-                ? null
-                : new AdInspectorErrorClientEventArgs
-                {
-                    AdErrorClient = new AdInspectorErrorClient(errorRef)
-                };
-
-            client.adInspectorClosedAction(args);
-            client.adInspectorClosedAction = null;
-        }
-
-        [MonoPInvokeCallback(typeof(GADUInitializationCompleteCallback))]
-        private static void InitializationCompleteCallback(IntPtr mobileAdsClient, IntPtr initStatus)
-        {
-            MobileAdsClient client = IntPtrToMobileAdsClient(mobileAdsClient);
-            if (client.initCompleteAction != null)
-            {
-                IInitializationStatusClient statusClient = new InitializationStatusClient(initStatus);
-                client.initCompleteAction(statusClient);
-            }
-        }
-
-        private static MobileAdsClient IntPtrToMobileAdsClient(IntPtr mobileAdsClient)
-        {
-            GCHandle handle = (GCHandle)mobileAdsClient;
-            return handle.Target as MobileAdsClient;
-        }
-
-        public void Dispose()
-        {
-            ((GCHandle)this.mobileAdsClientPtr).Free();
-        }
-
-        ~MobileAdsClient()
-        {
-            this.Dispose();
-        }
+    private MobileAdsClient() {
+      this.mobileAdsClientPtr = (IntPtr)GCHandle.Alloc(this);
     }
+
+    public static MobileAdsClient Instance {
+      get { return instance; }
+    }
+
+    public void Initialize(Action<IInitializationStatusClient> initCompleteAction) {
+      this.initCompleteAction = initCompleteAction;
+      Externs.GADUInitializeWithCallback(this.mobileAdsClientPtr, InitializationCompleteCallback);
+    }
+
+    public void DisableMediationInitialization() {
+      Externs.GADUDisableMediationInitialization();
+    }
+
+    public void SetApplicationVolume(float volume) {
+      Externs.GADUSetApplicationVolume(volume);
+    }
+
+    public void SetApplicationMuted(bool muted) {
+      Externs.GADUSetApplicationMuted(muted);
+    }
+
+    public void SetRequestConfiguration(RequestConfiguration requestConfiguration) {
+      RequestConfigurationClient.SetRequestConfiguration(requestConfiguration);
+    }
+
+    public RequestConfiguration GetRequestConfiguration() {
+      return RequestConfigurationClient.GetRequestConfiguration();
+    }
+
+    public void SetiOSAppPauseOnBackground(bool pause) {
+      Externs.GADUSetiOSAppPauseOnBackground(pause);
+    }
+
+    public float GetDeviceScale() {
+      return Externs.GADUDeviceScale();
+    }
+
+    public int GetDeviceSafeWidth() {
+      return Externs.GADUDeviceSafeWidth();
+    }
+
+    public void OpenAdInspector(Action<AdInspectorErrorClientEventArgs> onAdInspectorClosed) {
+      adInspectorClosedAction = onAdInspectorClosed;
+      Externs.GADUPresentAdInspector(this.mobileAdsClientPtr, AdInspectorClosedCallback);
+    }
+
+    [MonoPInvokeCallback(typeof(GADUAdInspectorClosedCallback))]
+    private static void AdInspectorClosedCallback(IntPtr mobileAdsClient, IntPtr errorRef) {
+      MobileAdsClient client = IntPtrToMobileAdsClient(mobileAdsClient);
+      if (client.adInspectorClosedAction == null) {
+        return;
+      }
+
+      AdInspectorErrorClientEventArgs args =
+          (errorRef == IntPtr.Zero)
+              ? null
+              : new AdInspectorErrorClientEventArgs { AdErrorClient =
+                                                          new AdInspectorErrorClient(errorRef) };
+
+      client.adInspectorClosedAction(args);
+      client.adInspectorClosedAction = null;
+    }
+
+    [MonoPInvokeCallback(typeof(GADUInitializationCompleteCallback))]
+    private static void InitializationCompleteCallback(IntPtr mobileAdsClient, IntPtr initStatus) {
+      MobileAdsClient client = IntPtrToMobileAdsClient(mobileAdsClient);
+      if (client.initCompleteAction != null) {
+        IInitializationStatusClient statusClient = new InitializationStatusClient(initStatus);
+        client.initCompleteAction(statusClient);
+      }
+    }
+
+    private static MobileAdsClient IntPtrToMobileAdsClient(IntPtr mobileAdsClient) {
+      GCHandle handle = (GCHandle)mobileAdsClient;
+      return handle.Target as MobileAdsClient;
+    }
+
+    public void Dispose() {
+      ((GCHandle)this.mobileAdsClientPtr).Free();
+    }
+
+    ~MobileAdsClient() {
+      this.Dispose();
+    }
+  }
 }
 #endif

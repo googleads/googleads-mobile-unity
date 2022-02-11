@@ -21,263 +21,213 @@ using UnityEngine;
 using GoogleMobileAds.Api;
 using GoogleMobileAds.Common;
 
-namespace GoogleMobileAds.iOS
-{
-    public class RewardedAdClient : IRewardedAdClient, IDisposable
-    {
-        private IntPtr rewardedAdClientPtr;
-        private IntPtr rewardedAdPtr;
+namespace GoogleMobileAds.iOS {
+  public class RewardedAdClient : IRewardedAdClient, IDisposable {
+    private IntPtr rewardedAdClientPtr;
+    private IntPtr rewardedAdPtr;
 
 #region rewarded ad callback types
 
-        internal delegate void GADURewardedAdLoadedCallback(IntPtr rewardedAdClient);
+    internal delegate void GADURewardedAdLoadedCallback(IntPtr rewardedAdClient);
 
-        internal delegate void GADURewardedAdFailedToLoadCallback(IntPtr rewardedAdClient, IntPtr error);
+    internal delegate void GADURewardedAdFailedToLoadCallback(IntPtr rewardedAdClient,
+                                                              IntPtr error);
 
-        internal delegate void GADURewardedAdUserEarnedRewardCallback(
-            IntPtr rewardedAdClient, string rewardType, double rewardAmount);
+    internal delegate void GADURewardedAdUserEarnedRewardCallback(IntPtr rewardedAdClient,
+                                                                  string rewardType,
+                                                                  double rewardAmount);
 
-        internal delegate void GADURewardedAdPaidEventCallback(
-            IntPtr rewardedAdClient, int precision, long value, string currencyCode);
+    internal delegate void GADURewardedAdPaidEventCallback(IntPtr rewardedAdClient, int precision,
+                                                           long value, string currencyCode);
 
 #endregion
 
 #region full screen content callback types
 
-        internal delegate void GADURewardedAdFailedToPresentFullScreenContentCallback(IntPtr rewardedAdClient, IntPtr error);
+    internal delegate void GADURewardedAdFailedToPresentFullScreenContentCallback(
+        IntPtr rewardedAdClient, IntPtr error);
 
-        internal delegate void GADURewardedAdDidPresentFullScreenContentCallback(IntPtr rewardedAdClient);
+    internal delegate void GADURewardedAdDidPresentFullScreenContentCallback(
+        IntPtr rewardedAdClient);
 
-        internal delegate void GADURewardedAdDidDismissFullScreenContentCallback(IntPtr rewardedAdClient);
+    internal delegate void GADURewardedAdDidDismissFullScreenContentCallback(
+        IntPtr rewardedAdClient);
 
-        internal delegate void GADURewardedAdDidRecordImpressionCallback(IntPtr rewardedAdClient);
+    internal delegate void GADURewardedAdDidRecordImpressionCallback(IntPtr rewardedAdClient);
 
 #endregion
 
-        public event EventHandler<EventArgs> OnAdLoaded;
+    public event EventHandler<EventArgs> OnAdLoaded;
 
-        public event EventHandler<LoadAdErrorClientEventArgs> OnAdFailedToLoad;
+    public event EventHandler<LoadAdErrorClientEventArgs> OnAdFailedToLoad;
 
-        public event EventHandler<Reward> OnUserEarnedReward;
+    public event EventHandler<Reward> OnUserEarnedReward;
 
-        public event EventHandler<AdValueEventArgs> OnPaidEvent;
+    public event EventHandler<AdValueEventArgs> OnPaidEvent;
 
-        public event EventHandler<AdErrorClientEventArgs> OnAdFailedToPresentFullScreenContent;
+    public event EventHandler<AdErrorClientEventArgs> OnAdFailedToPresentFullScreenContent;
 
-        public event EventHandler<EventArgs> OnAdDidPresentFullScreenContent;
+    public event EventHandler<EventArgs> OnAdDidPresentFullScreenContent;
 
-        public event EventHandler<EventArgs> OnAdDidDismissFullScreenContent;
+    public event EventHandler<EventArgs> OnAdDidDismissFullScreenContent;
 
-        public event EventHandler<EventArgs> OnAdDidRecordImpression;
+    public event EventHandler<EventArgs> OnAdDidRecordImpression;
 
-        // This property should be used when setting the rewardedAdPtr.
-        private IntPtr RewardedAdPtr
-        {
-            get
-            {
-                return this.rewardedAdPtr;
-            }
+    // This property should be used when setting the rewardedAdPtr.
+    private IntPtr RewardedAdPtr {
+      get { return this.rewardedAdPtr; }
 
-            set
-            {
-                Externs.GADURelease(this.rewardedAdPtr);
-                this.rewardedAdPtr = value;
-            }
-        }
+      set {
+        Externs.GADURelease(this.rewardedAdPtr);
+        this.rewardedAdPtr = value;
+      }
+    }
 
 #region IRewardedAdClient implementation
 
-        public void CreateRewardedAd()
-        {
-            this.rewardedAdClientPtr = (IntPtr)GCHandle.Alloc(this);
-            this.RewardedAdPtr = Externs.GADUCreateRewardedAd(this.rewardedAdClientPtr);
+    public void CreateRewardedAd() {
+      this.rewardedAdClientPtr = (IntPtr)GCHandle.Alloc(this);
+      this.RewardedAdPtr = Externs.GADUCreateRewardedAd(this.rewardedAdClientPtr);
 
-            Externs.GADUSetRewardedAdCallbacks(
-                this.RewardedAdPtr,
-                RewardedAdLoadedCallback,
-                RewardedAdFailedToLoadCallback,
-                AdDidPresentFullScreenContentCallback,
-                AdFailedToPresentFullScreenContentCallback,
-                AdDidDismissFullScreenContentCallback,
-                AdDidRecordImpressionCallback,
-                RewardedAdUserDidEarnRewardCallback,
-                RewardedAdPaidEventCallback);
-        }
+      Externs.GADUSetRewardedAdCallbacks(
+          this.RewardedAdPtr, RewardedAdLoadedCallback, RewardedAdFailedToLoadCallback,
+          AdDidPresentFullScreenContentCallback, AdFailedToPresentFullScreenContentCallback,
+          AdDidDismissFullScreenContentCallback, AdDidRecordImpressionCallback,
+          RewardedAdUserDidEarnRewardCallback, RewardedAdPaidEventCallback);
+    }
 
-        public void LoadAd(string adUnitID, AdRequest request) {
-            IntPtr requestPtr = Utils.BuildAdRequest(request);
-            Externs.GADULoadRewardedAd(this.RewardedAdPtr, adUnitID, requestPtr);
-            Externs.GADURelease(requestPtr);
-        }
+    public void LoadAd(string adUnitID, AdRequest request) {
+      IntPtr requestPtr = Utils.BuildAdRequest(request);
+      Externs.GADULoadRewardedAd(this.RewardedAdPtr, adUnitID, requestPtr);
+      Externs.GADURelease(requestPtr);
+    }
 
-        // Show the rewarded ad on the screen.
-        public void Show()
-        {
-            Externs.GADUShowRewardedAd(this.RewardedAdPtr);
-        }
+    // Show the rewarded ad on the screen.
+    public void Show() {
+      Externs.GADUShowRewardedAd(this.RewardedAdPtr);
+    }
 
-        // Sets the server side verification options
-        public void SetServerSideVerificationOptions(ServerSideVerificationOptions serverSideVerificationOptions)
-        {
-            IntPtr optionsPtr = Utils.BuildServerSideVerificationOptions(serverSideVerificationOptions);
-            Externs.GADURewardedAdSetServerSideVerificationOptions(this.RewardedAdPtr, optionsPtr);
-            Externs.GADURelease(optionsPtr);
-        }
+    // Sets the server side verification options
+    public void SetServerSideVerificationOptions(
+        ServerSideVerificationOptions serverSideVerificationOptions) {
+      IntPtr optionsPtr = Utils.BuildServerSideVerificationOptions(serverSideVerificationOptions);
+      Externs.GADURewardedAdSetServerSideVerificationOptions(this.RewardedAdPtr, optionsPtr);
+      Externs.GADURelease(optionsPtr);
+    }
 
-        // Returns the reward item for the loaded rewarded ad.
-        public Reward GetRewardItem()
-        {
-            string type = Externs.GADURewardedAdGetRewardType(this.RewardedAdPtr);
-            double amount = Externs.GADURewardedAdGetRewardAmount(this.RewardedAdPtr); ;
-            return new Reward()
-            {
-                Type = type,
-                Amount = amount
-            };
-        }
+    // Returns the reward item for the loaded rewarded ad.
+    public Reward GetRewardItem() {
+      string type = Externs.GADURewardedAdGetRewardType(this.RewardedAdPtr);
+      double amount = Externs.GADURewardedAdGetRewardAmount(this.RewardedAdPtr);
+      ;
+      return new Reward() { Type = type, Amount = amount };
+    }
 
-        public IResponseInfoClient GetResponseInfoClient()
-        {
-            return new ResponseInfoClient(ResponseInfoClientType.AdLoaded, this.RewardedAdPtr);
-        }
+    public IResponseInfoClient GetResponseInfoClient() {
+      return new ResponseInfoClient(ResponseInfoClientType.AdLoaded, this.RewardedAdPtr);
+    }
 
-        // Destroys the rewarded ad.
-        public void DestroyRewardedAd()
-        {
-            this.RewardedAdPtr = IntPtr.Zero;
-        }
+    // Destroys the rewarded ad.
+    public void DestroyRewardedAd() {
+      this.RewardedAdPtr = IntPtr.Zero;
+    }
 
-        public void Dispose()
-        {
-            this.DestroyRewardedAd();
-            ((GCHandle)this.rewardedAdClientPtr).Free();
-        }
+    public void Dispose() {
+      this.DestroyRewardedAd();
+      ((GCHandle)this.rewardedAdClientPtr).Free();
+    }
 
-        ~RewardedAdClient()
-        {
-            this.Dispose();
-        }
+    ~RewardedAdClient() {
+      this.Dispose();
+    }
 
 #endregion
 
 #region rewarded ad callback methods
 
-        [MonoPInvokeCallback(typeof(GADURewardedAdLoadedCallback))]
-        private static void RewardedAdLoadedCallback(IntPtr rewardedAdClient)
-        {
-            RewardedAdClient client = IntPtrToRewardedAdClient(rewardedAdClient);
-            if (client.OnAdLoaded != null)
-            {
-                client.OnAdLoaded(client, EventArgs.Empty);
-            }
-        }
+    [MonoPInvokeCallback(typeof(GADURewardedAdLoadedCallback))]
+    private static void RewardedAdLoadedCallback(IntPtr rewardedAdClient) {
+      RewardedAdClient client = IntPtrToRewardedAdClient(rewardedAdClient);
+      if (client.OnAdLoaded != null) {
+        client.OnAdLoaded(client, EventArgs.Empty);
+      }
+    }
 
-        [MonoPInvokeCallback(typeof(GADURewardedAdFailedToLoadCallback))]
-        private static void RewardedAdFailedToLoadCallback(
-            IntPtr rewardedAdClient, IntPtr error)
-        {
-            RewardedAdClient client = IntPtrToRewardedAdClient(rewardedAdClient);
-            if (client.OnAdFailedToLoad != null)
-            {
-                LoadAdErrorClientEventArgs args = new LoadAdErrorClientEventArgs()
-                {
-                    LoadAdErrorClient = new LoadAdErrorClient(error)
-                };
-                client.OnAdFailedToLoad(client, args);
-            }
-        }
+    [MonoPInvokeCallback(typeof(GADURewardedAdFailedToLoadCallback))]
+    private static void RewardedAdFailedToLoadCallback(IntPtr rewardedAdClient, IntPtr error) {
+      RewardedAdClient client = IntPtrToRewardedAdClient(rewardedAdClient);
+      if (client.OnAdFailedToLoad != null) {
+        LoadAdErrorClientEventArgs args =
+            new LoadAdErrorClientEventArgs() { LoadAdErrorClient = new LoadAdErrorClient(error) };
+        client.OnAdFailedToLoad(client, args);
+      }
+    }
 
-        [MonoPInvokeCallback(typeof(GADURewardedAdUserEarnedRewardCallback))]
-        private static void RewardedAdUserDidEarnRewardCallback(
-            IntPtr rewardedAdClient, string rewardType, double rewardAmount)
-        {
-            RewardedAdClient client = IntPtrToRewardedAdClient(
-                rewardedAdClient);
-            if (client.OnUserEarnedReward != null)
-            {
-                Reward args = new Reward()
-                {
-                    Type = rewardType,
-                    Amount = rewardAmount
-                };
-                client.OnUserEarnedReward(client, args);
-            }
-        }
+    [MonoPInvokeCallback(typeof(GADURewardedAdUserEarnedRewardCallback))]
+    private static void RewardedAdUserDidEarnRewardCallback(IntPtr rewardedAdClient,
+                                                            string rewardType,
+                                                            double rewardAmount) {
+      RewardedAdClient client = IntPtrToRewardedAdClient(rewardedAdClient);
+      if (client.OnUserEarnedReward != null) {
+        Reward args = new Reward() { Type = rewardType, Amount = rewardAmount };
+        client.OnUserEarnedReward(client, args);
+      }
+    }
 
-        [MonoPInvokeCallback(typeof(GADURewardedAdPaidEventCallback))]
-        private static void RewardedAdPaidEventCallback(
-            IntPtr rewardedAdClient, int precision, long value, string currencyCode)
-        {
-            RewardedAdClient client = IntPtrToRewardedAdClient(rewardedAdClient);
-            if (client.OnPaidEvent != null)
-            {
-                AdValue adValue = new AdValue()
-                {
-                    Precision = (AdValue.PrecisionType)precision,
-                    Value = value,
-                    CurrencyCode = currencyCode
-                };
-                AdValueEventArgs args = new AdValueEventArgs()
-                {
-                    AdValue = adValue
-                };
+    [MonoPInvokeCallback(typeof(GADURewardedAdPaidEventCallback))]
+    private static void RewardedAdPaidEventCallback(IntPtr rewardedAdClient, int precision,
+                                                    long value, string currencyCode) {
+      RewardedAdClient client = IntPtrToRewardedAdClient(rewardedAdClient);
+      if (client.OnPaidEvent != null) {
+        AdValue adValue = new AdValue() { Precision = (AdValue.PrecisionType)precision,
+                                          Value = value, CurrencyCode = currencyCode };
+        AdValueEventArgs args = new AdValueEventArgs() { AdValue = adValue };
 
-                client.OnPaidEvent(client, args);
-            }
-        }
+        client.OnPaidEvent(client, args);
+      }
+    }
 
-        [MonoPInvokeCallback(typeof(GADURewardedAdFailedToPresentFullScreenContentCallback))]
-        private static void AdFailedToPresentFullScreenContentCallback(IntPtr rewardedAdClient, IntPtr error)
-        {
-            RewardedAdClient client = IntPtrToRewardedAdClient(rewardedAdClient);
-            if (client.OnAdFailedToPresentFullScreenContent != null)
-            {
-                AdErrorClientEventArgs args = new AdErrorClientEventArgs()
-                {
-                    AdErrorClient = new AdErrorClient(error)
-                };
-                client.OnAdFailedToPresentFullScreenContent(client, args);
-            }
-        }
+    [MonoPInvokeCallback(typeof(GADURewardedAdFailedToPresentFullScreenContentCallback))]
+    private static void AdFailedToPresentFullScreenContentCallback(IntPtr rewardedAdClient,
+                                                                   IntPtr error) {
+      RewardedAdClient client = IntPtrToRewardedAdClient(rewardedAdClient);
+      if (client.OnAdFailedToPresentFullScreenContent != null) {
+        AdErrorClientEventArgs args =
+            new AdErrorClientEventArgs() { AdErrorClient = new AdErrorClient(error) };
+        client.OnAdFailedToPresentFullScreenContent(client, args);
+      }
+    }
 
-        [MonoPInvokeCallback(typeof(GADURewardedAdDidPresentFullScreenContentCallback))]
-        private static void AdDidPresentFullScreenContentCallback(IntPtr rewardedAdClient)
-        {
-            RewardedAdClient client = IntPtrToRewardedAdClient(rewardedAdClient);
-            if (client.OnAdDidPresentFullScreenContent != null)
-            {
-                client.OnAdDidPresentFullScreenContent(client, EventArgs.Empty);
-            }
-        }
+    [MonoPInvokeCallback(typeof(GADURewardedAdDidPresentFullScreenContentCallback))]
+    private static void AdDidPresentFullScreenContentCallback(IntPtr rewardedAdClient) {
+      RewardedAdClient client = IntPtrToRewardedAdClient(rewardedAdClient);
+      if (client.OnAdDidPresentFullScreenContent != null) {
+        client.OnAdDidPresentFullScreenContent(client, EventArgs.Empty);
+      }
+    }
 
-        [MonoPInvokeCallback(typeof(GADURewardedAdDidDismissFullScreenContentCallback))]
-        private static void AdDidDismissFullScreenContentCallback(IntPtr rewardedAdClient)
-        {
-            RewardedAdClient client = IntPtrToRewardedAdClient(rewardedAdClient);
-            if (client.OnAdDidDismissFullScreenContent != null)
-            {
-                client.OnAdDidDismissFullScreenContent(client, EventArgs.Empty);
-            }
-        }
+    [MonoPInvokeCallback(typeof(GADURewardedAdDidDismissFullScreenContentCallback))]
+    private static void AdDidDismissFullScreenContentCallback(IntPtr rewardedAdClient) {
+      RewardedAdClient client = IntPtrToRewardedAdClient(rewardedAdClient);
+      if (client.OnAdDidDismissFullScreenContent != null) {
+        client.OnAdDidDismissFullScreenContent(client, EventArgs.Empty);
+      }
+    }
 
-        [MonoPInvokeCallback(typeof(GADURewardedAdDidRecordImpressionCallback))]
-        private static void AdDidRecordImpressionCallback(IntPtr rewardedAdClient)
-        {
-            RewardedAdClient client = IntPtrToRewardedAdClient(rewardedAdClient);
-            if (client.OnAdDidRecordImpression != null)
-            {
-                client.OnAdDidRecordImpression(client, EventArgs.Empty);
-            }
-        }
+    [MonoPInvokeCallback(typeof(GADURewardedAdDidRecordImpressionCallback))]
+    private static void AdDidRecordImpressionCallback(IntPtr rewardedAdClient) {
+      RewardedAdClient client = IntPtrToRewardedAdClient(rewardedAdClient);
+      if (client.OnAdDidRecordImpression != null) {
+        client.OnAdDidRecordImpression(client, EventArgs.Empty);
+      }
+    }
 
-        private static RewardedAdClient IntPtrToRewardedAdClient(
-            IntPtr rewardedAdClient)
-        {
-            GCHandle handle = (GCHandle)rewardedAdClient;
-            return handle.Target as RewardedAdClient;
-        }
+    private static RewardedAdClient IntPtrToRewardedAdClient(IntPtr rewardedAdClient) {
+      GCHandle handle = (GCHandle)rewardedAdClient;
+      return handle.Target as RewardedAdClient;
+    }
 
 #endregion
-    }
+  }
 }
 #endif

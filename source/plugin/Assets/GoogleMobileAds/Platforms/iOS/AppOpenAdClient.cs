@@ -21,225 +21,180 @@ using UnityEngine;
 using GoogleMobileAds.Api;
 using GoogleMobileAds.Common;
 
-namespace GoogleMobileAds.iOS
-{
-    public class AppOpenAdClient : IAppOpenAdClient, IDisposable
-    {
-        private IntPtr appOpenAdPtr;
-        private IntPtr appOpenAdClientPtr;
+namespace GoogleMobileAds.iOS {
+  public class AppOpenAdClient : IAppOpenAdClient, IDisposable {
+    private IntPtr appOpenAdPtr;
+    private IntPtr appOpenAdClientPtr;
 
-        #region app open callback types
+#region app open callback types
 
-        internal delegate void GADUAppOpenAdLoadedCallback(
-            IntPtr appOpenAdClient);
+    internal delegate void GADUAppOpenAdLoadedCallback(IntPtr appOpenAdClient);
 
-        internal delegate void GADUAppOpenAdFailToLoadCallback(
-            IntPtr appOpenAdClient, IntPtr error);
+    internal delegate void GADUAppOpenAdFailToLoadCallback(IntPtr appOpenAdClient, IntPtr error);
 
-        internal delegate void GADUAppOpenAdPaidEventCallback(
-            IntPtr appOpenAdClient, int precision, long value, string currencyCode);
+    internal delegate void GADUAppOpenAdPaidEventCallback(IntPtr appOpenAdClient, int precision,
+                                                          long value, string currencyCode);
 
-        #endregion
+#endregion
 
-        #region full screen content callback types
+#region full screen content callback types
 
-        internal delegate void GADUAppOpenAdFailedToPresentFullScreenContentCallback(
-            IntPtr appOpenAdClient, IntPtr error);
+    internal delegate void GADUAppOpenAdFailedToPresentFullScreenContentCallback(
+        IntPtr appOpenAdClient, IntPtr error);
 
-        internal delegate void GADUAppOpenAdDidPresentFullScreenContentCallback(IntPtr appOpenAdClient);
+    internal delegate void GADUAppOpenAdDidPresentFullScreenContentCallback(IntPtr appOpenAdClient);
 
-        internal delegate void GADUAppOpenAdDidDismissFullScreenContentCallback(IntPtr appOpenAdClient);
+    internal delegate void GADUAppOpenAdDidDismissFullScreenContentCallback(IntPtr appOpenAdClient);
 
-        internal delegate void GADUAppOpenAdDidRecordImpressionCallback(IntPtr appOpenAdClient);
+    internal delegate void GADUAppOpenAdDidRecordImpressionCallback(IntPtr appOpenAdClient);
 
-        #endregion
+#endregion
 
-        public event EventHandler<EventArgs> OnAdLoaded;
+    public event EventHandler<EventArgs> OnAdLoaded;
 
-        public event EventHandler<LoadAdErrorClientEventArgs> OnAdFailedToLoad;
+    public event EventHandler<LoadAdErrorClientEventArgs> OnAdFailedToLoad;
 
-        public event EventHandler<AdValueEventArgs> OnPaidEvent;
+    public event EventHandler<AdValueEventArgs> OnPaidEvent;
 
-        public event EventHandler<AdErrorClientEventArgs> OnAdFailedToPresentFullScreenContent;
+    public event EventHandler<AdErrorClientEventArgs> OnAdFailedToPresentFullScreenContent;
 
-        public event EventHandler<EventArgs> OnAdDidPresentFullScreenContent;
+    public event EventHandler<EventArgs> OnAdDidPresentFullScreenContent;
 
-        public event EventHandler<EventArgs> OnAdDidRecordImpression;
+    public event EventHandler<EventArgs> OnAdDidRecordImpression;
 
-        public event EventHandler<EventArgs> OnAdDidDismissFullScreenContent;
+    public event EventHandler<EventArgs> OnAdDidDismissFullScreenContent;
 
-        // This property should be used when setting the appOpenAdPtr.
-        private IntPtr AppOpenAdPtr
-        {
-            get
-            {
-                return this.appOpenAdPtr;
-            }
+    // This property should be used when setting the appOpenAdPtr.
+    private IntPtr AppOpenAdPtr {
+      get { return this.appOpenAdPtr; }
 
-            set
-            {
-                Externs.GADURelease(this.appOpenAdPtr);
-                this.appOpenAdPtr = value;
-            }
-        }
-
-        #region IAppOpenAdClient implementation
-
-        public void CreateAppOpenAd()
-        {
-            this.appOpenAdClientPtr = (IntPtr)GCHandle.Alloc(this);
-            this.AppOpenAdPtr = Externs.GADUCreateAppOpenAd(this.appOpenAdClientPtr);
-
-            Externs.GADUSetAppOpenAdCallbacks(
-                    this.AppOpenAdPtr,
-                    AppOpenAdLoadedCallback,
-                    AppOpenAdFailedToLoadCallback,
-                    AppOpenAdPaidEventCallback,
-                    AdFailedToPresentFullScreenContentCallback,
-                    AdDidPresentFullScreenContentCallback,
-                    AdDidDismissFullScreenContentCallback,
-                    AdDidRecordImpressionCallback);
-        }
-
-        // Load an ad.
-        public void LoadAd(string adUnitID, AdRequest request, ScreenOrientation orientation)
-        {
-            IntPtr requestPtr = Utils.BuildAdRequest(request);
-            Externs.GADULoadAppOpenAd(this.AppOpenAdPtr, adUnitID, (int) orientation, requestPtr);
-            Externs.GADURelease(requestPtr);
-        }
-
-        // Show the app open ad on the screen.
-        public void Show()
-        {
-            Externs.GADUShowAppOpenAd(this.AppOpenAdPtr);
-        }
-
-        public IResponseInfoClient GetResponseInfoClient()
-        {
-            return new ResponseInfoClient(ResponseInfoClientType.AdLoaded, this.AppOpenAdPtr);
-        }
-
-        // Destroys the app open ad.
-        public void DestroyAppOpenAd()
-        {
-            this.AppOpenAdPtr = IntPtr.Zero;
-        }
-
-        public void Dispose()
-        {
-            this.DestroyAppOpenAd();
-            ((GCHandle)this.appOpenAdClientPtr).Free();
-        }
-
-        ~AppOpenAdClient()
-        {
-            this.Dispose();
-        }
-
-        #endregion
-
-        #region App open ad callback methods
-
-        [MonoPInvokeCallback(typeof(GADUAppOpenAdLoadedCallback))]
-        private static void AppOpenAdLoadedCallback(IntPtr appOpenAdClient)
-        {
-            AppOpenAdClient client = IntPtrToAppOpenAdClient(appOpenAdClient);
-            if (client.OnAdLoaded != null)
-            {
-                client.OnAdLoaded(client, EventArgs.Empty);
-            }
-        }
-
-        [MonoPInvokeCallback(typeof(GADUAppOpenAdFailToLoadCallback))]
-        private static void AppOpenAdFailedToLoadCallback(
-            IntPtr appOpenAdClient, IntPtr error)
-        {
-            AppOpenAdClient client = IntPtrToAppOpenAdClient(appOpenAdClient);
-            if (client.OnAdFailedToLoad != null)
-            {
-                LoadAdErrorClientEventArgs args = new LoadAdErrorClientEventArgs()
-                {
-                    LoadAdErrorClient = new LoadAdErrorClient(error),
-                };
-                client.OnAdFailedToLoad(client, args);
-            }
-        }
-
-        [MonoPInvokeCallback(typeof(GADUAppOpenAdPaidEventCallback))]
-        private static void AppOpenAdPaidEventCallback(
-            IntPtr appOpenAdClient, int precision, long value, string currencyCode)
-        {
-            AppOpenAdClient client = IntPtrToAppOpenAdClient(appOpenAdClient);
-            if (client.OnPaidEvent != null)
-            {
-                AdValue adValue = new AdValue()
-                {
-                    Precision = (AdValue.PrecisionType) precision,
-                    Value = value,
-                    CurrencyCode = currencyCode
-                };
-                AdValueEventArgs args = new AdValueEventArgs()
-                {
-                    AdValue = adValue
-                };
-
-                client.OnPaidEvent(client, args);
-            }
-        }
-
-        [MonoPInvokeCallback(typeof(GADUAppOpenAdFailedToPresentFullScreenContentCallback))]
-        private static void AdFailedToPresentFullScreenContentCallback(
-            IntPtr appOpenAdClient, IntPtr error)
-        {
-            AppOpenAdClient client = IntPtrToAppOpenAdClient(appOpenAdClient);
-            if (client.OnAdFailedToPresentFullScreenContent != null)
-            {
-                AdErrorClientEventArgs args = new AdErrorClientEventArgs()
-                {
-                    AdErrorClient = new AdErrorClient(error),
-                };
-                client.OnAdFailedToPresentFullScreenContent(client, args);
-            }
-        }
-
-        [MonoPInvokeCallback(typeof(GADUAppOpenAdDidPresentFullScreenContentCallback))]
-        private static void AdDidPresentFullScreenContentCallback(IntPtr appOpenAdClient)
-        {
-            AppOpenAdClient client = IntPtrToAppOpenAdClient(appOpenAdClient);
-            if (client.OnAdDidPresentFullScreenContent != null)
-            {
-                client.OnAdDidPresentFullScreenContent(client, EventArgs.Empty);
-            }
-        }
-
-        [MonoPInvokeCallback(typeof(GADUAppOpenAdDidDismissFullScreenContentCallback))]
-        private static void AdDidDismissFullScreenContentCallback(IntPtr appOpenAdClient)
-        {
-            AppOpenAdClient client = IntPtrToAppOpenAdClient(appOpenAdClient);
-            if (client.OnAdDidDismissFullScreenContent != null)
-            {
-                client.OnAdDidDismissFullScreenContent(client, EventArgs.Empty);
-            }
-        }
-
-        [MonoPInvokeCallback(typeof(GADUAppOpenAdDidRecordImpressionCallback))]
-        private static void AdDidRecordImpressionCallback(IntPtr appOpenAdClient)
-        {
-            AppOpenAdClient client = IntPtrToAppOpenAdClient(appOpenAdClient);
-            if (client.OnAdDidRecordImpression != null)
-            {
-                client.OnAdDidRecordImpression(client, EventArgs.Empty);
-            }
-        }
-
-        private static AppOpenAdClient IntPtrToAppOpenAdClient(IntPtr appOpenAdClient)
-        {
-            GCHandle handle = (GCHandle)appOpenAdClient;
-            return handle.Target as AppOpenAdClient;
-        }
-
-        #endregion
+      set {
+        Externs.GADURelease(this.appOpenAdPtr);
+        this.appOpenAdPtr = value;
+      }
     }
+
+#region IAppOpenAdClient implementation
+
+    public void CreateAppOpenAd() {
+      this.appOpenAdClientPtr = (IntPtr)GCHandle.Alloc(this);
+      this.AppOpenAdPtr = Externs.GADUCreateAppOpenAd(this.appOpenAdClientPtr);
+
+      Externs.GADUSetAppOpenAdCallbacks(
+          this.AppOpenAdPtr, AppOpenAdLoadedCallback, AppOpenAdFailedToLoadCallback,
+          AppOpenAdPaidEventCallback, AdFailedToPresentFullScreenContentCallback,
+          AdDidPresentFullScreenContentCallback, AdDidDismissFullScreenContentCallback,
+          AdDidRecordImpressionCallback);
+    }
+
+    // Load an ad.
+    public void LoadAd(string adUnitID, AdRequest request, ScreenOrientation orientation) {
+      IntPtr requestPtr = Utils.BuildAdRequest(request);
+      Externs.GADULoadAppOpenAd(this.AppOpenAdPtr, adUnitID, (int)orientation, requestPtr);
+      Externs.GADURelease(requestPtr);
+    }
+
+    // Show the app open ad on the screen.
+    public void Show() {
+      Externs.GADUShowAppOpenAd(this.AppOpenAdPtr);
+    }
+
+    public IResponseInfoClient GetResponseInfoClient() {
+      return new ResponseInfoClient(ResponseInfoClientType.AdLoaded, this.AppOpenAdPtr);
+    }
+
+    // Destroys the app open ad.
+    public void DestroyAppOpenAd() {
+      this.AppOpenAdPtr = IntPtr.Zero;
+    }
+
+    public void Dispose() {
+      this.DestroyAppOpenAd();
+      ((GCHandle)this.appOpenAdClientPtr).Free();
+    }
+
+    ~AppOpenAdClient() {
+      this.Dispose();
+    }
+
+#endregion
+
+#region App open ad callback methods
+
+    [MonoPInvokeCallback(typeof(GADUAppOpenAdLoadedCallback))]
+    private static void AppOpenAdLoadedCallback(IntPtr appOpenAdClient) {
+      AppOpenAdClient client = IntPtrToAppOpenAdClient(appOpenAdClient);
+      if (client.OnAdLoaded != null) {
+        client.OnAdLoaded(client, EventArgs.Empty);
+      }
+    }
+
+    [MonoPInvokeCallback(typeof(GADUAppOpenAdFailToLoadCallback))]
+    private static void AppOpenAdFailedToLoadCallback(IntPtr appOpenAdClient, IntPtr error) {
+      AppOpenAdClient client = IntPtrToAppOpenAdClient(appOpenAdClient);
+      if (client.OnAdFailedToLoad != null) {
+        LoadAdErrorClientEventArgs args = new LoadAdErrorClientEventArgs() {
+          LoadAdErrorClient = new LoadAdErrorClient(error),
+        };
+        client.OnAdFailedToLoad(client, args);
+      }
+    }
+
+    [MonoPInvokeCallback(typeof(GADUAppOpenAdPaidEventCallback))]
+    private static void AppOpenAdPaidEventCallback(IntPtr appOpenAdClient, int precision,
+                                                   long value, string currencyCode) {
+      AppOpenAdClient client = IntPtrToAppOpenAdClient(appOpenAdClient);
+      if (client.OnPaidEvent != null) {
+        AdValue adValue = new AdValue() { Precision = (AdValue.PrecisionType)precision,
+                                          Value = value, CurrencyCode = currencyCode };
+        AdValueEventArgs args = new AdValueEventArgs() { AdValue = adValue };
+
+        client.OnPaidEvent(client, args);
+      }
+    }
+
+    [MonoPInvokeCallback(typeof(GADUAppOpenAdFailedToPresentFullScreenContentCallback))]
+    private static void AdFailedToPresentFullScreenContentCallback(IntPtr appOpenAdClient,
+                                                                   IntPtr error) {
+      AppOpenAdClient client = IntPtrToAppOpenAdClient(appOpenAdClient);
+      if (client.OnAdFailedToPresentFullScreenContent != null) {
+        AdErrorClientEventArgs args = new AdErrorClientEventArgs() {
+          AdErrorClient = new AdErrorClient(error),
+        };
+        client.OnAdFailedToPresentFullScreenContent(client, args);
+      }
+    }
+
+    [MonoPInvokeCallback(typeof(GADUAppOpenAdDidPresentFullScreenContentCallback))]
+    private static void AdDidPresentFullScreenContentCallback(IntPtr appOpenAdClient) {
+      AppOpenAdClient client = IntPtrToAppOpenAdClient(appOpenAdClient);
+      if (client.OnAdDidPresentFullScreenContent != null) {
+        client.OnAdDidPresentFullScreenContent(client, EventArgs.Empty);
+      }
+    }
+
+    [MonoPInvokeCallback(typeof(GADUAppOpenAdDidDismissFullScreenContentCallback))]
+    private static void AdDidDismissFullScreenContentCallback(IntPtr appOpenAdClient) {
+      AppOpenAdClient client = IntPtrToAppOpenAdClient(appOpenAdClient);
+      if (client.OnAdDidDismissFullScreenContent != null) {
+        client.OnAdDidDismissFullScreenContent(client, EventArgs.Empty);
+      }
+    }
+
+    [MonoPInvokeCallback(typeof(GADUAppOpenAdDidRecordImpressionCallback))]
+    private static void AdDidRecordImpressionCallback(IntPtr appOpenAdClient) {
+      AppOpenAdClient client = IntPtrToAppOpenAdClient(appOpenAdClient);
+      if (client.OnAdDidRecordImpression != null) {
+        client.OnAdDidRecordImpression(client, EventArgs.Empty);
+      }
+    }
+
+    private static AppOpenAdClient IntPtrToAppOpenAdClient(IntPtr appOpenAdClient) {
+      GCHandle handle = (GCHandle)appOpenAdClient;
+      return handle.Target as AppOpenAdClient;
+    }
+
+#endregion
+  }
 }
 #endif

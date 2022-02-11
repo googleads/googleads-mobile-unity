@@ -22,72 +22,73 @@ using GoogleMobileAds.Common;
 using System.Linq;
 using System.Collections.Generic;
 
-namespace GoogleMobileAds.iOS
-{
-    public class RequestConfigurationClient
+namespace GoogleMobileAds.iOS {
+  public class RequestConfigurationClient
 
-    {
-        private static IntPtr requestConfigurationPtr = Externs.GADUCreateRequestConfiguration();
+  {
+    private static IntPtr requestConfigurationPtr = Externs.GADUCreateRequestConfiguration();
 
-        public static void SetRequestConfiguration(RequestConfiguration requestConfiguration)
-        {
+    public static void SetRequestConfiguration(RequestConfiguration requestConfiguration) {
+      if (requestConfiguration.MaxAdContentRating != null) {
+        Externs.GADUSetRequestConfigurationMaxAdContentRating(
+            requestConfigurationPtr, requestConfiguration.MaxAdContentRating.Value);
+      }
 
-            if (requestConfiguration.MaxAdContentRating != null)
-            {
-                Externs.GADUSetRequestConfigurationMaxAdContentRating(requestConfigurationPtr, requestConfiguration.MaxAdContentRating.Value);
-            }
+      if (requestConfiguration.TestDeviceIds.Count > 0) {
+        string[] testDeviceIdsArray = new string[requestConfiguration.TestDeviceIds.Count];
+        requestConfiguration.TestDeviceIds.CopyTo(testDeviceIdsArray);
+        Externs.GADUSetRequestConfigurationTestDeviceIdentifiers(
+            requestConfigurationPtr, testDeviceIdsArray, requestConfiguration.TestDeviceIds.Count);
+      }
+      if (requestConfiguration.TagForChildDirectedTreatment.HasValue) {
+        TagForChildDirectedTreatment? tagForChildDirectedTreatment =
+            requestConfiguration.TagForChildDirectedTreatment;
+        Externs.GADUSetRequestConfigurationTagForChildDirectedTreatment(
+            requestConfigurationPtr, (int)tagForChildDirectedTreatment.GetValueOrDefault());
+      }
 
-            if (requestConfiguration.TestDeviceIds.Count > 0)
-            {
-                string[] testDeviceIdsArray = new string[requestConfiguration.TestDeviceIds.Count];
-                requestConfiguration.TestDeviceIds.CopyTo(testDeviceIdsArray);
-                Externs.GADUSetRequestConfigurationTestDeviceIdentifiers(requestConfigurationPtr, testDeviceIdsArray, requestConfiguration.TestDeviceIds.Count);
-            }
-            if (requestConfiguration.TagForChildDirectedTreatment.HasValue)
-            {
+      if (requestConfiguration.TagForUnderAgeOfConsent.HasValue) {
+        TagForUnderAgeOfConsent? TagForUnderAgeOfConsent =
+            requestConfiguration.TagForUnderAgeOfConsent;
+        Externs.GADUSetRequestConfigurationTagForUnderAgeOfConsent(
+            requestConfigurationPtr, (int)TagForUnderAgeOfConsent.GetValueOrDefault());
+      }
 
-                TagForChildDirectedTreatment? tagForChildDirectedTreatment = requestConfiguration.TagForChildDirectedTreatment;
-                Externs.GADUSetRequestConfigurationTagForChildDirectedTreatment(requestConfigurationPtr, (int)tagForChildDirectedTreatment.GetValueOrDefault());
-            }
+      if (requestConfiguration.SameAppKeyEnabled.HasValue) {
+        Externs.GADUSetRequestConfigurationSameAppKeyEnabled(
+            requestConfigurationPtr, requestConfiguration.SameAppKeyEnabled.Value);
+      }
 
-            if (requestConfiguration.TagForUnderAgeOfConsent.HasValue)
-            {
-                TagForUnderAgeOfConsent? TagForUnderAgeOfConsent = requestConfiguration.TagForUnderAgeOfConsent;
-                Externs.GADUSetRequestConfigurationTagForUnderAgeOfConsent(requestConfigurationPtr, (int)TagForUnderAgeOfConsent.GetValueOrDefault());
-            }
-
-            if (requestConfiguration.SameAppKeyEnabled.HasValue) {
-              Externs.GADUSetRequestConfigurationSameAppKeyEnabled(
-                  requestConfigurationPtr, requestConfiguration.SameAppKeyEnabled.Value);
-            }
-
-            Externs.GADUSetRequestConfiguration(requestConfigurationPtr);
-
-        }
-
-        public static RequestConfiguration GetRequestConfiguration()
-        {
-            RequestConfiguration.Builder requestConfigurationBuilder = new RequestConfiguration.Builder();
-            MaxAdContentRating maxAdContentRating = MaxAdContentRating.ToMaxAdContentRating(Externs.GADUGetMaxAdContentRating(requestConfigurationPtr));
-            IntPtr testDeviceIdsArray = Externs.GADUGetTestDeviceIdentifiers(requestConfigurationPtr);
-            List<string> testDeviceIds = Utils.PtrArrayToManagedList(testDeviceIdsArray, Externs.GADUGetTestDeviceIdentifiersCount(requestConfigurationPtr));
-
-            TagForChildDirectedTreatment TagForChildDirectedTreatment = (TagForChildDirectedTreatment)Externs.GADUGetRequestConfigurationTagForChildDirectedTreatment(requestConfigurationPtr);
-            TagForUnderAgeOfConsent TagForUnderAgeOfConsent = (TagForUnderAgeOfConsent)Externs.GADUGetRequestConfigurationTagForUnderAgeOfConsent(requestConfigurationPtr);
-
-            bool sameAppKeyEnabled =
-                Externs.GADUGetRequestConfigurationSameAppKeyEnabled(requestConfigurationPtr);
-
-            requestConfigurationBuilder.SetMaxAdContentRating(maxAdContentRating);
-            requestConfigurationBuilder.SetTestDeviceIds(testDeviceIds);
-            requestConfigurationBuilder.SetTagForChildDirectedTreatment(TagForChildDirectedTreatment);
-            requestConfigurationBuilder.SetTagForUnderAgeOfConsent(TagForUnderAgeOfConsent);
-            requestConfigurationBuilder.SetSameAppKeyEnabled(sameAppKeyEnabled);
-
-            return requestConfigurationBuilder.build();
-        }
-
+      Externs.GADUSetRequestConfiguration(requestConfigurationPtr);
     }
+
+    public static RequestConfiguration GetRequestConfiguration() {
+      RequestConfiguration.Builder requestConfigurationBuilder = new RequestConfiguration.Builder();
+      MaxAdContentRating maxAdContentRating = MaxAdContentRating.ToMaxAdContentRating(
+          Externs.GADUGetMaxAdContentRating(requestConfigurationPtr));
+      IntPtr testDeviceIdsArray = Externs.GADUGetTestDeviceIdentifiers(requestConfigurationPtr);
+      List<string> testDeviceIds = Utils.PtrArrayToManagedList(
+          testDeviceIdsArray, Externs.GADUGetTestDeviceIdentifiersCount(requestConfigurationPtr));
+
+      TagForChildDirectedTreatment TagForChildDirectedTreatment =
+          (TagForChildDirectedTreatment)Externs
+              .GADUGetRequestConfigurationTagForChildDirectedTreatment(requestConfigurationPtr);
+      TagForUnderAgeOfConsent TagForUnderAgeOfConsent =
+          (TagForUnderAgeOfConsent)Externs.GADUGetRequestConfigurationTagForUnderAgeOfConsent(
+              requestConfigurationPtr);
+
+      bool sameAppKeyEnabled =
+          Externs.GADUGetRequestConfigurationSameAppKeyEnabled(requestConfigurationPtr);
+
+      requestConfigurationBuilder.SetMaxAdContentRating(maxAdContentRating);
+      requestConfigurationBuilder.SetTestDeviceIds(testDeviceIds);
+      requestConfigurationBuilder.SetTagForChildDirectedTreatment(TagForChildDirectedTreatment);
+      requestConfigurationBuilder.SetTagForUnderAgeOfConsent(TagForUnderAgeOfConsent);
+      requestConfigurationBuilder.SetSameAppKeyEnabled(sameAppKeyEnabled);
+
+      return requestConfigurationBuilder.build();
+    }
+  }
 
 }
 #endif
