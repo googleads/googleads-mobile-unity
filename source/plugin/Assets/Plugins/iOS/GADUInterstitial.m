@@ -72,12 +72,12 @@
   }
 }
 
-- (void)adDidPresentFullScreenContent:(nonnull id<GADFullScreenPresentingAd>)ad {
+- (void)adWillPresentFullScreenContent:(nonnull id<GADFullScreenPresentingAd>)ad {
   if (GADUPluginUtil.pauseOnBackground) {
     UnityPause(YES);
   }
-  if (self.adDidPresentFullScreenContentCallback) {
-    self.adDidPresentFullScreenContentCallback(self.interstitialClient);
+  if (self.adWillPresentFullScreenContentCallback) {
+    self.adWillPresentFullScreenContentCallback(self.interstitialClient);
   }
 }
 

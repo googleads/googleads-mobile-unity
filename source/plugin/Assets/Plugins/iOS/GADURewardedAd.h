@@ -27,9 +27,9 @@
 @property(nonatomic, assign) GADURewardedAdFailedToPresentFullScreenContentCallback
     adFailedToPresentFullScreenContentCallback;
 
-/// The ad presented full screen content callback into Unity.
+/// The ad will present full screen content callback into Unity.
 @property(nonatomic, assign)
-    GADURewardedAdDidPresentFullScreenContentCallback adDidPresentFullScreenContentCallback;
+    GADURewardedAdWillPresentFullScreenContentCallback adWillPresentFullScreenContentCallback;
 
 /// The ad dismissed full screen content callback into Unity.
 @property(nonatomic, assign)

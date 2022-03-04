@@ -28,9 +28,9 @@
 @property(nonatomic, assign) GADURewardedInterstitialAdFailedToPresentFullScreenContentCallback
     adFailedToPresentFullScreenContentCallback;
 
-/// The ad presented full screen content callback into Unity.
-@property(nonatomic, assign) GADURewardedInterstitialAdDidPresentFullScreenContentCallback
-    adDidPresentFullScreenContentCallback;
+/// The ad will present full screen content callback into Unity.
+@property(nonatomic, assign) GADURewardedInterstitialAdWillPresentFullScreenContentCallback
+    adWillPresentFullScreenContentCallback;
 
 /// The ad dismissed full screen content callback into Unity.
 @property(nonatomic, assign) GADURewardedInterstitialAdDidDismissFullScreenContentCallback

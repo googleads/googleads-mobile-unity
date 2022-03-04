@@ -66,6 +66,8 @@
   return self.appOpenAd.responseInfo;
 }
 
+#pragma mark GADFullScreenContentDelegate implementation
+
 - (void)ad:(nonnull id<GADFullScreenPresentingAd>)ad
     didFailToPresentFullScreenContentWithError:(nonnull NSError *)error {
   if (self.adFailedToPresentFullScreenContentCallback) {
@@ -74,13 +76,13 @@
   }
 }
 
-- (void)adDidPresentFullScreenContent:(nonnull id<GADFullScreenPresentingAd>)ad {
+- (void)adWillPresentFullScreenContent:(nonnull id<GADFullScreenPresentingAd>)ad {
   if (GADUPluginUtil.pauseOnBackground) {
     UnityPause(YES);
   }
 
-  if (self.adDidPresentFullScreenContentCallback) {
-    self.adDidPresentFullScreenContentCallback(self.appOpenAdClient);
+  if (self.adWillPresentFullScreenContentCallback) {
+    self.adWillPresentFullScreenContentCallback(self.appOpenAdClient);
   }
 }
 

@@ -46,7 +46,7 @@ namespace GoogleMobileAds.iOS
 
         internal delegate void GADURewardedAdFailedToPresentFullScreenContentCallback(IntPtr rewardedAdClient, IntPtr error);
 
-        internal delegate void GADURewardedAdDidPresentFullScreenContentCallback(IntPtr rewardedAdClient);
+        internal delegate void GADURewardedAdWillPresentFullScreenContentCallback(IntPtr rewardedAdClient);
 
         internal delegate void GADURewardedAdDidDismissFullScreenContentCallback(IntPtr rewardedAdClient);
 
@@ -96,7 +96,7 @@ namespace GoogleMobileAds.iOS
                 this.RewardedAdPtr,
                 RewardedAdLoadedCallback,
                 RewardedAdFailedToLoadCallback,
-                AdDidPresentFullScreenContentCallback,
+                AdWillPresentFullScreenContentCallback,
                 AdFailedToPresentFullScreenContentCallback,
                 AdDidDismissFullScreenContentCallback,
                 AdDidRecordImpressionCallback,
@@ -240,14 +240,14 @@ namespace GoogleMobileAds.iOS
             }
         }
 
-        [MonoPInvokeCallback(typeof(GADURewardedAdDidPresentFullScreenContentCallback))]
-        private static void AdDidPresentFullScreenContentCallback(IntPtr rewardedAdClient)
+        [MonoPInvokeCallback(typeof(GADURewardedAdWillPresentFullScreenContentCallback))]
+        private static void AdWillPresentFullScreenContentCallback(IntPtr rewardedAdClient)
         {
-            RewardedAdClient client = IntPtrToRewardedAdClient(rewardedAdClient);
-            if (client.OnAdDidPresentFullScreenContent != null)
-            {
-                client.OnAdDidPresentFullScreenContent(client, EventArgs.Empty);
-            }
+          RewardedAdClient client = IntPtrToRewardedAdClient(rewardedAdClient);
+          if (client.OnAdDidPresentFullScreenContent != null)
+          {
+            client.OnAdDidPresentFullScreenContent(client, EventArgs.Empty);
+          }
         }
 
         [MonoPInvokeCallback(typeof(GADURewardedAdDidDismissFullScreenContentCallback))]
