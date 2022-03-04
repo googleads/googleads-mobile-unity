@@ -17,14 +17,13 @@
 using System.Reflection;
 using System.Runtime.CompilerServices;
 
-[assembly: InternalsVisibleTo("GoogleMobileAds")]
-[assembly: InternalsVisibleTo("GoogleMobileAds.Android")]
-[assembly: InternalsVisibleTo("GoogleMobileAds.iOS")]
-[assembly: InternalsVisibleTo("GoogleMobileAds.Unity")]
-[assembly: InternalsVisibleTo("GoogleMobileAdsNative")]
-[assembly: InternalsVisibleTo("GoogleMobileAdsNative.iOS")]
-[assembly: InternalsVisibleTo("GoogleMobileAdsNative.Android")]
+[assembly:InternalsVisibleTo("GoogleMobileAds")]
+[assembly:InternalsVisibleTo("GoogleMobileAds.Android")]
+[assembly:InternalsVisibleTo("GoogleMobileAds.iOS")]
+[assembly:InternalsVisibleTo("GoogleMobileAds.Unity")]
+[assembly:InternalsVisibleTo("GoogleMobileAdsNative")]
+[assembly:InternalsVisibleTo("GoogleMobileAdsNative.iOS")]
+[assembly:InternalsVisibleTo("GoogleMobileAdsNative.Android")]
 
-// Version scheme is {major}.{minor}.{revision|fix|build}
-// for more information see go/admob-unity-version
-[assembly: AssemblyVersion("7.0.1")]
+[assembly:AssemblyVersion("7.0.0")]
+[assembly:AssemblyFileVersion("7.0.0")]
