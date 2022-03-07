@@ -9,7 +9,7 @@
   </androidPackages>
 
   <iosPods>
-    <iosPod name="GoogleMobileAdsMediationFacebook" version="6.8.0.0">
+    <iosPod name="GoogleMobileAdsMediationFacebook" version="6.9.0.1">
       <sources>
         <source>https://github.com/CocoaPods/Specs</source>
       </sources>
