@@ -9,7 +9,7 @@
   </androidPackages>
 
   <iosPods>
-    <iosPod name="GoogleMobileAdsMediationAdColony" version="4.7.2.0">
+    <iosPod name="GoogleMobileAdsMediationAdColony" version="4.7.2.2">
       <sources>
         <source>https://github.com/CocoaPods/Specs</source>
       </sources>
