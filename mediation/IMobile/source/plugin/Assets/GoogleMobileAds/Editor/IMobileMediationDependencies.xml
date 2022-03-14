@@ -10,7 +10,7 @@
   </androidPackages>
 
   <iosPods>
-    <iosPod name="GoogleMobileAdsMediationIMobile" version="2.2.0.0">
+    <iosPod name="GoogleMobileAdsMediationIMobile" version="2.2.0.1">
       <sources>
         <source>https://github.com/CocoaPods/Specs</source>
       </sources>
