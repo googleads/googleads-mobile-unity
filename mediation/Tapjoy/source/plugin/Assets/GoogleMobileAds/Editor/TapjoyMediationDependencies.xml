@@ -9,7 +9,7 @@
   </androidPackages>
 
   <iosPods>
-    <iosPod name="GoogleMobileAdsMediationTapjoy" version="12.9.0.0">
+    <iosPod name="GoogleMobileAdsMediationTapjoy" version="12.9.0.1">
       <sources>
         <source>https://github.com/CocoaPods/Specs</source>
       </sources>
