@@ -1,6 +1,13 @@
 Google Mobile Ads Unity Plugin Change Log
 
 **************
+Version Next
+**************
+
+Plugin:
+- Updated Ad formats icons in HelloWorld sample.
+
+**************
 Version 7.0.0
 **************
 
