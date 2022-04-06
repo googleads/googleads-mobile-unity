@@ -52,7 +52,7 @@ namespace GoogleMobileAds.Editor
             EditorGUI.indentLevel--;
             EditorGUILayout.Separator();
 
-            if (EditorGUI.EndChangeCheck())
+            if (EditorGUI.EndChangeCheck() || GUILayout.Button("Save"))
             {
                 EditorUtility.SetDirty((GoogleMobileAdsSettings)target);
                 AssetDatabase.SaveAssets();
