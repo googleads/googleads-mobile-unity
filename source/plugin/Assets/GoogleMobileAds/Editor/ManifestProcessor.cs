@@ -85,7 +85,8 @@ public class ManifestProcessor : IPreprocessBuild
                 .Where( elem => elem.Name.LocalName.Equals("meta-data"));
 
         XElement elemGMAEnabled = GetMetaElement(metas, META_APPLICATION_ID);
-        string appId = GoogleMobileAdsSettings.Instance.GoogleMobileAdsAndroidAppId;
+        GoogleMobileAdsSettings instance = GoogleMobileAdsSettings.LoadInstance();
+        string appId = instance.GoogleMobileAdsAndroidAppId;
 
         if (appId.Length == 0)
         {
@@ -102,10 +103,9 @@ public class ManifestProcessor : IPreprocessBuild
             elemGMAEnabled.SetAttributeValue(ns + "value", appId);
         }
 
-
         XElement elemDelayAppMeasurementInit =
                 GetMetaElement(metas, META_DELAY_APP_MEASUREMENT_INIT);
-        if (GoogleMobileAdsSettings.Instance.DelayAppMeasurementInit)
+        if (instance.DelayAppMeasurementInit)
         {
             if (elemDelayAppMeasurementInit == null)
             {
