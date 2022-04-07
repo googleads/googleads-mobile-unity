@@ -5,7 +5,7 @@ Version Next
 **************
 
 Plugin:
-- Updated Ad formats icons in HelloWorld sample.
+- Updated HelloWorld sample scene UI to fit smaller devices.
 
 **************
 Version 7.0.0
