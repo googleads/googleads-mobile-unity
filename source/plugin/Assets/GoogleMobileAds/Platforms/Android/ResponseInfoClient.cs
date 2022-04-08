@@ -22,34 +22,37 @@ namespace GoogleMobileAds.Android
 {
     internal class ResponseInfoClient : IResponseInfoClient
     {
-        private AndroidJavaObject androidResponseInfo;
+        private string getMediationAdapterClassName;
+        private string getResponseId;
+        private string toString;
 
         public ResponseInfoClient(ResponseInfoClientType type, AndroidJavaObject androidJavaObject)
         {
-            androidResponseInfo = androidJavaObject.Call<AndroidJavaObject>("getResponseInfo");
+            AndroidJavaObject androidResponseInfo =
+                androidJavaObject.Call<AndroidJavaObject>("getResponseInfo");
+
+            if (androidResponseInfo != null)
+            {
+                getMediationAdapterClassName =
+                    androidResponseInfo.Call<string>("getMediationAdapterClassName");
+                getResponseId = androidResponseInfo.Call<string>("getResponseId");
+                toString = androidResponseInfo.Call<string>("toString");
+            }
         }
 
         public string GetMediationAdapterClassName()
         {
-            if (androidResponseInfo != null)
-            {
-                return androidResponseInfo.Call<string>("getMediationAdapterClassName");
-            }
-            return null;
+            return getMediationAdapterClassName;
         }
 
         public string GetResponseId()
         {
-            if (androidResponseInfo != null)
-            {
-                return androidResponseInfo.Call<string>("getResponseId");
-            }
-            return null;
+            return getResponseId;
         }
 
         public override string ToString()
         {
-            return androidResponseInfo.Call<string>("toString");
+            return toString;
         }
     }
 }

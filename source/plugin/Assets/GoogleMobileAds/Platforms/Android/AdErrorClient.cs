@@ -19,34 +19,47 @@ namespace GoogleMobileAds.Android
 {
     internal class AdErrorClient : IAdErrorClient
     {
-        AndroidJavaObject error;
+        private int code;
+        private string domain;
+        private string message;
+        private string description;
+        private AdErrorClient inner;
 
-        public AdErrorClient(AndroidJavaObject error)
+        private AdErrorClient(AndroidJavaObject error)
         {
-            this.error = error;
+            // Because JNI objects are weak references and may be released,
+            // we cache the members for use in case we access this object later.
+            this.code = error.Call<int>("getCode");
+            this.domain = error.Call<string>("getDomain");;
+            this.message = error.Call<string>("getMessage");;
+            this.description = error.Call<string>("toString");
+            AndroidJavaObject cause = error.Call<AndroidJavaObject>("getCause");
+            this.inner = new AdErrorClient(cause);
         }
+
         public int GetCode()
         {
-           return error.Call<int>("getCode");
+           return code;
         }
+
         public string GetDomain()
         {
-            return error.Call<string>("getDomain");
+            return domain;
         }
 
         public string GetMessage()
         {
-            return error.Call<string>("getMessage");
+            return message;
         }
 
         public IAdErrorClient GetCause()
         {
-            return new AdErrorClient(error.Call<AndroidJavaObject>("getCause"));
+            return inner;
         }
 
         public override string ToString()
         {
-            return error.Call<string>("toString");
+            return description;
         }
 
     }

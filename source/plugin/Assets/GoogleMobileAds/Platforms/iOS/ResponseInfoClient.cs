@@ -23,49 +23,54 @@ namespace GoogleMobileAds.iOS
 {
     internal class ResponseInfoClient : IResponseInfoClient
     {
-        private IntPtr adFormat;
+        private string getMediationAdapterClassName;
+        private string getResponseId;
+        private string toString;
         private IntPtr iosResponseInfo;
 
         public ResponseInfoClient(ResponseInfoClientType type, IntPtr ptr)
         {
             if(type == ResponseInfoClientType.AdLoaded)
             {
-                this.adFormat = adFormat;
                 iosResponseInfo = Externs.GADUGetResponseInfo(ptr);
             }
             else if(type == ResponseInfoClientType.AdError)
             {
                 iosResponseInfo = Externs.GADUGetAdErrorResponseInfo(ptr);
             }
+
+            InitMembers(iosResponseInfo);
         }
 
         public ResponseInfoClient(IntPtr adFormat, IntPtr iOSClient)
         {
-            this.adFormat = adFormat;
-            iosResponseInfo = iOSClient;
+            InitMembers(iOSClient);
         }
+
+        private void InitMembers(IntPtr iosResponseInfo)
+        {
+             if (iosResponseInfo != IntPtr.Zero)
+            {
+                getMediationAdapterClassName =
+                    Externs.GADUResponseInfoMediationAdapterClassName(iosResponseInfo);
+                getResponseId = Externs.GADUResponseInfoResponseId(iosResponseInfo);
+                toString = Externs.GADUGetResponseInfoDescription(iosResponseInfo);
+            }
+         }
 
         public string GetMediationAdapterClassName()
         {
-            if (iosResponseInfo != IntPtr.Zero)
-            {
-                return Externs.GADUResponseInfoMediationAdapterClassName(iosResponseInfo);
-            }
-            return null;
+            return getMediationAdapterClassName;
         }
 
         public string GetResponseId()
         {
-            if (iosResponseInfo != IntPtr.Zero)
-            {
-                return Externs.GADUResponseInfoResponseId(iosResponseInfo);
-            }
-            return null;
+            return getResponseId;
         }
 
         public override string ToString()
         {
-            return Externs.GADUGetResponseInfoDescription(iosResponseInfo);
+            return toString;
         }
     }
 }
