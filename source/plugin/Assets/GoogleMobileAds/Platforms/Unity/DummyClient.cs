@@ -17,10 +17,11 @@ using System.Reflection;
 using GoogleMobileAds.Unity;
 using GoogleMobileAds.Api;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace GoogleMobileAds.Common
 {
-    public class DummyClient : IBannerClient, IInterstitialClient,
+    public class DummyClient : BaseAdDummyClient, IBannerClient, IInterstitialClient,
             IMobileAdsClient
     {
         public DummyClient()
@@ -57,6 +58,26 @@ namespace GoogleMobileAds.Common
 
         public event EventHandler<EventArgs> OnAdDidRecordImpression;
 
+        private ButtonBehaviour buttonBehaviour;
+
+        private void AddClickBehavior(GameObject dummyAd)
+        {
+            Image[] images = dummyAd.GetComponentsInChildren<Image>();
+            Image adInspectorImage = images[1];
+
+            Button[] innerButtons = adInspectorImage.GetComponentsInChildren<Button>();
+
+            innerButtons[1].onClick.AddListener(() =>
+            {
+                DestroyAdInspector();
+                AdBehaviour.ResumeGame();
+            });
+        }
+
+        private void CreateButtonBehavior()
+        {
+            buttonBehaviour = new ButtonBehaviour();
+        }
 
 #pragma warning restore 67
 
@@ -236,8 +257,31 @@ namespace GoogleMobileAds.Common
 
         public void OpenAdInspector(Action<AdInspectorErrorClientEventArgs> onAdInspectorClosed)
         {
+            LoadAndSetPrefabAd("DummyAds/AdInspector/768x1024");
+            if (prefabAd != null)
+            {
+                dummyAd = AdBehaviour.ShowAd(prefabAd, new Vector3(0, 0, 1));
+                CreateButtonBehavior();
+                AddClickBehavior(dummyAd);
+                AdBehaviour.PauseGame();
+                if (OnAdDidPresentFullScreenContent != null)
+                {
+                  OnAdDidPresentFullScreenContent.Invoke(this, EventArgs.Empty);
+                }
+            }
+            else
+            {
+                Debug.Log("No Ad Loaded");
+            }
             Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
             onAdInspectorClosed(null);
+        }
+
+        // Destroys Ad Inspector.
+        public void DestroyAdInspector()
+        {
+            AdBehaviour.DestroyAd(dummyAd);
+            prefabAd = null;
         }
     }
 }

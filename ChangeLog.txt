@@ -10,6 +10,7 @@ Plugin:
 
 Sample:
 - Added logging for important ad events.
+- Added Dummy AdInspector for Unity editor.
 
 **************
 Version 7.0.0
