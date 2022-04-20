@@ -76,7 +76,7 @@ namespace GoogleMobileAds.Common
 
         private void CreateButtonBehavior()
         {
-            buttonBehaviour = new ButtonBehaviour();
+            buttonBehaviour = base.dummyAd.AddComponent<ButtonBehaviour>();
         }
 
 #pragma warning restore 67

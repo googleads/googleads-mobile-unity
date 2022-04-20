@@ -88,7 +88,7 @@ namespace GoogleMobileAds.Unity
 
         internal void CreateButtonBehavior()
         {
-            buttonBehaviour = new ButtonBehaviour();
+            buttonBehaviour = base.dummyAd.AddComponent<ButtonBehaviour>();
         }
 
         // Load a rewarding ad.

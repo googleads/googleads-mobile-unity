@@ -59,7 +59,7 @@ namespace GoogleMobileAds.Unity
 
         private void CreateButtonBehavior()
         {
-            buttonBehaviour = new ButtonBehaviour();
+            buttonBehaviour = base.dummyAd.AddComponent<ButtonBehaviour>();
             buttonBehaviour.OnAdOpening += OnAdOpening;
         }
 
