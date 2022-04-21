@@ -24,8 +24,7 @@ namespace GoogleMobileAds.Editor
                 instance = ScriptableObject.CreateInstance<GoogleMobileAdsSettings>();
                 string assetPath = Path.Combine(
                     MobileAdsSettingsResDir,
-                    MobileAdsSettingsFile,
-                    MobileAdsSettingsFileExtension);
+                    MobileAdsSettingsFile + MobileAdsSettingsFileExtension);
                 AssetDatabase.CreateAsset(instance, assetPath);
                 AssetDatabase.SaveAssets();
             }
