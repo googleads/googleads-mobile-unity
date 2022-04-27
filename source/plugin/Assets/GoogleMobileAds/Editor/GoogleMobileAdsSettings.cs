@@ -44,23 +44,35 @@ namespace GoogleMobileAds.Editor
 
         public string GoogleMobileAdsAndroidAppId
         {
-            get { return adMobAndroidAppId; }
+            get { return Instance.adMobAndroidAppId; }
 
-            set { adMobAndroidAppId = value; }
+            set
+            {
+                Instance.adMobAndroidAppId = value;
+                EditorUtility.SetDirty(Instance);
+            }
         }
 
         public string GoogleMobileAdsIOSAppId
         {
-            get { return adMobIOSAppId; }
+            get { return Instance.adMobIOSAppId; }
 
-            set { adMobIOSAppId = value; }
+            set
+            {
+                Instance.adMobIOSAppId = value;
+                EditorUtility.SetDirty(Instance);
+            }
         }
 
         public bool DelayAppMeasurementInit
         {
-            get { return delayAppMeasurementInit; }
+            get { return Instance.delayAppMeasurementInit; }
 
-            set { delayAppMeasurementInit = value; }
+            set
+            {
+                Instance.delayAppMeasurementInit = value;
+                EditorUtility.SetDirty(Instance);
+            }
         }
     }
 }
