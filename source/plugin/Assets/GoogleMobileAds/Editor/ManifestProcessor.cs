@@ -28,6 +28,8 @@ using UnityEngine;
 using GoogleMobileAds.Editor;
 
 #if UNITY_2018_1_OR_NEWER
+namespace GoogleMobileAds.Editor
+{
 public class ManifestProcessor : IPreprocessBuildWithReport
 #else
 public class ManifestProcessor : IPreprocessBuild
@@ -160,5 +162,5 @@ public class ManifestProcessor : IPreprocessBuild
     #endif
     }
 }
-
+}
 #endif
