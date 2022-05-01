@@ -14,7 +14,6 @@
   return self;
 }
 
-
 - (void)addKeyword:(NSString *)keyword {
   [self.keywords addObject:keyword];
 }
