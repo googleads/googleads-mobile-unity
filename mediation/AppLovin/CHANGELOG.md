@@ -1,6 +1,6 @@
 ## AppLovin Unity Mediation Plugin Changelog
 
-#### Version 6.2.1 (In Progress)
+#### [Version 6.2.1](https://dl.google.com/googleadmobadssdk/mediation/unity/applovin/AppLovinUnityAdapter-6.2.1.zip)
 - Supports [AppLovin Android adapter version 11.3.3.0](https://github.com/googleads/googleads-mobile-android-mediation/blob/master/ThirdPartyAdapters/applovin/CHANGELOG.md#version-11330).
 - Supports [AppLovin iOS adapter version 11.3.3.0](https://github.com/googleads/googleads-mobile-ios-mediation/blob/master/adapters/AppLovin/CHANGELOG.md#version-11330).
 - Built and tested with the Google Mobile Ads Unity Plugin version 7.0.0.
