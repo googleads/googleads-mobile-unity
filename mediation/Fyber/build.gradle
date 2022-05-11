@@ -43,7 +43,6 @@ task exportPackage(type: Exec) {
             "-logFile", "temp/unity.log",
             "-exportPackage",
             "Assets/GoogleMobileAds",
-            "Assets/Plugins",
             "${exportPath}",
             "-quit"
 
