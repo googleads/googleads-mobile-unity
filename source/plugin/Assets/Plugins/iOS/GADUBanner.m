@@ -17,7 +17,11 @@
 
 @end
 
-@implementation GADUBanner
+@implementation GADUBanner {
+  // Keep a reference to the error objects so references to Unity-level
+  // ResponseInfo object are not released until the ad object is released.
+  NSError *_lastLoadError;
+}
 
 - (id)initWithBannerClientReference:(GADUTypeBannerClientRef *)bannerClient
                            adUnitID:(NSString *)adUnitID
@@ -246,6 +250,7 @@
 
 - (void)bannerView:(GADBannerView *)view didFailToReceiveAdWithError:(NSError *)error {
   if (self.adFailedCallback) {
+    _lastLoadError = error;
     self.adFailedCallback(self.bannerClient, (__bridge GADUTypeErrorRef)error);
   }
 }

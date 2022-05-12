@@ -12,7 +12,12 @@
 @interface GADUInterstitial () <GADFullScreenContentDelegate>
 @end
 
-@implementation GADUInterstitial
+@implementation GADUInterstitial {
+  // Keep a reference to the error objects so references to Unity-level
+  // ResponseInfo object are not released until the ad object is released.
+  NSError *_lastLoadError;
+  NSError *_lastPresentError;
+}
 
 - (id)initWithInterstitialClientReference:(GADUTypeInterstitialClientRef *)interstitialClient {
   self = [super init];
@@ -30,6 +35,7 @@
         GADUInterstitial *strongSelf = weakSelf;
         if (error || !interstitialAd) {
           if (strongSelf.adFailedToLoadCallback) {
+            _lastLoadError = error;
             strongSelf.adFailedToLoadCallback(strongSelf.interstitialClient,
                                               (__bridge GADUTypeErrorRef)error);
           }
@@ -67,6 +73,7 @@
 - (void)ad:(nonnull id<GADFullScreenPresentingAd>)ad
     didFailToPresentFullScreenContentWithError:(nonnull NSError *)error {
   if (self.adFailedToPresentFullScreenContentCallback) {
+    _lastPresentError = error;
     self.adFailedToPresentFullScreenContentCallback(self.interstitialClient,
                                                     (__bridge GADUTypeErrorRef)error);
   }
