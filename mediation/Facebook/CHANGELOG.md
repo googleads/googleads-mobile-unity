@@ -1,5 +1,10 @@
 ## Facebook Unity Mediation Plugin Changelog
 
+#### Version 3.7.0 (In Progress)
+- Supports [Facebook Android adapter version 6.10.0.0](https://github.com/googleads/googleads-mobile-android-mediation/blob/main/ThirdPartyAdapters/facebook/CHANGELOG.md#61000).
+- Supports [Facebook iOS adapter version 6.10.0.0](https://github.com/googleads/googleads-mobile-ios-mediation/blob/master/adapters/Facebook/CHANGELOG.md#version-61000).
+- Built and tested with the Google Mobile Ads Unity Plugin version 7.0.0.
+
 #### [Version 3.6.1](https://dl.google.com/googleadmobadssdk/mediation/unity/facebook/FacebookUnityAdapter-3.6.1.zip)
 - Supports [Facebook Android adapter version 6.8.0.0](https://github.com/googleads/googleads-mobile-android-mediation/blob/master/ThirdPartyAdapters/facebook/CHANGELOG.md#6800).
 - Supports [Facebook iOS adapter version 6.9.0.1](https://github.com/googleads/googleads-mobile-ios-mediation/blob/master/adapters/Facebook/CHANGELOG.md#version-6901).
