@@ -1,5 +1,8 @@
 ## Verizon Media Unity Mediation Plugin Changelog
 
+#### Next Version
+- Removed the Verizon Media Privacy APIs.
+
 #### [Version 1.7.0](https://dl.google.com/googleadmobadssdk/mediation/unity/verizonmedia/VerizonMediaUnityAdapter-1.7.0.zip)
 - Supports [Verizon Media Android adapter version 1.13.0.0](https://github.com/googleads/googleads-mobile-android-mediation/blob/master/ThirdPartyAdapters/verizonmedia/CHANGELOG.md#version-11300).
 - Supports [Verizon Media iOS adapter version 1.13.0.0](https://github.com/googleads/googleads-mobile-ios-mediation/blob/master/adapters/VerizonMedia/CHANGELOG.md#version-11300).
