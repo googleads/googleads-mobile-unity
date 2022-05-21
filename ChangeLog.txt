@@ -1,16 +1,13 @@
 Google Mobile Ads Unity Plugin Change Log
 
 **************
-Version Next
+Version 7.0.1
 **************
 
 Plugin:
-- Updated HelloWorld sample scene UI to fit smaller devices.
-- Fixed Github issue [1943](https://github.com/googleads/googleads-mobile-unity/issues/1943)
+- Fixed Github issue [1943](https://github.com/googleads/googleads-mobile-unity/issues/1943) related App Id saving.
 - Fixed Github issue [2001](https://github.com/googleads/googleads-mobile-unity/issues/2001) related to Android manifest.
-
-Sample:
-- Added logging for important ad events.
+- Fixed Github issue [2003](https://github.com/googleads/googleads-mobile-unity/issues/2003) related to Ad Inspector crash.
 - Added Dummy AdInspector for Unity editor.
 
 **************

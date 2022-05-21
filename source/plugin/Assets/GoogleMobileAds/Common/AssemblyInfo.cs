@@ -22,6 +22,3 @@ using System.Runtime.CompilerServices;
 [assembly: InternalsVisibleTo("GoogleMobileAds.iOS")]
 [assembly: InternalsVisibleTo("GoogleMobileAds.Unity")]
 [assembly: InternalsVisibleTo("GoogleMobileAdsNative")]
-
-[assembly:AssemblyVersion("7.0.0")]
-[assembly:AssemblyFileVersion("7.0.0")]
