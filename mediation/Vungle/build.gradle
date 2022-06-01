@@ -107,7 +107,7 @@ task clearZip(type: Delete) {
  */
 task makeZip(type: Zip) {
     // Targets to be added to the zip archive.
-    from("./${pluginFileName}", "./README.md", "./CHANGELOG.md")
+    from("./${pluginFileName}", "./README.md")
     // Root directory name for the zip archive.
     into(zipName)
     // Name of the zip archive.
