@@ -1,7 +1,7 @@
 Google Mobile Ads Unity Plugin Change Log
 
 **************
-Version Next
+Version 7.0.2
 **************
 
 Plugin:
@@ -10,7 +10,7 @@ Plugin:
 Built and tested with:
 - Google Mobile Ads Android SDK 21.0.0.
 - Google Mobile Ads iOS SDK 9.0.0
-- External Dependency Manager for Unity 1.2.169.
+- External Dependency Manager for Unity 1.2.171.
 
 **************
 Version 7.0.1
@@ -25,7 +25,7 @@ Plugin:
 Built and tested with:
 - Google Play services 20.2.0
 - Google Mobile Ads iOS SDK 9.0.0
-- External Dependency Manager for Unity 1.2.169.
+- External Dependency Manager for Unity 1.2.171.
 
 **************
 Version 7.0.0
@@ -39,7 +39,7 @@ Plugin:
 Built and tested with:
 - Google Play services 20.2.0
 - Google Mobile Ads iOS SDK 9.0.0
-- External Dependency Manager for Unity 1.2.169.
+- External Dependency Manager for Unity 1.2.171.
 
 **************
 Version 6.1.2
