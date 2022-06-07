@@ -1,5 +1,5 @@
 /*
-*   Gradle file to build a Unity package to add Facebook mediation support to the Google Mobile Ads Unity plugin.
+*   Gradle file to build a Unity package to add Meta Audience Network mediation support to the Google Mobile Ads Unity plugin.
 *   Usage: ./gradlew exportPackage
 */
 defaultTasks 'exportPackage'
@@ -20,7 +20,7 @@ project.ext {
     }
 
     versionString = '3.7.0'
-    adapterName = 'Facebook'
+    adapterName = 'MetaAudienceNetwork'
     pluginName = "GoogleMobileAds${adapterName}Mediation"
     pluginFileName = "${pluginName}.unitypackage"
     zipName = "${adapterName}UnityAdapter-${versionString}"
