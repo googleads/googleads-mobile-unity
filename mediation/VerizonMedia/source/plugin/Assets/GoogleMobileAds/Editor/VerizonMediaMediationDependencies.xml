@@ -1,6 +1,6 @@
 <dependencies>
   <androidPackages>
-    <androidPackage spec="com.google.ads.mediation:verizonmedia:1.14.0.0">
+    <androidPackage spec="com.google.ads.mediation:verizonmedia:1.14.0.1">
       <repositories>
         <repository>https://artifactory.verizonmedia.com/artifactory/maven/</repository>
         <repository>https://dl.google.com/dl/android/maven2/</repository>
