@@ -8,6 +8,8 @@ using System.Collections.Generic;
 
 public class GoogleAdMobController : MonoBehaviour
 {
+    private readonly TimeSpan APPOPEN_TIMEOUT = TimeSpan.FromHours(4);
+    private DateTime appOpenExpireTime;
     private AppOpenAd appOpenAd;
     private BannerView bannerView;
     private InterstitialAd interstitialAd;
@@ -50,6 +52,9 @@ public class GoogleAdMobController : MonoBehaviour
 
         // Initialize the Google Mobile Ads SDK.
         MobileAds.Initialize(HandleInitCompleteAction);
+
+        // Listen to application foreground / background events.
+        AppStateEventNotifier.AppStateChanged += OnAppStateChanged;
     }
 
     private void HandleInitCompleteAction(InitializationStatus initstatus)
@@ -91,15 +96,6 @@ public class GoogleAdMobController : MonoBehaviour
         return new AdRequest.Builder()
             .AddKeyword("unity-admob-sample")
             .Build();
-    }
-
-    public void OnApplicationPause(bool paused)
-    {
-        // Display the app open ad when the app is foregrounded.
-        if (!paused)
-        {
-            ShowAppOpenAd();
-        }
     }
 
     #endregion
@@ -417,6 +413,31 @@ public class GoogleAdMobController : MonoBehaviour
 
     #region APPOPEN ADS
 
+    public bool IsAppOpenAdAvailable
+    {
+        get
+        {
+            return (!isShowingAppOpenAd
+                    && appOpenAd != null
+                    && DateTime.Now < appOpenExpireTime);
+        }
+    }
+
+    public void OnAppStateChanged(AppState state)
+    {
+        // Display the app open ad when the app is foregrounded.
+        UnityEngine.Debug.Log("App State is " + state);
+
+        // OnAppStateChanged is not guaranteed to execute on the Unity UI thread.
+        MobileAdsEventExecutor.ExecuteInUpdate(() =>
+        {
+            if (state == AppState.Foreground)
+            {
+                ShowAppOpenAd();
+            }
+        });
+    }
+
     public void RequestAndLoadAppOpenAd()
     {
         PrintStatus("Requesting App Open ad.");
@@ -430,26 +451,28 @@ public class GoogleAdMobController : MonoBehaviour
         string adUnitId = "unexpected_platform";
 #endif
         // create new app open ad instance
-        AppOpenAd.LoadAd(adUnitId, ScreenOrientation.Portrait, CreateAdRequest(), (appOpenAd, error) =>
-        {
-            if (error != null)
-            {
-                PrintStatus("App Open ad failed to load with error: " + error);
-                return;
-            }
+        AppOpenAd.LoadAd(adUnitId,
+                         ScreenOrientation.Portrait,
+                         CreateAdRequest(),
+                         OnAppOpenAdLoad);
+    }
 
-            PrintStatus("App Open ad loaded. Please background the app and return.");
-            this.appOpenAd = appOpenAd;
-        });
+    private void OnAppOpenAdLoad(AppOpenAd ad, AdFailedToLoadEventArgs error)
+    {
+        if (error != null)
+        {
+            PrintStatus("App Open ad failed to load with error: " + error);
+            return;
+        }
+
+        PrintStatus("App Open ad loaded. Please background the app and return.");
+        this.appOpenAd = ad;
+        this.appOpenExpireTime = DateTime.Now + APPOPEN_TIMEOUT;
     }
 
     public void ShowAppOpenAd()
     {
-        if (isShowingAppOpenAd)
-        {
-            return;
-        }
-        if (appOpenAd == null)
+        if (!IsAppOpenAdAvailable)
         {
             return;
         }
@@ -459,31 +482,26 @@ public class GoogleAdMobController : MonoBehaviour
         {
             PrintStatus("App Open ad dismissed.");
             isShowingAppOpenAd = false;
-            MobileAdsEventExecutor.ExecuteInUpdate(() => {
-                if (this.appOpenAd != null)
-                {
-                    this.appOpenAd.Destroy();
-                    this.appOpenAd = null;
-                }
-            });
+            if (this.appOpenAd != null)
+            {
+                this.appOpenAd.Destroy();
+                this.appOpenAd = null;
+            }
         };
         this.appOpenAd.OnAdFailedToPresentFullScreenContent += (sender, args) =>
         {
             PrintStatus("App Open ad failed to present with error: " + args.AdError.GetMessage());
 
             isShowingAppOpenAd = false;
-            MobileAdsEventExecutor.ExecuteInUpdate(() => {
-                if (this.appOpenAd != null)
-                {
-                    this.appOpenAd.Destroy();
-                    this.appOpenAd = null;
-                }
-            });
+            if (this.appOpenAd != null)
+            {
+                this.appOpenAd.Destroy();
+                this.appOpenAd = null;
+            }
         };
         this.appOpenAd.OnAdDidPresentFullScreenContent += (sender, args) =>
         {
             PrintStatus("App Open ad opened.");
-            isShowingAppOpenAd = true;
         };
         this.appOpenAd.OnAdDidRecordImpression += (sender, args) =>
         {
@@ -497,6 +515,8 @@ public class GoogleAdMobController : MonoBehaviour
                                         args.AdValue.Value);
             PrintStatus(msg);
         };
+
+        isShowingAppOpenAd = true;
         appOpenAd.Show();
     }
 
@@ -532,7 +552,8 @@ public class GoogleAdMobController : MonoBehaviour
     private void PrintStatus(string message)
     {
         Debug.Log(message);
-        MobileAdsEventExecutor.ExecuteInUpdate(() => {
+        MobileAdsEventExecutor.ExecuteInUpdate(() =>
+        {
             statusText.text = message;
         });
     }

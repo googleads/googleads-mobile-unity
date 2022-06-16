@@ -1,6 +1,18 @@
 Google Mobile Ads Unity Plugin Change Log
 
 **************
+Version Next
+**************
+
+Plugin:
+- Added AppStateEventNotifier as a better option to OnApplicationPause for app open ads.
+
+Built and tested with:
+- Google Mobile Ads Android SDK 21.0.0.
+- Google Mobile Ads iOS SDK 9.0.0
+- External Dependency Manager for Unity 1.2.171.
+
+**************
 Version 7.0.2
 **************
 

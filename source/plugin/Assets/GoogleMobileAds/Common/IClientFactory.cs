@@ -20,6 +20,8 @@ namespace GoogleMobileAds
 {
     public interface IClientFactory
     {
+        IAppStateEventClient BuildAppStateEventClient();
+
         IAppOpenAdClient BuildAppOpenAdClient();
 
         IBannerClient BuildBannerClient();

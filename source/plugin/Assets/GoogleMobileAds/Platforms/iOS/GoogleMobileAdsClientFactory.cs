@@ -21,10 +21,21 @@ using GoogleMobileAds;
 using GoogleMobileAds.Api;
 using GoogleMobileAds.Common;
 
-namespace GoogleMobileAds {
+namespace GoogleMobileAds
+{
   [Preserve]
   public class GoogleMobileAdsClientFactory : IClientFactory
   {
+    public IAppStateEventClient BuildAppStateEventClient()
+    {
+        if (Application.platform == RuntimePlatform.IPhonePlayer)
+        {
+          return GoogleMobileAds.Common.AppStateEventClient.Instance;
+        }
+        throw new InvalidOperationException(@"Called " + MethodBase.GetCurrentMethod().Name +
+                                            " on non-iOS runtime");
+    }
+
     public IAppOpenAdClient BuildAppOpenAdClient()
     {
       if (Application.platform == RuntimePlatform.IPhonePlayer)
