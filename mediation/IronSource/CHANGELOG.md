@@ -1,6 +1,6 @@
 ## IronSource Unity Mediation Plugin Changelog
 
-#### Version 2.2.2 (In Progress)
+#### [Version 2.2.2](https://dl.google.com/googleadmobadssdk/mediation/unity/ironsource/IronSourceUnityAdapter-2.2.2.zip)
 - Supports [IronSource Android adapter version 7.2.2.1.0](https://github.com/googleads/googleads-mobile-android-mediation/blob/main/ThirdPartyAdapters/ironsource/CHANGELOG.md#version-72210).
 - Supports [IronSource iOS adapter version 7.2.2.1.0](https://github.com/googleads/googleads-mobile-ios-mediation/blob/master/adapters/IronSource/CHANGELOG.md#version-72210).
 - Built and tested with the Google Mobile Ads Unity Plugin version 7.0.2.
