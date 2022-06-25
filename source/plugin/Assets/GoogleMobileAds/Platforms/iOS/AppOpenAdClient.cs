@@ -34,7 +34,7 @@ namespace GoogleMobileAds.iOS
             IntPtr appOpenAdClient);
 
         internal delegate void GADUAppOpenAdFailToLoadCallback(
-            IntPtr appOpenAdClient, IntPtr error);
+            IntPtr appOpenAdClient, string error);
 
         internal delegate void GADUAppOpenAdPaidEventCallback(
             IntPtr appOpenAdClient, int precision, long value, string currencyCode);
@@ -44,7 +44,7 @@ namespace GoogleMobileAds.iOS
         #region full screen content callback types
 
         internal delegate void GADUAppOpenAdFailedToPresentFullScreenContentCallback(
-            IntPtr appOpenAdClient, IntPtr error);
+            IntPtr appOpenAdClient, string error);
 
         internal delegate void GADUAppOpenAdWillPresentFullScreenContentCallback(IntPtr appOpenAdClient);
 
@@ -117,7 +117,8 @@ namespace GoogleMobileAds.iOS
 
         public IResponseInfoClient GetResponseInfoClient()
         {
-            return new ResponseInfoClient(ResponseInfoClientType.AdLoaded, this.AppOpenAdPtr);
+            string json = Externs.GADUGetResponseInfoJson(this.AppOpenAdPtr);
+            return new JsonResponseInfoClient(json);
         }
 
         // Destroys the app open ad.
@@ -153,14 +154,14 @@ namespace GoogleMobileAds.iOS
 
         [MonoPInvokeCallback(typeof(GADUAppOpenAdFailToLoadCallback))]
         private static void AppOpenAdFailedToLoadCallback(
-            IntPtr appOpenAdClient, IntPtr error)
+            IntPtr appOpenAdClient, string error)
         {
             AppOpenAdClient client = IntPtrToAppOpenAdClient(appOpenAdClient);
             if (client.OnAdFailedToLoad != null)
             {
                 LoadAdErrorClientEventArgs args = new LoadAdErrorClientEventArgs()
                 {
-                    LoadAdErrorClient = new LoadAdErrorClient(error),
+                    LoadAdErrorClient = new JsonAdErrorClient(error),
                 };
                 client.OnAdFailedToLoad(client, args);
             }
@@ -190,14 +191,14 @@ namespace GoogleMobileAds.iOS
 
         [MonoPInvokeCallback(typeof(GADUAppOpenAdFailedToPresentFullScreenContentCallback))]
         private static void AdFailedToPresentFullScreenContentCallback(
-            IntPtr appOpenAdClient, IntPtr error)
+            IntPtr appOpenAdClient, string error)
         {
             AppOpenAdClient client = IntPtrToAppOpenAdClient(appOpenAdClient);
             if (client.OnAdFailedToPresentFullScreenContent != null)
             {
                 AdErrorClientEventArgs args = new AdErrorClientEventArgs()
                 {
-                    AdErrorClient = new AdErrorClient(error),
+                    AdErrorClient = new JsonAdErrorClient(error),
                 };
                 client.OnAdFailedToPresentFullScreenContent(client, args);
             }

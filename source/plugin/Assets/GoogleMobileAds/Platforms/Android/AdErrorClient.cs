@@ -17,6 +17,7 @@ using UnityEngine;
 
 namespace GoogleMobileAds.Android
 {
+    [System.Obsolete("Use JsonResponseInfoClient")]
     internal class AdErrorClient : IAdErrorClient
     {
         AndroidJavaObject error;

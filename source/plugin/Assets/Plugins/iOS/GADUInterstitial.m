@@ -8,7 +8,6 @@
 #import "GADUPluginUtil.h"
 #import "UnityInterface.h"
 
-
 @interface GADUInterstitial () <GADFullScreenContentDelegate>
 @end
 
@@ -37,7 +36,7 @@
           if (strongSelf.adFailedToLoadCallback) {
             _lastLoadError = error;
             strongSelf.adFailedToLoadCallback(strongSelf.interstitialClient,
-                                              (__bridge GADUTypeErrorRef)error);
+                                              [GADUPluginUtil GADUStringFromNSError:error]);
           }
           return;
         }
@@ -75,7 +74,7 @@
   if (self.adFailedToPresentFullScreenContentCallback) {
     _lastPresentError = error;
     self.adFailedToPresentFullScreenContentCallback(self.interstitialClient,
-                                                    (__bridge GADUTypeErrorRef)error);
+                                                    [GADUPluginUtil GADUStringFromNSError:error]);
   }
 }
 
@@ -90,9 +89,10 @@
 
 - (void)adDidDismissFullScreenContent:(nonnull id<GADFullScreenPresentingAd>)ad {
   extern bool _didResignActive;
-  if(_didResignActive) {
-    // We are in the middle of the shutdown sequence, and at this point unity runtime is already destroyed.
-    // We shall not call unity API, and definitely not script callbacks, so nothing to do here
+  if (_didResignActive) {
+    // We are in the middle of the shutdown sequence, and at this point unity runtime is already
+    // destroyed. We shall not call unity API, and definitely not script callbacks, so nothing to do
+    // here
     return;
   }
   if (UnityIsPaused()) {

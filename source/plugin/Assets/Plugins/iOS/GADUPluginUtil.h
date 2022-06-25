@@ -47,4 +47,13 @@ UIInterfaceOrientation GADUUIInterfaceOrientationForGADUScreenOrientation(
 /// If requesting any other ad size, returns the un-modified ad size.
 + (GADAdSize)safeAdSizeForAdSize:(GADAdSize)adSize;
 
+/// Serializes a NSError into a Unity string
++ (char *)GADUStringFromNSError:(NSError *)error;
+
+/// Serializes a GADResponseInfo into a Unity string
++ (char *)GADUStringFromGADResponseInfo:(GADResponseInfo *)responseInfo;
+
+/// Serializes a GADAdNetworkResponseInfo into a Unity string
++ (char *)GADUStringFromGADAdNetworkResponseInfo:(GADAdNetworkResponseInfo *)responseInfo;
+
 @end

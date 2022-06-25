@@ -85,7 +85,8 @@ namespace GoogleMobileAds.Android
 
         public IResponseInfoClient GetResponseInfoClient()
         {
-            return new ResponseInfoClient(ResponseInfoClientType.AdLoaded, this.androidRewardedInterstitialAd);
+            string json = androidRewardedInterstitialAd.Call<string>("getResponseInfo");
+            return new JsonResponseInfoClient(json);
         }
 
         public void DestroyRewardedInterstitialAd()
@@ -101,25 +102,25 @@ namespace GoogleMobileAds.Android
             }
         }
 
-        void onRewardedInterstitialAdFailedToLoad(AndroidJavaObject error)
+        void onRewardedInterstitialAdFailedToLoad(string jsonError)
         {
             if (this.OnAdFailedToLoad != null)
             {
                 LoadAdErrorClientEventArgs args = new LoadAdErrorClientEventArgs()
                 {
-                    LoadAdErrorClient = new LoadAdErrorClient(error)
+                    LoadAdErrorClient = new JsonAdErrorClient(jsonError)
                 };
                 this.OnAdFailedToLoad(this, args);
             }
         }
 
-        void onAdFailedToShowFullScreenContent(AndroidJavaObject error)
+        void onAdFailedToShowFullScreenContent(string jsonError)
         {
             if (this.OnAdFailedToPresentFullScreenContent != null)
             {
                 AdErrorClientEventArgs args = new AdErrorClientEventArgs()
                 {
-                    AdErrorClient = new AdErrorClient(error),
+                    AdErrorClient = new JsonAdErrorClient(jsonError)
                 };
                 this.OnAdFailedToPresentFullScreenContent(this, args);
             }
@@ -132,7 +133,6 @@ namespace GoogleMobileAds.Android
                 this.OnAdDidPresentFullScreenContent(this, EventArgs.Empty);
             }
         }
-
 
         void onAdDismissedFullScreenContent()
         {

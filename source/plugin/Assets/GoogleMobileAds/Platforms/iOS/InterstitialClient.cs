@@ -32,7 +32,7 @@ namespace GoogleMobileAds.iOS
 
         internal delegate void GADUInterstitialAdLoadedCallback(IntPtr interstitialClient);
 
-        internal delegate void GADUInterstitialAdFailedToLoadCallback(IntPtr interstitialClient, IntPtr error);
+        internal delegate void GADUInterstitialAdFailedToLoadCallback(IntPtr interstitialClient, string error);
 
         internal delegate void GADUInterstitialPaidEventCallback(
             IntPtr interstitialClient, int precision, long value, string currencyCode);
@@ -41,7 +41,9 @@ namespace GoogleMobileAds.iOS
 
 #region full screen content callback types
 
-        internal delegate void GADUInterstitialAdFailedToPresentFullScreenContentCallback(IntPtr interstitialClient, IntPtr error);
+        internal delegate void GADUInterstitialAdFailedToPresentFullScreenContentCallback(
+            IntPtr interstitialClient,
+            string error);
 
         internal delegate void GADUInterstitialAdWillPresentFullScreenContentCallback(IntPtr interstitialClient);
 
@@ -112,7 +114,8 @@ namespace GoogleMobileAds.iOS
 
         public IResponseInfoClient GetResponseInfoClient()
         {
-            return new ResponseInfoClient(ResponseInfoClientType.AdLoaded, this.InterstitialPtr);
+            string json = Externs.GADUGetResponseInfoJson(this.InterstitialPtr);
+            return new JsonResponseInfoClient(json);
         }
 
         // Destroys the interstitial ad.
@@ -148,14 +151,14 @@ namespace GoogleMobileAds.iOS
 
         [MonoPInvokeCallback(typeof(GADUInterstitialAdFailedToLoadCallback))]
         private static void InterstitialFailedToLoadCallback(
-            IntPtr interstitialClient, IntPtr error)
+            IntPtr interstitialClient, string error)
         {
             InterstitialClient client = IntPtrToInterstitialClient(interstitialClient);
             if (client.OnAdFailedToLoad != null)
             {
                 LoadAdErrorClientEventArgs args = new LoadAdErrorClientEventArgs()
                 {
-                    LoadAdErrorClient = new LoadAdErrorClient(error)
+                    LoadAdErrorClient = new JsonAdErrorClient(error)
                 };
                 client.OnAdFailedToLoad(client, args);
             }
@@ -184,14 +187,15 @@ namespace GoogleMobileAds.iOS
         }
 
         [MonoPInvokeCallback(typeof(GADUInterstitialAdFailedToPresentFullScreenContentCallback))]
-        private static void AdFailedToPresentFullScreenContentCallback(IntPtr interstitialClient, IntPtr error)
+        private static void AdFailedToPresentFullScreenContentCallback(IntPtr interstitialClient,
+                                                                       string error)
         {
             InterstitialClient client = IntPtrToInterstitialClient(interstitialClient);
             if (client.OnAdFailedToPresentFullScreenContent != null)
             {
                 AdErrorClientEventArgs args = new AdErrorClientEventArgs()
                 {
-                    AdErrorClient = new AdErrorClient(error)
+                    AdErrorClient = new JsonAdErrorClient(error)
                 };
                 client.OnAdFailedToPresentFullScreenContent(client, args);
             }

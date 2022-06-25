@@ -21,9 +21,9 @@ public final class UnityAdInspector {
                 activity,
                 new OnAdInspectorClosedListener() {
                   @Override
-                  public void onAdInspectorClosed(AdInspectorError adInspectorError) {
+                  public void onAdInspectorClosed(AdInspectorError error) {
                     if (adInspectorListener != null) {
-                      adInspectorListener.onAdInspectorClosed(adInspectorError);
+                      adInspectorListener.onAdInspectorClosed(PluginUtils.toJsonString(error));
                     }
                   }
                 });

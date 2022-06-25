@@ -771,6 +771,33 @@ void GADURewardedInterstitialAdSetServerSideVerificationOptions(
   [internalRewardedInterstitialAd setServerSideVerificationOptions:internalOptions];
 }
 
+const char * GADUGetResponseInfoJson(GADUTypeRef adFormat) {
+  id internalAd = (__bridge id)adFormat;
+  GADResponseInfo *responseInfo;
+  if ([internalAd isKindOfClass:[GADUBanner class]]){
+      GADUBanner *internalBanner = (GADUBanner *)internalAd;
+      responseInfo = internalBanner.responseInfo;
+  } else if ([internalAd isKindOfClass:[GADUInterstitial class]]) {
+      GADUInterstitial *internalInterstitial = (GADUInterstitial *)internalAd;
+      responseInfo =  internalInterstitial.responseInfo;
+  } else if ([internalAd isKindOfClass:[GADURewardedAd class]]){
+      GADURewardedAd *internalRewardedAd = (GADURewardedAd *)internalAd;
+      responseInfo =  internalRewardedAd.responseInfo;
+  } else if ([internalAd isKindOfClass:[GADURewardedInterstitialAd class]]) {
+    GADURewardedInterstitialAd *internalRewardedInterstitialAd =
+    (GADURewardedInterstitialAd *)internalAd;
+    responseInfo =  internalRewardedInterstitialAd.responseInfo;
+  }
+
+  if (responseInfo){
+    GADUObjectCache *cache = [GADUObjectCache sharedInstance];
+    cache[responseInfo.gadu_referenceKey] = responseInfo;
+    return [GADUPluginUtil GADUStringFromGADResponseInfo:responseInfo];
+  }else {
+    return nil;
+  }
+}
+
 const GADUTypeResponseInfoRef GADUGetResponseInfo(GADUTypeRef adFormat) {
   id internalAd = (__bridge id)adFormat;
   GADResponseInfo *responseInfo;
@@ -796,7 +823,6 @@ const GADUTypeResponseInfoRef GADUGetResponseInfo(GADUTypeRef adFormat) {
   }else {
     return nil;
   }
-
 }
 
 const char *GADUResponseInfoMediationAdapterClassName(GADUTypeResponseInfoRef responseInfo){
