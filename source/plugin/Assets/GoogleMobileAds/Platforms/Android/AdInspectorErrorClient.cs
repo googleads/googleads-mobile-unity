@@ -16,6 +16,7 @@ using GoogleMobileAds.Common;
 using UnityEngine;
 
 namespace GoogleMobileAds.Android {
+  [System.Obsolete("Use JsonResponseInfoClient")]
   internal class AdInspectorErrorClient : AdErrorClient, IAdInspectorErrorClient {
     public AdInspectorErrorClient(AndroidJavaObject error) : base(error) {}
   }

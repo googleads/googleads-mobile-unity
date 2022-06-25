@@ -33,24 +33,16 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.FutureTask;
 
-/**
- * Native app open ad implementation for the Google Mobile Ads Unity plugin.
- */
+/** Native app open ad implementation for the Google Mobile Ads Unity plugin. */
 public class UnityAppOpenAd {
 
-  /**
-   * The {@link AppOpenAd}.
-   */
+  /** The {@link AppOpenAd}. */
   private AppOpenAd appOpenAd;
 
-  /**
-   * The {@code Activity} on which the app open add will display.
-   */
+  /** The {@code Activity} on which the app open add will display. */
   private final Activity activity;
 
-  /**
-   * A callback implemented in Unity via {@code AndroidJavaProxy} to receive ad events.
-   */
+  /** A callback implemented in Unity via {@code AndroidJavaProxy} to receive ad events. */
   private final UnityAppOpenAdCallback callback;
 
   public UnityAppOpenAd(Activity activity, UnityAppOpenAdCallback callback) {
@@ -101,7 +93,8 @@ public class UnityAppOpenAd {
                                   @Override
                                   public void run() {
                                     if (callback != null) {
-                                      callback.onAdFailedToShowFullScreenContent(error);
+                                      callback.onAdFailedToShowFullScreenContent(
+                                          PluginUtils.toJsonString(error));
                                     }
                                   }
                                 });
@@ -145,7 +138,6 @@ public class UnityAppOpenAd {
                                   }
                                 });
                           }
-
                         });
 
                     runOnNewThread(
@@ -166,7 +158,7 @@ public class UnityAppOpenAd {
                           @Override
                           public void run() {
                             if (callback != null) {
-                              callback.onAppOpenAdFailedToLoad(error);
+                              callback.onAppOpenAdFailedToLoad(PluginUtils.toJsonString(error));
                             }
                           }
                         });
@@ -178,8 +170,10 @@ public class UnityAppOpenAd {
 
   public void show() {
     if (appOpenAd == null) {
-      Log.e(PluginUtils.LOGTAG, "Tried to show rewarded ad before it was ready. This should "
-          + "in theory never happen. If it does, please contact the plugin owners.");
+      Log.e(
+          PluginUtils.LOGTAG,
+          "Tried to show rewarded ad before it was ready. This should "
+              + "in theory never happen. If it does, please contact the plugin owners.");
       return;
     }
 
@@ -192,12 +186,9 @@ public class UnityAppOpenAd {
         });
   }
 
+  /** Returns the request response info. */
   @Nullable
-  public ResponseInfo getResponseInfo() {
-    if (appOpenAd == null) {
-      return null;
-    }
-
+  public String getResponseInfo() {
     FutureTask<ResponseInfo> task =
         new FutureTask<>(
             new Callable<ResponseInfo>() {
@@ -209,8 +200,10 @@ public class UnityAppOpenAd {
     activity.runOnUiThread(task);
 
     ResponseInfo result = null;
+    String resultJson = null;
     try {
       result = task.get();
+      resultJson = PluginUtils.toJsonString(result);
     } catch (ExecutionException | InterruptedException exception) {
       Log.e(
           PluginUtils.LOGTAG,
@@ -218,12 +211,10 @@ public class UnityAppOpenAd {
               "Unable to check unity app open ad response info: %s",
               exception.getLocalizedMessage()));
     }
-    return result;
+    return resultJson;
   }
 
-  /**
-   * Destroys the {@link AppOpenAd}.
-   */
+  /** Destroys the {@link AppOpenAd}. */
   public void destroy() {
     // Currently there is no appOpenAd.destroy() method. This method is a placeholder
     // in case there is any cleanup to do here in the future.
