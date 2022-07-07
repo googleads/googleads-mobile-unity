@@ -1,4 +1,4 @@
-﻿// Copyright (C) 2017 Google, Inc.
+// Copyright (C) 2017 Google, Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,21 +15,18 @@
 #if UNITY_IOS
 
 using UnityEngine;
-
 using GoogleMobileAds.Common.Mediation.AppLovin;
 
 namespace GoogleMobileAds.iOS.Mediation.AppLovin
 {
-    public class AppLovinClient: IAppLovinClient
+    public class AppLovinClient : IAppLovinClient
     {
-        private static AppLovinClient instance = new AppLovinClient();
-
+        private static readonly AppLovinClient instance = new AppLovinClient();
         private AppLovinClient() {}
 
         public static AppLovinClient Instance
         {
-            get
-            {
+            get {
                 return instance;
             }
         }
@@ -41,16 +38,17 @@ namespace GoogleMobileAds.iOS.Mediation.AppLovin
 
         public void SetHasUserConsent(bool hasUserConsent)
         {
-            string parameterString = (hasUserConsent == true ? "YES" : "NO");
-            MonoBehaviour.print("Calling '[ALPrivacySettings setHasUserConsent:]' with argument: " + parameterString);
-            Externs.GADUMAppLovinSetHasUserConsent (hasUserConsent);
+            Externs.GADUMAppLovinSetHasUserConsent(hasUserConsent);
         }
 
         public void SetIsAgeRestrictedUser(bool isAgeRestrictedUser)
         {
-            string parameterString = (isAgeRestrictedUser == true ? "YES" : "NO");
-            MonoBehaviour.print("Calling '[ALPrivacySettings setIsAgeRestrictedUser:]' with argument: " + parameterString);
-            Externs.GADUMAppLovinSetIsAgeRestrictedUser (isAgeRestrictedUser);
+            Externs.GADUMAppLovinSetIsAgeRestrictedUser(isAgeRestrictedUser);
+        }
+
+        public void SetDoNotSell(bool doNotSell)
+        {
+            Externs.GADUMAppLovinSetDoNotSell(doNotSell);
         }
     }
 }

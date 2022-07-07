@@ -1,4 +1,4 @@
-﻿// Copyright (C) 2017 Google, Inc.
+// Copyright (C) 2017 Google, Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -13,7 +13,6 @@
 // limitations under the License.
 
 using System;
-
 using GoogleMobileAds.Common.Mediation.AppLovin;
 using GoogleMobileAds.Mediation;
 
@@ -36,6 +35,11 @@ namespace GoogleMobileAds.Api.Mediation.AppLovin
         public static void SetIsAgeRestrictedUser(bool isAgeRestrictedUser)
         {
             client.SetIsAgeRestrictedUser(isAgeRestrictedUser);
+        }
+
+        public static void SetDoNotSell(bool doNotSell)
+        {
+            client.SetDoNotSell(doNotSell);
         }
 
         private static IAppLovinClient GetAppLovinClient()
