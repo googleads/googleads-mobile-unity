@@ -1,4 +1,4 @@
-﻿// Copyright (C) 2017 Google, Inc.
+// Copyright (C) 2017 Google, Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,7 +16,6 @@
 
 using System.Reflection;
 using UnityEngine;
-
 using GoogleMobileAds.Common.Mediation.AppLovin;
 
 namespace GoogleMobileAds.Android.Mediation.AppLovin
@@ -24,45 +23,58 @@ namespace GoogleMobileAds.Android.Mediation.AppLovin
     public class AppLovinClient : IAppLovinClient
     {
         private static AppLovinClient instance = new AppLovinClient();
-        private AppLovinClient() { }
+        private AppLovinClient() {}
+
+        private const string appLovinSdkClassName = "com.applovin.sdk.AppLovinSdk";
+        private const string appLovinPrivacySettingsClassName =
+                "com.applovin.sdk.AppLovinPrivacySettings";
 
         public static AppLovinClient Instance
         {
-            get
-            {
+            get {
                 return instance;
             }
         }
 
         public void Initialize()
         {
-            MonoBehaviour.print("AppLovin intialize received");
             AndroidJavaClass unityPlayer = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
-            AndroidJavaObject currentActivity = unityPlayer.GetStatic<AndroidJavaObject>("currentActivity");
-            AndroidJavaClass appLovin = new AndroidJavaClass("com.applovin.sdk.AppLovinSdk");
+            AndroidJavaObject currentActivity =
+                    unityPlayer.GetStatic<AndroidJavaObject>("currentActivity");
+            AndroidJavaClass appLovin = new AndroidJavaClass(appLovinSdkClassName);
             appLovin.CallStatic("initializeSdk", currentActivity);
         }
 
         public void SetHasUserConsent(bool hasUserConsent)
         {
             AndroidJavaClass unityPlayer = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
-            AndroidJavaObject currentActivity = unityPlayer.GetStatic<AndroidJavaObject>("currentActivity");
-            AndroidJavaClass appLovinPrivacySettings = new AndroidJavaClass("com.applovin.sdk.AppLovinPrivacySettings");
-
-            string parameterString = (hasUserConsent == true ? "true" : "false");
-            MonoBehaviour.print("Calling 'AppLovinPrivacySettings.setHasUserConsent()' with argument: " + parameterString);
-            appLovinPrivacySettings.CallStatic("setHasUserConsent", hasUserConsent, currentActivity);
+            AndroidJavaObject currentActivity =
+                    unityPlayer.GetStatic<AndroidJavaObject>("currentActivity");
+            AndroidJavaClass appLovinPrivacySettings =
+                    new AndroidJavaClass(appLovinPrivacySettingsClassName);
+            appLovinPrivacySettings.CallStatic("setHasUserConsent", hasUserConsent,
+                                               currentActivity);
         }
 
         public void SetIsAgeRestrictedUser(bool isAgeRestrictedUser)
         {
             AndroidJavaClass unityPlayer = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
-            AndroidJavaObject currentActivity = unityPlayer.GetStatic<AndroidJavaObject>("currentActivity");
-            AndroidJavaClass appLovinPrivacySettings = new AndroidJavaClass("com.applovin.sdk.AppLovinPrivacySettings");
+            AndroidJavaObject currentActivity =
+                    unityPlayer.GetStatic<AndroidJavaObject>("currentActivity");
+            AndroidJavaClass appLovinPrivacySettings =
+                    new AndroidJavaClass(appLovinPrivacySettingsClassName);
+            appLovinPrivacySettings.CallStatic("setIsAgeRestrictedUser", isAgeRestrictedUser,
+                                               currentActivity);
+        }
 
-            string parameterString = (isAgeRestrictedUser == true ? "true" : "false");
-            MonoBehaviour.print("Calling 'AppLovinPrivacySettings.setIsAgeRestrictedUser()' with argument: " + parameterString);
-            appLovinPrivacySettings.CallStatic("setIsAgeRestrictedUser", isAgeRestrictedUser, currentActivity);
+        public void SetDoNotSell(bool doNotSell)
+        {
+            AndroidJavaClass unityPlayer = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
+            AndroidJavaObject currentActivity =
+                    unityPlayer.GetStatic<AndroidJavaObject>("currentActivity");
+            AndroidJavaClass appLovinPrivacySettings =
+                    new AndroidJavaClass(appLovinPrivacySettingsClassName);
+            appLovinPrivacySettings.CallStatic("setDoNotSell", doNotSell, currentActivity);
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿// Copyright (C) 2017 Google, Inc.
+// Copyright (C) 2017 Google, Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,7 +14,6 @@
 
 using System;
 using System.Reflection;
-
 using UnityEngine;
 
 namespace GoogleMobileAds.Common.Mediation.AppLovin
@@ -40,6 +39,10 @@ namespace GoogleMobileAds.Common.Mediation.AppLovin
         {
             Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
         }
+
+        public void SetDoNotSell(bool doNotSell)
+        {
+            Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
+        }
     }
 }
-

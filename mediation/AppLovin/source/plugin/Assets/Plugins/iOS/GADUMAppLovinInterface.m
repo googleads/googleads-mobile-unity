@@ -14,9 +14,7 @@
 
 #import <AppLovinSDK/AppLovinSDK.h>
 
-void GADUMInitializeAppLovin(void) {
-  [ALSdk initializeSdk];
-}
+void GADUMInitializeAppLovin(void) { [ALSdk initializeSdk]; }
 
 void GADUMAppLovinSetHasUserConsent(BOOL hasUserConsent) {
   [ALPrivacySettings setHasUserConsent:hasUserConsent];
@@ -25,3 +23,5 @@ void GADUMAppLovinSetHasUserConsent(BOOL hasUserConsent) {
 void GADUMAppLovinSetIsAgeRestrictedUser(bool isAgeRestrictedUser) {
   [ALPrivacySettings setIsAgeRestrictedUser:isAgeRestrictedUser];
 }
+
+void GADUMAppLovinSetDoNotSell(bool doNotSell) { [ALPrivacySettings setDoNotSell:doNotSell]; }
