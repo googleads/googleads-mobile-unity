@@ -18,44 +18,18 @@ using GoogleMobileAds.Api;
 
 namespace GoogleMobileAds.Common
 {
-    public interface IRewardedInterstitialAdClient
+    /// <summary>
+    /// Rewarded interstitial ads can serve without requiring the user to opt-in to viewing.
+    /// At any point during the experience, the user can decide to skip the ad.
+    /// </summary>
+    public interface IRewardedInterstitialAdClient : IBaseFullScreenAdClient, IBaseRewardedAd
     {
-        // Ad event fired when the rewarded interstitial ad has been received.
-        event EventHandler<EventArgs> OnAdLoaded;
-        // Ad event fired when the rewarded interstitial ad has failed to load.
-        event EventHandler<LoadAdErrorClientEventArgs> OnAdFailedToLoad;
-        // Ad event fired when the rewarded interstitial ad is estimated to have earned money.
-        event EventHandler<AdValueEventArgs> OnPaidEvent;
-        // Ad event fired when the rewarded interstitial ad has rewarded the user.
-        event EventHandler<Reward> OnUserEarnedReward;
-        // Ad event fired when the rewarded interstitial ad has failed to present the full screen content.
-        event EventHandler<AdErrorClientEventArgs> OnAdFailedToPresentFullScreenContent;
-        // Ad event fired when the rewarded interstitial ad has presented the full screen content.
-        event EventHandler<EventArgs> OnAdDidPresentFullScreenContent;
-        // Ad event fired when the rewarded interstitial ad has dismissed the full screen content.
-        event EventHandler<EventArgs> OnAdDidDismissFullScreenContent;
-        // Ad event fired when the rewarded interstitial ad has recorded an impression.
-        event EventHandler<EventArgs> OnAdDidRecordImpression;
-
-        // Creates a rewarded interstitial ad.
-        void CreateRewardedInterstitialAd();
-
-        // Loads a rewarded interstitial ad.
-        void LoadAd(string adUnitID, AdRequest request);
-
-        // Returns the reward item for the loaded rewarded interstitial ad.
-        Reward GetRewardItem();
-
-        // Shows the rewarded interstitial ad on the screen.
-        void Show();
-
-        // Sets the server side verification options
-        void SetServerSideVerificationOptions(ServerSideVerificationOptions serverSideVerificationOptions);
-
-        // Returns ad request Response info client.
-        IResponseInfoClient GetResponseInfoClient();
-
-        // Destroys the rewarded interstitial ad.
-        void DestroyRewardedInterstitialAd();
+        /// <summary>
+        /// Loads an RewardedInterstitialAd.
+        /// </summary>
+        void LoadAd(
+            string adUnitId,
+            AdRequest request,
+            Action<IRewardedInterstitialAdClient, ILoadAdErrorClient> callback);
     }
 }

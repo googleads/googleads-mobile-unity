@@ -1,4 +1,4 @@
-// Copyright (C) 2020 Google LLC
+// Copyright (C) 2022 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,171 +14,92 @@
 
 using System;
 using UnityEngine;
-
 using GoogleMobileAds.Api;
 using GoogleMobileAds.Common;
 
 namespace GoogleMobileAds.Android
 {
-    public class RewardedInterstitialAdClient : AndroidJavaProxy, IRewardedInterstitialAdClient
+    public class RewardedInterstitialAdClient : BaseAdClient,
+                                                IRewardedInterstitialAdClient
     {
-        private AndroidJavaObject androidRewardedInterstitialAd;
 
-        public RewardedInterstitialAdClient() : base(Utils.UnityRewardedInterstitialAdCallbackClassName)
+        public Reward RewardItem
         {
-            AndroidJavaClass playerClass = new AndroidJavaClass(Utils.UnityActivityClassName);
-            AndroidJavaObject activity = playerClass.GetStatic<AndroidJavaObject>("currentActivity");
-            androidRewardedInterstitialAd = new AndroidJavaObject(Utils.UnityRewardedInterstitialAdClassName, activity, this);
-        }
-
-        public event EventHandler<EventArgs> OnAdLoaded;
-
-        public event EventHandler<LoadAdErrorClientEventArgs> OnAdFailedToLoad;
-
-        public event EventHandler<Reward> OnUserEarnedReward;
-
-        public event EventHandler<AdValueEventArgs> OnPaidEvent;
-
-        public event EventHandler<AdErrorClientEventArgs> OnAdFailedToPresentFullScreenContent;
-
-        public event EventHandler<EventArgs> OnAdDidPresentFullScreenContent;
-
-        public event EventHandler<EventArgs> OnAdDidDismissFullScreenContent;
-
-        public event EventHandler<EventArgs> OnAdDidRecordImpression;
-
-        public void CreateRewardedInterstitialAd()
-        {
-            // Do nothing.
-        }
-
-        public void LoadAd(string adUnitId, AdRequest request)
-        {
-            androidRewardedInterstitialAd.Call("loadAd", adUnitId, Utils.GetAdRequestJavaObject(request));
-        }
-
-        public void Show()
-        {
-            androidRewardedInterstitialAd.Call("show");
-        }
-
-        public Reward GetRewardItem()
-        {
-            AndroidJavaObject rewardItem = this.androidRewardedInterstitialAd.Call<AndroidJavaObject>("getRewardItem");
-            if (rewardItem == null)
+            get
             {
-                return null;
-            }
-            string type = rewardItem.Call<string>("getType");
-            int amount = rewardItem.Call<int>("getAmount");
-            return new Reward()
-            {
-                Type = type,
-                Amount = (double)amount
-            };
-        }
-
-        public void SetServerSideVerificationOptions(ServerSideVerificationOptions serverSideVerificationOptions)
-        {
-            androidRewardedInterstitialAd.Call("setServerSideVerificationOptions", Utils.GetServerSideVerificationOptionsJavaObject(serverSideVerificationOptions));
-        }
-
-        public IResponseInfoClient GetResponseInfoClient()
-        {
-            return new ResponseInfoClient(ResponseInfoClientType.AdLoaded, this.androidRewardedInterstitialAd);
-        }
-
-        public void DestroyRewardedInterstitialAd()
-        {
-            this.androidRewardedInterstitialAd.Call("destroy");
-        }
-
-        void onRewardedInterstitialAdLoaded()
-        {
-            if (this.OnAdLoaded != null)
-            {
-                this.OnAdLoaded(this, EventArgs.Empty);
+                return GetRewardItem();
             }
         }
 
-        void onRewardedInterstitialAdFailedToLoad(AndroidJavaObject error)
+        private Action<IRewardedInterstitialAdClient, ILoadAdErrorClient> _loadCallback;
+        private Action<Reward> _userRewardEarnedCallback;
+
+        public RewardedInterstitialAdClient() : base(Utils.UnityRewardedInterstitialAdClassName)
         {
-            if (this.OnAdFailedToLoad != null)
+        }
+
+        public void LoadAd(string adUnitId,
+            AdRequest request,
+            Action<IRewardedInterstitialAdClient, ILoadAdErrorClient> callback)
+        {
+            _loadCallback = callback;
+
+            if (_ad != null)
             {
-                LoadAdErrorClientEventArgs args = new LoadAdErrorClientEventArgs()
-                {
-                    LoadAdErrorClient = new LoadAdErrorClient(error)
-                };
-                this.OnAdFailedToLoad(this, args);
+                _ad.Call("loadAd", adUnitId, Utils.GetAdRequestJavaObject(request));
             }
         }
 
-        void onAdFailedToShowFullScreenContent(AndroidJavaObject error)
+        #region Callbacks from IInterstitalAd
+
+        public void Destroy()
         {
-            if (this.OnAdFailedToPresentFullScreenContent != null)
+            _ad = null;
+        }
+
+        public void Show(Action<Reward> userRewardEarnedCallback)
+        {
+            _userRewardEarnedCallback = userRewardEarnedCallback;
+
+            if (_ad != null)
             {
-                AdErrorClientEventArgs args = new AdErrorClientEventArgs()
-                {
-                    AdErrorClient = new AdErrorClient(error),
-                };
-                this.OnAdFailedToPresentFullScreenContent(this, args);
+                _ad.Call("show");
             }
         }
 
-        void onAdShowedFullScreenContent()
+        public void SetServerSideVerificationOptions(ServerSideVerificationOptions options)
         {
-            if (this.OnAdDidPresentFullScreenContent != null)
+            if (_ad != null)
             {
-                this.OnAdDidPresentFullScreenContent(this, EventArgs.Empty);
+                _ad.Call("setServerSideVerificationOptions",
+                    Utils.GetServerSideVerificationOptionsJavaObject(options));
             }
         }
 
+        #endregion
 
-        void onAdDismissedFullScreenContent()
+        protected override void OnAdLoaded()
         {
-            if (this.OnAdDidDismissFullScreenContent != null)
+            if (_loadCallback != null)
             {
-                this.OnAdDidDismissFullScreenContent(this, EventArgs.Empty);
+                _loadCallback(this, null);
+            }
+            _loadCallback = null;
+        }
+
+        protected override void OnAdLoadFailed(AndroidJavaObject error)
+        {
+            if (_loadCallback != null)
+            {
+                _loadCallback(null, new LoadAdErrorClient(error));
             }
         }
 
-        void onAdImpression()
+        protected override void OnUserEarnedReward(Reward item)
         {
-            if (this.OnAdDidRecordImpression != null)
+            if (_userRewardEarnedCallback != null)
             {
-                this.OnAdDidRecordImpression(this, EventArgs.Empty);
-            }
-        }
-
-        void onUserEarnedReward(string type, float amount)
-        {
-            if (this.OnUserEarnedReward != null)
-            {
-                Reward args = new Reward()
-                {
-                    Type = type,
-                    Amount = amount
-                };
-                this.OnUserEarnedReward(this, args);
-            }
-        }
-
-        public void onPaidEvent(int precision, long valueInMicros, string currencyCode)
-        {
-            if (this.OnPaidEvent != null)
-            {
-                AdValue adValue = new AdValue()
-                {
-                    Precision = (AdValue.PrecisionType)precision,
-                    Value = valueInMicros,
-                    CurrencyCode = currencyCode
-                };
-                AdValueEventArgs args = new AdValueEventArgs()
-                {
-                    AdValue = adValue
-                };
-
-                this.OnPaidEvent(this, args);
+                _userRewardEarnedCallback(item);
             }
         }
     }

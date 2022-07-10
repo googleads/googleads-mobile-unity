@@ -5,7 +5,9 @@
 #import <CoreGraphics/CoreGraphics.h>
 #import <UIKit/UIKit.h>
 
+#import "GADUObjectCache.h"
 #import "GADUPluginUtil.h"
+#import "GADURequest.h"
 
 @interface GADUBanner () <GADBannerViewDelegate>
 
@@ -23,7 +25,7 @@
   NSError *_lastLoadError;
 }
 
-- (id)initWithBannerClientReference:(GADUTypeBannerClientRef *)bannerClient
+- (id)initWithBannerClientReference:(GADUTypeAdClientRef *)bannerClient
                            adUnitID:(NSString *)adUnitID
                               width:(CGFloat)width
                              height:(CGFloat)height
@@ -34,7 +36,7 @@
                                   adPosition:adPosition];
 }
 
-- (id)initWithBannerClientReference:(GADUTypeBannerClientRef *)bannerClient
+- (id)initWithBannerClientReference:(GADUTypeAdClientRef *)bannerClient
                            adUnitID:(NSString *)adUnitID
                               width:(CGFloat)width
                              height:(CGFloat)height
@@ -45,7 +47,7 @@
                             customAdPosition:customAdPosition];
 }
 
-- (id)initWithSmartBannerSizeAndBannerClientReference:(GADUTypeBannerClientRef *)bannerClient
+- (id)initWithSmartBannerSizeAndBannerClientReference:(GADUTypeAdClientRef *)bannerClient
                                              adUnitID:(NSString *)adUnitID
                                            adPosition:(GADAdPosition)adPosition {
   // Choose the correct Smart Banner constant according to orientation.
@@ -63,7 +65,7 @@
                                   adPosition:adPosition];
 }
 
-- (id)initWithSmartBannerSizeAndBannerClientReference:(GADUTypeBannerClientRef *)bannerClient
+- (id)initWithSmartBannerSizeAndBannerClientReference:(GADUTypeAdClientRef *)bannerClient
                                              adUnitID:(NSString *)adUnitID
                                      customAdPosition:(CGPoint)customAdPosition {
   // Choose the correct Smart Banner constant according to orientation.
@@ -81,7 +83,7 @@
                             customAdPosition:customAdPosition];
 }
 
-- (id)initWithAdaptiveBannerSizeAndBannerClientReference:(GADUTypeBannerClientRef *)bannerClient
+- (id)initWithAdaptiveBannerSizeAndBannerClientReference:(GADUTypeAdClientRef *)bannerClient
                                                 adUnitID:(NSString *)adUnitID
                                                    width:(NSInteger)width
                                              orientation:(GADUBannerOrientation)orientation
@@ -93,7 +95,7 @@
                                   adPosition:adPosition];
 }
 
-- (id)initWithAdaptiveBannerSizeAndBannerClientReference:(GADUTypeBannerClientRef *)bannerClient
+- (id)initWithAdaptiveBannerSizeAndBannerClientReference:(GADUTypeAdClientRef *)bannerClient
                                                 adUnitID:(NSString *)adUnitID
                                                    width:(NSInteger)width
                                              orientation:(GADUBannerOrientation)orientation
@@ -105,13 +107,13 @@
                             customAdPosition:customAdPosition];
 }
 
-- (id)initWithBannerClientReference:(GADUTypeBannerClientRef *)bannerClient
+- (id)initWithBannerClientReference:(GADUTypeAdClientRef *)bannerClient
                            adUnitID:(NSString *)adUnitID
                              adSize:(GADAdSize)size
                          adPosition:(GADAdPosition)adPosition {
   self = [super init];
   if (self) {
-    _bannerClient = bannerClient;
+    super.adClient = bannerClient;
     _adPosition = adPosition;
     _bannerView = [[GADBannerView alloc] initWithAdSize:[GADUPluginUtil safeAdSizeForAdSize:size]];
     _bannerView.adUnitID = adUnitID;
@@ -123,13 +125,13 @@
   return self;
 }
 
-- (id)initWithBannerClientReference:(GADUTypeBannerClientRef *)bannerClient
+- (id)initWithBannerClientReference:(GADUTypeAdClientRef *)bannerClient
                            adUnitID:(NSString *)adUnitID
                              adSize:(GADAdSize)size
                    customAdPosition:(CGPoint)customAdPosition {
   self = [super init];
   if (self) {
-    _bannerClient = bannerClient;
+    super.adClient = bannerClient;
     _customAdPosition = customAdPosition;
     _adPosition = kGADAdPositionCustom;
     _bannerView = [[GADBannerView alloc] initWithAdSize:[GADUPluginUtil safeAdSizeForAdSize:size]];
@@ -150,11 +152,10 @@
   __weak GADUBanner *weakSelf = self;
   _bannerView.paidEventHandler = ^void(GADAdValue *_Nonnull adValue) {
     GADUBanner *strongSelf = weakSelf;
-    if (strongSelf.paidEventCallback) {
+    if (strongSelf.adPaidCallback) {
       int64_t valueInMicros = [adValue.value decimalNumberByMultiplyingByPowerOf10:6].longLongValue;
-      strongSelf.paidEventCallback(
-          strongSelf.bannerClient, (int)adValue.precision, valueInMicros,
-          [adValue.currencyCode cStringUsingEncoding:NSUTF8StringEncoding]);
+      strongSelf.adPaidCallback(strongSelf.adClient, (int)adValue.precision, valueInMicros,
+                                [adValue.currencyCode cStringUsingEncoding:NSUTF8StringEncoding]);
     }
   };
 }
@@ -243,21 +244,21 @@
 
   [unityView addSubview:self.bannerView];
 
-  if (self.adReceivedCallback) {
-    self.adReceivedCallback(self.bannerClient);
+  if (self.adLoadCallback) {
+    self.adLoadCallback(self.adClient);
   }
 }
 
 - (void)bannerView:(GADBannerView *)view didFailToReceiveAdWithError:(NSError *)error {
-  if (self.adFailedCallback) {
+  if (self.adLoadFailedCallback) {
     _lastLoadError = error;
-    self.adFailedCallback(self.bannerClient, (__bridge GADUTypeErrorRef)error);
+    self.adLoadFailedCallback(self.adClient, (__bridge GADUTypeErrorRef)error);
   }
 }
 
 - (void)bannerViewWillPresentScreen:(GADBannerView *)bannerView {
-  if (self.willPresentCallback) {
-    self.willPresentCallback(self.bannerClient);
+  if (self.adFullScreenOpenedCallback) {
+    self.adFullScreenOpenedCallback(self.adClient);
   }
 }
 
@@ -266,9 +267,162 @@
 }
 
 - (void)bannerViewDidDismissScreen:(GADBannerView *)bannerView {
-  if (self.didDismissCallback) {
-    self.didDismissCallback(self.bannerClient);
+  if (self.adFullScreenClosedCallback) {
+    self.adFullScreenClosedCallback(self.adClient);
+  }
+}
+
+- (void)bannerViewDidRecordImpression:(nonnull GADBannerView *)bannerView {
+  if (self.adImpressionCallback) {
+    self.adImpressionCallback(self.adClient);
+  }
+}
+
+- (void)bannerViewDidRecordClick:(nonnull GADBannerView *)bannerView {
+  if (self.adClickedCallback) {
+    self.adClickedCallback(self.adClient);
   }
 }
 
 @end
+
+#pragma mark Unity Native Interop Methods
+
+static NSString *GADUStringFromUTF8String(const char *bytes) { return bytes ? @(bytes) : nil; }
+
+/// Creates a GADBannerView with the specified width, height, and position. Returns a reference to
+/// the GADUBannerAd.
+GADUTypeAdBridgeRef GADUBannerAdCreate(GADUTypeAdClientRef *adClient, const char *adUnitID,
+                                       NSInteger width, NSInteger height,
+                                       GADAdPosition adPosition) {
+  GADUBanner *banner =
+      [[GADUBanner alloc] initWithBannerClientReference:adClient
+                                               adUnitID:GADUStringFromUTF8String(adUnitID)
+                                                  width:(int)width
+                                                 height:(int)height
+                                             adPosition:adPosition];
+  GADUObjectCache *cache = [GADUObjectCache sharedInstance];
+  cache[banner.gadu_referenceKey] = banner;
+  return (__bridge GADUTypeAdBridgeRef)banner;
+}
+
+/// Creates a GADBannerView with the specified width, height, and custom position. Returns
+/// a reference to the GADUBannerAd.
+GADUTypeAdBridgeRef GADUBannerAdCreateWithCustomPosition(GADUTypeAdClientRef *adClient,
+                                                         const char *adUnitID, NSInteger width,
+                                                         NSInteger height, NSInteger x,
+                                                         NSInteger y) {
+  CGPoint adPosition = CGPointMake(x, y);
+  GADUBanner *banner =
+      [[GADUBanner alloc] initWithBannerClientReference:adClient
+                                               adUnitID:GADUStringFromUTF8String(adUnitID)
+                                                  width:(int)width
+                                                 height:(int)height
+                                       customAdPosition:adPosition];
+  GADUObjectCache *cache = [GADUObjectCache sharedInstance];
+  cache[banner.gadu_referenceKey] = banner;
+  return (__bridge GADUTypeAdBridgeRef)banner;
+}
+
+/// Creates a full-width GADBannerView in the current orientation. Returns a reference to the
+/// GADUBannerAd.
+GADUTypeAdBridgeRef GADUBannerAdCreateSmart(GADUTypeAdClientRef *adClient, const char *adUnitID,
+                                              GADAdPosition adPosition) {
+  GADUBanner *banner = [[GADUBanner alloc]
+      initWithSmartBannerSizeAndBannerClientReference:adClient
+                                             adUnitID:GADUStringFromUTF8String(adUnitID)
+                                           adPosition:adPosition];
+  GADUObjectCache *cache = [GADUObjectCache sharedInstance];
+  cache[banner.gadu_referenceKey] = banner;
+  return (__bridge GADUTypeBannerRef)banner;
+}
+
+/// Creates a full-width GADBannerView in the current orientation with a custom position. Returns a
+/// reference to the GADUBannerAd.
+GADUTypeAdBridgeRef GADUBannerAdCreateSmartWithCustomPosition(GADUTypeAdClientRef *adClient,
+                                                                  const char *adUnitID, NSInteger x,
+                                                                  NSInteger y) {
+  CGPoint adPosition = CGPointMake(x, y);
+  GADUBanner *banner = [[GADUBanner alloc]
+      initWithSmartBannerSizeAndBannerClientReference:adClient
+                                             adUnitID:GADUStringFromUTF8String(adUnitID)
+                                     customAdPosition:adPosition];
+  GADUObjectCache *cache = [GADUObjectCache sharedInstance];
+  cache[banner.gadu_referenceKey] = banner;
+  return (__bridge GADUTypeBannerRef)banner;
+}
+
+/// Creates a an adaptive sized GADBannerView with the specified width, orientation, and position.
+/// Returns a reference to the GADUBannerAd.
+GADUTypeAdBridgeRef GADUBannerAdCreateAnchoredAdaptive(GADUTypeAdClientRef *adClient,
+                                                       const char *adUnitID, NSInteger width,
+                                                       GADUBannerOrientation orientation,
+                                                       GADAdPosition adPosition) {
+  GADUBanner *banner = [[GADUBanner alloc]
+      initWithAdaptiveBannerSizeAndBannerClientReference:adClient
+                                                adUnitID:GADUStringFromUTF8String(adUnitID)
+                                                   width:(int)width
+                                             orientation:orientation
+                                              adPosition:adPosition];
+  GADUObjectCache *cache = [GADUObjectCache sharedInstance];
+  cache[banner.gadu_referenceKey] = banner;
+  return (__bridge GADUTypeBannerRef)banner;
+}
+
+/// Creates a an adaptive sized GADBannerView with the specified width, orientation, and position.
+/// Returns a reference to the GADUBannerAd.
+GADUTypeAdBridgeRef GADUBannerAdCreateAnchoredAdaptiveWithCustomPosition(
+    GADUTypeAdClientRef *adClient, const char *adUnitID, NSInteger width,
+    GADUBannerOrientation orientation, NSInteger x, NSInteger y) {
+  CGPoint adPosition = CGPointMake(x, y);
+  GADUBanner *banner = [[GADUBanner alloc]
+      initWithAdaptiveBannerSizeAndBannerClientReference:adClient
+                                                adUnitID:GADUStringFromUTF8String(adUnitID)
+                                                   width:(int)width
+                                             orientation:orientation
+                                        customAdPosition:adPosition];
+  GADUObjectCache *cache = [GADUObjectCache sharedInstance];
+  cache[banner.gadu_referenceKey] = banner;
+  return (__bridge GADUTypeBannerRef)banner;
+}
+
+void GADUBannerAdRequest(GADUTypeAdBridgeRef adBridgeRef, GADUTypeRequestRef requestRef) {
+  GADUBanner *adBridge = (__bridge GADUBanner *)adBridgeRef;
+  GADURequest *adRequest = (__bridge GADURequest *)requestRef;
+  [adBridge loadRequest:[adRequest request]];
+}
+
+void GADUBannerAdHideView(GADUTypeAdBridgeRef adBridgeRef) {
+  GADUBanner *adBridge = (__bridge GADUBanner *)adBridgeRef;
+  [adBridge hideBannerView];
+}
+
+void GADUBannerAdShow(GADUTypeAdBridgeRef adBridgeRef) {
+  GADUBanner *adBridge = (__bridge GADUBanner *)adBridgeRef;
+  [adBridge showBannerView];
+}
+
+void GADUBannerAdRemove(GADUTypeAdBridgeRef adBridgeRef) {
+  GADUBanner *adBridge = (__bridge GADUBanner *)adBridgeRef;
+  [adBridge removeBannerView];
+}
+
+float GADUBannerAdGetHeightInPixels(GADUTypeAdBridgeRef adBridgeRef) {
+  GADUBanner *adBridge = (__bridge GADUBanner *)adBridgeRef;
+  return adBridge.heightInPixels;
+}
+
+float GADUBannerAdGetWidthInPixels(GADUTypeAdBridgeRef adBridgeRef) {
+  GADUBanner *adBridge = (__bridge GADUBanner *)adBridgeRef;
+  return adBridge.widthInPixels;
+}
+
+void GADUBannerAdSetPosition(GADUTypeAdBridgeRef adBridgeRef, int position) {
+  GADUBanner *adBridge = (__bridge GADUBanner *)adBridgeRef;
+  [adBridge setAdPosition:(GADAdPosition)position];
+}
+
+void GADUBannerAdSetCustomPosition(GADUTypeAdBridgeRef adBridgeRef, int x, int y) {
+  GADUBanner *adBridge = (__bridge GADUBanner *)adBridgeRef;
+  [adBridge setCustomAdPosition:CGPointMake(x, y)];
+}

@@ -5,7 +5,10 @@
 #import <CoreGraphics/CoreGraphics.h>
 #import <UIKit/UIKit.h>
 
+#import "GADUObjectCache.h"
 #import "GADUPluginUtil.h"
+#import "GADURequest.h"
+#import "GADUTypes.h"
 #import "UnityInterface.h"
 
 @interface GADUAppOpenAd () <GADFullScreenContentDelegate>
@@ -15,12 +18,11 @@
   // Keep a reference to the error objects so references to Unity-level
   // ResponseInfo object are not released until the ad object is released.
   NSError *_lastLoadError;
-  NSError *_lastPresentError;
 }
 
-- (instancetype)initWithAppOpenAdClientReference:(GADUTypeAppOpenAdClientRef *)appOpenAdClient {
+- (id)initWithAdClientReference:(GADUTypeAdClientRef *)adClient {
   self = [super init];
-  _appOpenAdClient = appOpenAdClient;
+  super.adClient = adClient;
   return self;
 }
 
@@ -32,35 +34,39 @@
   UIInterfaceOrientation uiOrientation =
       GADUUIInterfaceOrientationForGADUScreenOrientation(orientation);
 
-  [GADAppOpenAd loadWithAdUnitID:adUnit
-                         request:request
-                     orientation:uiOrientation
-               completionHandler:^(GADAppOpenAd *_Nullable appOpenAd, NSError *_Nullable error) {
-                 GADUAppOpenAd *strongSelf = weakSelf;
-                 if (error) {
-                   if (strongSelf.adFailedToLoadCallback) {
-                     _lastLoadError = error;
-                     strongSelf.adFailedToLoadCallback(strongSelf.appOpenAdClient,
-                                                       (__bridge GADUTypeErrorRef)error);
-                   }
-                   return;
-                 }
-                 strongSelf.appOpenAd = appOpenAd;
-                 strongSelf.appOpenAd.fullScreenContentDelegate = strongSelf;
-                 strongSelf.appOpenAd.paidEventHandler = ^void(GADAdValue *_Nonnull adValue) {
-                   GADUAppOpenAd *strongSecondSelf = weakSelf;
-                   if (strongSecondSelf.paidEventCallback) {
-                     int64_t valueInMicros =
-                         [adValue.value decimalNumberByMultiplyingByPowerOf10:6].longLongValue;
-                     strongSecondSelf.paidEventCallback(
-                         strongSecondSelf.appOpenAdClient, (int)adValue.precision, valueInMicros,
-                         [adValue.currencyCode cStringUsingEncoding:NSUTF8StringEncoding]);
-                   }
-                 };
-                 if (strongSelf.adLoadedCallback) {
-                   strongSelf.adLoadedCallback(self.appOpenAdClient);
-                 }
-               }];
+  [GADAppOpenAd
+       loadWithAdUnitID:adUnit
+                request:request
+            orientation:uiOrientation
+      completionHandler:^(GADAppOpenAd *_Nullable appOpenAd, NSError *_Nullable error) {
+        GADUAppOpenAd *strongSelf = weakSelf;
+        if (error) {
+          if (strongSelf.adLoadFailedCallback) {
+            _lastLoadError = error;
+            strongSelf.adLoadFailedCallback(strongSelf.adClient, (__bridge GADUTypeErrorRef)error);
+          }
+          return;
+        }
+        strongSelf.appOpenAd = appOpenAd;
+        strongSelf.appOpenAd.fullScreenContentDelegate = strongSelf;
+        strongSelf.appOpenAd.paidEventHandler = ^void(GADAdValue *_Nonnull adValue) {
+          GADUAppOpenAd *strongSecondSelf = weakSelf;
+          if (strongSecondSelf.adPaidCallback) {
+            int64_t valueInMicros =
+                [adValue.value decimalNumberByMultiplyingByPowerOf10:6].longLongValue;
+            strongSecondSelf.adPaidCallback(
+                strongSecondSelf.adClient, (int)adValue.precision, valueInMicros,
+                [adValue.currencyCode cStringUsingEncoding:NSUTF8StringEncoding]);
+          }
+        };
+        if (strongSelf.adLoadCallback) {
+          strongSelf.adLoadCallback(strongSelf.adClient);
+        }
+      }];
+}
+
+- (GADResponseInfo *)responseInfo {
+  return self.appOpenAd.responseInfo;
 }
 
 - (void)show {
@@ -68,53 +74,30 @@
   [self.appOpenAd presentFromRootViewController:unityController];
 }
 
-- (GADResponseInfo *)responseInfo {
-  return self.appOpenAd.responseInfo;
-}
-
-#pragma mark GADFullScreenContentDelegate implementation
-
-- (void)ad:(nonnull id<GADFullScreenPresentingAd>)ad
-    didFailToPresentFullScreenContentWithError:(nonnull NSError *)error {
-  if (self.adFailedToPresentFullScreenContentCallback) {
-    _lastPresentError = error;
-    self.adFailedToPresentFullScreenContentCallback(self.appOpenAdClient,
-                                                    (__bridge GADUTypeErrorRef)error);
-  }
-}
-
-- (void)adWillPresentFullScreenContent:(nonnull id<GADFullScreenPresentingAd>)ad {
-  if (GADUPluginUtil.pauseOnBackground) {
-    UnityPause(YES);
-  }
-
-  if (self.adWillPresentFullScreenContentCallback) {
-    self.adWillPresentFullScreenContentCallback(self.appOpenAdClient);
-  }
-}
-
-- (void)adDidRecordImpression:(nonnull id<GADFullScreenPresentingAd>)ad {
-  if (self.adDidRecordImpressionCallback) {
-    self.adDidRecordImpressionCallback(self.appOpenAdClient);
-  }
-}
-
-- (void)adDidDismissFullScreenContent:(nonnull id<GADFullScreenPresentingAd>)ad {
-  extern bool _didResignActive;
-  if (_didResignActive) {
-    // We are in the middle of the shutdown sequence, and at this point unity runtime is already
-    // destroyed. We shall not call unity API, and definitely not script callbacks, so nothing to do
-    // here
-    return;
-  }
-
-  if (UnityIsPaused()) {
-    UnityPause(NO);
-  }
-
-  if (self.adDidDismissFullScreenContentCallback) {
-    self.adDidDismissFullScreenContentCallback(self.appOpenAdClient);
-  }
-}
-
 @end
+
+#pragma mark Unity Native Interop Methods
+
+static NSString *GADUStringFromUTF8String(const char *bytes) { return bytes ? @(bytes) : nil; }
+
+GADUTypeAdBridgeRef GADUAppOpenAdCreate(GADUTypeAdClientRef *adClientRef) {
+  GADUAppOpenAd *adBridge = [[GADUAppOpenAd alloc] initWithAdClientReference:adClientRef];
+  GADUObjectCache *cache = [GADUObjectCache sharedInstance];
+  cache[adBridge.gadu_referenceKey] = adBridge;
+  return (__bridge GADUTypeAdBridgeRef)adBridge;
+}
+
+void GADUAppOpenAdLoad(GADUTypeAdBridgeRef adBridgeRef, const char *adUnitID, int orientation,
+                       GADUTypeRequestRef requestRef) {
+  GADUAppOpenAd *adBridge = (__bridge GADUAppOpenAd *)adBridgeRef;
+  GADURequest *adRequest = (__bridge GADURequest *)requestRef;
+
+  [adBridge loadWithAdUnitID:GADUStringFromUTF8String(adUnitID)
+                 orientation:(GADUScreenOrientation)orientation
+                     request:[adRequest request]];
+}
+
+void GADUAppOpenAdShow(GADUTypeAdBridgeRef adBridgeRef) {
+  GADUAppOpenAd *adBridge = (__bridge GADUAppOpenAd *)adBridgeRef;
+  [adBridge show];
+}
