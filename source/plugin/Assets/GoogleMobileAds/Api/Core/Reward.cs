@@ -16,10 +16,17 @@ using System;
 
 namespace GoogleMobileAds.Api
 {
-    // Event that occurs when a user is rewarded by a reward based video ad.
+    /// <summary>
+    /// Event that occurs when a user is rewarded by a reward based video ad.
+    /// </summary>
     public class Reward : EventArgs
     {
         public string Type { get; set; }
         public double Amount { get; set; }
+
+        public override string ToString()
+        {
+            return "Reward of "+ Amount +" "+ Type +".";
+        }
     }
 }

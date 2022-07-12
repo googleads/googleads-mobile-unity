@@ -16,8 +16,14 @@ using System;
 
 namespace GoogleMobileAds.Common
 {
+    /// <summary>
+    //  Error information about why an ad load operation failed.
+    /// </summary>
     public interface ILoadAdErrorClient : IAdErrorClient
     {
-        IResponseInfoClient GetResponseInfoClient();
+        /// <summary>
+        /// Returns the ad request Response info.
+        /// </summary>
+        IResponseInfoClient Response { get; }
     }
 }

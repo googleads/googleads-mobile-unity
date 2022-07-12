@@ -1,4 +1,4 @@
-// Copyright (C) 2018 Google, Inc.
+// Copyright (C) 2022 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,26 +12,23 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System.Collections.Generic;
 using UnityEngine;
-
 using GoogleMobileAds.Api;
 using GoogleMobileAds.Common;
-using System.Collections.Generic;
 
 namespace GoogleMobileAds.Android
 {
     internal class InitializationStatusClient : IInitializationStatusClient
     {
-        private AndroidJavaObject status;
         private AndroidJavaObject statusMap;
 
         public InitializationStatusClient(AndroidJavaObject status)
         {
-            this.status = status;
             this.statusMap = status.Call<AndroidJavaObject>("getAdapterStatusMap");
         }
 
-        public AdapterStatus getAdapterStatusForClassName(string className)
+        public AdapterStatus GetAdapterStatusForClassName(string className)
         {
             AndroidJavaObject map = this.statusMap;
             AndroidJavaObject adapterStatus = map.Call<AndroidJavaObject>("get", className);
@@ -51,13 +48,13 @@ namespace GoogleMobileAds.Android
             return new AdapterStatus(adapterState, description, latency);
         }
 
-        public Dictionary<string, AdapterStatus> getAdapterStatusMap()
+        public Dictionary<string, AdapterStatus> GetAdapterStatusMap()
         {
             Dictionary<string, AdapterStatus> map = new Dictionary<string, AdapterStatus>();
             string[] keys = getKeys();
             foreach(string key in keys)
             {
-                map.Add(key, getAdapterStatusForClassName(key));
+                map.Add(key, GetAdapterStatusForClassName(key));
             }
             return map;
         }

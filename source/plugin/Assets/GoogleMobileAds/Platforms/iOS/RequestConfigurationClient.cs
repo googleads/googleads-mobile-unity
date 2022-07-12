@@ -25,7 +25,6 @@ using System.Collections.Generic;
 namespace GoogleMobileAds.iOS
 {
     public class RequestConfigurationClient
-
     {
         private static IntPtr requestConfigurationPtr = Externs.GADUCreateRequestConfiguration();
 

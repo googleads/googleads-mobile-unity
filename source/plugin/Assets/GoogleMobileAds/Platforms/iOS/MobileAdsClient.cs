@@ -15,8 +15,7 @@
 
 using System;
 using System.Runtime.InteropServices;
-using UnityEngine;
-
+using System.Threading;
 using GoogleMobileAds.Api;
 using GoogleMobileAds.Common;
 
@@ -25,7 +24,7 @@ namespace GoogleMobileAds.iOS
     public class MobileAdsClient : IMobileAdsClient
     {
         private static MobileAdsClient instance = new MobileAdsClient();
-        private Action<AdInspectorErrorClientEventArgs> adInspectorClosedAction;
+        private Action<IAdErrorClient> adInspectorClosedAction;
         private Action<IInitializationStatusClient> initCompleteAction;
         private IntPtr mobileAdsClientPtr;
         internal delegate void GADUAdInspectorClosedCallback(IntPtr mobileAdsClient,
@@ -93,7 +92,7 @@ namespace GoogleMobileAds.iOS
             return Externs.GADUDeviceSafeWidth();
         }
 
-        public void OpenAdInspector(Action<AdInspectorErrorClientEventArgs> onAdInspectorClosed)
+        public void OpenAdInspector(Action<IAdErrorClient> onAdInspectorClosed)
         {
             adInspectorClosedAction = onAdInspectorClosed;
             Externs.GADUPresentAdInspector(this.mobileAdsClientPtr, AdInspectorClosedCallback);
@@ -104,16 +103,12 @@ namespace GoogleMobileAds.iOS
         {
             MobileAdsClient client = IntPtrToMobileAdsClient(mobileAdsClient);
             if (client.adInspectorClosedAction == null)
+
             {
                 return;
             }
 
-            AdInspectorErrorClientEventArgs args = (errorRef == IntPtr.Zero)
-                ? null
-                : new AdInspectorErrorClientEventArgs
-                {
-                    AdErrorClient = new AdInspectorErrorClient(errorRef)
-                };
+            AdErrorClient args = (errorRef == IntPtr.Zero) ? null : new AdErrorClient(errorRef);
 
             client.adInspectorClosedAction(args);
             client.adInspectorClosedAction = null;
@@ -125,7 +120,8 @@ namespace GoogleMobileAds.iOS
             MobileAdsClient client = IntPtrToMobileAdsClient(mobileAdsClient);
             if (client.initCompleteAction != null)
             {
-                IInitializationStatusClient statusClient = new InitializationStatusClient(initStatus);
+                IInitializationStatusClient statusClient =
+                    new InitializationStatusClient(initStatus);
                 client.initCompleteAction(statusClient);
             }
         }

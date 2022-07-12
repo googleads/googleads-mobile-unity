@@ -11,28 +11,63 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+
+using System;
 using GoogleMobileAds.Common;
-public class ResponseInfo
+using GoogleMobileAds.Api;
+
+namespace GoogleMobileAds.Api
 {
-    private IResponseInfoClient client;
-
-    public ResponseInfo(IResponseInfoClient client)
+    public class ResponseInfo
     {
-        this.client = client;
-    }
+        /// <summary>
+        /// Returns the mediation adapter class name of the ad network that loaded the ad.
+        ///
+        /// In the case of a mediated ad response, this is the name of the class that was
+        /// responsible for performing the ad request and rendering the ad.
+        ///
+        /// For non-mediated responses, this value will be AdMobAdapter.
+        /// Returns null if the ad failed to load.
+        /// </summary>
+        public string MediationAdapterClassName
+        {
+            get { return _client.MediationAdapterClassName; }
+        }
 
-    public string GetMediationAdapterClassName()
-    {
-        return client.GetMediationAdapterClassName();
-    }
+        /// <summary>
+        /// Returns the response ID for the loaded ad.
+        /// Can be used to look up ads in the Ad Review Center.
+        /// Returns null if the ad failed to load.
+        /// </summary>
+        public string ResponseId { get { return _client.ResponseId; } }
 
-    public string GetResponseId()
-    {
-        return client.GetResponseId();
-    }
+        /// <summary>
+        /// Returns a log friendly string of the ad request response.
+        /// </summary>
+        public string Description { get { return _client.Description; } }
 
-    public override string ToString()
-    {
-        return client.ToString();
+        private IResponseInfoClient _client;
+
+        internal ResponseInfo(IResponseInfoClient client)
+        {
+            _client = client;
+        }
+
+        [Obsolete("Use MediationAdapterClassName")]
+        public string GetMediationAdapterClassName()
+        {
+            return MediationAdapterClassName;
+        }
+
+        [Obsolete("Use ResponseId")]
+        public string GetResponseId()
+        {
+            return ResponseId;
+        }
+
+        public override string ToString()
+        {
+            return Description;
+        }
     }
 }

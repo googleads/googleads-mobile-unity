@@ -1,5 +1,5 @@
 #if !UNITY_IOS
-// Copyright (C) 2015 Google, Inc.
+// Copyright (C) 2022 Google LLC.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,12 +14,11 @@
 // limitations under the License.
 
 using System;
-using System.Reflection;
 using UnityEngine;
 using UnityEngine.Scripting;
-using GoogleMobileAds;
-using GoogleMobileAds.Api;
 using GoogleMobileAds.Common;
+using GoogleMobileAds.Api;
+using GoogleMobileAds.Android;
 
 namespace GoogleMobileAds
 {
@@ -28,73 +27,37 @@ namespace GoogleMobileAds
     {
         public IAppStateEventClient BuildAppStateEventClient()
         {
-            if (Application.platform == RuntimePlatform.Android)
-            {
-                return new GoogleMobileAds.Android.AppStateEventClient();
-            }
-            throw new InvalidOperationException(@"Called " + MethodBase.GetCurrentMethod().Name +
-            " on non-Android runtime");
+            return new Android.AppStateEventClient();
         }
 
         public IAppOpenAdClient BuildAppOpenAdClient()
         {
-            if (Application.platform == RuntimePlatform.Android)
-            {
-                return new GoogleMobileAds.Android.AppOpenAdClient();
-            }
-            throw new InvalidOperationException(@"Called " + MethodBase.GetCurrentMethod().Name +
-            " on non-Android runtime");
+            return new AppOpenAdClient();
         }
 
-        public IBannerClient BuildBannerClient()
+        public IBannerAdClient BuildBannerClient()
         {
-            if (Application.platform == RuntimePlatform.Android)
-            {
-                return new GoogleMobileAds.Android.BannerClient();
-            }
-            throw new InvalidOperationException(@"Called " + MethodBase.GetCurrentMethod().Name +
-            " on non-Android runtime");
+            return new BannerAdClient();
         }
 
-        public IInterstitialClient BuildInterstitialClient()
+        public IInterstitialAdClient BuildInterstitialClient()
         {
-            if (Application.platform == RuntimePlatform.Android)
-            {
-                return new GoogleMobileAds.Android.InterstitialClient();
-            }
-            throw new InvalidOperationException(@"Called " + MethodBase.GetCurrentMethod().Name +
-            " on non-Android runtime");
+            return new InterstitialAdClient();
         }
 
         public IRewardedAdClient BuildRewardedAdClient()
         {
-            if (Application.platform == RuntimePlatform.Android)
-            {
-                return new GoogleMobileAds.Android.RewardedAdClient();
-            }
-            throw new InvalidOperationException(@"Called " + MethodBase.GetCurrentMethod().Name +
-            " on non-Android runtime");
+            return new RewardedAdClient();
         }
 
         public IRewardedInterstitialAdClient BuildRewardedInterstitialAdClient()
         {
-            if (Application.platform == RuntimePlatform.Android)
-            {
-                return new GoogleMobileAds.Android.RewardedInterstitialAdClient();
-            }
-            throw new InvalidOperationException(@"Called " + MethodBase.GetCurrentMethod().Name +
-            " on non-Android runtime");
+            return new RewardedInterstitialAdClient();
         }
-
 
         public IMobileAdsClient MobileAdsInstance()
         {
-            if (Application.platform == RuntimePlatform.Android)
-            {
-                return GoogleMobileAds.Android.MobileAdsClient.Instance;
-            }
-            throw new InvalidOperationException(@"Called " + MethodBase.GetCurrentMethod().Name +
-            " on non-Android runtime");
+            return MobileAdsClient.Instance;
         }
     }
 }

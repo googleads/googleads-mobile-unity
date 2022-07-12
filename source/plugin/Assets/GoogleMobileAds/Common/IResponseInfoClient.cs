@@ -14,11 +14,32 @@
 
 namespace GoogleMobileAds.Common
 {
+    /// <summary>
+    /// Information about an ad response.
+    /// </summary>
     public interface IResponseInfoClient
     {
-        string GetMediationAdapterClassName();
+        /// <summary>
+        /// Returns the mediation adapter class name of the ad network that loaded the ad.
+        ///
+        /// In the case of a mediated ad response, this is the name of the class that was
+        /// responsible for performing the ad request and rendering the ad.
+        ///
+        /// For non-mediated responses, this value will be AdMobAdapter.
+        /// Returns null if the ad failed to load.
+        /// </summary>
+        string MediationAdapterClassName { get; }
 
-        string GetResponseId();
+        /// <summary>
+        /// Returns the response ID for the loaded ad.
+        /// Can be used to look up ads in the Ad Review Center.
+        /// Returns null if the ad failed to load.
+        /// </summary>
+        string ResponseId { get; }
 
+        /// <summary>
+        /// Returns a log friendly string of the ad request response.
+        /// </summary>
+        string Description { get; }
     }
 }

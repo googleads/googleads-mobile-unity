@@ -1,4 +1,4 @@
-// Copyright (C) 2021 Google LLC
+// Copyright (C) 2022 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -13,148 +13,77 @@
 // limitations under the License.
 
 using System;
-
 using UnityEngine;
-
 using GoogleMobileAds.Api;
 using GoogleMobileAds.Common;
 
 namespace GoogleMobileAds.Android
 {
-    public class AppOpenAdClient : AndroidJavaProxy, IAppOpenAdClient
+    public class AppOpenAdClient : BaseAdClient,
+                                   IAppOpenAdClient
     {
-        private AndroidJavaObject androidAppOpenAd;
 
-        public AppOpenAdClient() : base(Utils.UnityAppOpenAdCallbackClassName)
+        private Action<IAppOpenAdClient, ILoadAdErrorClient> _loadCallback;
+
+        public AppOpenAdClient() : base(Utils.UnityAppOpenAdClassName)
         {
-            AndroidJavaClass playerClass = new AndroidJavaClass(Utils.UnityActivityClassName);
-            AndroidJavaObject activity =
-                    playerClass.GetStatic<AndroidJavaObject>("currentActivity");
-            androidAppOpenAd = new AndroidJavaObject(Utils.UnityAppOpenAdClassName, activity, this);
         }
 
-        #region IAppOpenClient implementation
-
-        public event EventHandler<EventArgs> OnAdLoaded;
-
-        public event EventHandler<LoadAdErrorClientEventArgs> OnAdFailedToLoad;
-
-        public event EventHandler<AdValueEventArgs> OnPaidEvent;
-
-        public event EventHandler<AdErrorClientEventArgs> OnAdFailedToPresentFullScreenContent;
-
-        public event EventHandler<EventArgs> OnAdDidPresentFullScreenContent;
-
-        public event EventHandler<EventArgs> OnAdDidDismissFullScreenContent;
-
-        public event EventHandler<EventArgs> OnAdDidRecordImpression;
-
-        public void CreateAppOpenAd()
+        public void LoadAppOpenAd(string adUnitId,
+            ScreenOrientation orientation,
+            AdRequest request,
+            Action<IAppOpenAdClient, ILoadAdErrorClient> callback)
         {
-            // Do nothing.
+            //START_DEBUG_STRIP
+            UnityEngine.Debug.Log("Android.AppOpenAd LoadAppOpenAd");
+            //END_DEBUG_STRIP
+            _loadCallback = callback;
+
+            if (_ad != null)
+            {
+                _ad.Call("loadAd",
+                    adUnitId,
+                    Utils.GetAdRequestJavaObject(request),
+                    Utils.GetAppOpenAdOrientation(orientation));
+            }
         }
 
-        public void LoadAd(string adUnitID, AdRequest request, ScreenOrientation orientation)
-        {
-            androidAppOpenAd.Call("loadAd", adUnitID,
-                Utils.GetAdRequestJavaObject(request),
-                Utils.GetAppOpenAdOrientation(orientation));
-        }
+        #region Callbacks from IAppOpenAd
 
         public void Show()
         {
-            androidAppOpenAd.Call("show");
+            //START_DEBUG_STRIP
+            UnityEngine.Debug.Log("Android.AppOpenAd Show");
+            //END_DEBUG_STRIP
+
+            if (_ad != null)
+            {
+                _ad.Call("show");
+            }
         }
 
-        public IResponseInfoClient GetResponseInfoClient()
+        public void Destroy()
         {
-            return new ResponseInfoClient(ResponseInfoClientType.AdLoaded, this.androidAppOpenAd);
-        }
-
-        public void DestroyAppOpenAd()
-        {
-            this.androidAppOpenAd.Call("destroy");
+            _ad = null;
         }
 
         #endregion
 
-        #region Callbacks from UnityAppOpenAdListener
-
-        void onAppOpenAdLoaded()
+        protected override void OnAdLoaded()
         {
-            if (this.OnAdLoaded != null)
+            if (_loadCallback != null)
             {
-                this.OnAdLoaded(this, EventArgs.Empty);
+                _loadCallback(this, null);
             }
+            _loadCallback = null;
         }
 
-        void onAppOpenAdFailedToLoad(AndroidJavaObject error)
+        protected override void OnAdLoadFailed(AndroidJavaObject error)
         {
-            if (this.OnAdFailedToLoad != null)
+            if (_loadCallback != null)
             {
-                LoadAdErrorClientEventArgs args = new LoadAdErrorClientEventArgs()
-                {
-                    LoadAdErrorClient = new LoadAdErrorClient(error),
-                };
-                this.OnAdFailedToLoad(this, args);
+                _loadCallback(null, new LoadAdErrorClient(error));
             }
         }
-
-        void onAdFailedToShowFullScreenContent(AndroidJavaObject error)
-        {
-            if (this.OnAdFailedToPresentFullScreenContent != null)
-            {
-                AdErrorClientEventArgs args = new AdErrorClientEventArgs()
-                {
-                    AdErrorClient = new AdErrorClient(error),
-                };
-                this.OnAdFailedToPresentFullScreenContent(this, args);
-            }
-        }
-
-        void onAdShowedFullScreenContent()
-        {
-            if (this.OnAdDidPresentFullScreenContent != null)
-            {
-                this.OnAdDidPresentFullScreenContent(this, EventArgs.Empty);
-            }
-        }
-
-        void onAdDismissedFullScreenContent()
-        {
-            if (this.OnAdDidDismissFullScreenContent != null)
-            {
-                this.OnAdDidDismissFullScreenContent(this, EventArgs.Empty);
-            }
-        }
-
-        void onAdImpression()
-        {
-            if (this.OnAdDidRecordImpression != null)
-            {
-                this.OnAdDidRecordImpression(this, EventArgs.Empty);
-            }
-        }
-
-        void onPaidEvent(int precision, long valueInMicros, string currencyCode)
-        {
-            if (this.OnPaidEvent != null)
-            {
-                AdValue adValue = new AdValue()
-                {
-                    Precision = (AdValue.PrecisionType) precision,
-                    Value = valueInMicros,
-                    CurrencyCode = currencyCode
-                };
-                AdValueEventArgs args = new AdValueEventArgs()
-                {
-                    AdValue = adValue
-                };
-
-                this.OnPaidEvent(this, args);
-            }
-        }
-
-        #endregion
     }
 }

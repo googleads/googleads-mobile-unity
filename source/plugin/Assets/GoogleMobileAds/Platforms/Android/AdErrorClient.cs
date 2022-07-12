@@ -1,4 +1,4 @@
-// Copyright (C) 2021 Google LLC
+// Copyright (C) 2022 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,42 +12,48 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using GoogleMobileAds.Common;
 using UnityEngine;
+using GoogleMobileAds.Api;
+using GoogleMobileAds.Common;
 
 namespace GoogleMobileAds.Android
 {
-    internal class AdErrorClient : IAdErrorClient
+    public class AdErrorClient : IAdErrorClient
     {
-        AndroidJavaObject error;
+        public int Code
+        {
+            get { return _error.Call<int>("getCode"); }
+        }
+
+        public string Domain
+        {
+            get { return _error.Call<string>("getDomain"); }
+        }
+
+        public string Message
+        {
+            get { return _error.Call<string>("getMessage"); }
+        }
+
+        public string Description
+        {
+            get { return _error.Call<string>("toString"); }
+        }
+
+        public IAdErrorClient Cause
+        {
+            get
+            {
+                var error = _error.Call<AndroidJavaObject>("getCause");
+                return error == null ? null : new AdErrorClient(error);
+            }
+        }
+
+        private AndroidJavaObject _error;
 
         public AdErrorClient(AndroidJavaObject error)
         {
-            this.error = error;
+            _error = error;
         }
-        public int GetCode()
-        {
-           return error.Call<int>("getCode");
-        }
-        public string GetDomain()
-        {
-            return error.Call<string>("getDomain");
-        }
-
-        public string GetMessage()
-        {
-            return error.Call<string>("getMessage");
-        }
-
-        public IAdErrorClient GetCause()
-        {
-            return new AdErrorClient(error.Call<AndroidJavaObject>("getCause"));
-        }
-
-        public override string ToString()
-        {
-            return error.Call<string>("toString");
-        }
-
     }
 }

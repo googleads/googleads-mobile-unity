@@ -100,16 +100,16 @@ public class Banner {
   /**
    * Creates an {@link AdView} to hold banner ads.
    *
-   * @param publisherId Your ad unit ID.
+   * @param adUnitId Your ad unit ID.
    * @param adSize The size of the banner.
    * @param positionCode A code indicating where to place the ad.
    */
-  public void create(final String publisherId, final AdSize adSize, final int positionCode) {
+  public void create(final String adUnitId, final AdSize adSize, final int positionCode) {
     mUnityPlayerActivity.runOnUiThread(
         new Runnable() {
           @Override
           public void run() {
-            createAdView(publisherId, adSize);
+            createAdView(adUnitId, adSize);
             mHorizontalOffset = 0;
             mVerticalOffset = 0;
             mPositionCode = positionCode;
@@ -121,18 +121,18 @@ public class Banner {
   /**
    * Creates an {@link AdView} to hold banner ads with a custom position.
    *
-   * @param publisherId Your ad unit ID.
+   * @param adUnitId Your ad unit ID.
    * @param adSize The size of the banner.
    * @param positionX Position of banner ad on the x axis.
    * @param positionY Position of banner ad on the y axis.
    */
   public void create(
-      final String publisherId, final AdSize adSize, final int positionX, final int positionY) {
+      final String adUnitId, final AdSize adSize, final int positionX, final int positionY) {
     mUnityPlayerActivity.runOnUiThread(
         new Runnable() {
           @Override
           public void run() {
-            createAdView(publisherId, adSize);
+            createAdView(adUnitId, adSize);
             mPositionCode = PluginUtils.POSITION_CUSTOM;
             mHorizontalOffset = positionX;
             mVerticalOffset = positionY;
@@ -141,11 +141,11 @@ public class Banner {
         });
   }
 
-  private void createAdView(final String publisherId, final AdSize adSize) {
+  private void createAdView(final String adUnitId, final AdSize adSize) {
     mAdView = new AdView(mUnityPlayerActivity);
     // Setting the background color works around an issue where the first ad isn't visible.
     mAdView.setBackgroundColor(Color.TRANSPARENT);
-    mAdView.setAdUnitId(publisherId);
+    mAdView.setAdUnitId(adUnitId);
     mAdView.setAdSize(adSize);
     mAdView.setVisibility(View.GONE);
     mUnityPlayerActivity.addContentView(mAdView, getLayoutParams());
@@ -153,22 +153,19 @@ public class Banner {
         new AdListener() {
           @Override
           public void onAdLoaded() {
-            if (mUnityListener != null) {
-              if (!mHidden) {
-                show();
-              }
-
-              new Thread(
-                      new Runnable() {
-                        @Override
-                        public void run() {
-                          if (mUnityListener != null) {
-                            mUnityListener.onAdLoaded();
-                          }
-                        }
-                      })
-                  .start();
+            if (!mHidden) {
+              show();
             }
+            new Thread(
+                    new Runnable() {
+                      @Override
+                      public void run() {
+                        if (mUnityListener != null) {
+                          mUnityListener.onAdLoaded();
+                        }
+                      }
+                    })
+                .start();
           }
 
           @Override
@@ -179,7 +176,7 @@ public class Banner {
                         @Override
                         public void run() {
                           if (mUnityListener != null) {
-                            mUnityListener.onAdFailedToLoad(error);
+                            mUnityListener.onAdLoadFailed(error);
                           }
                         }
                       })
@@ -195,7 +192,7 @@ public class Banner {
                         @Override
                         public void run() {
                           if (mUnityListener != null) {
-                            mUnityListener.onAdOpened();
+                            mUnityListener.onAdFullScreenContentOpened();
                           }
                         }
                       })
@@ -211,7 +208,39 @@ public class Banner {
                         @Override
                         public void run() {
                           if (mUnityListener != null) {
-                            mUnityListener.onAdClosed();
+                            mUnityListener.onAdFullScreenContentClosed();
+                          }
+                        }
+                      })
+                  .start();
+            }
+          }
+
+          @Override
+          public void onAdImpression() {
+            if (mUnityListener != null) {
+              new Thread(
+                      new Runnable() {
+                        @Override
+                        public void run() {
+                          if (mUnityListener != null) {
+                            mUnityListener.onAdImpressionRecorded();
+                          }
+                        }
+                      })
+                  .start();
+            }
+          }
+
+          @Override
+          public void onAdClicked() {
+            if (mUnityListener != null) {
+              new Thread(
+                      new Runnable() {
+                        @Override
+                        public void run() {
+                          if (mUnityListener != null) {
+                            mUnityListener.onAdClickRecorded();
                           }
                         }
                       })
@@ -219,7 +248,6 @@ public class Banner {
             }
           }
         });
-
 
     mAdView.setOnPaidEventListener(
         new OnPaidEventListener() {
@@ -231,7 +259,7 @@ public class Banner {
                         @Override
                         public void run() {
                           if (mUnityListener != null) {
-                            mUnityListener.onPaidEvent(
+                            mUnityListener.onAdPaid(
                                 adValue.getPrecisionType(),
                                 adValue.getValueMicros(),
                                 adValue.getCurrencyCode());
@@ -242,7 +270,6 @@ public class Banner {
             }
           }
         });
-
 
     mLayoutChangeListener =
         new View.OnLayoutChangeListener() {
@@ -286,7 +313,6 @@ public class Banner {
         new Runnable() {
           @Override
           public void run() {
-            Log.d(PluginUtils.LOGTAG, "Calling loadAd() on Android");
             mAdView.loadAd(request);
           }
         });
@@ -298,7 +324,6 @@ public class Banner {
         new Runnable() {
           @Override
           public void run() {
-            Log.d(PluginUtils.LOGTAG, "Calling show() on Android");
             mHidden = false;
             mAdView.setVisibility(View.VISIBLE);
             updatePosition();
@@ -313,7 +338,6 @@ public class Banner {
         new Runnable() {
           @Override
           public void run() {
-            Log.d(PluginUtils.LOGTAG, "Calling hide() on Android");
             mHidden = true;
             mAdView.setVisibility(View.GONE);
             mAdView.pause();
@@ -327,7 +351,6 @@ public class Banner {
         new Runnable() {
           @Override
           public void run() {
-            Log.d(PluginUtils.LOGTAG, "Calling destroy() on Android");
             if (mAdView != null) {
               mAdView.destroy();
               ViewParent parentView = mAdView.getParent();
@@ -364,11 +387,7 @@ public class Banner {
     float result = -1;
     try {
       result = task.get();
-    } catch (InterruptedException e) {
-      Log.e(
-          PluginUtils.LOGTAG,
-          String.format("Failed to get ad view height: %s", e.getLocalizedMessage()));
-    } catch (ExecutionException e) {
+    } catch (InterruptedException | ExecutionException e) {
       Log.e(
           PluginUtils.LOGTAG,
           String.format("Failed to get ad view height: %s", e.getLocalizedMessage()));
@@ -395,14 +414,10 @@ public class Banner {
     float result = -1;
     try {
       result = task.get();
-    } catch (InterruptedException e) {
+    } catch (InterruptedException | ExecutionException e) {
       Log.e(
           PluginUtils.LOGTAG,
-          String.format("Failed to get ad view width: %s", e.getLocalizedMessage()));
-    } catch (ExecutionException e) {
-      Log.e(
-          PluginUtils.LOGTAG,
-          String.format("Failed to get ad view width: %s", e.getLocalizedMessage()));
+          String.format("Failed to get ad view height: %s", e.getLocalizedMessage()));
     }
     return result;
   }
@@ -521,29 +536,26 @@ public class Banner {
     return insets;
   }
 
-  /**
-   * Returns the request response info.
-   */
+  /** Returns the request response info. */
   public ResponseInfo getResponseInfo() {
-    FutureTask<ResponseInfo> task = new FutureTask<>(new Callable<ResponseInfo>() {
-      @Override
-      public ResponseInfo call() {
-        return mAdView.getResponseInfo();
-      }
-    });
+    FutureTask<ResponseInfo> task =
+        new FutureTask<>(
+            new Callable<ResponseInfo>() {
+              @Override
+              public ResponseInfo call() {
+                return mAdView.getResponseInfo();
+              }
+            });
     mUnityPlayerActivity.runOnUiThread(task);
 
     ResponseInfo result = null;
     try {
       result = task.get();
-    } catch (InterruptedException exception) {
-      Log.e(PluginUtils.LOGTAG,
-              String.format("Unable to check banner response info: %s",
-                      exception.getLocalizedMessage()));
-    } catch (ExecutionException exception) {
-      Log.e(PluginUtils.LOGTAG,
-              String.format("Unable to check banner response info: %s",
-                      exception.getLocalizedMessage()));
+    } catch (InterruptedException | ExecutionException e) {
+      Log.e(
+          PluginUtils.LOGTAG,
+          String.format(
+              "Unable to check banner response info: %s", e.getLocalizedMessage()));
     }
     return result;
   }

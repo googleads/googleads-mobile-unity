@@ -1,4 +1,4 @@
-// Copyright (C) 2018 Google, Inc.
+// Copyright (C) 2022 Google LLC.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System;
 using GoogleMobileAds.Common;
 using System.Collections.Generic;
 
@@ -19,21 +20,33 @@ namespace GoogleMobileAds.Api
 {
     public class InitializationStatus
     {
-        private IInitializationStatusClient client;
+        private IInitializationStatusClient _client;
 
         internal InitializationStatus(IInitializationStatusClient client)
         {
-            this.client = client;
+            _client = client;
         }
 
+        public AdapterStatus GetAdapterStatusForClassName(string className)
+        {
+            return _client.GetAdapterStatusForClassName(className);
+        }
+
+        public Dictionary<string, AdapterStatus> GetAdapterStatusMap()
+        {
+            return _client.GetAdapterStatusMap();
+        }
+
+        [Obsolete("Use GetAdapterStatusForClassName")]
         public AdapterStatus getAdapterStatusForClassName(string className)
         {
-            return client.getAdapterStatusForClassName(className);
+            return GetAdapterStatusForClassName(className);
         }
 
+        [Obsolete("Use GetAdapterStatusMap")]
         public Dictionary<string, AdapterStatus> getAdapterStatusMap()
         {
-            return client.getAdapterStatusMap();
+            return GetAdapterStatusMap();
         }
     }
 }

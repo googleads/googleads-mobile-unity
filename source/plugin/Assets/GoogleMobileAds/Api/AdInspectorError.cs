@@ -12,15 +12,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System;
 using GoogleMobileAds.Common;
 
 namespace GoogleMobileAds.Api {
 
-  ///< summary>
-  /// Error information about why the ad inspector failed.
-  /// <summary>
-  public class AdInspectorError : AdError {
-
+    /// <summary>
+    /// Error information about why the ad inspector failed.
+    /// <summary>
+    public class AdInspectorError : AdError
+    {
         /// <summary>
         /// Error information about why the ad inspector failed.
         /// <summary>
@@ -44,10 +45,13 @@ namespace GoogleMobileAds.Api {
           ERROR_CODE_ALREADY_OPEN = 3
         }
 
-    public AdInspectorError(IAdInspectorErrorClient client) : base(client) {}
+        public AdInspectorError(IAdErrorClient client) : base(client)
+        {
+        }
 
-    public new AdInspectorErrorCode GetCode() {
-      return (AdInspectorErrorCode)base.GetCode();
+        public new AdInspectorErrorCode GetCode()
+        {
+            return (AdInspectorErrorCode)base.Code;
+        }
     }
-  }
 }

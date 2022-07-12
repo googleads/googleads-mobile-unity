@@ -13,88 +13,49 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System;
-using System.Reflection;
-using UnityEngine;
 using UnityEngine.Scripting;
-using GoogleMobileAds;
-using GoogleMobileAds.Api;
 using GoogleMobileAds.Common;
+using GoogleMobileAds.iOS;
 
 namespace GoogleMobileAds
 {
-  [Preserve]
-  public class GoogleMobileAdsClientFactory : IClientFactory
-  {
-    public IAppStateEventClient BuildAppStateEventClient()
+    [Preserve]
+    public class GoogleMobileAdsClientFactory : IClientFactory
     {
-        if (Application.platform == RuntimePlatform.IPhonePlayer)
+        public IAppStateEventClient BuildAppStateEventClient()
         {
-          return GoogleMobileAds.Common.AppStateEventClient.Instance;
+            return AppStateEventClient.Instance;
         }
-        throw new InvalidOperationException(@"Called " + MethodBase.GetCurrentMethod().Name +
-                                            " on non-iOS runtime");
-    }
 
-    public IAppOpenAdClient BuildAppOpenAdClient()
-    {
-      if (Application.platform == RuntimePlatform.IPhonePlayer)
-      {
-        return new GoogleMobileAds.iOS.AppOpenAdClient();
-      }
-      throw new InvalidOperationException(@"Called " + MethodBase.GetCurrentMethod().Name +
-                                          " on non-iOS runtime");
-    }
+        public IAppOpenAdClient BuildAppOpenAdClient()
+        {
+            return new AppOpenAdClient();
+        }
 
-    public IBannerClient BuildBannerClient()
-    {
-      if (Application.platform == RuntimePlatform.IPhonePlayer)
-      {
-        return new GoogleMobileAds.iOS.BannerClient();
-      }
-      throw new InvalidOperationException(@"Called " + MethodBase.GetCurrentMethod().Name +
-                                          " on non-iOS runtime");
-    }
+        public IBannerAdClient BuildBannerClient()
+        {
+            return new BannerAdClient();
+        }
 
-    public IInterstitialClient BuildInterstitialClient()
-    {
-      if (Application.platform == RuntimePlatform.IPhonePlayer)
-      {
-        return new GoogleMobileAds.iOS.InterstitialClient();
-      }
-      throw new InvalidOperationException(@"Called " + MethodBase.GetCurrentMethod().Name +
-                                          " on non-iOS runtime");
-    }
+        public IInterstitialAdClient BuildInterstitialClient()
+        {
+            return new InterstitialAdClient();
+        }
 
-    public IRewardedAdClient BuildRewardedAdClient()
-    {
-      if (Application.platform == RuntimePlatform.IPhonePlayer)
-      {
-        return new GoogleMobileAds.iOS.RewardedAdClient();
-      }
-      throw new InvalidOperationException(@"Called " + MethodBase.GetCurrentMethod().Name +
-                                          " on non-iOS runtime");
-    }
+        public IRewardedAdClient BuildRewardedAdClient()
+        {
+            return new RewardedAdClient();
+        }
 
-    public IRewardedInterstitialAdClient BuildRewardedInterstitialAdClient()
-    {
-      if (Application.platform == RuntimePlatform.IPhonePlayer)
-      {
-        return new GoogleMobileAds.iOS.RewardedInterstitialAdClient();
-      }
-      throw new InvalidOperationException(@"Called " + MethodBase.GetCurrentMethod().Name +
-                                          " on non-iOS runtime");
-    }
+        public IRewardedInterstitialAdClient BuildRewardedInterstitialAdClient()
+        {
+            return new RewardedInterstitialAdClient();
+        }
 
-    public IMobileAdsClient MobileAdsInstance()
-    {
-      if (Application.platform == RuntimePlatform.IPhonePlayer)
-      {
-        return GoogleMobileAds.iOS.MobileAdsClient.Instance;
-      }
-      throw new InvalidOperationException(@"Called " + MethodBase.GetCurrentMethod().Name +
-                                          " on non-iOS runtime");
+        public IMobileAdsClient MobileAdsInstance()
+        {
+            return MobileAdsClient.Instance;
+        }
     }
-  }
 }
 #endif

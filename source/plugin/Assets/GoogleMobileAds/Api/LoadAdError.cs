@@ -19,11 +19,11 @@ namespace GoogleMobileAds.Api
 {
     public class LoadAdError : AdError
     {
-        ILoadAdErrorClient client;
+        ILoadAdErrorClient _client;
 
-        public LoadAdError(ILoadAdErrorClient client) : base(client)
+        internal LoadAdError(ILoadAdErrorClient client) : base(client)
         {
-            this.client = client;
+            _client = client;
         }
 
         /// <summary>
@@ -34,12 +34,7 @@ namespace GoogleMobileAds.Api
         /// <returns>ResponseInfo Object</returns>
         public ResponseInfo GetResponseInfo()
         {
-            return new ResponseInfo(client.GetResponseInfoClient());
-        }
-
-        public override string ToString()
-        {
-            return client.ToString();
+            return new ResponseInfo(_client.Response);
         }
     }
 }

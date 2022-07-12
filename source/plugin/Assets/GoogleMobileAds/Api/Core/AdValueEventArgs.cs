@@ -19,10 +19,21 @@ using GoogleMobileAds.Api;
 
 namespace GoogleMobileAds.Api
 {
-    // Event args for a paid event.
+    /// <summary>
+    /// Event args for a paid event.
+    /// </summary>
     public class AdValueEventArgs : EventArgs
     {
         public AdValue AdValue { get; set; }
+
+        public AdValueEventArgs()
+        {
+        }
+
+        public AdValueEventArgs(AdValue adValue)
+        {
+            AdValue = adValue;
+        }
     }
 }
 

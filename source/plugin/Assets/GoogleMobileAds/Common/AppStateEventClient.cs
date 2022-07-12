@@ -13,6 +13,7 @@
 // limitations under the License.
 
 using System;
+using GoogleMobileAds.Api;
 using UnityEngine;
 
 namespace GoogleMobileAds.Common

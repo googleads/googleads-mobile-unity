@@ -30,19 +30,19 @@ namespace GoogleMobileAds.Api
         {
             add
             {
-                client.AppStateChanged += value;
+                _client.AppStateChanged += value;
             }
             remove
             {
-                client.AppStateChanged -= value;
+                _client.AppStateChanged -= value;
             }
         }
 
-        private static IAppStateEventClient client;
+        private static IAppStateEventClient _client;
 
         static AppStateEventNotifier()
         {
-            client = MobileAds.GetClientFactory().BuildAppStateEventClient();
+            _client = MobileAds.GetClientFactory().BuildAppStateEventClient();
         }
     }
 }

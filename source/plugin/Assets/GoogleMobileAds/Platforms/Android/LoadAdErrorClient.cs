@@ -1,4 +1,4 @@
-// Copyright (C) 2020 Google LLC
+// Copyright (C) 2022 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,48 +12,28 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using GoogleMobileAds.Common;
 using UnityEngine;
+using GoogleMobileAds.Api;
+using GoogleMobileAds.Common;
 
 namespace GoogleMobileAds.Android
 {
-    internal class LoadAdErrorClient : ILoadAdErrorClient
+    public class LoadAdErrorClient : AdErrorClient, ILoadAdErrorClient
     {
-        AndroidJavaObject loadAdError;
-
-        public LoadAdErrorClient(AndroidJavaObject loadAdError)
+        public IResponseInfoClient Response
         {
-            this.loadAdError = loadAdError;
+            get
+            {
+                var response = _error.Call<AndroidJavaObject>("getResponseInfo");
+                return response == null ? null : new ResponseInfo(response);
+            }
         }
 
-        public int GetCode()
-        {
-           return loadAdError.Call<int>("getCode");
-        }
+        private AndroidJavaObject _error;
 
-        public string GetDomain()
+        public LoadAdErrorClient(AndroidJavaObject error) : base(error)
         {
-            return loadAdError.Call<string>("getDomain");
-        }
-
-        public string GetMessage()
-        {
-            return loadAdError.Call<string>("getMessage");
-        }
-
-        public IAdErrorClient GetCause()
-        {
-            return new AdErrorClient(loadAdError.Call<AndroidJavaObject>("getCause"));
-        }
-
-        public IResponseInfoClient GetResponseInfoClient()
-        {
-            return new ResponseInfoClient(ResponseInfoClientType.AdError, loadAdError);
-        }
-
-        public override string ToString()
-        {
-            return loadAdError.Call<string>("toString");
+            _error = error;
         }
     }
 }

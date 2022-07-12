@@ -14,6 +14,7 @@
 
 using System;
 using UnityEngine;
+using GoogleMobileAds.Api;
 using GoogleMobileAds.Common;
 
 namespace GoogleMobileAds.Android
@@ -49,6 +50,9 @@ namespace GoogleMobileAds.Android
 
         public AppStateEventClient() : base(Utils.UnityAppStateEventCallbackClassName)
         {
+            //START_DEBUG_STRIP
+            UnityEngine.Debug.Log("Android.AppStateEventClient()");
+            //END_DEBUG_STRIP
             var playerClass = new AndroidJavaClass(Utils.UnityActivityClassName);
             var activity = playerClass.GetStatic<AndroidJavaObject>("currentActivity");
             appStateEventNotifer =
@@ -57,6 +61,9 @@ namespace GoogleMobileAds.Android
 
         private void onAppStateChanged(bool isBackground)
         {
+            //START_DEBUG_STRIP
+            UnityEngine.Debug.Log("Android.AppStateEventClient onAppStateChanged");
+            //END_DEBUG_STRIP
             if (appStateChanged != null)
             {
                 appStateChanged(isBackground ? AppState.Background : AppState.Foreground);

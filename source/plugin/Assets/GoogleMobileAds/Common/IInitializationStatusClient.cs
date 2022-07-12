@@ -17,9 +17,19 @@ using GoogleMobileAds.Api;
 
 namespace GoogleMobileAds.Common
 {
+    /// <summary>
+    /// The status of the SDK initialization
+    /// </summary>
     public interface IInitializationStatusClient
     {
-        AdapterStatus getAdapterStatusForClassName(string className);
-        Dictionary<string, AdapterStatus> getAdapterStatusMap();
+        /// <summary>
+        /// Initialization status of a specific ad network.
+        /// </summary>
+        AdapterStatus GetAdapterStatusForClassName(string className);
+
+        /// <summary>
+        /// Initialization status of each known ad network, keyed by its adapter's class name.
+        /// </summary>
+        Dictionary<string, AdapterStatus> GetAdapterStatusMap();
     }
 }

@@ -40,7 +40,6 @@ namespace GoogleMobileAds.Api
         private readonly IMobileAdsClient client = GetMobileAdsClient();
 
         private static IClientFactory clientFactory;
-
         private static MobileAds instance;
 
         public static MobileAds Instance
@@ -103,20 +102,24 @@ namespace GoogleMobileAds.Api
         /// Opens ad inspector UI.
         /// </summary>
         /// <param name="adInspectorClosedAction">Called when ad inspector UI closes.</param>
-        public static void OpenAdInspector(Action<AdInspectorError> adInspectorClosedAction)
+        public static void OpenAdInspector(Action<AdInspectorError> completeCallback)
         {
-            Instance.client.OpenAdInspector(args =>
+            Action<IAdErrorClient> updatedCallback = (adError) =>
             {
-                if(adInspectorClosedAction != null)
+                if (completeCallback != null)
                 {
-                    AdInspectorError error = null;
-                    if (args != null && args.AdErrorClient != null)
+                    if (adError != null)
                     {
-                        error = new AdInspectorError(args.AdErrorClient);
+                        completeCallback(new AdInspectorError(adError));
                     }
-                    adInspectorClosedAction(error);
+                    else
+                    {
+                        completeCallback(null);
+                    }
                 }
-            });
+            };
+
+            Instance.client.OpenAdInspector(updatedCallback);
         }
 
         internal static IClientFactory GetClientFactory() {

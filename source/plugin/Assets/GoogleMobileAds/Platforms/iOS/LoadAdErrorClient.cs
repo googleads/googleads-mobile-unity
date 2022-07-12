@@ -14,45 +14,29 @@
 // limitations under the License.
 
 using System;
+using GoogleMobileAds.Api;
 using GoogleMobileAds.Common;
 
 namespace GoogleMobileAds.iOS
 {
-    internal class LoadAdErrorClient : ILoadAdErrorClient
+    internal class LoadAdErrorClient : AdErrorClient, ILoadAdErrorClient
     {
         IntPtr error;
-        public LoadAdErrorClient(IntPtr error)
+
+        public IResponseInfoClient Response
+        {
+            get
+            {
+                IntPtr responseRef = Externs.GADUGetAdErrorResponseInfo(error);
+                return responseRef == IntPtr.Zero
+                    ? null
+                    : new ResponseInfoClient(responseRef);
+            }
+        }
+
+        public LoadAdErrorClient(IntPtr error) : base(error)
         {
             this.error = error;
-        }
-        public int GetCode()
-        {
-           return Externs.GADUGetAdErrorCode(error);
-        }
-        public string GetDomain()
-        {
-            return Externs.GADUGetAdErrorDomain(error);
-
-        }
-
-        public string GetMessage()
-        {
-            return Externs.GADUGetAdErrorMessage(error);
-        }
-
-        public IAdErrorClient GetCause()
-        {
-            return new AdErrorClient(Externs.GADUGetAdErrorUnderLyingError(error));
-        }
-
-        public IResponseInfoClient GetResponseInfoClient()
-        {
-            return new ResponseInfoClient(ResponseInfoClientType.AdError, error);
-        }
-
-        public override string ToString()
-        {
-            return Externs.GADUGetAdErrorDescription(error);
         }
     }
 }

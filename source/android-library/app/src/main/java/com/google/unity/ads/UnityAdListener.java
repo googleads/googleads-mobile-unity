@@ -15,17 +15,29 @@
  */
 package com.google.unity.ads;
 
+import com.google.android.gms.ads.AdError;
 import com.google.android.gms.ads.LoadAdError;
 
 /**
  * An interface form of {@link UnityAdListener} that can be implemented via {@code AndroidJavaProxy}
  * in Unity to receive ad events synchronously.
  */
-public interface UnityAdListener extends UnityPaidEventListener {
+public interface UnityAdListener {
+  void onAdLoaded();
 
-    void onAdLoaded();
-    void onAdFailedToLoad(LoadAdError error);
-    void onAdOpened();
-    void onAdClosed();
-    void onAdLeftApplication();
+  void onAdLoadFailed(LoadAdError error);
+
+  void onAdPaid(int precision, long value, String currencyCode);
+
+  void onAdClickRecorded();
+
+  void onAdImpressionRecorded();
+
+  void onAdFullScreenContentOpened();
+
+  void onAdFullScreenContentClosed();
+
+  void onAdFullScreenContentFailed(AdError error);
+
+  void onUserEarnedReward(String type, float amount);
 }

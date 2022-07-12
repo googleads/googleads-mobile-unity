@@ -13,24 +13,10 @@
 // limitations under the License.
 
 using System;
+using GoogleMobileAds.Api;
 
 namespace GoogleMobileAds.Common
 {
-    /// <summary>
-    /// The app foreground/background state.
-    /// </summary>
-    public enum AppState
-    {
-        /// <summary>
-        /// The app is backgrounded.
-        /// </summary>
-        Background = 0,
-        /// <summary>
-        /// The app is foregrounded.
-        /// </summary>
-        Foreground = 1
-    }
-
     /// <summary>
     /// Notifies changes in app foreground/background.
     /// </summary>

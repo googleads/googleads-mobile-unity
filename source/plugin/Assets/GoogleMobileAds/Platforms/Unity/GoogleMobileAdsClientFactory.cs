@@ -1,4 +1,4 @@
-// Copyright (C) 2020 Google LLC
+// Copyright (C) 2022 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,69 +12,51 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System;
 using UnityEngine;
-using GoogleMobileAds;
 using GoogleMobileAds.Api;
 using GoogleMobileAds.Common;
+using GoogleMobileAds.Unity;
 using UnityEngine.Scripting;
 
 namespace GoogleMobileAds
 {
-  [Preserve]
-  public class GoogleMobileAdsClientFactory: IClientFactory
-  {
-    public IAppStateEventClient BuildAppStateEventClient()
+    [Preserve]
+    public class GoogleMobileAdsClientFactory: IClientFactory
     {
-      return GoogleMobileAds.Common.AppStateEventClient.Instance;
-    }
+        public IAppStateEventClient BuildAppStateEventClient()
+        {
+            return AppStateEventClient.Instance;
+        }
 
-    public IAppOpenAdClient BuildAppOpenAdClient()
-    {
-      if (Application.platform == RuntimePlatform.OSXEditor || Application.platform == RuntimePlatform.WindowsEditor)
-      {
-        return new GoogleMobileAds.Unity.AppOpenAdClient();
-      }
-      return new GoogleMobileAds.Common.AppOpenAdAdDummyClient();
-    }
+        public IAppOpenAdClient BuildAppOpenAdClient()
+        {
+            return new AppOpenAdClient();
+        }
 
-    public IBannerClient BuildBannerClient()
-    {
-      if (Application.platform == RuntimePlatform.OSXEditor || Application.platform == RuntimePlatform.WindowsEditor)
-      {
-        return new GoogleMobileAds.Unity.BannerClient();
-      }
-      return new GoogleMobileAds.Common.DummyClient();
-    }
+        public IBannerAdClient BuildBannerClient()
+        {
+            return new BannerAdClient();
+        }
 
-    public IInterstitialClient BuildInterstitialClient()
-    {
-      if (Application.platform == RuntimePlatform.OSXEditor || Application.platform == RuntimePlatform.WindowsEditor)
-      {
-        return new GoogleMobileAds.Unity.InterstitialClient();
-      }
-      return new GoogleMobileAds.Common.DummyClient();
-     }
+        public IInterstitialAdClient BuildInterstitialClient()
+        {
+            return new InterstitialAdClient();
+        }
 
-    public IRewardedAdClient BuildRewardedAdClient()
-    {
-      if (Application.platform == RuntimePlatform.OSXEditor || Application.platform == RuntimePlatform.WindowsEditor)
-      {
-        return new GoogleMobileAds.Unity.RewardedAdClient();
-      }
-      return new GoogleMobileAds.Common.RewardedAdDummyClient();
-    }
+        public IRewardedAdClient BuildRewardedAdClient()
+        {
+            return new RewardedAdClient();
+        }
 
-    public IRewardedInterstitialAdClient BuildRewardedInterstitialAdClient() {
-      if (Application.platform == RuntimePlatform.OSXEditor || Application.platform == RuntimePlatform.WindowsEditor)
-      {
-        return new GoogleMobileAds.Unity.RewardedInterstitialAdClient();
-      }
-      return new GoogleMobileAds.Common.RewardedInterstitialAdDummyClient();
-    }
+        public IRewardedInterstitialAdClient BuildRewardedInterstitialAdClient()
+        {
+            return new RewardedAdClient();
+        }
 
-    public IMobileAdsClient MobileAdsInstance()
-    {
-      return new GoogleMobileAds.Common.DummyClient();
+        public IMobileAdsClient MobileAdsInstance()
+        {
+            return new MobileAdsClient();
+        }
     }
-  }
 }

@@ -33,27 +33,19 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.FutureTask;
 
-/**
- * Native app open ad implementation for the Google Mobile Ads Unity plugin.
- */
+/** Native app open ad implementation for the Google Mobile Ads Unity plugin. */
 public class UnityAppOpenAd {
 
-  /**
-   * The {@link AppOpenAd}.
-   */
+  /** The {@link AppOpenAd}. */
   private AppOpenAd appOpenAd;
 
-  /**
-   * The {@code Activity} on which the app open add will display.
-   */
+  /** The {@code Activity} on which the app open add will display. */
   private final Activity activity;
 
-  /**
-   * A callback implemented in Unity via {@code AndroidJavaProxy} to receive ad events.
-   */
-  private final UnityAppOpenAdCallback callback;
+  /** A callback implemented in Unity via {@code AndroidJavaProxy} to receive ad events. */
+  private final UnityAdListener callback;
 
-  public UnityAppOpenAd(Activity activity, UnityAppOpenAdCallback callback) {
+  public UnityAppOpenAd(Activity activity, UnityAdListener callback) {
     this.activity = activity;
     this.callback = callback;
   }
@@ -82,7 +74,7 @@ public class UnityAppOpenAd {
                                   @Override
                                   public void run() {
                                     if (callback != null) {
-                                      callback.onPaidEvent(
+                                      callback.onAdPaid(
                                           adValue.getPrecisionType(),
                                           adValue.getValueMicros(),
                                           adValue.getCurrencyCode());
@@ -101,7 +93,7 @@ public class UnityAppOpenAd {
                                   @Override
                                   public void run() {
                                     if (callback != null) {
-                                      callback.onAdFailedToShowFullScreenContent(error);
+                                      callback.onAdFullScreenContentFailed(error);
                                     }
                                   }
                                 });
@@ -114,7 +106,7 @@ public class UnityAppOpenAd {
                                   @Override
                                   public void run() {
                                     if (callback != null) {
-                                      callback.onAdShowedFullScreenContent();
+                                      callback.onAdFullScreenContentOpened();
                                     }
                                   }
                                 });
@@ -127,7 +119,7 @@ public class UnityAppOpenAd {
                                   @Override
                                   public void run() {
                                     if (callback != null) {
-                                      callback.onAdDismissedFullScreenContent();
+                                      callback.onAdFullScreenContentClosed();
                                     }
                                   }
                                 });
@@ -140,12 +132,24 @@ public class UnityAppOpenAd {
                                   @Override
                                   public void run() {
                                     if (callback != null) {
-                                      callback.onAdImpression();
+                                      callback.onAdImpressionRecorded();
                                     }
                                   }
                                 });
                           }
 
+                          @Override
+                          public void onAdClicked() {
+                            runOnNewThread(
+                                new Runnable() {
+                                  @Override
+                                  public void run() {
+                                    if (callback != null) {
+                                      callback.onAdClickRecorded();
+                                    }
+                                  }
+                                });
+                          }
                         });
 
                     runOnNewThread(
@@ -153,7 +157,7 @@ public class UnityAppOpenAd {
                           @Override
                           public void run() {
                             if (callback != null) {
-                              callback.onAppOpenAdLoaded();
+                              callback.onAdLoaded();
                             }
                           }
                         });
@@ -166,7 +170,7 @@ public class UnityAppOpenAd {
                           @Override
                           public void run() {
                             if (callback != null) {
-                              callback.onAppOpenAdFailedToLoad(error);
+                              callback.onAdLoadFailed(error);
                             }
                           }
                         });
@@ -178,8 +182,10 @@ public class UnityAppOpenAd {
 
   public void show() {
     if (appOpenAd == null) {
-      Log.e(PluginUtils.LOGTAG, "Tried to show rewarded ad before it was ready. This should "
-          + "in theory never happen. If it does, please contact the plugin owners.");
+      Log.e(
+          PluginUtils.LOGTAG,
+          "Tried to show rewarded ad before it was ready. This should "
+              + "in theory never happen. If it does, please contact the plugin owners.");
       return;
     }
 
@@ -218,14 +224,6 @@ public class UnityAppOpenAd {
               exception.getLocalizedMessage()));
     }
     return result;
-  }
-
-  /**
-   * Destroys the {@link AppOpenAd}.
-   */
-  public void destroy() {
-    // Currently there is no appOpenAd.destroy() method. This method is a placeholder
-    // in case there is any cleanup to do here in the future.
   }
 
   private void runOnNewThread(final Runnable action) {

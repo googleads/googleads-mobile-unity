@@ -14,6 +14,7 @@
 // limitations under the License.
 
 using System;
+using GoogleMobileAds.Api;
 using GoogleMobileAds.Common;
 
 namespace GoogleMobileAds.iOS
@@ -22,35 +23,50 @@ namespace GoogleMobileAds.iOS
     {
         IntPtr error;
 
+        public int Code
+        {
+            get
+            {
+                return Externs.GADUGetAdErrorCode(error);
+            }
+        }
+
+        public string Domain
+        {
+            get
+            {
+                return Externs.GADUGetAdErrorDomain(error);
+            }
+        }
+
+        public string Message
+        {
+            get
+            {
+                return Externs.GADUGetAdErrorMessage(error);
+            }
+        }
+
+        public string Description
+        {
+            get
+            {
+                return Externs.GADUGetAdErrorDescription(error);
+            }
+        }
+
+        public IAdErrorClient Cause
+        {
+            get
+            {
+                IntPtr cause = Externs.GADUGetAdErrorUnderLyingError(error);
+                return cause == IntPtr.Zero ? null : new AdErrorClient(cause);
+            }
+        }
+
         public AdErrorClient(IntPtr error)
         {
             this.error = error;
-        }
-
-        public int GetCode()
-        {
-           return Externs.GADUGetAdErrorCode(error);
-        }
-
-        public string GetDomain()
-        {
-            return Externs.GADUGetAdErrorDomain(error);
-
-        }
-
-        public string GetMessage()
-        {
-            return Externs.GADUGetAdErrorMessage(error);
-        }
-
-        public IAdErrorClient GetCause()
-        {
-            return new AdErrorClient(Externs.GADUGetAdErrorUnderLyingError(error));
-        }
-
-        public override string ToString()
-        {
-            return Externs.GADUGetAdErrorDescription(error);
         }
     }
 }
