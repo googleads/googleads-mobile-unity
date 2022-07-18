@@ -1,51 +1,16 @@
 // Copyright 2020 Google Inc. All Rights Reserved.
 
 #import <Foundation/Foundation.h>
-
 #import <GoogleMobileAds/GoogleMobileAds.h>
+#import "GADUBaseAd.h"
 
-#import "GADUTypes.h"
-
-@interface GADURewardedInterstitialAd : NSObject
+@interface GADURewardedInterstitialAd : GADUBaseAd
 
 /// Initializes a GADURewardedInterstitialAd.
-- (instancetype)initWithRewardedInterstitialAdClientReference:
-    (GADUTypeRewardedInterstitialAdClientRef *)rewardedInterstitialAdClient;
+- (id)initWithAdClientReference:(GADUTypeAdClientRef *)adClient;
 
 /// The rewarded interstitial ad.
 @property(nonatomic, strong) GADRewardedInterstitialAd *rewardedInterstitialAd;
-
-/// A reference to the Unity rewarded interstitial ad client.
-@property(nonatomic, assign) GADUTypeRewardedInterstitialAdClientRef *rewardedInterstitialAdClient;
-
-/// The ad received callback into Unity.
-@property(nonatomic, assign) GADURewardedInterstitialAdLoadedCallback adLoadedCallback;
-
-/// The ad request failed callback into Unity.
-@property(nonatomic, assign) GADURewardedInterstitialAdFailedToLoadCallback adFailedToLoadCallback;
-
-/// The ad failed to present full screen content callback into Unity.
-@property(nonatomic, assign) GADURewardedInterstitialAdFailedToPresentFullScreenContentCallback
-    adFailedToPresentFullScreenContentCallback;
-
-/// The ad will present full screen content callback into Unity.
-@property(nonatomic, assign) GADURewardedInterstitialAdWillPresentFullScreenContentCallback
-    adWillPresentFullScreenContentCallback;
-
-/// The ad dismissed full screen content callback into Unity.
-@property(nonatomic, assign) GADURewardedInterstitialAdDidDismissFullScreenContentCallback
-    adDidDismissFullScreenContentCallback;
-
-/// The ad impression callback into Unity.
-@property(nonatomic, assign)
-    GADURewardedInterstitialAdDidRecordImpressionCallback adDidRecordImpressionCallback;
-
-/// The user was rewarded callback into Unity.
-@property(nonatomic, assign)
-    GADURewardedInterstitialAdUserEarnedRewardCallback didEarnRewardCallback;
-
-/// The paid event callback into Unity.
-@property(nonatomic, assign) GADURewardedInterstitialAdPaidEventCallback paidEventCallback;
 
 /// Returns the rewarded interstitial ad response info.
 @property(nonatomic, readonly, copy) GADResponseInfo *responseInfo;

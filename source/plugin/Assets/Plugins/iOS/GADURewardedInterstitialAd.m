@@ -5,7 +5,9 @@
 #import <CoreGraphics/CoreGraphics.h>
 #import <UIKit/UIKit.h>
 
+#import "GADUObjectCache.h"
 #import "GADUPluginUtil.h"
+#import "GADURequest.h"
 #import "UnityInterface.h"
 
 @interface GADURewardedInterstitialAd () <GADFullScreenContentDelegate>
@@ -15,13 +17,11 @@
   // Keep a reference to the error objects so references to Unity-level
   // ResponseInfo object are not released until the ad object is released.
   NSError *_lastLoadError;
-  NSError *_lastPresentError;
 }
 
-- (instancetype)initWithRewardedInterstitialAdClientReference:
-    (GADUTypeRewardedInterstitialAdClientRef *)rewardedInterstitialAdClient {
+- (id)initWithAdClientReference:(GADUTypeAdClientRef *)adClient {
   self = [super init];
-  _rewardedInterstitialAdClient = rewardedInterstitialAdClient;
+  super.adClient = adClient;
   return self;
 }
 
@@ -35,10 +35,9 @@
                           NSError *_Nullable error) {
         GADURewardedInterstitialAd *strongSelf = weakSelf;
         if (error || !rewardedInterstitialAd) {
-          if (strongSelf.adFailedToLoadCallback) {
+          if (strongSelf.adLoadFailedCallback) {
             _lastLoadError = error;
-            strongSelf.adFailedToLoadCallback(
-                strongSelf.rewardedInterstitialAdClient, (__bridge GADUTypeErrorRef)error);
+            strongSelf.adLoadFailedCallback(strongSelf.adClient, (__bridge GADUTypeErrorRef)error);
           }
           return;
         }
@@ -46,18 +45,21 @@
         strongSelf.rewardedInterstitialAd.fullScreenContentDelegate = strongSelf;
         strongSelf.rewardedInterstitialAd.paidEventHandler = ^void(GADAdValue *_Nonnull adValue) {
           GADURewardedInterstitialAd *strongSecondSelf = weakSelf;
-          if (strongSecondSelf.paidEventCallback) {
+          if (strongSecondSelf.adPaidCallback) {
             int64_t valueInMicros =
                 [adValue.value decimalNumberByMultiplyingByPowerOf10:6].longLongValue;
-            strongSecondSelf.paidEventCallback(
-                strongSecondSelf.rewardedInterstitialAdClient, (int)adValue.precision,
-                valueInMicros, [adValue.currencyCode cStringUsingEncoding:NSUTF8StringEncoding]);
+            strongSecondSelf.adPaidCallback(
+                strongSecondSelf.adClient, (int)adValue.precision, valueInMicros,
+                [adValue.currencyCode cStringUsingEncoding:NSUTF8StringEncoding]);
           }
         };
-        if (strongSelf.adLoadedCallback) {
-          strongSelf.adLoadedCallback(self.rewardedInterstitialAdClient);
+        if (strongSelf.adLoadCallback) {
+          strongSelf.adLoadCallback(self.adClient);
         }
       }];
+}
+- (GADResponseInfo *)responseInfo {
+  return self.rewardedInterstitialAd.responseInfo;
 }
 
 - (void)show {
@@ -68,9 +70,9 @@
       presentFromRootViewController:unityController
            userDidEarnRewardHandler:^void() {
              GADURewardedInterstitialAd *strongSelf = weakSelf;
-             if (strongSelf.didEarnRewardCallback) {
-               strongSelf.didEarnRewardCallback(
-                   strongSelf.rewardedInterstitialAdClient,
+             if (strongSelf.adUserEarnedRewardCallback) {
+               strongSelf.adUserEarnedRewardCallback(
+                   strongSelf.adClient,
                    [strongSelf.rewardedInterstitialAd.adReward.type
                        cStringUsingEncoding:NSUTF8StringEncoding],
                    strongSelf.rewardedInterstitialAd.adReward.amount.doubleValue);
@@ -78,55 +80,62 @@
            }];
 }
 
-- (GADResponseInfo *)responseInfo {
-  return self.rewardedInterstitialAd.responseInfo;
-}
-
 - (void)setServerSideVerificationOptions:(GADServerSideVerificationOptions *)options {
   self.rewardedInterstitialAd.serverSideVerificationOptions = options;
 }
 
-#pragma mark GADFullScreenContentDelegate implementation
-
-- (void)ad:(nonnull id<GADFullScreenPresentingAd>)ad
-    didFailToPresentFullScreenContentWithError:(nonnull NSError *)error {
-  if (self.adFailedToPresentFullScreenContentCallback) {
-    _lastPresentError = error;
-    self.adFailedToPresentFullScreenContentCallback(
-        self.rewardedInterstitialAdClient,
-        (__bridge GADUTypeErrorRef)error);
-  }
-}
-
-- (void)adWillPresentFullScreenContent:(nonnull id<GADFullScreenPresentingAd>)ad {
-  if (GADUPluginUtil.pauseOnBackground) {
-    UnityPause(YES);
-  }
-  if (self.adWillPresentFullScreenContentCallback) {
-    self.adWillPresentFullScreenContentCallback(self.rewardedInterstitialAdClient);
-  }
-}
-
-- (void)adDidDismissFullScreenContent:(nonnull id<GADFullScreenPresentingAd>)ad {
-  extern bool _didResignActive;
-  if(_didResignActive) {
-    // We are in the middle of the shutdown sequence, and at this point unity runtime is already destroyed.
-    // We shall not call unity API, and definitely not script callbacks, so nothing to do here
-    return;
-  }
-  if (UnityIsPaused()) {
-    UnityPause(NO);
-  }
-
-  if (self.adDidDismissFullScreenContentCallback) {
-    self.adDidDismissFullScreenContentCallback(self.rewardedInterstitialAdClient);
-  }
-}
-
-- (void)adDidRecordImpression:(nonnull id<GADFullScreenPresentingAd>)ad {
-  if (self.adDidRecordImpressionCallback) {
-    self.adDidRecordImpressionCallback(self.rewardedInterstitialAdClient);
-  }
-}
-
 @end
+
+#pragma mark - Interopt Methods
+
+static NSString *GADUStringFromUTF8String(const char *bytes) { return bytes ? @(bytes) : nil; }
+
+/// Returns a C string from a C array of UTF8-encoded bytes.
+static const char *cStringCopy(const char *string) {
+  if (!string) {
+    return NULL;
+  }
+  char *res = (char *)malloc(strlen(string) + 1);
+  strcpy(res, string);
+  return res;
+}
+
+GADUTypeAdBridgeRef GADURewardedInterstitialAdCreate(GADUTypeAdClientRef *adClientRef) {
+  GADURewardedInterstitialAd *adBridge =
+      [[GADURewardedInterstitialAd alloc] initWithAdClientReference:adClientRef];
+  GADUObjectCache *cache = [GADUObjectCache sharedInstance];
+  cache[adBridge.gadu_referenceKey] = adBridge;
+  return (__bridge GADUTypeAdBridgeRef)adBridge;
+}
+
+void GADURewardedInterstitialAdLoad(GADUTypeAdBridgeRef adBridgeRef, const char *adUnitID,
+                                    GADUTypeRequestRef adRequestRef) {
+  GADURewardedInterstitialAd *adBridge = (__bridge GADURewardedInterstitialAd *)adBridgeRef;
+  GADURequest *adRequest = (__bridge GADURequest *)adRequestRef;
+  [adBridge loadWithAdUnitID:GADUStringFromUTF8String(adUnitID) request:[adRequest request]];
+}
+
+void GADURewardedInterstitialAdShow(GADUTypeAdBridgeRef adBridgeRef) {
+  GADURewardedInterstitialAd *adBridge = (__bridge GADURewardedInterstitialAd *)adBridgeRef;
+  [adBridge show];
+}
+
+void GADURewardedInterstitialAdSetServerSideVerificationOptions(
+    GADUTypeAdBridgeRef adBridgeRef, GADUTypeServerSideVerificationOptionsRef optionsRef) {
+  GADURewardedInterstitialAd *adBridge = (__bridge GADURewardedInterstitialAd *)adBridgeRef;
+  GADServerSideVerificationOptions *adOptions =
+      (__bridge GADServerSideVerificationOptions *)optionsRef;
+  [adBridge setServerSideVerificationOptions:adOptions];
+}
+
+const char *GADURewardedInterstitalAdGetRewardType(GADUTypeAdBridgeRef adBridgeRef) {
+  GADURewardedInterstitialAd *adBridge = (__bridge GADURewardedInterstitialAd *)adBridgeRef;
+  GADAdReward *reward = adBridge.rewardedInterstitialAd.adReward;
+  return cStringCopy(reward.type.UTF8String);
+}
+
+double GADURewardedInterstitalAdGetRewardAmount(GADUTypeAdBridgeRef adBridgeRef) {
+  GADURewardedInterstitialAd *adBridge = (__bridge GADURewardedInterstitialAd *)adBridgeRef;
+  GADAdReward *reward = adBridge.rewardedInterstitialAd.adReward;
+  return reward.amount.doubleValue;
+}

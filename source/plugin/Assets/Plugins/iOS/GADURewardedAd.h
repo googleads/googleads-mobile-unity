@@ -1,49 +1,16 @@
 // Copyright 2018 Google Inc. All Rights Reserved.
 
 #import <Foundation/Foundation.h>
-
 #import <GoogleMobileAds/GoogleMobileAds.h>
+#import "GADUBaseAd.h"
 
-#import "GADUTypes.h"
-
-@interface GADURewardedAd : NSObject
+@interface GADURewardedAd : GADUBaseAd
 
 /// Initializes a GADURewardedAd.
-- (instancetype)initWithRewardedAdClientReference:(GADUTypeRewardedAdClientRef *)rewardedAdClient;
+- (id)initWithAdClientReference:(GADUTypeAdClientRef *)adClient;
 
 /// The rewarded ad.
 @property(nonatomic, strong) GADRewardedAd *rewardedAd;
-
-/// A reference to the Unity rewarded ad client.
-@property(nonatomic, assign) GADUTypeRewardedAdClientRef *rewardedAdClient;
-
-/// The ad received callback into Unity.
-@property(nonatomic, assign) GADURewardedAdLoadedCallback adLoadedCallback;
-
-/// The ad request failed callback into Unity.
-@property(nonatomic, assign) GADURewardedAdFailedToLoadCallback adFailedToLoadCallback;
-
-/// The ad failed to present full screen content callback into Unity.
-@property(nonatomic, assign) GADURewardedAdFailedToPresentFullScreenContentCallback
-    adFailedToPresentFullScreenContentCallback;
-
-/// The ad will present full screen content callback into Unity.
-@property(nonatomic, assign)
-    GADURewardedAdWillPresentFullScreenContentCallback adWillPresentFullScreenContentCallback;
-
-/// The ad dismissed full screen content callback into Unity.
-@property(nonatomic, assign)
-    GADURewardedAdDidDismissFullScreenContentCallback adDidDismissFullScreenContentCallback;
-
-/// The ad impression callback into Unity.
-@property(nonatomic, assign)
-    GADURewardedAdDidRecordImpressionCallback adDidRecordImpressionCallback;
-
-/// The user was rewarded callback into Unity.
-@property(nonatomic, assign) GADURewardedAdUserEarnedRewardCallback didEarnRewardCallback;
-
-/// The paid event callback into Unity.
-@property(nonatomic, assign) GADURewardedAdPaidEventCallback paidEventCallback;
 
 // Returns the rewarded ad response info.
 @property(nonatomic, readonly, copy) GADResponseInfo *responseInfo;

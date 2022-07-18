@@ -40,13 +40,13 @@ namespace GoogleMobileAds.Unity
         // Returns the mediation adapter class name.
         public string MediationAdapterClassName()
         {
-            return new ResponseInfoDummyClient().GetMediationAdapterClassName();
+            return new ResponseInfoClient().GetMediationAdapterClassName();
         }
 
         // Returns ad request Response info client.
         public IResponseInfoClient GetResponseInfoClient()
         {
-            return new ResponseInfoDummyClient();
+            return new ResponseInfoClient();
         }
     }
 }

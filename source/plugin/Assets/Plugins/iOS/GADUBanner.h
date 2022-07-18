@@ -4,71 +4,53 @@
 
 #import <GoogleMobileAds/GoogleMobileAds.h>
 
-#import "GADUTypes.h"
+#import "GADUBaseAd.h"
 
 /// A wrapper around GADBannerView. Includes the ability to create GADBannerView objects, load them
 /// with ads, and listen for ad events.
-@interface GADUBanner : NSObject
+@interface GADUBanner : GADUBaseAd
 
 /// Initializes a GADUBanner with specified width and height, positioned at either the top or
 /// bottom of the screen.
-- (id)initWithBannerClientReference:(GADUTypeBannerClientRef *)bannerClient
+- (id)initWithBannerClientReference:(GADUTypeAdClientRef *)adClient
                            adUnitID:(NSString *)adUnitID
                               width:(CGFloat)width
                              height:(CGFloat)height
                          adPosition:(GADAdPosition)adPosition;
 
 /// Initializes a full-width GADUBanner, positioned at either the top or bottom of the screen.
-- (id)initWithSmartBannerSizeAndBannerClientReference:(GADUTypeBannerClientRef *)bannerClient
+- (id)initWithSmartBannerSizeAndBannerClientReference:(GADUTypeAdClientRef *)adClient
                                              adUnitID:(NSString *)adUnitID
                                            adPosition:(GADAdPosition)adPosition;
 
 /// Initializes a GADUBanner with specified width and height at the specified point.
-- (id)initWithBannerClientReference:(GADUTypeBannerClientRef *)bannerClient
+- (id)initWithBannerClientReference:(GADUTypeAdClientRef *)adClient
                            adUnitID:(NSString *)adUnitID
                               width:(CGFloat)width
                              height:(CGFloat)height
                    customAdPosition:(CGPoint)customAdPosition;
 
 /// Initializes a full-width GADUBanner with specified width and height at the specified point.
-- (id)initWithSmartBannerSizeAndBannerClientReference:(GADUTypeBannerClientRef *)bannerClient
+- (id)initWithSmartBannerSizeAndBannerClientReference:(GADUTypeAdClientRef *)adClient
                                              adUnitID:(NSString *)adUnitID
                                      customAdPosition:(CGPoint)customAdPosition;
 
 /// Initializes an adaptive GADUBanner, positioned at either the top or bottom of the screen.
-- (id)initWithAdaptiveBannerSizeAndBannerClientReference:(GADUTypeBannerClientRef *)bannerClient
+- (id)initWithAdaptiveBannerSizeAndBannerClientReference:(GADUTypeAdClientRef *)adClient
                                                adUnitID:(NSString *)adUnitID
                                                   width:(NSInteger)width
                                             orientation:(GADUBannerOrientation)orientation
                                              adPosition:(GADAdPosition)adPosition;
 
 /// Initializes an adaptive GADUBanner with a custom position at given point from top left.
-- (id)initWithAdaptiveBannerSizeAndBannerClientReference:(GADUTypeBannerClientRef *)bannerClient
+- (id)initWithAdaptiveBannerSizeAndBannerClientReference:(GADUTypeAdClientRef *)adClient
                                                 adUnitID:(NSString *)adUnitID
                                                    width:(NSInteger)width
                                              orientation:(GADUBannerOrientation)orientation
                                         customAdPosition:(CGPoint)customAdPosition;
 
-/// A reference to the Unity banner client.
-@property(nonatomic, assign) GADUTypeBannerClientRef *bannerClient;
-
 /// A GADBannerView which contains the ad.
 @property(nonatomic, strong) GADBannerView *bannerView;
-
-/// The ad received callback into Unity.
-@property(nonatomic, assign) GADUAdViewDidReceiveAdCallback adReceivedCallback;
-
-/// The ad failed callback into Unity.
-@property(nonatomic, assign) GADUAdViewDidFailToReceiveAdWithErrorCallback adFailedCallback;
-
-/// The will present screen callback into Unity.
-@property(nonatomic, assign) GADUAdViewWillPresentScreenCallback willPresentCallback;
-
-/// The did dismiss screen callback into Unity.
-@property(nonatomic, assign) GADUAdViewDidDismissScreenCallback didDismissCallback;
-
-/// The paid event callback into Unity.
-@property(nonatomic, assign) GADUAdViewPaidEventCallback paidEventCallback;
 
 // Returns the banner ad response info.
 @property(nonatomic, readonly, copy) GADResponseInfo *responseInfo;
