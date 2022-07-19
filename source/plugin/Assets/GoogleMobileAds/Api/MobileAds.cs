@@ -136,6 +136,16 @@ namespace GoogleMobileAds.Api
           return clientFactory;
         }
 
+        /// <summary>
+        /// Used to provide a mock clientFactory - for unit testing only.
+        /// </summary>
+        /// <param name="clientFactory">IClientFactory implementation for the underlying
+        /// platform.</param>
+        internal static void SetClientFactory(IClientFactory clientFactory)
+        {
+            MobileAds.clientFactory = clientFactory;
+        }
+
         private static IMobileAdsClient GetMobileAdsClient()
         {
             return GetClientFactory().MobileAdsInstance();

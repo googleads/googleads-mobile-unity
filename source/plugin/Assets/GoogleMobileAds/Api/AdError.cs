@@ -26,7 +26,6 @@ namespace GoogleMobileAds.Api
         public AdError(IAdErrorClient client)
         {
             this.client = client;
-
         }
 
         /// <summary>
