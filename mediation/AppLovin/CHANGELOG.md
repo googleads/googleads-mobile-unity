@@ -1,6 +1,6 @@
 ## AppLovin Unity Mediation Plugin Changelog
 
-#### Version 6.3.1 (In Progress)
+#### [Version 6.3.1](https://dl.google.com/googleadmobadssdk/mediation/unity/applovin/AppLovinUnityAdapter-6.3.1.zip)
 - Added the `AppLovin.SetDoNotSell(bool)` method to support CCPA requirements.
 - Supports [AppLovin Android adapter version 11.4.4.0](https://github.com/googleads/googleads-mobile-android-mediation/blob/main/ThirdPartyAdapters/applovin/CHANGELOG.md#version-11440).
 - Supports [AppLovin iOS adapter version 11.4.3.0](https://github.com/googleads/googleads-mobile-ios-mediation/blob/main/adapters/AppLovin/CHANGELOG.md#version-11430).
