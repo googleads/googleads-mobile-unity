@@ -13,151 +13,133 @@
 // limitations under the License.
 
 using System;
-using System.Collections.Generic;
-
-using GoogleMobileAds;
 using GoogleMobileAds.Common;
 
 namespace GoogleMobileAds.Api
 {
-    public class RewardedInterstitialAd
+    /// <summary>
+    /// Rewarded interstitial ads can serve without requiring the user to opt-in to viewing.
+    /// At any point during the experience, the user can decide to skip the ad.
+    /// </summary>
+    public class RewardedInterstitialAd : FullScreenAd
     {
-        private IRewardedInterstitialAdClient rewardedInterstitialAdClient;
-        private static HashSet<IRewardedInterstitialAdClient> loadingClients = new HashSet<IRewardedInterstitialAdClient>();
+        /// <summary>
+        /// Loads an rewarded interstitial ad.
+        /// </summary>
+        public static void LoadRewardedInterstitialAd(
+                                  string adUnitId,
+                                  AdRequest request,
+                                  Action<RewardedInterstitialAd, LoadAdError> callback)
+        {
+            Action<IRewardedInterstitialAdClient, ILoadAdErrorClient> apiCallback = (ad, error) =>
+            {
+                callback(
+                    ad == null ? null : new RewardedInterstitialAd(ad),
+                    error == null ? null : new LoadAdError(error));
+            };
+            var loader = MobileAds.GetClientFactory().BuildRewardedInterstitialAdClient();
+            loader.LoadAd(adUnitId, request, apiCallback);
+        }
+
+        [Obsolete("Use RewardedInterstitialAd.LoadRewardedInterstitialAd().")]
+        public static void LoadAd(string adUnitId,
+                                  AdRequest request,
+                                  Action<RewardedInterstitialAd, AdFailedToLoadEventArgs> adLoadCallback)
+          {
+            Action<RewardedInterstitialAd, LoadAdError> oldCallback = (ad, error) =>
+            {
+                AdFailedToLoadEventArgs failedToLoadEventArgs = error == null
+                  ? null
+                  : new AdFailedToLoadEventArgs{ LoadAdError = error };
+                adLoadCallback(ad, failedToLoadEventArgs);
+            };
+            LoadRewardedInterstitialAd(adUnitId, request, oldCallback);
+          }
+
+        [Obsolete("Use OnFullScreenAdOpened.")]
+        public event EventHandler<EventArgs> OnAdDidPresentFullScreenContent = delegate{};
+        [Obsolete("Use OnFullScreenAdClosed.")]
+        public event EventHandler<EventArgs> OnAdDidDismissFullScreenContent = delegate{};
+        [Obsolete("Use OnFullScreenAdFailed.")]
+        public event EventHandler<AdErrorEventArgs>
+                                    OnAdFailedToPresentFullScreenContent = delegate{};
+        [Obsolete("Use OnAdImpressionRecorded.")]
+        public event EventHandler<EventArgs> OnAdDidRecordImpression = delegate{};
+        [Obsolete("Use OnAdPaid.")]
+        public event EventHandler<AdValueEventArgs> OnPaidEvent = delegate{};
+
+        IRewardedInterstitialAdClient _client;
 
         private RewardedInterstitialAd(IRewardedInterstitialAdClient client)
         {
-            this.rewardedInterstitialAdClient = client;
-
-            this.rewardedInterstitialAdClient.OnAdFailedToPresentFullScreenContent += (sender, args) =>
+            base.Init(client);
+            _client = client;
+            OnAdPaid += (adValue) =>
             {
-                if (this.OnAdFailedToPresentFullScreenContent != null)
+                OnPaidEvent(this, new AdValueEventArgs
                 {
-                    AdError adError = new AdError(args.AdErrorClient);
-                    this.OnAdFailedToPresentFullScreenContent(this, new AdErrorEventArgs()
-                    {
-                        AdError = adError
-                    });
-                }
+                    AdValue = adValue,
+                });
             };
-
-            this.rewardedInterstitialAdClient.OnAdDidPresentFullScreenContent += (sender, args) =>
+            OnAdImpressionRecorded += () =>
             {
-                if (this.OnAdDidPresentFullScreenContent != null)
-                {
-                    this.OnAdDidPresentFullScreenContent(this, args);
-                }
+                OnAdDidRecordImpression(this, EventArgs.Empty);
             };
-
-            this.rewardedInterstitialAdClient.OnAdDidDismissFullScreenContent += (sender, args) =>
+            OnAdFullScreenContentFailed += (error) =>
             {
-                if (this.OnAdDidDismissFullScreenContent != null)
+                OnAdFailedToPresentFullScreenContent(this, new AdErrorEventArgs
                 {
-                   this.OnAdDidDismissFullScreenContent(this, args);
-                }
+                    AdError = error
+                });
             };
-
-            this.rewardedInterstitialAdClient.OnAdDidRecordImpression += (sender, args) =>
+            OnAdFullScreenContentClosed += () =>
             {
-                if (this.OnAdDidRecordImpression != null)
-                {
-                    this.OnAdDidRecordImpression(this, args);
-                }
+                OnAdDidDismissFullScreenContent(this, EventArgs.Empty);
             };
-
-            this.rewardedInterstitialAdClient.OnPaidEvent += (sender, args) =>
+            OnAdFullScreenContentOpened += () =>
             {
-                if (this.OnPaidEvent != null)
-                {
-                    this.OnPaidEvent(this, args);
-                }
+                OnAdDidPresentFullScreenContent(this, EventArgs.Empty);
             };
         }
 
-        // Called when the ad is estimated to have earned money.
-        public event EventHandler<AdValueEventArgs> OnPaidEvent;
-
-        // Full screen content events.
-        public event EventHandler<AdErrorEventArgs> OnAdFailedToPresentFullScreenContent;
-
-        public event EventHandler<EventArgs> OnAdDidPresentFullScreenContent;
-
-        public event EventHandler<EventArgs> OnAdDidDismissFullScreenContent;
-
-        public event EventHandler<EventArgs> OnAdDidRecordImpression;
-
-
-        // Loads a new rewarded interstitial ad.
-        public static void LoadAd(string adUnitID, AdRequest request, Action<RewardedInterstitialAd, AdFailedToLoadEventArgs> adLoadCallback)
+        /// <summary>
+        /// The reward item for the loaded rewarded interstital ad.
+        /// </summary>
+        public Reward GetRewardItem()
         {
-            IRewardedInterstitialAdClient client = MobileAds.GetClientFactory().BuildRewardedInterstitialAdClient();
-            loadingClients.Add(client);
-            client.CreateRewardedInterstitialAd();
-
-            client.OnAdLoaded += (sender, args) =>
-            {
-                if (adLoadCallback != null)
-                {
-                    adLoadCallback(new RewardedInterstitialAd(client), null);
-                    loadingClients.Remove(client);
-                }
-            };
-
-            client.OnAdFailedToLoad += (sender, args) =>
-            {
-                if (adLoadCallback != null)
-                {
-                    LoadAdError loadAdError = new LoadAdError(args.LoadAdErrorClient);
-                    adLoadCallback(null, new AdFailedToLoadEventArgs()
-                    {
-                        LoadAdError = loadAdError
-                    });
-                    loadingClients.Remove(client);
-                }
-            };
-
-            client.LoadAd(adUnitID, request);
+            return _client == null ? null : _client.GetRewardItem();
         }
 
-        // Shows the rewarded interstitial ad.
-        public void Show(Action<Reward> userEarnedRewardCallback)
+        /// <summary>
+        /// Sets the server side verification options
+        /// </summary>
+        public void SetServerSideVerificationOptions(ServerSideVerificationOptions options)
         {
-            if (rewardedInterstitialAdClient != null)
+            if (_client != null)
             {
-                this.rewardedInterstitialAdClient.OnUserEarnedReward += (sender, args) =>
-                {
-                    if (userEarnedRewardCallback != null)
-                    {
-                        userEarnedRewardCallback(args);
-                    }
-                };
-                rewardedInterstitialAdClient.Show();
+                _client.SetServerSideVerificationOptions(options);
             }
         }
 
-        // Sets the server side verification options
-        public void SetServerSideVerificationOptions(ServerSideVerificationOptions serverSideVerificationOptions)
+        /// <summary>
+        /// Shows a rewarded interstitial ad.
+        /// </summary>
+        /// <param name="userRewardEarnedCallback">
+        /// An action to be raised when the user earns a reward.
+        /// </param>
+        public void Show(Action<Reward> userRewardEarnedCallback)
         {
-            rewardedInterstitialAdClient.SetServerSideVerificationOptions(serverSideVerificationOptions);
+            if (_client != null)
+            {
+                Action<Reward> proxyCallback = (reward) =>
+                {
+                    if (userRewardEarnedCallback != null)
+                    {
+                        userRewardEarnedCallback(reward);
+                    }
+                };
+                _client.ShowAd(proxyCallback);
+            }
         }
-
-        // Returns the reward item for the loaded rewarded interstitial ad.
-        public Reward GetRewardItem()
-        {
-            return rewardedInterstitialAdClient.GetRewardItem();
-        }
-
-        // Destroys the RewardedInterstitialAd.
-        public void Destroy()
-        {
-            rewardedInterstitialAdClient.DestroyRewardedInterstitialAd();
-        }
-
-        // Returns ad request response info.
-        public ResponseInfo GetResponseInfo()
-        {
-            return new ResponseInfo(rewardedInterstitialAdClient.GetResponseInfoClient());
-        }
-
     }
 }
