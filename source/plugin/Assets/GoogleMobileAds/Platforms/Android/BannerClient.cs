@@ -24,6 +24,8 @@ namespace GoogleMobileAds.Android
     {
         private AndroidJavaObject bannerView;
 
+        public bool IsDestroyed { get; private set; }
+
         public BannerClient() : base(Utils.UnityAdListenerClassName)
         {
             AndroidJavaClass playerClass = new AndroidJavaClass(Utils.UnityActivityClassName);
@@ -33,18 +35,16 @@ namespace GoogleMobileAds.Android
                 Utils.BannerViewClassName, activity, this);
         }
 
-        public event EventHandler<EventArgs> OnAdLoaded;
-
-        public event EventHandler<LoadAdErrorClientEventArgs> OnAdFailedToLoad;
-
-        public event EventHandler<EventArgs> OnAdOpening;
-
-        public event EventHandler<EventArgs> OnAdClosed;
-
-        public event EventHandler<AdValueEventArgs> OnPaidEvent;
+        public event Action OnBannerAdLoaded = delegate { };
+        public event Action<ILoadAdErrorClient> OnBannerAdLoadFailed = delegate { };
+        public event Action OnAdFullScreenContentOpened = delegate { };
+        public event Action OnAdFullScreenContentClosed = delegate { };
+        public event Action<AdValue> OnAdPaid = delegate { };
+        public event Action OnAdClickRecorded = delegate { };
+        public event Action OnAdImpressionRecorded = delegate { };
 
         // Creates a banner view.
-        public void CreateBannerView(string adUnitId, AdSize adSize, AdPosition position)
+        public void CreateBannerAd(string adUnitId, AdSize adSize, AdPosition position)
         {
             this.bannerView.Call(
                     "create",
@@ -52,7 +52,7 @@ namespace GoogleMobileAds.Android
         }
 
         // Creates a banner view with a custom position.
-        public void CreateBannerView(string adUnitId, AdSize adSize, int x, int y)
+        public void CreateBannerAd(string adUnitId, AdSize adSize, int x, int y)
         {
             this.bannerView.Call(
                 "create",
@@ -66,20 +66,21 @@ namespace GoogleMobileAds.Android
         }
 
         // Displays the banner view on the screen.
-        public void ShowBannerView()
+        public void Show()
         {
             this.bannerView.Call("show");
         }
 
         // Hides the banner view from the screen.
-        public void HideBannerView()
+        public void Hide()
         {
             this.bannerView.Call("hide");
         }
 
         // Destroys the banner view.
-        public void DestroyBannerView()
+        public void Destroy()
         {
+            IsDestroyed = true;
             this.bannerView.Call("destroy");
         }
 
@@ -109,67 +110,56 @@ namespace GoogleMobileAds.Android
 
         public IResponseInfoClient GetResponseInfoClient()
         {
-
             return new ResponseInfoClient(ResponseInfoClientType.AdLoaded, this.bannerView);
         }
 
         #region Callbacks from UnityBannerAdListener.
 
-        public void onAdLoaded()
+        internal void onAdLoaded()
         {
-            if (this.OnAdLoaded != null)
-            {
-                this.OnAdLoaded(this, EventArgs.Empty);
-            }
+            this.OnBannerAdLoaded();
         }
 
-        public void onAdFailedToLoad(AndroidJavaObject error)
+        internal void onAdFailedToLoad(AndroidJavaObject error)
         {
-            if (this.OnAdFailedToLoad != null)
-            {
-                LoadAdErrorClientEventArgs args = new LoadAdErrorClientEventArgs()
-                {
-                    LoadAdErrorClient = new LoadAdErrorClient(error)
-                };
-                this.OnAdFailedToLoad(this, args);
-            }
+            this.OnBannerAdLoadFailed(new LoadAdErrorClient(error));
         }
 
-        public void onAdOpened()
+        internal void onAdOpened()
         {
-            if (this.OnAdOpening != null)
-            {
-                this.OnAdOpening(this, EventArgs.Empty);
-            }
+            this.OnAdFullScreenContentOpened();
         }
 
-        public void onAdClosed()
+        internal void onAdClosed()
         {
-            if (this.OnAdClosed != null)
-            {
-                this.OnAdClosed(this, EventArgs.Empty);
-            }
+            this.OnAdFullScreenContentClosed();
         }
 
-        public void onPaidEvent(int precision, long valueInMicros, string currencyCode)
+        internal void onPaidEvent(int precision, long valueInMicros, string currencyCode)
         {
-            if (this.OnPaidEvent != null)
+            AdValue adValue = new AdValue()
             {
-                AdValue adValue = new AdValue()
-                {
-                    Precision = (AdValue.PrecisionType)precision,
-                    Value = valueInMicros,
-                    CurrencyCode = currencyCode
-                };
-                AdValueEventArgs args = new AdValueEventArgs()
-                {
-                    AdValue = adValue
-                };
+                Precision = (AdValue.PrecisionType)precision,
+                Value = valueInMicros,
+                CurrencyCode = currencyCode
+            };
+            AdValueEventArgs args = new AdValueEventArgs()
+            {
+                AdValue = adValue
+            };
 
-                this.OnPaidEvent(this, args);
-            }
+            this.OnAdPaid(adValue);
         }
 
+        internal void onAdClickRecorded()
+        {
+            this.OnAdClickRecorded();
+        }
+
+        internal void onAdImpressionRecorded()
+        {
+            this.OnAdImpressionRecorded();
+        }
 
         #endregion
     }

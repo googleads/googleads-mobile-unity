@@ -13,135 +13,114 @@
 // limitations under the License.
 
 using System;
-using System.Collections.Generic;
-
 using UnityEngine;
-
 using GoogleMobileAds.Common;
 
 namespace GoogleMobileAds.Api
 {
-    public class AppOpenAd
+    /// <summary>
+    /// App open ads are used to display ads when users enter your app. An AppOpenAd object
+    /// contains all the data necessary to display an ad. Unlike interstitial ads, app open ads
+    /// make it easy to provide an app branding so that users understand the context in which they
+    /// see the ad.
+    /// </summary>
+    public class AppOpenAd : BaseFullScreenAd
     {
-        private IAppOpenAdClient client;
+        /// <summary>
+        /// Loads an app open ad.
+        /// </summary>
+        public static void LoadAppOpenAd(string adUnitId,
+                                         ScreenOrientation orientation,
+                                         AdRequest request,
+                                         Action<AppOpenAd, LoadAdError> callback)
+        {
+            Action<IAppOpenAdClient, ILoadAdErrorClient> apiCallback = (ad, error) =>
+            {
+                callback(ad == null ? null : new AppOpenAd(ad),
+                         error == null ? null : new LoadAdError(error));
+            };
+            var client = MobileAds.GetClientFactory().BuildAppOpenAdClient();
+            client.LoadAppOpenAd(adUnitId, orientation, request, apiCallback);
+        }
 
-        private static HashSet<IAppOpenAdClient> loadingClients = new HashSet<IAppOpenAdClient>();
+        /// <summary>
+        /// Loads a new app open ad.
+        /// <summary>
+        [Obsolete("Use LoadAppOpenAd().")]
+        public static void LoadAd(string adUnitId,
+                                  ScreenOrientation orientation,
+                                  AdRequest request,
+                                  Action<AppOpenAd, AdFailedToLoadEventArgs> adLoadCallback)
+        {
+            Action<AppOpenAd, LoadAdError> oldCallback = (ad, error) =>
+            {
+                AdFailedToLoadEventArgs failedToLoadEventArgs = error == null
+                  ? null
+                  : new AdFailedToLoadEventArgs{ LoadAdError = error };
+                adLoadCallback(ad,failedToLoadEventArgs);
+            };
+            LoadAppOpenAd(adUnitId, orientation, request, oldCallback);
+        }
 
+        // Events
+
+        [Obsolete("Use OnFullScreenAdOpened.")]
+        public event EventHandler<EventArgs> OnAdDidPresentFullScreenContent = delegate{};
+        [Obsolete("Use OnFullScreenAdClosed.")]
+        public event EventHandler<EventArgs> OnAdDidDismissFullScreenContent = delegate{};
+        [Obsolete("Use OnFullScreenAdFailed.")]
+        public event EventHandler<AdErrorEventArgs>
+                                    OnAdFailedToPresentFullScreenContent = delegate{};
+        [Obsolete("Use OnAdImpressionRecorded.")]
+        public event EventHandler<EventArgs> OnAdDidRecordImpression = delegate{};
+        [Obsolete("Use OnAdPaid.")]
+        public event EventHandler<AdValueEventArgs> OnPaidEvent = delegate{};
+
+        // Fields
+        private IAppOpenAdClient _client;
+
+        // Constructors
         private AppOpenAd(IAppOpenAdClient client)
         {
-            this.client = client;
-
-            this.client.OnAdFailedToPresentFullScreenContent += (sender, args) =>
+            Init(client);
+            _client = client;
+            OnAdPaid += (adValue) =>
             {
-                if (this.OnAdFailedToPresentFullScreenContent != null)
+                OnPaidEvent(this, new AdValueEventArgs
                 {
-                    AdError adError = new AdError(args.AdErrorClient);
-                    this.OnAdFailedToPresentFullScreenContent(this, new AdErrorEventArgs()
-                    {
-                        AdError = adError,
-                    });
-                }
+                    AdValue = adValue
+                });
             };
-
-            this.client.OnAdDidPresentFullScreenContent += (sender, args) =>
+            OnAdImpressionRecorded += () =>
             {
-                  if (this.OnAdDidPresentFullScreenContent != null)
-                  {
-                      this.OnAdDidPresentFullScreenContent(this, args);
-                  }
+                OnAdDidRecordImpression(this, EventArgs.Empty);
             };
-            
-            this.client.OnAdDidDismissFullScreenContent += (sender, args) =>
-            {
-                  if (this.OnAdDidDismissFullScreenContent != null)
-                  {
-                      this.OnAdDidDismissFullScreenContent(this, args);
-                  }
-            };
-
-            this.client.OnAdDidRecordImpression += (sender, args) =>
-            {
-                if (this.OnAdDidRecordImpression != null)
+            OnAdFullScreenContentFailed += (error) =>
+            {;
+                OnAdFailedToPresentFullScreenContent(this, new AdErrorEventArgs
                 {
-                    this.OnAdDidRecordImpression(this, args);
-                }
+                    AdError = error
+                });
             };
-
-            this.client.OnPaidEvent += (sender, args) =>
+            OnAdFullScreenContentClosed += () =>
             {
-                if (this.OnPaidEvent != null)
-                {
-                    this.OnPaidEvent(this, args);
-                }
+                OnAdDidDismissFullScreenContent(this, EventArgs.Empty);
+            };
+            OnAdFullScreenContentOpened += () =>
+            {
+                OnAdDidPresentFullScreenContent(this, EventArgs.Empty);
             };
         }
 
-        // Called when the ad is estimated to have earned money.
-        public event EventHandler<AdValueEventArgs> OnPaidEvent;
-
-        // Full screen content events.
-        public event EventHandler<AdErrorEventArgs> OnAdFailedToPresentFullScreenContent;
-
-        public event EventHandler<EventArgs> OnAdDidPresentFullScreenContent;
-
-        public event EventHandler<EventArgs> OnAdDidDismissFullScreenContent;
-
-        public event EventHandler<EventArgs> OnAdDidRecordImpression;
-
-        // Loads a new app open ad.
-        public static void LoadAd(string adUnitID,
-            ScreenOrientation orientation,
-            AdRequest request,
-            Action<AppOpenAd, AdFailedToLoadEventArgs> adLoadCallback)
-        {
-            IAppOpenAdClient client = MobileAds.GetClientFactory().BuildAppOpenAdClient();
-            loadingClients.Add(client);
-            client.CreateAppOpenAd();
-
-            client.OnAdLoaded += (sender, args) =>
-            {
-                if (adLoadCallback != null)
-                {
-                    adLoadCallback(new AppOpenAd(client), null);
-                    loadingClients.Remove(client);
-                }
-            };
-
-            client.OnAdFailedToLoad += (sender, args) =>
-            {
-                if (adLoadCallback != null)
-                {
-                    LoadAdError loadAdError = new LoadAdError(args.LoadAdErrorClient);
-                    adLoadCallback(null, new AdFailedToLoadEventArgs()
-                    {
-                        LoadAdError = loadAdError,
-                    });
-                    loadingClients.Remove(client);
-                }
-            };
-
-            client.LoadAd(adUnitID, request, orientation);
-        }
-
-        // Shows an app open ad.
+        /// <summary>
+        /// Shows an app open ad.
+        /// </summary>
         public void Show()
         {
-            if (client != null)
+            if (_client != null)
             {
-                client.Show();
+                _client.Show();
             }
-        }
-
-        // Destroys the AppOpenAd.
-        public void Destroy()
-        {
-            client.DestroyAppOpenAd();
-        }
-
-        // Returns ad request response info.
-        public ResponseInfo GetResponseInfo()
-        {
-            return new ResponseInfo(client.GetResponseInfoClient());
         }
     }
 }

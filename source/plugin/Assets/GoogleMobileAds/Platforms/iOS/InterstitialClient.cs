@@ -25,6 +25,8 @@ namespace GoogleMobileAds.iOS
 {
     public class InterstitialClient : IInterstitialClient, IDisposable
     {
+        public bool IsDestroyed { get; private set; }
+
         private IntPtr interstitialClientPtr;
         private IntPtr interstitialPtr;
 
@@ -49,21 +51,16 @@ namespace GoogleMobileAds.iOS
 
         internal delegate void GADUInterstitialAdDidRecordImpressionCallback(IntPtr interstitialClient);
 
-#endregion
+        internal delegate void GADUInterstitialAdDidRecordClickCallback(IntPtr interstitialClient);
 
-        public event EventHandler<EventArgs> OnAdLoaded;
+        #endregion
 
-        public event EventHandler<LoadAdErrorClientEventArgs> OnAdFailedToLoad;
-
-        public event EventHandler<AdValueEventArgs> OnPaidEvent;
-
-        public event EventHandler<AdErrorClientEventArgs> OnAdFailedToPresentFullScreenContent;
-
-        public event EventHandler<EventArgs> OnAdDidPresentFullScreenContent;
-
-        public event EventHandler<EventArgs> OnAdDidDismissFullScreenContent;
-
-        public event EventHandler<EventArgs> OnAdDidRecordImpression;
+        public event Action OnAdFullScreenContentOpened = delegate { };
+        public event Action OnAdFullScreenContentClosed = delegate { };
+        public event Action<IAdErrorClient> OnAdFullScreenContentFailed = delegate { };
+        public event Action<AdValue> OnAdPaid = delegate { };
+        public event Action OnAdClickRecorded = delegate { };
+        public event Action OnAdImpressionRecorded = delegate { };
 
         // This property should be used when setting the interstitialPtr.
         private IntPtr InterstitialPtr
@@ -80,9 +77,11 @@ namespace GoogleMobileAds.iOS
             }
         }
 
-#region IInterstitialClient implementation
+        private Action<IInterstitialClient, ILoadAdErrorClient> _loadCallback;
 
-        public void CreateInterstitialAd()
+        #region IInterstitialAdClient implementation
+
+        public InterstitialClient()
         {
             this.interstitialClientPtr = (IntPtr)GCHandle.Alloc(this);
             this.InterstitialPtr = Externs.GADUCreateInterstitial(this.interstitialClientPtr);
@@ -95,12 +94,16 @@ namespace GoogleMobileAds.iOS
                 AdFailedToPresentFullScreenContentCallback,
                 AdDidDismissFullScreenContentCallback,
                 AdDidRecordImpressionCallback,
+                AdDidRecordClickCallback,
                 InterstitialPaidEventCallback);
         }
 
-        public void LoadAd(string adUnitID, AdRequest request) {
+        public void LoadInterstitialAd(string adUnitId, AdRequest request,
+            Action<IInterstitialClient, ILoadAdErrorClient> callback)
+        {
+            _loadCallback = callback;
             IntPtr requestPtr = Utils.BuildAdRequest(request);
-            Externs.GADULoadInterstitialAd(this.InterstitialPtr, adUnitID, requestPtr);
+            Externs.GADULoadInterstitialAd(this.InterstitialPtr, adUnitId, requestPtr);
             Externs.GADURelease(requestPtr);
         }
 
@@ -116,14 +119,15 @@ namespace GoogleMobileAds.iOS
         }
 
         // Destroys the interstitial ad.
-        public void DestroyInterstitial()
+        public void Destroy()
         {
             this.InterstitialPtr = IntPtr.Zero;
+            IsDestroyed = true;
         }
 
         public void Dispose()
         {
-            this.DestroyInterstitial();
+            this.Destroy();
             ((GCHandle)this.interstitialClientPtr).Free();
         }
 
@@ -140,10 +144,11 @@ namespace GoogleMobileAds.iOS
         private static void InterstitialLoadedCallback(IntPtr interstitialClient)
         {
             InterstitialClient client = IntPtrToInterstitialClient(interstitialClient);
-            if (client.OnAdLoaded != null)
+            if(client._loadCallback == null)
             {
-                client.OnAdLoaded(client, EventArgs.Empty);
+                return;
             }
+            client._loadCallback(client, null);
         }
 
         [MonoPInvokeCallback(typeof(GADUInterstitialAdFailedToLoadCallback))]
@@ -151,14 +156,11 @@ namespace GoogleMobileAds.iOS
             IntPtr interstitialClient, IntPtr error)
         {
             InterstitialClient client = IntPtrToInterstitialClient(interstitialClient);
-            if (client.OnAdFailedToLoad != null)
+            if (client._loadCallback == null)
             {
-                LoadAdErrorClientEventArgs args = new LoadAdErrorClientEventArgs()
-                {
-                    LoadAdErrorClient = new LoadAdErrorClient(error)
-                };
-                client.OnAdFailedToLoad(client, args);
+                return;
             }
+            client._loadCallback(null, new LoadAdErrorClient(error));
         }
 
         [MonoPInvokeCallback(typeof(GADUInterstitialPaidEventCallback))]
@@ -166,65 +168,48 @@ namespace GoogleMobileAds.iOS
             IntPtr interstitialClient, int precision, long value, string currencyCode)
         {
             InterstitialClient client = IntPtrToInterstitialClient(interstitialClient);
-            if (client.OnPaidEvent != null)
+            AdValue adValue = new AdValue()
             {
-                AdValue adValue = new AdValue()
-                {
-                    Precision = (AdValue.PrecisionType)precision,
-                    Value = value,
-                    CurrencyCode = currencyCode
-                };
-                AdValueEventArgs args = new AdValueEventArgs()
-                {
-                    AdValue = adValue
-                };
-
-                client.OnPaidEvent(client, args);
-            }
+                Precision = (AdValue.PrecisionType)precision,
+                Value = value,
+                CurrencyCode = currencyCode
+            };
+            client.OnAdPaid(adValue);
         }
 
         [MonoPInvokeCallback(typeof(GADUInterstitialAdFailedToPresentFullScreenContentCallback))]
         private static void AdFailedToPresentFullScreenContentCallback(IntPtr interstitialClient, IntPtr error)
         {
             InterstitialClient client = IntPtrToInterstitialClient(interstitialClient);
-            if (client.OnAdFailedToPresentFullScreenContent != null)
-            {
-                AdErrorClientEventArgs args = new AdErrorClientEventArgs()
-                {
-                    AdErrorClient = new AdErrorClient(error)
-                };
-                client.OnAdFailedToPresentFullScreenContent(client, args);
-            }
+            client.OnAdFullScreenContentFailed(new AdErrorClient(error));
         }
 
         [MonoPInvokeCallback(typeof(GADUInterstitialAdWillPresentFullScreenContentCallback))]
         private static void AdWillPresentFullScreenContentCallback(IntPtr interstitialClient)
         {
             InterstitialClient client = IntPtrToInterstitialClient(interstitialClient);
-            if (client.OnAdDidPresentFullScreenContent != null)
-            {
-                client.OnAdDidPresentFullScreenContent(client, EventArgs.Empty);
-            }
+            client.OnAdFullScreenContentOpened();
         }
 
         [MonoPInvokeCallback(typeof(GADUInterstitialAdDidDismissFullScreenContentCallback))]
         private static void AdDidDismissFullScreenContentCallback(IntPtr interstitialClient)
         {
             InterstitialClient client = IntPtrToInterstitialClient(interstitialClient);
-            if (client.OnAdDidDismissFullScreenContent != null)
-            {
-                client.OnAdDidDismissFullScreenContent(client, EventArgs.Empty);
-            }
+            client.OnAdFullScreenContentClosed();
         }
 
         [MonoPInvokeCallback(typeof(GADUInterstitialAdDidRecordImpressionCallback))]
         private static void AdDidRecordImpressionCallback(IntPtr interstitialClient)
         {
             InterstitialClient client = IntPtrToInterstitialClient(interstitialClient);
-            if (client.OnAdDidRecordImpression != null)
-            {
-                client.OnAdDidRecordImpression(client, EventArgs.Empty);
-            }
+            client.OnAdImpressionRecorded();
+        }
+
+        [MonoPInvokeCallback(typeof(GADUInterstitialAdDidRecordClickCallback))]
+        private static void AdDidRecordClickCallback(IntPtr interstitialClient)
+        {
+            InterstitialClient client = IntPtrToInterstitialClient(interstitialClient);
+            client.OnAdClickRecorded();
         }
 
         private static InterstitialClient IntPtrToInterstitialClient(
@@ -234,7 +219,7 @@ namespace GoogleMobileAds.iOS
             return handle.Target as InterstitialClient;
         }
 
-#endregion
+        #endregion
     }
 }
 #endif

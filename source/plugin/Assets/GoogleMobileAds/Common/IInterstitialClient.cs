@@ -18,36 +18,22 @@ using GoogleMobileAds.Api;
 
 namespace GoogleMobileAds.Common
 {
-    public interface IInterstitialClient
+    /// <summary>
+    /// A full page ad experience at natural transition points such as a page change, an app launch.
+    /// Interstitials use a close button that removes the ad from the user's experience.
+    /// </summary>
+    public interface IInterstitialClient : IFullScreenAdClient
     {
-        // Ad event fired when the interstitial ad has been received.
-        event EventHandler<EventArgs> OnAdLoaded;
-        // Ad event fired when the interstitial ad has failed to load.
-        event EventHandler<LoadAdErrorClientEventArgs> OnAdFailedToLoad;
-        // Ad event fired when the interstitial ad is estimated to have earned money.
-        event EventHandler<AdValueEventArgs> OnPaidEvent;
-        // Ad event fired when the full screen content has failed to be presented.
-        event EventHandler<AdErrorClientEventArgs> OnAdFailedToPresentFullScreenContent;
-        // Ad event fired when the full screen content has been presented.
-        event EventHandler<EventArgs> OnAdDidPresentFullScreenContent;
-        // Ad event fired when the full screen content has been dismissed.
-        event EventHandler<EventArgs> OnAdDidDismissFullScreenContent;
-        // Ad event fired when an ad impression has been recorded.
-        event EventHandler<EventArgs> OnAdDidRecordImpression;
-
-        // Creates an interstitial ad.
-        void CreateInterstitialAd();
-
-        // Loads an interstitial ad.
-        void LoadAd(string adUnitID, AdRequest request);
-
-        // Shows the interstitial ad on the screen.
+        /// <summary>
+        /// Shows the InterstitialAd on the screen.
+        /// </summary>
         void Show();
 
-        // Returns ad request Response info client.
-        IResponseInfoClient GetResponseInfoClient();
-
-        // Destroys the interstitial ad.
-        void DestroyInterstitial();
+        /// <summary>
+        /// Loads an IInterstitialAd.
+        /// </summary>
+        void LoadInterstitialAd(string adUnitId,
+                                AdRequest request,
+                                Action<IInterstitialClient, ILoadAdErrorClient> callback);
     }
 }

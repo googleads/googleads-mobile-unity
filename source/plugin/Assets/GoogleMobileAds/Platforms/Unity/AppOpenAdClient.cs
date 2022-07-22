@@ -25,19 +25,15 @@ namespace GoogleMobileAds.Unity
 {
     public class AppOpenAdClient : BaseAdDummyClient, IAppOpenAdClient
     {
-        public event EventHandler<EventArgs> OnAdLoaded;
+        public bool IsDestroyed { get; private set; }
 
-        public event EventHandler<LoadAdErrorClientEventArgs> OnAdFailedToLoad;
-
-        public event EventHandler<AdValueEventArgs> OnPaidEvent;
-
-        public event EventHandler<AdErrorClientEventArgs> OnAdFailedToPresentFullScreenContent;
-
-        public event EventHandler<EventArgs> OnAdDidPresentFullScreenContent;
-
-        public event EventHandler<EventArgs> OnAdDidDismissFullScreenContent;
-
-        public event EventHandler<EventArgs> OnAdDidRecordImpression;
+        public event EventHandler<EventArgs> OnAdDidRecordImpression = delegate { };
+        public event Action OnAdFullScreenContentOpened = delegate { };
+        public event Action OnAdFullScreenContentClosed = delegate { };
+        public event Action<IAdErrorClient> OnAdFullScreenContentFailed = delegate { };
+        public event Action<AdValue> OnAdPaid = delegate { };
+        public event Action OnAdClickRecorded = delegate { };
+        public event Action OnAdImpressionRecorded = delegate { };
 
         private Dictionary<AdSize, string> prefabAds = new Dictionary<AdSize, string>() {
             { new AdSize(768, 1024), "DummyAds/AppOpen/768x1024" },
@@ -52,6 +48,7 @@ namespace GoogleMobileAds.Unity
             Image adImage = images[1];
             Button button = adImage.GetComponentInChildren<Button>();
             button.onClick.AddListener(() => {
+                OnAdClickRecorded();
                 buttonBehaviour.OpenURL();
             });
 
@@ -59,11 +56,8 @@ namespace GoogleMobileAds.Unity
 
             innerButtons[1].onClick.AddListener(() =>
             {
-                DestroyAppOpenAd();
-                if(OnAdDidDismissFullScreenContent != null)
-                {
-                    OnAdDidDismissFullScreenContent.Invoke(this, new EventArgs());
-                }
+                Destroy();
+                OnAdFullScreenContentClosed();
                 AdBehaviour.ResumeGame();
             });
         }
@@ -78,7 +72,10 @@ namespace GoogleMobileAds.Unity
             // Do nothing.
         }
 
-        public void LoadAd(string adUnitID, AdRequest request, ScreenOrientation orientation)
+        public void LoadAppOpenAd(string adUnitId,
+                           ScreenOrientation orientation,
+                           AdRequest request,
+                           Action<IAppOpenAdClient, ILoadAdErrorClient> callback)
         {
             if (Screen.width > Screen.height) // Landscape
             {
@@ -89,23 +86,15 @@ namespace GoogleMobileAds.Unity
                 LoadAndSetPrefabAd(prefabAds[new AdSize(768, 1024)]);
             }
 
-            if (prefabAd != null)
+
+            if (callback == null)
             {
-                if(OnAdLoaded != null)
-                {
-                    OnAdLoaded.Invoke(this, EventArgs.Empty);
-                }
+                return;
             }
-            else
-            {
-                if(OnAdFailedToLoad != null)
-                {
-                    OnAdFailedToLoad.Invoke(this, new LoadAdErrorClientEventArgs()
-                    {
-                        LoadAdErrorClient = new LoadAdErrorClient()
-                    });
-                }
-            }
+
+            callback(
+                prefabAd == null ? null : this,
+                prefabAd == null ? new LoadAdErrorClient() : null);
         }
 
         public void Show()
@@ -117,11 +106,7 @@ namespace GoogleMobileAds.Unity
 
               CreateButtonBehavior();
               AddClickBehavior(dummyAd);
-
-              if(OnAdDidPresentFullScreenContent != null)
-              {
-                OnAdDidPresentFullScreenContent.Invoke(this, EventArgs.Empty);
-              }
+              OnAdFullScreenContentOpened();
           }
           else
           {
@@ -129,10 +114,11 @@ namespace GoogleMobileAds.Unity
           }
         }
 
-        public void DestroyAppOpenAd()
+        public void Destroy()
         {
           AdBehaviour.DestroyAd(dummyAd);
           prefabAd = null;
+          IsDestroyed = true;
         }
     }
 }

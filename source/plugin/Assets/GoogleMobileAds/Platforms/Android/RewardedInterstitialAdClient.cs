@@ -22,6 +22,8 @@ namespace GoogleMobileAds.Android
 {
     public class RewardedInterstitialAdClient : AndroidJavaProxy, IRewardedInterstitialAdClient
     {
+        public bool IsDestroyed { get; private set; }
+
         private AndroidJavaObject androidRewardedInterstitialAd;
 
         public RewardedInterstitialAdClient() : base(Utils.UnityRewardedInterstitialAdCallbackClassName)
@@ -31,40 +33,50 @@ namespace GoogleMobileAds.Android
             androidRewardedInterstitialAd = new AndroidJavaObject(Utils.UnityRewardedInterstitialAdClassName, activity, this);
         }
 
-        public event EventHandler<EventArgs> OnAdLoaded;
+        public event Action OnAdFullScreenContentOpened = delegate { };
+        public event Action OnAdFullScreenContentClosed = delegate { };
+        public event Action<IAdErrorClient> OnAdFullScreenContentFailed = delegate { };
+        public event Action<AdValue> OnAdPaid = delegate { };
+        public event Action OnAdClickRecorded = delegate { };
+        public event Action OnAdImpressionRecorded = delegate { };
 
-        public event EventHandler<LoadAdErrorClientEventArgs> OnAdFailedToLoad;
+        private Action<IRewardedInterstitialAdClient, ILoadAdErrorClient> _loadCallback;
+        private Action<Reward> _rewardCallback;
 
-        public event EventHandler<Reward> OnUserEarnedReward;
-
-        public event EventHandler<AdValueEventArgs> OnPaidEvent;
-
-        public event EventHandler<AdErrorClientEventArgs> OnAdFailedToPresentFullScreenContent;
-
-        public event EventHandler<EventArgs> OnAdDidPresentFullScreenContent;
-
-        public event EventHandler<EventArgs> OnAdDidDismissFullScreenContent;
-
-        public event EventHandler<EventArgs> OnAdDidRecordImpression;
-
-        public void CreateRewardedInterstitialAd()
+        public void LoadRewardedInterstitialAd(string adUnitId, AdRequest request,
+            Action<IRewardedInterstitialAdClient, ILoadAdErrorClient> callback)
         {
-            // Do nothing.
-        }
-
-        public void LoadAd(string adUnitId, AdRequest request)
-        {
+            _loadCallback = callback;
             androidRewardedInterstitialAd.Call("loadAd", adUnitId, Utils.GetAdRequestJavaObject(request));
         }
 
-        public void Show()
+        public void Show(Action<Reward> userRewardEarnedCallback)
         {
+            _rewardCallback = userRewardEarnedCallback;
             androidRewardedInterstitialAd.Call("show");
         }
 
+        public void SetServerSideVerificationOptions(ServerSideVerificationOptions serverSideVerificationOptions)
+        {
+            androidRewardedInterstitialAd.Call("setServerSideVerificationOptions", Utils.GetServerSideVerificationOptionsJavaObject(serverSideVerificationOptions));
+        }
+
+        public IResponseInfoClient GetResponseInfoClient()
+        {
+            return new ResponseInfoClient(ResponseInfoClientType.AdLoaded, this.androidRewardedInterstitialAd);
+        }
+
+        public void Destroy()
+        {
+            this.androidRewardedInterstitialAd.Call("destroy");
+            IsDestroyed = true;
+        }
+
+        // Returns the reward item for the loaded rewarded ad.
         public Reward GetRewardItem()
         {
-            AndroidJavaObject rewardItem = this.androidRewardedInterstitialAd.Call<AndroidJavaObject>("getRewardItem");
+            AndroidJavaObject rewardItem =
+                this.androidRewardedInterstitialAd.Call<AndroidJavaObject>("getRewardItem");
             if (rewardItem == null)
             {
                 return null;
@@ -78,108 +90,73 @@ namespace GoogleMobileAds.Android
             };
         }
 
-        public void SetServerSideVerificationOptions(ServerSideVerificationOptions serverSideVerificationOptions)
+        internal void onRewardedInterstitialAdLoaded()
         {
-            androidRewardedInterstitialAd.Call("setServerSideVerificationOptions", Utils.GetServerSideVerificationOptionsJavaObject(serverSideVerificationOptions));
-        }
-
-        public IResponseInfoClient GetResponseInfoClient()
-        {
-            return new ResponseInfoClient(ResponseInfoClientType.AdLoaded, this.androidRewardedInterstitialAd);
-        }
-
-        public void DestroyRewardedInterstitialAd()
-        {
-            this.androidRewardedInterstitialAd.Call("destroy");
-        }
-
-        void onRewardedInterstitialAdLoaded()
-        {
-            if (this.OnAdLoaded != null)
+            if (_loadCallback != null)
             {
-                this.OnAdLoaded(this, EventArgs.Empty);
+                _loadCallback(this, null);
+                _loadCallback = null;
             }
         }
 
-        void onRewardedInterstitialAdFailedToLoad(AndroidJavaObject error)
+        internal void onRewardedInterstitialAdFailedToLoad(AndroidJavaObject error)
         {
-            if (this.OnAdFailedToLoad != null)
+            if (_loadCallback != null)
             {
-                LoadAdErrorClientEventArgs args = new LoadAdErrorClientEventArgs()
-                {
-                    LoadAdErrorClient = new LoadAdErrorClient(error)
-                };
-                this.OnAdFailedToLoad(this, args);
+                _loadCallback(null, new LoadAdErrorClient(error));
+                _loadCallback = null;
             }
         }
 
-        void onAdFailedToShowFullScreenContent(AndroidJavaObject error)
+        internal void onAdFailedToShowFullScreenContent(AndroidJavaObject error)
         {
-            if (this.OnAdFailedToPresentFullScreenContent != null)
-            {
-                AdErrorClientEventArgs args = new AdErrorClientEventArgs()
-                {
-                    AdErrorClient = new AdErrorClient(error),
-                };
-                this.OnAdFailedToPresentFullScreenContent(this, args);
-            }
+            this.OnAdFullScreenContentFailed(new AdErrorClient(error));
         }
 
-        void onAdShowedFullScreenContent()
+        internal void onAdShowedFullScreenContent()
         {
-            if (this.OnAdDidPresentFullScreenContent != null)
-            {
-                this.OnAdDidPresentFullScreenContent(this, EventArgs.Empty);
-            }
+            this.OnAdFullScreenContentOpened();
         }
 
 
-        void onAdDismissedFullScreenContent()
+        internal void onAdDismissedFullScreenContent()
         {
-            if (this.OnAdDidDismissFullScreenContent != null)
-            {
-                this.OnAdDidDismissFullScreenContent(this, EventArgs.Empty);
-            }
+            this.OnAdFullScreenContentClosed();
         }
 
-        void onAdImpression()
+        internal void onAdImpression()
         {
-            if (this.OnAdDidRecordImpression != null)
-            {
-                this.OnAdDidRecordImpression(this, EventArgs.Empty);
-            }
+            this.OnAdImpressionRecorded();
         }
 
-        void onUserEarnedReward(string type, float amount)
+        internal void onAdClickRecorded()
         {
-            if (this.OnUserEarnedReward != null)
+            this.OnAdClickRecorded();
+        }
+
+        internal void onUserEarnedReward(string type, float amount)
+        {
+            if (_rewardCallback != null)
             {
-                Reward args = new Reward()
+                Reward reward = new Reward()
                 {
                     Type = type,
                     Amount = amount
                 };
-                this.OnUserEarnedReward(this, args);
+                _rewardCallback(reward);
+                _rewardCallback = null;
             }
         }
 
-        public void onPaidEvent(int precision, long valueInMicros, string currencyCode)
+        internal void onPaidEvent(int precision, long valueInMicros, string currencyCode)
         {
-            if (this.OnPaidEvent != null)
+            AdValue adValue = new AdValue()
             {
-                AdValue adValue = new AdValue()
-                {
-                    Precision = (AdValue.PrecisionType)precision,
-                    Value = valueInMicros,
-                    CurrencyCode = currencyCode
-                };
-                AdValueEventArgs args = new AdValueEventArgs()
-                {
-                    AdValue = adValue
-                };
-
-                this.OnPaidEvent(this, args);
-            }
+                Precision = (AdValue.PrecisionType)precision,
+                Value = valueInMicros,
+                CurrencyCode = currencyCode
+            };
+            this.OnAdPaid(adValue);
         }
     }
 }
