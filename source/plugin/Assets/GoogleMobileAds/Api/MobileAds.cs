@@ -34,7 +34,6 @@ namespace GoogleMobileAds.Api
             public static int GetDeviceSafeWidth()
             {
                 return Instance.client.GetDeviceSafeWidth();
-
             }
         }
 
