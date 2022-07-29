@@ -1,4 +1,4 @@
-// Copyright (C) 2020 Google, LLC
+// Copyright (C) 2022 Google, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,12 +16,15 @@ using System.Collections.Generic;
 
 namespace GoogleMobileAds.Common
 {
-    public interface IResponseInfoClient
+    public interface IAdapterResponseInfoClient
     {
-        IAdapterResponseInfoClient GetLoadedAdapterResponseInfo();
-        IAdapterResponseInfoClient[] GetAdapterResponses();
-        Dictionary<string, string> GetResponseExtras();
-        string GetMediationAdapterClassName();
-        string GetResponseId();
+        string AdapterClassName { get; }
+        IAdErrorClient AdError { get; }
+        string AdSourceId { get; }
+        string AdSourceName { get; }
+        string AdSourceInstanceId { get; }
+        string AdSourceInstanceName { get; }
+        Dictionary<string, string> AdUnitMapping { get; }
+        long LatencyMillis { get; }
     }
 }
