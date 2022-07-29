@@ -245,32 +245,45 @@ namespace GoogleMobileAds.iOS
         internal static extern void GADUSetBannerViewCustomPosition(IntPtr bannerView, int x, int y);
 
         [DllImport("__Internal")]
+        internal static extern string GADUGetResponseInfoJson(IntPtr adFormat);
+
+        [System.Obsolete("Use GADUGetResponseInfoJson. Preserved for Native Plugin.")]
+        [DllImport("__Internal")]
         internal static extern IntPtr GADUGetResponseInfo(IntPtr adFormat);
 
+        [System.Obsolete("Use GADUGetResponseInfoJson. Preserved for Native Plugin.")]
         [DllImport("__Internal")]
         internal static extern string GADUResponseInfoMediationAdapterClassName(IntPtr responseInfo);
 
+        [System.Obsolete("Use GADUGetResponseInfoJson. Preserved for Native Plugin.")]
         [DllImport("__Internal")]
         internal static extern string GADUResponseInfoResponseId(IntPtr responseInfo);
 
+        [System.Obsolete("Use GADUGetResponseInfoJson. Preserved for Native Plugin.")]
         [DllImport("__Internal")]
         internal static extern string GADUGetResponseInfoDescription(IntPtr responseInfo);
 
+        [System.Obsolete("Use JsonAdErrorClient. Preserved for Native Plugin.")]
         [DllImport("__Internal")]
         internal static extern int GADUGetAdErrorCode(IntPtr error);
 
+        [System.Obsolete("Use JsonAdErrorClient. Preserved for Native Plugin.")]
         [DllImport("__Internal")]
         internal static extern string GADUGetAdErrorDomain(IntPtr error);
 
+        [System.Obsolete("Use JsonAdErrorClient. Preserved for Native Plugin.")]
         [DllImport("__Internal")]
         internal static extern string GADUGetAdErrorMessage(IntPtr error);
 
+        [System.Obsolete("Use JsonAdErrorClient. Preserved for Native Plugin.")]
         [DllImport("__Internal")]
         internal static extern IntPtr GADUGetAdErrorUnderLyingError(IntPtr error);
 
+        [System.Obsolete("Use JsonAdErrorClient. Preserved for Native Plugin.")]
         [DllImport("__Internal")]
         internal static extern IntPtr GADUGetAdErrorResponseInfo(IntPtr error);
 
+        [System.Obsolete("Use JsonAdErrorClient. Preserved for Native Plugin.")]
         [DllImport("__Internal")]
         internal static extern string GADUGetAdErrorDescription(IntPtr error);
 

@@ -29,7 +29,7 @@ namespace GoogleMobileAds.iOS
         private Action<IInitializationStatusClient> initCompleteAction;
         private IntPtr mobileAdsClientPtr;
         internal delegate void GADUAdInspectorClosedCallback(IntPtr mobileAdsClient,
-                                                             IntPtr errorRef);
+                                                             string error);
         internal delegate void GADUInitializationCompleteCallback(IntPtr mobileAdsClient,
                                                                   IntPtr initStatusClient);
 
@@ -100,7 +100,7 @@ namespace GoogleMobileAds.iOS
         }
 
         [MonoPInvokeCallback(typeof(GADUAdInspectorClosedCallback))]
-        private static void AdInspectorClosedCallback(IntPtr mobileAdsClient, IntPtr errorRef)
+        private static void AdInspectorClosedCallback(IntPtr mobileAdsClient, string error)
         {
             MobileAdsClient client = IntPtrToMobileAdsClient(mobileAdsClient);
             if (client.adInspectorClosedAction == null)
@@ -108,12 +108,10 @@ namespace GoogleMobileAds.iOS
                 return;
             }
 
-            AdInspectorErrorClientEventArgs args = (errorRef == IntPtr.Zero)
-                ? null
-                : new AdInspectorErrorClientEventArgs
-                {
-                    AdErrorClient = new AdInspectorErrorClient(errorRef)
-                };
+            AdInspectorErrorClientEventArgs args = new AdInspectorErrorClientEventArgs
+            {
+                AdErrorClient = new JsonAdErrorClient(error)
+            };
 
             client.adInspectorClosedAction(args);
             client.adInspectorClosedAction = null;
