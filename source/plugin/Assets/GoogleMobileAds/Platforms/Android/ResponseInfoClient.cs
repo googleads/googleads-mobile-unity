@@ -20,6 +20,7 @@ using GoogleMobileAds.Common;
 
 namespace GoogleMobileAds.Android
 {
+    [System.Obsolete("Use JsonResponseInfoClient")]
     internal class ResponseInfoClient : IResponseInfoClient
     {
         private AndroidJavaObject androidResponseInfo;

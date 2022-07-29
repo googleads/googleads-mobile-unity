@@ -20,6 +20,7 @@ using UnityEngine;
 using GoogleMobileAds.Common;
 
 namespace GoogleMobileAds.iOS {
+  [System.Obsolete("Use JsonResponseInfoClient")]
   internal class AdInspectorErrorClient : AdErrorClient, IAdInspectorErrorClient {
     public AdInspectorErrorClient(IntPtr error) : base(error) {}
   }
