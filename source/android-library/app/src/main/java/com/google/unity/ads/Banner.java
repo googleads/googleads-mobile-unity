@@ -220,7 +220,6 @@ public class Banner {
           }
         });
 
-
     mAdView.setOnPaidEventListener(
         new OnPaidEventListener() {
           @Override
@@ -242,7 +241,6 @@ public class Banner {
             }
           }
         });
-
 
     mLayoutChangeListener =
         new View.OnLayoutChangeListener() {
@@ -521,29 +519,31 @@ public class Banner {
     return insets;
   }
 
-  /**
-   * Returns the request response info.
-   */
+  /** Returns the request response info. */
   public ResponseInfo getResponseInfo() {
-    FutureTask<ResponseInfo> task = new FutureTask<>(new Callable<ResponseInfo>() {
-      @Override
-      public ResponseInfo call() {
-        return mAdView.getResponseInfo();
-      }
-    });
+    FutureTask<ResponseInfo> task =
+        new FutureTask<>(
+            new Callable<ResponseInfo>() {
+              @Override
+              public ResponseInfo call() {
+                return mAdView.getResponseInfo();
+              }
+            });
     mUnityPlayerActivity.runOnUiThread(task);
 
     ResponseInfo result = null;
     try {
       result = task.get();
     } catch (InterruptedException exception) {
-      Log.e(PluginUtils.LOGTAG,
-              String.format("Unable to check banner response info: %s",
-                      exception.getLocalizedMessage()));
+      Log.e(
+          PluginUtils.LOGTAG,
+          String.format(
+              "Unable to check banner response info: %s", exception.getLocalizedMessage()));
     } catch (ExecutionException exception) {
-      Log.e(PluginUtils.LOGTAG,
-              String.format("Unable to check banner response info: %s",
-                      exception.getLocalizedMessage()));
+      Log.e(
+          PluginUtils.LOGTAG,
+          String.format(
+              "Unable to check banner response info: %s", exception.getLocalizedMessage()));
     }
     return result;
   }

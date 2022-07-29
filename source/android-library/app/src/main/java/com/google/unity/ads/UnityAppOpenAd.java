@@ -33,24 +33,16 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.FutureTask;
 
-/**
- * Native app open ad implementation for the Google Mobile Ads Unity plugin.
- */
+/** Native app open ad implementation for the Google Mobile Ads Unity plugin. */
 public class UnityAppOpenAd {
 
-  /**
-   * The {@link AppOpenAd}.
-   */
+  /** The {@link AppOpenAd}. */
   private AppOpenAd appOpenAd;
 
-  /**
-   * The {@code Activity} on which the app open add will display.
-   */
+  /** The {@code Activity} on which the app open add will display. */
   private final Activity activity;
 
-  /**
-   * A callback implemented in Unity via {@code AndroidJavaProxy} to receive ad events.
-   */
+  /** A callback implemented in Unity via {@code AndroidJavaProxy} to receive ad events. */
   private final UnityAppOpenAdCallback callback;
 
   public UnityAppOpenAd(Activity activity, UnityAppOpenAdCallback callback) {
@@ -145,7 +137,6 @@ public class UnityAppOpenAd {
                                   }
                                 });
                           }
-
                         });
 
                     runOnNewThread(
@@ -178,8 +169,10 @@ public class UnityAppOpenAd {
 
   public void show() {
     if (appOpenAd == null) {
-      Log.e(PluginUtils.LOGTAG, "Tried to show rewarded ad before it was ready. This should "
-          + "in theory never happen. If it does, please contact the plugin owners.");
+      Log.e(
+          PluginUtils.LOGTAG,
+          "Tried to show rewarded ad before it was ready. This should "
+              + "in theory never happen. If it does, please contact the plugin owners.");
       return;
     }
 
@@ -221,9 +214,7 @@ public class UnityAppOpenAd {
     return result;
   }
 
-  /**
-   * Destroys the {@link AppOpenAd}.
-   */
+  /** Destroys the {@link AppOpenAd}. */
   public void destroy() {
     // Currently there is no appOpenAd.destroy() method. This method is a placeholder
     // in case there is any cleanup to do here in the future.

@@ -23,9 +23,13 @@ import com.google.android.gms.ads.LoadAdError;
  */
 public interface UnityAdListener extends UnityPaidEventListener {
 
-    void onAdLoaded();
-    void onAdFailedToLoad(LoadAdError error);
-    void onAdOpened();
-    void onAdClosed();
-    void onAdLeftApplication();
+  void onAdLoaded();
+
+  void onAdFailedToLoad(LoadAdError error);
+
+  void onAdOpened();
+
+  void onAdClosed();
+
+  void onAdLeftApplication();
 }

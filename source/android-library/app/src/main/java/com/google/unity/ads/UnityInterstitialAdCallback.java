@@ -6,8 +6,8 @@ import com.google.android.gms.ads.LoadAdError;
  * An interface form of {@link InterstitialAdCallback} that can be implemented via {@code
  * AndroidJavaProxy} in Unity to receive ad events synchronously.
  */
-public interface UnityInterstitialAdCallback extends UnityPaidEventListener,
-    UnityFullScreenContentCallback {
+public interface UnityInterstitialAdCallback
+    extends UnityPaidEventListener, UnityFullScreenContentCallback {
 
   void onInterstitialAdLoaded();
 
