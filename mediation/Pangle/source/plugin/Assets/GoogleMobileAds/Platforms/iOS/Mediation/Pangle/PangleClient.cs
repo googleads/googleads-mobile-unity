@@ -27,7 +27,10 @@ namespace GoogleMobileAds.iOS.Mediation.Pangle
 
         public static PangleClient Instance
         {
-            get { return instance; }
+            get
+            {
+                return instance;
+            }
         }
 
         public void SetGDPR(int gdpr)

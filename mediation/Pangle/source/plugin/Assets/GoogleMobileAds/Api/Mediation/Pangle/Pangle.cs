@@ -23,37 +23,11 @@ namespace GoogleMobileAds.Api.Mediation.Pangle
     {
         public static readonly IPangleClient client = GetPangleClient();
 
-        /// <summary>
-        /// Set the GDPR setting in Pangle SDK.
-        /// </summary>
-        /// <remarks>
-        /// Pangle SDK can only accept the following values:
-        /// <c>0</c> means the user consents.
-        /// <c>1</c> means the user does not consent.
-        /// <c>-1</c> means the user hasn't specified.
-        /// </remarks>
-        /// <param name="gdpr">
-        /// An <c>int</c> value that indicates whether the user consents the use of personal data
-        /// to serve ads under GDPR.
-        /// </param>
         public static void SetGDPR(int gdpr)
         {
             client.SetGDPR(gdpr);
         }
 
-        /// <summary>
-        /// Set the CCPA setting in Pangle SDK.
-        /// </summary>
-        /// <remarks>
-        /// Pangle SDK can only accept the following values:
-        /// <c>0</c> means the user consents.
-        /// <c>1</c> means the user does not consent.
-        /// <c>-1</c> means the user hasn't specified.
-        /// </remarks>
-        /// <param name="ccpa">
-        /// An <c>int</c>  value that indicates whether the user opts in of the "sale" of the
-        /// "personal information" under CCPA.
-        /// </param>
         public static void SetCCPA(int ccpa)
         {
             client.SetCCPA(ccpa);

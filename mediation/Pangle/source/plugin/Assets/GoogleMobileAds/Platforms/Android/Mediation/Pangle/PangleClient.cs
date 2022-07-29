@@ -26,24 +26,27 @@ namespace GoogleMobileAds.Android.Mediation.Pangle
         private PangleClient() { }
 
         private const string pangleMediationAdapterClassName =
-            "com.google.ads.mediation.pangle.PangleMediationAdapter";
+               "com.google.ads.mediation.pangle.PangleMediationAdapter";
 
         public static PangleClient Instance
         {
-            get { return instance; }
+            get
+            {
+                return instance;
+            }
         }
 
         public void SetGDPR(int gdpr)
         {
             AndroidJavaClass PangleMediationAdapter =
-                new AndroidJavaClass(pangleMediationAdapterClassName);
+                    new AndroidJavaClass(pangleMediationAdapterClassName);
             PangleMediationAdapter.CallStatic("setGdpr", gdpr);
         }
 
         public void SetCCPA(int ccpa)
         {
             AndroidJavaClass PangleMediationAdapter =
-                new AndroidJavaClass(pangleMediationAdapterClassName);
+                    new AndroidJavaClass(pangleMediationAdapterClassName);
             PangleMediationAdapter.CallStatic("setCcpa", ccpa);
         }
     }
