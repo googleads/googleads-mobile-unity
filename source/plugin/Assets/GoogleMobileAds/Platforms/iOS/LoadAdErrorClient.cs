@@ -18,6 +18,7 @@ using GoogleMobileAds.Common;
 
 namespace GoogleMobileAds.iOS
 {
+    [System.Obsolete("Use JsonResponseInfoClient")]
     internal class LoadAdErrorClient : ILoadAdErrorClient
     {
         IntPtr error;

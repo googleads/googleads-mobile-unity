@@ -13,6 +13,7 @@
 // limitations under the License.
 
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 using GoogleMobileAds.Api;
@@ -20,6 +21,7 @@ using GoogleMobileAds.Common;
 
 namespace GoogleMobileAds.Android
 {
+    [System.Obsolete("Use JsonResponseInfoClient")]
     internal class ResponseInfoClient : IResponseInfoClient
     {
         private AndroidJavaObject androidResponseInfo;
@@ -27,6 +29,21 @@ namespace GoogleMobileAds.Android
         public ResponseInfoClient(ResponseInfoClientType type, AndroidJavaObject androidJavaObject)
         {
             androidResponseInfo = androidJavaObject.Call<AndroidJavaObject>("getResponseInfo");
+        }
+
+        public IAdapterResponseInfoClient GetLoadedAdapterResponseInfo()
+        {
+            return null;
+        }
+
+        public IAdapterResponseInfoClient[] GetAdapterResponses()
+        {
+            return null;
+        }
+
+        public Dictionary<string,string> GetResponseExtras()
+        {
+            return null;
         }
 
         public string GetMediationAdapterClassName()

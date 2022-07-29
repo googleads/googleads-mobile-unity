@@ -21,6 +21,7 @@ using GoogleMobileAds.Common;
 
 namespace GoogleMobileAds.iOS
 {
+    [System.Obsolete("Use JsonResponseInfoClient")]
     internal class ResponseInfoClient : IResponseInfoClient
     {
         private IntPtr adFormat;
