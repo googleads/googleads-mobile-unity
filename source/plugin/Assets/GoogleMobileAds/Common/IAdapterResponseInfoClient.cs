@@ -1,4 +1,4 @@
-// Copyright (C) 2021 Google LLC
+// Copyright (C) 2022 Google, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,13 +12,19 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using GoogleMobileAds.Common;
-using UnityEngine;
+using System.Collections.Generic;
 
-namespace GoogleMobileAds.Unity
+namespace GoogleMobileAds.Common
 {
-    [System.Obsolete("Use JsonResponseInfoClient")]
-    internal class AdInspectorErrorClient : AdErrorClient, IAdInspectorErrorClient
+    public interface IAdapterResponseInfoClient
     {
+        string AdapterClassName { get; }
+        IAdErrorClient AdError { get; }
+        string AdSourceId { get; }
+        string AdSourceName { get; }
+        string AdSourceInstanceId { get; }
+        string AdSourceInstanceName { get; }
+        Dictionary<string, string> AdUnitMapping { get; }
+        long LatencyMillis { get; }
     }
 }
