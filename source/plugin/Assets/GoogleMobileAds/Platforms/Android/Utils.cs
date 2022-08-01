@@ -209,7 +209,7 @@ namespace GoogleMobileAds.Android
             // Denote that the request is coming from this Unity plugin.
             adRequestBuilder.Call<AndroidJavaObject>(
                     "setRequestAgent",
-                    nativePluginVersion);
+                    AdRequest.BuildVersionString(nativePluginVersion));
             AndroidJavaObject bundle = new AndroidJavaObject(BundleClassName);
             foreach (KeyValuePair<string, string> entry in request.Extras)
             {

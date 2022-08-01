@@ -68,7 +68,8 @@ namespace GoogleMobileAds.iOS
                 }
             }
 
-            Externs.GADUSetRequestAgent(requestPtr, nativePluginVersion);
+            Externs.GADUSetRequestAgent(requestPtr,
+                    AdRequest.BuildVersionString(nativePluginVersion));
             return requestPtr;
         }
 
