@@ -24,7 +24,7 @@ namespace GoogleMobileAds.Mediation
             return new GoogleMobileAds.Common.Mediation.Fyber.DummyClient();
             #elif UNITY_ANDROID
             return GoogleMobileAds.Android.Mediation.Fyber.FyberClient.Instance;
-            #elif UNITY_IPHONE || UNITY_IOS
+            #elif UNITY_IOS
             return GoogleMobileAds.iOS.Mediation.Fyber.FyberClient.Instance;
             #else
             return new GoogleMobileAds.Common.Mediation.Fyber.DummyClient();

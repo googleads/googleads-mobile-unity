@@ -18,18 +18,9 @@ namespace GoogleMobileAds.Common.Mediation.MyTarget
 {
     public interface IMyTargetClient
     {
-        // Forward the user's consent status to the MyTarget SDK
         void SetUserConsent (bool userConsent);
-
-        // Sets a flag to indicate if the user is known to be in an
-        // age-restricted category (i.e., under the age of 16)
         void SetUserAgeRestricted (bool userAgeRestricted);
-
-        // Gets the user's current consent status
         bool IsConsent ();
-
-        // Gets the flag indicating that the user is known to be in
-        // an age-restricted category (i.e., under the age of 16)
         bool IsUserAgeRestricted ();
     }
 }

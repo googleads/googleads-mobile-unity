@@ -24,7 +24,7 @@ namespace GoogleMobileAds.Mediation
             return new GoogleMobileAds.Common.Mediation.AdColony.DummyClient();
             #elif UNITY_ANDROID
             return GoogleMobileAds.Android.Mediation.AdColony.AdColonyAppOptionsClient.Instance;
-            #elif (UNITY_5 && UNITY_IOS) || UNITY_IPHONE
+            #elif UNITY_IOS
             return GoogleMobileAds.iOS.Mediation.AdColony.AdColonyAppOptionsClient.Instance;
             #else
             return new GoogleMobileAds.Common.Mediation.AdColony.DummyClient();

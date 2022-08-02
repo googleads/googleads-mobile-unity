@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#if UNITY_IPHONE || UNITY_IOS
+#if UNITY_IOS
 
 using UnityEngine;
 
@@ -35,14 +35,11 @@ namespace GoogleMobileAds.iOS.Mediation.Tapjoy
 
         public void SetUserConsent(string consentString)
         {
-            MonoBehaviour.print ("Calling '[Tapjoy setUserConsent:]' with argument: '" + consentString + "'");
             Externs.GADUMTapjoySetUserConsent (consentString);
         }
 
         public void SubjectToGDPR(bool gdprApplicability)
         {
-            string parameterString = (gdprApplicability == true ? "YES" : "NO");
-            MonoBehaviour.print ("Calling '[Tapjoy subjectToGDPR:]' with argument: " + parameterString);
             Externs.GADUMTapjoySubjectToGDPR (gdprApplicability);
         }
     }

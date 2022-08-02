@@ -28,7 +28,7 @@ namespace GoogleMobileAds.Mediation
             return new GoogleMobileAds.Common.Mediation.Tapjoy.DummyClient();
             #elif UNITY_ANDROID
             return GoogleMobileAds.Android.Mediation.Tapjoy.TapjoyClient.Instance;
-            #elif (UNITY_5 && UNITY_IOS) || UNITY_IPHONE
+            #elif UNITY_IOS
             return GoogleMobileAds.iOS.Mediation.Tapjoy.TapjoyClient.Instance;
             #else
             return new GoogleMobileAds.Common.Mediation.Tapjoy.DummyClient();

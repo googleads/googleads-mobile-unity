@@ -23,19 +23,11 @@ namespace GoogleMobileAds.Api.Mediation.Fyber
     {
         private static readonly IFyberClient client = FyberClientFactory.CreateFyberClient();
 
-        /// <summary>
-        /// Sets GDPR consent on the Fyber Marketplace SDK.
-        /// </summary>
-        /// <param name="consent">true if you have the user's consent.</param>
         public static void SetGDPRConsent(bool consent)
         {
             client.SetGDPRConsent(consent);
         }
 
-        /// <summary>
-        /// Sets GDPR consent string on the Fyber Marketplace SDK.
-        /// </summary>
-        /// <param name="consentString">the GDPR consent string.</param>
         public static void SetGDPRConsentString(string consentString)
         {
             if (consentString == null)
@@ -47,9 +39,6 @@ namespace GoogleMobileAds.Api.Mediation.Fyber
             client.SetGDPRConsentString(consentString);
         }
 
-        /// <summary>
-        /// Clears GDPR consent data from the Fyber Marketplace SDK.
-        /// </summary>
         public static void ClearGDPRConsentData()
         {
             client.ClearGDPRConsentData();

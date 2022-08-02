@@ -28,7 +28,7 @@ namespace GoogleMobileAds.Mediation
             return new GoogleMobileAds.Common.Mediation.Chartboost.DummyClient();
             #elif UNITY_ANDROID
             return GoogleMobileAds.Android.Mediation.Chartboost.ChartboostClient.Instance;
-            #elif (UNITY_5 && UNITY_IOS) || UNITY_IPHONE
+            #elif UNITY_IOS
             return GoogleMobileAds.iOS.Mediation.Chartboost.ChartboostClient.Instance;
             #else
             return new GoogleMobileAds.Common.Mediation.Chartboost.DummyClient();

@@ -16,31 +16,13 @@ namespace GoogleMobileAds.Common.Mediation.AdColony
 {
     public interface IAdColonyAppOptionsClient
     {
-        // Indicates whether the user has given consent to store
-        // and process personal information.
         void SetGDPRConsentString(string consentString);
-
-        // Indicates whether the user is subject to GDPR laws.
         void SetGDPRRequired(bool gdprRequired);
-
-        // Sets a custom User ID for this specific app session to be reported
-        // to AdColony.
         void SetUserId(string userId);
-
-        // Enables Test Ads for AdColony.
         void SetTestMode(bool isTestMode);
-
-        // Gets the consent string indicating whether the user has given
-        // consent to store and process personal information.
         string GetGDPRConsentString();
-
-        // Gets the flag indicating whether the user is subject to GDPR laws.
         bool IsGDPRRequired();
-
-        // Gets the custom User ID set in the AdColony App Options.
         string GetUserId();
-
-        // Gets the flag indicating whether Test Ads for AdColony is enabled.
         bool IsTestMode();
     }
 }

@@ -37,17 +37,12 @@ namespace GoogleMobileAds.Android.Mediation.Tapjoy
         public void SetUserConsent(string consentString)
         {
             AndroidJavaClass tapjoy = new AndroidJavaClass ("com.tapjoy.Tapjoy");
-
-            MonoBehaviour.print ("Calling 'Tapjoy.setUserConsent()' with argument: '" + consentString + "'");
             tapjoy.CallStatic ("setUserConsent", consentString);
         }
 
         public void SubjectToGDPR(bool gdprApplicability)
         {
             AndroidJavaClass tapjoy = new AndroidJavaClass ("com.tapjoy.Tapjoy");
-
-            string parameterString = (gdprApplicability == true ? "true" : "false");
-            MonoBehaviour.print ("Calling 'Tapjoy.subjectToGDPR()' with argument: " + parameterString);
             tapjoy.CallStatic ("subjectToGDPR", gdprApplicability);
         }
     }

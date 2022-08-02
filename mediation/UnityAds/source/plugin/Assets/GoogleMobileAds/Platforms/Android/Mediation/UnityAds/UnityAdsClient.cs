@@ -43,8 +43,6 @@ namespace GoogleMobileAds.Android.Mediation.UnityAds
             AndroidJavaObject unityAdsMetaData = new AndroidJavaObject ("com.unity3d.ads.metadata.MetaData", currentActivity);
             bool success = unityAdsMetaData.Call<bool> ("set", "gdpr.consent", consentObject);
             if (success) {
-                string parameterString = (consent == true ? "true" : "false");
-                MonoBehaviour.print ("Setting UnityAds metadata with key 'gdpr.consent' to value: " + parameterString);
                 unityAdsMetaData.Call ("commit");
             }
         }

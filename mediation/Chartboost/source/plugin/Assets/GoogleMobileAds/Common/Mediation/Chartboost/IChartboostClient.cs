@@ -20,13 +20,8 @@ namespace GoogleMobileAds.Common.Mediation.Chartboost
 {
     public interface IChartboostClient
     {
-        // Sets GDPR consent for the Chartboost SDK.
         void AddDataUseConsent(CBGDPRDataUseConsent gdprConsent);
-
-        // Sets CCPA consent for the Chartboost SDK.
         void AddDataUseConsent(CBCCPADataUseConsent ccpaConsent);
-
-        // Sets a custom data use consent for the Chartboost SDK.
         void AddDataUseConsent(string customConsentName, string customConsentValue);
     }
 }

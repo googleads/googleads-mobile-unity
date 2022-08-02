@@ -18,7 +18,6 @@ namespace GoogleMobileAds.Common.Mediation.UnityAds
 {
     public interface IUnityAdsClient
     {
-        // Manually request a user opt-in for targeted advertising.
         void SetGDPRConsentMetaData(bool consent);
     }
 }

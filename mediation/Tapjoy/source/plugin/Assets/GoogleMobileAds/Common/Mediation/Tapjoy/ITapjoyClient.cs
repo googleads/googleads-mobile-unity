@@ -18,11 +18,7 @@ namespace GoogleMobileAds.Common.Mediation.Tapjoy
 {
     public interface ITapjoyClient
     {
-        // Forward user's consent status to the Tapjoy SDK in the form
-        // of a consent string.
         void SetUserConsent(string consentString);
-
-        // Indicate if GDPR is applicable to the user or not.
         void SubjectToGDPR(bool gdprApplicability);
     }
 }
