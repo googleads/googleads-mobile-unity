@@ -20,11 +20,3 @@
 -keep class com.google.unity.ads.** {
    *;
 }
-
-# Keep Google Mobile Ads Android classes.
--keep class com.google.android.gms.ads.** {
-   public *;
-}
--keep public class com.google.ads.** {
-   public *;
-}
