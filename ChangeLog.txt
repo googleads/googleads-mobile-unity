@@ -1,6 +1,19 @@
 Google Mobile Ads Unity Plugin Change Log
 
 **************
+Version Next
+**************
+
+Plugin:
+- Requires using Google Mobile Ads Android SDK v21.1.0 or higher.
+- Requires using Google Mobile Ads iOS SDK v9.10.0 or higher.
+
+Built and tested with:
+- Google Mobile Ads Android SDK 21.1.0.
+- Google Mobile Ads iOS SDK 9.10.0
+- External Dependency Manager for Unity 1.2.171.
+
+**************
 Version 7.2.0
 **************
 
@@ -11,7 +24,7 @@ Plugin:
 
 Built and tested with:
 - Google Mobile Ads Android SDK 21.0.0.
-- Google Mobile Ads iOS SDK 9.0.0
+- Google Mobile Ads iOS SDK 9.9.0
 - External Dependency Manager for Unity 1.2.171.
 
 **************
