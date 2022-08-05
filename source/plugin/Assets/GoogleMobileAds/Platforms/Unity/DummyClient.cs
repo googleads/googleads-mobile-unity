@@ -21,7 +21,7 @@ using UnityEngine.UI;
 
 namespace GoogleMobileAds.Common
 {
-    public class DummyClient : BaseAdDummyClient, IBannerClient, IInterstitialClient,
+    public class DummyClient : BaseAdDummyClient, IBannerAdClient, IInterstitialAdClient,
             IMobileAdsClient
     {
         public DummyClient()

@@ -37,7 +37,7 @@ namespace GoogleMobileAds
       return new GoogleMobileAds.Common.AppOpenAdAdDummyClient();
     }
 
-    public IBannerClient BuildBannerClient()
+    public IBannerAdClient BuildBannerClient()
     {
       if (Application.platform == RuntimePlatform.OSXEditor || Application.platform == RuntimePlatform.WindowsEditor)
       {
@@ -46,7 +46,7 @@ namespace GoogleMobileAds
       return new GoogleMobileAds.Common.DummyClient();
     }
 
-    public IInterstitialClient BuildInterstitialClient()
+    public IInterstitialAdClient BuildInterstitialClient()
     {
       if (Application.platform == RuntimePlatform.OSXEditor || Application.platform == RuntimePlatform.WindowsEditor)
       {
