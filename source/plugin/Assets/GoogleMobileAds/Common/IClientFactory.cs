@@ -16,7 +16,7 @@ using UnityEngine;
 using GoogleMobileAds;
 using GoogleMobileAds.Common;
 
-namespace GoogleMobileAds
+namespace GoogleMobileAds.Common
 {
     public interface IClientFactory
     {
