@@ -14,8 +14,6 @@
 // limitations under the License.
 
 using System;
-using UnityEngine;
-
 using GoogleMobileAds.Api;
 using GoogleMobileAds.Common;
 
@@ -23,49 +21,55 @@ namespace GoogleMobileAds.iOS
 {
     internal class ResponseInfoClient : IResponseInfoClient
     {
-        private IntPtr adFormat;
-        private IntPtr iosResponseInfo;
+        private IntPtr _responsePtr;
 
         public ResponseInfoClient(ResponseInfoClientType type, IntPtr ptr)
         {
             if(type == ResponseInfoClientType.AdLoaded)
             {
-                this.adFormat = adFormat;
-                iosResponseInfo = Externs.GADUGetResponseInfo(ptr);
+                _responsePtr = Externs.GADUGetResponseInfo(ptr);
             }
             else if(type == ResponseInfoClientType.AdError)
             {
-                iosResponseInfo = Externs.GADUGetAdErrorResponseInfo(ptr);
+                _responsePtr = Externs.GADUGetAdErrorResponseInfo(ptr);
             }
         }
 
         public ResponseInfoClient(IntPtr adFormat, IntPtr iOSClient)
         {
-            this.adFormat = adFormat;
-            iosResponseInfo = iOSClient;
+            _responsePtr = iOSClient;
+        }
+
+        public ResponseInfoClient(IntPtr responsePtr)
+        {
+            _responsePtr = responsePtr;
         }
 
         public string GetMediationAdapterClassName()
         {
-            if (iosResponseInfo != IntPtr.Zero)
+            if (_responsePtr != IntPtr.Zero)
             {
-                return Externs.GADUResponseInfoMediationAdapterClassName(iosResponseInfo);
+                return Externs.GADUResponseInfoMediationAdapterClassName(_responsePtr);
             }
             return null;
         }
 
         public string GetResponseId()
         {
-            if (iosResponseInfo != IntPtr.Zero)
+            if (_responsePtr != IntPtr.Zero)
             {
-                return Externs.GADUResponseInfoResponseId(iosResponseInfo);
+                return Externs.GADUResponseInfoResponseId(_responsePtr);
             }
             return null;
         }
 
         public override string ToString()
         {
-            return Externs.GADUGetResponseInfoDescription(iosResponseInfo);
+            if (_responsePtr != IntPtr.Zero)
+            {
+                return Externs.GADUGetResponseInfoDescription(_responsePtr);
+            }
+            return null;
         }
     }
 }

@@ -22,7 +22,7 @@ using GoogleMobileAds.Common;
 
 namespace GoogleMobileAds.iOS
 {
-    public class BannerClient : IBannerClient, IDisposable
+    public class BannerClient : IBannerAdClient, IDisposable
     {
         private IntPtr bannerViewPtr;
 
@@ -70,7 +70,7 @@ namespace GoogleMobileAds.iOS
             }
         }
 
-#region IBannerClient implementation
+#region IBannerAdClient implementation
 
         // Creates a banner view.
         public void CreateBannerView(string adUnitId, AdSize adSize, AdPosition position)

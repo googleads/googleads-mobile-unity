@@ -21,7 +21,7 @@ namespace GoogleMobileAds.Api
 {
     public class BannerView
     {
-        private IBannerClient client;
+        private IBannerAdClient client;
 
         // Creates a BannerView and adds it to the view hierarchy.
         public BannerView(string adUnitId, AdSize adSize, AdPosition position)
