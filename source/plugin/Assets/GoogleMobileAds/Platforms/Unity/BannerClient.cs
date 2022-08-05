@@ -23,7 +23,7 @@ using UnityEngine.UI;
 
 namespace GoogleMobileAds.Unity
 {
-    public class BannerClient : BaseAdDummyClient, IBannerClient
+    public class BannerClient : BaseAdDummyClient, IBannerAdClient
     {
         // Ad event fired when the banner ad has been received.
         public event EventHandler<EventArgs> OnAdLoaded;

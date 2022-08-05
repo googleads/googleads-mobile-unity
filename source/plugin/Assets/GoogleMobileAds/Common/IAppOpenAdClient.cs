@@ -13,49 +13,30 @@
 // limitations under the License.
 
 using System;
-
 using UnityEngine;
-
 using GoogleMobileAds.Api;
 
 namespace GoogleMobileAds.Common
 {
-  public interface IAppOpenAdClient
-  {
-    // Ad event fired when the app open ad has been loaded.
-    event EventHandler<EventArgs> OnAdLoaded;
+    /// <summary>
+    /// App open ads are used to display ads when users enter your app. An AppOpenAd object
+    /// contains all the data necessary to display an ad. Unlike interstitial ads, app open ads
+    /// make it easy to provide an app branding so that users understand the context in which they
+    /// see the ad.
+    /// </summary>
+    public interface IAppOpenAdClient : IBaseFullScreenAd
+    {
+        /// <summary>
+        /// Loads an IAppOpenAd.
+        /// </summary>
+        void LoadAd(string adUnitId,
+                    ScreenOrientation orientation,
+                    AdRequest request,
+                    Action<IAppOpenAdClient, ILoadAdErrorClient> callback);
 
-    // Ad event fired when the app open ad has failed to load.
-    event EventHandler<LoadAdErrorClientEventArgs> OnAdFailedToLoad;
-
-    // Ad event fired when the app open ad is estimated to have earned money.
-    event EventHandler<AdValueEventArgs> OnPaidEvent;
-
-    // Ad event fired when the ad failed to present full screen content.
-    event EventHandler<AdErrorClientEventArgs> OnAdFailedToPresentFullScreenContent;
-
-    // Ad event fired when the ad presented the full screen content.
-    event EventHandler<EventArgs> OnAdDidPresentFullScreenContent;
-
-    // Ad event fired when the ad dismissed full screen content.
-    event EventHandler<EventArgs> OnAdDidDismissFullScreenContent;
-
-    // Ad event fired when an impression has been recorded for the ad.
-    event EventHandler<EventArgs> OnAdDidRecordImpression;
-
-    // Creates an app open ad.
-    void CreateAppOpenAd();
-
-    // Loads an app open ad.
-    void LoadAd(string adUnitID, AdRequest request, ScreenOrientation orientation);
-
-    // Shows the app open ad on the screen.
-    void Show();
-
-    // Returns ad request Response info client.
-    IResponseInfoClient GetResponseInfoClient();
-
-    // Destroys the app open ad.
-    void DestroyAppOpenAd();
-  }
+        /// <summary>
+        /// Shows the AppOpenAd on the screen.
+        /// </summary>
+        void Show();
+    }
 }
