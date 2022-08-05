@@ -21,7 +21,7 @@ namespace GoogleMobileAds.Api
 {
     public class InterstitialAd
     {
-        private IInterstitialClient client;
+        private IInterstitialAdClient client;
         private string adUnitId;
         private bool isLoaded;
 
