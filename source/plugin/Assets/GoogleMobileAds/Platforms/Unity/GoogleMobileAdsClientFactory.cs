@@ -34,25 +34,25 @@ namespace GoogleMobileAds
       {
         return new GoogleMobileAds.Unity.AppOpenAdClient();
       }
-      return new GoogleMobileAds.Common.AppOpenAdAdDummyClient();
+      return new GoogleMobileAds.Unity.AppOpenAdAdDummyClient();
     }
 
-    public IBannerClient BuildBannerClient()
+    public IBannerAdClient BuildBannerClient()
     {
       if (Application.platform == RuntimePlatform.OSXEditor || Application.platform == RuntimePlatform.WindowsEditor)
       {
         return new GoogleMobileAds.Unity.BannerClient();
       }
-      return new GoogleMobileAds.Common.DummyClient();
+      return null;
     }
 
-    public IInterstitialClient BuildInterstitialClient()
+    public IInterstitialAdClient BuildInterstitialClient()
     {
       if (Application.platform == RuntimePlatform.OSXEditor || Application.platform == RuntimePlatform.WindowsEditor)
       {
         return new GoogleMobileAds.Unity.InterstitialClient();
       }
-      return new GoogleMobileAds.Common.DummyClient();
+      return null;
      }
 
     public IRewardedAdClient BuildRewardedAdClient()
@@ -61,7 +61,7 @@ namespace GoogleMobileAds
       {
         return new GoogleMobileAds.Unity.RewardedAdClient();
       }
-      return new GoogleMobileAds.Common.RewardedAdDummyClient();
+      return new GoogleMobileAds.Unity.RewardedAdDummyClient();
     }
 
     public IRewardedInterstitialAdClient BuildRewardedInterstitialAdClient() {
@@ -69,12 +69,12 @@ namespace GoogleMobileAds
       {
         return new GoogleMobileAds.Unity.RewardedInterstitialAdClient();
       }
-      return new GoogleMobileAds.Common.RewardedInterstitialAdDummyClient();
+      return new GoogleMobileAds.Unity.RewardedInterstitialAdDummyClient();
     }
 
     public IMobileAdsClient MobileAdsInstance()
     {
-      return new GoogleMobileAds.Common.DummyClient();
+      return new GoogleMobileAds.Unity.MobileAdsClient();
     }
   }
 }

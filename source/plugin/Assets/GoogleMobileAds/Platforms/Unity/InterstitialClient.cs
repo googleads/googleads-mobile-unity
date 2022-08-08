@@ -22,7 +22,7 @@ using UnityEngine.UI;
 
 namespace GoogleMobileAds.Unity
 {
-    public class InterstitialClient : BaseAdDummyClient, IInterstitialClient
+    public class InterstitialClient : BaseAdDummyClient, IInterstitialAdClient
     {
         public event EventHandler<EventArgs> OnAdLoaded;
 

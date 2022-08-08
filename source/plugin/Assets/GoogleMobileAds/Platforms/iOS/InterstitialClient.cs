@@ -23,7 +23,7 @@ using GoogleMobileAds.Common;
 
 namespace GoogleMobileAds.iOS
 {
-    public class InterstitialClient : IInterstitialClient, IDisposable
+    public class InterstitialClient : IInterstitialAdClient, IDisposable
     {
         private IntPtr interstitialClientPtr;
         private IntPtr interstitialPtr;
@@ -80,7 +80,7 @@ namespace GoogleMobileAds.iOS
             }
         }
 
-#region IInterstitialClient implementation
+#region IInterstitialAdClient implementation
 
         public void CreateInterstitialAd()
         {

@@ -20,7 +20,7 @@ using UnityEngine;
 
 namespace GoogleMobileAds.Android
 {
-    public class BannerClient : AndroidJavaProxy, IBannerClient
+    public class BannerClient : AndroidJavaProxy, IBannerAdClient
     {
         private AndroidJavaObject bannerView;
 
