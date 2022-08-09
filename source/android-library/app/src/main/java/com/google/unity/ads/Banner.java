@@ -26,6 +26,7 @@ import android.view.ViewParent;
 import android.view.Window;
 import android.view.WindowInsets;
 import android.widget.FrameLayout;
+import androidx.annotation.Nullable;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdSize;
@@ -179,7 +180,7 @@ public class Banner {
                         @Override
                         public void run() {
                           if (mUnityListener != null) {
-                            mUnityListener.onAdFailedToLoad(error);
+                            mUnityListener.onAdFailedToLoad(PluginUtils.toJsonString(error));
                           }
                         }
                       })
@@ -220,7 +221,6 @@ public class Banner {
           }
         });
 
-
     mAdView.setOnPaidEventListener(
         new OnPaidEventListener() {
           @Override
@@ -242,7 +242,6 @@ public class Banner {
             }
           }
         });
-
 
     mLayoutChangeListener =
         new View.OnLayoutChangeListener() {
@@ -521,30 +520,30 @@ public class Banner {
     return insets;
   }
 
-  /**
-   * Returns the request response info.
-   */
-  public ResponseInfo getResponseInfo() {
-    FutureTask<ResponseInfo> task = new FutureTask<>(new Callable<ResponseInfo>() {
-      @Override
-      public ResponseInfo call() {
-        return mAdView.getResponseInfo();
-      }
-    });
+  /** Returns the request response info. */
+  @Nullable
+  public String getResponseInfo() {
+    FutureTask<ResponseInfo> task =
+        new FutureTask<>(
+            new Callable<ResponseInfo>() {
+              @Override
+              public ResponseInfo call() {
+                return mAdView.getResponseInfo();
+              }
+            });
     mUnityPlayerActivity.runOnUiThread(task);
 
     ResponseInfo result = null;
+    String resultJson = null;
     try {
       result = task.get();
-    } catch (InterruptedException exception) {
-      Log.e(PluginUtils.LOGTAG,
-              String.format("Unable to check banner response info: %s",
-                      exception.getLocalizedMessage()));
-    } catch (ExecutionException exception) {
-      Log.e(PluginUtils.LOGTAG,
-              String.format("Unable to check banner response info: %s",
-                      exception.getLocalizedMessage()));
+      resultJson = PluginUtils.toJsonString(result);
+    } catch (ExecutionException | InterruptedException exception) {
+      Log.e(
+          PluginUtils.LOGTAG,
+          String.format(
+              "Unable to check banner response info: %s", exception.getLocalizedMessage()));
     }
-    return result;
+    return resultJson;
   }
 }

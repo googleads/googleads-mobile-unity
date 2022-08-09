@@ -180,4 +180,145 @@ static BOOL _pauseOnBackground = NO;
   }
 }
 
+/* NSError */
++ (char *)GADUStringFromNSError:(NSError *)error {
+  NSMutableDictionary *dict = [GADUPluginUtil NSMutableDictionaryFromNSError:error];
+  return [GADUPluginUtil GADUStringFromNSMutableDictionary:dict];
+}
+
+/* NSError */
++ (NSMutableDictionary *)NSMutableDictionaryFromNSError:(NSError *)error {
+  NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
+  [dict setValue:[NSNumber numberWithInt:error.code] forKey:@"code"];
+  [dict setValue:error.domain forKey:@"domain"];
+  [dict setValue:error.localizedDescription forKey:@"message"];
+  [dict setValue:error.description forKey:@"description"];
+  if (error.userInfo[NSUnderlyingErrorKey]) {
+    NSMutableDictionary *cause =
+        [GADUPluginUtil NSMutableDictionaryFromNSError:error.userInfo[NSUnderlyingErrorKey]];
+    [dict setValue:[GADUPluginUtil NSStringFromNSMutableDictionary:cause] forKey:@"cause"];
+  }
+  if (error.userInfo[GADErrorUserInfoKeyResponseInfo]) {
+    GADResponseInfo *response = error.userInfo[GADErrorUserInfoKeyResponseInfo];
+    [dict setValue:[GADUPluginUtil NSMutableDictionaryFromGADResponseInfo:response]
+            forKey:@"responseInfo"];
+  }
+  return dict;
+}
+
+/* GADResponseInfo */
++ (char *)GADUStringFromGADResponseInfo:(GADResponseInfo *)responseInfo {
+  NSMutableDictionary *dict = [GADUPluginUtil NSMutableDictionaryFromGADResponseInfo:responseInfo];
+  return [GADUPluginUtil GADUStringFromNSMutableDictionary:dict];
+}
+
+/* GADResponseInfo */
++ (NSMutableDictionary *)NSMutableDictionaryFromGADResponseInfo:(GADResponseInfo *)responseInfo {
+  NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
+
+  NSMutableDictionary *responseInfoDic = [GADUPluginUtil
+      GADUMutableDictionaryFromGADAdNetworkResponseInfo:responseInfo.loadedAdNetworkResponseInfo];
+
+  [dict setValue:responseInfoDic forKey:@"adapterResponseInfo"];
+
+  NSMutableArray *responseInfosDic = [[NSMutableArray alloc] init];
+  for (GADAdNetworkResponseInfo *adNetwork in responseInfo.adNetworkInfoArray) {
+    NSMutableDictionary *responseInfoJson =
+        [GADUPluginUtil GADUMutableDictionaryFromGADAdNetworkResponseInfo:adNetwork];
+    [responseInfosDic addObject:responseInfoJson];
+  }
+  [dict setValue:responseInfosDic forKey:@"adapterResponseInfos"];
+
+  [dict setValue:responseInfo.adNetworkClassName forKey:@"adNetworkName"];
+  [dict setValue:responseInfo.description forKey:@"description"];
+
+  /* Waiting for SDK
+  [dict setValue:[GADUPluginUtil GADUDictionaryFromNSDictionary:responseInfo.responseExtras]
+          forKey:@"responseExtras"];*/
+
+  [dict setValue:responseInfo.responseIdentifier forKey:@"responseId"];
+  return dict;
+}
+
+/* GADAdNetworkResponseInfo */
++ (char *)GADUStringFromGADAdNetworkResponseInfo:(GADAdNetworkResponseInfo *)responseInfo {
+  return convertToCString(@"");
+}
+
++ (NSMutableDictionary *)GADUMutableDictionaryFromGADAdNetworkResponseInfo:
+    (GADAdNetworkResponseInfo *)responseInfo {
+  NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
+  [dict setValue:responseInfo.adNetworkClassName forKey:@"adapterClassName"];
+  /* Waiting for SDK
+  [dict setValue:responseInfo.adSourceName forKey:@"adSourceName"];
+  [dict setValue:responseInfo.adSourceID forKey:@"adSourceId"];
+  [dict setValue:responseInfo.adSourceInstanceName forKey:@"adSourceInstanceName"]; */
+  [dict setValue:responseInfo.adSourceInstanceID forKey:@"adSourceInstanceId"];
+
+  [dict setValue:[GADUPluginUtil GADUDictionaryFromNSDictionary:responseInfo.adUnitMapping]
+          forKey:@"adUnitMapping"];
+  NSMutableDictionary *adError =
+      [GADUPluginUtil NSMutableDictionaryFromNSError:responseInfo.error];
+  [dict setValue:[GADUPluginUtil NSStringFromNSMutableDictionary:adError] forKey:@"adError"];
+  //Unity expects a long lantecyMillis.
+  [dict setValue:[NSNumber numberWithLong:responseInfo.latency * 1000] forKey:@"latencyMillis"];
+  [dict setValue:responseInfo.description forKey:@"description"];
+  return dict;
+}
+
+/* NSMutableDictionary */
++ (NSString *)NSStringFromNSMutableDictionary:(NSMutableDictionary *)dict {
+  NSError *jsonError;
+  NSData *jsonData = [NSJSONSerialization dataWithJSONObject:dict
+                                                     options:0  // unformatted
+                                                       error:&jsonError];
+  NSString *jsonString = @"";
+  if (jsonError) {
+    NSLog(@"GoogleMobileAdsPlugin: %@", [jsonError localizedDescription]);
+  } else {
+    jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+  }
+  return jsonString;
+}
+
+/* NSMutableDictionary */
++ (char *)GADUStringFromNSMutableDictionary:(NSMutableDictionary *)dict {
+  NSError *jsonError;
+  NSData *jsonData = [NSJSONSerialization dataWithJSONObject:dict
+                                                     options:0  // unformatted
+                                                       error:&jsonError];
+  NSString *jsonString = @"";
+  if (jsonError) {
+    NSLog(@"GoogleMobileAdsPlugin: %@", [jsonError localizedDescription]);
+  } else {
+    jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+  }
+  return convertToCString(jsonString);
+}
+
+/* NSDictionary */
++ (NSMutableArray *)GADUDictionaryFromNSDictionary:(NSDictionary<NSString *, id> *)dict {
+  NSMutableArray *result = [[NSMutableArray alloc] init];
+  for (id key in dict) {
+    NSMutableDictionary *pair = [[NSMutableDictionary alloc] init];
+    [pair setValue:key forKey:@"key"];
+    [pair setValue:[dict valueForKey:key] forKey:@"value"];
+    [result addObject:pair];
+  }
+  return result;
+}
+
+/* convertToCString */
+char *convertToCString(const NSString *nsString) {
+  if (nsString == NULL) return NULL;
+
+  const char *nsStringUtf8 = [nsString UTF8String];
+  // create a null terminated C string on the heap so that our string's memory isn't wiped out right
+  // after method's return
+  char *cString = (char *)malloc(strlen(nsStringUtf8) + 1);
+  strcpy(cString, nsStringUtf8);
+
+  return cString;
+}
+
 @end

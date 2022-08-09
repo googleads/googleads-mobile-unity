@@ -40,8 +40,8 @@
                  if (error) {
                    if (strongSelf.adFailedToLoadCallback) {
                      _lastLoadError = error;
-                     strongSelf.adFailedToLoadCallback(strongSelf.appOpenAdClient,
-                                                       (__bridge GADUTypeErrorRef)error);
+                     strongSelf.adFailedToLoadCallback(
+                         strongSelf.appOpenAdClient, [GADUPluginUtil GADUStringFromNSError:error]);
                    }
                    return;
                  }
@@ -79,7 +79,7 @@
   if (self.adFailedToPresentFullScreenContentCallback) {
     _lastPresentError = error;
     self.adFailedToPresentFullScreenContentCallback(self.appOpenAdClient,
-                                                    (__bridge GADUTypeErrorRef)error);
+                                                    [GADUPluginUtil GADUStringFromNSError:error]);
   }
 }
 

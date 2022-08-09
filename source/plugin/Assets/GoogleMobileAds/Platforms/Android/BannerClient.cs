@@ -109,8 +109,8 @@ namespace GoogleMobileAds.Android
 
         public IResponseInfoClient GetResponseInfoClient()
         {
-
-            return new ResponseInfoClient(ResponseInfoClientType.AdLoaded, this.bannerView);
+            string json = bannerView.Call<string>("getResponseInfo");
+            return new JsonResponseInfoClient(json);
         }
 
         #region Callbacks from UnityBannerAdListener.
@@ -123,13 +123,13 @@ namespace GoogleMobileAds.Android
             }
         }
 
-        public void onAdFailedToLoad(AndroidJavaObject error)
+        public void onAdFailedToLoad(string jsonError)
         {
             if (this.OnAdFailedToLoad != null)
             {
                 LoadAdErrorClientEventArgs args = new LoadAdErrorClientEventArgs()
                 {
-                    LoadAdErrorClient = new LoadAdErrorClient(error)
+                    LoadAdErrorClient = new JsonAdErrorClient(jsonError)
                 };
                 this.OnAdFailedToLoad(this, args);
             }

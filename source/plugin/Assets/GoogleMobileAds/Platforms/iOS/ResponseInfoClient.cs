@@ -14,13 +14,16 @@
 // limitations under the License.
 
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 using GoogleMobileAds.Api;
 using GoogleMobileAds.Common;
+using System.Collections.Generic;
 
 namespace GoogleMobileAds.iOS
 {
+    [System.Obsolete("Use JsonResponseInfoClient")]
     internal class ResponseInfoClient : IResponseInfoClient
     {
         private IntPtr adFormat;
@@ -43,6 +46,21 @@ namespace GoogleMobileAds.iOS
         {
             this.adFormat = adFormat;
             iosResponseInfo = iOSClient;
+        }
+
+        public IAdapterResponseInfoClient GetLoadedAdapterResponseInfo()
+        {
+            return null;
+        }
+
+        public IAdapterResponseInfoClient[] GetAdapterResponses()
+        {
+            return null;
+        }
+
+        public Dictionary<string,string> GetResponseExtras()
+        {
+            return null;
         }
 
         public string GetMediationAdapterClassName()

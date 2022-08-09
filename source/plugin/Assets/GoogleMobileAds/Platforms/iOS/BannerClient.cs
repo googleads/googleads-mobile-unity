@@ -33,7 +33,7 @@ namespace GoogleMobileAds.iOS
         internal delegate void GADUAdViewDidReceiveAdCallback(IntPtr bannerClient);
 
         internal delegate void GADUAdViewDidFailToReceiveAdWithErrorCallback(
-                IntPtr bannerClient, IntPtr error);
+                IntPtr bannerClient, string error);
 
         internal delegate void GADUAdViewWillPresentScreenCallback(IntPtr bannerClient);
 
@@ -208,7 +208,8 @@ namespace GoogleMobileAds.iOS
 
         public IResponseInfoClient GetResponseInfoClient()
         {
-            return new ResponseInfoClient(ResponseInfoClientType.AdLoaded, this.BannerViewPtr);
+            string json = Externs.GADUGetResponseInfoJson(this.BannerViewPtr);
+            return new JsonResponseInfoClient(json);
         }
 
         public void Dispose()
@@ -238,14 +239,14 @@ namespace GoogleMobileAds.iOS
 
         [MonoPInvokeCallback(typeof(GADUAdViewDidFailToReceiveAdWithErrorCallback))]
         private static void AdViewDidFailToReceiveAdWithErrorCallback(
-                IntPtr bannerClient, IntPtr error)
+                IntPtr bannerClient, string error)
         {
             BannerClient client = IntPtrToBannerClient(bannerClient);
             if (client.OnAdFailedToLoad != null)
             {
                 LoadAdErrorClientEventArgs args = new LoadAdErrorClientEventArgs()
                 {
-                    LoadAdErrorClient = new LoadAdErrorClient(error)
+                    LoadAdErrorClient = new JsonAdErrorClient(error)
                 };
                 client.OnAdFailedToLoad(client, args);
             }

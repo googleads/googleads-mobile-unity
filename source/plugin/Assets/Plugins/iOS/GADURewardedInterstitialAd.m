@@ -37,8 +37,8 @@
         if (error || !rewardedInterstitialAd) {
           if (strongSelf.adFailedToLoadCallback) {
             _lastLoadError = error;
-            strongSelf.adFailedToLoadCallback(
-                strongSelf.rewardedInterstitialAdClient, (__bridge GADUTypeErrorRef)error);
+            strongSelf.adFailedToLoadCallback(strongSelf.rewardedInterstitialAdClient,
+                                              [GADUPluginUtil GADUStringFromNSError:error]);
           }
           return;
         }
@@ -92,9 +92,8 @@
     didFailToPresentFullScreenContentWithError:(nonnull NSError *)error {
   if (self.adFailedToPresentFullScreenContentCallback) {
     _lastPresentError = error;
-    self.adFailedToPresentFullScreenContentCallback(
-        self.rewardedInterstitialAdClient,
-        (__bridge GADUTypeErrorRef)error);
+    self.adFailedToPresentFullScreenContentCallback(self.rewardedInterstitialAdClient,
+                                                    [GADUPluginUtil GADUStringFromNSError:error]);
   }
 }
 
@@ -109,9 +108,10 @@
 
 - (void)adDidDismissFullScreenContent:(nonnull id<GADFullScreenPresentingAd>)ad {
   extern bool _didResignActive;
-  if(_didResignActive) {
-    // We are in the middle of the shutdown sequence, and at this point unity runtime is already destroyed.
-    // We shall not call unity API, and definitely not script callbacks, so nothing to do here
+  if (_didResignActive) {
+    // We are in the middle of the shutdown sequence, and at this point unity runtime is already
+    // destroyed. We shall not call unity API, and definitely not script callbacks, so nothing to do
+    // here
     return;
   }
   if (UnityIsPaused()) {

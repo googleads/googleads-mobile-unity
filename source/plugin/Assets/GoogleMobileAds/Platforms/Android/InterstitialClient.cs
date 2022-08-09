@@ -76,8 +76,8 @@ namespace GoogleMobileAds.Android
         // Returns ad request response info
         public IResponseInfoClient GetResponseInfoClient()
         {
-
-            return new ResponseInfoClient(ResponseInfoClientType.AdLoaded, this.androidInterstitialAd);
+            string json = androidInterstitialAd.Call<string>("getResponseInfo");
+            return new JsonResponseInfoClient(json);
         }
 
         #endregion
@@ -92,25 +92,25 @@ namespace GoogleMobileAds.Android
             }
         }
 
-        public void onInterstitialAdFailedToLoad(AndroidJavaObject error)
+        public void onInterstitialAdFailedToLoad(string jsonError)
         {
             if (this.OnAdFailedToLoad != null)
             {
                 LoadAdErrorClientEventArgs args = new LoadAdErrorClientEventArgs()
                 {
-                    LoadAdErrorClient = new LoadAdErrorClient(error)
+                    LoadAdErrorClient = new JsonAdErrorClient(jsonError)
                 };
                 this.OnAdFailedToLoad(this, args);
             }
         }
 
-        void onAdFailedToShowFullScreenContent(AndroidJavaObject error)
+        void onAdFailedToShowFullScreenContent(string jsonError)
         {
             if (this.OnAdFailedToPresentFullScreenContent != null)
             {
                 AdErrorClientEventArgs args = new AdErrorClientEventArgs()
                 {
-                    AdErrorClient = new AdErrorClient(error),
+                    AdErrorClient = new JsonAdErrorClient(jsonError),
                 };
                 this.OnAdFailedToPresentFullScreenContent(this, args);
             }

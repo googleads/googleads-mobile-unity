@@ -251,7 +251,7 @@
 - (void)bannerView:(GADBannerView *)view didFailToReceiveAdWithError:(NSError *)error {
   if (self.adFailedCallback) {
     _lastLoadError = error;
-    self.adFailedCallback(self.bannerClient, (__bridge GADUTypeErrorRef)error);
+    self.adFailedCallback(self.bannerClient, [GADUPluginUtil GADUStringFromNSError:error]);
   }
 }
 

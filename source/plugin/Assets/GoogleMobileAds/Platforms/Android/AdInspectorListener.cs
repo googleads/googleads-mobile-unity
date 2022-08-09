@@ -18,29 +18,30 @@ using UnityEngine;
 using GoogleMobileAds.Api;
 using GoogleMobileAds.Common;
 
-namespace GoogleMobileAds.Android {
-  public class AdInspectorListener : AndroidJavaProxy {
-    private Action<AdInspectorErrorClientEventArgs> adInspectorClosedAction;
+namespace GoogleMobileAds.Android
+{
+    public class AdInspectorListener : AndroidJavaProxy
+    {
+        private Action<AdInspectorErrorClientEventArgs> adInspectorClosedAction;
 
-    public AdInspectorListener(Action<AdInspectorErrorClientEventArgs> adInspectorClosedAction)
-        : base(Utils.UnityAdInspectorListenerClassname) {
-      this.adInspectorClosedAction = adInspectorClosedAction;
+        public AdInspectorListener(Action<AdInspectorErrorClientEventArgs> adInspectorClosedAction)
+            : base(Utils.UnityAdInspectorListenerClassname)
+        {
+            this.adInspectorClosedAction = adInspectorClosedAction;
+        }
+
+        void onAdInspectorClosed(string errorJson)
+        {
+          if (adInspectorClosedAction == null)
+          {
+              return;
+          }
+
+          var args = new AdInspectorErrorClientEventArgs
+                         {
+                             AdErrorClient = new JsonAdErrorClient(errorJson)
+                         };
+          adInspectorClosedAction(args);
+        }
     }
-
-#region Callbacks from UnityAdInspectorListener
-
-    void onAdInspectorClosed(AndroidJavaObject error) {
-      if (adInspectorClosedAction == null) {
-        return;
-      }
-      var args = error == null ? null
-                               : new AdInspectorErrorClientEventArgs {
-                                   AdErrorClient = new AdInspectorErrorClient(error)
-                                 };
-
-      adInspectorClosedAction(args);
-    }
-
-#endregion
-  }
 }
