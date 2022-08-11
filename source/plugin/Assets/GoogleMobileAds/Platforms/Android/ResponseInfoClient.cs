@@ -20,36 +20,45 @@ using GoogleMobileAds.Common;
 
 namespace GoogleMobileAds.Android
 {
-    internal class ResponseInfoClient : IResponseInfoClient
+    public class ResponseInfoClient : IResponseInfoClient
     {
-        private AndroidJavaObject androidResponseInfo;
+        private AndroidJavaObject _androidResponseInfo;
 
-        public ResponseInfoClient(ResponseInfoClientType type, AndroidJavaObject androidJavaObject)
+        public ResponseInfoClient(ResponseInfoClientType type, AndroidJavaObject androidClient)
         {
-            androidResponseInfo = androidJavaObject.Call<AndroidJavaObject>("getResponseInfo");
+            _androidResponseInfo = androidClient.Call<AndroidJavaObject>("getResponseInfo");
+        }
+
+        public ResponseInfoClient(AndroidJavaObject androidResponseInfo)
+        {
+            _androidResponseInfo = androidResponseInfo;
         }
 
         public string GetMediationAdapterClassName()
         {
-            if (androidResponseInfo != null)
+            if (_androidResponseInfo != null)
             {
-                return androidResponseInfo.Call<string>("getMediationAdapterClassName");
+                return _androidResponseInfo.Call<string>("getMediationAdapterClassName");
             }
             return null;
         }
 
         public string GetResponseId()
         {
-            if (androidResponseInfo != null)
+            if (_androidResponseInfo != null)
             {
-                return androidResponseInfo.Call<string>("getResponseId");
+                return _androidResponseInfo.Call<string>("getResponseId");
             }
             return null;
         }
 
         public override string ToString()
         {
-            return androidResponseInfo.Call<string>("toString");
+            if (_androidResponseInfo != null)
+            {
+                return _androidResponseInfo.Call<string>("toString");
+            }
+            return null;
         }
     }
 }

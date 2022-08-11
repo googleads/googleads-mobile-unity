@@ -16,22 +16,25 @@ using UnityEngine;
 using UnityEngine.UI;
 using System;
 
-public class ButtonBehaviour : MonoBehaviour
+namespace GoogleMobileAds.Unity
 {
-    public event EventHandler<EventArgs> OnAdOpening;
-    public event EventHandler<EventArgs> OnLeavingApplication;
-
-    public void OpenURL()
+    public class ButtonBehaviour : MonoBehaviour
     {
-        Debug.Log("Opened URL");
-        Application.OpenURL("http://google.com");
-        if (OnAdOpening != null)
+        public event EventHandler<EventArgs> OnAdOpening;
+        public event EventHandler<EventArgs> OnLeavingApplication;
+
+        public void OpenURL()
         {
-            OnAdOpening.Invoke(this, new EventArgs());
-        }
-        if (OnLeavingApplication != null)
-        {
-            OnLeavingApplication.Invoke(this, new EventArgs());
+            Debug.Log("Opened URL");
+            Application.OpenURL("http://google.com");
+            if (OnAdOpening != null)
+            {
+                OnAdOpening.Invoke(this, new EventArgs());
+            }
+            if (OnLeavingApplication != null)
+            {
+                OnLeavingApplication.Invoke(this, new EventArgs());
+            }
         }
     }
 }

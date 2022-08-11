@@ -37,22 +37,22 @@ namespace GoogleMobileAds
       return new GoogleMobileAds.Common.AppOpenAdAdDummyClient();
     }
 
-    public IBannerClient BuildBannerClient()
+    public IBannerAdClient BuildBannerClient()
     {
       if (Application.platform == RuntimePlatform.OSXEditor || Application.platform == RuntimePlatform.WindowsEditor)
       {
-        return new GoogleMobileAds.Unity.BannerClient();
+        return new GoogleMobileAds.Unity.BannerAdClient();
       }
-      return new GoogleMobileAds.Common.DummyClient();
+      return null;
     }
 
-    public IInterstitialClient BuildInterstitialClient()
+    public IInterstitialAdClient BuildInterstitialClient()
     {
       if (Application.platform == RuntimePlatform.OSXEditor || Application.platform == RuntimePlatform.WindowsEditor)
       {
-        return new GoogleMobileAds.Unity.InterstitialClient();
+        return new GoogleMobileAds.Unity.InterstitialAdClient();
       }
-      return new GoogleMobileAds.Common.DummyClient();
+      return null;
      }
 
     public IRewardedAdClient BuildRewardedAdClient()
@@ -74,7 +74,7 @@ namespace GoogleMobileAds
 
     public IMobileAdsClient MobileAdsInstance()
     {
-      return new GoogleMobileAds.Common.DummyClient();
+      return new GoogleMobileAds.Unity.MobileAdsClient();
     }
   }
 }

@@ -9,3 +9,19 @@ syntax: regexp
 
 # Plugin settings file
 ^google3/java/com/google/android/libraries/admob/demo/unity/googlemobileads/source/plugin/Assets/GoogleMobileAds/Resources/GoogleMobileAdsSettings\.(asset|meta)
+
+# Meta files
+^google3/java/com/google/android/libraries/admob/demo/unity/googlemobileads/source/plugin/Assets/GoogleMobileAds/Api\.(meta)
+^google3/java/com/google/android/libraries/admob/demo/unity/googlemobileads/source/plugin/Assets/GoogleMobileAds/Api/Core\.(meta)
+^google3/java/com/google/android/libraries/admob/demo/unity/googlemobileads/source/plugin/Assets/GoogleMobileAds/Api/Mediation\.(meta)
+^google3/java/com/google/android/libraries/admob/demo/unity/googlemobileads/source/plugin/Assets/GoogleMobileAds/Common\.(meta)
+^google3/java/com/google/android/libraries/admob/demo/unity/googlemobileads/source/plugin/Assets/GoogleMobileAds/Platforms\.(meta)
+^google3/java/com/google/android/libraries/admob/demo/unity/googlemobileads/source/plugin/Assets/Plugins\.(meta)
+
+# Visual Studio
+^google3/java/com/google/android/libraries/admob/demo/unity/googlemobileads/bin/**/.*
+^google3/java/com/google/android/libraries/admob/demo/unity/googlemobileads/obj/**/.*
+^google3/java/com/google/android/libraries/admob/demo/unity/googlemobileads/packages/**/.*
+^google3/java/com/google/android/libraries/admob/demo/unity/googlemobileads/test-apps/UnitTests/bin/**/.*
+^google3/java/com/google/android/libraries/admob/demo/unity/googlemobileads/test-apps/UnitTests/obj/**/.*
+^google3/java/com/google/android/libraries/admob/demo/unity/googlemobileads/test-apps/UnitTests/packages/**/.*
