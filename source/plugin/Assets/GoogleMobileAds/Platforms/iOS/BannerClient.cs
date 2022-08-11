@@ -14,7 +14,6 @@
 // limitations under the License.
 
 using System;
-using System.Collections.Generic;
 using System.Runtime.InteropServices;
 
 using GoogleMobileAds.Api;
@@ -22,110 +21,144 @@ using GoogleMobileAds.Common;
 
 namespace GoogleMobileAds.iOS
 {
-    public class BannerClient : IBannerClient, IDisposable
+    public class BannerAdClient : BaseAdClient, IBannerAdClient
     {
-        private IntPtr bannerViewPtr;
+        #region Banner externs
 
-        private IntPtr bannerClientPtr;
+        [DllImport("__Internal")]
+        internal static extern IntPtr GADUBannerAdCreate(
+            IntPtr adClientPtr,
+            string adUnitId,
+            int width,
+            int height,
+            int positionAtTop);
 
-#region Banner callback types
+        [DllImport("__Internal")]
+        internal static extern IntPtr GADUBannerAdCreateWithCustomPosition(
+            IntPtr adClientPtr,
+            string adUnitId,
+            int width,
+            int height,
+            int x,
+            int y);
 
-        internal delegate void GADUAdViewDidReceiveAdCallback(IntPtr bannerClient);
+        [DllImport("__Internal")]
+        internal static extern IntPtr GADUBannerAdCreateSmart(
+            IntPtr adClientPtr,
+            string adUnitId,
+            int positionAtTop);
 
-        internal delegate void GADUAdViewDidFailToReceiveAdWithErrorCallback(
-                IntPtr bannerClient, IntPtr error);
+        [DllImport("__Internal")]
+        internal static extern IntPtr GADUBannerAdCreateSmartWithCustomPosition(
+            IntPtr adClientPtr,
+            string adUnitId,
+            int x,
+            int y);
 
-        internal delegate void GADUAdViewWillPresentScreenCallback(IntPtr bannerClient);
+        [DllImport("__Internal")]
+        internal static extern IntPtr GADUBannerAdCreateAnchoredAdaptive(
+            IntPtr adClientPtr,
+            string adUnitId,
+            int width,
+            int orientation,
+            int positionAtTop);
 
-        internal delegate void GADUAdViewDidDismissScreenCallback(IntPtr bannerClient);
+        [DllImport("__Internal")]
+        internal static extern IntPtr GADUBannerAdCreateAnchoredAdaptiveWithCustomPosition(
+            IntPtr adClientPtr,
+            string adUnitId,
+            int width,
+            int orientation,
+            int x,
+            int y);
 
-        internal delegate void GADUAdViewPaidEventCallback(
-            IntPtr bannerClient, int precision, long value, string currencyCode);
+        [DllImport("__Internal")]
+        internal static extern void GADUBannerAdHide(IntPtr adBridgePtr);
 
-#endregion
+        [DllImport("__Internal")]
+        internal static extern void GADUBannerAdShow(IntPtr adBridgePtr);
 
-        public event EventHandler<EventArgs> OnAdLoaded;
+        [DllImport("__Internal")]
+        internal static extern void GADUBannerAdRemove(IntPtr adBridgePtr);
 
-        public event EventHandler<LoadAdErrorClientEventArgs> OnAdFailedToLoad;
+        [DllImport("__Internal")]
+        internal static extern void GADUBannerAdRequest(IntPtr adBridgePtr, IntPtr request);
 
-        public event EventHandler<EventArgs> OnAdOpening;
+        [DllImport("__Internal")]
+        internal static extern float GADUBannerAdGetHeightInPixels(IntPtr adBridgePtr);
 
-        public event EventHandler<EventArgs> OnAdClosed;
+        [DllImport("__Internal")]
+        internal static extern float GADUBannerAdGetWidthInPixels(IntPtr adBridgePtr);
 
-        public event EventHandler<AdValueEventArgs> OnPaidEvent;
+        [DllImport("__Internal")]
+        internal static extern void GADUBannerAdSetPosition(IntPtr adBridgePtr, int position);
 
+        [DllImport("__Internal")]
+        internal static extern void GADUBannerAdSetCustomPosition(IntPtr adBridgePtr,
+                                                                  int x,
+                                                                  int y);
+        #endregion
 
-        // This property should be used when setting the bannerViewPtr.
-        private IntPtr BannerViewPtr
+        public event Action OnBannerAdLoaded = delegate { };
+        public event Action<ILoadAdErrorClient> OnBannerAdLoadFailed = delegate { };
+
+        public override void Dispose()
         {
-            get
+            if (AdBridgePtr != IntPtr.Zero)
             {
-                return this.bannerViewPtr;
+                GADUBannerAdRemove(AdBridgePtr);
             }
-
-            set
-            {
-                Externs.GADURelease(this.bannerViewPtr);
-                this.bannerViewPtr = value;
-            }
+            base.Dispose();
         }
 
-#region IBannerClient implementation
-
-        // Creates a banner view.
-        public void CreateBannerView(string adUnitId, AdSize adSize, AdPosition position)
+        public void CreateBannerAd(string adUnitId, AdSize adSize, AdPosition position)
         {
-            this.bannerClientPtr = (IntPtr)GCHandle.Alloc(this);
+            AdClientPtr = (IntPtr)GCHandle.Alloc(this);
 
             switch (adSize.AdType)
             {
                 case AdSize.Type.SmartBanner:
-                    this.BannerViewPtr = Externs.GADUCreateSmartBannerView(
-                            this.bannerClientPtr, adUnitId, (int)position);
+                    AdBridgePtr = GADUBannerAdCreateSmart(
+                            AdClientPtr, adUnitId, (int)position);
                     break;
                 case AdSize.Type.AnchoredAdaptive:
-                    this.BannerViewPtr = Externs.GADUCreateAnchoredAdaptiveBannerView(
-                            this.bannerClientPtr,
+                    AdBridgePtr = GADUBannerAdCreateAnchoredAdaptive(
+                            AdClientPtr,
                             adUnitId,
                             adSize.Width,
                             (int)adSize.Orientation,
                             (int)position);
                     break;
                 case AdSize.Type.Standard:
-                    this.BannerViewPtr = Externs.GADUCreateBannerView(
-                            this.bannerClientPtr, adUnitId, adSize.Width, adSize.Height, (int)position);
+                    AdBridgePtr = GADUBannerAdCreate(
+                            AdClientPtr,
+                            adUnitId,
+                            adSize.Width,
+                            adSize.Height,
+                            (int)position);
                     break;
                 default:
                     throw new ArgumentException("Invalid AdSize.Type provided.");
             }
-
-            Externs.GADUSetBannerCallbacks(
-                    this.BannerViewPtr,
-                    AdViewDidReceiveAdCallback,
-                    AdViewDidFailToReceiveAdWithErrorCallback,
-                    AdViewWillPresentScreenCallback,
-                    AdViewDidDismissScreenCallback,
-                    AdViewPaidEventCallback
-                    );
+            SetClientCallbacks();
         }
 
-        public void CreateBannerView(string adUnitId, AdSize adSize, int x, int y)
+        public void CreateBannerAd(string adUnitId, AdSize adSize, int x, int y)
         {
-
-            this.bannerClientPtr = (IntPtr)GCHandle.Alloc(this);
+            AdClientPtr = (IntPtr)GCHandle.Alloc(this);
 
             switch (adSize.AdType)
             {
                 case AdSize.Type.SmartBanner:
-                    this.BannerViewPtr = Externs.GADUCreateSmartBannerViewWithCustomPosition(
-                    this.bannerClientPtr,
+                    AdBridgePtr = GADUBannerAdCreateSmartWithCustomPosition(
+                    AdClientPtr,
                     adUnitId,
                     x,
                     y);
                     break;
                 case AdSize.Type.AnchoredAdaptive:
-                    this.BannerViewPtr = Externs.GADUCreateAnchoredAdaptiveBannerViewWithCustomPosition(
-                        this.bannerClientPtr,
+                    AdBridgePtr = GADUBannerAdCreateAnchoredAdaptiveWithCustomPosition(
+                        AdClientPtr,
                         adUnitId,
                         adSize.Width,
                         (int)adSize.Orientation,
@@ -133,8 +166,8 @@ namespace GoogleMobileAds.iOS
                         y);
                     break;
                 case AdSize.Type.Standard:
-                    this.BannerViewPtr = Externs.GADUCreateBannerViewWithCustomPosition(
-                        this.bannerClientPtr,
+                    AdBridgePtr = GADUBannerAdCreateWithCustomPosition(
+                        AdClientPtr,
                         adUnitId,
                         adSize.Width,
                         adSize.Height,
@@ -144,162 +177,60 @@ namespace GoogleMobileAds.iOS
                 default:
                     throw new ArgumentException("Invalid AdSize.Type provided.");
             }
-
-            Externs.GADUSetBannerCallbacks(
-                this.BannerViewPtr,
-                AdViewDidReceiveAdCallback,
-                AdViewDidFailToReceiveAdWithErrorCallback,
-                AdViewWillPresentScreenCallback,
-                AdViewDidDismissScreenCallback,
-                AdViewPaidEventCallback
-                );
+            SetClientCallbacks();
         }
 
-        // Loads an ad.
         public void LoadAd(AdRequest request)
         {
             IntPtr requestPtr = Utils.BuildAdRequest(request);
-            Externs.GADURequestBannerAd(this.BannerViewPtr, requestPtr);
+            GADUBannerAdRequest(AdBridgePtr, requestPtr);
             Externs.GADURelease(requestPtr);
         }
 
-        // Displays the banner view on the screen.
-        public void ShowBannerView()
+        public void Show()
         {
-            Externs.GADUShowBannerView(this.BannerViewPtr);
+            GADUBannerAdShow(AdBridgePtr);
         }
 
-        // Hides the banner view from the screen.
-        public void HideBannerView()
+        public void Hide()
         {
-            Externs.GADUHideBannerView(this.BannerViewPtr);
+            GADUBannerAdHide(AdBridgePtr);
         }
 
-        // Destroys the banner view.
-        public void DestroyBannerView()
+        public void Destroy()
         {
-            Externs.GADURemoveBannerView(this.BannerViewPtr);
-            this.BannerViewPtr = IntPtr.Zero;
+            Dispose();
         }
 
-        // Returns the height of the BannerView in pixels.
         public float GetHeightInPixels()
         {
-            return Externs.GADUGetBannerViewHeightInPixels(this.BannerViewPtr);
+            return GADUBannerAdGetHeightInPixels(AdBridgePtr);
         }
 
-        // Returns the width of the BannerView in pixels.
         public float GetWidthInPixels()
         {
-            return Externs.GADUGetBannerViewWidthInPixels(this.BannerViewPtr);
+            return GADUBannerAdGetWidthInPixels(AdBridgePtr);
         }
 
-        // Set the position of the banner view using standard position.
         public void SetPosition(AdPosition adPosition)
         {
-            Externs.GADUSetBannerViewAdPosition(this.BannerViewPtr, (int)adPosition);
+            GADUBannerAdSetPosition(AdBridgePtr, (int)adPosition);
         }
 
-        // Set the position of the banner view using custom position.
         public void SetPosition(int x, int y)
         {
-            Externs.GADUSetBannerViewCustomPosition(this.BannerViewPtr, x, y);
+            GADUBannerAdSetCustomPosition(AdBridgePtr, x, y);
         }
 
-        public IResponseInfoClient GetResponseInfoClient()
+        protected override void OnAdLoaded()
         {
-            return new ResponseInfoClient(ResponseInfoClientType.AdLoaded, this.BannerViewPtr);
+            OnBannerAdLoaded();
         }
 
-        public void Dispose()
+        protected override void OnAdLoadFailed(ILoadAdErrorClient error)
         {
-            this.DestroyBannerView();
-            ((GCHandle)this.bannerClientPtr).Free();
+            OnBannerAdLoadFailed(error);
         }
-
-        ~BannerClient()
-        {
-            this.Dispose();
-        }
-
-#endregion
-
-#region Banner callback methods
-
-        [MonoPInvokeCallback(typeof(GADUAdViewDidReceiveAdCallback))]
-        private static void AdViewDidReceiveAdCallback(IntPtr bannerClient)
-        {
-            BannerClient client = IntPtrToBannerClient(bannerClient);
-            if (client.OnAdLoaded != null)
-            {
-                client.OnAdLoaded(client, EventArgs.Empty);
-            }
-        }
-
-        [MonoPInvokeCallback(typeof(GADUAdViewDidFailToReceiveAdWithErrorCallback))]
-        private static void AdViewDidFailToReceiveAdWithErrorCallback(
-                IntPtr bannerClient, IntPtr error)
-        {
-            BannerClient client = IntPtrToBannerClient(bannerClient);
-            if (client.OnAdFailedToLoad != null)
-            {
-                LoadAdErrorClientEventArgs args = new LoadAdErrorClientEventArgs()
-                {
-                    LoadAdErrorClient = new LoadAdErrorClient(error)
-                };
-                client.OnAdFailedToLoad(client, args);
-            }
-        }
-
-        [MonoPInvokeCallback(typeof(GADUAdViewWillPresentScreenCallback))]
-        private static void AdViewWillPresentScreenCallback(IntPtr bannerClient)
-        {
-            BannerClient client = IntPtrToBannerClient(bannerClient);
-            if (client.OnAdOpening != null)
-            {
-                client.OnAdOpening(client, EventArgs.Empty);
-            }
-        }
-
-        [MonoPInvokeCallback(typeof(GADUAdViewDidDismissScreenCallback))]
-        private static void AdViewDidDismissScreenCallback(IntPtr bannerClient)
-        {
-            BannerClient client = IntPtrToBannerClient(bannerClient);
-            if (client.OnAdClosed != null)
-            {
-                client.OnAdClosed(client, EventArgs.Empty);
-            }
-        }
-
-        [MonoPInvokeCallback(typeof(GADUAdViewPaidEventCallback))]
-        private static void AdViewPaidEventCallback(
-            IntPtr bannerClient, int precision, long value, string currencyCode)
-        {
-            BannerClient client = IntPtrToBannerClient(bannerClient);
-            if (client.OnPaidEvent != null)
-            {
-                AdValue adValue = new AdValue()
-                {
-                    Precision = (AdValue.PrecisionType)precision,
-                    Value = value,
-                    CurrencyCode = currencyCode
-                };
-                AdValueEventArgs args = new AdValueEventArgs()
-                {
-                    AdValue = adValue
-                };
-
-                client.OnPaidEvent(client, args);
-            }
-        }
-
-        private static BannerClient IntPtrToBannerClient(IntPtr bannerClient)
-        {
-            GCHandle handle = (GCHandle)bannerClient;
-            return handle.Target as BannerClient;
-        }
-
-#endregion
     }
 }
 #endif

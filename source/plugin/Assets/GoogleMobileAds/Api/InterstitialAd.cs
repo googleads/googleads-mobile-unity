@@ -13,138 +13,143 @@
 // limitations under the License.
 
 using System;
-
-using GoogleMobileAds;
 using GoogleMobileAds.Common;
 
 namespace GoogleMobileAds.Api
 {
-    public class InterstitialAd
+    /// <summary>
+    /// A full page ad experience at natural transition points such as a page change, an app launch.
+    /// Interstitials use a close button that removes the ad from the user's experience.
+    /// </summary>
+    public class InterstitialAd : BaseFullScreenAd
     {
-        private IInterstitialClient client;
-        private string adUnitId;
-        private bool isLoaded;
+        /// <summary>
+        /// Loads an interstitial ad.
+        /// </summary>
+        public static void LoadInterstitialAd(string adUnitId,
+                                  AdRequest request,
+                                  Action<InterstitialAd, LoadAdError> callback)
+        {
+            Action<IInterstitialAdClient, ILoadAdErrorClient> apiCallback = (ad, error) =>
+            {
+                callback(
+                    ad == null ? null : new InterstitialAd(ad),
+                    error == null ? null : new LoadAdError(error));
+            };
+            var loader = MobileAds.GetClientFactory().BuildInterstitialClient();
+            loader.LoadAd(adUnitId, request, apiCallback);
+        }
 
-        // Creates an InterstitialAd.
+        [Obsolete("Use LoadInterstitialAd().")]
+        public event EventHandler<EventArgs> OnAdLoaded = delegate{};
+        [Obsolete("Use LoadInterstitialAd().")]
+        public event EventHandler<AdFailedToLoadEventArgs> OnAdFailedToLoad = delegate{};
+        [Obsolete("Use OnFullScreenAdOpened.")]
+        public event EventHandler<EventArgs> OnAdOpening = delegate{};
+        [Obsolete("Use OnFullScreenAdClosed.")]
+        public event EventHandler<EventArgs> OnAdClosed = delegate{};
+        [Obsolete("Use OnFullScreenAdFailed.")]
+        public event EventHandler<AdErrorEventArgs> OnAdFailedToShow = delegate{};
+        [Obsolete("Use OnAdImpressionRecorded.")]
+        public event EventHandler<EventArgs> OnAdDidRecordImpression = delegate { };
+        [Obsolete("Use OnAdPaid")]
+        public event EventHandler<AdValueEventArgs> OnPaidEvent = delegate{};
+
+        // Properties
+
+        // Fields
+
+        private IInterstitialAdClient _client;
+        private string _adUnitId;
+
+        // Constructors
+
+        [Obsolete("Use LoadInterstitialAd().")]
         public InterstitialAd(string adUnitId)
         {
-            this.client = MobileAds.GetClientFactory().BuildInterstitialClient();
-            this.adUnitId = adUnitId;
-            this.isLoaded = false;
-            client.CreateInterstitialAd();
-
-            this.client.OnAdLoaded += (sender, args) =>
-            {
-                this.isLoaded = true;
-                if (this.OnAdLoaded != null)
-                {
-                    this.OnAdLoaded(this, args);
-                }
-            };
-
-            this.client.OnAdFailedToLoad += (sender, args) =>
-            {
-                if (this.OnAdFailedToLoad != null)
-                {
-                    LoadAdError loadAdError = new LoadAdError(args.LoadAdErrorClient);
-                    this.OnAdFailedToLoad(this, new AdFailedToLoadEventArgs()
-                    {
-                        LoadAdError = loadAdError
-                    });
-                }
-            };
-
-            this.client.OnAdDidPresentFullScreenContent += (sender, args) =>
-            {
-                if (this.OnAdOpening != null)
-                {
-                    this.OnAdOpening(this, args);
-                }
-            };
-
-            this.client.OnAdDidDismissFullScreenContent += (sender, args) =>
-            {
-                if (this.OnAdClosed != null)
-                {
-                    this.OnAdClosed(this, args);
-                }
-            };
-
-            this.client.OnAdFailedToPresentFullScreenContent += (sender, args) =>
-            {
-                if (this.OnAdFailedToShow != null)
-                {
-                    AdError adError = new AdError(args.AdErrorClient);
-                    this.OnAdFailedToShow(this, new AdErrorEventArgs()
-                    {
-                        AdError = adError
-                    });
-                }
-            };
-
-            this.client.OnAdDidRecordImpression += (sender, args) =>
-            {
-                if (this.OnAdDidRecordImpression != null)
-                {
-                    this.OnAdDidRecordImpression(this, args);
-                }
-            };
-
-            this.client.OnPaidEvent += (sender, args) =>
-            {
-                if (this.OnPaidEvent != null)
-                {
-                    this.OnPaidEvent(this, args);
-                }
-            };
-
+            _adUnitId = adUnitId;
         }
 
-        // These are the ad callback events that can be hooked into.
-        public event EventHandler<EventArgs> OnAdLoaded;
+        private InterstitialAd(IInterstitialAdClient client)
+        {
+            Init(client);
+        }
 
-        public event EventHandler<AdFailedToLoadEventArgs> OnAdFailedToLoad;
+        // Methods
 
-        public event EventHandler<EventArgs> OnAdOpening;
-
-        public event EventHandler<EventArgs> OnAdClosed;
-
-        public event EventHandler<AdErrorEventArgs> OnAdFailedToShow;
-
-        public event EventHandler<EventArgs> OnAdDidRecordImpression;
-
-        // Called when the ad is estimated to have earned money.
-        public event EventHandler<AdValueEventArgs> OnPaidEvent;
-
-        // Loads an InterstitialAd.
+        /// <summary>
+        /// Loads an InterstitialAd.
+        /// </summary>
+        [Obsolete("Use LoadInterstitialAd().")]
         public void LoadAd(AdRequest request)
         {
-            client.LoadAd(this.adUnitId, request);
+            var loader = MobileAds.GetClientFactory().BuildInterstitialClient();
+            loader.LoadAd(_adUnitId, request, OnLoadAd);
         }
 
-        // Determines whether the InterstitialAd has loaded.
+        /// <summary>
+        /// Determines whether the InterstitialAd has loaded.
+        /// </summary>
+        [Obsolete("Use MobileAds.LoadInterstitialAd().")]
         public bool IsLoaded()
         {
-            return this.isLoaded;
+            return _client != null;
         }
 
-        // Displays the InterstitialAd.
+        /// <summary>
+        /// Shows the InterstitialAd.
+        /// </summary>
         public void Show()
         {
-            this.isLoaded = false;
-            client.Show();
+            if (_client != null)
+            {
+                _client.Show();
+            }
         }
 
-        // Destroys the InterstitialAd.
-        public void Destroy()
+        private void OnLoadAd(IInterstitialAdClient client, ILoadAdErrorClient error)
         {
-            client.DestroyInterstitial();
+            if (client == null || error != null)
+            {
+                OnAdFailedToLoad(this, new AdFailedToLoadEventArgs
+                {
+                    LoadAdError = new LoadAdError(error)
+                });
+            }
+            else
+            {
+                Init(client);
+                OnAdLoaded(this, EventArgs.Empty);
+            }
         }
 
-        // Returns ad request response info.
-        public ResponseInfo GetResponseInfo()
+        private void Init(IInterstitialAdClient client)
         {
-            return new ResponseInfo(this.client.GetResponseInfoClient());
+            base.Init(client);
+            _client = client;
+            OnAdPaid += (adValue) =>
+            {
+                OnPaidEvent(this, new AdValueEventArgs
+                {
+                    AdValue = adValue
+                });
+            };
+            OnAdImpressionRecorded += () =>
+            {
+                OnAdDidRecordImpression(this, EventArgs.Empty);
+            };
+            OnAdFullScreenContentFailed += (error) =>
+            {
+                OnAdFailedToShow(this, new AdErrorEventArgs{ AdError = error });
+            };
+            OnAdFullScreenContentClosed += () =>
+            {
+                OnAdClosed(this, EventArgs.Empty);
+            };
+            OnAdFullScreenContentOpened += () =>
+            {
+                OnAdOpening(this, EventArgs.Empty);
+            };
         }
     }
 }
