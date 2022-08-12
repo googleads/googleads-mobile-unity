@@ -1,4 +1,4 @@
-// Copyright (C) 2021 Google LLC.
+// Copyright (C) 2022 Google LLC.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,125 +14,92 @@
 
 using System;
 using System.Collections.Generic;
-
 using UnityEngine;
 using UnityEngine.UI;
-
 using GoogleMobileAds.Api;
 using GoogleMobileAds.Common;
 
 namespace GoogleMobileAds.Unity
 {
-    public class AppOpenAdClient : BaseAdDummyClient, IAppOpenAdClient
+    public class AppOpenAdClient : BaseAdClient, IAppOpenAdClient
     {
-        public event EventHandler<EventArgs> OnAdLoaded;
 
-        public event EventHandler<LoadAdErrorClientEventArgs> OnAdFailedToLoad;
-
-        public event EventHandler<AdValueEventArgs> OnPaidEvent;
-
-        public event EventHandler<AdErrorClientEventArgs> OnAdFailedToPresentFullScreenContent;
-
-        public event EventHandler<EventArgs> OnAdDidPresentFullScreenContent;
-
-        public event EventHandler<EventArgs> OnAdDidDismissFullScreenContent;
-
-        public event EventHandler<EventArgs> OnAdDidRecordImpression;
-
-        private Dictionary<AdSize, string> prefabAds = new Dictionary<AdSize, string>() {
-            { new AdSize(768, 1024), "DummyAds/AppOpen/768x1024" },
-            { new AdSize(1024, 768), "DummyAds/AppOpen/1024x768" }
-        };
-
-        private ButtonBehaviour buttonBehaviour;
-
-        private void AddClickBehavior(GameObject dummy)
-        {
-            Image[] images = dummy.GetComponentsInChildren<Image>();
-            Image adImage = images[1];
-            Button button = adImage.GetComponentInChildren<Button>();
-            button.onClick.AddListener(() => {
-                buttonBehaviour.OpenURL();
-            });
-
-            Button[] innerButtons = adImage.GetComponentsInChildren<Button>();
-
-            innerButtons[1].onClick.AddListener(() =>
+        private readonly Dictionary<AdSize, string> prefabAds =
+            new Dictionary<AdSize, string>()
             {
-                DestroyAppOpenAd();
-                if(OnAdDidDismissFullScreenContent != null)
-                {
-                    OnAdDidDismissFullScreenContent.Invoke(this, new EventArgs());
-                }
-                AdBehaviour.ResumeGame();
-            });
-        }
+                {new AdSize (768,1024), "DummyAds/AppOpen/768x1024" },
+                {new AdSize (1024,768), "DummyAds/AppOpen/1024x768"}
+            };
 
-        private void CreateButtonBehavior()
+        public void LoadAd(string adUnitId,
+                           ScreenOrientation orientation,
+                           AdRequest request,
+                           Action<IAppOpenAdClient, ILoadAdErrorClient> callback)
         {
-            buttonBehaviour = base.dummyAd.AddComponent<ButtonBehaviour>();
-        }
-
-        public void CreateAppOpenAd()
-        {
-            // Do nothing.
-        }
-
-        public void LoadAd(string adUnitID, AdRequest request, ScreenOrientation orientation)
-        {
-            if (Screen.width > Screen.height) // Landscape
+            //Landscape
+            if (Screen.width > Screen.height)
             {
-                LoadAndSetPrefabAd(prefabAds[new AdSize(1024, 768)]);
+                LoadPrefab(prefabAds[new AdSize(1024, 768)]);
             }
             else
             {
-                LoadAndSetPrefabAd(prefabAds[new AdSize(768, 1024)]);
+                LoadPrefab(prefabAds[new AdSize(768, 1024)]);
             }
 
-            if (prefabAd != null)
+            if (callback == null)
             {
-                if(OnAdLoaded != null)
-                {
-                    OnAdLoaded.Invoke(this, EventArgs.Empty);
-                }
+                return;
+            }
+
+            if (adPrefab == null)
+            {
+                callback(null, new LoadAdErrorClient());
             }
             else
             {
-                if(OnAdFailedToLoad != null)
-                {
-                    OnAdFailedToLoad.Invoke(this, new LoadAdErrorClientEventArgs()
-                    {
-                        LoadAdErrorClient = new LoadAdErrorClient()
-                    });
-                }
+                callback(this, null);
             }
         }
 
         public void Show()
         {
-          if (prefabAd != null)
-          {
-              dummyAd = AdBehaviour.ShowAd(prefabAd, new Vector3(0, 0, 1));
-              AdBehaviour.PauseGame();
+            if (adPrefab == null)
+            {
+                RaiseAdFullScreenContentFailed(new AdErrorClient());
+                return;
+            }
 
-              CreateButtonBehavior();
-              AddClickBehavior(dummyAd);
+            adInstance = LoadAd(Vector3.zero);
 
-              if(OnAdDidPresentFullScreenContent != null)
-              {
-                OnAdDidPresentFullScreenContent.Invoke(this, EventArgs.Empty);
-              }
-          }
-          else
-          {
-              Debug.Log("No Ad Loaded");
-          }
-        }
+            PauseGame();
 
-        public void DestroyAppOpenAd()
-        {
-          AdBehaviour.DestroyAd(dummyAd);
-          prefabAd = null;
+            Image[] images = adInstance.GetComponentsInChildren<Image>();
+            Image adImage = images[1];
+            Button button = adImage.GetComponentInChildren<Button>();
+            Button[] innerButtons = adImage.GetComponentsInChildren<Button>();
+
+            if (innerButtons.Length < 2)
+            {
+                Debug.Log("Invalid Prefab");
+                Destroy();
+                return;
+            }
+
+            Button closeButton = innerButtons[1];
+            closeButton.onClick.AddListener(() =>
+            {
+                Destroy();
+                RaiseAdFullScreenContentClosed();
+                ResumeGame();
+            });
+            button.onClick.AddListener(() =>
+            {
+                NavigateToAdUrl();
+                RaiseAdClickRecorded();
+            });
+
+            RaiseAdFullScreenContentOpened();
+            RaiseAdImpressionRecorded();
         }
     }
 }

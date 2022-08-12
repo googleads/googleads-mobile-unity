@@ -21,53 +21,56 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Countdown : MonoBehaviour
+namespace GoogleMobileAds.Unity
 {
-
-    private float currentTime = 0f;
-    private float startingTime = 5f;
-    private Button closeButton;
-    private Text countdownText;
-
-    public void Start()
+    public class Countdown : MonoBehaviour
     {
-        Text[] texts = this.GetComponentsInChildren<Text>();
-        Button[] buttons = this.GetComponentsInChildren<Button>();
 
-        if (texts.Length < 2 || buttons.Length < 2)
+        private float currentTime = 0f;
+        private float startingTime = 5f;
+        private Button closeButton;
+        private Text countdownText;
+
+        public void Start()
         {
-            Debug.Log("Invalid Prefab");
-            return;
+            Text[] texts = this.GetComponentsInChildren<Text>();
+            Button[] buttons = this.GetComponentsInChildren<Button>();
+
+            if (texts.Length < 2 || buttons.Length < 2)
+            {
+                Debug.Log("Invalid Prefab");
+                return;
+            }
+
+            closeButton = buttons[1];
+            countdownText = texts[1];
+            closeButton.gameObject.SetActive(false);
+            currentTime = startingTime;
         }
 
-        closeButton = buttons[1];
-        countdownText = texts[1];
-        closeButton.gameObject.SetActive(false);
-        currentTime = startingTime;
-    }
+        // Update is called once per frame
+        public void Update()
+        {
+            if (countdownText == null || closeButton == null)
+            {
+                return;
+            }
 
-    // Update is called once per frame
-    public void Update()
-    {
-        if (countdownText == null || closeButton == null)
-        {
-            return;
-        }
+            if (currentTime <= 0)
+            {
+                return;
+            }
 
-        if (currentTime <= 0)
-        {
-            return;
-        }
-
-        currentTime -= Time.unscaledDeltaTime;
-        if (currentTime > 0)
-        {
-            countdownText.text = Mathf.Round(currentTime).ToString() + " second(s) remaining";
-        }
-        else
-        {
-            countdownText.enabled = false;
-            closeButton.gameObject.SetActive(true);
+            currentTime -= Time.unscaledDeltaTime;
+            if (currentTime > 0)
+            {
+                countdownText.text = Mathf.Round(currentTime).ToString() + " second(s) remaining";
+            }
+            else
+            {
+                countdownText.enabled = false;
+                closeButton.gameObject.SetActive(true);
+            }
         }
     }
 }

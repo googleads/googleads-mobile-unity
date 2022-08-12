@@ -1,0 +1,48 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.810.25
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GoogleMobileAds.Platforms.iOS", "GoogleMobileAds.Platforms.iOS.csproj", "{01AC50BE-3155-4026-80FB-28F7E1E9B03E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GoogleMobileAds.Platforms.Unity", "GoogleMobileAds.Platforms.Unity.csproj", "{01AC50BE-3105-4026-80FB-28F7EEE9B03E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GoogleMobileAds.Platforms.Android", "GoogleMobileAds.Platforms.Android.csproj", "{01AC50BE-3105-4026-80FB-23F7EEE9B03E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GoogleMobileAds", "GoogleMobileAds.csproj", "{01AC50BE-3105-4026-80FB-28F7E1E9B03E}"
+EndProject
+Project("{420D11AA-F609-415B-AF97-BDE0F97C7A3D}") = "UnitTests", "test-apps\UnitTests\UnitTests.csproj", "{420D11AA-F609-415B-AF97-BDE0F97C7A3D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{01AC50BE-3155-4026-80FB-28F7E1E9B03E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{01AC50BE-3155-4026-80FB-28F7E1E9B03E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{01AC50BE-3155-4026-80FB-28F7E1E9B03E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{01AC50BE-3155-4026-80FB-28F7E1E9B03E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{01AC50BE-3105-4026-80FB-28F7EEE9B03E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{01AC50BE-3105-4026-80FB-28F7EEE9B03E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{01AC50BE-3105-4026-80FB-28F7EEE9B03E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{01AC50BE-3105-4026-80FB-28F7EEE9B03E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{01AC50BE-3105-4026-80FB-23F7EEE9B03E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{01AC50BE-3105-4026-80FB-23F7EEE9B03E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{01AC50BE-3105-4026-80FB-23F7EEE9B03E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{01AC50BE-3105-4026-80FB-23F7EEE9B03E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{01AC50BE-3105-4026-80FB-28F7E1E9B03E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{01AC50BE-3105-4026-80FB-28F7E1E9B03E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{01AC50BE-3105-4026-80FB-28F7E1E9B03E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{01AC50BE-3105-4026-80FB-28F7E1E9B03E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{420D11AA-F609-415B-AF97-BDE0F97C7A3D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{420D11AA-F609-415B-AF97-BDE0F97C7A3D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{420D11AA-F609-415B-AF97-BDE0F97C7A3D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{420D11AA-F609-415B-AF97-BDE0F97C7A3D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {33988EEC-FAC8-4D23-9B59-265B91DE579A}
+	EndGlobalSection
+EndGlobal
