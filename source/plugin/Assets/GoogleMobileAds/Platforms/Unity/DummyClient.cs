@@ -14,14 +14,14 @@
 
 using System;
 using System.Reflection;
-using GoogleMobileAds.Unity;
+using GoogleMobileAds.Common;
 using GoogleMobileAds.Api;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace GoogleMobileAds.Common
+namespace GoogleMobileAds.Unity
 {
-    public class DummyClient : BaseAdDummyClient, IBannerClient, IInterstitialClient,
+    public class DummyClient : BaseAdDummyClient, IBannerAdClient, IInterstitialAdClient,
             IMobileAdsClient
     {
         public DummyClient()

@@ -11,28 +11,35 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+
+using System;
 using GoogleMobileAds.Common;
-public class ResponseInfo
+using GoogleMobileAds.Api;
+
+namespace GoogleMobileAds.Api
 {
-    private IResponseInfoClient client;
-
-    public ResponseInfo(IResponseInfoClient client)
+    public class ResponseInfo
     {
-        this.client = client;
-    }
+        private IResponseInfoClient _client;
 
-    public string GetMediationAdapterClassName()
-    {
-        return client.GetMediationAdapterClassName();
-    }
+        public ResponseInfo(IResponseInfoClient client)
+        {
+            _client = client;
+        }
 
-    public string GetResponseId()
-    {
-        return client.GetResponseId();
-    }
+        public string GetMediationAdapterClassName()
+        {
+            return _client.GetMediationAdapterClassName();
+        }
 
-    public override string ToString()
-    {
-        return client.ToString();
+        public string GetResponseId()
+        {
+            return _client.GetResponseId();
+        }
+
+        public override string ToString()
+        {
+            return _client.ToString();
+        }
     }
 }

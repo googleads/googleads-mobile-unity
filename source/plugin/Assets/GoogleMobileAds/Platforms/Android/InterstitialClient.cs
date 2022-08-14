@@ -20,7 +20,7 @@ using UnityEngine;
 
 namespace GoogleMobileAds.Android
 {
-    public class InterstitialClient : AndroidJavaProxy, IInterstitialClient
+    public class InterstitialClient : AndroidJavaProxy, IInterstitialAdClient
     {
         private AndroidJavaObject androidInterstitialAd;
 

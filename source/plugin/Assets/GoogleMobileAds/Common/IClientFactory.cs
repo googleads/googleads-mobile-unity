@@ -16,7 +16,7 @@ using UnityEngine;
 using GoogleMobileAds;
 using GoogleMobileAds.Common;
 
-namespace GoogleMobileAds
+namespace GoogleMobileAds.Common
 {
     public interface IClientFactory
     {
@@ -24,9 +24,9 @@ namespace GoogleMobileAds
 
         IAppOpenAdClient BuildAppOpenAdClient();
 
-        IBannerClient BuildBannerClient();
+        IBannerAdClient BuildBannerClient();
 
-        IInterstitialClient BuildInterstitialClient();
+        IInterstitialAdClient BuildInterstitialClient();
 
         IRewardedAdClient BuildRewardedAdClient();
 
