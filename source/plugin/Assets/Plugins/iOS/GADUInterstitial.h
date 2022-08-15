@@ -41,6 +41,10 @@
 @property(nonatomic, assign)
     GADUInterstitialAdDidRecordImpressionCallback adDidRecordImpressionCallback;
 
+/// The ad click callback into Unity.
+@property(nonatomic, assign)
+    GADUInterstitialAdDidRecordClickCallback adDidRecordClickCallback;
+
 /// The paid event callback into Unity.
 @property(nonatomic, assign) GADUInterstitialPaidEventCallback paidEventCallback;
 

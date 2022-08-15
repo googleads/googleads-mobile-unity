@@ -163,7 +163,7 @@ namespace GoogleMobileAds.Android
             }
         }
 
-        public void onPaidEvent(int precision, long valueInMicros, string currencyCode)
+        internal void onPaidEvent(int precision, long valueInMicros, string currencyCode)
         {
             if (this.OnPaidEvent != null)
             {
