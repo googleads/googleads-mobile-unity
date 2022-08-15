@@ -1,4 +1,4 @@
-// Copyright (C) 2020 Google LLC
+// Copyright (C) 2022 Google, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,26 +12,18 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using UnityEngine;
-using GoogleMobileAds;
-using GoogleMobileAds.Common;
+using System;
 
-namespace GoogleMobileAds
+namespace GoogleMobileAds.Common
 {
-    public interface IClientFactory
+    /// <summary>
+    /// The ad client interface for full screen ad formats.
+    /// </summary>
+    public interface IFullScreenAdClient : IBaseAdClient
     {
-        IAppStateEventClient BuildAppStateEventClient();
-
-        IAppOpenAdClient BuildAppOpenAdClient();
-
-        IBannerAdClient BuildBannerAdClient();
-
-        IInterstitialClient BuildInterstitialClient();
-
-        IRewardedAdClient BuildRewardedAdClient();
-
-        IRewardedInterstitialAdClient BuildRewardedInterstitialAdClient();
-
-        IMobileAdsClient MobileAdsInstance();
+        /// <summary>
+        /// Raised when the ad failed to open full screen content.
+        /// </summary>
+        event Action<IAdErrorClient> OnAdFullScreenContentFailed;
     }
 }
