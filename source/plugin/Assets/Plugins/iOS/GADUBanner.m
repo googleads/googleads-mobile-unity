@@ -271,4 +271,15 @@
   }
 }
 
+- (void)bannerViewDidRecordImpression:(nonnull GADBannerView *)bannerView {
+  if (self.adImpressionCallback) {
+    self.adImpressionCallback(self.bannerClient);
+  }
+}
+
+- (void)bannerViewDidRecordClick:(nonnull GADBannerView *)bannerView {
+  if (self.adClickedCallback) {
+    self.adClickedCallback(self.bannerClient);
+  }
+}
 @end

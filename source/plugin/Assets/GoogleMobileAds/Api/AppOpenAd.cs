@@ -50,7 +50,7 @@ namespace GoogleMobileAds.Api
                       this.OnAdDidPresentFullScreenContent(this, args);
                   }
             };
-            
+
             this.client.OnAdDidDismissFullScreenContent += (sender, args) =>
             {
                   if (this.OnAdDidDismissFullScreenContent != null)

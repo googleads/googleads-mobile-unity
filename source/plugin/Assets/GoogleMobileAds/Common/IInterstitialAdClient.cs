@@ -1,4 +1,4 @@
-// Copyright (C) 2020 Google LLC
+// Copyright 2015-2021 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -19,16 +19,21 @@ using GoogleMobileAds.Api;
 namespace GoogleMobileAds.Common
 {
     /// <summary>
-    /// Rewarded interstitial ads can serve without requiring the user to opt-in to viewing.
-    /// At any point during the experience, the user can decide to skip the ad.
+    /// A full page ad experience at natural transition points such as a page change, an app launch.
+    /// Interstitials use a close button that removes the ad from the user's experience.
     /// </summary>
-    public interface IRewardedInterstitialAdClient : IFullScreenAdClient, IBaseRewardedAdClient
+    public interface IInterstitialAdClient : IFullScreenAdClient
     {
         /// <summary>
-        /// Loads an rewarded interstitial ad client.
+        /// Shows the interstitial ad on the screen.
+        /// </summary>
+        void ShowAd();
+
+        /// <summary>
+        /// Loads an interstitial ad.
         /// </summary>
         void LoadAd(string adUnitId,
                     AdRequest request,
-                    Action<IRewardedInterstitialAdClient, ILoadAdErrorClient> callback);
+                    Action<IInterstitialAdClient, ILoadAdErrorClient> callback);
     }
 }
