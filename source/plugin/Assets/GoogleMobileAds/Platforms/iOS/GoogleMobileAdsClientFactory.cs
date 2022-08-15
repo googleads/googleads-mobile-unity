@@ -46,11 +46,11 @@ namespace GoogleMobileAds
                                           " on non-iOS runtime");
     }
 
-    public IBannerClient BuildBannerClient()
+    public IBannerAdClient BuildBannerAdClient()
     {
       if (Application.platform == RuntimePlatform.IPhonePlayer)
       {
-        return new GoogleMobileAds.iOS.BannerClient();
+        return new GoogleMobileAds.iOS.BannerAdClient();
       }
       throw new InvalidOperationException(@"Called " + MethodBase.GetCurrentMethod().Name +
                                           " on non-iOS runtime");
