@@ -1,4 +1,4 @@
-// Copyright (C) 2020 Google LLC
+// Copyright (C) 2022 Google, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,21 +14,27 @@
 
 using System;
 
-using GoogleMobileAds.Api;
-
 namespace GoogleMobileAds.Common
 {
     /// <summary>
-    /// Rewarded interstitial ads can serve without requiring the user to opt-in to viewing.
-    /// At any point during the experience, the user can decide to skip the ad.
+    /// The ad client interface for full screen ad formats.
     /// </summary>
-    public interface IRewardedInterstitialAdClient : IFullScreenAdClient, IBaseRewardedAdClient
+    public interface IFullScreenAdClient : IBaseAdClient
     {
         /// <summary>
-        /// Loads an rewarded interstitial ad client.
+        /// Raised when an ad opened full screen content.
         /// </summary>
-        void LoadAd(string adUnitId,
-                    AdRequest request,
-                    Action<IRewardedInterstitialAdClient, ILoadAdErrorClient> callback);
+        event Action OnAdFullScreenContentOpened;
+
+        /// <summary>
+        /// Raised when the ad closed full screen content.
+        /// On iOS this does not include ads which open (safari) web browser links.
+        /// </summary>
+        event Action OnAdFullScreenContentClosed;
+
+        /// <summary>
+        /// Raised when the ad failed to open full screen content.
+        /// </summary>
+        event Action<IAdErrorClient> OnAdFullScreenContentFailed;
     }
 }

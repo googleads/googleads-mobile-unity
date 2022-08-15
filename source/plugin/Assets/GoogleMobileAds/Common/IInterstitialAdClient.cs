@@ -1,4 +1,4 @@
-﻿// Copyright (C) 2021 Google, LLC
+// Copyright 2015-2021 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -13,30 +13,27 @@
 // limitations under the License.
 
 using System;
-using UnityEngine;
+
 using GoogleMobileAds.Api;
 
 namespace GoogleMobileAds.Common
 {
     /// <summary>
-    /// App open ads are used to display ads when users enter your app. An AppOpenAd object
-    /// contains all the data necessary to display an ad. Unlike interstitial ads, app open ads
-    /// make it easy to provide an app branding so that users understand the context in which they
-    /// see the ad.
+    /// A full page ad experience at natural transition points such as a page change, an app launch.
+    /// Interstitials use a close button that removes the ad from the user's experience.
     /// </summary>
-    public interface IAppOpenAdClient : IFullScreenAdClient
+    public interface IInterstitialAdClient : IFullScreenAdClient
     {
         /// <summary>
-        /// Loads an app open ad client.
-        /// </summary>
-        void LoadAd(string adUnitId,
-                    ScreenOrientation orientation,
-                    AdRequest request,
-                    Action<IAppOpenAdClient, ILoadAdErrorClient> callback);
-
-        /// <summary>
-        /// Shows the app open ad on the screen.
+        /// Shows the interstitial ad on the screen.
         /// </summary>
         void ShowAd();
+
+        /// <summary>
+        /// Loads an interstitial ad.
+        /// </summary>
+        void LoadAd(string adUnitId,
+                    AdRequest request,
+                    Action<IInterstitialAdClient, ILoadAdErrorClient> callback);
     }
 }
