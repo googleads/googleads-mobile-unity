@@ -1,4 +1,4 @@
-// Copyright 2015-2021 Google LLC
+// Copyright (C) 2022 Google, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,21 +14,27 @@
 
 using System;
 
-using GoogleMobileAds.Api;
-
 namespace GoogleMobileAds.Common
 {
     /// <summary>
-    /// Rewarded ad units allow you to reward users with in-app items for interacting with
-    /// video ads, playable ads, and surveys.
+    /// The ad client interface for full screen ad formats.
     /// </summary>
-    public interface IRewardedAdClient : IFullScreenAdClient, IBaseRewardedAdClient
+    public interface IFullScreenAdClient : IBaseAdClient
     {
         /// <summary>
-        /// Loads an IRewardedAd.
+        /// Raised when an ad opened full screen content.
         /// </summary>
-        void LoadAd(string adUnitId,
-                    AdRequest request,
-                    Action<IRewardedAdClient, ILoadAdErrorClient> callback);
+        event Action OnAdFullScreenContentOpened;
+
+        /// <summary>
+        /// Raised when the ad closed full screen content.
+        /// On iOS this does not include ads which open (safari) web browser links.
+        /// </summary>
+        event Action OnAdFullScreenContentClosed;
+
+        /// <summary>
+        /// Raised when the ad failed to open full screen content.
+        /// </summary>
+        event Action<IAdErrorClient> OnAdFullScreenContentFailed;
     }
 }

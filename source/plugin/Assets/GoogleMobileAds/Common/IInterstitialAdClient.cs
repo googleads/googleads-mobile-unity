@@ -19,16 +19,21 @@ using GoogleMobileAds.Api;
 namespace GoogleMobileAds.Common
 {
     /// <summary>
-    /// Rewarded ad units allow you to reward users with in-app items for interacting with
-    /// video ads, playable ads, and surveys.
+    /// A full page ad experience at natural transition points such as a page change, an app launch.
+    /// Interstitials use a close button that removes the ad from the user's experience.
     /// </summary>
-    public interface IRewardedAdClient : IFullScreenAdClient, IBaseRewardedAdClient
+    public interface IInterstitialAdClient : IFullScreenAdClient
     {
         /// <summary>
-        /// Loads an IRewardedAd.
+        /// Shows the interstitial ad on the screen.
+        /// </summary>
+        void ShowAd();
+
+        /// <summary>
+        /// Loads an interstitial ad.
         /// </summary>
         void LoadAd(string adUnitId,
                     AdRequest request,
-                    Action<IRewardedAdClient, ILoadAdErrorClient> callback);
+                    Action<IInterstitialAdClient, ILoadAdErrorClient> callback);
     }
 }
