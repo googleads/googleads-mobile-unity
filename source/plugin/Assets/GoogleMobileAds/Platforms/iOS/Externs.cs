@@ -213,11 +213,13 @@ namespace GoogleMobileAds.iOS
         [DllImport("__Internal")]
         internal static extern void GADUSetBannerCallbacks(
             IntPtr bannerView,
-            BannerClient.GADUAdViewDidReceiveAdCallback adReceivedCallback,
-            BannerClient.GADUAdViewDidFailToReceiveAdWithErrorCallback adFailedCallback,
-            BannerClient.GADUAdViewWillPresentScreenCallback willPresentCallback,
-            BannerClient.GADUAdViewDidDismissScreenCallback didDismissCallback,
-            BannerClient.GADUAdViewPaidEventCallback paidEventCallback
+            BannerAdClient.GADUAdViewDidReceiveAdCallback adReceivedCallback,
+            BannerAdClient.GADUAdViewDidFailToReceiveAdWithErrorCallback adFailedCallback,
+            BannerAdClient.GADUAdViewWillPresentScreenCallback willPresentCallback,
+            BannerAdClient.GADUAdViewDidDismissScreenCallback didDismissCallback,
+            BannerAdClient.GADUAdViewPaidEventCallback paidEventCallback,
+            BannerAdClient.GADUAdViewImpressionCallback adImpressionCallback,
+            BannerAdClient.GADUAdViewClickCallback adClickCallback
         );
 
         [DllImport("__Internal")]
@@ -298,6 +300,8 @@ namespace GoogleMobileAds.iOS
                 adDidDismissFullScreenContentCallback,
             InterstitialClient.GADUInterstitialAdDidRecordImpressionCallback
                 adDidRecordImpressionCallback,
+            InterstitialClient.GADUInterstitialAdDidRecordClickCallback
+                adDidRecordClickCallback,
             InterstitialClient.GADUInterstitialPaidEventCallback paidEventCallback
         );
 

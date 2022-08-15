@@ -20,8 +20,10 @@ using UnityEngine;
 
 namespace GoogleMobileAds.Android
 {
-    public class InterstitialClient : AndroidJavaProxy, IInterstitialClient
+    public class InterstitialClient : AndroidJavaProxy, IInterstitialAdClient
     {
+        public bool IsDestroyed { get; private set; }
+
         private AndroidJavaObject androidInterstitialAd;
 
         public InterstitialClient() : base(Utils.UnityInterstitialAdCallbackClassName)
@@ -33,50 +35,44 @@ namespace GoogleMobileAds.Android
                 Utils.InterstitialClassName, activity, this);
         }
 
-        public event EventHandler<EventArgs> OnAdLoaded;
+        public event Action OnAdFullScreenContentOpened = delegate { };
+        public event Action OnAdFullScreenContentClosed = delegate { };
+        public event Action<IAdErrorClient> OnAdFullScreenContentFailed = delegate { };
+        public event Action<AdValue> OnAdPaid = delegate { };
+        public event Action OnAdClickRecorded = delegate { };
+        public event Action OnAdImpressionRecorded = delegate { };
 
-        public event EventHandler<LoadAdErrorClientEventArgs> OnAdFailedToLoad;
-
-        public event EventHandler<AdErrorClientEventArgs> OnAdFailedToPresentFullScreenContent;
-
-        public event EventHandler<EventArgs> OnAdDidPresentFullScreenContent;
-
-        public event EventHandler<EventArgs> OnAdDidDismissFullScreenContent;
-
-        public event EventHandler<EventArgs> OnAdDidRecordImpression;
-
-        public event EventHandler<AdValueEventArgs> OnPaidEvent;
+        Action<IInterstitialAdClient, ILoadAdErrorClient> _callback;
 
         #region IGoogleMobileAdsInterstitialClient implementation
 
-        // Creates an interstitial ad.
-        public void CreateInterstitialAd()
-        {
-            // No op.
-        }
-
         // Loads an ad.
-        public void LoadAd(string adUnitId, AdRequest request)
+
+        public void LoadAd(string adUnitId,
+                           AdRequest request,
+                           Action<IInterstitialAdClient, ILoadAdErrorClient> callback)
         {
-            this.androidInterstitialAd.Call("loadAd", adUnitId, Utils.GetAdRequestJavaObject(request));
+            _callback = callback;
+            this.androidInterstitialAd.Call("loadAd", adUnitId,
+                Utils.GetAdRequestJavaObject(request));
         }
 
         // Presents the interstitial ad on the screen.
-        public void Show()
+        public void ShowAd()
         {
             this.androidInterstitialAd.Call("show");
         }
 
         // Destroys the interstitial ad.
-        public void DestroyInterstitial()
+        public void Destroy()
         {
             this.androidInterstitialAd.Call("destroy");
+            IsDestroyed = true;
         }
 
         // Returns ad request response info
         public IResponseInfoClient GetResponseInfoClient()
         {
-
             return new ResponseInfoClient(ResponseInfoClientType.AdLoaded, this.androidInterstitialAd);
         }
 
@@ -84,80 +80,63 @@ namespace GoogleMobileAds.Android
 
         #region Callbacks from UnityInterstitialAdCallback.
 
-        public void onInterstitialAdLoaded()
+        internal void onInterstitialAdLoaded()
         {
-            if (this.OnAdLoaded != null)
+            if (_callback == null)
             {
-                this.OnAdLoaded(this, EventArgs.Empty);
+                return;
             }
+
+            _callback(this, null);
+            _callback = null;
         }
 
-        public void onInterstitialAdFailedToLoad(AndroidJavaObject error)
+        internal void onInterstitialAdFailedToLoad(AndroidJavaObject error)
         {
-            if (this.OnAdFailedToLoad != null)
+            if (_callback == null)
             {
-                LoadAdErrorClientEventArgs args = new LoadAdErrorClientEventArgs()
-                {
-                    LoadAdErrorClient = new LoadAdErrorClient(error)
-                };
-                this.OnAdFailedToLoad(this, args);
+                return;
             }
+
+            _callback(null, new LoadAdErrorClient(error));
+            _callback = null;
         }
 
-        void onAdFailedToShowFullScreenContent(AndroidJavaObject error)
+        internal void onAdFailedToShowFullScreenContent(AndroidJavaObject error)
         {
-            if (this.OnAdFailedToPresentFullScreenContent != null)
-            {
-                AdErrorClientEventArgs args = new AdErrorClientEventArgs()
-                {
-                    AdErrorClient = new AdErrorClient(error),
-                };
-                this.OnAdFailedToPresentFullScreenContent(this, args);
-            }
+            this.OnAdFullScreenContentFailed(new AdErrorClient(error));
         }
 
-        void onAdShowedFullScreenContent()
+        internal void onAdShowedFullScreenContent()
         {
-            if (this.OnAdDidPresentFullScreenContent != null)
-            {
-                this.OnAdDidPresentFullScreenContent(this, EventArgs.Empty);
-            }
+            this.OnAdFullScreenContentOpened();
         }
 
-
-        void onAdDismissedFullScreenContent()
+        internal void onAdDismissedFullScreenContent()
         {
-            if (this.OnAdDidDismissFullScreenContent != null)
-            {
-                this.OnAdDidDismissFullScreenContent(this, EventArgs.Empty);
-            }
+            this.OnAdFullScreenContentClosed();
         }
 
-        void onAdImpression()
+        internal void onAdImpression()
         {
-            if (this.OnAdDidRecordImpression != null)
-            {
-                this.OnAdDidRecordImpression(this, EventArgs.Empty);
-            }
+            this.OnAdImpressionRecorded();
+        }
+
+        internal void onAdClickRecorded()
+        {
+            this.OnAdClickRecorded();
         }
 
         public void onPaidEvent(int precision, long valueInMicros, string currencyCode)
         {
-            if (this.OnPaidEvent != null)
+            AdValue adValue = new AdValue()
             {
-                AdValue adValue = new AdValue()
-                {
-                    Precision = (AdValue.PrecisionType)precision,
-                    Value = valueInMicros,
-                    CurrencyCode = currencyCode
-                };
-                AdValueEventArgs args = new AdValueEventArgs()
-                {
-                    AdValue = adValue
-                };
+                Precision = (AdValue.PrecisionType)precision,
+                Value = valueInMicros,
+                CurrencyCode = currencyCode
+            };
 
-                this.OnPaidEvent(this, args);
-            }
+            this.OnAdPaid(adValue);
         }
 
         #endregion

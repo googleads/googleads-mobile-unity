@@ -78,17 +78,6 @@
   return self.rewardedAd.responseInfo;
 }
 
-- (void)rewardedAd:(nonnull GADRewardedAd *)rewardedAd
-    userDidEarnReward:(nonnull GADAdReward *)reward {
-  if (self.didEarnRewardCallback) {
-    // Double value used for didEarnRewardCallback callback to maintain consistency with Android
-    // implementation.
-    self.didEarnRewardCallback(self.rewardedAdClient,
-                               [reward.type cStringUsingEncoding:NSUTF8StringEncoding],
-                               reward.amount.doubleValue);
-  }
-}
-
 - (void)setServerSideVerificationOptions:(GADServerSideVerificationOptions *)options {
   self.rewardedAd.serverSideVerificationOptions = options;
 }
