@@ -1,3 +1,4 @@
+#if UNITY_IOS
 // Copyright (C) 2021 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -23,3 +24,4 @@ namespace GoogleMobileAds.iOS {
     public AdInspectorErrorClient(IntPtr error) : base(error) {}
   }
 }
+#endif
