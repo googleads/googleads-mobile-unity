@@ -149,6 +149,13 @@ typedef void (*GADUAdViewWillLeaveApplicationCallback)(GADUTypeBannerClientRef *
 typedef void (*GADUAdViewPaidEventCallback)(GADUTypeBannerClientRef *bannerClient, int precision,
                                             int64_t value, const char *currencyCode);
 
+/// Callback for when an ad reports an impression.
+typedef void (*GADUAdViewImpressionCallback)(GADUTypeBannerClientRef *bannerClient);
+
+/// Callback for when an ad reports a click.
+typedef void (*GADUAdViewClickCallback)(GADUTypeBannerClientRef *bannerClient);
+
+
 // MARK: - GADUInterstitial
 
 /// Callback for when a interstitial ad request was successfully loaded.
