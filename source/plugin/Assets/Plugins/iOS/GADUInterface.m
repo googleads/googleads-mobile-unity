@@ -288,14 +288,17 @@ void GADUSetBannerCallbacks(GADUTypeBannerRef banner,
                             GADUAdViewDidFailToReceiveAdWithErrorCallback adFailedCallback,
                             GADUAdViewWillPresentScreenCallback willPresentCallback,
                             GADUAdViewDidDismissScreenCallback didDismissCallback,
-                            GADUAdViewPaidEventCallback paidEventCallback) {
+                            GADUAdViewPaidEventCallback paidEventCallback,
+                            GADUAdViewImpressionCallback adImpressionCallback,
+                            GADUAdViewClickCallback adClickedCallback) {
   GADUBanner *internalBanner = (__bridge GADUBanner *)banner;
   internalBanner.adReceivedCallback = adReceivedCallback;
   internalBanner.adFailedCallback = adFailedCallback;
   internalBanner.willPresentCallback = willPresentCallback;
   internalBanner.didDismissCallback = didDismissCallback;
-
   internalBanner.paidEventCallback = paidEventCallback;
+  internalBanner.adImpressionCallback = adImpressionCallback;
+  internalBanner.adClickedCallback = adClickedCallback;
 }
 
 /// Sets the interstitial callback methods to be invoked during interstitial ad events.
@@ -306,6 +309,7 @@ void GADUSetInterstitialCallbacks(
     GADUInterstitialAdFailedToPresentFullScreenContentCallback adFailedToPresentCallback,
     GADUInterstitialAdDidDismissFullScreenContentCallback adDidDismissCallback,
     GADUInterstitialAdDidRecordImpressionCallback adDidRecordImpressionCallback,
+    GADUInterstitialAdDidRecordClickCallback adDidRecordClickCallback,
     GADUInterstitialPaidEventCallback paidEventCallback) {
   GADUInterstitial *internalInterstitial = (__bridge GADUInterstitial *)interstitial;
   internalInterstitial.adLoadedCallback = adLoadedCallback;
@@ -314,6 +318,7 @@ void GADUSetInterstitialCallbacks(
   internalInterstitial.adFailedToPresentFullScreenContentCallback = adFailedToPresentCallback;
   internalInterstitial.adDidDismissFullScreenContentCallback = adDidDismissCallback;
   internalInterstitial.adDidRecordImpressionCallback = adDidRecordImpressionCallback;
+  internalInterstitial.adDidRecordClickCallback = adDidRecordClickCallback;
   internalInterstitial.paidEventCallback = paidEventCallback;
 }
 
