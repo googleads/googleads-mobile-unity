@@ -13,68 +13,67 @@
 // limitations under the License.
 
 using UnityEngine;
-using GoogleMobileAds;
-using GoogleMobileAds.Api;
 using GoogleMobileAds.Common;
 using UnityEngine.Scripting;
 
 namespace GoogleMobileAds
 {
-  [Preserve]
-  public class GoogleMobileAdsClientFactory: IClientFactory
-  {
-    public IAppStateEventClient BuildAppStateEventClient()
+    [Preserve]
+    public class GoogleMobileAdsClientFactory: IClientFactory
     {
-      return GoogleMobileAds.Common.AppStateEventClient.Instance;
-    }
+        public IAppStateEventClient BuildAppStateEventClient()
+        {
+            return GoogleMobileAds.Common.AppStateEventClient.Instance;
+        }
 
-    public IAppOpenAdClient BuildAppOpenAdClient()
-    {
-      if (Application.platform == RuntimePlatform.OSXEditor || Application.platform == RuntimePlatform.WindowsEditor)
-      {
-        return new GoogleMobileAds.Unity.AppOpenAdClient();
-      }
-      return new GoogleMobileAds.Common.AppOpenAdAdDummyClient();
-    }
+        public IAppOpenAdClient BuildAppOpenAdClient()
+        {
+            if (Application.platform == RuntimePlatform.OSXEditor ||
+                Application.platform == RuntimePlatform.WindowsEditor)
+            {
+                return new GoogleMobileAds.Unity.AppOpenAdClient();
+            }
+            return new GoogleMobileAds.Common.AppOpenAdAdDummyClient();
+        }
 
-    public IBannerClient BuildBannerClient()
-    {
-      if (Application.platform == RuntimePlatform.OSXEditor || Application.platform == RuntimePlatform.WindowsEditor)
-      {
-        return new GoogleMobileAds.Unity.BannerClient();
-      }
-      return new GoogleMobileAds.Common.DummyClient();
-    }
+        public IBannerAdClient BuildBannerAdClient()
+        {
+            return new GoogleMobileAds.Unity.BannerAdClient();
+        }
 
-    public IInterstitialClient BuildInterstitialClient()
-    {
-      if (Application.platform == RuntimePlatform.OSXEditor || Application.platform == RuntimePlatform.WindowsEditor)
-      {
-        return new GoogleMobileAds.Unity.InterstitialClient();
-      }
-      return new GoogleMobileAds.Common.DummyClient();
-     }
+        public IInterstitialClient BuildInterstitialClient()
+        {
+            if (Application.platform == RuntimePlatform.OSXEditor ||
+                Application.platform == RuntimePlatform.WindowsEditor)
+            {
+                return new GoogleMobileAds.Unity.InterstitialClient();
+            }
+            return new GoogleMobileAds.Common.DummyClient();
+        }
 
-    public IRewardedAdClient BuildRewardedAdClient()
-    {
-      if (Application.platform == RuntimePlatform.OSXEditor || Application.platform == RuntimePlatform.WindowsEditor)
-      {
-        return new GoogleMobileAds.Unity.RewardedAdClient();
-      }
-      return new GoogleMobileAds.Common.RewardedAdDummyClient();
-    }
+        public IRewardedAdClient BuildRewardedAdClient()
+        {
+            if (Application.platform == RuntimePlatform.OSXEditor ||
+                    Application.platform == RuntimePlatform.WindowsEditor)
+            {
+                return new GoogleMobileAds.Unity.RewardedAdClient();
+            }
+            return new GoogleMobileAds.Common.RewardedAdDummyClient();
+        }
 
-    public IRewardedInterstitialAdClient BuildRewardedInterstitialAdClient() {
-      if (Application.platform == RuntimePlatform.OSXEditor || Application.platform == RuntimePlatform.WindowsEditor)
-      {
-        return new GoogleMobileAds.Unity.RewardedInterstitialAdClient();
-      }
-      return new GoogleMobileAds.Common.RewardedInterstitialAdDummyClient();
-    }
+        public IRewardedInterstitialAdClient BuildRewardedInterstitialAdClient()
+        {
+            if (Application.platform == RuntimePlatform.OSXEditor ||
+                    Application.platform == RuntimePlatform.WindowsEditor)
+            {
+                return new GoogleMobileAds.Unity.RewardedInterstitialAdClient();
+            }
+            return new GoogleMobileAds.Common.RewardedInterstitialAdDummyClient();
+        }
 
-    public IMobileAdsClient MobileAdsInstance()
-    {
-      return new GoogleMobileAds.Common.DummyClient();
+        public IMobileAdsClient MobileAdsInstance()
+        {
+            return new GoogleMobileAds.Common.DummyClient();
+        }
     }
-  }
 }
