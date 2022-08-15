@@ -1,9 +1,6 @@
 #!/bin/bash
-# Main build script running on kokoro.
-
 # Fail on any error.
 set -e
-
 # Display commands being run.
 # WARNING: please only enable 'set -x' if necessary for debugging, and be very
 #  careful if you handle credentials (e.g. from Keystore) with 'set -x':
@@ -12,10 +9,6 @@ set -e
 #  Additionally, recursive invocation with credentials as command-line
 #  parameters, will print the full command, with credentials, in the build logs.
 # set -x
-
-if [[ "$1" == "release" ]]; then
-  javac -g:none Hello.java
-else
-  javac Hello.java
-fi
-java Hello
+# Code under depot is checked out to ${KOKORO_ARTIFACTS_DIR}/piper.
+cd "${KOKORO_ARTIFACTS_DIR}/piper/google3/java/com/google/android/libraries/admob/demo/unity/googlemobileads/kokoro"
+./build.sh
