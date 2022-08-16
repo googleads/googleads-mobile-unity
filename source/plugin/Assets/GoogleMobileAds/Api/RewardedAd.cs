@@ -17,170 +17,167 @@ using GoogleMobileAds.Common;
 
 namespace GoogleMobileAds.Api
 {
-    public class RewardedAd
+    /// <summary>
+    /// Rewarded ad units allow you to reward users with in-app items for interacting with
+    /// video ads, playable ads, and surveys.
+    /// </summary>
+    public class RewardedAd : FullScreenAd
     {
-        private IRewardedAdClient client;
-        private string adUnitId;
-        private bool isLoaded;
+        /// <summary>
+        /// Loads an rewarded ad.
+        /// </summary>
+        public static void LoadAd(string adUnitId,
+                                  AdRequest request,
+                                  Action<RewardedAd, LoadAdError> callback)
+        {
+            Action<IRewardedAdClient, ILoadAdErrorClient> apiCallback = (ad, error) =>
+            {
+                callback(
+                    ad == null ? null : new RewardedAd(ad),
+                    error == null ? null : new LoadAdError(error));
+            };
+            var loader = MobileAds.GetClientFactory().BuildRewardedAdClient();
+            loader.LoadAd(adUnitId, request, apiCallback);
+        }
 
+        [Obsolete("Use RewardedAd.LoadAd().")]
+        public event EventHandler<EventArgs> OnAdLoaded = delegate{};
+        [Obsolete("Use RewardedAd.LoadAd().")]
+        public event EventHandler<AdFailedToLoadEventArgs> OnAdFailedToLoad = delegate{};
+        [Obsolete("Use OnFullScreenAdOpened.")]
+        public event EventHandler<EventArgs> OnAdOpening = delegate{};
+        [Obsolete("Use OnFullScreenAdClosed.")]
+        public event EventHandler<EventArgs> OnAdClosed = delegate{};
+        [Obsolete("Use OnFullScreenAdFailed.")]
+        public event EventHandler<AdErrorEventArgs> OnAdFailedToShow = delegate{};
+        [Obsolete("Use OnAdImpressionRecorded.")]
+        public event EventHandler<EventArgs> OnAdDidRecordImpression = delegate{};
+        [Obsolete("Use OnAdPaid.")]
+        public event EventHandler<AdValueEventArgs> OnPaidEvent = delegate{};
+        [Obsolete("Use OnUserRewardEarned.")]
+        public event EventHandler<Reward> OnUserEarnedReward = delegate{};
+
+        private IRewardedAdClient _client;
+        private string _adUnitId;
+
+        [Obsolete("Use RewardedAd.LoadAd().")]
         public RewardedAd(string adUnitId)
         {
-            this.client = MobileAds.GetClientFactory().BuildRewardedAdClient();
-            this.adUnitId = adUnitId;
-            this.isLoaded = false;
-            client.CreateRewardedAd();
-
-            this.client.OnAdLoaded += (sender, args) =>
-            {
-                this.isLoaded = true;
-                if (this.OnAdLoaded != null)
-                {
-                    this.OnAdLoaded(this, args);
-                }
-            };
-
-            this.client.OnAdFailedToLoad += (sender, args) =>
-            {
-                if (this.OnAdFailedToLoad != null)
-                {
-                    LoadAdError loadAdError = new LoadAdError(args.LoadAdErrorClient);
-                    this.OnAdFailedToLoad(this, new AdFailedToLoadEventArgs()
-                    {
-                        LoadAdError = loadAdError
-                    });
-                }
-            };
-
-            this.client.OnAdFailedToPresentFullScreenContent += (sender, args) =>
-            {
-                if (this.OnAdFailedToShow != null)
-                {
-                    AdError adError = new AdError(args.AdErrorClient);
-
-                    this.OnAdFailedToShow(this, new AdErrorEventArgs()
-                    {
-                        AdError = adError
-                    });
-                }
-            };
-
-            this.client.OnAdDidPresentFullScreenContent += (sender, args) =>
-            {
-                if (this.OnAdOpening != null)
-                {
-                    this.OnAdOpening(this, args);
-                }
-            };
-
-            this.client.OnAdDidDismissFullScreenContent += (sender, args) =>
-            {
-                if (this.OnAdClosed != null)
-                {
-                    this.OnAdClosed(this, args);
-                }
-            };
-
-            this.client.OnAdFailedToPresentFullScreenContent += (sender, args) =>
-            {
-                if (this.OnAdFailedToShow != null)
-                {
-                    AdError adError = new AdError(args.AdErrorClient);
-                    this.OnAdFailedToShow(this, new AdErrorEventArgs()
-                    {
-                        AdError = adError
-                    });
-                }
-            };
-
-            this.client.OnAdDidRecordImpression += (sender, args) =>
-            {
-                if (this.OnAdDidRecordImpression != null)
-                {
-                    this.OnAdDidRecordImpression(this, args);
-                }
-            };
-
-            this.client.OnUserEarnedReward += (sender, args) =>
-            {
-                if (this.OnUserEarnedReward != null)
-                {
-                    this.OnUserEarnedReward(this, args);
-                }
-            };
-
-            this.client.OnPaidEvent += (sender, args) =>
-            {
-                if (this.OnPaidEvent != null)
-                {
-                    this.OnPaidEvent(this, args);
-                }
-            };
-
+            _adUnitId = adUnitId;
         }
 
-        // These are the ad callback events that can be hooked into.
-        public event EventHandler<EventArgs> OnAdLoaded;
+        private RewardedAd(IRewardedAdClient client)
+        {
+            Init(client);
+        }
 
-        public event EventHandler<AdFailedToLoadEventArgs> OnAdFailedToLoad;
-
-        public event EventHandler<EventArgs> OnAdOpening;
-
-        public event EventHandler<EventArgs> OnAdClosed;
-
-        public event EventHandler<AdErrorEventArgs> OnAdFailedToShow;
-
-        public event EventHandler<EventArgs> OnAdDidRecordImpression;
-
-        public event EventHandler<Reward> OnUserEarnedReward;
-
-        // Called when the ad is estimated to have earned money.
-        public event EventHandler<AdValueEventArgs> OnPaidEvent;
-
-        // Loads a new rewarded ad.
+        /// <summary>
+        /// Loads an rewarded ad.
+        /// </summary>
+        [Obsolete("Use RewardedAd.LoadAd().")]
         public void LoadAd(AdRequest request)
         {
-            client.LoadAd(this.adUnitId, request);
+            var loader = MobileAds.GetClientFactory().BuildRewardedAdClient();
+            loader.LoadAd(_adUnitId, request, OnLoadAd);
         }
 
-        // Determines whether the rewarded ad has loaded.
+        /// <summary>
+        /// Determines whether the rewarded ad has loaded.
+        /// </summary>
+        [Obsolete("Use RewardedAd.LoadAd().")]
         public bool IsLoaded()
         {
-            return this.isLoaded;
+            return _client != null;
         }
 
-        // Shows the rewarded ad.
-        public void Show()
-        {
-            this.isLoaded = false;
-            client.Show();
-        }
-
-        // Sets the server side verification options
-        public void SetServerSideVerificationOptions(ServerSideVerificationOptions serverSideVerificationOptions)
-        {
-            client.SetServerSideVerificationOptions(serverSideVerificationOptions);
-        }
-
-        // Returns the reward item for the loaded rewarded ad. Returns null if the ad is not loaded.
+        /// <summary>
+        /// The reward item for the loaded rewarded ad.
+        /// </summary>
         public Reward GetRewardItem()
         {
-            if (this.isLoaded)
+            return _client != null ? _client.GetRewardItem() : null;
+        }
+
+        /// <summary>
+        /// Sets the server side verification options
+        /// </summary>
+        public void SetServerSideVerificationOptions(ServerSideVerificationOptions options)
+        {
+            if (_client != null)
             {
-                return client.GetRewardItem();
+                _client.SetServerSideVerificationOptions(options);
             }
-            return null;
         }
 
-        // Destroys the RewardedAd.
-        public void Destroy()
+        /// <summary>
+        /// Shows a rewarded ad.
+        /// </summary>
+        /// <param name="userRewardEarnedCallback">
+        /// An action to be raised when the user earns a reward.
+        /// </param>
+        public void Show(Action<Reward> userRewardEarnedCallback)
         {
-            client.DestroyRewardedAd();
+            if (_client != null)
+            {
+                Action<Reward> proxyCallback = (reward) =>
+                {
+                    if (userRewardEarnedCallback != null)
+                    {
+                        userRewardEarnedCallback(reward);
+                    }
+                    if(reward != null)
+                    {
+                        OnUserEarnedReward(this, reward);
+                    }
+                };
+                _client.ShowAd(proxyCallback);
+            }
         }
 
-        // Returns ad request response info.
-        public ResponseInfo GetResponseInfo()
+        private void OnLoadAd(IRewardedAdClient client, ILoadAdErrorClient error)
         {
-            return new ResponseInfo(this.client.GetResponseInfoClient());
+            if (client == null || error != null)
+            {
+                OnAdFailedToLoad(this, new AdFailedToLoadEventArgs
+                {
+                    LoadAdError = new LoadAdError(error)
+                });
+            }
+            else
+            {
+                Init(client);
+                OnAdLoaded(this, EventArgs.Empty);
+            }
+        }
+
+        private void Init(IRewardedAdClient client)
+        {
+           base.Init(client);
+
+            _client = client;
+            OnAdPaid += (adValue) =>
+            {
+                OnPaidEvent(this, new AdValueEventArgs
+                {
+                    AdValue = adValue
+                });
+            };
+            OnAdImpressionRecorded += () =>
+            {
+                OnAdDidRecordImpression(this, EventArgs.Empty);
+            };
+            OnAdFullScreenContentFailed += (error) =>
+            {
+                OnAdFailedToShow(this, new AdErrorEventArgs { AdError = error });
+            };
+            OnAdFullScreenContentClosed += () =>
+            {
+                OnAdClosed(this, EventArgs.Empty);
+            };
+            OnAdFullScreenContentOpened += () =>
+            {
+                OnAdOpening(this, EventArgs.Empty);
+            };
         }
     }
 }
