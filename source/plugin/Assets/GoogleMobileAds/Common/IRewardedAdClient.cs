@@ -18,44 +18,17 @@ using GoogleMobileAds.Api;
 
 namespace GoogleMobileAds.Common
 {
-    public interface IRewardedAdClient
+    /// <summary>
+    /// Rewarded ad units allow you to reward users with in-app items for interacting with
+    /// video ads, playable ads, and surveys.
+    /// </summary>
+    public interface IRewardedAdClient : IFullScreenAdClient, IBaseRewardedAdClient
     {
-        // Ad event fired when the rewarded ad has been received.
-        event EventHandler<EventArgs> OnAdLoaded;
-        // Ad event fired when the rewarded ad has failed to load.
-        event EventHandler<LoadAdErrorClientEventArgs> OnAdFailedToLoad;
-        // Ad event fired when the rewarded ad is estimated to have earned money.
-        event EventHandler<AdValueEventArgs> OnPaidEvent;
-        // Ad event fired when the rewarded ad has rewarded the user.
-        event EventHandler<Reward> OnUserEarnedReward;
-        // Ad event fired when the full screen content has failed to be presented.
-        event EventHandler<AdErrorClientEventArgs> OnAdFailedToPresentFullScreenContent;
-        // Ad event fired when the full screen content has been presented.
-        event EventHandler<EventArgs> OnAdDidPresentFullScreenContent;
-        // Ad event fired when the full screen content has been dismissed.
-        event EventHandler<EventArgs> OnAdDidDismissFullScreenContent;
-        // Ad event fired when an ad impression has been recorded.
-        event EventHandler<EventArgs> OnAdDidRecordImpression;
-
-        // Creates a rewarded ad.
-        void CreateRewardedAd();
-
-        // Loads a rewarded ad.
-        void LoadAd(string adUnitID, AdRequest request);
-
-        // Returns the reward item for the loaded rewarded ad.
-        Reward GetRewardItem();
-
-        // Shows the rewarded ad on the screen.
-        void Show();
-
-        // Sets the server side verification options
-        void SetServerSideVerificationOptions(ServerSideVerificationOptions serverSideVerificationOptions);
-
-        // Returns ad request Response info client.
-        IResponseInfoClient GetResponseInfoClient();
-
-        // Destroys the rewarded ad.
-        void DestroyRewardedAd();
+        /// <summary>
+        /// Loads an IRewardedAd.
+        /// </summary>
+        void LoadAd(string adUnitId,
+                    AdRequest request,
+                    Action<IRewardedAdClient, ILoadAdErrorClient> callback);
     }
 }
