@@ -12,8 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using UnityEngine;
-using GoogleMobileAds;
 using GoogleMobileAds.Common;
 
 namespace GoogleMobileAds
@@ -24,9 +22,9 @@ namespace GoogleMobileAds
 
         IAppOpenAdClient BuildAppOpenAdClient();
 
-        IBannerClient BuildBannerClient();
+        IBannerAdClient BuildBannerAdClient();
 
-        IInterstitialClient BuildInterstitialClient();
+        IInterstitialAdClient BuildInterstitialAdClient();
 
         IRewardedAdClient BuildRewardedAdClient();
 
