@@ -41,6 +41,9 @@
 /// The ad impression callback into Unity.
 @property(nonatomic, assign) GADUAppOpenAdDidRecordImpressionCallback adDidRecordImpressionCallback;
 
+/// The ad click callback into Unity.
+@property(nonatomic, assign) GADUAppOpenAdDidRecordClickCallback adDidRecordClickCallback;
+
 // The app open ad response info.
 @property(nonatomic, readonly, copy) GADResponseInfo *responseInfo;
 
