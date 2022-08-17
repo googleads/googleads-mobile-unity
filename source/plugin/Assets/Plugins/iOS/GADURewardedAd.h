@@ -39,6 +39,10 @@
 @property(nonatomic, assign)
     GADURewardedAdDidRecordImpressionCallback adDidRecordImpressionCallback;
 
+/// The ad click callback into Unity.
+@property(nonatomic, assign)
+    GADURewardedAdDidRecordClickCallback adDidRecordClickCallback;
+
 /// The user was rewarded callback into Unity.
 @property(nonatomic, assign) GADURewardedAdUserEarnedRewardCallback didEarnRewardCallback;
 

@@ -1,4 +1,4 @@
-﻿// Copyright (C) 2021 Google, LLC
+// Copyright (C) 2022 Google, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -13,30 +13,32 @@
 // limitations under the License.
 
 using System;
-using UnityEngine;
 using GoogleMobileAds.Api;
 
 namespace GoogleMobileAds.Common
 {
     /// <summary>
-    /// App open ads are used to display ads when users enter your app. An AppOpenAd object
-    /// contains all the data necessary to display an ad. Unlike interstitial ads, app open ads
-    /// make it easy to provide an app branding so that users understand the context in which they
-    /// see the ad.
+    /// The ad client interface for ad formats that reward users.
+    /// This includes the rewarded ad and rewarded interstitial ad formats.
     /// </summary>
-    public interface IAppOpenAdClient : IFullScreenAdClient
+    public interface IBaseRewardedAdClient
     {
         /// <summary>
-        /// Loads an app open ad client.
+        /// The reward item for the loaded rewarded ad.
         /// </summary>
-        void LoadAd(string adUnitId,
-                    ScreenOrientation orientation,
-                    AdRequest request,
-                    Action<IAppOpenAdClient, ILoadAdErrorClient> callback);
+        Reward GetRewardItem();
 
         /// <summary>
-        /// Shows the app open ad on the screen.
+        /// Shows a rewarded ad content.
         /// </summary>
-        void ShowAd();
+        /// <param name="userRewardEarnedCallback">
+        /// An action to be raised when the user earns a reward.
+        /// </param>
+        void ShowAd(Action<Reward> userRewardEarnedCallback);
+
+        /// <summary>
+        /// Sets the server side verification options.
+        /// </summary>
+        void SetServerSideVerificationOptions(ServerSideVerificationOptions options);
     }
 }
