@@ -13,146 +13,177 @@
 // limitations under the License.
 
 using System;
-
-using GoogleMobileAds;
 using GoogleMobileAds.Common;
 
 namespace GoogleMobileAds.Api
 {
-    public class BannerView
+    /// <summary>
+    /// Banner views occupy a spot within an app's layout. They stay on screen while users are
+    /// interacting with the app, and can refresh automatically after a certain period of time
+    /// </summary>
+    public class BannerView : BaseAd
     {
-        private IBannerClient client;
+        /// <summary>
+        /// Raised when an ad is loaded into the banner view.
+        /// </summary>
+        public event Action OnBannerAdLoaded = delegate{};
 
-        // Creates a BannerView and adds it to the view hierarchy.
-        public BannerView(string adUnitId, AdSize adSize, AdPosition position)
-        {
-            this.client = MobileAds.GetClientFactory().BuildBannerClient();
-            client.CreateBannerView(adUnitId, adSize, position);
+        /// <summary>
+        /// Raised when an ad fails to load into the banner view.
+        /// </summary>
+        public event Action<LoadAdError> OnBannerAdLoadFailed = delegate{};
 
-            ConfigureBannerEvents();
-        }
+        /// <summary>
+        /// Raised when an ad opened full screen content.
+        /// </summary>
+        public event Action OnAdFullScreenContentOpened = delegate{};
 
-        // Creates a BannerView with a custom position.
-        public BannerView(string adUnitId, AdSize adSize, int x, int y)
-        {
-            this.client = MobileAds.GetClientFactory().BuildBannerClient();
-            client.CreateBannerView(adUnitId, adSize, x, y);
-
-            ConfigureBannerEvents();
-        }
+        /// <summary>
+        /// Raised when the ad closed full screen content.
+        /// On iOS this does not include ads which open (safari) web browser links.
+        /// </summary>
+        public event Action OnAdFullScreenContentClosed = delegate{};
 
         // These are the ad callback events that can be hooked into.
-        public event EventHandler<EventArgs> OnAdLoaded;
-
-        public event EventHandler<AdFailedToLoadEventArgs> OnAdFailedToLoad;
-
-        public event EventHandler<EventArgs> OnAdOpening;
-
-        public event EventHandler<EventArgs> OnAdClosed;
-
+        [Obsolete("Use OnBannerAdLoaded.")]
+        public event EventHandler<EventArgs> OnAdLoaded = delegate{};
+        [Obsolete("Use OnBannerAdLoadFailed.")]
+        public event EventHandler<AdFailedToLoadEventArgs> OnAdFailedToLoad = delegate{};
+        [Obsolete("Use OnFullScreenAdOpened.")]
+        public event EventHandler<EventArgs> OnAdOpening = delegate{};
+        [Obsolete("Use OnFullScreenAdClosed.")]
+        public event EventHandler<EventArgs> OnAdClosed = delegate{};
         // Called when an ad is estimated to have earned money.
-        public event EventHandler<AdValueEventArgs> OnPaidEvent;
+        [Obsolete("Use OnAdPaid.")]
+        public event EventHandler<AdValueEventArgs> OnPaidEvent = delegate{};
 
-        // Loads an ad into the BannerView.
-        public void LoadAd(AdRequest request)
+        private readonly IBannerAdClient _client;
+
+        /// <summary>
+        /// Creates a banner view and adds it to the view hierarchy.
+        /// </summary>
+        public BannerView(string adUnitId, AdSize adSize, AdPosition position)
         {
-            client.LoadAd(request);
+            _client = MobileAds.GetClientFactory().BuildBannerAdClient();
+            _client.CreateBannerAd(adUnitId, adSize, position);
+            Init();
         }
 
-        // Hides the BannerView from the screen.
-        public void Hide()
+        /// <summary>
+        /// Creates a banner view with a custom position.
+        /// </summary>
+        public BannerView(string adUnitId, AdSize adSize, int x, int y)
         {
-            client.HideBannerView();
+            _client = MobileAds.GetClientFactory().BuildBannerAdClient();
+            _client.CreateBannerAd(adUnitId, adSize, x, y);
+            Init();
         }
 
-        // Shows the BannerView on the screen.
-        public void Show()
-        {
-            client.ShowBannerView();
-        }
-
-        // Destroys the BannerView.
-        public void Destroy()
-        {
-            client.DestroyBannerView();
-        }
-
-        // Returns the height of the BannerView in pixels.
+        /// <summary>
+        /// Returns the height of the banner view in pixels.
+        /// </summary>
         public float GetHeightInPixels()
         {
-            return client.GetHeightInPixels();
+            return _client != null ? _client.GetHeightInPixels() : 0;
         }
 
-        // Returns the width of the BannerView in pixels.
+        /// <summary>
+        /// Returns the width of the banner view in pixels.
+        /// </summary>
         public float GetWidthInPixels()
         {
-            return client.GetWidthInPixels();
+            return _client != null ? _client.GetWidthInPixels() : 0;
         }
 
-        // Set the position of the BannerView using standard position.
+        /// <summary>
+        /// Loads an into the banner view.
+        /// </summary>
+        public void LoadAd(AdRequest request)
+        {
+            if (_client != null)
+            {
+                _client.LoadAd(request);
+            }
+        }
+
+        /// <summary>
+        /// Shows the banner view from the screen.
+        /// </summary>
+        public void Show()
+        {
+            if (_client != null)
+            {
+                _client.ShowAd();
+            }
+        }
+
+        /// <summary>
+        /// Hides the banner view from the screen.
+        /// </summary>
+        public void Hide()
+        {
+            if (_client != null)
+            {
+                _client.HideAd();
+            }
+        }
+
+        /// <summary>
+        /// Set the position of the BannerView using standard position.
+        /// </summary>
         public void SetPosition(AdPosition adPosition)
         {
-            client.SetPosition(adPosition);
+            if (_client != null)
+            {
+                _client.SetPosition(adPosition);
+            }
         }
 
-        // Set the position of the BannerView using custom position.
+        /// <summary>
+        /// Set the position of the banner view using custom position.
+        /// </summary>
         public void SetPosition(int x, int y)
         {
-            client.SetPosition(x, y);
+            if (_client != null)
+            {
+                _client.SetPosition(x, y);
+            }
         }
 
-        private void ConfigureBannerEvents()
+        private void Init()
         {
-            this.client.OnAdLoaded += (sender, args) =>
+            base.Init(_client);
+            _client.OnBannerAdLoaded += () =>
             {
-                if (this.OnAdLoaded != null)
-                {
-                    this.OnAdLoaded(this, args);
-                }
+                OnAdLoaded(this, EventArgs.Empty);
+                OnBannerAdLoaded();
             };
-            this.client.OnAdFailedToLoad += (sender, args) =>
+            _client.OnBannerAdLoadFailed += (error) =>
             {
-                if (this.OnAdFailedToLoad != null)
+                var loadError = new LoadAdError(error);
+                OnAdFailedToLoad(this, new AdFailedToLoadEventArgs
                 {
-                    LoadAdError loadAdError = new LoadAdError(args.LoadAdErrorClient);
-                    this.OnAdFailedToLoad(this, new AdFailedToLoadEventArgs()
-                    {
-                        LoadAdError = loadAdError
-                    });
-                }
+                    LoadAdError = loadError
+                });
+                OnBannerAdLoadFailed(loadError);
             };
-
-            this.client.OnAdOpening += (sender, args) =>
+            OnAdPaid += (adValue) =>
             {
-                if (this.OnAdOpening != null)
+                OnPaidEvent(this, new AdValueEventArgs
                 {
-                    this.OnAdOpening(this, args);
-                }
+                    AdValue = adValue
+                });
             };
-
-            this.client.OnAdClosed += (sender, args) =>
+            _client.OnAdFullScreenContentClosed += () =>
             {
-                if (this.OnAdClosed != null)
-                {
-                    this.OnAdClosed(this, args);
-                }
+                OnAdClosed(this, EventArgs.Empty);
+                OnAdFullScreenContentClosed();
             };
-
-            this.client.OnPaidEvent += (sender, args) =>
+            _client.OnAdFullScreenContentOpened += () =>
             {
-                if (this.OnPaidEvent != null)
-                {
-                    this.OnPaidEvent(this, args);
-                }
+                OnAdOpening(this, EventArgs.Empty);
+                OnAdFullScreenContentOpened();
             };
-
-        }
-
-        // Returns ad request response info.
-        public ResponseInfo GetResponseInfo()
-        {
-            return new ResponseInfo(this.client.GetResponseInfoClient());
-
         }
     }
 }
