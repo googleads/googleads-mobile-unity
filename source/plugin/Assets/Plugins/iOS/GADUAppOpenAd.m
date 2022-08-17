@@ -99,6 +99,12 @@
   }
 }
 
+- (void)adDidRecordClick:(nonnull id<GADFullScreenPresentingAd>)ad {
+  if (self.adDidRecordClickCallback) {
+    self.adDidRecordClickCallback(self.appOpenAdClient);
+  }
+}
+
 - (void)adDidDismissFullScreenContent:(nonnull id<GADFullScreenPresentingAd>)ad {
   extern bool _didResignActive;
   if (_didResignActive) {

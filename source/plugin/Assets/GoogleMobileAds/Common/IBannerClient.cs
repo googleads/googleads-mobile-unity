@@ -18,52 +18,76 @@ using GoogleMobileAds.Api;
 
 namespace GoogleMobileAds.Common
 {
-    public interface IBannerClient
+    /// <summary>
+    /// Banner ads occupy a spot within an app's layout. They stay on screen while users are
+    /// interacting with the app, and can refresh automatically after a certain period of time.
+    /// </summary>
+    public interface IBannerClient : IBaseAdClient
     {
-        // Ad event fired when the banner ad has been received.
-        event EventHandler<EventArgs> OnAdLoaded;
-        // Ad event fired when the banner ad has failed to load.
-        event EventHandler<LoadAdErrorClientEventArgs> OnAdFailedToLoad;
-        // Ad event fired when the banner ad is opened.
-        event EventHandler<EventArgs> OnAdOpening;
-        // Ad event fired when the banner ad is closed.
-        event EventHandler<EventArgs> OnAdClosed;
-        // Ad event fired when the banner ad is estimated to have earned money.
-        event EventHandler<AdValueEventArgs> OnPaidEvent;
+        /// <summary>
+        /// Raised an ad is loaded into the banner.
+        /// </summary>
+        event Action OnBannerAdLoaded;
 
-        // Creates a banner view and adds it to the view hierarchy.
-        void CreateBannerView(string adUnitId, AdSize adSize, AdPosition position);
+        /// <summary>
+        /// Raised an ad fails to load into the banner.
+        /// </summary>
+        event Action<ILoadAdErrorClient> OnBannerAdLoadFailed;
 
-        // Creates a banner view and adds it to the view hierarchy with a custom position.
-        void CreateBannerView(string adUnitId, AdSize adSize, int x, int y);
+        /// <summary>
+        /// Raised when an overlay ad that covers the screen is opened.
+        /// </summary>
+        event Action OnAdFullScreenContentOpened;
 
-        // Requests a new ad for the banner view.
+        /// <summary>
+        /// Raised when returning to the application after closing an overlay ad.
+        /// On iOS this does not include ads which open (safari) web browser links.
+        /// </summary>
+        event Action OnAdFullScreenContentClosed;
+
+        /// <summary>
+        /// Loads an ad into the banner view.
+        /// </summary>
         void LoadAd(AdRequest request);
 
-        // Shows the banner view on the screen.
-        void ShowBannerView();
+        /// <summary>
+        /// Shows the ad on the screen.
+        /// </summary>
+        void Show();
 
-        // Hides the banner view from the screen.
-        void HideBannerView();
+        /// <summary>
+        /// Hides the BannerAd from the screen.
+        /// </summary>
+        void Hide();
 
-        // Destroys a banner view.
-        void DestroyBannerView();
-
-        // Returns the height of the BannerView in pixels.
+        /// <summary>
+        /// Returns the height of the BannerAd in pixels.
+        /// </summary>
         float GetHeightInPixels();
 
-        // Returns the width of the BannerView in pixels.
+        /// <summary>
+        /// Returns the width of the BannerAd in pixels.
+        /// </summary>
         float GetWidthInPixels();
 
-        // Set the position of the banner view using standard position.
+        /// <summary>
+        /// Set the position of the BannerAd using standard position.
+        /// </summary>
         void SetPosition(AdPosition adPosition);
 
-        // Set the position of the banner view using custom position.
+        /// <summary>
+        /// Set the position of the BannerAd using custom position.
+        /// </summary>
         void SetPosition(int x, int y);
 
-        // Returns ad request Response info client.
-        IResponseInfoClient GetResponseInfoClient();
+        /// <summary>
+        /// Creates a IBannerView and adds it to the view hierarchy.
+        /// </summary>
+        void CreateBannerAd(string adUnitId, AdSize adSize, AdPosition position);
 
-
+        /// <summary>
+        /// Creates a IBannerView with a custom position.
+        /// </summary>
+        void CreateBannerAd(string adUnitId, AdSize adSize, int x, int y);
     }
 }

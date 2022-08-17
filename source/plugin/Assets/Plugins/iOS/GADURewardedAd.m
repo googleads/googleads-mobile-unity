@@ -68,7 +68,8 @@
              if (strongSelf.didEarnRewardCallback) {
                strongSelf.didEarnRewardCallback(
                    strongSelf.rewardedAdClient,
-                   [strongSelf.rewardedAd.adReward.type cStringUsingEncoding:NSUTF8StringEncoding],
+                   [strongSelf.rewardedAd.adReward.type
+                       cStringUsingEncoding:NSUTF8StringEncoding],
                    strongSelf.rewardedAd.adReward.amount.doubleValue);
              }
            }];
@@ -76,17 +77,6 @@
 
 - (GADResponseInfo *)responseInfo {
   return self.rewardedAd.responseInfo;
-}
-
-- (void)rewardedAd:(nonnull GADRewardedAd *)rewardedAd
-    userDidEarnReward:(nonnull GADAdReward *)reward {
-  if (self.didEarnRewardCallback) {
-    // Double value used for didEarnRewardCallback callback to maintain consistency with Android
-    // implementation.
-    self.didEarnRewardCallback(self.rewardedAdClient,
-                               [reward.type cStringUsingEncoding:NSUTF8StringEncoding],
-                               reward.amount.doubleValue);
-  }
 }
 
 - (void)setServerSideVerificationOptions:(GADServerSideVerificationOptions *)options {
@@ -136,4 +126,9 @@
   }
 }
 
+- (void)adDidRecordClick:(nonnull id<GADFullScreenPresentingAd>)ad {
+  if (self.adDidRecordClickCallback) {
+    self.adDidRecordClickCallback(self.rewardedAdClient);
+  }
+}
 @end

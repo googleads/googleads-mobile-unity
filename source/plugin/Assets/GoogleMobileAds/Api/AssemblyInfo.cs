@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015 Google, Inc.
+ * Copyright 2022 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,21 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.google.unity.ads;
 
-import com.google.android.gms.ads.LoadAdError;
+using System.Reflection;
+using System.Runtime.CompilerServices;
 
-/**
- * An interface form of {@link UnityAdListener} that can be implemented via {@code AndroidJavaProxy}
- * in Unity to receive ad events synchronously.
- */
-public interface UnityAdListener extends UnityPaidEventListener {
-
-    void onAdLoaded();
-    void onAdFailedToLoad(LoadAdError error);
-    void onAdOpened();
-    void onAdClosed();
-    void onAdLeftApplication();
-    void onAdImpressionRecorded();
-    void onAdClickRecorded();
-}
+[assembly:InternalsVisibleTo("basic_unittests_test_library")]
+[assembly:InternalsVisibleTo("UnitTests")]

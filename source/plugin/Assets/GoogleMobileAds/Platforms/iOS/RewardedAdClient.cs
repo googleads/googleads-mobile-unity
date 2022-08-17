@@ -25,6 +25,8 @@ namespace GoogleMobileAds.iOS
 {
     public class RewardedAdClient : IRewardedAdClient, IDisposable
     {
+        public bool IsDestroyed { get; private set; }
+
         private IntPtr rewardedAdClientPtr;
         private IntPtr rewardedAdPtr;
 
@@ -52,23 +54,19 @@ namespace GoogleMobileAds.iOS
 
         internal delegate void GADURewardedAdDidRecordImpressionCallback(IntPtr rewardedAdClient);
 
+        internal delegate void GADURewardedAdDidRecordClickCallback(IntPtr rewardedAdClient);
+
 #endregion
 
-        public event EventHandler<EventArgs> OnAdLoaded;
+        public event Action OnAdFullScreenContentOpened = delegate { };
+        public event Action OnAdFullScreenContentClosed = delegate { };
+        public event Action<IAdErrorClient> OnAdFullScreenContentFailed = delegate { };
+        public event Action<AdValue> OnAdPaid = delegate { };
+        public event Action OnAdClickRecorded = delegate { };
+        public event Action OnAdImpressionRecorded = delegate { };
 
-        public event EventHandler<LoadAdErrorClientEventArgs> OnAdFailedToLoad;
-
-        public event EventHandler<Reward> OnUserEarnedReward;
-
-        public event EventHandler<AdValueEventArgs> OnPaidEvent;
-
-        public event EventHandler<AdErrorClientEventArgs> OnAdFailedToPresentFullScreenContent;
-
-        public event EventHandler<EventArgs> OnAdDidPresentFullScreenContent;
-
-        public event EventHandler<EventArgs> OnAdDidDismissFullScreenContent;
-
-        public event EventHandler<EventArgs> OnAdDidRecordImpression;
+        private Action<IRewardedAdClient, ILoadAdErrorClient> _loadCallback;
+        private Action<Reward> _rewardCallback;
 
         // This property should be used when setting the rewardedAdPtr.
         private IntPtr RewardedAdPtr
@@ -85,9 +83,9 @@ namespace GoogleMobileAds.iOS
             }
         }
 
-#region IRewardedAdClient implementation
+        #region IRewardedAdClient implementation
 
-        public void CreateRewardedAd()
+        public RewardedAdClient()
         {
             this.rewardedAdClientPtr = (IntPtr)GCHandle.Alloc(this);
             this.RewardedAdPtr = Externs.GADUCreateRewardedAd(this.rewardedAdClientPtr);
@@ -100,19 +98,25 @@ namespace GoogleMobileAds.iOS
                 AdFailedToPresentFullScreenContentCallback,
                 AdDidDismissFullScreenContentCallback,
                 AdDidRecordImpressionCallback,
+                AdDidRecordClickCallback,
                 RewardedAdUserDidEarnRewardCallback,
                 RewardedAdPaidEventCallback);
         }
 
-        public void LoadAd(string adUnitID, AdRequest request) {
+
+        public void LoadRewardedAd(string adUnitId, AdRequest request,
+            Action<IRewardedAdClient, ILoadAdErrorClient> callback)
+        {
+            _loadCallback = callback;
             IntPtr requestPtr = Utils.BuildAdRequest(request);
-            Externs.GADULoadRewardedAd(this.RewardedAdPtr, adUnitID, requestPtr);
+            Externs.GADULoadRewardedAd(this.RewardedAdPtr, adUnitId, requestPtr);
             Externs.GADURelease(requestPtr);
         }
 
         // Show the rewarded ad on the screen.
-        public void Show()
+        public void Show(Action<Reward> userRewardEarnedCallback)
         {
+            _rewardCallback = userRewardEarnedCallback;
             Externs.GADUShowRewardedAd(this.RewardedAdPtr);
         }
 
@@ -142,14 +146,15 @@ namespace GoogleMobileAds.iOS
         }
 
         // Destroys the rewarded ad.
-        public void DestroyRewardedAd()
+        public void Destroy()
         {
             this.RewardedAdPtr = IntPtr.Zero;
+            IsDestroyed = true;
         }
 
         public void Dispose()
         {
-            this.DestroyRewardedAd();
+            this.Destroy();
             ((GCHandle)this.rewardedAdClientPtr).Free();
         }
 
@@ -166,9 +171,10 @@ namespace GoogleMobileAds.iOS
         private static void RewardedAdLoadedCallback(IntPtr rewardedAdClient)
         {
             RewardedAdClient client = IntPtrToRewardedAdClient(rewardedAdClient);
-            if (client.OnAdLoaded != null)
+            if (client._loadCallback != null)
             {
-                client.OnAdLoaded(client, EventArgs.Empty);
+                client._loadCallback(client, null);
+                client._loadCallback = null;
             }
         }
 
@@ -177,13 +183,10 @@ namespace GoogleMobileAds.iOS
             IntPtr rewardedAdClient, IntPtr error)
         {
             RewardedAdClient client = IntPtrToRewardedAdClient(rewardedAdClient);
-            if (client.OnAdFailedToLoad != null)
+            if (client._loadCallback != null)
             {
-                LoadAdErrorClientEventArgs args = new LoadAdErrorClientEventArgs()
-                {
-                    LoadAdErrorClient = new LoadAdErrorClient(error)
-                };
-                client.OnAdFailedToLoad(client, args);
+                client._loadCallback(null, new LoadAdErrorClient(error));
+                client._loadCallback = null;
             }
         }
 
@@ -193,14 +196,15 @@ namespace GoogleMobileAds.iOS
         {
             RewardedAdClient client = IntPtrToRewardedAdClient(
                 rewardedAdClient);
-            if (client.OnUserEarnedReward != null)
+            if (client._rewardCallback != null)
             {
-                Reward args = new Reward()
+                Reward reward = new Reward()
                 {
                     Type = rewardType,
                     Amount = rewardAmount
                 };
-                client.OnUserEarnedReward(client, args);
+                client._rewardCallback(reward);
+                client._rewardCallback = null;
             }
         }
 
@@ -209,65 +213,48 @@ namespace GoogleMobileAds.iOS
             IntPtr rewardedAdClient, int precision, long value, string currencyCode)
         {
             RewardedAdClient client = IntPtrToRewardedAdClient(rewardedAdClient);
-            if (client.OnPaidEvent != null)
+            AdValue adValue = new AdValue()
             {
-                AdValue adValue = new AdValue()
-                {
-                    Precision = (AdValue.PrecisionType)precision,
-                    Value = value,
-                    CurrencyCode = currencyCode
-                };
-                AdValueEventArgs args = new AdValueEventArgs()
-                {
-                    AdValue = adValue
-                };
-
-                client.OnPaidEvent(client, args);
-            }
+                Precision = (AdValue.PrecisionType)precision,
+                Value = value,
+                CurrencyCode = currencyCode
+            };
+            client.OnAdPaid(adValue);
         }
 
         [MonoPInvokeCallback(typeof(GADURewardedAdFailedToPresentFullScreenContentCallback))]
         private static void AdFailedToPresentFullScreenContentCallback(IntPtr rewardedAdClient, IntPtr error)
         {
             RewardedAdClient client = IntPtrToRewardedAdClient(rewardedAdClient);
-            if (client.OnAdFailedToPresentFullScreenContent != null)
-            {
-                AdErrorClientEventArgs args = new AdErrorClientEventArgs()
-                {
-                    AdErrorClient = new AdErrorClient(error)
-                };
-                client.OnAdFailedToPresentFullScreenContent(client, args);
-            }
+            client.OnAdFullScreenContentFailed(new AdErrorClient(error));
         }
 
         [MonoPInvokeCallback(typeof(GADURewardedAdWillPresentFullScreenContentCallback))]
         private static void AdWillPresentFullScreenContentCallback(IntPtr rewardedAdClient)
         {
           RewardedAdClient client = IntPtrToRewardedAdClient(rewardedAdClient);
-          if (client.OnAdDidPresentFullScreenContent != null)
-          {
-            client.OnAdDidPresentFullScreenContent(client, EventArgs.Empty);
-          }
+          client.OnAdFullScreenContentOpened();
         }
 
         [MonoPInvokeCallback(typeof(GADURewardedAdDidDismissFullScreenContentCallback))]
         private static void AdDidDismissFullScreenContentCallback(IntPtr rewardedAdClient)
         {
             RewardedAdClient client = IntPtrToRewardedAdClient(rewardedAdClient);
-            if (client.OnAdDidDismissFullScreenContent != null)
-            {
-                client.OnAdDidDismissFullScreenContent(client, EventArgs.Empty);
-            }
+            client.OnAdFullScreenContentClosed();
         }
 
         [MonoPInvokeCallback(typeof(GADURewardedAdDidRecordImpressionCallback))]
         private static void AdDidRecordImpressionCallback(IntPtr rewardedAdClient)
         {
             RewardedAdClient client = IntPtrToRewardedAdClient(rewardedAdClient);
-            if (client.OnAdDidRecordImpression != null)
-            {
-                client.OnAdDidRecordImpression(client, EventArgs.Empty);
-            }
+            client.OnAdImpressionRecorded();
+        }
+
+        [MonoPInvokeCallback(typeof(GADURewardedAdDidRecordClickCallback))]
+        private static void AdDidRecordClickCallback(IntPtr rewardedAdClient)
+        {
+            RewardedAdClient client = IntPtrToRewardedAdClient(rewardedAdClient);
+            client.OnAdClickRecorded();
         }
 
         private static RewardedAdClient IntPtrToRewardedAdClient(
@@ -277,7 +264,7 @@ namespace GoogleMobileAds.iOS
             return handle.Target as RewardedAdClient;
         }
 
-#endregion
+        #endregion
     }
 }
 #endif

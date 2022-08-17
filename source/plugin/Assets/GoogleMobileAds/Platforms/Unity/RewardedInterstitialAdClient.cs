@@ -12,27 +12,36 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System.Reflection;
 using System;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
-using GoogleMobileAds;
 using GoogleMobileAds.Api;
 using GoogleMobileAds.Common;
 
 namespace GoogleMobileAds.Unity
 {
-    public class RewardedInterstitialAdClient : RewardingAdBaseClient, IRewardedInterstitialAdClient
+    public class RewardedInterstitialAdClient : BaseRewardedAdClient, IRewardedInterstitialAdClient
     {
-        public void CreateRewardedInterstitialAd()
+        public void LoadRewardedInterstitialAd(
+            string adUnitId,
+            AdRequest request,
+            Action<IRewardedInterstitialAdClient, ILoadAdErrorClient> callback)
         {
-            // No op.
-        }
+            if (Screen.width > Screen.height) //Landscape
+            {
+                LoadAndSetPrefabAd(prefabAds[new AdSize(1024, 768)]);
+            }
+            else
+            {
+                LoadAndSetPrefabAd(prefabAds[new AdSize(768, 1024)]);
+            }
 
-        public void DestroyRewardedInterstitialAd()
-        {
-            // No op.
+            if (callback == null)
+            {
+                return;
+            }
+
+            callback(prefabAd == null ? null : this,
+                     prefabAd == null ? new LoadAdErrorClient() : null);
         }
     }
 }

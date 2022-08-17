@@ -13,7 +13,6 @@
 // limitations under the License.
 
 using System;
-using System.Reflection;
 using System.Collections.Generic;
 using GoogleMobileAds.Api;
 using GoogleMobileAds.Common;
@@ -24,20 +23,15 @@ namespace GoogleMobileAds.Unity
 {
     public class InterstitialClient : BaseAdDummyClient, IInterstitialClient
     {
-        public event EventHandler<EventArgs> OnAdLoaded;
+        public bool IsDestroyed { get; private set; }
 
-        public event EventHandler<LoadAdErrorClientEventArgs> OnAdFailedToLoad;
-
-        public event EventHandler<AdValueEventArgs> OnPaidEvent;
-
-        public event EventHandler<AdErrorClientEventArgs> OnAdFailedToPresentFullScreenContent;
-
-        public event EventHandler<EventArgs> OnAdDidPresentFullScreenContent;
-
-        public event EventHandler<EventArgs> OnAdDidDismissFullScreenContent;
-
-        public event EventHandler<EventArgs> OnAdDidRecordImpression;
-
+        public event EventHandler<EventArgs> OnAdDidRecordImpression = delegate { };
+        public event Action OnAdFullScreenContentOpened = delegate { };
+        public event Action OnAdFullScreenContentClosed = delegate { };
+        public event Action<IAdErrorClient> OnAdFullScreenContentFailed = delegate { };
+        public event Action<AdValue> OnAdPaid = delegate { };
+        public event Action OnAdClickRecorded = delegate { };
+        public event Action OnAdImpressionRecorded = delegate { };
 
         private Dictionary<AdSize, string> prefabAds = new Dictionary<AdSize, string>() {
             {new AdSize (768,1024), "DummyAds/Interstitials/768x1024" },
@@ -53,19 +47,20 @@ namespace GoogleMobileAds.Unity
             Button button = adImage.GetComponentInChildren<Button>();
             button.onClick.AddListener(() => {
                 buttonBehaviour.OpenURL();
+                OnAdClickRecorded();
             });
 
             Button[] innerButtons = adImage.GetComponentsInChildren<Button>();
 
-            innerButtons[1].onClick.AddListener(() =>
+            innerButtons[1].onClick.AddListener((UnityEngine.Events.UnityAction)(() =>
             {
-                DestroyInterstitial();
-                if (OnAdDidDismissFullScreenContent != null)
+                Destroy();
+                if (OnAdFullScreenContentClosed != null)
                 {
-                    OnAdDidDismissFullScreenContent.Invoke(this, new EventArgs());
+                    OnAdFullScreenContentClosed.Invoke();
                 }
                 AdBehaviour.ResumeGame();
-            });
+            }));
         }
 
         private void CreateButtonBehavior()
@@ -73,14 +68,9 @@ namespace GoogleMobileAds.Unity
             buttonBehaviour = base.dummyAd.AddComponent<ButtonBehaviour>();
         }
 
-        // Creates an InterstitialAd.
-        public void CreateInterstitialAd()
-        {
-
-        }
-
         // Loads a new interstitial request.
-        public void LoadAd(string adUnitId, AdRequest request)
+        public void LoadInterstitialAd(string adUnitId, AdRequest request,
+            Action<IInterstitialClient, ILoadAdErrorClient> callback)
         {
             if (Screen.width > Screen.height) //Landscape
             {
@@ -91,23 +81,14 @@ namespace GoogleMobileAds.Unity
                 LoadAndSetPrefabAd(prefabAds[new AdSize(768, 1024)]);
             }
 
-            if (prefabAd != null)
+            if (callback == null)
             {
-                if (OnAdLoaded != null)
-                {
-                    OnAdLoaded.Invoke(this, EventArgs.Empty);
-                }
+                return;
             }
-            else
-            {
-                if (OnAdFailedToLoad != null)
-                {
-                    OnAdFailedToLoad.Invoke(this, new LoadAdErrorClientEventArgs()
-                    {
-                        LoadAdErrorClient = new LoadAdErrorClient()
-                    });
-                }
-            }
+
+            callback(
+                prefabAd == null ? null : this,
+                prefabAd == null ? new LoadAdErrorClient() : null);
         }
 
         // Shows the InterstitialAd.
@@ -119,10 +100,8 @@ namespace GoogleMobileAds.Unity
                 CreateButtonBehavior();
                 AddClickBehavior(dummyAd);
                 AdBehaviour.PauseGame();
-                if (OnAdDidPresentFullScreenContent != null)
-                {
-                  OnAdDidPresentFullScreenContent.Invoke(this, EventArgs.Empty);
-                }
+                OnAdImpressionRecorded();
+                OnAdFullScreenContentOpened();
             } else
             {
                 Debug.Log("No Ad Loaded");
@@ -130,11 +109,11 @@ namespace GoogleMobileAds.Unity
         }
 
         // Destroys an InterstitialAd.
-        public void DestroyInterstitial()
+        public void Destroy()
         {
             AdBehaviour.DestroyAd(dummyAd);
             prefabAd = null;
+            IsDestroyed = true;
         }
-
     }
 }

@@ -24,6 +24,8 @@ namespace GoogleMobileAds.iOS
 {
     public class BannerClient : IBannerClient, IDisposable
     {
+        public bool IsDestroyed { get; private set; }
+
         private IntPtr bannerViewPtr;
 
         private IntPtr bannerClientPtr;
@@ -42,18 +44,25 @@ namespace GoogleMobileAds.iOS
         internal delegate void GADUAdViewPaidEventCallback(
             IntPtr bannerClient, int precision, long value, string currencyCode);
 
-#endregion
+        internal delegate void GADUAdViewImpressionCallback(IntPtr bannerClient);
 
-        public event EventHandler<EventArgs> OnAdLoaded;
+        internal delegate void GADUAdViewClickCallback(IntPtr bannerClient);
 
-        public event EventHandler<LoadAdErrorClientEventArgs> OnAdFailedToLoad;
+        #endregion
 
-        public event EventHandler<EventArgs> OnAdOpening;
+        public event Action OnBannerAdLoaded = delegate { };
 
-        public event EventHandler<EventArgs> OnAdClosed;
+        public event Action<ILoadAdErrorClient> OnBannerAdLoadFailed = delegate { };
 
-        public event EventHandler<AdValueEventArgs> OnPaidEvent;
+        public event Action OnAdFullScreenContentOpened = delegate { };
 
+        public event Action OnAdFullScreenContentClosed = delegate { };
+
+        public event Action<AdValue> OnAdPaid = delegate { };
+
+        public event Action OnAdClickRecorded = delegate { };
+
+        public event Action OnAdImpressionRecorded = delegate { };
 
         // This property should be used when setting the bannerViewPtr.
         private IntPtr BannerViewPtr
@@ -70,10 +79,10 @@ namespace GoogleMobileAds.iOS
             }
         }
 
-#region IBannerClient implementation
+        #region IBannerAdClient implementation
 
         // Creates a banner view.
-        public void CreateBannerView(string adUnitId, AdSize adSize, AdPosition position)
+        public void CreateBannerAd(string adUnitId, AdSize adSize, AdPosition position)
         {
             this.bannerClientPtr = (IntPtr)GCHandle.Alloc(this);
 
@@ -105,11 +114,13 @@ namespace GoogleMobileAds.iOS
                     AdViewDidFailToReceiveAdWithErrorCallback,
                     AdViewWillPresentScreenCallback,
                     AdViewDidDismissScreenCallback,
-                    AdViewPaidEventCallback
+                    AdViewPaidEventCallback,
+                    AdViewImpressionRecordedCallback,
+                    AdViewClickRecordedCallback
                     );
         }
 
-        public void CreateBannerView(string adUnitId, AdSize adSize, int x, int y)
+        public void CreateBannerAd(string adUnitId, AdSize adSize, int x, int y)
         {
 
             this.bannerClientPtr = (IntPtr)GCHandle.Alloc(this);
@@ -151,7 +162,9 @@ namespace GoogleMobileAds.iOS
                 AdViewDidFailToReceiveAdWithErrorCallback,
                 AdViewWillPresentScreenCallback,
                 AdViewDidDismissScreenCallback,
-                AdViewPaidEventCallback
+                AdViewPaidEventCallback,
+                AdViewImpressionRecordedCallback,
+                AdViewClickRecordedCallback
                 );
         }
 
@@ -164,22 +177,23 @@ namespace GoogleMobileAds.iOS
         }
 
         // Displays the banner view on the screen.
-        public void ShowBannerView()
+        public void Show()
         {
             Externs.GADUShowBannerView(this.BannerViewPtr);
         }
 
         // Hides the banner view from the screen.
-        public void HideBannerView()
+        public void Hide()
         {
             Externs.GADUHideBannerView(this.BannerViewPtr);
         }
 
         // Destroys the banner view.
-        public void DestroyBannerView()
+        public void Destroy()
         {
             Externs.GADURemoveBannerView(this.BannerViewPtr);
             this.BannerViewPtr = IntPtr.Zero;
+            IsDestroyed = true;
         }
 
         // Returns the height of the BannerView in pixels.
@@ -213,7 +227,7 @@ namespace GoogleMobileAds.iOS
 
         public void Dispose()
         {
-            this.DestroyBannerView();
+            this.Destroy();
             ((GCHandle)this.bannerClientPtr).Free();
         }
 
@@ -230,10 +244,7 @@ namespace GoogleMobileAds.iOS
         private static void AdViewDidReceiveAdCallback(IntPtr bannerClient)
         {
             BannerClient client = IntPtrToBannerClient(bannerClient);
-            if (client.OnAdLoaded != null)
-            {
-                client.OnAdLoaded(client, EventArgs.Empty);
-            }
+            client.OnBannerAdLoaded();
         }
 
         [MonoPInvokeCallback(typeof(GADUAdViewDidFailToReceiveAdWithErrorCallback))]
@@ -241,34 +252,21 @@ namespace GoogleMobileAds.iOS
                 IntPtr bannerClient, IntPtr error)
         {
             BannerClient client = IntPtrToBannerClient(bannerClient);
-            if (client.OnAdFailedToLoad != null)
-            {
-                LoadAdErrorClientEventArgs args = new LoadAdErrorClientEventArgs()
-                {
-                    LoadAdErrorClient = new LoadAdErrorClient(error)
-                };
-                client.OnAdFailedToLoad(client, args);
-            }
+            client.OnBannerAdLoadFailed(new LoadAdErrorClient(error));
         }
 
         [MonoPInvokeCallback(typeof(GADUAdViewWillPresentScreenCallback))]
         private static void AdViewWillPresentScreenCallback(IntPtr bannerClient)
         {
             BannerClient client = IntPtrToBannerClient(bannerClient);
-            if (client.OnAdOpening != null)
-            {
-                client.OnAdOpening(client, EventArgs.Empty);
-            }
+            client.OnAdFullScreenContentOpened();
         }
 
         [MonoPInvokeCallback(typeof(GADUAdViewDidDismissScreenCallback))]
         private static void AdViewDidDismissScreenCallback(IntPtr bannerClient)
         {
             BannerClient client = IntPtrToBannerClient(bannerClient);
-            if (client.OnAdClosed != null)
-            {
-                client.OnAdClosed(client, EventArgs.Empty);
-            }
+            client.OnAdFullScreenContentClosed();
         }
 
         [MonoPInvokeCallback(typeof(GADUAdViewPaidEventCallback))]
@@ -276,21 +274,28 @@ namespace GoogleMobileAds.iOS
             IntPtr bannerClient, int precision, long value, string currencyCode)
         {
             BannerClient client = IntPtrToBannerClient(bannerClient);
-            if (client.OnPaidEvent != null)
+            AdValue adValue = new AdValue()
             {
-                AdValue adValue = new AdValue()
-                {
-                    Precision = (AdValue.PrecisionType)precision,
-                    Value = value,
-                    CurrencyCode = currencyCode
-                };
-                AdValueEventArgs args = new AdValueEventArgs()
-                {
-                    AdValue = adValue
-                };
+                Precision = (AdValue.PrecisionType)precision,
+                Value = value,
+                CurrencyCode = currencyCode
+            };
+            client.OnAdPaid(adValue);
+        }
 
-                client.OnPaidEvent(client, args);
-            }
+
+        [MonoPInvokeCallback(typeof(GADUAdViewClickCallback))]
+        private static void AdViewImpressionRecordedCallback(IntPtr adClientRef)
+        {
+            BannerClient client = IntPtrToBannerClient(adClientRef);
+            client.OnAdImpressionRecorded();
+        }
+
+        [MonoPInvokeCallback(typeof(GADUAdViewImpressionCallback))]
+        private static void AdViewClickRecordedCallback(IntPtr adClientRef)
+        {
+            BannerClient client = IntPtrToBannerClient(adClientRef);
+            client.OnAdClickRecorded();
         }
 
         private static BannerClient IntPtrToBannerClient(IntPtr bannerClient)

@@ -13,7 +13,6 @@
 // limitations under the License.
 
 using System;
-using System.Reflection;
 using System.Collections.Generic;
 using GoogleMobileAds.Api;
 using GoogleMobileAds.Common;
@@ -25,16 +24,22 @@ namespace GoogleMobileAds.Unity
 {
     public class BannerClient : BaseAdDummyClient, IBannerClient
     {
+        public bool IsDestroyed { get { return prefabAd != null; } }
+
         // Ad event fired when the banner ad has been received.
-        public event EventHandler<EventArgs> OnAdLoaded;
+        public event Action OnBannerAdLoaded = delegate { };
         // Ad event fired when the banner ad has failed to load.
-        public event EventHandler<LoadAdErrorClientEventArgs> OnAdFailedToLoad;
+        public event Action<ILoadAdErrorClient> OnBannerAdLoadFailed;
         // Ad event fired when the banner ad is opened.
-        public event EventHandler<EventArgs> OnAdOpening;
+        public event Action OnAdFullScreenContentOpened;
         // Ad event fired when the banner ad is closed.
-        public event EventHandler<EventArgs> OnAdClosed;
+        public event Action OnAdFullScreenContentClosed;
         // Ad event fired when the banner ad is estimated to have earned money.
-        public event EventHandler<AdValueEventArgs> OnPaidEvent;
+        public event Action<AdValue> OnAdPaid;
+
+        public event Action OnAdClickRecorded = delegate { };
+
+        public event Action OnAdImpressionRecorded = delegate { };
 
         private Dictionary<AdSize, string> prefabAds = new Dictionary<AdSize, string>()
         {
@@ -53,6 +58,7 @@ namespace GoogleMobileAds.Unity
             Image myImage = dummyAd.GetComponentInChildren<Image>();
             Button button = myImage.GetComponentInChildren<Button>();
             button.onClick.AddListener(() => {
+                OnAdClickRecorded();
                 buttonBehaviour.OpenURL();
             });
         }
@@ -60,11 +66,15 @@ namespace GoogleMobileAds.Unity
         private void CreateButtonBehavior()
         {
             buttonBehaviour = base.dummyAd.AddComponent<ButtonBehaviour>();
-            buttonBehaviour.OnAdOpening += OnAdOpening;
+            buttonBehaviour.OnAdOpening += (s, e) =>
+            {
+                OnAdImpressionRecorded();
+                OnAdFullScreenContentOpened();
+            };
         }
 
         // Creates a banner view and adds it to the view hierarchy.
-        public void CreateBannerView(string adUnitId, AdSize adSize, AdPosition position)
+        public void CreateBannerAd(string adUnitId, AdSize adSize, AdPosition position)
         {
             if (adSize.AdType == AdSize.Type.AnchoredAdaptive)
             {
@@ -87,7 +97,7 @@ namespace GoogleMobileAds.Unity
         }
 
         // Creates a banner view and adds it to the view hierarchy with a custom position.
-        public void CreateBannerView(string adUnitId, AdSize adSize, int x, int y)
+        public void CreateBannerAd(string adUnitId, AdSize adSize, int x, int y)
         {
             if (adSize.AdType == AdSize.Type.AnchoredAdaptive)
             {
@@ -117,24 +127,21 @@ namespace GoogleMobileAds.Unity
         {
 
             if (prefabAd != null) {
-                ShowBannerView();
-                if (OnAdLoaded != null)
+                Show();
+                if (OnBannerAdLoaded != null)
                 {
-                  OnAdLoaded.Invoke(this, EventArgs.Empty);
+                  OnBannerAdLoaded.Invoke();
                 }
             } else {
-                if (OnAdFailedToLoad != null)
+                if (OnBannerAdLoadFailed != null)
                 {
-                  OnAdFailedToLoad.Invoke(this, new LoadAdErrorClientEventArgs()
-                  {
-                      LoadAdErrorClient = new LoadAdErrorClient()
-                  });
+                  OnBannerAdLoadFailed.Invoke(new LoadAdErrorClient());
                 }
             }
         }
 
         // Shows the banner view on the screen.
-        public void ShowBannerView()
+        public void Show()
         {
             dummyAd = AdBehaviour.ShowAd(prefabAd, getRectTransform(prefabAd).anchoredPosition);
             CreateButtonBehavior();
@@ -142,13 +149,13 @@ namespace GoogleMobileAds.Unity
         }
 
         // Hides the banner view from the screen.
-        public void HideBannerView()
+        public void Hide()
         {
             AdBehaviour.DestroyAd(dummyAd);
         }
 
         // Destroys a banner view.
-        public void DestroyBannerView()
+        public void Destroy()
         {
             AdBehaviour.DestroyAd(dummyAd);
             prefabAd = null;
@@ -299,6 +306,5 @@ namespace GoogleMobileAds.Unity
                 Debug.Log("Invalid Dummy Ad");
             }
         }
-
     }
 }

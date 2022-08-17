@@ -1,4 +1,4 @@
-// Copyright 2015-2021 Google LLC
+// Copyright (C) 2022 Google, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -13,22 +13,31 @@
 // limitations under the License.
 
 using System;
-
 using GoogleMobileAds.Api;
 
 namespace GoogleMobileAds.Common
 {
     /// <summary>
-    /// Rewarded ad units allow you to reward users with in-app items for interacting with
-    /// video ads, playable ads, and surveys.
+    /// The ad client interface for ad formats that reward users.
     /// </summary>
-    public interface IRewardedAdClient : IFullScreenAdClient, IBaseRewardedAdClient
+    public interface IBaseRewardedAdClient
     {
         /// <summary>
-        /// Loads an IRewardedAd.
+        /// The reward item for the loaded rewarded ad.
         /// </summary>
-        void LoadRewardedAd(string adUnitId,
-                            AdRequest request,
-                            Action<IRewardedAdClient, ILoadAdErrorClient> callback);
+        Reward GetRewardItem();
+
+        /// <summary>
+        /// Shows a rewarded ad.
+        /// </summary>
+        /// <param name="userRewardEarnedCallback">
+        /// An action to be raised when the user earns a reward.
+        /// </param>
+        void Show(Action<Reward> userRewardEarnedCallback);
+
+        /// <summary>
+        /// Sets the server side verification options.
+        /// </summary>
+        void SetServerSideVerificationOptions(ServerSideVerificationOptions options);
     }
 }
