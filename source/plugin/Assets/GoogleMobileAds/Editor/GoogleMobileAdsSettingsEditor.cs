@@ -51,8 +51,33 @@ namespace GoogleMobileAds.Editor
             EditorGUILayout.PropertyField(_appIdiOS, new GUIContent("iOS"));
 
             EditorGUILayout.HelpBox(
-                    "Google Mobile  Ads App ID will look similar to this sample ID: ca-app-pub-3940256099942544~3347511713",
+                    "Google Mobile Ads App ID will look similar to this sample ID: ca-app-pub-3940256099942544~3347511713",
                     MessageType.Info);
+
+            EditorGUI.indentLevel--;
+            EditorGUILayout.Separator();
+
+            EditorGUILayout.LabelField("Android optimization settings", EditorStyles.boldLabel);
+            EditorGUI.indentLevel++;
+
+            EditorGUI.BeginChangeCheck();
+
+            EditorGUILayout.PropertyField(_optimizeInitialization,
+                                          new GUIContent("Optimize initialization"));
+            if (settings.OptimizeInitialization) {
+                EditorGUILayout.HelpBox(
+                        "Initialization will be offloaded to a background thread.",
+                        MessageType.Info);
+            }
+
+            EditorGUILayout.PropertyField(_optimizeAdLoading,
+                                          new GUIContent("Optimize ad loading"));
+
+            if (settings.OptimizeAdLoading) {
+                EditorGUILayout.HelpBox(
+                        "Ad loading tasks will be offloaded to a background thread.",
+                        MessageType.Info);
+            }
 
             EditorGUI.indentLevel--;
             EditorGUILayout.Separator();
@@ -64,12 +89,6 @@ namespace GoogleMobileAds.Editor
 
             EditorGUILayout.PropertyField(_delayAppMeasurement,
                                           new GUIContent("Delay app measurement"));
-
-            EditorGUILayout.PropertyField(_optimizeInitialization,
-                                          new GUIContent("Optimize Initialization"));
-
-            EditorGUILayout.PropertyField(_optimizeAdLoading,
-                                          new GUIContent("Optimize AdLoading"));
 
             if (settings.DelayAppMeasurementInit) {
                 EditorGUILayout.HelpBox(
