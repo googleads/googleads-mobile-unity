@@ -7,7 +7,7 @@ Version Next
 Plugin:
 - Added support for Android optimize initialization and ad loading.
 - Fixed issue with AppOpenAd.GetResponseInfo() not completing on Android.
-
+- Fixed display issue for AdInspector on the Unity Editor platform.
 
 Built and tested with:
 - Google Mobile Ads Android SDK 21.0.0.
