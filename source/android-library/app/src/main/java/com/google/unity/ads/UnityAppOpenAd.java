@@ -206,6 +206,7 @@ public class UnityAppOpenAd {
                 return appOpenAd.getResponseInfo();
               }
             });
+    activity.runOnUiThread(task);
 
     ResponseInfo result = null;
     try {

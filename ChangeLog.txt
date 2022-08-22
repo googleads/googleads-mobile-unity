@@ -6,6 +6,7 @@ Version Next
 
 Plugin:
 - Added support for Android optimize initialization and ad loading.
+- Fixed issue with AppOpenAd.GetResponseInfo() not completing on Android.
 
 
 Built and tested with:
