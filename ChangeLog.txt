@@ -1,11 +1,11 @@
 Google Mobile Ads Unity Plugin Change Log
 
 **************
-Version Next
+Version 7.2.0
 **************
 
 Plugin:
-- Added support for Android optimize initialization and ad loading.
+- Added support for Android initialization and ad loading optimization.
 - Fixed issue with AppOpenAd.GetResponseInfo() not completing on Android.
 - Fixed display issue for AdInspector on the Unity Editor platform.
 
