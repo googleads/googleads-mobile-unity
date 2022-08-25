@@ -1,4 +1,4 @@
-﻿// Copyright 2018 Google LLC
+// Copyright 2018 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -23,8 +23,11 @@ namespace GoogleMobileAds.Android.Mediation.UnityAds
 {
     public class UnityAdsClient : IUnityAdsClient
     {
+        private const string UNITY_PLAYER_CLASS_NAME = "com.unity3d.player.UnityPlayer";
+        private const string UNITY_ADS_METADATA_CLASS_NAME = "com.unity3d.ads.metadata.MetaData";
+
         private static UnityAdsClient instance = new UnityAdsClient();
-        private UnityAdsClient() {}
+        private UnityAdsClient() { }
 
         public static UnityAdsClient Instance
         {
@@ -34,16 +37,22 @@ namespace GoogleMobileAds.Android.Mediation.UnityAds
             }
         }
 
-        public void SetGDPRConsentMetaData(bool consent)
+        public void SetConsentMetaData(string key, bool metaDataValue)
         {
-            AndroidJavaClass unityPlayer = new AndroidJavaClass ("com.unity3d.player.UnityPlayer");
-            AndroidJavaObject currentActivity = unityPlayer.GetStatic<AndroidJavaObject> ("currentActivity");
+            AndroidJavaClass unityPlayer = new AndroidJavaClass(UNITY_PLAYER_CLASS_NAME);
+            AndroidJavaObject currentActivity =
+                    unityPlayer.GetStatic<AndroidJavaObject> ("currentActivity");
 
-            AndroidJavaObject consentObject = new AndroidJavaObject("java.lang.Boolean", consent);
-            AndroidJavaObject unityAdsMetaData = new AndroidJavaObject ("com.unity3d.ads.metadata.MetaData", currentActivity);
-            bool success = unityAdsMetaData.Call<bool> ("set", "gdpr.consent", consentObject);
-            if (success) {
-                unityAdsMetaData.Call ("commit");
+            AndroidJavaObject unityAdsMetaData =
+                    new AndroidJavaObject(UNITY_ADS_METADATA_CLASS_NAME, currentActivity);
+            bool success = unityAdsMetaData.Call<bool>("set", key, metaDataValue);
+            if (success)
+            {
+                unityAdsMetaData.Call("commit");
+            }
+            else
+            {
+                MonoBehaviour.print("[UnityAds Plugin] Failed to update consent MetaData.");
             }
         }
     }

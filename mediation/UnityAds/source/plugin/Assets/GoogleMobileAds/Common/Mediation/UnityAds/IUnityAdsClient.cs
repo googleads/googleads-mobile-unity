@@ -18,6 +18,6 @@ namespace GoogleMobileAds.Common.Mediation.UnityAds
 {
     public interface IUnityAdsClient
     {
-        void SetGDPRConsentMetaData(bool consent);
+        void SetConsentMetaData(string key, bool metaDataValue);
     }
 }

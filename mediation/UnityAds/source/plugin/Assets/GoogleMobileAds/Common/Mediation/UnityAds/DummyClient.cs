@@ -26,7 +26,7 @@ namespace GoogleMobileAds.Common.Mediation.UnityAds
             Debug.Log ("Dummy " + MethodBase.GetCurrentMethod ().Name);
         }
 
-        public void SetGDPRConsentMetaData(bool consent)
+        public void SetConsentMetaData(string key, bool metaDataValue)
         {
             Debug.Log ("Dummy " + MethodBase.GetCurrentMethod ().Name);
         }

@@ -21,7 +21,7 @@ namespace GoogleMobileAds.Mediation
 {
     public class UnityAdsClientFactory
     {
-        public static IUnityAdsClient UnityAdsInstance ()
+        public static IUnityAdsClient CreateUnityAdsClient()
         {
             #if UNITY_EDITOR
             return new GoogleMobileAds.Common.Mediation.UnityAds.DummyClient();

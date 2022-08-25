@@ -23,7 +23,7 @@ namespace GoogleMobileAds.iOS.Mediation.UnityAds
     internal class Externs
     {
         [DllImport("__Internal")]
-        internal static extern void GADUMSetGDPRConsentMetaData(bool consent);
+        internal static extern void GADUMSetConsentMetaData(string key, bool metaDataValue);
     }
 }
 

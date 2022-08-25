@@ -14,8 +14,8 @@
 
 #import <UnityAds/UnityAds.h>
 
-void GADUMSetGDPRConsentMetaData(BOOL consent) {
-  UADSMetaData *unityAdsMetaData = [[UADSMetaData alloc] init];
-  [unityAdsMetaData set:@"gdpr.consent" value:@(consent)];
+void GADUMSetConsentMetaData(const char* key, BOOL consent) {
+  UADSMetaData* unityAdsMetaData = [[UADSMetaData alloc] init];
+  [unityAdsMetaData set:@(key) value:@(consent)];
   [unityAdsMetaData commit];
 }
