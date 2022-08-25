@@ -22,7 +22,7 @@ namespace GoogleMobileAds.Mediation
 {
     public class MyTargetClientFactory
     {
-        public static IMyTargetClient MyTargetInstance()
+        public static IMyTargetClient CreateMyTargetClient()
         {
             #if UNITY_EDITOR
             return new GoogleMobileAds.Common.Mediation.MyTarget.DummyClient();

@@ -26,6 +26,8 @@ namespace GoogleMobileAds.Android.Mediation.MyTarget
         private static MyTargetClient instance = new MyTargetClient();
         private MyTargetClient() {}
 
+        private const string MYTARGET_PRIVACY_CLASS_NAME = "com.my.target.common.MyTargetPrivacy";
+
         public static MyTargetClient Instance
         {
             get
@@ -36,28 +38,48 @@ namespace GoogleMobileAds.Android.Mediation.MyTarget
 
         public void SetUserConsent(bool userConsent)
         {
-            AndroidJavaClass myTarget = new AndroidJavaClass("com.my.target.common.MyTargetPrivacy");
-            myTarget.CallStatic("setUserConsent", userConsent);
+            AndroidJavaClass myTargetPrivacy = new AndroidJavaClass(MYTARGET_PRIVACY_CLASS_NAME);
+            myTargetPrivacy.CallStatic("setUserConsent", userConsent);
+        }
+
+        public bool GetUserConsent()
+        {
+            AndroidJavaClass myTargetPrivacy = new AndroidJavaClass(MYTARGET_PRIVACY_CLASS_NAME);
+            AndroidJavaObject myTargetCurrentPrivacy =
+                    myTargetPrivacy.CallStatic<AndroidJavaObject>("currentPrivacy");
+            AndroidJavaObject userConsent =
+                    myTargetCurrentPrivacy.Get<AndroidJavaObject>("userConsent");
+            return userConsent.Call<bool>("booleanValue");
         }
 
         public void SetUserAgeRestricted(bool userAgeRestricted)
         {
-            AndroidJavaClass myTarget = new AndroidJavaClass ("com.my.target.common.MyTargetPrivacy");
-            myTarget.CallStatic("setUserAgeRestricted", userAgeRestricted);
-        }
-
-        public bool IsConsent()
-        {
-            AndroidJavaClass myTarget = new AndroidJavaClass("com.my.target.common.MyTargetPrivacy");
-            AndroidJavaObject myTargetCurrentPrivacy = myTarget.CallStatic<AndroidJavaObject>("currentPrivacy");
-            return myTargetCurrentPrivacy.Call<bool>("isConsent");
+            AndroidJavaClass myTargetPrivacy = new AndroidJavaClass(MYTARGET_PRIVACY_CLASS_NAME);
+            myTargetPrivacy.CallStatic("setUserAgeRestricted", userAgeRestricted);
         }
 
         public bool IsUserAgeRestricted()
         {
-            AndroidJavaClass myTarget = new AndroidJavaClass("com.my.target.common.MyTargetPrivacy");
-            AndroidJavaObject myTargetCurrentPrivacy = myTarget.CallStatic<AndroidJavaObject>("currentPrivacy");
+            AndroidJavaClass myTargetPrivacy = new AndroidJavaClass(MYTARGET_PRIVACY_CLASS_NAME);
+            AndroidJavaObject myTargetCurrentPrivacy =
+                    myTargetPrivacy.CallStatic<AndroidJavaObject>("currentPrivacy");
             return myTargetCurrentPrivacy.Get<bool>("userAgeRestricted");
+        }
+
+        public void SetCCPAUserConsent(bool ccpaUserConsent)
+        {
+            AndroidJavaClass myTargetPrivacy = new AndroidJavaClass(MYTARGET_PRIVACY_CLASS_NAME);
+            myTargetPrivacy.CallStatic("setCcpaUserConsent", ccpaUserConsent);
+        }
+
+        public bool GetCCPAUserConsent()
+        {
+            AndroidJavaClass myTargetPrivacy = new AndroidJavaClass(MYTARGET_PRIVACY_CLASS_NAME);
+            AndroidJavaObject myTargetCurrentPrivacy =
+                    myTargetPrivacy.CallStatic<AndroidJavaObject>("currentPrivacy");
+            AndroidJavaObject ccpaUserConsent =
+                    myTargetCurrentPrivacy.Get<AndroidJavaObject>("ccpaUserConsent");
+            return ccpaUserConsent.Call<bool>("booleanValue");
         }
     }
 }

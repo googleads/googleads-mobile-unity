@@ -18,9 +18,11 @@ namespace GoogleMobileAds.Common.Mediation.MyTarget
 {
     public interface IMyTargetClient
     {
-        void SetUserConsent (bool userConsent);
-        void SetUserAgeRestricted (bool userAgeRestricted);
-        bool IsConsent ();
-        bool IsUserAgeRestricted ();
+        void SetUserConsent(bool userConsent);
+        bool GetUserConsent();
+        void SetUserAgeRestricted(bool userAgeRestricted);
+        bool IsUserAgeRestricted();
+        void SetCCPAUserConsent(bool ccpaUserConsent);
+        bool GetCCPAUserConsent();
     }
 }

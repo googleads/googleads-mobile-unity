@@ -14,18 +14,18 @@
 
 #import <MyTargetSDK/MyTargetSDK.h>
 
-void GADUMMyTargetSetUserConsent(BOOL userConsent) {
-  [MTRGPrivacy setUserConsent:userConsent];
-}
+void GADUMMyTargetSetUserConsent(BOOL userConsent) { [MTRGPrivacy setUserConsent:userConsent]; }
+
+BOOL GADUMMyTargetGetUserConsent() { return [MTRGPrivacy currentPrivacy].userConsent; }
 
 void GADUMMyTargetSetUserAgeRestricted(BOOL userAgeRestricted) {
   [MTRGPrivacy setUserAgeRestricted:userAgeRestricted];
 }
 
-BOOL GADUMMyTargetIsConsent() {
-  return [MTRGPrivacy currentPrivacy].isConsent;
+BOOL GADUMMyTargetIsUserAgeRestricted() { return [MTRGPrivacy currentPrivacy].userAgeRestricted; }
+
+void GADUMMyTargetSetCCPAUserConsent(BOOL ccpaUserConsent) {
+  [MTRGPrivacy setCcpaUserConsent:ccpaUserConsent];
 }
 
-BOOL GADUMMyTargetIsUserAgeRestricted() {
-  return [MTRGPrivacy currentPrivacy].userAgeRestricted;
-}
+BOOL GADUMMyTargetGetCCPAUserConsent() { return [MTRGPrivacy currentPrivacy].ccpaUserConsent; }

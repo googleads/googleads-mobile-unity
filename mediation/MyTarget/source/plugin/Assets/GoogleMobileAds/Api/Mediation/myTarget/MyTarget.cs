@@ -21,31 +21,37 @@ namespace GoogleMobileAds.Api.Mediation.MyTarget
 {
     public class MyTarget
     {
-        public static readonly IMyTargetClient client = GetMyTargetClient();
-
-        private static IMyTargetClient GetMyTargetClient()
-        {
-            return MyTargetClientFactory.MyTargetInstance ();
-        }
+        public static readonly IMyTargetClient client =
+                MyTargetClientFactory.CreateMyTargetClient();
 
         public static void SetUserConsent(bool userConsent)
         {
-            client.SetUserConsent (userConsent);
+            client.SetUserConsent(userConsent);
+        }
+
+        public static bool GetUserConsent()
+        {
+            return client.GetUserConsent();
         }
 
         public static void SetUserAgeRestricted(bool userAgeRestricted)
         {
-            client.SetUserAgeRestricted (userAgeRestricted);
-        }
-
-        public static bool IsConsent()
-        {
-            return client.IsConsent ();
+            client.SetUserAgeRestricted(userAgeRestricted);
         }
 
         public static bool IsUserAgeRestricted()
         {
-            return client.IsUserAgeRestricted ();
+            return client.IsUserAgeRestricted();
+        }
+
+        public static void SetCCPAUserConsent(bool ccpaUserConsent) 
+        {
+            client.SetCCPAUserConsent(ccpaUserConsent);
+        }
+
+        public static bool GetCCPAUserConsent()
+        {
+            return client.GetCCPAUserConsent();
         }
     }
 }

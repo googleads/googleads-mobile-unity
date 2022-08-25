@@ -23,7 +23,7 @@ namespace GoogleMobileAds.iOS.Mediation.MyTarget
     public class MyTargetClient : IMyTargetClient
     {
         private static MyTargetClient instance = new MyTargetClient();
-        private MyTargetClient() {}
+        private MyTargetClient() { }
 
         public static MyTargetClient Instance
         {
@@ -35,22 +35,32 @@ namespace GoogleMobileAds.iOS.Mediation.MyTarget
 
         public void SetUserConsent(bool userConsent)
         {
-            Externs.GADUMMyTargetSetUserConsent (userConsent);
+            Externs.GADUMMyTargetSetUserConsent(userConsent);
+        }
+
+        public bool GetUserConsent()
+        {
+            return Externs.GADUMMyTargetGetUserConsent();
         }
 
         public void SetUserAgeRestricted(bool userAgeRestricted)
         {
-            Externs.GADUMMyTargetSetUserAgeRestricted (userAgeRestricted);
-        }
-
-        public bool IsConsent()
-        {
-            return Externs.GADUMMyTargetIsConsent ();
+            Externs.GADUMMyTargetSetUserAgeRestricted(userAgeRestricted);
         }
 
         public bool IsUserAgeRestricted()
         {
-            return Externs.GADUMMyTargetIsUserAgeRestricted ();
+            return Externs.GADUMMyTargetIsUserAgeRestricted();
+        }
+
+        public void SetCCPAUserConsent(bool ccpaUserConsent)
+        {
+            Externs.GADUMMyTargetSetCCPAUserConsent(ccpaUserConsent);
+        }
+
+        public bool GetCCPAUserConsent()
+        {
+            return Externs.GADUMMyTargetGetCCPAUserConsent();
         }
     }
 }

@@ -21,30 +21,41 @@ namespace GoogleMobileAds.Common.Mediation.MyTarget
 {
     public class DummyClient : IMyTargetClient
     {
-        public DummyClient ()
+        public DummyClient()
         {
-            Debug.Log ("Dummy " + MethodBase.GetCurrentMethod ().Name);
+            Debug.Log ("Dummy " + MethodBase.GetCurrentMethod().Name);
         }
 
         public void SetUserConsent(bool userConsent)
         {
-            Debug.Log ("Dummy " + MethodBase.GetCurrentMethod ().Name);
+            Debug.Log ("Dummy " + MethodBase.GetCurrentMethod().Name);
+        }
+
+        public bool GetUserConsent()
+        {
+            Debug.Log ("Dummy " + MethodBase.GetCurrentMethod().Name);
+            return false;
         }
 
         public void SetUserAgeRestricted(bool userAgeRestricted)
         {
-            Debug.Log ("Dummy " + MethodBase.GetCurrentMethod ().Name);
-        }
-
-        public bool IsConsent()
-        {
-            Debug.Log ("Dummy " + MethodBase.GetCurrentMethod ().Name);
-            return false;
+            Debug.Log ("Dummy " + MethodBase.GetCurrentMethod().Name);
         }
 
         public bool IsUserAgeRestricted()
         {
-            Debug.Log ("Dummy " + MethodBase.GetCurrentMethod ().Name);
+            Debug.Log ("Dummy " + MethodBase.GetCurrentMethod().Name);
+            return false;
+        }
+
+        public void SetCCPAUserConsent(bool ccpaUserConsent) 
+        {
+            Debug.Log ("Dummy " + MethodBase.GetCurrentMethod().Name);
+        }
+
+        public bool GetCCPAUserConsent()
+        {
+            Debug.Log ("Dummy " + MethodBase.GetCurrentMethod().Name);
             return false;
         }
     }
