@@ -1,6 +1,6 @@
 ## myTarget Unity Mediation Plugin Changelog
 
-#### Version 3.11.3 (In Progress)
+#### [Version 3.11.3](https://dl.google.com/googleadmobadssdk/mediation/unity/mytarget/MyTargetUnityAdapter-3.11.3.zip)
 - Renamed the `IsConsent()` method from the `MyTarget` class to `GetUserConsent()`.
 - Added the following methods to the `MyTarget` class:
   * `SetCCPAUserConsent(bool)`
