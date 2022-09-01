@@ -65,9 +65,7 @@ namespace GoogleMobileAds.Api
                     initCompleteAction.Invoke(new InitializationStatus(initStatusClient));
                 }
             });
-#if !VSTUDIO
             MobileAdsEventExecutor.Initialize();
-#endif
         }
 
         public static void DisableMediationInitialization()
