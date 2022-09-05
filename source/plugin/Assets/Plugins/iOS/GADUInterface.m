@@ -787,6 +787,9 @@ const GADUTypeResponseInfoRef GADUGetResponseInfo(GADUTypeRef adFormat) {
     GADURewardedInterstitialAd *internalRewardedInterstitialAd =
     (GADURewardedInterstitialAd *)internalAd;
     responseInfo =  internalRewardedInterstitialAd.responseInfo;
+  } else if ([internalAd isKindOfClass:[GADUAppOpenAd class]]) {
+    GADUAppOpenAd *internalAppOpenAd = (GADUAppOpenAd *)internalAd;
+    responseInfo =  internalAppOpenAd.responseInfo;
   }
 
   if (responseInfo){
@@ -812,6 +815,22 @@ const char *GADUResponseInfoResponseId(GADUTypeResponseInfoRef responseInfo){
 const char *GADUGetResponseInfoDescription(GADUTypeResponseInfoRef responseInfo){
   GADResponseInfo *internalResponseInfo = (__bridge GADResponseInfo *)responseInfo;
   return cStringCopy(internalResponseInfo.description.UTF8String);
+}
+
+const char *GADUGetResponseInfoJson(GADUTypeResponseInfoRef responseInfo){
+  GADResponseInfo *internalResponseInfo = (__bridge GADResponseInfo *)responseInfo;
+  NSDictionary<NSString *, id> * dict =  internalResponseInfo.dictionaryRepresentation;
+  NSError *jsonError;
+  NSData *jsonData = [NSJSONSerialization dataWithJSONObject:dict
+                                                     options:0  // unformatted
+                                                       error:&jsonError];
+  NSString *jsonString = @"";
+  if (jsonError) {
+    NSLog(@"GoogleMobileAdsPlugin: %@", [jsonError localizedDescription]);
+  } else {
+    jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+  }
+  return cStringCopy(jsonString.UTF8String);
 }
 
 const int GADUGetAdErrorCode(GADUTypeErrorRef error) {
