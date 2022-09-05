@@ -13,43 +13,83 @@
 // limitations under the License.
 
 using System;
+using System.Linq;
 using UnityEngine;
 
-using GoogleMobileAds.Api;
 using GoogleMobileAds.Common;
+using System.Collections.Generic;
 
 namespace GoogleMobileAds.Android
 {
     internal class ResponseInfoClient : IResponseInfoClient
     {
-        private AndroidJavaObject androidResponseInfo;
+        private AndroidJavaObject _androidResponseInfo;
+        private JsonObject _jsonObject;
 
         public ResponseInfoClient(ResponseInfoClientType type, AndroidJavaObject androidJavaObject)
         {
-            androidResponseInfo = androidJavaObject.Call<AndroidJavaObject>("getResponseInfo");
+            // Too much work (I/O) in the constructor
+            try
+            {
+                _androidResponseInfo = androidJavaObject.Call<AndroidJavaObject>("getResponseInfo");
+            }
+            catch (Exception ex)
+            {
+                UnityEngine.Debug.LogException(ex);
+            }
+        }
+
+        public IAdapterResponseInfoClient[] GetAdapterResponses()
+        {
+            var listJson = GetJson().GetJsonObjectList("Adapter Responses");
+            return listJson == null
+                    ? new IAdapterResponseInfoClient[0]
+                    : listJson.Select(item => new AdapterResponseInfoClient(item)).ToArray();
+        }
+
+        public IAdapterResponseInfoClient GetLoadedAdapterResponseInfo()
+        {
+            var adapterJson = GetJson().GetJsonObject("Loaded Adapter Response");
+            return adapterJson == null
+                    ? null
+                    : new AdapterResponseInfoClient(adapterJson);
         }
 
         public string GetMediationAdapterClassName()
         {
-            if (androidResponseInfo != null)
-            {
-                return androidResponseInfo.Call<string>("getMediationAdapterClassName");
-            }
-            return null;
+            return GetJson().GetValue<string>("Mediation Adapter Class Name");
+        }
+
+        public Dictionary<string, string> GetResponseExtras()
+        {
+            return GetJson().GetDictionary<string>("Response Extras");
         }
 
         public string GetResponseId()
         {
-            if (androidResponseInfo != null)
-            {
-                return androidResponseInfo.Call<string>("getResponseId");
-            }
-            return null;
+            return GetJson().GetValue<string>("Response ID");
         }
 
         public override string ToString()
         {
-            return androidResponseInfo.Call<string>("toString");
+            return GetJson().ToString();
+        }
+
+        private JsonObject GetJson()
+        {
+            if (_jsonObject != null)
+            {
+                return _jsonObject;
+            }
+            if (_androidResponseInfo == null)
+            {
+                _jsonObject = new JsonObject("");
+                return _jsonObject;
+            }
+
+            var jsonString = _androidResponseInfo.Call<string>("toString");
+            _jsonObject = new JsonObject(jsonString);
+            return _jsonObject;
         }
     }
 }

@@ -14,58 +14,95 @@
 // limitations under the License.
 
 using System;
+using System.Linq;
 using UnityEngine;
 
-using GoogleMobileAds.Api;
 using GoogleMobileAds.Common;
+using System.Collections.Generic;
 
 namespace GoogleMobileAds.iOS
 {
     internal class ResponseInfoClient : IResponseInfoClient
     {
-        private IntPtr adFormat;
-        private IntPtr iosResponseInfo;
+        private IntPtr _iosResponseInfo;
+        private JsonObject _jsonObject;
 
         public ResponseInfoClient(ResponseInfoClientType type, IntPtr ptr)
         {
-            if(type == ResponseInfoClientType.AdLoaded)
+            // Too much work (I/O) in the constructor
+            try
             {
-                this.adFormat = adFormat;
-                iosResponseInfo = Externs.GADUGetResponseInfo(ptr);
+                if(type == ResponseInfoClientType.AdLoaded)
+                {
+                    _iosResponseInfo = Externs.GADUGetResponseInfo(ptr);
+                }
+                else if(type == ResponseInfoClientType.AdError)
+                {
+                    _iosResponseInfo = Externs.GADUGetAdErrorResponseInfo(ptr);
+                }
             }
-            else if(type == ResponseInfoClientType.AdError)
+            catch (Exception ex)
             {
-                iosResponseInfo = Externs.GADUGetAdErrorResponseInfo(ptr);
+                UnityEngine.Debug.LogException(ex);
             }
         }
 
-        public ResponseInfoClient(IntPtr adFormat, IntPtr iOSClient)
+        public ResponseInfoClient(IntPtr _adFormat, IntPtr iOSClient)
         {
-            this.adFormat = adFormat;
-            iosResponseInfo = iOSClient;
+            _iosResponseInfo = iOSClient;
+        }
+
+        public IAdapterResponseInfoClient[] GetAdapterResponses()
+        {
+            var listJson = GetJson().GetJsonObjectList("Mediation line items");
+            return listJson == null
+                    ? new IAdapterResponseInfoClient[0]
+                    : listJson.Select(item => new AdapterResponseInfoClient(item)).ToArray();
+        }
+
+        public IAdapterResponseInfoClient GetLoadedAdapterResponseInfo()
+        {
+            var adapterJson = GetJson().GetJsonObject("Loaded Adapter Response");
+            return adapterJson == null
+                    ? null
+                    : new AdapterResponseInfoClient(adapterJson);
         }
 
         public string GetMediationAdapterClassName()
         {
-            if (iosResponseInfo != IntPtr.Zero)
-            {
-                return Externs.GADUResponseInfoMediationAdapterClassName(iosResponseInfo);
-            }
-            return null;
+            return GetJson().GetValue<string>("Network");
+        }
+
+        public Dictionary<string, string> GetResponseExtras()
+        {
+            return GetJson().GetDictionary<string>("Extras Dictionary");
         }
 
         public string GetResponseId()
         {
-            if (iosResponseInfo != IntPtr.Zero)
-            {
-                return Externs.GADUResponseInfoResponseId(iosResponseInfo);
-            }
-            return null;
+            return GetJson().GetValue<string>("Response ID");
         }
 
         public override string ToString()
         {
-            return Externs.GADUGetResponseInfoDescription(iosResponseInfo);
+            return GetJson().ToString();
+        }
+
+        private JsonObject GetJson()
+        {
+            if (_jsonObject != null)
+            {
+                return _jsonObject;
+            }
+            if (_iosResponseInfo == IntPtr.Zero)
+            {
+                _jsonObject = new JsonObject("");
+                return _jsonObject;
+            }
+
+            var jsonString = Externs.GADUGetResponseInfoJson(_iosResponseInfo);
+            _jsonObject = new JsonObject(jsonString);
+            return _jsonObject;
         }
     }
 }
