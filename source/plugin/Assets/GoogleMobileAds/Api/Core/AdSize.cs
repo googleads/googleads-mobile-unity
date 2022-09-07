@@ -25,6 +25,7 @@ namespace GoogleMobileAds.Api
     {
         public enum Type {
             Standard = 0,
+            [System.Obsolete("Deprecated. Use AnchoredAdaptive.")]
             SmartBanner = 1,
             AnchoredAdaptive = 2
         }
