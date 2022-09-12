@@ -83,6 +83,9 @@ typedef const void *GADUTypeRequestConfigurationRef;
 typedef const void *GADUTypeResponseInfoRef;
 
 /// Type representing a AdError type
+typedef const void *GADUTypeAdapterResponseInfoRef;
+
+/// Type representing a AdError type
 typedef const void *GADUTypeErrorRef;
 
 /// Type representing a NSMutableDictionary of extras.
