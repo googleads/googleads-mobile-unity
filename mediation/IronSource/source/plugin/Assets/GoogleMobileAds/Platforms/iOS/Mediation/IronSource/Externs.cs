@@ -24,6 +24,9 @@ namespace GoogleMobileAds.iOS.Mediation.IronSource
     {
         [DllImport("__Internal")]
         internal static extern void GADUMIronSourceSetConsent(bool consent);
+
+        [DllImport("__Internal")]
+        internal static extern void GADUMIronSourceSetMetaData(string key, string metaDataValue);
     }
 }
 

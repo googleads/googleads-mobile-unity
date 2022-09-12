@@ -1,5 +1,8 @@
 ## IronSource Unity Mediation Plugin Changelog
 
+#### Next Version
+- Added the `IronSource.SetMetaData(string, string)` method.
+
 #### [Version 2.2.3](https://dl.google.com/googleadmobadssdk/mediation/unity/ironsource/IronSourceUnityAdapter-2.2.3.zip)
 - Supports [IronSource Android adapter version 7.2.3.1.0](https://github.com/googleads/googleads-mobile-android-mediation/blob/main/ThirdPartyAdapters/ironsource/CHANGELOG.md#version-72310).
 - Supports [IronSource iOS adapter version 7.2.3.1.0](https://github.com/googleads/googleads-mobile-ios-mediation/blob/main/adapters/IronSource/CHANGELOG.md#version-72310).

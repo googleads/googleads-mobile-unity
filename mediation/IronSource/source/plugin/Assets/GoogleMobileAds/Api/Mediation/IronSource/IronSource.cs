@@ -21,16 +21,17 @@ namespace GoogleMobileAds.Api.Mediation.IronSource
 {
     public class IronSource
     {
-        public static readonly IIronSourceClient client = GetIronSourceClient();
+        private static readonly IIronSourceClient client =
+                IronSourceClientFactory.CreateIronSourceClient();
 
         public static void SetConsent(bool consent)
         {
-            client.SetConsent (consent);
+            client.SetConsent(consent);
         }
 
-        private static IIronSourceClient GetIronSourceClient()
+        public static void SetMetaData(string key, string metaDataValue)
         {
-            return IronSourceClientFactory.IronSourceInstance();
+            client.SetMetaData(key, metaDataValue);
         }
     }
 }

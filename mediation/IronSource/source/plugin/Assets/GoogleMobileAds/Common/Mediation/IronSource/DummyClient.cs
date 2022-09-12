@@ -26,7 +26,13 @@ namespace GoogleMobileAds.Common.Mediation.IronSource
             Debug.Log ("Dummy " + MethodBase.GetCurrentMethod ().Name);
         }
 
-        public void SetConsent(bool consent){
+        public void SetConsent(bool consent)
+        {
+            Debug.Log ("Dummy " + MethodBase.GetCurrentMethod ().Name);
+        }
+
+        public void SetMetaData(string key, string metaDataValue)
+        {
             Debug.Log ("Dummy " + MethodBase.GetCurrentMethod ().Name);
         }
     }

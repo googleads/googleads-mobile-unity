@@ -23,7 +23,7 @@ namespace GoogleMobileAds.iOS.Mediation.IronSource
     public class IronSourceClient : IIronSourceClient
     {
         private static IronSourceClient instance = new IronSourceClient();
-        private IronSourceClient() {}
+        private IronSourceClient() { }
 
         public static IronSourceClient Instance
         {
@@ -35,7 +35,12 @@ namespace GoogleMobileAds.iOS.Mediation.IronSource
 
         public void SetConsent(bool consent)
         {
-            Externs.GADUMIronSourceSetConsent (consent);
+            Externs.GADUMIronSourceSetConsent(consent);
+        }
+
+        public void SetMetaData(string key, string metaDataValue)
+        {
+            Externs.GADUMIronSourceSetMetaData(key, metaDataValue);
         }
     }
 }

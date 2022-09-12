@@ -23,8 +23,10 @@ namespace GoogleMobileAds.Android.Mediation.IronSource
 {
     public class IronSourceClient : IIronSourceClient
     {
+        private const string IRONSOURCE_CLASS_NAME = "com.ironsource.mediationsdk.IronSource";
+
         private static IronSourceClient instance = new IronSourceClient();
-        private IronSourceClient() {}
+        private IronSourceClient() { }
 
         public static IronSourceClient Instance
         {
@@ -36,8 +38,14 @@ namespace GoogleMobileAds.Android.Mediation.IronSource
 
         public void SetConsent(bool consent)
         {
-            AndroidJavaClass ironSource = new AndroidJavaClass ("com.ironsource.mediationsdk.IronSource");
-            ironSource.CallStatic ("setConsent", consent);
+            AndroidJavaClass ironSource = new AndroidJavaClass(IRONSOURCE_CLASS_NAME);
+            ironSource.CallStatic("setConsent", consent);
+        }
+
+        public void SetMetaData(string key, string metaDataValue)
+        {
+            AndroidJavaClass ironSource = new AndroidJavaClass(IRONSOURCE_CLASS_NAME);
+            ironSource.CallStatic("setMetaData", key, metaDataValue);
         }
     }
 }

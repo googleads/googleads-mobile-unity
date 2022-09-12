@@ -14,6 +14,8 @@
 
 #import <IronSource/IronSource.h>
 
-void GADUMIronSourceSetConsent(BOOL consent) {
-  [IronSource setConsent:consent];
+void GADUMIronSourceSetConsent(BOOL consent) { [IronSource setConsent:consent]; }
+
+void GADUMIronSourceSetMetaData(const char *_Nonnull key, const char *_Nonnull metaDataValue) {
+  [IronSource setMetaDataWithKey:@(key) value:@(metaDataValue)];
 }

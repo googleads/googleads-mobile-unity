@@ -22,7 +22,7 @@ namespace GoogleMobileAds.Mediation
 {
     public class IronSourceClientFactory
     {
-        public static IIronSourceClient IronSourceInstance()
+        public static IIronSourceClient CreateIronSourceClient()
         {
             #if UNITY_EDITOR
             return new GoogleMobileAds.Common.Mediation.IronSource.DummyClient();
