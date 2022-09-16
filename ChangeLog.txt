@@ -1,6 +1,13 @@
 Google Mobile Ads Unity Plugin Change Log
 
 **************
+Version Next
+**************
+
+Built and tested with:
+- External Dependency Manager for Unity 1.2.172.
+
+**************
 Version 7.2.0
 **************
 
