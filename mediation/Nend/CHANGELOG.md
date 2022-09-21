@@ -1,5 +1,10 @@
 ## nend Unity Mediation Plugin Changelog
 
+#### Version 6.0.0 (In Progress)
+- Supports [nend Android adapter version 9.0.0.0](https://github.com/googleads/googleads-mobile-android-mediation/blob/main/ThirdPartyAdapters/nend/CHANGELOG.md#version-9000).
+- Supports [nend iOS adapter version 7.4.0.0](https://github.com/googleads/googleads-mobile-ios-mediation/blob/main/adapters/Nend/CHANGELOG.md#version-7400).
+- Built and tested with the Google Mobile Ads Unity Plugin version 7.2.0.
+
 #### [Version 5.2.0](https://dl.google.com/googleadmobadssdk/mediation/unity/nend/NendUnityAdapter-5.2.0.zip)
 - Supports [nend Android adapter version 8.1.0.1](https://github.com/googleads/googleads-mobile-android-mediation/blob/main/ThirdPartyAdapters/nend/CHANGELOG.md#version-8101).
 - Supports [nend iOS adapter version 7.3.0.0](https://github.com/googleads/googleads-mobile-ios-mediation/blob/main/adapters/Nend/CHANGELOG.md#version-7300).
