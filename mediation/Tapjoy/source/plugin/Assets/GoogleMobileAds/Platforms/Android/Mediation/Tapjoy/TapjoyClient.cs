@@ -24,7 +24,9 @@ namespace GoogleMobileAds.Android.Mediation.Tapjoy
     public class TapjoyClient : ITapjoyClient
     {
         private static TapjoyClient instance = new TapjoyClient();
-        private TapjoyClient() {}
+        private TapjoyClient() { }
+
+        private const string TAPJOY_CLASS_NAME = "com.tapjoy.Tapjoy";
 
         public static TapjoyClient Instance
         {
@@ -36,14 +38,26 @@ namespace GoogleMobileAds.Android.Mediation.Tapjoy
 
         public void SetUserConsent(string consentString)
         {
-            AndroidJavaClass tapjoy = new AndroidJavaClass ("com.tapjoy.Tapjoy");
-            tapjoy.CallStatic ("setUserConsent", consentString);
+            AndroidJavaClass tapjoy = new AndroidJavaClass(TAPJOY_CLASS_NAME);
+            AndroidJavaObject tapjoyPrivacyPolicy =
+                    tapjoy.CallStatic<AndroidJavaObject>("getPrivacyPolicy");
+            tapjoyPrivacyPolicy.Call("setUserConsent", consentString);
         }
 
         public void SubjectToGDPR(bool gdprApplicability)
         {
-            AndroidJavaClass tapjoy = new AndroidJavaClass ("com.tapjoy.Tapjoy");
-            tapjoy.CallStatic ("subjectToGDPR", gdprApplicability);
+            AndroidJavaClass tapjoy = new AndroidJavaClass(TAPJOY_CLASS_NAME);
+            AndroidJavaObject tapjoyPrivacyPolicy =
+                    tapjoy.CallStatic<AndroidJavaObject>("getPrivacyPolicy");
+            tapjoyPrivacyPolicy.Call("setSubjectToGDPR", gdprApplicability);
+        }
+
+        public void SetUSPrivacy(string privacyString)
+        {
+            AndroidJavaClass tapjoy = new AndroidJavaClass(TAPJOY_CLASS_NAME);
+            AndroidJavaObject tapjoyPrivacyPolicy =
+                    tapjoy.CallStatic<AndroidJavaObject>("getPrivacyPolicy");
+            tapjoyPrivacyPolicy.Call("setUSPrivacy", privacyString);
         }
     }
 }

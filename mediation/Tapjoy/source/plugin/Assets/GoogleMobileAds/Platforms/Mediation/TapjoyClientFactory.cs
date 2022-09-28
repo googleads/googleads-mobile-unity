@@ -22,7 +22,7 @@ namespace GoogleMobileAds.Mediation
 {
     public class TapjoyClientFactory
     {
-        public static ITapjoyClient TapjoyInstance()
+        public static ITapjoyClient CreateTapjoyClient()
         {
             #if UNITY_EDITOR
             return new GoogleMobileAds.Common.Mediation.Tapjoy.DummyClient();

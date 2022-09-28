@@ -42,6 +42,11 @@ namespace GoogleMobileAds.iOS.Mediation.Tapjoy
         {
             Externs.GADUMTapjoySubjectToGDPR (gdprApplicability);
         }
+
+        public void SetUSPrivacy(string privacyString)
+        {
+            Externs.GADUMTapjoySetUSPrivacy(privacyString);
+        }
     }
 }
 

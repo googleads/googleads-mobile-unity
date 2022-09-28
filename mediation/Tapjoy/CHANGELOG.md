@@ -1,5 +1,8 @@
 ## Tapjoy Unity Mediation Plugin Changelog
 
+#### Next Version
+- Added the `Tapjoy.SetUSPrivacy(string)` method.
+
 #### [Version 2.9.0](https://dl.google.com/googleadmobadssdk/mediation/unity/tapjoy/TapjoyUnityAdapter-2.9.0.zip)
 - Supports [Tapjoy Android adapter version 12.10.0.1](https://github.com/googleads/googleads-mobile-android-mediation/blob/main/ThirdPartyAdapters/tapjoy/CHANGELOG.md#version-121001).
 - Supports [Tapjoy iOS adapter version 12.10.0.0](https://github.com/googleads/googleads-mobile-ios-mediation/blob/main/adapters/Tapjoy/CHANGELOG.md#version-121000).

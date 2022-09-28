@@ -14,14 +14,17 @@
 
 #import <Tapjoy/Tapjoy.h>
 
-void GADUMTapjoySetUserConsent(const char* consentString) {
-  NSString *consent = @"";
-  if (consentString != nil) {
-    consent = [NSString stringWithUTF8String:consentString];
-  }
-  [Tapjoy setUserConsent:consent];
+void GADUMTapjoySetUserConsent(const char *consentString) {
+  TJPrivacyPolicy *privacyPolicy = [Tapjoy getPrivacyPolicy];
+  [privacyPolicy setUserConsent:@(consentString)];
 }
 
 void GADUMTapjoySubjectToGDPR(BOOL gdprApplicability) {
-  [Tapjoy subjectToGDPR:gdprApplicability];
+  TJPrivacyPolicy *privacyPolicy = [Tapjoy getPrivacyPolicy];
+  [privacyPolicy setSubjectToGDPR:gdprApplicability];
+}
+
+void GADUMTapjoySetUSPrivacy(const char *privacyString) {
+  TJPrivacyPolicy *privacyPolicy = [Tapjoy getPrivacyPolicy];
+  [privacyPolicy setUSPrivacy:@(privacyString)];
 }

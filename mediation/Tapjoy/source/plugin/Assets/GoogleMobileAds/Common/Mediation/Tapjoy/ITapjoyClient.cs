@@ -20,5 +20,6 @@ namespace GoogleMobileAds.Common.Mediation.Tapjoy
     {
         void SetUserConsent(string consentString);
         void SubjectToGDPR(bool gdprApplicability);
+        void SetUSPrivacy(string privacyString);
     }
 }

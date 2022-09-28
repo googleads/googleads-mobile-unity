@@ -21,12 +21,7 @@ namespace GoogleMobileAds.Api.Mediation.Tapjoy
 {
     public class Tapjoy
     {
-        public static readonly ITapjoyClient client = GetTapjoyClient();
-
-        private static ITapjoyClient GetTapjoyClient()
-        {
-            return TapjoyClientFactory.TapjoyInstance();
-        }
+        public static readonly ITapjoyClient client = TapjoyClientFactory.CreateTapjoyClient();
 
         public static void SetUserConsent(string consentString)
         {
@@ -36,6 +31,11 @@ namespace GoogleMobileAds.Api.Mediation.Tapjoy
         public static void SubjectToGDPR(bool gdprApplicability)
         {
             client.SubjectToGDPR(gdprApplicability);
+        }
+
+        public static void SetUSPrivacy(string privacyString)
+        {
+            client.SetUSPrivacy(privacyString);
         }
     }
 }

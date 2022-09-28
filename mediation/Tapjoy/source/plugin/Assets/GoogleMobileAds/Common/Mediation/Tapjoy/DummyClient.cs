@@ -23,17 +23,22 @@ namespace GoogleMobileAds.Common.Mediation.Tapjoy
     {
         public DummyClient()
         {
-            Debug.Log ("Dummy " + MethodBase.GetCurrentMethod ().Name);
+            Debug.Log ("Dummy " + MethodBase.GetCurrentMethod().Name);
         }
 
         public void SetUserConsent(string consentString)
         {
-            Debug.Log ("Dummy " + MethodBase.GetCurrentMethod ().Name);
+            Debug.Log ("Dummy " + MethodBase.GetCurrentMethod().Name);
         }
 
         public void SubjectToGDPR(bool gdprApplicability)
         {
-            Debug.Log ("Dummy " + MethodBase.GetCurrentMethod ().Name);
+            Debug.Log ("Dummy " + MethodBase.GetCurrentMethod().Name);
+        }
+
+        public void SetUSPrivacy(string privacyString)
+        {
+            Debug.Log ("Dummy " + MethodBase.GetCurrentMethod().Name);
         }
     }
 }

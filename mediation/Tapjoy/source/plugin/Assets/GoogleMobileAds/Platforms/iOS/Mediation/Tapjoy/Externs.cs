@@ -27,6 +27,9 @@ namespace GoogleMobileAds.iOS.Mediation.Tapjoy
 
         [DllImport("__Internal")]
         internal static extern void GADUMTapjoySubjectToGDPR(bool gdprApplicability);
+
+        [DllImport("__Internal")]
+        internal static extern void GADUMTapjoySetUSPrivacy(string privacyString);
     }
 }
 
