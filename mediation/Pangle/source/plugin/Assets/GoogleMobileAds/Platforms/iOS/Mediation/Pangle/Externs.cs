@@ -23,10 +23,10 @@ namespace GoogleMobileAds.iOS.Mediation.Pangle
     internal class Externs
     {
         [DllImport("__Internal")]
-        internal static extern void GADUMPangleSetGDPR(int gdpr);
+        internal static extern void GADUMPangleSetGDPRConsent(int gdpr);
 
         [DllImport("__Internal")]
-        internal static extern void GADUMPangleSetCCPA(int ccpa);
+        internal static extern void GADUMPangleSetDoNotSell(int doNotSell);
     }
 }
 

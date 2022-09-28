@@ -33,14 +33,14 @@ namespace GoogleMobileAds.iOS.Mediation.Pangle
             }
         }
 
-        public void SetGDPR(int gdpr)
+        public void SetGDPRConsent(int gdpr)
         {
-            Externs.GADUMPangleSetGDPR(gdpr);
+            Externs.GADUMPangleSetGDPRConsent(gdpr);
         }
 
-        public void SetCCPA(int ccpa)
+        public void SetDoNotSell(int doNotSell)
         {
-            Externs.GADUMPangleSetCCPA(ccpa);
+            Externs.GADUMPangleSetDoNotSell(doNotSell);
         }
     }
 }

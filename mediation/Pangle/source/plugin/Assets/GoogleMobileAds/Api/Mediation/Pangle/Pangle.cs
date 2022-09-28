@@ -23,14 +23,14 @@ namespace GoogleMobileAds.Api.Mediation.Pangle
     {
         public static readonly IPangleClient client = GetPangleClient();
 
-        public static void SetGDPR(int gdpr)
+        public static void SetGDPRConsent(int gdpr)
         {
-            client.SetGDPR(gdpr);
+            client.SetGDPRConsent(gdpr);
         }
 
-        public static void SetCCPA(int ccpa)
+        public static void SetDoNotSell(int doNotSell)
         {
-            client.SetCCPA(ccpa);
+            client.SetDoNotSell(doNotSell);
         }
 
         private static IPangleClient GetPangleClient()

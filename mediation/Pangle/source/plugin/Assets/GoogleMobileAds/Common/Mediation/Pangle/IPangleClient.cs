@@ -20,7 +20,7 @@ namespace GoogleMobileAds.Common.Mediation.Pangle
 {
     public interface IPangleClient
     {
-        void SetGDPR(int gdpr);
-        void SetCCPA(int ccpa);
+        void SetGDPRConsent(int gdpr);
+        void SetDoNotSell(int doNotSell);
     }
 }

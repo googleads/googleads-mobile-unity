@@ -25,12 +25,12 @@ namespace GoogleMobileAds.Common.Mediation.Pangle
             Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
         }
 
-        public void SetGDPR(int gdpr)
+        public void SetGDPRConsent(int gdpr)
         {
             Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
         }
 
-        public void SetCCPA(int ccpa)
+        public void SetDoNotSell(int doNotSell)
         {
             Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
         }

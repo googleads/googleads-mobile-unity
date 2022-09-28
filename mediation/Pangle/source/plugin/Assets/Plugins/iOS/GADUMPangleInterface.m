@@ -14,10 +14,10 @@
 
 #import <PangleAdapter/PangleAdapter.h>
 
-void GADUMPangleSetGDPR(int GDPR) {
-  [GADMediationAdapterPangle setGDPR:GDPR];
+void GADUMPangleSetGDPRConsent(int GDPR) {
+  [GADMediationAdapterPangle setGDPRConsent:GDPR];
 }
 
-void GADUMPangleSetCCPA(int CCPA) {
-  [GADMediationAdapterPangle setCCPA:CCPA];
+void GADUMPangleSetDoNotSell(int doNotSell) {
+  [GADMediationAdapterPangle setDoNotSell:doNotSell];
 }

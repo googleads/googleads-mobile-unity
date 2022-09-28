@@ -36,18 +36,18 @@ namespace GoogleMobileAds.Android.Mediation.Pangle
             }
         }
 
-        public void SetGDPR(int gdpr)
+        public void SetGDPRConsent(int gdpr)
         {
             AndroidJavaClass PangleMediationAdapter =
                     new AndroidJavaClass(pangleMediationAdapterClassName);
-            PangleMediationAdapter.CallStatic("setGdpr", gdpr);
+            PangleMediationAdapter.CallStatic("setGDPRConsent", gdpr);
         }
 
-        public void SetCCPA(int ccpa)
+        public void SetDoNotSell(int doNotSell)
         {
             AndroidJavaClass PangleMediationAdapter =
                     new AndroidJavaClass(pangleMediationAdapterClassName);
-            PangleMediationAdapter.CallStatic("setCcpa", ccpa);
+            PangleMediationAdapter.CallStatic("setDoNotSell", doNotSell);
         }
     }
 }
