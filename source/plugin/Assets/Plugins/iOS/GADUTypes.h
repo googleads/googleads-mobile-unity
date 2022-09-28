@@ -82,6 +82,9 @@ typedef const void *GADUTypeRequestConfigurationRef;
 /// Type representing a GADUTypeResponseInfoRef
 typedef const void *GADUTypeResponseInfoRef;
 
+/// Type representing a GADUTypeAdapterResponseInfoRef type
+typedef const void *GADUTypeAdapterResponseInfoRef;
+
 /// Type representing a AdError type
 typedef const void *GADUTypeErrorRef;
 

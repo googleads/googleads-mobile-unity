@@ -772,6 +772,8 @@ void GADURewardedInterstitialAdSetServerSideVerificationOptions(
   [internalRewardedInterstitialAd setServerSideVerificationOptions:internalOptions];
 }
 
+// ResponseInfo Methods
+
 const GADUTypeResponseInfoRef GADUGetResponseInfo(GADUTypeRef adFormat) {
   id internalAd = (__bridge id)adFormat;
   GADResponseInfo *responseInfo;
@@ -814,6 +816,52 @@ const char *GADUGetResponseInfoDescription(GADUTypeResponseInfoRef responseInfo)
   return cStringCopy(internalResponseInfo.description.UTF8String);
 }
 
+const int GADUResponseInfoAdNetworkCount(GADUTypeResponseInfoRef responseInfo) {
+  GADResponseInfo *info = (__bridge GADResponseInfo *)responseInfo;
+  return info.adNetworkInfoArray.count;
+}
+
+const GADUTypeAdapterResponseInfoRef GADUResponseInfoAdNetworkAtIndex(
+    GADUTypeResponseInfoRef responseInfo, int index) {
+  GADResponseInfo *info = (__bridge GADResponseInfo *)responseInfo;
+  GADAdNetworkResponseInfo *adNetworkInfo = info.adNetworkInfoArray[index];
+  return (__bridge GADUTypeAdapterResponseInfoRef)(adNetworkInfo);
+}
+
+const GADUTypeAdapterResponseInfoRef GADUResponseInfoLoadedAdNetworkResponseInfo(
+    GADUTypeResponseInfoRef responseInfo) {
+  GADResponseInfo *info = (__bridge GADResponseInfo *)responseInfo;
+  GADAdNetworkResponseInfo *adNetworkInfo = info.loadedAdNetworkResponseInfo;
+  return (__bridge GADUTypeAdapterResponseInfoRef)(adNetworkInfo);
+}
+
+const int GADUResponseInfoExtrasCount(GADUTypeResponseInfoRef responseInfo) {
+  GADResponseInfo *info = (__bridge GADResponseInfo *)responseInfo;
+  return info.extrasDictionary.count;
+}
+
+const char *GADUResponseInfoExtrasKey(GADUTypeResponseInfoRef responseInfo, int index) {
+  GADResponseInfo *info = (__bridge GADResponseInfo *)responseInfo;
+  NSArray<NSString *> *keys = [info.extrasDictionary allKeys];
+  NSString *key = (NSString *)keys[index];
+  return cStringCopy(key.UTF8String);
+}
+
+const char *GADUResponseInfoExtrasValue(GADUTypeResponseInfoRef responseInfo, char *extrasKey) {
+  NSString *key = GADUStringFromUTF8String(extrasKey);
+  GADResponseInfo *info = (__bridge GADResponseInfo *)responseInfo;
+  id value = info.extrasDictionary[key];
+  NSString *stringValue = nil;
+  if ([value isKindOfClass:[NSString class]]) {
+    stringValue = (NSString *)value;
+  } else {
+    NSLog(@"Unable to get response info extra value : %@", key);
+  }
+  return cStringCopy(stringValue.UTF8String);
+}
+
+// AdError Methods
+
 const int GADUGetAdErrorCode(GADUTypeErrorRef error) {
   NSError *internalError = (__bridge NSError *)error;
   return internalError.code;
@@ -844,6 +892,83 @@ const GADUTypeResponseInfoRef GADUGetAdErrorResponseInfo(GADUTypeErrorRef error)
 const char *GADUGetAdErrorDescription(GADUTypeErrorRef error) {
   NSError *internalError = (__bridge NSError *)error;
   return cStringCopy(internalError.description.UTF8String);
+}
+
+// AdapterResponseInfo Methods
+
+const char *GADUAdapterResponseInfoAdNetworkClassName(
+    GADUTypeAdapterResponseInfoRef adapterResponseInfo) {
+  GADAdNetworkResponseInfo *info = (__bridge GADAdNetworkResponseInfo *)adapterResponseInfo;
+  return cStringCopy(info.adNetworkClassName.UTF8String);
+}
+
+const char *GADUAdapterResponseInfoAdSourceID(
+    GADUTypeAdapterResponseInfoRef adapterResponseInfo) {
+  GADAdNetworkResponseInfo *info = (__bridge GADAdNetworkResponseInfo *)adapterResponseInfo;
+  return cStringCopy(info.adSourceID.UTF8String);
+}
+
+const char *GADUAdapterResponseInfoAdSourceName(
+    GADUTypeAdapterResponseInfoRef adapterResponseInfo) {
+  GADAdNetworkResponseInfo *info = (__bridge GADAdNetworkResponseInfo *)adapterResponseInfo;
+  return cStringCopy(info.adSourceName.UTF8String);
+}
+
+const char *GADUAdapterResponseInfoAdSourceInstanceID(
+    GADUTypeAdapterResponseInfoRef adapterResponseInfo) {
+  GADAdNetworkResponseInfo *info = (__bridge GADAdNetworkResponseInfo *)adapterResponseInfo;
+  return cStringCopy(info.adSourceInstanceID.UTF8String);
+}
+
+const char *GADUAdapterResponseInfoAdSourceInstanceName(
+    GADUTypeAdapterResponseInfoRef adapterResponseInfo) {
+  GADAdNetworkResponseInfo *info = (__bridge GADAdNetworkResponseInfo *)adapterResponseInfo;
+  return cStringCopy(info.adSourceInstanceName.UTF8String);
+}
+
+const long GADUAdapterResponseInfoLatency(GADUTypeAdapterResponseInfoRef adapterResponseInfo) {
+  GADAdNetworkResponseInfo *info = (__bridge GADAdNetworkResponseInfo *)adapterResponseInfo;
+  return (long)[NSNumber numberWithLong:info.latency];
+}
+
+const int GADUAdapterResponseInfoAdUnitMappingCount(
+    GADUTypeAdapterResponseInfoRef adapterResponseInfo) {
+  GADAdNetworkResponseInfo *info = (__bridge GADAdNetworkResponseInfo *)adapterResponseInfo;
+  return info.adUnitMapping.count;
+}
+
+const char *GADUAdapterResponseInfoAdUnitMappingKey(
+    GADUTypeAdapterResponseInfoRef adapterResponseInfo, int index) {
+  GADAdNetworkResponseInfo *info = (__bridge GADAdNetworkResponseInfo *)adapterResponseInfo;
+  NSArray<NSString *> *keys = [info.adUnitMapping allKeys];
+  NSString *key = (NSString *)keys[index];
+  return cStringCopy(key.UTF8String);
+}
+
+const char *GADUAdapterResponseInfoAdUnitMappingValue(
+    GADUTypeAdapterResponseInfoRef adapterResponseInfo, char *adUnitMappingKey) {
+  NSString *key = GADUStringFromUTF8String(adUnitMappingKey);
+  GADAdNetworkResponseInfo *info = (__bridge GADAdNetworkResponseInfo *)adapterResponseInfo;
+  id value = info.adUnitMapping[key];
+  NSString *stringValue = nil;
+  if ([value isKindOfClass:[NSString class]]) {
+    stringValue = (NSString *)value;
+  } else {
+    NSLog(@"Unable to get adapter response info ad unit mapping value : %@", key);
+  }
+  return cStringCopy(stringValue.UTF8String);
+}
+
+const GADUTypeErrorRef GADUAdapterResponseInfoAdError(
+    GADUTypeAdapterResponseInfoRef adapterResponseInfo) {
+  GADAdNetworkResponseInfo *info = (__bridge GADAdNetworkResponseInfo *)adapterResponseInfo;
+  return (__bridge GADUTypeErrorRef)(info.error);
+}
+
+const char *GADUAdapterResponseInfoDescription(
+    GADUTypeAdapterResponseInfoRef adapterResponseInfo) {
+  GADAdNetworkResponseInfo *info = (__bridge GADAdNetworkResponseInfo *)adapterResponseInfo;
+  return cStringCopy(info.description.UTF8String);
 }
 
 #pragma mark - Other methods

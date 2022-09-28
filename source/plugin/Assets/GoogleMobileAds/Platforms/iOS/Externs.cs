@@ -257,6 +257,26 @@ namespace GoogleMobileAds.iOS
         internal static extern string GADUGetResponseInfoDescription(IntPtr responseInfo);
 
         [DllImport("__Internal")]
+        internal static extern int GADUResponseInfoAdNetworkCount(IntPtr responseInfo);
+
+        [DllImport("__Internal")]
+        internal static extern IntPtr GADUResponseInfoAdNetworkAtIndex(IntPtr responseInfo,
+                                                                       int index);
+
+        [DllImport("__Internal")]
+        internal static extern IntPtr GADUResponseInfoLoadedAdNetworkResponseInfo(
+            IntPtr responseInfo);
+
+        [DllImport("__Internal")]
+        internal static extern int GADUResponseInfoExtrasCount(IntPtr responseInfo);
+
+        [DllImport("__Internal")]
+        internal static extern string GADUResponseInfoExtrasKey(IntPtr responseInfo, int index);
+
+        [DllImport("__Internal")]
+        internal static extern string GADUResponseInfoExtrasValue(IntPtr responseInfo, string key);
+
+        [DllImport("__Internal")]
         internal static extern int GADUGetAdErrorCode(IntPtr error);
 
         [DllImport("__Internal")]
@@ -411,6 +431,53 @@ namespace GoogleMobileAds.iOS
         [DllImport("__Internal")]
         internal static extern void GADUPresentAdInspector(
             IntPtr mobileAdsClient, MobileAdsClient.GADUAdInspectorClosedCallback callback);
+
+        #endregion
+
+        #region AdapterResponseInfo externs
+
+        [DllImport("__Internal")]
+        internal static extern string GADUAdapterResponseInfoAdNetworkClassName(
+            IntPtr adapterResponseInfoRef);
+
+        [DllImport("__Internal")]
+        internal static extern string GADUAdapterResponseInfoAdSourceID(
+            IntPtr adapterResponseInfoRef);
+
+        [DllImport("__Internal")]
+        internal static extern string GADUAdapterResponseInfoAdSourceName(
+            IntPtr adapterResponseInfoRef);
+
+        [DllImport("__Internal")]
+        internal static extern string GADUAdapterResponseInfoAdSourceInstanceID(
+            IntPtr adapterResponseInfoRef);
+
+        [DllImport("__Internal")]
+        internal static extern string GADUAdapterResponseInfoAdSourceInstanceName(
+            IntPtr adapterResponseInfoRef);
+
+        [DllImport("__Internal")]
+        internal static extern long GADUAdapterResponseInfoLatency(
+            IntPtr adapterResponseInfoRef);
+
+        [DllImport("__Internal")]
+        internal static extern int GADUAdapterResponseInfoAdUnitMappingCount(
+            IntPtr adapterResponseInfoRef);
+
+        [DllImport("__Internal")]
+        internal static extern string GADUAdapterResponseInfoAdUnitMappingKey(
+            IntPtr adapterResponseInfoRef,  int index);
+
+        [DllImport("__Internal")]
+        internal static extern string GADUAdapterResponseInfoAdUnitMappingValue(
+            IntPtr adapterResponseInfoRef, string key);
+
+        [DllImport("__Internal")]
+        internal static extern IntPtr GADUAdapterResponseInfoAdError(
+            IntPtr adapterResponseInfoRef);
+
+        [DllImport("__Internal")]
+        internal static extern string GADUAdapterResponseInfoDescription(IntPtr error);
 
         #endregion
     }
