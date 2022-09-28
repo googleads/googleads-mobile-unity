@@ -12,9 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using UnityEngine;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using UnityEngine;
 
 using GoogleMobileAds.Api;
 using GoogleMobileAds.Api.Mediation;
@@ -184,6 +185,25 @@ namespace GoogleMobileAds.Android
 
             AndroidJavaClass appOpenAdClass = new AndroidJavaClass(AppOpenAdClassName);
             return appOpenAdClass.GetStatic<int>(orientationFieldName);
+        }
+
+        public static Dictionary<string, string> GetDictionary(AndroidJavaObject androidBundle)
+        {
+            AndroidJavaObject bundleKeySet = androidBundle.Call<AndroidJavaObject>("keySet");
+            int length = bundleKeySet.Call<int>("size");
+
+            AndroidJavaObject bundleKeyArray = bundleKeySet.Call<AndroidJavaObject>("toArray");
+            IntPtr bundleKeyArrayPtr = bundleKeyArray.GetRawObject();
+
+            Dictionary<string, string> dict = new Dictionary<string, string>();
+            for (int i = 0; i < length; i++)
+            {
+                IntPtr keyPtr = AndroidJNI.GetObjectArrayElement(bundleKeyArrayPtr, i);
+                string key = AndroidJNI.GetStringUTFChars(keyPtr);
+                string val = androidBundle.Call<string>("getString", key);
+                dict.Add(key, val);
+            }
+            return dict;
         }
 
         internal static int GetScreenWidth()
