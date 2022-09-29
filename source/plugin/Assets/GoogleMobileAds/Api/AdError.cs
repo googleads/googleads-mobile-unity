@@ -22,10 +22,11 @@ namespace GoogleMobileAds.Api
     /// <returns>Ad Error Object with Code, Message, Domain, and Cause.</returns>
     public class AdError
     {
-        private IAdErrorClient client;
+        private IAdErrorClient _client;
+
         public AdError(IAdErrorClient client)
         {
-            this.client = client;
+            _client = client;
         }
 
         /// <summary>
@@ -34,7 +35,7 @@ namespace GoogleMobileAds.Api
         /// <returns>Ad Error Code. </returns>
         public int GetCode()
         {
-            return client.GetCode();
+            return _client.GetCode();
         }
 
         /// <summary>
@@ -43,7 +44,7 @@ namespace GoogleMobileAds.Api
         /// <returns>Ad Error Domain. </returns>
         public string GetDomain()
         {
-            return client.GetDomain();
+            return _client.GetDomain();
         }
 
         /// <summary>
@@ -54,21 +55,22 @@ namespace GoogleMobileAds.Api
         /// <returns>Ad Error Message. </returns>
         public string GetMessage()
         {
-            return client.GetMessage();
+            return _client.GetMessage();
         }
 
         ///<summary>
-        /// Gets the underlying error cause if exists
+        /// Gets the underlying cause, or null if no cause exists.
         /// <summary>
         /// <returns>Ad Error Cause. </returns>
         public AdError GetCause()
         {
-            return new AdError(client.GetCause());
+            var cause = _client.GetCause();
+            return cause == null ? null : new AdError(_client.GetCause());
         }
 
         public override string ToString()
         {
-            return client.ToString();
+            return _client.ToString();
         }
     }
 }
