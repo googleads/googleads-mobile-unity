@@ -14,6 +14,7 @@
 // limitations under the License.
 
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 using GoogleMobileAds.Api;
@@ -23,49 +24,101 @@ namespace GoogleMobileAds.iOS
 {
     internal class ResponseInfoClient : IResponseInfoClient
     {
-        private IntPtr adFormat;
-        private IntPtr iosResponseInfo;
+        private IntPtr _iosResponseInfo;
 
         public ResponseInfoClient(ResponseInfoClientType type, IntPtr ptr)
         {
             if(type == ResponseInfoClientType.AdLoaded)
             {
-                this.adFormat = adFormat;
-                iosResponseInfo = Externs.GADUGetResponseInfo(ptr);
+                _iosResponseInfo = Externs.GADUGetResponseInfo(ptr);
             }
             else if(type == ResponseInfoClientType.AdError)
             {
-                iosResponseInfo = Externs.GADUGetAdErrorResponseInfo(ptr);
+                _iosResponseInfo = Externs.GADUGetAdErrorResponseInfo(ptr);
             }
         }
 
         public ResponseInfoClient(IntPtr adFormat, IntPtr iOSClient)
         {
-            this.adFormat = adFormat;
-            iosResponseInfo = iOSClient;
+            _iosResponseInfo = iOSClient;
+        }
+
+        public List<IAdapterResponseInfoClient> GetAdapterResponses()
+        {
+            var list = new List<IAdapterResponseInfoClient>();
+            if (_iosResponseInfo == IntPtr.Zero)
+            {
+                return list;
+            }
+
+            int count = Externs.GADUResponseInfoAdNetworkCount(_iosResponseInfo);
+            for (int i = 0; i < count; i++)
+            {
+                var adNetworkRef = Externs.GADUResponseInfoAdNetworkAtIndex(_iosResponseInfo, i);
+                list.Add(new AdapterResponseInfoClient(adNetworkRef));
+            }
+            return list;
+        }
+
+        public IAdapterResponseInfoClient GetLoadedAdapterResponseInfo()
+        {
+            if (_iosResponseInfo == IntPtr.Zero)
+            {
+                return null;
+            }
+
+            var adapterRef = Externs.GADUResponseInfoLoadedAdNetworkResponseInfo(_iosResponseInfo);
+            return adapterRef == IntPtr.Zero
+                    ? null
+                    : new AdapterResponseInfoClient(adapterRef);
+        }
+
+        public Dictionary<string, string> GetResponseExtras()
+        {
+            Dictionary<string, string> dict = new Dictionary<string, string>();
+            if (_iosResponseInfo == IntPtr.Zero)
+            {
+                return dict;
+            }
+
+            int count = Externs.GADUResponseInfoExtrasCount(_iosResponseInfo);
+            for (int i = 0; i < count; i++)
+            {
+                string key = Externs.GADUResponseInfoExtrasKey(_iosResponseInfo, i);
+                string val = Externs.GADUResponseInfoExtrasValue(_iosResponseInfo, key);
+                dict.Add(key, val);
+            }
+            return dict;
         }
 
         public string GetMediationAdapterClassName()
         {
-            if (iosResponseInfo != IntPtr.Zero)
+            if (_iosResponseInfo == IntPtr.Zero)
             {
-                return Externs.GADUResponseInfoMediationAdapterClassName(iosResponseInfo);
+                return string.Empty;
             }
-            return null;
+
+            return Externs.GADUResponseInfoMediationAdapterClassName(_iosResponseInfo);
         }
 
         public string GetResponseId()
         {
-            if (iosResponseInfo != IntPtr.Zero)
+            if (_iosResponseInfo == IntPtr.Zero)
             {
-                return Externs.GADUResponseInfoResponseId(iosResponseInfo);
+                return string.Empty;
             }
-            return null;
+
+            return Externs.GADUResponseInfoResponseId(_iosResponseInfo);
         }
 
         public override string ToString()
         {
-            return Externs.GADUGetResponseInfoDescription(iosResponseInfo);
+            if (_iosResponseInfo == IntPtr.Zero)
+            {
+                return string.Empty;
+            }
+
+            return Externs.GADUGetResponseInfoDescription(_iosResponseInfo);
         }
     }
 }

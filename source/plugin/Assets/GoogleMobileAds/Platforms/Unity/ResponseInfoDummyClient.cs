@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System.Collections.Generic;
 using GoogleMobileAds.Common;
 
 namespace GoogleMobileAds.Unity
@@ -20,12 +21,33 @@ namespace GoogleMobileAds.Unity
     {
         public string GetMediationAdapterClassName()
         {
-            return "Dummy Mediation Adapter Class Name";
+            return "Placeholder Mediation Adapter Class Name";
         }
 
         public string GetResponseId()
         {
-            return "Dummy Response ID";
+            return "Placeholder Response ID";
+        }
+
+        public IAdapterResponseInfoClient GetLoadedAdapterResponseInfo()
+        {
+            return new AdapterResponseInfoClient();
+        }
+
+        public List<IAdapterResponseInfoClient> GetAdapterResponses()
+        {
+            return new List<IAdapterResponseInfoClient>
+            {
+                new AdapterResponseInfoClient()
+            };
+        }
+
+        public Dictionary<string, string> GetResponseExtras()
+        {
+            return new Dictionary<string, string>
+            {
+                {"Placeholder Key", "Placeholder Value"}
+            };
         }
     }
 }
