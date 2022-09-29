@@ -1,6 +1,6 @@
 ## Pangle Unity Mediation Plugin Changelog
 
-#### Version 1.3.0 (In Progress)
+#### [Version 1.3.0](https://dl.google.com/googleadmobadssdk/mediation/unity/pangle/PangleUnityAdapter-1.3.0.zip)
 - Renamed the following methods in the `Pangle` class:
   * `SetGDPR()` -> `SetGDPRConsent()`
   * `SetCCPA()` -> `SetDoNotSell()`
