@@ -5,12 +5,12 @@ Version Next
 **************
 
 Plugin:
-- Requires using Google Mobile Ads Android SDK v21.2.0 or higher.
+- Requires using Google Mobile Ads Android SDK v21.3.0 or higher.
 - Requires using Google Mobile Ads iOS SDK v9.11.0 or higher.
 - Added response information for ad networks to the [ad response](https://developers.google.com/admob/unity/response-info).
 
 Built and tested with:
-- Google Mobile Ads Android SDK 21.2.0.
+- Google Mobile Ads Android SDK 21.3.0.
 - Google Mobile Ads iOS SDK 9.11.0
 - External Dependency Manager for Unity 1.2.171.
 
