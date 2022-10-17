@@ -29,6 +29,12 @@ namespace GoogleMobileAds.iOS.Mediation.Fyber
 
         [DllImport("__Internal")]
         internal static extern void GADUMFyberClearGDPRConsentData();
+
+        [DllImport("__Internal")]
+        internal static extern void GADUMFyberSetCCPAString(string ccpaString);
+
+        [DllImport("__Internal")]
+        internal static extern void GADUMFyberClearCCPAString();
     }
 }
 

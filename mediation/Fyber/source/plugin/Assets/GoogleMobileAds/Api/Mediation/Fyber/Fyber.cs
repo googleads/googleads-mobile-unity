@@ -43,5 +43,15 @@ namespace GoogleMobileAds.Api.Mediation.Fyber
         {
             client.ClearGDPRConsentData();
         }
+
+        public static void SetCCPAString(string ccpaString)
+        {
+            client.SetCCPAString(ccpaString);
+        }
+
+        public static void ClearCCPAString()
+        {
+            client.ClearCCPAString();
+        }
     }
 }

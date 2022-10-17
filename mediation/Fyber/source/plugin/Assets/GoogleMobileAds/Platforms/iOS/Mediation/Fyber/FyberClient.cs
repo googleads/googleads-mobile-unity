@@ -45,6 +45,16 @@ namespace GoogleMobileAds.iOS.Mediation.Fyber
         {
             Externs.GADUMFyberClearGDPRConsentData();
         }
+
+        public void SetCCPAString(string ccpaString)
+        {
+            Externs.GADUMFyberSetCCPAString(ccpaString);
+        }
+
+        public void ClearCCPAString()
+        {
+            Externs.GADUMFyberClearCCPAString();
+        }
     }
 }
 

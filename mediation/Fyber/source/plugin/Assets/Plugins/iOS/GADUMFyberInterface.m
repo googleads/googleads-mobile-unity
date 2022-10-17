@@ -23,3 +23,9 @@ void GADUMFyberSetGDPRConsentString(const char *_Nonnull consentString) {
 }
 
 void GADUMFyberClearGDPRConsentData() { [IASDKCore.sharedInstance clearGDPRConsentData]; }
+
+void GADUMFyberSetCCPAString(const char *_Nonnull ccpaString) {
+  IASDKCore.sharedInstance.CCPAString = @(ccpaString);
+}
+
+void GADUMFyberClearCCPAString() { IASDKCore.sharedInstance.CCPAString = nil; }

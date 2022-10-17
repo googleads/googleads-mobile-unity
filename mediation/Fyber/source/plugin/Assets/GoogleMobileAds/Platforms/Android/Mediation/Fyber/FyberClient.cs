@@ -21,7 +21,8 @@ namespace GoogleMobileAds.Android.Mediation.Fyber
 {
     public class FyberClient : IFyberClient
     {
-        private const string INNERACTIVE_AD_MANAGER_CLASS = "com.fyber.inneractive.sdk.external.InneractiveAdManager";
+        private const string INNERACTIVE_AD_MANAGER_CLASS =
+                "com.fyber.inneractive.sdk.external.InneractiveAdManager";
 
         private static readonly FyberClient instance = new FyberClient();
         private FyberClient() { }
@@ -36,20 +37,37 @@ namespace GoogleMobileAds.Android.Mediation.Fyber
 
         public void SetGDPRConsent(bool consent)
         {
-            AndroidJavaClass inneractiveAdManager = new AndroidJavaClass(INNERACTIVE_AD_MANAGER_CLASS);
+            AndroidJavaClass inneractiveAdManager =
+                    new AndroidJavaClass(INNERACTIVE_AD_MANAGER_CLASS);
             inneractiveAdManager.CallStatic("setGdprConsent", consent);
         }
 
         public void SetGDPRConsentString(string consentString)
         {
-            AndroidJavaClass inneractiveAdManager = new AndroidJavaClass(INNERACTIVE_AD_MANAGER_CLASS);
+            AndroidJavaClass inneractiveAdManager =
+                    new AndroidJavaClass(INNERACTIVE_AD_MANAGER_CLASS);
             inneractiveAdManager.CallStatic("setGdprConsentString", consentString);
         }
 
         public void ClearGDPRConsentData()
         {
-            AndroidJavaClass inneractiveAdManager = new AndroidJavaClass(INNERACTIVE_AD_MANAGER_CLASS);
+            AndroidJavaClass inneractiveAdManager =
+                    new AndroidJavaClass(INNERACTIVE_AD_MANAGER_CLASS);
             inneractiveAdManager.CallStatic("clearGdprConsentData");
+        }
+
+        public void SetCCPAString(string ccpaString)
+        {
+            AndroidJavaClass inneractiveAdManager =
+                    new AndroidJavaClass(INNERACTIVE_AD_MANAGER_CLASS);
+            inneractiveAdManager.CallStatic("setUSPrivacyString", ccpaString);
+        }
+
+        public void ClearCCPAString()
+        {
+            AndroidJavaClass inneractiveAdManager =
+                    new AndroidJavaClass(INNERACTIVE_AD_MANAGER_CLASS);
+            inneractiveAdManager.CallStatic("clearUSPrivacyString");
         }
     }
 }

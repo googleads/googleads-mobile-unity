@@ -38,5 +38,15 @@ namespace GoogleMobileAds.Common.Mediation.Fyber
         {
             Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
         }
+
+        public void SetCCPAString(string ccpaString)
+        {
+            Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
+        }
+
+        public void ClearCCPAString()
+        {
+            Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
+        }
     }
 }

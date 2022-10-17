@@ -1,5 +1,10 @@
 ## Fyber Unity Mediation Plugin Changelog
 
+#### Next Version
+- Added the following methods to the `Fyber` class:
+  * `SetCCPAString(string)`
+  * `ClearCCPAString()`
+
 #### [Version 3.1.0](https://dl.google.com/googleadmobadssdk/mediation/unity/fyber/FyberUnityAdapter-3.1.0.zip)
 - Supports [Fyber Android adapter version 8.2.0.0](https://github.com/googleads/googleads-mobile-android-mediation/blob/main/ThirdPartyAdapters/fyber/CHANGELOG.md#version-8200).
 - Supports [Fyber iOS adapter version 8.1.5.0](https://github.com/googleads/googleads-mobile-ios-mediation/blob/main/adapters/Fyber/CHANGELOG.md#version-8150).

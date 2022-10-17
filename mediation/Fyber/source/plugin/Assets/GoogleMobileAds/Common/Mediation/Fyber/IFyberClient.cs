@@ -19,5 +19,8 @@ namespace GoogleMobileAds.Common.Mediation.Fyber
         void SetGDPRConsent(bool consent);
         void SetGDPRConsentString(string consentString);
         void ClearGDPRConsentData();
+
+        void SetCCPAString(string ccpaString);
+        void ClearCCPAString();
     }
 }
