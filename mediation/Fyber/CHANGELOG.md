@@ -1,6 +1,6 @@
 ## Fyber Unity Mediation Plugin Changelog
 
-#### Version 3.1.1 (In Progress)
+#### [Version 3.1.1](https://dl.google.com/googleadmobadssdk/mediation/unity/fyber/FyberUnityAdapter-3.1.1.zip)
 - Added the following methods to the `Fyber` class:
   * `SetCCPAString(string)`
   * `ClearCCPAString()`
