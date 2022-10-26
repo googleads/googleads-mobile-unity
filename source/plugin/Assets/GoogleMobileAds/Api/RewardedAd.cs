@@ -56,7 +56,6 @@ namespace GoogleMobileAds.Api
                 if (this.OnAdFailedToShow != null)
                 {
                     AdError adError = new AdError(args.AdErrorClient);
-
                     this.OnAdFailedToShow(this, new AdErrorEventArgs()
                     {
                         AdError = adError
@@ -77,18 +76,6 @@ namespace GoogleMobileAds.Api
                 if (this.OnAdClosed != null)
                 {
                     this.OnAdClosed(this, args);
-                }
-            };
-
-            this.client.OnAdFailedToPresentFullScreenContent += (sender, args) =>
-            {
-                if (this.OnAdFailedToShow != null)
-                {
-                    AdError adError = new AdError(args.AdErrorClient);
-                    this.OnAdFailedToShow(this, new AdErrorEventArgs()
-                    {
-                        AdError = adError
-                    });
                 }
             };
 
