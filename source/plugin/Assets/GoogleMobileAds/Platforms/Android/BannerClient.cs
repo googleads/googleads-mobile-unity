@@ -43,6 +43,10 @@ namespace GoogleMobileAds.Android
 
         public event EventHandler<AdValueEventArgs> OnPaidEvent;
 
+        public event Action OnAdClickRecorded;
+
+        public event Action OnAdImpressionRecorded;
+
         // Creates a banner view.
         public void CreateBannerView(string adUnitId, AdSize adSize, AdPosition position)
         {
@@ -170,6 +174,22 @@ namespace GoogleMobileAds.Android
             }
         }
 
+
+        internal void onAdClickRecorded()
+        {
+            if (this.OnAdClickRecorded != null)
+            {
+                this.OnAdClickRecorded();
+            }
+        }
+
+        internal void onAdImpressionRecorded()
+        {
+            if (this.OnAdImpressionRecorded != null)
+            {
+                this.OnAdImpressionRecorded();
+            }
+        }
 
         #endregion
     }

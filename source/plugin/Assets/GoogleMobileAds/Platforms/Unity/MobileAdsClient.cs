@@ -21,10 +21,9 @@ using UnityEngine.UI;
 
 namespace GoogleMobileAds.Common
 {
-    public class DummyClient : BaseAdDummyClient, IBannerClient, IInterstitialClient,
-            IMobileAdsClient
+    public class MobileAdsClient : BaseAdDummyClient, IMobileAdsClient
     {
-        public DummyClient()
+        public MobileAdsClient()
         {
             Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
         }
