@@ -288,14 +288,17 @@ void GADUSetBannerCallbacks(GADUTypeBannerRef banner,
                             GADUAdViewDidFailToReceiveAdWithErrorCallback adFailedCallback,
                             GADUAdViewWillPresentScreenCallback willPresentCallback,
                             GADUAdViewDidDismissScreenCallback didDismissCallback,
-                            GADUAdViewPaidEventCallback paidEventCallback) {
+                            GADUAdViewPaidEventCallback paidEventCallback,
+                            GADUAdViewImpressionCallback adImpressionCallback,
+                            GADUAdViewClickCallback adClickedCallback) {
   GADUBanner *internalBanner = (__bridge GADUBanner *)banner;
   internalBanner.adReceivedCallback = adReceivedCallback;
   internalBanner.adFailedCallback = adFailedCallback;
   internalBanner.willPresentCallback = willPresentCallback;
   internalBanner.didDismissCallback = didDismissCallback;
-
   internalBanner.paidEventCallback = paidEventCallback;
+  internalBanner.adImpressionCallback = adImpressionCallback;
+  internalBanner.adClickedCallback = adClickedCallback;
 }
 
 /// Sets the interstitial callback methods to be invoked during interstitial ad events.

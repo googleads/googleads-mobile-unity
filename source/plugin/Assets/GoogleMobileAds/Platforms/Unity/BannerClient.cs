@@ -36,6 +36,10 @@ namespace GoogleMobileAds.Unity
         // Ad event fired when the banner ad is estimated to have earned money.
         public event EventHandler<AdValueEventArgs> OnPaidEvent;
 
+        public event Action OnAdClickRecorded;
+
+        public event Action OnAdImpressionRecorded;
+
         private Dictionary<AdSize, string> prefabAds = new Dictionary<AdSize, string>()
         {
             {AdSize.Banner, "DummyAds/Banners/BANNER"},
@@ -53,6 +57,7 @@ namespace GoogleMobileAds.Unity
             Image myImage = dummyAd.GetComponentInChildren<Image>();
             Button button = myImage.GetComponentInChildren<Button>();
             button.onClick.AddListener(() => {
+                OnAdClickRecorded();
                 buttonBehaviour.OpenURL();
             });
         }
@@ -60,7 +65,11 @@ namespace GoogleMobileAds.Unity
         private void CreateButtonBehavior()
         {
             buttonBehaviour = base.dummyAd.AddComponent<ButtonBehaviour>();
-            buttonBehaviour.OnAdOpening += OnAdOpening;
+            buttonBehaviour.OnAdOpening += (s, e) =>
+            {
+                OnAdOpening(this, EventArgs.Empty);
+                OnAdImpressionRecorded();
+            };
         }
 
         // Creates a banner view and adds it to the view hierarchy.
