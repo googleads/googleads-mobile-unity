@@ -15,11 +15,36 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-using GoogleMobileAds.Common.Mediation.InMobi;
-using GoogleMobileAds.Mediation;
+using GoogleMobileAds.Mediation.InMobi;
+using GoogleMobileAds.Mediation.InMobi.Common;
+
+
+namespace GoogleMobileAds.Mediation.InMobi.Api
+{
+    public class InMobi
+    {
+        public static readonly IInMobiClient client = GetInMobiClient();
+
+        private static IInMobiClient GetInMobiClient()
+        {
+            return InMobiClientFactory.InMobiInstance();
+        }
+
+        public static void UpdateGDPRConsent(Dictionary<string, string> consentObject)
+        {
+            if (consentObject == null) {
+                MonoBehaviour.print("Error: Consent object is null.");
+                return;
+            }
+
+            client.UpdateGDPRConsent(consentObject);
+        }
+    }
+}
 
 namespace GoogleMobileAds.Api.Mediation.InMobi
 {
+    [System.Obsolete("Moved to GoogleMobileAds.Mediation.InMobi.Api.InMobi")]
     public class InMobi
     {
         public static readonly IInMobiClient client = GetInMobiClient();

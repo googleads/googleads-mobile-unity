@@ -12,15 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#if UNITY_ANDROID
+#if UNITY_IOS
 
-using System.Reflection;
-using System.Collections.Generic;
 using UnityEngine;
+using System.Collections.Generic;
 
-using GoogleMobileAds.Common.Mediation.InMobi;
+using GoogleMobileAds.Mediation.InMobi.Common;
 
-namespace GoogleMobileAds.Android.Mediation.InMobi
+namespace GoogleMobileAds.Mediation.InMobi.iOS
 {
     public class InMobiClient : IInMobiClient
     {
@@ -37,14 +36,14 @@ namespace GoogleMobileAds.Android.Mediation.InMobi
 
         public void UpdateGDPRConsent(Dictionary<string, string> consentObject)
         {
-            AndroidJavaObject consentObjectJSON = new AndroidJavaObject("org.json.JSONObject");
-            AndroidJavaClass inMobi = new AndroidJavaClass("com.google.ads.mediation.inmobi.InMobiConsent");
-
+            // Since a Dictionary cannot be converted to an NSDictionary object, we parse the dictionary
+            // as a delimited string to be interpreted.
+            string consentObjectString = "";
             foreach (KeyValuePair<string, string> entry in consentObject) {
-                consentObjectJSON.Call<AndroidJavaObject>("put", entry.Key, entry.Value);
+                consentObjectString += entry.Key + "=" + entry.Value + ";";
             }
 
-            inMobi.CallStatic("updateGDPRConsent", consentObjectJSON);
+            Externs.GADMInMobiUpdateGDPRConsent(consentObjectString);
         }
     }
 }

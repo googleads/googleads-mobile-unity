@@ -15,7 +15,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace GoogleMobileAds.Common.Mediation.InMobi
+namespace GoogleMobileAds.Mediation.InMobi.Common
 {
     public interface IInMobiClient
     {
