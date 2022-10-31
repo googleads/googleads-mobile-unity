@@ -7,6 +7,9 @@ Version Next
 Plugin:
 - Added OnAdClicked and OnAdImpressionRecorded events to BannerView.
 - Updated all ad format APIs to have consistent nomenclature.
+- Added new InterstitialAd.OnAdClicked event to interstitial ads.
+- Added new InterstitialAd.Load() API for loading interstitial ads.
+- Added new InterstitialAd.CanShowAd() API for checking interstitial ad state.
 
 **************
 Version 7.3.1
