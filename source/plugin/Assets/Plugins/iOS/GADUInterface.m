@@ -11,6 +11,10 @@
 #import "GADURequestConfiguration.h"
 #import "GADURewardedAd.h"
 #import "GADURewardedInterstitialAd.h"
+#import "GADUUMPRequestParameters.h"
+#import "GADUUMPDebugSettings.h"
+#import "GADUUMPConsentInformation.h"
+#import "GADUUMPConsentForm.h"
 #import "GADUTypes.h"
 
 /// Returns an NSString copying the characters from |bytes|, a C array of UTF8-encoded bytes.
@@ -969,6 +973,145 @@ const char *GADUAdapterResponseInfoDescription(
     GADUTypeAdapterResponseInfoRef adapterResponseInfo) {
   GADAdNetworkResponseInfo *info = (__bridge GADAdNetworkResponseInfo *)adapterResponseInfo;
   return cStringCopy(info.description.UTF8String);
+}
+
+// UMP SDK - FormError Methods
+
+const int GADUGetFormErrorCode(GADUTypeErrorRef error) {
+  NSError *internalError = (__bridge NSError *)error;
+  return internalError.code;
+}
+
+const char *GADUGetFormErrorMessage(GADUTypeErrorRef error) {
+  NSError *internalError = (__bridge NSError *)error;
+  return cStringCopy(internalError.localizedDescription.UTF8String);
+}
+
+// UMP SDK - Consent Information Methods
+
+/// Create an empty UMPRequestParameters
+GADUTypeUMPRequestParametersRef GADUCreateUMPRequestParameters() {
+  GADUUMPRequestParameters *requestParameters = [[GADUUMPRequestParameters alloc] init];
+  GADUObjectCache *cache = [GADUObjectCache sharedInstance];
+  cache[requestParameters.gadu_referenceKey] = requestParameters;
+  return (__bridge GADUTypeUMPRequestParametersRef)requestParameters;
+}
+
+/// Set RequestParameters tagForUnderAgeOfConsent
+void GADUSetUMPRequestParametersTagForUnderAgeOfConsent(
+    GADUTypeUMPRequestParametersRef requestParameters, BOOL tagForUnderAgeOfConsent) {
+  GADUUMPRequestParameters *internalRequestParameters =
+      (__bridge GADUUMPRequestParameters *)requestParameters;
+  internalRequestParameters.tagForUnderAgeOfConsent = tagForUnderAgeOfConsent;
+}
+
+/// Create an empty UMPDebugSettings.
+GADUTypeUMPDebugSettingsRef GADUCreateUMPDebugSettings() {
+  GADUUMPDebugSettings *debugSettings = [[GADUUMPDebugSettings alloc] init];
+  GADUObjectCache *cache = [GADUObjectCache sharedInstance];
+  cache[debugSettings.gadu_referenceKey] = debugSettings;
+  return (__bridge GADUTypeUMPDebugSettingsRef)debugSettings;
+}
+
+/// Set UMPDebugSettings DebugGeography.
+void GADUSetUMPDebugSettingsDebugGeography(
+    GADUTypeUMPDebugSettingsRef debugSettings, int debugGeography) {
+  GADUUMPDebugSettings *internalDebugSettings =
+      (__bridge GADUUMPDebugSettings *)debugSettings;
+  internalDebugSettings.geography = debugGeography;
+}
+
+/// Set UMPDebugSettings Test Device Ids.
+void GADUSetUMPDebugSettingsTestDeviceIdentifiers(
+    GADUTypeUMPDebugSettingsRef debugSettings, const char **testDeviceIDs,
+    NSInteger testDeviceIDLength) {
+  GADUUMPDebugSettings *internalDebugSettings =
+      (__bridge GADUUMPDebugSettings *)debugSettings;
+  NSMutableArray *testDeviceIDsArray = [[NSMutableArray alloc] init];
+  for (int i = 0; i < testDeviceIDLength; i++) {
+    [testDeviceIDsArray addObject:GADUStringFromUTF8String(testDeviceIDs[i])];
+  }
+  [internalDebugSettings setTestDeviceIdentifiers:testDeviceIDsArray];
+}
+
+/// Set RequestParameters tag for under age of consent.
+void GADUSetUMPRequestParametersUMPDebugSettings(
+    GADUTypeUMPRequestParametersRef requestParameters, GADUTypeUMPDebugSettingsRef debugSettings) {
+  GADUUMPRequestParameters *internalRequestParameters =
+      (__bridge GADUUMPRequestParameters *)requestParameters;
+  internalRequestParameters.debugSettings = (__bridge GADUUMPDebugSettings *)debugSettings;
+}
+
+/// Create an empty ConsentInformation object (in bridge layer).
+GADUTypeUMPConsentInformationRef GADUCreateConsentInformation(
+    GADUTypeUMPConsentInformationClientRef *consentInformationClient) {
+  GADUUMPConsentInformation *internalConsentInfo =
+      [[GADUUMPConsentInformation alloc]
+          initWithConsentInformationClientReference:consentInformationClient];
+    GADUObjectCache *cache = [GADUObjectCache sharedInstance];
+    cache[internalConsentInfo.gadu_referenceKey] = internalConsentInfo;
+    return (__bridge GADUTypeUMPConsentInformationRef)internalConsentInfo;
+}
+
+/// Update ConsentInformation with the RequestParameters.
+void GADUUMPRequestConsentInfoUpdate(
+    GADUTypeUMPConsentInformationRef consentInformation,
+    GADUTypeUMPRequestParametersRef parameters, GADUUMPConsentInfoUpdateCallback callback) {
+  GADUUMPConsentInformation *internalConsentInfo =
+      (__bridge GADUUMPConsentInformation *)consentInformation;
+  internalConsentInfo.consentInfoUpdateCallback = callback;
+  GADUUMPRequestParameters *internalRequestParameters =
+      (__bridge GADUUMPRequestParameters *)parameters;
+  [internalConsentInfo requestConsentInfoUpdateWithParameters:internalRequestParameters];
+}
+
+/// Get the current consent status.
+const int GADUUMPGetConsentStatus(GADUTypeUMPConsentInformationRef consentInformation) {
+  GADUUMPConsentInformation *internalConsentInfo =
+      (__bridge GADUUMPConsentInformation *)consentInformation;
+  return [internalConsentInfo getConsentStatus];
+}
+
+/// Check if there is a ConsentForm available to load.
+const bool GADUUMPIsConsentFormAvailable(GADUTypeUMPConsentInformationRef consentInformation) {
+  GADUUMPConsentInformation *internalConsentInfo =
+      (__bridge GADUUMPConsentInformation *)consentInformation;
+  return [internalConsentInfo isConsentFormAvailable];
+}
+
+/// Erase / Reset ConsentInformation to default (unknown).
+void GADUUMPConsentInformationReset(GADUTypeUMPConsentInformationRef consentInformation) {
+  GADUUMPConsentInformation *internalConsentInfo =
+      (__bridge GADUUMPConsentInformation *)consentInformation;
+  [internalConsentInfo reset];
+}
+
+// UMP SDK - Consent Form Methods
+
+/// Create an empty ConsentForm object (in bridge layer).
+GADUTypeUMPConsentFormRef GADUCreateConsentForm(
+    GADUTypeUMPConsentFormClientRef *consentFormClient) {
+  GADUUMPConsentForm *consentForm =
+      [[GADUUMPConsentForm alloc] initWithConsentFormClientReference:consentFormClient];
+  GADUObjectCache *cache = [GADUObjectCache sharedInstance];
+  cache[consentForm.gadu_referenceKey] = consentForm;
+  return (__bridge GADUTypeUMPConsentFormRef)consentForm;
+}
+
+/// Try loading a ConsentForm if required / available.
+void GADUUMPLoadConsentForm(GADUTypeUMPConsentFormRef form,
+    GADUUMPConsentFormLoadCompleteCallback callback) {
+  GADUUMPConsentForm *internalConsentForm = (__bridge GADUUMPConsentForm *)form;
+  internalConsentForm.formLoadedCallback = callback;
+  [internalConsentForm loadForm];
+}
+
+/// Present the loaded ConsentForm.
+void GADUUMPPresentConsentForm(GADUTypeUMPConsentFormRef form,
+    GADUUMPConsentFormPresentCompleteCallback callback) {
+  GADUUMPConsentForm *internalConsentForm = (__bridge GADUUMPConsentForm *)form;
+  internalConsentForm.formPresentedCallback = callback;
+  [internalConsentForm show];
 }
 
 #pragma mark - Other methods

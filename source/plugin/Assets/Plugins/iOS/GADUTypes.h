@@ -97,6 +97,9 @@ typedef const void *GADUTypeAdNetworkExtrasRef;
 /// Type representing a GADUServerSideVerificationOptions.
 typedef const void *GADUTypeServerSideVerificationOptionsRef;
 
+/// Type representing a Unity UMP Consent Form client.
+typedef const void *GADUTypeConsentFormClientRef;
+
 // MARK: - GADUAppOpenAd
 
 /// Callback for when an app open ad is loaded.
@@ -255,3 +258,41 @@ typedef void (*GADURewardedInterstitialAdDidRecordImpressionCallback)(
 /// Callback when ad inspector UI closes.
 typedef void (*GADUAdInspectorCompleteCallback)(GADUTypeMobileAdsClientRef *clientRef,
                                                 const char *error);
+
+// MARK: - UMP SDK
+
+/// Type representing a UMPConsentInformation type
+typedef const void *GADUTypeUMPConsentInformationRef;
+
+/// Type representing a UMPConsentInformationClient type
+typedef const void *GADUTypeUMPConsentInformationClientRef;
+
+/// Type representing a UMPRequestParameters type
+typedef const void *GADUTypeUMPRequestParametersRef;
+
+/// Type representing a UMPDebugSettings type
+typedef const void *GADUTypeUMPDebugSettingsRef;
+
+/// Type representing a UMPDebugGeography type
+typedef const void *GADUTypeUMPDebugGeographyRef;
+
+/// Type representing a FormError type
+typedef const void *GADUTypeFormErrorRef;
+
+/// Type representing a UMPConsentForm type
+typedef const void *GADUTypeUMPConsentFormRef;
+
+/// Type representing a GADUTypeConsentFormClient type
+typedef const void *GADUTypeUMPConsentFormClientRef;
+
+/// Callback when Consent Information is updated.
+typedef void (*GADUUMPConsentInfoUpdateCallback)(
+    GADUTypeUMPConsentInformationClientRef *clientRef, const char *error);
+
+/// Callback when Consent Form is loaded.
+typedef void (*GADUUMPConsentFormLoadCompleteCallback)(GADUTypeConsentFormClientRef *clientRef,
+    const char *error);
+
+/// Callback when Consent Form is presented.
+typedef void (*GADUUMPConsentFormPresentCompleteCallback)(GADUTypeConsentFormClientRef *clientRef,
+    const char *error);
