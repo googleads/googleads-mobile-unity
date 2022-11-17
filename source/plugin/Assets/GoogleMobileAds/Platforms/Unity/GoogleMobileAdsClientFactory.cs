@@ -20,61 +20,42 @@ using UnityEngine.Scripting;
 
 namespace GoogleMobileAds
 {
-  [Preserve]
-  public class GoogleMobileAdsClientFactory: IClientFactory
-  {
-    public IAppStateEventClient BuildAppStateEventClient()
+    [Preserve]
+    public class GoogleMobileAdsClientFactory: IClientFactory
     {
-      return GoogleMobileAds.Common.AppStateEventClient.Instance;
-    }
+        public IAppStateEventClient BuildAppStateEventClient()
+        {
+            return GoogleMobileAds.Common.AppStateEventClient.Instance;
+        }
 
-    public IAppOpenAdClient BuildAppOpenAdClient()
-    {
-      if (Application.platform == RuntimePlatform.OSXEditor || Application.platform == RuntimePlatform.WindowsEditor)
-      {
-        return new GoogleMobileAds.Unity.AppOpenAdClient();
-      }
-      return new GoogleMobileAds.Common.AppOpenAdAdDummyClient();
-    }
+        public IAppOpenAdClient BuildAppOpenAdClient()
+        {
+            return new GoogleMobileAds.Unity.AppOpenAdClient();
+        }
 
-    public IBannerClient BuildBannerClient()
-    {
-      if (Application.platform == RuntimePlatform.OSXEditor || Application.platform == RuntimePlatform.WindowsEditor)
-      {
-        return new GoogleMobileAds.Unity.BannerClient();
-      }
-      return new GoogleMobileAds.Common.DummyClient();
-    }
+        public IBannerClient BuildBannerClient()
+        {
+            return new GoogleMobileAds.Unity.BannerClient();
+        }
 
-    public IInterstitialClient BuildInterstitialClient()
-    {
-      if (Application.platform == RuntimePlatform.OSXEditor || Application.platform == RuntimePlatform.WindowsEditor)
-      {
-        return new GoogleMobileAds.Unity.InterstitialClient();
-      }
-      return new GoogleMobileAds.Common.DummyClient();
-     }
+        public IInterstitialClient BuildInterstitialClient()
+        {
+            return new GoogleMobileAds.Unity.InterstitialClient();
+         }
 
-    public IRewardedAdClient BuildRewardedAdClient()
-    {
-      if (Application.platform == RuntimePlatform.OSXEditor || Application.platform == RuntimePlatform.WindowsEditor)
-      {
-        return new GoogleMobileAds.Unity.RewardedAdClient();
-      }
-      return new GoogleMobileAds.Common.RewardedAdDummyClient();
-    }
+        public IRewardedAdClient BuildRewardedAdClient()
+        {
+            return new GoogleMobileAds.Unity.RewardedAdClient();
+        }
 
-    public IRewardedInterstitialAdClient BuildRewardedInterstitialAdClient() {
-      if (Application.platform == RuntimePlatform.OSXEditor || Application.platform == RuntimePlatform.WindowsEditor)
-      {
-        return new GoogleMobileAds.Unity.RewardedInterstitialAdClient();
-      }
-      return new GoogleMobileAds.Common.RewardedInterstitialAdDummyClient();
-    }
+        public IRewardedInterstitialAdClient BuildRewardedInterstitialAdClient()
+        {
+            return new GoogleMobileAds.Unity.RewardedInterstitialAdClient();
+        }
 
-    public IMobileAdsClient MobileAdsInstance()
-    {
-      return new GoogleMobileAds.Common.DummyClient();
+        public IMobileAdsClient MobileAdsInstance()
+        {
+            return new GoogleMobileAds.Unity.MobileAdsClient();
+        }
     }
-  }
 }

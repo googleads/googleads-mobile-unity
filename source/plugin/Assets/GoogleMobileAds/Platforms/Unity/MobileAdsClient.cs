@@ -18,13 +18,13 @@ using GoogleMobileAds.Unity;
 using GoogleMobileAds.Api;
 using UnityEngine;
 using UnityEngine.UI;
+using GoogleMobileAds.Common;
 
-namespace GoogleMobileAds.Common
+namespace GoogleMobileAds.Unity
 {
-    public class DummyClient : BaseAdDummyClient, IBannerClient, IInterstitialClient,
-            IMobileAdsClient
+    public class MobileAdsClient : BaseAdDummyClient, IMobileAdsClient
     {
-        public DummyClient()
+        public MobileAdsClient()
         {
             Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
         }
