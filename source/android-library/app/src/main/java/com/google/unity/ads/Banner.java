@@ -218,8 +218,39 @@ public class Banner {
                   .start();
             }
           }
-        });
 
+          @Override
+          public void onAdImpression() {
+            if (mUnityListener != null) {
+              new Thread(
+                      new Runnable() {
+                        @Override
+                        public void run() {
+                          if (mUnityListener != null) {
+                            mUnityListener.onAdImpression();
+                          }
+                        }
+                      })
+                  .start();
+            }
+          }
+
+          @Override
+          public void onAdClicked() {
+            if (mUnityListener != null) {
+              new Thread(
+                      new Runnable() {
+                        @Override
+                        public void run() {
+                          if (mUnityListener != null) {
+                            mUnityListener.onAdClicked();
+                          }
+                        }
+                      })
+                  .start();
+            }
+          }
+        });
 
     mAdView.setOnPaidEventListener(
         new OnPaidEventListener() {
