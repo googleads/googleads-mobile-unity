@@ -14,23 +14,32 @@
 
 using System;
 using UnityEngine;
-using System.Reflection;
-using System.Runtime;
-
-using GoogleMobileAds;
 using GoogleMobileAds.Common;
 
 namespace GoogleMobileAds.Api
 {
+    /// <summary>
+    /// Contains logic that applies to the Google Mobile Ads SDK as a whole.
+    /// </summary>
     public class MobileAds
     {
+        /// <summary>
+        /// Contains methods for returning the device scale and safe width.
+        /// </summary>
         public static class Utils
         {
+            /// <summary>
+            /// The scale of the device in density independent pixels.
+            /// </summary>
             public static float GetDeviceScale()
             {
                 return Instance.client.GetDeviceScale();
             }
 
+            /// <summary>
+            /// The safe width of the device.
+            /// </summary>
+            /// <returns></returns>
             public static int GetDeviceSafeWidth()
             {
                 return Instance.client.GetDeviceSafeWidth();
@@ -43,6 +52,9 @@ namespace GoogleMobileAds.Api
 
         private static MobileAds instance;
 
+        /// <summary>
+        /// The <c>MobileAds</c> static instance.
+        /// </summary>
         public static MobileAds Instance
         {
             get
@@ -55,6 +67,17 @@ namespace GoogleMobileAds.Api
             }
         }
 
+        /// <summary>
+        /// Initializes the Google Mobile Ads SDK.
+        /// </summary>
+        /// <remarks>
+        /// Call this method before loading an ad and before interacting with
+        /// the rest of the Google Mobile Ads SDK.
+        /// </remarks>
+        /// <param name="initCompleteAction">
+        /// An action which is invoked after initialization is complete. Includes
+        /// the <c>InitializationStatus</c> of the SDK as a parameter.
+        /// </param>
         public static void Initialize(Action<InitializationStatus> initCompleteAction)
         {
             Instance.client.Initialize((initStatusClient) =>
@@ -68,32 +91,87 @@ namespace GoogleMobileAds.Api
             MobileAdsEventExecutor.Initialize();
         }
 
+        /// <summary>
+        /// Call before <see cref="MobileAds.Initialize(Action{InitializationStatus})"/> to
+        /// disable mediation adapter initialization.
+        /// </summary>
+        /// <remarks>
+        /// Warning: Calling this method might negatively impact your mediation performance.
+        /// This method should only be called if you include mediation adapters in your app, but
+        /// you don't plan on using Google mediation during this app session (for example, you are
+        /// running an A/B test).
+        /// </remarks>
         public static void DisableMediationInitialization()
         {
             Instance.client.DisableMediationInitialization();
         }
 
+        /// <summary>
+        /// Sets whether the app's audio is muted. Affects initial mute state for all ads.
+        /// </summary>
+        /// <remarks>
+        /// Warning: Muting your app reduces video ad eligibility and might reduce your app's
+        /// ad revenue. Use this API only if your app provides a custom mute control and reflects
+        /// the user's mute decision through the API.
+        /// </remarks>
+        /// <param name="muted">
+        /// True if the app is muted, false otherwise. Defaults to false.
+        /// </param>
         public static void SetApplicationMuted(bool muted)
         {
             Instance.client.SetApplicationMuted(muted);
         }
-
+        /// <summary>
+        /// Sets the global <see cref="RequestConfiguration"/> that is used for every
+        /// <see cref="AdRequest"/> during the app's session.
+        /// </summary>
+        /// <param name="requestConfiguration">
+        /// The global configuration that is used for every <see cref="AdRequest"/>.
+        /// </param>
         public static void SetRequestConfiguration(RequestConfiguration requestConfiguration)
         {
             Instance.client.SetRequestConfiguration(requestConfiguration);
         }
 
+        /// <summary>
+        /// Gets the global <see cref="RequestConfiguration"/>.
+        /// </summary>
+        /// <returns>
+        /// The global configuration that is used for every <see cref="AdRequest"/>.
+        /// </returns>
         public static RequestConfiguration GetRequestConfiguration()
         {
 
             return Instance.client.GetRequestConfiguration();
         }
 
+        /// <summary>
+        /// Sets the app's audio volume. Affects audio volumes of all ads relative
+        /// to other audio output.
+        /// </summary>
+        /// <remarks>
+        /// Warning: Lowering your app's audio volume reduces video ad eligibility and might reduce
+        /// your app's ad revenue. Use this API only if your app provides custom volume control and
+        /// reflects the user's volume choice through the API.
+        /// </remarks>
+        /// <param name="volume">
+        /// The volume as a float from 0 (muted) to 1.0 (full media volume). Defaults to 1.0.
+        /// </param>
         public static void SetApplicationVolume(float volume)
         {
             Instance.client.SetApplicationVolume(volume);
         }
 
+        /// <summary>
+        /// Indicates if the Unity app should be paused when a full-screen ad is displayed.
+        /// </summary>
+        /// <remarks>
+        /// On Android, Unity is paused when displaying full-screen ads. Calling this method
+        /// with <c>true</c> duplicates this behavior on iOS.
+        /// </remarks>
+        /// <param name="pause">
+        /// True if iOS should pause the app when backgrounded. Default is false.
+        /// </param>
         public static void SetiOSAppPauseOnBackground(bool pause)
         {
             Instance.client.SetiOSAppPauseOnBackground(pause);
@@ -138,8 +216,9 @@ namespace GoogleMobileAds.Api
         /// <summary>
         /// Used to provide a mock clientFactory - for unit testing only.
         /// </summary>
-        /// <param name="clientFactory">IClientFactory implementation for the underlying
-        /// platform.</param>
+        /// <param name="clientFactory">
+        /// <see cref="IClientFactory"/> implementation for the underlying platform.
+        /// </param>
         internal static void SetClientFactory(IClientFactory clientFactory)
         {
             MobileAds.clientFactory = clientFactory;
