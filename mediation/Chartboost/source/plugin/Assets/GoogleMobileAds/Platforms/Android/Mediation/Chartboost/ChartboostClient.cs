@@ -36,7 +36,7 @@ namespace GoogleMobileAds.Android.Mediation.Chartboost
 
         public void AddDataUseConsent(CBGDPRDataUseConsent gdprConsent)
         {
-            AndroidJavaClass chartboostGDPRConsentEnum = new AndroidJavaClass("com.chartboost.sdk.Privacy.model.GDPR$GDPR_CONSENT");
+            AndroidJavaClass chartboostGDPRConsentEnum = new AndroidJavaClass("com.chartboost.sdk.privacy.model.GDPR$GDPR_CONSENT");
             AndroidJavaObject gdprConsentObject;
             if (gdprConsent == CBGDPRDataUseConsent.NonBehavioral)
             {
@@ -54,14 +54,14 @@ namespace GoogleMobileAds.Android.Mediation.Chartboost
 
             AndroidJavaClass unityPlayer = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
             AndroidJavaObject currentActivity = unityPlayer.GetStatic<AndroidJavaObject>("currentActivity");
-            AndroidJavaObject dataUseConsent = new AndroidJavaObject("com.chartboost.sdk.Privacy.model.GDPR", gdprConsentObject);
+            AndroidJavaObject dataUseConsent = new AndroidJavaObject("com.chartboost.sdk.privacy.model.GDPR", gdprConsentObject);
             AndroidJavaClass chartboost = new AndroidJavaClass("com.chartboost.sdk.Chartboost");
             chartboost.CallStatic("addDataUseConsent", currentActivity, dataUseConsent);
         }
 
         public void AddDataUseConsent(CBCCPADataUseConsent ccpaConsent)
         {
-            AndroidJavaClass chartboostCCPAConsentEnum = new AndroidJavaClass("com.chartboost.sdk.Privacy.model.CCPA$CCPA_CONSENT");
+            AndroidJavaClass chartboostCCPAConsentEnum = new AndroidJavaClass("com.chartboost.sdk.privacy.model.CCPA$CCPA_CONSENT");
             AndroidJavaObject ccpaConsentObject;
             if (ccpaConsent == CBCCPADataUseConsent.OptOutSale)
             {
@@ -79,7 +79,7 @@ namespace GoogleMobileAds.Android.Mediation.Chartboost
 
             AndroidJavaClass unityPlayer = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
             AndroidJavaObject currentActivity = unityPlayer.GetStatic<AndroidJavaObject>("currentActivity");
-            AndroidJavaObject dataUseConsent = new AndroidJavaObject("com.chartboost.sdk.Privacy.model.CCPA", ccpaConsentObject);
+            AndroidJavaObject dataUseConsent = new AndroidJavaObject("com.chartboost.sdk.privacy.model.CCPA", ccpaConsentObject);
             AndroidJavaClass chartboost = new AndroidJavaClass("com.chartboost.sdk.Chartboost");
             chartboost.CallStatic("addDataUseConsent", currentActivity, dataUseConsent);
         }
@@ -88,7 +88,7 @@ namespace GoogleMobileAds.Android.Mediation.Chartboost
         {
             AndroidJavaClass unityPlayer = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
             AndroidJavaObject currentActivity = unityPlayer.GetStatic<AndroidJavaObject>("currentActivity");
-            AndroidJavaObject dataUseConsent = new AndroidJavaObject("com.chartboost.sdk.Privacy.model.Custom", customConsentName, customConsentValue);
+            AndroidJavaObject dataUseConsent = new AndroidJavaObject("com.chartboost.sdk.privacy.model.Custom", customConsentName, customConsentValue);
             AndroidJavaClass chartboost = new AndroidJavaClass("com.chartboost.sdk.Chartboost");
             chartboost.CallStatic("addDataUseConsent", currentActivity, dataUseConsent);
         }
