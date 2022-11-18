@@ -790,6 +790,9 @@ const GADUTypeResponseInfoRef GADUGetResponseInfo(GADUTypeRef adFormat) {
     GADURewardedInterstitialAd *internalRewardedInterstitialAd =
         (GADURewardedInterstitialAd *)internalAd;
     responseInfo = internalRewardedInterstitialAd.responseInfo;
+  } else if ([internalAd isKindOfClass:[GADUAppOpenAd class]]) {
+    GADUAppOpenAd *internalGADUAppOpenAd = (GADUAppOpenAd *)internalAd;
+    responseInfo = internalGADUAppOpenAd.responseInfo;
   }
 
   if (responseInfo) {
