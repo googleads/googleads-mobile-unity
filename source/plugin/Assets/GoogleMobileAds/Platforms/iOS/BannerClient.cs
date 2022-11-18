@@ -42,7 +42,11 @@ namespace GoogleMobileAds.iOS
         internal delegate void GADUAdViewPaidEventCallback(
             IntPtr bannerClient, int precision, long value, string currencyCode);
 
-#endregion
+        internal delegate void GADUAdViewImpressionCallback(IntPtr bannerClient);
+
+        internal delegate void GADUAdViewClickCallback(IntPtr bannerClient);
+
+        #endregion
 
         public event EventHandler<EventArgs> OnAdLoaded;
 
@@ -54,6 +58,9 @@ namespace GoogleMobileAds.iOS
 
         public event EventHandler<AdValueEventArgs> OnPaidEvent;
 
+        public event Action OnAdClicked;
+
+        public event Action OnAdImpressionRecorded;
 
         // This property should be used when setting the bannerViewPtr.
         private IntPtr BannerViewPtr
@@ -100,13 +107,15 @@ namespace GoogleMobileAds.iOS
             }
 
             Externs.GADUSetBannerCallbacks(
-                    this.BannerViewPtr,
-                    AdViewDidReceiveAdCallback,
-                    AdViewDidFailToReceiveAdWithErrorCallback,
-                    AdViewWillPresentScreenCallback,
-                    AdViewDidDismissScreenCallback,
-                    AdViewPaidEventCallback
-                    );
+                this.BannerViewPtr,
+                AdViewDidReceiveAdCallback,
+                AdViewDidFailToReceiveAdWithErrorCallback,
+                AdViewWillPresentScreenCallback,
+                AdViewDidDismissScreenCallback,
+                AdViewPaidEventCallback,
+                AdViewImpressionRecordedCallback,
+                AdViewClickRecordedCallback
+                );
         }
 
         public void CreateBannerView(string adUnitId, AdSize adSize, int x, int y)
@@ -151,7 +160,9 @@ namespace GoogleMobileAds.iOS
                 AdViewDidFailToReceiveAdWithErrorCallback,
                 AdViewWillPresentScreenCallback,
                 AdViewDidDismissScreenCallback,
-                AdViewPaidEventCallback
+                AdViewPaidEventCallback,
+                AdViewImpressionRecordedCallback,
+                AdViewClickRecordedCallback
                 );
         }
 
@@ -290,6 +301,27 @@ namespace GoogleMobileAds.iOS
                 };
 
                 client.OnPaidEvent(client, args);
+            }
+        }
+
+
+        [MonoPInvokeCallback(typeof(GADUAdViewImpressionCallback))]
+        private static void AdViewImpressionRecordedCallback(IntPtr adClientRef)
+        {
+            BannerClient client = IntPtrToBannerClient(adClientRef);
+            if (client.OnAdImpressionRecorded != null)
+            {
+                client.OnAdImpressionRecorded();
+            }
+        }
+
+        [MonoPInvokeCallback(typeof(GADUAdViewClickCallback))]
+        private static void AdViewClickRecordedCallback(IntPtr adClientRef)
+        {
+            BannerClient client = IntPtrToBannerClient(adClientRef);
+            if (client.OnAdClicked != null)
+            {
+                client.OnAdClicked();
             }
         }
 

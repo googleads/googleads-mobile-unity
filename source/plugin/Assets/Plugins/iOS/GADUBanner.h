@@ -70,6 +70,12 @@
 /// The paid event callback into Unity.
 @property(nonatomic, assign) GADUAdViewPaidEventCallback paidEventCallback;
 
+/// The ad impression event callback into Unity.
+@property(nonatomic, assign) GADUAdViewImpressionCallback adImpressionCallback;
+
+/// The ad clicked event callback into Unity.
+@property(nonatomic, assign) GADUAdViewClickCallback adClickedCallback;
+
 // Returns the banner ad response info.
 @property(nonatomic, readonly, copy) GADResponseInfo *responseInfo;
 
