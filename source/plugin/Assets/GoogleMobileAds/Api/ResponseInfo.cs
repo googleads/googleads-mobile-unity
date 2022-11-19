@@ -31,8 +31,8 @@ namespace GoogleMobileAds.Api
         }
 
         /// <summary>
-        /// Returns the AdapterResponseInfo of the adapter that loaded the ad.
-        /// Returns null if the ad failed to load.
+        /// Returns the <see cref="AdapterResponseInfo"/> of the adapter that loaded
+        /// the ad or null if the ad failed to load.
         /// </summary>
         public AdapterResponseInfo GetLoadedAdapterResponseInfo()
         {
@@ -40,8 +40,9 @@ namespace GoogleMobileAds.Api
         }
 
         /// <summary>
-        /// Returns the list of AdapterResponseInfo containing metadata for each adapter included
-        /// in the ad response. Can be used to debug the mediation waterfall execution.
+        /// Returns the list of <see cref="AdapterResponseInfo"/> containing metadata
+        /// for each adapter included in the ad response. Can be used to debug the
+        /// mediation waterfall execution.
         /// </summary>
         public List<AdapterResponseInfo> GetAdapterResponses()
         {
@@ -67,7 +68,8 @@ namespace GoogleMobileAds.Api
         /// In the case of a mediated ad response, this is the name of the class that was
         /// responsible for performing the ad request and rendering the ad.
         ///
-        /// See https://developers.google.com/admob/unity/response-info for possible return values.
+        /// See <seealso href="https://developers.google.com/admob/unity/response-info"/>
+        /// for possible return values.
         /// Returns null if the ad failed to load.
         /// </summary>
         public string GetMediationAdapterClassName()
