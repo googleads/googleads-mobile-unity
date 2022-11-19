@@ -12,44 +12,49 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using UnityEngine;
 using GoogleMobileAds.Common;
 namespace GoogleMobileAds.Api
 {
     /// <summary>
-    /// Gets error information about why an ad load operation failed.
+    /// Error information about why an ad operation failed.
     /// </summary>
-    /// <returns>Ad Error Object with Code, Message, Domain, and Cause.</returns>
     public class AdError
     {
         private IAdErrorClient _client;
 
+        /// <summary>
+        /// Creates a <see cref="AdError"/>.
+        /// </summary>
+        /// <param name="client">
+        /// A platform level <see cref="IAdErrorClient"/> implementation.
+        /// </param>
         public AdError(IAdErrorClient client)
         {
             _client = client;
         }
 
         /// <summary>
-        /// Gets the error code.
+        /// Returns the error code.
         /// </summary>
-        /// <returns>Ad Error Code. </returns>
+        /// <returns>The error code.</returns>
         public int GetCode()
         {
             return _client.GetCode();
         }
 
         /// <summary>
-        /// Gets the domain from which the error came.
+        /// Return "MobileAds" for Google Mobile Ads SDK errors, or a domain defined by
+        /// mediation networks for mediation errors.
         /// </summary>
-        /// <returns>Ad Error Domain. </returns>
+        /// <returns>The error domain.</returns>
         public string GetDomain()
         {
             return _client.GetDomain();
         }
 
         /// <summary>
-        /// Gets the error message.
-        /// See https://support.google.com/admob/answer/9905175
+        /// Returns the error message.
+        /// <seealso href="https://support.google.com/admob/answer/9905175"/>
         /// for explanations of common errors.
         /// <summary>
         /// <returns>Ad Error Message. </returns>
@@ -59,15 +64,18 @@ namespace GoogleMobileAds.Api
         }
 
         ///<summary>
-        /// Gets the underlying cause, or null if no cause exists.
+        /// Returns the cause of this error or <c>null</c> if the cause is nonexistent or unknown.
         /// <summary>
-        /// <returns>Ad Error Cause. </returns>
+        /// <returns>Returns the cause of this error.</returns>
         public AdError GetCause()
         {
             var cause = _client.GetCause();
             return cause == null ? null : new AdError(_client.GetCause());
         }
 
+        /// <summary>
+        /// Returns a log friendly string version of this object.
+        /// </summary>
         public override string ToString()
         {
             return _client.ToString();
