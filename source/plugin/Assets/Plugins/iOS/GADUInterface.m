@@ -309,6 +309,7 @@ void GADUSetInterstitialCallbacks(
     GADUInterstitialAdFailedToPresentFullScreenContentCallback adFailedToPresentCallback,
     GADUInterstitialAdDidDismissFullScreenContentCallback adDidDismissCallback,
     GADUInterstitialAdDidRecordImpressionCallback adDidRecordImpressionCallback,
+    GADUInterstitialAdDidRecordClickCallback adDidRecordClickCallback,
     GADUInterstitialPaidEventCallback paidEventCallback) {
   GADUInterstitial *internalInterstitial = (__bridge GADUInterstitial *)interstitial;
   internalInterstitial.adLoadedCallback = adLoadedCallback;
@@ -317,6 +318,7 @@ void GADUSetInterstitialCallbacks(
   internalInterstitial.adFailedToPresentFullScreenContentCallback = adFailedToPresentCallback;
   internalInterstitial.adDidDismissFullScreenContentCallback = adDidDismissCallback;
   internalInterstitial.adDidRecordImpressionCallback = adDidRecordImpressionCallback;
+  internalInterstitial.adDidRecordClickCallback = adDidRecordClickCallback;
   internalInterstitial.paidEventCallback = paidEventCallback;
 }
 

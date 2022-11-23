@@ -184,6 +184,10 @@ typedef void (*GADUInterstitialAdDidDismissFullScreenContentCallback)(
 typedef void (*GADUInterstitialAdDidRecordImpressionCallback)(
     GADUTypeInterstitialRef *interstitialClient);
 
+/// Callback when an interstitial ad has made a click.
+typedef void (*GADUInterstitialAdDidRecordClickCallback)(
+    GADUTypeInterstitialRef *interstitialClient);
+
 /// Callback when an interstitial ad is estimated to have earned money.
 typedef void (*GADUInterstitialPaidEventCallback)(GADUTypeInterstitialClientRef *interstitialClient,
                                                   int precision, int64_t value,

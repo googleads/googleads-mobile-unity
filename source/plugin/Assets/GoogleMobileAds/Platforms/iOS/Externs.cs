@@ -320,6 +320,8 @@ namespace GoogleMobileAds.iOS
                 adDidDismissFullScreenContentCallback,
             InterstitialClient.GADUInterstitialAdDidRecordImpressionCallback
                 adDidRecordImpressionCallback,
+            InterstitialClient.GADUInterstitialAdDidRecordClickCallback
+                adDidRecordClickCallback,
             InterstitialClient.GADUInterstitialPaidEventCallback paidEventCallback
         );
 
