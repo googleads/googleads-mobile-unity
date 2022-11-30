@@ -11,7 +11,9 @@ public interface UnityFullScreenContentCallback {
 
   void onAdShowedFullScreenContent();
 
+  void onAdDismissedFullScreenContent();
+
   void onAdImpression();
 
-  void onAdDismissedFullScreenContent();
+  void onAdClicked();
 }
