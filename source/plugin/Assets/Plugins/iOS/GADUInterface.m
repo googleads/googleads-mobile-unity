@@ -270,7 +270,8 @@ void GADUSetAppOpenAdCallbacks(
         adFailedToPresentFullScreenContentCallback,
     GADUAppOpenAdWillPresentFullScreenContentCallback adWillPresentFullScreenContentCallback,
     GADUAppOpenAdDidDismissFullScreenContentCallback adDidDismissFullScreenContentCallback,
-    GADUAppOpenAdDidRecordImpressionCallback adDidRecordImpressionCallback) {
+    GADUAppOpenAdDidRecordImpressionCallback adDidRecordImpressionCallback,
+    GADUAppOpenAdDidRecordClickCallback adDidRecordClickCallback) {
   GADUAppOpenAd *internalAppOpenAd = (__bridge GADUAppOpenAd *)appOpenAd;
   internalAppOpenAd.adLoadedCallback = adLoadedCallback;
   internalAppOpenAd.adFailedToLoadCallback = adFailedToLoadCallback;
@@ -280,6 +281,7 @@ void GADUSetAppOpenAdCallbacks(
   internalAppOpenAd.adWillPresentFullScreenContentCallback = adWillPresentFullScreenContentCallback;
   internalAppOpenAd.adDidDismissFullScreenContentCallback = adDidDismissFullScreenContentCallback;
   internalAppOpenAd.adDidRecordImpressionCallback = adDidRecordImpressionCallback;
+  internalAppOpenAd.adDidRecordClickCallback = adDidRecordClickCallback;
 }
 
 /// Sets the banner callback methods to be invoked during banner ad events.

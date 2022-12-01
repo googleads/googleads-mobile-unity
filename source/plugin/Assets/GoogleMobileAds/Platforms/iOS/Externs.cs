@@ -165,7 +165,9 @@ namespace GoogleMobileAds.iOS
             AppOpenAdClient.GADUAppOpenAdDidDismissFullScreenContentCallback
                     adDidDismissFullScreenContentCallback,
             AppOpenAdClient.GADUAppOpenAdDidRecordImpressionCallback
-                    adDidRecordImpressionCallback
+                    adDidRecordImpressionCallback,
+            AppOpenAdClient.GADUAppOpenAdDidRecordClickCallback
+                    adDidRecordClickCallback
         );
 
         #endregion

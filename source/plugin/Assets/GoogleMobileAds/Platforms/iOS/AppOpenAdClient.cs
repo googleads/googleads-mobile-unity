@@ -52,6 +52,7 @@ namespace GoogleMobileAds.iOS
 
         internal delegate void GADUAppOpenAdDidRecordImpressionCallback(IntPtr appOpenAdClient);
 
+        internal delegate void GADUAppOpenAdDidRecordClickCallback(IntPtr appOpenAdClient);
         #endregion
 
         public event EventHandler<EventArgs> OnAdLoaded;
@@ -65,6 +66,8 @@ namespace GoogleMobileAds.iOS
         public event EventHandler<EventArgs> OnAdDidPresentFullScreenContent;
 
         public event EventHandler<EventArgs> OnAdDidRecordImpression;
+
+        public event Action OnAdClicked;
 
         public event EventHandler<EventArgs> OnAdDidDismissFullScreenContent;
 
@@ -98,7 +101,8 @@ namespace GoogleMobileAds.iOS
                     AdFailedToPresentFullScreenContentCallback,
                     AdWillPresentFullScreenContentCallback,
                     AdDidDismissFullScreenContentCallback,
-                    AdDidRecordImpressionCallback);
+                    AdDidRecordImpressionCallback,
+                    AdDidRecordClickCallback);
         }
 
         // Load an ad.
@@ -230,6 +234,16 @@ namespace GoogleMobileAds.iOS
             if (client.OnAdDidRecordImpression != null)
             {
                 client.OnAdDidRecordImpression(client, EventArgs.Empty);
+            }
+        }
+
+        [MonoPInvokeCallback(typeof(GADUAppOpenAdDidRecordClickCallback))]
+        private static void AdDidRecordClickCallback(IntPtr appOpenAdClient)
+        {
+            AppOpenAdClient client = IntPtrToAppOpenAdClient(appOpenAdClient);
+            if (client.OnAdClicked != null)
+            {
+                client.OnAdClicked();
             }
         }
 

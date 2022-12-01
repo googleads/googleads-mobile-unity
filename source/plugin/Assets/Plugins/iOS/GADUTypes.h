@@ -118,6 +118,11 @@ typedef void (*GADUAppOpenAdWillPresentFullScreenContentCallback)(
 typedef void (*GADUAppOpenAdDidRecordImpressionCallback)(
     GADUTypeAppOpenAdClientRef *appOpenAdClient);
 
+/// Callback when an ad click has been recorded for the app open ad.
+typedef void (*GADUAppOpenAdDidRecordClickCallback)(
+    GADUTypeAppOpenAdClientRef *appOpenAdClient);
+
+
 /// Callback when an app open ad dismissed full screen content.
 typedef void (*GADUAppOpenAdDidDismissFullScreenContentCallback)(
     GADUTypeAppOpenAdClientRef *appOpenAdClient);
