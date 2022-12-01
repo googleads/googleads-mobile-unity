@@ -38,6 +38,7 @@ namespace GoogleMobileAds.Unity
 
         public event EventHandler<EventArgs> OnAdDidRecordImpression;
 
+        public event Action OnAdClicked;
 
         private Dictionary<AdSize, string> prefabAds = new Dictionary<AdSize, string>() {
             {new AdSize (768,1024), "DummyAds/Interstitials/768x1024" },
@@ -53,6 +54,10 @@ namespace GoogleMobileAds.Unity
             Button button = adImage.GetComponentInChildren<Button>();
             button.onClick.AddListener(() => {
                 buttonBehaviour.OpenURL();
+                if (OnAdClicked != null)
+                {
+                    OnAdClicked();
+                }
             });
 
             Button[] innerButtons = adImage.GetComponentsInChildren<Button>();
@@ -122,6 +127,10 @@ namespace GoogleMobileAds.Unity
                 if (OnAdDidPresentFullScreenContent != null)
                 {
                   OnAdDidPresentFullScreenContent.Invoke(this, EventArgs.Empty);
+                }
+                if (OnAdDidRecordImpression != null)
+                {
+                    OnAdDidRecordImpression(this, EventArgs.Empty);
                 }
             } else
             {
