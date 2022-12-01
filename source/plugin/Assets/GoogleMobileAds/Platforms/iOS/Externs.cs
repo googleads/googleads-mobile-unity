@@ -355,6 +355,8 @@ namespace GoogleMobileAds.iOS
                 adDidDismissFullScreenContentCallback,
             RewardedAdClient.GADURewardedAdDidRecordImpressionCallback
                 adDidRecordImpressionCallback,
+            RewardedAdClient.GADURewardedAdDidRecordClickCallback
+                adDidRecordClickCallback,
             RewardedAdClient.GADURewardedAdUserEarnedRewardCallback adDidEarnRewardCallback,
             RewardedAdClient.GADURewardedAdPaidEventCallback
                 paidEventCallback

@@ -330,6 +330,7 @@ void GADUSetRewardedAdCallbacks(
     GADURewardedAdFailedToPresentFullScreenContentCallback adFailedToPresentCallback,
     GADURewardedAdDidDismissFullScreenContentCallback adDidDismissCallback,
     GADURewardedAdDidRecordImpressionCallback adDidRecordImpressionCallback,
+    GADURewardedAdDidRecordClickCallback adDidRecordClickCallback,
     GADURewardedAdUserEarnedRewardCallback didEarnRewardCallback,
     GADURewardedAdPaidEventCallback paidEventCallback) {
   GADURewardedAd *internalRewardedAd = (__bridge GADURewardedAd *)rewardedAd;
@@ -339,6 +340,7 @@ void GADUSetRewardedAdCallbacks(
   internalRewardedAd.adFailedToPresentFullScreenContentCallback = adFailedToPresentCallback;
   internalRewardedAd.adDidDismissFullScreenContentCallback = adDidDismissCallback;
   internalRewardedAd.adDidRecordImpressionCallback = adDidRecordImpressionCallback;
+  internalRewardedAd.adDidRecordClickCallback = adDidRecordClickCallback;
   internalRewardedAd.didEarnRewardCallback = didEarnRewardCallback;
   internalRewardedAd.paidEventCallback = paidEventCallback;
 }

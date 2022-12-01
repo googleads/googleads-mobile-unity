@@ -216,6 +216,9 @@ typedef void (*GADURewardedAdDidDismissFullScreenContentCallback)(
 /// Callback when a rewarded ad has made an impression.
 typedef void (*GADURewardedAdDidRecordImpressionCallback)(GADUTypeRewardedAdRef *rewardedAdClient);
 
+/// Callback when a rewarded ad has made a click.
+typedef void (*GADURewardedAdDidRecordClickCallback)(GADUTypeRewardedAdRef *rewardedAdClient);
+
 /// Callback for when a user earned a reward.
 typedef void (*GADURewardedAdUserEarnedRewardCallback)(
     GADUTypeRewardedAdClientRef *rewardBasedVideoClient, const char *rewardType,

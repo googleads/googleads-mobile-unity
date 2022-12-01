@@ -136,4 +136,9 @@
   }
 }
 
+- (void)adDidRecordClick:(nonnull id<GADFullScreenPresentingAd>)ad {
+  if (self.adDidRecordClickCallback) {
+    self.adDidRecordClickCallback(self.rewardedAdClient);
+  }
+}
 @end
