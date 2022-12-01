@@ -359,7 +359,8 @@ void GADUSetRewardedInterstitialAdCallbacks(
         adWillPresentFullScreenContentCallback,
     GADURewardedInterstitialAdDidDismissFullScreenContentCallback
         adDidDismissFullScreenContentCallback,
-    GADURewardedInterstitialAdDidRecordImpressionCallback adDidRecordImpressionCallback) {
+    GADURewardedInterstitialAdDidRecordImpressionCallback adDidRecordImpressionCallback,
+    GADURewardedInterstitialAdDidRecordClickCallback adDidRecordClickCallback) {
   GADURewardedInterstitialAd *internalRewardedInterstitialAd =
       (__bridge GADURewardedInterstitialAd *)rewardedInterstitialAd;
   internalRewardedInterstitialAd.adLoadedCallback = adLoadedCallback;
@@ -373,6 +374,7 @@ void GADUSetRewardedInterstitialAdCallbacks(
   internalRewardedInterstitialAd.adDidDismissFullScreenContentCallback =
       adDidDismissFullScreenContentCallback;
   internalRewardedInterstitialAd.adDidRecordImpressionCallback = adDidRecordImpressionCallback;
+  internalRewardedInterstitialAd.adDidRecordClickCallback = adDidRecordClickCallback;
 }
 
 /// Shows the GADAppOpenAd.

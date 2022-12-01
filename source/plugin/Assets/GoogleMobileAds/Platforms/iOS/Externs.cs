@@ -414,7 +414,9 @@ namespace GoogleMobileAds.iOS
             RewardedInterstitialAdClient.GADURewardedInterstitialAdDidDismissFullScreenContentCallback
                 adDidDismissFullScreenContentCallback,
             RewardedInterstitialAdClient.GADURewardedInterstitialAdDidRecordImpressionCallback
-                adDidRecordImpressionCallback
+                adDidRecordImpressionCallback,
+            RewardedInterstitialAdClient.GADURewardedInterstitialAdDidRecordClickCallback
+                adDidRecordClickCallback
         );
 
         [DllImport("__Internal")]
