@@ -1,0 +1,19 @@
+<dependencies>
+  <androidPackages>
+    <androidPackage spec="com.google.ads.mediation:mintegral:16.2.61.0">
+      <repositories>
+        <repository>https://repo.maven.apache.org/maven2/</repository>
+        <repository>https://dl.google.com/dl/android/maven2/</repository>
+        <repository>https://dl-maven-android.mintegral.com/repository/mbridge_android_sdk_oversea</repository>
+      </repositories>
+    </androidPackage>
+  </androidPackages>
+
+  <iosPods>
+    <iosPod name="GoogleMobileAdsMediationMintegral" version="7.2.6.0">
+      <sources>
+        <source>https://github.com/CocoaPods/Specs</source>
+      </sources>
+    </iosPod>
+  </iosPods>
+</dependencies>
