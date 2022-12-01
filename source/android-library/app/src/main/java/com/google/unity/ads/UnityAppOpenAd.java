@@ -146,6 +146,18 @@ public class UnityAppOpenAd {
                                 });
                           }
 
+                          @Override
+                          public void onAdClicked() {
+                            runOnNewThread(
+                                new Runnable() {
+                                  @Override
+                                  public void run() {
+                                    if (callback != null) {
+                                      callback.onAdClicked();
+                                    }
+                                  }
+                                });
+                          }
                         });
 
                     runOnNewThread(
