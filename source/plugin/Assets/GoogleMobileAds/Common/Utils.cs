@@ -26,9 +26,10 @@ namespace GoogleMobileAds.Common
         {
             if (!MobileAdsEventExecutor.IsActive())
             {
-                Debug.Log("You intitialized an ad object but have not yet called MobileAds.Initialize(). We " +
-                    "highly recommend you call MobileAds.Initialize() before interacting with the Google " +
-                    "Mobile Ads SDK.");
+                Debug.Log("You intitialized an ad object but have not yet called " +
+                          "MobileAds.Initialize(). We highly recommend you call " +
+                          "MobileAds.Initialize() before interacting with the Google " +
+                          "Mobile Ads SDK.");
             }
             MobileAdsEventExecutor.Initialize();
         }
@@ -36,7 +37,7 @@ namespace GoogleMobileAds.Common
         public static Texture2D GetTexture2DFromByteArray(byte[] img)
         {
             // Create a texture. Texture size does not matter, since
-            // LoadImage will replace with with incoming image size.
+            // LoadImage will replace with incoming image size.
             Texture2D nativeAdTexture = new Texture2D(1, 1);
             if (!nativeAdTexture.LoadImage(img))
             {
