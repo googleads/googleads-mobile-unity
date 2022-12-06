@@ -1,6 +1,19 @@
 Google Mobile Ads Unity Plugin Change Log
 
 **************
+Version Next Release
+**************
+
+Plugin:
+- Added the MobileAds.RaiseAdEventsOnUnityMainThread option for raising ad events on the Unity main thread.
+
+Built and tested with:
+- Google Mobile Ads Android SDK 21.3.0
+- Google Mobile Ads iOS SDK 9.11.0
+- Google User Messaging Platform 2.0.0
+- External Dependency Manager for Unity 1.2.175
+
+**************
 Version 7.4.0
 **************
 
@@ -22,12 +35,23 @@ Plugin:
 - Fixed [#2453] and [#2450] XCode build error when using iOS SDK 9.14.0 or greater.
 - Added User Messaging Platform (UMP) APIs.
 
+Built and tested with:
+- Google Mobile Ads Android SDK 21.3.0
+- Google Mobile Ads iOS SDK 9.11.0
+- Google User Messaging Platform 2.0.0
+- External Dependency Manager for Unity 1.2.175
+
 **************
 Version 7.3.1
 **************
 
 Plugin:
 - Fixed [#1799](https://github.com/googleads/googleads-mobile-unity/issues/1799) RewardedAd OnAdFailedToPresentFullScreenContent called twice.
+
+Built and tested with:
+- Google Mobile Ads Android SDK 21.3.0.
+- Google Mobile Ads iOS SDK 9.11.0
+- External Dependency Manager for Unity 1.2.171
 
 **************
 Version 7.3.0
