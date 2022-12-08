@@ -1,6 +1,14 @@
 Google Mobile Ads Unity Plugin Change Log
 
 **************
+Version Next
+**************
+
+Plugin:
+- Added OnAdClicked and OnAdImpressionRecorded events to BannerView.
+- Updated all ad format APIs to have consistent nomenclature.
+
+**************
 Version 7.3.1
 **************
 
@@ -67,7 +75,7 @@ Plugin:
 - Fixed Github issue [1943](https://github.com/googleads/googleads-mobile-unity/issues/1943) related App Id saving.
 - Fixed Github issue [2001](https://github.com/googleads/googleads-mobile-unity/issues/2001) related to Android manifest.
 - Fixed Github issue [2003](https://github.com/googleads/googleads-mobile-unity/issues/2003) related to Ad Inspector crash.
-- Added Dummy AdInspector for Unity editor.
+- Added placeholder AdInspector for Unity editor.
 
 Built and tested with:
 - Google Play services 20.2.0
@@ -569,7 +577,7 @@ Plugin:
 - Updated Android ad events to be invoked on the main thread.
 - Added `MobileAds.SetiOSAppPauseOnBackground()` method to pause iOS apps when
 displaying full screen ads.
-- Fixed issue were banners repositioned incorrectly following an orienation
+- Fixed issue were banners repositioned incorrectly following an orientation
 change.
 
 Mediation packages:
@@ -611,7 +619,7 @@ Plugin:
 - Implemented workaround for issue where ad views are rendered in incorrect
 position.
 - Resolved compatibility issues with Gradle 4.
-- Resovled comnpatilbity issues with older versions of Xcode.
+- Resolved comnpatilbity issues with older versions of Xcode.
 
 Mediation packages:
 - Added API for video ad volume control.
@@ -741,7 +749,7 @@ Version 3.3.0
 - Fix issue were ads larger than 320dp could not be rendered.
 - Fix incorrect positioning of ads in iOS for ad position BOTTOM.
 - Add rewarded video test ad units to HelloWorld sample app.
-- Suppress warnings for unsed dummy ad events.
+- Suppress warnings for unused placeholder ad events.
 
 Built and tested with:
 - Google Play services 10.2.0
