@@ -19,7 +19,8 @@ namespace GoogleMobileAds.Api
 {
     /// <summary>
     /// Notifies changes in app foreground/background.
-    /// Subscribe to AppStateChanged to get notified of changes in app state.
+    /// Subscribe to <see cref="AppStateEventNotifier.AppStateChanged"/>
+    /// to get notified of changes in <see cref="AppState"/>.
     /// </summary>
     public class AppStateEventNotifier
     {
