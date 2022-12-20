@@ -34,7 +34,8 @@ namespace GoogleMobileAds.Ump.Api
         ///     settings won't accidentally get released to all users.
         /// </para>
         /// <para>
-        ///     You can access the hashedDeviceId from log once your app calls ConsentInformation.
+        ///     You can access the hashedDeviceId from the console logs once your app calls
+        ///     ConsentInformation.
         /// </para>
         /// </summary>
         /// <typeparam name="string">hashedId The hashed device ID that

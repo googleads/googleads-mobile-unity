@@ -22,7 +22,7 @@ namespace GoogleMobileAds.Ump.Api
         /// <summary>
         /// The error code.
         /// <remarks>
-        /// The error code constant values change depending on the runtime platform.
+        /// The error code constant values are different depending on the runtime platform.
         /// For iOS <see href="https://developers.google.com/admob/ump/ios/api/reference/Enums/UMPFormErrorCode"/>
         /// For Android <see href="https://developers.google.com/admob/ump/android/api/reference/com/google/android/ump/FormError"/>
         /// </remarks>
