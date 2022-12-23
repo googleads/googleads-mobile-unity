@@ -2,7 +2,7 @@
 
 #import <Foundation/Foundation.h>
 #import <UserMessagingPlatform/UMPConsentForm.h>
-#import "GADUTypes.h"
+#import "GADUUmpTypes.h"
 
 /// A rendered form for collecting consent from a user.
 @interface GADUConsentForm : NSObject
