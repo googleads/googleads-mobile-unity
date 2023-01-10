@@ -15,13 +15,16 @@
 
 using System;
 
-using GoogleMobileAds.Api;
-
 namespace GoogleMobileAds.Api
 {
-    // Event args for a paid event.
+    /// <summary>
+    /// Event args for a paid event.
+    /// </summary>
     public class AdValueEventArgs : EventArgs
     {
+        /// <summary>
+        /// The monetary value earned from an ad.
+        /// </summary>
         public AdValue AdValue { get; set; }
     }
 }
