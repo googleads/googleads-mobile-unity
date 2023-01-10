@@ -12,14 +12,22 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System;
-using System.Collections.Generic;
-
 namespace GoogleMobileAds.Api
 {
+    /// <summary>
+    /// Options for rewarded ad types server-side verification callbacks.
+    /// Options are created using <see cref="ServerSideVerificationOptions.Builder"/>.
+    /// </summary>
     public class ServerSideVerificationOptions
     {
+        /// <summary>
+        /// The user id of the current user.
+        /// </summary>
         public string UserId { get; private set; }
+
+        /// <summary>
+        /// Custom data of the current user.
+        /// </summary>
         public string CustomData { get; private set; }
 
         private ServerSideVerificationOptions(Builder builder)
@@ -28,6 +36,9 @@ namespace GoogleMobileAds.Api
             CustomData = builder.CustomData;
         }
 
+        /// <summary>
+        /// Constructs a <see cref="Builder"/>.
+        /// </summary>
         public class Builder
         {
             internal string UserId { get; private set; }
@@ -37,18 +48,28 @@ namespace GoogleMobileAds.Api
             {
             }
 
+            /// <summary>
+            /// Sets the user id of the current user.
+            /// </summary>
             public Builder SetUserId(string userId)
             {
                 UserId = userId;
                 return this;
             }
 
+            /// <summary>
+            /// Set custom data of the current user.
+            /// </summary>
             public Builder SetCustomData(string customData)
             {
                 CustomData = customData;
                 return this;
             }
 
+            /// <summary>
+            /// Constructs an <see cref="ServerSideVerificationOptions"/>
+            /// with the specified attributes.
+            /// </summary>
             public ServerSideVerificationOptions Build()
             {
                 return new ServerSideVerificationOptions(this);
