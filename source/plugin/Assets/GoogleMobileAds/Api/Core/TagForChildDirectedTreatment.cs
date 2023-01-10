@@ -14,12 +14,29 @@
 
 namespace GoogleMobileAds.Api
 {
+    /// <summary>
+    /// This enum lets you specify whether you would like your app to be treated as
+    /// child-directed for purposes of the Children's Online Privacy Protection Act (COPPA) -
+    /// <seealso href="http://business.ftc.gov/privacy-and-security/childrens-privacy">
+    /// http://business.ftc.gov/privacy-and-security/childrens-privacy</seealso>.
+    ///
+    /// If you set this enum to True, you are indicating that your app should be treated as
+    /// child-directed for purposes of the Children's Online Privacy Protection Act (COPPA).
+    ///
+    /// If you set this enum to False, you are indicating that your app should not be treated as
+    /// child-directed for purposes of the Children's Online Privacy Protection Act (COPPA).
+    ///
+    /// If you do not set this enum, or set this enum to Unspecified, ad requests will include no
+    /// indication of how you would like your app treated with respect to COPPA.
+    ///
+    /// By using this enum, you certify that this notification is accurate and you are
+    /// authorized to act on behalf of the owner of the app. You understand that abuse of this
+    /// setting can result in termination of your Google account.
+    /// </summary>
     public enum TagForChildDirectedTreatment
     {
         Unspecified = -1,
         False = 0,
         True = 1,
-
     }
-
 }
