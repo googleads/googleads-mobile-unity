@@ -20,10 +20,21 @@ using GoogleMobileAds.Api.Mediation;
 
 namespace GoogleMobileAds.Api
 {
+    /// <summary>
+    /// An <see cref="AdRequest"/> contains targeting information used to fetch an ad.
+    /// Ad requests are created using <see cref="AdRequest.Builder"/>.
+    /// </summary>
     public class AdRequest
     {
+        /// <summary>
+        /// Request version string.
+        /// </summary>
         public static string Version { get; private set; }
 
+        /// <summary>
+        /// Test device ID used to load test ads.
+        /// <seealso href="https://developers.google.com/admob/unity/test-ads"/>.
+        /// </summary>
         public const string TestDeviceSimulator = "SIMULATOR";
 
         static AdRequest()
@@ -39,10 +50,19 @@ namespace GoogleMobileAds.Api
             this.MediationExtras = builder.MediationExtras;
         }
 
+        /// <summary>
+        /// Returns targeting information keywords. Returns an empty set if no keywords were added.
+        /// </summary>
         public HashSet<string> Keywords { get; private set; }
 
+        /// <summary>
+        /// Returns extra parameters to be sent in the ad request.
+        /// </summary>
         public Dictionary<string, string> Extras { get; private set; }
 
+        /// <summary>
+        /// Returns extra parameters to be sent to a specific ad partner in the ad request.
+        /// </summary>
         public List<MediationExtras> MediationExtras { get; private set; }
 
         internal static string BuildVersionString(string nativePluginVersion = null)
@@ -56,6 +76,9 @@ namespace GoogleMobileAds.Api
             return versionBuilder.ToString();
         }
 
+        /// <summary>
+        /// Constructs a <see cref="Builder"/>.
+        /// </summary>
         public class Builder
         {
             public Builder()
@@ -71,23 +94,43 @@ namespace GoogleMobileAds.Api
 
             internal List<MediationExtras> MediationExtras { get; private set; }
 
+            /// <summary>
+            /// Words or phrase describing the current activity of the user for targeting purposes.
+            /// </summary>
+            /// <param name="keyword">
+            /// Word or phrase describing the current activity of the user for targeting purposes.
+            /// </param>
             public Builder AddKeyword(string keyword)
             {
                 this.Keywords.Add(keyword);
                 return this;
             }
 
+            /// <summary>
+            /// Constructs an <see cref="AdRequest"/> with the specified attributes.
+            /// </summary>
             public AdRequest Build()
             {
                 return new AdRequest(this);
             }
 
+            /// <summary>
+            /// Extra parameters to be sent to a specific ad partner in the ad request.
+            /// </summary>
+            /// <param name="extras">
+            /// Extra parameters for mediation custom events.
+            /// </param>
             public Builder AddMediationExtras(MediationExtras extras)
             {
                 this.MediationExtras.Add(extras);
                 return this;
             }
 
+            /// <summary>
+            /// Extra parameters to be sent in the ad request.
+            /// </summary>
+            /// <param name="key">The extra key to add.</param>
+            /// <param name="value">The extra value to add.</param>
             public Builder AddExtra(string key, string value)
             {
                 this.Extras.Add(key, value);
