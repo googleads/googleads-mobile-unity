@@ -1,12 +1,14 @@
 Google Mobile Ads Unity Plugin Change Log
 
 **************
-Version Next
+Version 7.4.0
 **************
 
 Plugin:
 - Added OnAdClicked and OnAdImpressionRecorded events to BannerView.
 - Updated all ad format APIs to have consistent nomenclature.
+- Fixed [#2453] and [#2450] XCode build error when using iOS SDK 9.14.0 or greater.
+- Added User Messaging Platform APIs for requesting user consent.
 
 **************
 Version 7.3.1
