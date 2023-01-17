@@ -1,8 +1,9 @@
-using UnityEngine.Events;
 using UnityEngine;
+using UnityEngine.Events;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 using GoogleMobileAds.Api;
 using GoogleMobileAds.Common;
-using UnityEngine.UI;
 using System;
 using System.Collections.Generic;
 
@@ -545,6 +546,14 @@ public class GoogleAdMobController : MonoBehaviour
     #endregion
 
     #region Utility
+
+    /// <summary>
+    /// Loads the Google Ump sample scene.
+    /// </summary>
+    public void LoadUmpScene()
+    {
+        SceneManager.LoadScene("GoogleUmpScene");
+    }
 
     ///<summary>
     /// Log the message and update the status text on the main thread.
