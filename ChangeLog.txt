@@ -19,6 +19,7 @@ Plugin:
 - Added new AppOpenAd.OnAdClicked event to app open ads.
 - Added new AppOpenAd.Load() API for loading app open  ads.
 - Added new AppOpenAd.CanShowAd() API for checking app open ad state.
+- Fixed [#2453] and [#2450] XCode build error when using iOS SDK 9.14.0 or greater.
 
 **************
 Version 7.3.1
