@@ -10,6 +10,9 @@ Plugin:
 - Added new InterstitialAd.OnAdClicked event to interstitial ads.
 - Added new InterstitialAd.Load() API for loading interstitial ads.
 - Added new InterstitialAd.CanShowAd() API for checking interstitial ad state.
+- Added new RewardedAd.OnAdClicked event to rewarded ads.
+- Added new RewardedAd.Load() API for loading rewarded ads.
+- Added new RewardedAd.CanShowAd() API for checking rewarded ad state.
 
 **************
 Version 7.3.1
