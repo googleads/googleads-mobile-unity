@@ -23,7 +23,6 @@ namespace GoogleMobileAds.Api
     public class RewardedInterstitialAd
     {
         private IRewardedInterstitialAdClient rewardedInterstitialAdClient;
-        private static HashSet<IRewardedInterstitialAdClient> loadingClients = new HashSet<IRewardedInterstitialAdClient>();
 
         private RewardedInterstitialAd(IRewardedInterstitialAdClient client)
         {
@@ -91,7 +90,6 @@ namespace GoogleMobileAds.Api
         public static void LoadAd(string adUnitID, AdRequest request, Action<RewardedInterstitialAd, AdFailedToLoadEventArgs> adLoadCallback)
         {
             IRewardedInterstitialAdClient client = MobileAds.GetClientFactory().BuildRewardedInterstitialAdClient();
-            loadingClients.Add(client);
             client.CreateRewardedInterstitialAd();
 
             client.OnAdLoaded += (sender, args) =>
@@ -99,7 +97,6 @@ namespace GoogleMobileAds.Api
                 if (adLoadCallback != null)
                 {
                     adLoadCallback(new RewardedInterstitialAd(client), null);
-                    loadingClients.Remove(client);
                 }
             };
 
@@ -112,7 +109,6 @@ namespace GoogleMobileAds.Api
                     {
                         LoadAdError = loadAdError
                     });
-                    loadingClients.Remove(client);
                 }
             };
 

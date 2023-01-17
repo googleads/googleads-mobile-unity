@@ -25,8 +25,6 @@ namespace GoogleMobileAds.Api
     {
         private IAppOpenAdClient client;
 
-        private static HashSet<IAppOpenAdClient> loadingClients = new HashSet<IAppOpenAdClient>();
-
         private AppOpenAd(IAppOpenAdClient client)
         {
             this.client = client;
@@ -50,7 +48,7 @@ namespace GoogleMobileAds.Api
                       this.OnAdDidPresentFullScreenContent(this, args);
                   }
             };
-            
+
             this.client.OnAdDidDismissFullScreenContent += (sender, args) =>
             {
                   if (this.OnAdDidDismissFullScreenContent != null)
@@ -95,7 +93,6 @@ namespace GoogleMobileAds.Api
             Action<AppOpenAd, AdFailedToLoadEventArgs> adLoadCallback)
         {
             IAppOpenAdClient client = MobileAds.GetClientFactory().BuildAppOpenAdClient();
-            loadingClients.Add(client);
             client.CreateAppOpenAd();
 
             client.OnAdLoaded += (sender, args) =>
@@ -103,7 +100,6 @@ namespace GoogleMobileAds.Api
                 if (adLoadCallback != null)
                 {
                     adLoadCallback(new AppOpenAd(client), null);
-                    loadingClients.Remove(client);
                 }
             };
 
@@ -116,7 +112,6 @@ namespace GoogleMobileAds.Api
                     {
                         LoadAdError = loadAdError,
                     });
-                    loadingClients.Remove(client);
                 }
             };
 
