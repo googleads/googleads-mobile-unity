@@ -19,7 +19,7 @@ using UnityEngine;
 
 namespace GoogleMobileAds.Unity
 {
-    public class InitializationStatusDummyClient : IInitializationStatusClient
+    public class InitializationStatusClient : IInitializationStatusClient
     {
         public AdapterStatus getAdapterStatusForClassName(string className)
         {
@@ -31,9 +31,9 @@ namespace GoogleMobileAds.Unity
 
         public Dictionary<string, AdapterStatus> getAdapterStatusMap()
         {
-            Dictionary<string, AdapterStatus> dummyDictionary = new Dictionary<string,AdapterStatus>();
-            dummyDictionary.Add("ExampleClass", getAdapterStatusForClassName("ExampleClass"));
-            return dummyDictionary;
+            Dictionary<string, AdapterStatus> dictionary = new Dictionary<string,AdapterStatus>();
+            dictionary.Add("ExampleClass", getAdapterStatusForClassName("ExampleClass"));
+            return dictionary;
         }
     }
 }

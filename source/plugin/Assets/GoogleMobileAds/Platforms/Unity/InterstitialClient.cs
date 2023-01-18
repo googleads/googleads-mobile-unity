@@ -22,7 +22,7 @@ using UnityEngine.UI;
 
 namespace GoogleMobileAds.Unity
 {
-    public class InterstitialClient : BaseAdDummyClient, IInterstitialClient
+    public class InterstitialClient : BaseAdClient, IInterstitialClient
     {
         public event EventHandler<EventArgs> OnAdLoaded;
 
@@ -41,8 +41,8 @@ namespace GoogleMobileAds.Unity
         public event Action OnAdClicked;
 
         private Dictionary<AdSize, string> prefabAds = new Dictionary<AdSize, string>() {
-            {new AdSize (768,1024), "DummyAds/Interstitials/768x1024" },
-            {new AdSize (1024,768), "DummyAds/Interstitials/1024x768"}
+            {new AdSize (768,1024), "PlaceholderAds/Interstitials/768x1024" },
+            {new AdSize (1024,768), "PlaceholderAds/Interstitials/1024x768"}
         };
 
         private ButtonBehaviour buttonBehaviour;

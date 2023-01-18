@@ -15,7 +15,7 @@
 using UnityEngine;
 using System;
 
-public class DummyAdBehaviour : MonoBehaviour
+public class AdBehaviour : MonoBehaviour
 {
     public void PauseGame()
     {

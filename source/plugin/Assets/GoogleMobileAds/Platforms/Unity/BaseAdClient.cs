@@ -21,9 +21,9 @@ using GoogleMobileAds.Common;
 
 namespace GoogleMobileAds.Unity
 {
-    public class BaseAdDummyClient
+    public class BaseAdClient
     {
-        protected static DummyAdBehaviour AdBehaviour = new GameObject().AddComponent<DummyAdBehaviour>();
+        protected static AdBehaviour AdBehaviour = new GameObject().AddComponent<AdBehaviour>();
         protected GameObject prefabAd, dummyAd = null;
         public void LoadAndSetPrefabAd(string prefabName) {
             prefabAd = Resources.Load(prefabName) as GameObject;
@@ -40,13 +40,13 @@ namespace GoogleMobileAds.Unity
         // Returns the mediation adapter class name.
         public string MediationAdapterClassName()
         {
-            return new ResponseInfoDummyClient().GetMediationAdapterClassName();
+            return new ResponseInfoClient().GetMediationAdapterClassName();
         }
 
         // Returns ad request Response info client.
         public IResponseInfoClient GetResponseInfoClient()
         {
-            return new ResponseInfoDummyClient();
+            return new ResponseInfoClient();
         }
     }
 }

@@ -24,7 +24,7 @@ using GoogleMobileAds.Common;
 namespace GoogleMobileAds.Unity
 {
     // A base client for rewarding ad types for Unity editor platform.
-    public class RewardingAdBaseClient : BaseAdDummyClient
+    public class RewardingAdBaseClient : BaseAdClient
     {
         // Ad event fired when the rewarding ad has been received.
         public event EventHandler<EventArgs> OnAdLoaded;
@@ -47,8 +47,8 @@ namespace GoogleMobileAds.Unity
 
         internal static readonly Dictionary<AdSize, string> prefabAds = new Dictionary<AdSize, string>()
         {
-            {new AdSize (768,1024), "DummyAds/Rewarded/768x1024" },
-            {new AdSize (1024,768), "DummyAds/Rewarded/1024x768"}
+            {new AdSize (768,1024), "PlaceholderAds/Rewarded/768x1024" },
+            {new AdSize (1024,768), "PlaceholderAds/Rewarded/1024x768"}
         };
 
         internal ButtonBehaviour buttonBehaviour;

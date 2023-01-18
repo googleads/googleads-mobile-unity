@@ -17,7 +17,7 @@ using GoogleMobileAds.Common;
 
 namespace GoogleMobileAds.Unity
 {
-    public class ResponseInfoDummyClient : IResponseInfoClient
+    public class ResponseInfoClient : IResponseInfoClient
     {
         public string GetMediationAdapterClassName()
         {
