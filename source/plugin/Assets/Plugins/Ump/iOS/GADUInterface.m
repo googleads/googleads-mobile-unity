@@ -4,7 +4,7 @@
 #import "GADUConsentInformation.h"
 #import "GADUDebugSettings.h"
 #import "GADUObjectCache.h"
-#import "GADUUmpTypes.h"
+#import "GADUTypes.h"
 
 /// Returns an NSString copying the characters from |bytes|, a C array of UTF8-encoded bytes.
 /// Returns nil if |bytes| is NULL.

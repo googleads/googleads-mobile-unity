@@ -2,7 +2,7 @@
 
 #import <Foundation/Foundation.h>
 #import "GADURequestParameters.h"
-#import "GADUUmpTypes.h"
+#import "GADUTypes.h"
 
 /// Consent status values.
 typedef NS_ENUM(NSInteger, GADUConsentStatus) {
