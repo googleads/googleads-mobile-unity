@@ -16,7 +16,7 @@
 
 using System;
 using UnityEngine;
-
+using System.Runtime.InteropServices;
 using GoogleMobileAds.Api.Mediation.Vungle;
 using GoogleMobileAds.Common.Mediation.Vungle;
 
@@ -35,31 +35,15 @@ namespace GoogleMobileAds.iOS.Mediation.Vungle
             }
         }
 
-        public void UpdateConsentStatus(VungleConsent consentStatus)
-        {
-            if (consentStatus == VungleConsent.UNKNOWN) {
-                MonoBehaviour.print ("Cannot call '[VungleRouterConsent updateConsentStatus:]' with unknown consent status.");
-                return;
-            }
-
-            Externs.GADUMUpdateConsentStatus( (int)consentStatus );
-        }
-
-        public void UpdateConsentStatus(VungleConsent consentStatus,
+        public void UpdateConsentStatus(VuncleConsentStatus consentStatus,
                                         String consentMessageVersion)
         {
-            UpdateConsentStatus(consentStatus);
+            Externs.GADUMVungleUpdateConsentStatus((int)consentStatus, consentMessageVersion);
         }
 
-        public VungleConsent GetCurrentConsentStatus()
+        public void UpdateCCPAStatus(VungleCCPAStatus ccpaStatus)
         {
-            return (VungleConsent)Externs.GADUMGetCurrentConsentStatus();
-        }
-
-        [System.Obsolete("Consent Message is obsolete as of version 6.3.2.0 of the Vungle iOS adapter.")]
-        public String GetCurrentConsentMessageVersion()
-        {
-            return "";
+            Externs.GADUMVungleUpdateCCPAStatus((int)ccpaStatus);
         }
     }
 }

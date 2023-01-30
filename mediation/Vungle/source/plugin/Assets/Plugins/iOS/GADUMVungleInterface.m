@@ -13,16 +13,45 @@
 // limitations under the License.
 
 #import <VungleSDK/VungleSDK.h>
-#import <VungleAdapter/VungleAdapter.h>
 
-void GADUMUpdateConsentStatus(int consentStatus) {
-  if (consentStatus == (int)VungleConsentAccepted) {
-    [VungleRouterConsent updateConsentStatus:VungleConsentAccepted];
-  } else if (consentStatus == (int)VungleConsentDenied) {
-    [VungleRouterConsent updateConsentStatus:VungleConsentDenied];
+#pragma mark - Utility
+
+typedef NS_ENUM(NSUInteger, GADUMVungleConsentStatus) {
+  GADUMVungleConsentStatusAccepted = 0,
+  GADUMVungleConsentStatusDenied = 1
+};
+
+typedef NS_ENUM(NSUInteger, GADUMVungleCCPAStatus) {
+  GADUMVungleCCPAStatusAccepted = 0,
+  GADUMVungleCCPAStatusDenied = 1
+};
+
+#pragma mark - GADUMVungleInterface implementation
+
+void GADUMVungleUpdateConsentStatus(int consentStatus, const char *consentMessageVersion) {
+  switch (consentStatus) {
+    case GADUMVungleConsentStatusAccepted:
+      [[VungleSDK sharedSDK] updateConsentStatus:VungleConsentAccepted
+                           consentMessageVersion:@(consentMessageVersion)];
+      break;
+    case GADUMVungleConsentStatusDenied:
+      [[VungleSDK sharedSDK] updateConsentStatus:VungleConsentDenied
+                           consentMessageVersion:@(consentMessageVersion)];
+      break;
+    default:
+      break;
   }
 }
 
-int GADUMGetCurrentConsentStatus() {
-  return (int)[VungleRouterConsent getConsentStatus];
+void GADUMVungleUpdateCCPAStatus(int ccpaStatus) {
+  switch (ccpaStatus) {
+    case GADUMVungleCCPAStatusAccepted:
+      [[VungleSDK sharedSDK] updateCCPAStatus:VungleCCPAAccepted];
+      break;
+    case GADUMVungleCCPAStatusDenied:
+      [[VungleSDK sharedSDK] updateCCPAStatus:VungleCCPADenied];
+      break;
+    default:
+      break;
+  }
 }

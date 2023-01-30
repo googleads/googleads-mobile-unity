@@ -25,30 +25,18 @@ namespace GoogleMobileAds.Common.Mediation.Vungle
     {
         public DummyClient()
         {
-            Debug.Log ("Dummy " + MethodBase.GetCurrentMethod().Name);
+            Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
         }
 
-        public void UpdateConsentStatus(VungleConsent consentStatus)
-        {
-            Debug.Log ("Dummy " + MethodBase.GetCurrentMethod().Name);
-        }
-
-        public void UpdateConsentStatus(VungleConsent consentStatus,
+        public void UpdateConsentStatus(VungleConsentStatus consentStatus,
                                         String consentMessageVersion)
         {
-            Debug.Log ("Dummy " + MethodBase.GetCurrentMethod().Name);
+            Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
         }
 
-        public VungleConsent GetCurrentConsentStatus()
-        {
-            Debug.Log ("Dummy " + MethodBase.GetCurrentMethod().Name);
-            return VungleConsent.UNKNOWN;
-        }
-
-        public String GetCurrentConsentMessageVersion()
+        public void UpdateCCPAStatus(VungleCCPAStatus consentStatus)
         {
             Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
-            return String.Empty;
         }
     }
 }

@@ -22,7 +22,7 @@ namespace GoogleMobileAds.Mediation
 {
     public class VungleClientFactory
     {
-        public static IVungleClient VungleInstance()
+        public static IVungleClient CreateVungleClient()
         {
             #if UNITY_EDITOR
             return new GoogleMobileAds.Common.Mediation.Vungle.DummyClient();

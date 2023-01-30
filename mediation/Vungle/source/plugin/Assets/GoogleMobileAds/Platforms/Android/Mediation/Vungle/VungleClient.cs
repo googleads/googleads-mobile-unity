@@ -27,6 +27,9 @@ namespace GoogleMobileAds.Android.Mediation.Vungle
         private static VungleClient instance = new VungleClient();
         private VungleClient() {}
 
+        private const string VUNGLE_CLASS_NAME = "com.vungle.warren.Vungle";
+        private const string VUNGLE_CONSENT_ENUM_NAME = "com.vungle.warren.Vungle$Consent";
+
         public static VungleClient Instance
         {
             get
@@ -35,62 +38,66 @@ namespace GoogleMobileAds.Android.Mediation.Vungle
             }
         }
 
-        public void UpdateConsentStatus(VungleConsent consentStatus)
-        {
-            UpdateConsentStatus(consentStatus, "");
-        }
-
-        public void UpdateConsentStatus(VungleConsent consentStatus,
+        public void UpdateConsentStatus(VungleConsentStatus consentStatus,
                                         String consentMessageVersion)
         {
-            if (consentStatus == VungleConsent.UNKNOWN) {
-                MonoBehaviour.print("Cannot call 'VungleConsent.updateConsentStatus()' with unknown consent status.");
+            AndroidJavaObject vungleConsentStatusObject =
+                    GetConsentStatusAndroidJavaObject(consentStatus);
+            if (vungleConsentStatusObject == null)
+            {
+                MonoBehaviour.print("[Vungle Plugin] Received invalid consent status. " +
+                        "Status will not be updated.");
                 return;
             }
-            if (consentMessageVersion == null) {
-                consentMessageVersion = "";
-            }
 
-            AndroidJavaObject vungleConsentObject;
-            AndroidJavaClass vungleConsentEnum = new AndroidJavaClass("com.vungle.warren.Vungle$Consent");
-            if (consentStatus == VungleConsent.ACCEPTED) {
-                vungleConsentObject = vungleConsentEnum.GetStatic<AndroidJavaObject>("OPTED_IN");
-            } else {
-                vungleConsentObject = vungleConsentEnum.GetStatic<AndroidJavaObject>("OPTED_OUT");
-            }
-
-            AndroidJavaClass vungleConsentClass = new AndroidJavaClass("com.vungle.mediation.VungleConsent");
-            vungleConsentClass.CallStatic("updateConsentStatus", vungleConsentObject, consentMessageVersion);
+            AndroidJavaClass vungle = new AndroidJavaClass(VUNGLE_CLASS_NAME);
+            vungle.CallStatic("updateConsentStatus",
+                    vungleConsentStatusObject, consentMessageVersion);
         }
 
-        public VungleConsent GetCurrentConsentStatus()
+        public void UpdateCCPAStatus(VungleCCPAStatus ccpaStatus)
         {
-            AndroidJavaClass vungleConsentClass = new AndroidJavaClass("com.vungle.mediation.VungleConsent");
-            AndroidJavaClass vungleConsentEnum = new AndroidJavaClass("com.vungle.warren.Vungle$Consent");
-
-            AndroidJavaObject vungleConsent = vungleConsentClass.CallStatic<AndroidJavaObject>("getCurrentVungleConsent");
-
-            if (vungleConsent == null) {
-                return VungleConsent.UNKNOWN;
+            AndroidJavaObject vungleCCPAStatusObject =
+                    GetCCPAStatusAndroidJavaObject(ccpaStatus);
+            if (vungleCCPAStatusObject == null)
+            {
+                MonoBehaviour.print("[Vungle Plugin] Received invalid CCPA status. " +
+                        "Status will not be updated.");
+                return;
             }
 
-            int vungleConsentValue = vungleConsent.Call<int> ("ordinal");
-            int optedInConsentValue = vungleConsentEnum.GetStatic<AndroidJavaObject>("OPTED_IN").Call<int>("ordinal");
-            int optedOutConsentValue = vungleConsentEnum.GetStatic<AndroidJavaObject>("OPTED_OUT").Call<int>("ordinal");
-
-            if (vungleConsentValue == optedInConsentValue) {
-                return VungleConsent.ACCEPTED;
-            } else if (vungleConsentValue == optedOutConsentValue) {
-                return VungleConsent.DENIED;
-            }
-
-            return VungleConsent.UNKNOWN;
+            AndroidJavaClass vungle = new AndroidJavaClass(VUNGLE_CLASS_NAME);
+            vungle.CallStatic("updateCCPAStatus", vungleCCPAStatusObject);
         }
 
-        public String GetCurrentConsentMessageVersion()
+        // Private utility methods.
+        private AndroidJavaObject GetConsentStatusAndroidJavaObject(
+                VungleConsentStatus vungleConsent)
         {
-            AndroidJavaClass vungleConsentClass = new AndroidJavaClass("com.vungle.mediation.VungleConsent");
-            return vungleConsentClass.CallStatic<String>("getCurrentVungleConsentMessageVersion");
+            AndroidJavaClass vungleConsentEnum = new AndroidJavaClass(VUNGLE_CONSENT_ENUM_NAME);
+            switch (vungleConsent)
+            {
+                case VungleConsentStatus.OPTED_IN:
+                    return vungleConsentEnum.GetStatic<AndroidJavaObject>("OPTED_IN");
+                case VungleConsentStatus.OPTED_OUT:
+                    return vungleConsentEnum.GetStatic<AndroidJavaObject>("OPTED_OUT");
+                default:
+                    return null;
+            }
+        }
+
+        private AndroidJavaObject GetCCPAStatusAndroidJavaObject(VungleCCPAStatus ccpaStatus)
+        {
+            AndroidJavaClass vungleCCPAStatusEnum = new AndroidJavaClass(VUNGLE_CONSENT_ENUM_NAME);
+            switch (ccpaStatus)
+            {
+                case VungleCCPAStatus.OPTED_IN:
+                    return vungleCCPAStatusEnum.GetStatic<AndroidJavaObject>("OPTED_IN");
+                case VungleCCPAStatus.OPTED_OUT:
+                    return vungleCCPAStatusEnum.GetStatic<AndroidJavaObject>("OPTED_OUT");
+                default:
+                    return null;
+            }
         }
     }
 }

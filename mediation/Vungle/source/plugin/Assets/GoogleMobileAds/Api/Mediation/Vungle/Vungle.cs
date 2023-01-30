@@ -19,41 +19,31 @@ using GoogleMobileAds.Mediation;
 
 namespace GoogleMobileAds.Api.Mediation.Vungle
 {
-    public enum VungleConsent
+    public enum VungleConsentStatus
     {
-        UNKNOWN = 0,
-        ACCEPTED,
-        DENIED
+        OPTED_IN = 0,
+        OPTED_OUT = 1
+    }
+
+    public enum VungleCCPAStatus
+    {
+        OPTED_IN = 0,
+        OPTED_OUT = 1
     }
 
     public class Vungle
     {
-        public static readonly IVungleClient client = GetVungleClient();
+        public static readonly IVungleClient client = VungleClientFactory.CreateVungleClient();
 
-        public static void UpdateConsentStatus(VungleConsent consentStatus)
-        {
-            client.UpdateConsentStatus(consentStatus);
-        }
-
-        public static void UpdateConsentStatus(VungleConsent consentStatus,
+        public static void UpdateConsentStatus(VungleConsentStatus consentStatus,
                                                String consentMessageVersion)
         {
             client.UpdateConsentStatus(consentStatus, consentMessageVersion);
         }
 
-        public static VungleConsent GetCurrentConsentStatus()
+        public static void UpdateCCPAStatus(VungleCCPAStatus consentStatus)
         {
-            return client.GetCurrentConsentStatus();
-        }
-
-        public static String GetCurrentConsentMessageVersion()
-        {
-            return client.GetCurrentConsentMessageVersion();
-        }
-
-        private static IVungleClient GetVungleClient()
-        {
-            return VungleClientFactory.VungleInstance();
+            client.UpdateCCPAStatus(consentStatus);
         }
     }
 }
