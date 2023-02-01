@@ -9,7 +9,7 @@
   </androidPackages>
 
   <iosPods>
-    <iosPod name="GoogleMobileAdsMediationFyber" version="8.1.7.0">
+    <iosPod name="GoogleMobileAdsMediationFyber" version="8.1.9.0">
       <sources>
         <source>https://github.com/CocoaPods/Specs</source>
       </sources>
