@@ -6,7 +6,7 @@
   * Removed the `GetCurrentConsentStatus()` method.
   * Removed the `GetCurrentConsentMessageVersion()` method.
 
-#### Version 3.9.1 (In Progress)
+#### [Version 3.9.1](https://dl.google.com/googleadmobadssdk/mediation/unity/vungle/VungleUnityAdapter-3.9.1.zip)
 - Supports [Vungle Android adapter version 6.12.1.0](https://github.com/googleads/googleads-mobile-android-mediation/blob/main/ThirdPartyAdapters/vungle/CHANGELOG.md#version-61210).
 - Supports [Vungle iOS adapter version 6.12.1.1](https://github.com/googleads/googleads-mobile-ios-mediation/blob/main/adapters/Vungle/CHANGELOG.md#version-61211).
 - Built and tested with the Google Mobile Ads Unity Plugin version 7.4.0.
