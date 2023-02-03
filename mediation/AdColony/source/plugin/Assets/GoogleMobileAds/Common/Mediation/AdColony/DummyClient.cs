@@ -13,8 +13,8 @@
 // limitations under the License.
 
 using System.Reflection;
-
 using UnityEngine;
+using GoogleMobileAds.Api.Mediation.AdColony;
 
 namespace GoogleMobileAds.Common.Mediation.AdColony
 {
@@ -25,14 +25,28 @@ namespace GoogleMobileAds.Common.Mediation.AdColony
             Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
         }
 
-        public void SetGDPRConsentString(string consentString)
+        public void SetPrivacyFrameworkRequired(AdColonyPrivacyFramework privacyFramework,
+                                                bool isRequired)
         {
             Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
         }
 
-        public void SetGDPRRequired(bool gdprRequired)
+        public bool GetPrivacyFrameworkRequired(AdColonyPrivacyFramework privacyFramework)
         {
             Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
+            return false;
+        }
+
+        public void SetPrivacyConsentString(AdColonyPrivacyFramework privacyFramework,
+                                            string consentString)
+        {
+            Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
+        }
+
+        public string GetPrivacyConsentString(AdColonyPrivacyFramework privacyFramework)
+        {
+            Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
+            return "";
         }
 
         public void SetUserId(string userId)
@@ -40,27 +54,15 @@ namespace GoogleMobileAds.Common.Mediation.AdColony
             Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
         }
 
-        public void SetTestMode(bool isTestMode)
-        {
-            Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
-        }
-
-        public string GetGDPRConsentString()
-        {
-            Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
-            return "";
-        }
-
-        public bool IsGDPRRequired()
-        {
-            Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
-            return false;
-        }
-
         public string GetUserId()
         {
             Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
             return "";
+        }
+
+        public void SetTestMode(bool isTestMode)
+        {
+            Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
         }
 
         public bool IsTestMode()

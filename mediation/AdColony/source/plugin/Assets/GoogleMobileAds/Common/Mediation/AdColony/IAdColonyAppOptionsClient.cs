@@ -12,17 +12,24 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using GoogleMobileAds.Api.Mediation.AdColony;
+
 namespace GoogleMobileAds.Common.Mediation.AdColony
 {
     public interface IAdColonyAppOptionsClient
     {
-        void SetGDPRConsentString(string consentString);
-        void SetGDPRRequired(bool gdprRequired);
+        void SetPrivacyFrameworkRequired(AdColonyPrivacyFramework privacyFramework,
+                                         bool required);
+        bool GetPrivacyFrameworkRequired(AdColonyPrivacyFramework privacyFramework);
+
+        void SetPrivacyConsentString(AdColonyPrivacyFramework privacyFramework,
+                                     string consentString);
+        string GetPrivacyConsentString(AdColonyPrivacyFramework privacyFramework);
+
         void SetUserId(string userId);
-        void SetTestMode(bool isTestMode);
-        string GetGDPRConsentString();
-        bool IsGDPRRequired();
         string GetUserId();
+
+        void SetTestMode(bool isTestMode);
         bool IsTestMode();
     }
 }

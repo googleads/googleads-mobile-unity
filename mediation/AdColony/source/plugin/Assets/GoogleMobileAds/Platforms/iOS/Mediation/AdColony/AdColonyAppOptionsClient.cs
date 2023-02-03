@@ -18,7 +18,7 @@ using UnityEngine;
 using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
-
+using GoogleMobileAds.Api.Mediation.AdColony;
 using GoogleMobileAds.Common.Mediation.AdColony;
 
 namespace GoogleMobileAds.iOS.Mediation.AdColony
@@ -28,47 +28,52 @@ namespace GoogleMobileAds.iOS.Mediation.AdColony
         private static AdColonyAppOptionsClient instance = new AdColonyAppOptionsClient();
         private AdColonyAppOptionsClient() { }
 
-        public static AdColonyAppOptionsClient Instance
-        {
-            get
-            {
+        public static AdColonyAppOptionsClient Instance {
+            get {
                 return instance;
             }
         }
 
-        public void SetGDPRConsentString(string consentString)
+        public void SetPrivacyFrameworkRequired(AdColonyPrivacyFramework privacyFramework,
+                                                bool isRequired)
         {
-            Externs.GADUMAdColonyAppOptionsSetGDPRConsentString(consentString);
+            Externs.GADUMAdColonyAppOptionsSetPrivacyFrameworkRequired(
+                    (int)privacyFramework, isRequired);
         }
 
-        public void SetGDPRRequired(bool gdprRequired)
+        public bool GetPrivacyFrameworkRequired(AdColonyPrivacyFramework privacyFramework)
         {
-            Externs.GADUMAdColonyAppOptionsSetGDPRRequired(gdprRequired);
+            return Externs.GADUMAdColonyAppOptionsGetPrivacyFrameworkRequired(
+                    (int)privacyFramework);
+        }
+
+        public void SetPrivacyConsentString(AdColonyPrivacyFramework privacyFramework,
+                                            string consentString)
+        {
+            Externs.GADUMAdColonyAppOptionsSetPrivacyConsentString(
+                    (int)privacyFramework, consentString);
+        }
+
+        public string GetPrivacyConsentString(AdColonyPrivacyFramework privacyFramework)
+        {
+            return IOSStringToUnityString(
+                    Externs.GADUMAdColonyAppOptionsGetPrivacyConsentString(
+                            (int)privacyFramework));
         }
 
         public void SetUserId(string userId)
         {
-            Externs.GADUMAdColonyAppOptionsSetUserId(userId);
+            Externs.GADUMAdColonyAppOptionsSetUserID(userId);
+        }
+
+        public string GetUserId()
+        {
+            return IOSStringToUnityString(Externs.GADUMAdColonyAppOptionsGetUserID());
         }
 
         public void SetTestMode(bool isTestMode)
         {
             Externs.GADUMAdColonyAppOptionsSetTestMode(isTestMode);
-        }
-
-        public string GetGDPRConsentString()
-        {
-            return IOSStringToUnityString(Externs.GADUMAdColonyAppOptionsGetGDPRConsentString());
-        }
-
-        public bool IsGDPRRequired()
-        {
-            return Externs.GADUMAdColonyAppOptionsIsGDPRRequired();
-        }
-
-        public string GetUserId()
-        {
-            return IOSStringToUnityString(Externs.GADUMAdColonyAppOptionsGetUserId());
         }
 
         public bool IsTestMode()

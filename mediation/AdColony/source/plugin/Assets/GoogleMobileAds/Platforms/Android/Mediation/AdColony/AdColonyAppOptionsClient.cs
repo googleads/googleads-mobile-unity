@@ -15,87 +15,146 @@
 #if UNITY_ANDROID
 
 using UnityEngine;
-
+using GoogleMobileAds.Api.Mediation.AdColony;
 using GoogleMobileAds.Common.Mediation.AdColony;
 
 namespace GoogleMobileAds.Android.Mediation.AdColony
 {
     public class AdColonyAppOptionsClient : IAdColonyAppOptionsClient
     {
-        private static readonly string adapterClassName = "com.google.ads.mediation.adcolony.AdColonyMediationAdapter";
         private static AdColonyAppOptionsClient instance = new AdColonyAppOptionsClient();
         private AdColonyAppOptionsClient() { }
 
+        private const string adapterClassName =
+                "com.google.ads.mediation.adcolony.AdColonyMediationAdapter";
+        private const string adColonyAppOptionsClassName = "com.adcolony.sdk.AdColonyAppOptions";
+
         public static AdColonyAppOptionsClient Instance
         {
-            get
-            {
+            get {
                 return instance;
             }
         }
 
-        public void SetGDPRConsentString(string consentString)
-        {
-            AndroidJavaClass adColonyAdapter = new AndroidJavaClass(adapterClassName);
-            AndroidJavaObject appOptions = adColonyAdapter.CallStatic<AndroidJavaObject>("getAppOptions");
+        public void SetPrivacyFrameworkRequired(AdColonyPrivacyFramework privacyFramework,
+                                                bool isRequired) {
+            string adColonyPrivacyFrameworkString =
+                    GetAdColonyPrivacyFrameworkString(privacyFramework);
+            if (string.IsNullOrEmpty(adColonyPrivacyFrameworkString)) {
+                Debug.Log("[AdColony Plugin] Error: Invalid AdColonyPrivacyFramework value " +
+                        "provided to the AdColony adapter: " + privacyFramework);
+                return;
+            }
 
-            appOptions.Call<AndroidJavaObject>("setGDPRConsentString", consentString);
+            AndroidJavaClass adColonyAdapter = new AndroidJavaClass(adapterClassName);
+            AndroidJavaObject appOptions =
+                    adColonyAdapter.CallStatic<AndroidJavaObject>("getAppOptions");
+            appOptions.Call<AndroidJavaObject>("setPrivacyFrameworkRequired",
+                    adColonyPrivacyFrameworkString, isRequired);
         }
 
-        public void SetGDPRRequired(bool gdprRequired)
+        public bool GetPrivacyFrameworkRequired(AdColonyPrivacyFramework privacyFramework)
         {
-            AndroidJavaClass adColonyAdapter = new AndroidJavaClass(adapterClassName);
-            AndroidJavaObject appOptions = adColonyAdapter.CallStatic<AndroidJavaObject>("getAppOptions");
+            string adColonyPrivacyFrameworkString =
+                    GetAdColonyPrivacyFrameworkString(privacyFramework);
+            if (string.IsNullOrEmpty(adColonyPrivacyFrameworkString)) {
+                Debug.Log("[AdColony Plugin] Error: Invalid AdColonyPrivacyFramework value " +
+                        "provided to the AdColony adapter: " + privacyFramework);
+                return false;
+            }
 
-            appOptions.Call<AndroidJavaObject>("setGDPRRequired", gdprRequired);
+            AndroidJavaClass adColonyAdapter = new AndroidJavaClass(adapterClassName);
+            AndroidJavaObject appOptions =
+                    adColonyAdapter.CallStatic<AndroidJavaObject>("getAppOptions");
+            return appOptions.Call<bool>("getPrivacyFrameworkRequired",
+                    adColonyPrivacyFrameworkString);
+        }
+
+        public void SetPrivacyConsentString(AdColonyPrivacyFramework privacyFramework,
+                                            string consentString)
+        {
+            string adColonyPrivacyFrameworkString =
+                    GetAdColonyPrivacyFrameworkString(privacyFramework);
+            if (string.IsNullOrEmpty(adColonyPrivacyFrameworkString)) {
+                Debug.Log("[AdColony Plugin] Error: Invalid AdColonyPrivacyFramework value " +
+                        "provided to the AdColony adapter: " + privacyFramework);
+                return;
+            }
+
+            AndroidJavaClass adColonyAdapter = new AndroidJavaClass(adapterClassName);
+            AndroidJavaObject appOptions =
+                    adColonyAdapter.CallStatic<AndroidJavaObject>("getAppOptions");
+            appOptions.Call<AndroidJavaObject>("setPrivacyConsentString",
+                    adColonyPrivacyFrameworkString, consentString);
+        }
+
+        public string GetPrivacyConsentString(AdColonyPrivacyFramework privacyFramework)
+        {
+            string adColonyPrivacyFrameworkString =
+                    GetAdColonyPrivacyFrameworkString(privacyFramework);
+            if (string.IsNullOrEmpty(adColonyPrivacyFrameworkString)) {
+                Debug.Log("[AdColony Plugin] Error: Invalid AdColonyPrivacyFramework value " +
+                        "provided to the AdColony adapter: " + privacyFramework);
+                return "";
+            }
+
+            AndroidJavaClass adColonyAdapter = new AndroidJavaClass(adapterClassName);
+            AndroidJavaObject appOptions =
+                    adColonyAdapter.CallStatic<AndroidJavaObject>("getAppOptions");
+            return appOptions.Call<string>("getPrivacyConsentString",
+                    adColonyPrivacyFrameworkString);
         }
 
         public void SetUserId(string userId)
         {
             AndroidJavaClass adColonyAdapter = new AndroidJavaClass(adapterClassName);
-            AndroidJavaObject appOptions = adColonyAdapter.CallStatic<AndroidJavaObject>("getAppOptions");
+            AndroidJavaObject appOptions =
+                    adColonyAdapter.CallStatic<AndroidJavaObject>("getAppOptions");
 
             appOptions.Call<AndroidJavaObject>("setUserID", userId);
-        }
-
-        public void SetTestMode(bool isTestMode)
-        {
-            AndroidJavaClass adColonyAdapter = new AndroidJavaClass(adapterClassName);
-            AndroidJavaObject appOptions = adColonyAdapter.CallStatic<AndroidJavaObject>("getAppOptions");
-
-            appOptions.Call<AndroidJavaObject>("setTestModeEnabled", isTestMode);
-        }
-
-        public string GetGDPRConsentString()
-        {
-            AndroidJavaClass adColonyAdapter = new AndroidJavaClass(adapterClassName);
-            AndroidJavaObject appOptions = adColonyAdapter.CallStatic<AndroidJavaObject>("getAppOptions");
-
-            return appOptions.Call<string>("getGDPRConsentString");
-        }
-
-        public bool IsGDPRRequired()
-        {
-            AndroidJavaClass adColonyAdapter = new AndroidJavaClass(adapterClassName);
-            AndroidJavaObject appOptions = adColonyAdapter.CallStatic<AndroidJavaObject>("getAppOptions");
-
-            return appOptions.Call<bool>("getGDPRRequired");
         }
 
         public string GetUserId()
         {
             AndroidJavaClass adColonyAdapter = new AndroidJavaClass(adapterClassName);
-            AndroidJavaObject appOptions = adColonyAdapter.CallStatic<AndroidJavaObject>("getAppOptions");
+            AndroidJavaObject appOptions =
+                    adColonyAdapter.CallStatic<AndroidJavaObject>("getAppOptions");
 
             return appOptions.Call<string>("getUserID");
+        }
+
+        public void SetTestMode(bool isTestMode)
+        {
+            AndroidJavaClass adColonyAdapter = new AndroidJavaClass(adapterClassName);
+            AndroidJavaObject appOptions =
+                    adColonyAdapter.CallStatic<AndroidJavaObject>("getAppOptions");
+
+            appOptions.Call<AndroidJavaObject>("setTestModeEnabled", isTestMode);
         }
 
         public bool IsTestMode()
         {
             AndroidJavaClass adColonyAdapter = new AndroidJavaClass(adapterClassName);
-            AndroidJavaObject appOptions = adColonyAdapter.CallStatic<AndroidJavaObject>("getAppOptions");
+            AndroidJavaObject appOptions =
+                    adColonyAdapter.CallStatic<AndroidJavaObject>("getAppOptions");
 
             return appOptions.Call<bool>("getTestModeEnabled");
+        }
+
+        private string GetAdColonyPrivacyFrameworkString(AdColonyPrivacyFramework privacyFramework)
+        {
+            AndroidJavaClass adColonyAppOptions =
+                    new AndroidJavaClass(adColonyAppOptionsClassName);
+
+            switch (privacyFramework)
+            {
+                case AdColonyPrivacyFramework.GDPR:
+                    return adColonyAppOptions.GetStatic<string>("GDPR");
+                case AdColonyPrivacyFramework.CCPA:
+                    return adColonyAppOptions.GetStatic<string>("CCPA");
+                default:
+                    return "";
+            }
         }
     }
 }

@@ -17,31 +17,37 @@
 using System;
 using System.Runtime.InteropServices;
 
+using GoogleMobileAds.Api.Mediation.AdColony;
+
 namespace GoogleMobileAds.iOS.Mediation.AdColony
 {
     // Externs used by the iOS component.
     internal class Externs
     {
         [DllImport("__Internal")]
-        internal static extern void GADUMAdColonyAppOptionsSetGDPRConsentString(string consentString);
+        internal static extern void GADUMAdColonyAppOptionsSetPrivacyFrameworkRequired(
+                int privacyFramework, bool isRequired);
 
         [DllImport("__Internal")]
-        internal static extern void GADUMAdColonyAppOptionsSetGDPRRequired(bool gdprRequired);
+        internal static extern bool GADUMAdColonyAppOptionsGetPrivacyFrameworkRequired(
+                int privacyFramework);
 
         [DllImport("__Internal")]
-        internal static extern void GADUMAdColonyAppOptionsSetUserId(string userId);
+        internal static extern void GADUMAdColonyAppOptionsSetPrivacyConsentString(
+                int privacyFramework, string consentString);
+
+        [DllImport("__Internal")]
+        internal static extern IntPtr GADUMAdColonyAppOptionsGetPrivacyConsentString(
+                int privacyFramework);
+
+        [DllImport("__Internal")]
+        internal static extern void GADUMAdColonyAppOptionsSetUserID(string userId);
+
+        [DllImport("__Internal")]
+        internal static extern IntPtr GADUMAdColonyAppOptionsGetUserID();
 
         [DllImport("__Internal")]
         internal static extern void GADUMAdColonyAppOptionsSetTestMode(bool isTestMode);
-
-        [DllImport("__Internal")]
-        internal static extern IntPtr GADUMAdColonyAppOptionsGetGDPRConsentString();
-
-        [DllImport("__Internal")]
-        internal static extern bool GADUMAdColonyAppOptionsIsGDPRRequired();
-
-        [DllImport("__Internal")]
-        internal static extern IntPtr GADUMAdColonyAppOptionsGetUserId();
 
         [DllImport("__Internal")]
         internal static extern bool GADUMAdColonyAppOptionsIsTestMode();

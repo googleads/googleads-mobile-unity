@@ -17,41 +17,70 @@
 
 #pragma mark - Utility
 
-static const char* NSStringToCString(NSString* whichString) {
-  const char* utf8String = [whichString UTF8String];
+typedef NS_ENUM(NSUInteger, GADUMAdColonyPrivacyFramework) {
+  GADUMAdColonyPrivacyFrameworkGDPR = 0,
+  GADUMAdColonyPrivacyFrameworkCCPA = 1
+};
 
-  if (utf8String) {
-    char *cString = (char *)malloc(strlen(utf8String) + 1);
-    strcpy(cString, utf8String);
-
-    return cString;
+static const char *NSStringToCString(NSString *_Nonnull string) {
+  const char *utf8String = [string UTF8String];
+  if (!utf8String) {
+    utf8String = "";
   }
-  return "";
+
+  // Unity recommends that string values returned from a native method should be UTF–8 encoded and
+  // allocated on the heap.
+  char *cString = (char *)malloc(strlen(utf8String) + 1);
+  strcpy(cString, utf8String);
+  return cString;
+}
+
+static NSString *GADUMAdColonyPrivacyFrameworkFromUnity(
+    GADUMAdColonyPrivacyFramework privacyFramework) {
+  switch (privacyFramework) {
+    case GADUMAdColonyPrivacyFrameworkGDPR:
+      return ADC_GDPR;
+    case GADUMAdColonyPrivacyFrameworkCCPA:
+      return ADC_CCPA;
+    default:
+      return @"";
+  }
 }
 
 #pragma mark - GADUMAdColonyAppOptions Interface
 
-void GADUMAdColonyAppOptionsSetGDPRConsentString(const char *consentString) {
-  NSString *consent = @"";
-  if (consentString) {
-    consent = [NSString stringWithUTF8String:consentString];
+void GADUMAdColonyAppOptionsSetPrivacyFrameworkRequired(
+    GADUMAdColonyPrivacyFramework privacyFramework, BOOL isRequired) {
+  NSString *adColonyPrivacyFramework = GADUMAdColonyPrivacyFrameworkFromUnity(privacyFramework);
+  if (!adColonyPrivacyFramework.length) {
+    NSLog(@"[AdColony Plugin] Error: Invalid AdColonyPrivacyFramework value provided to the "
+          @"AdColony adapter: %ld",
+          privacyFramework);
+    return;
   }
+
   AdColonyAppOptions *appOptions = [GADMediationAdapterAdColony appOptions];
-  [appOptions setGdprConsentString:consent];
+  [appOptions setPrivacyFrameworkOfType:adColonyPrivacyFramework isRequired:isRequired];
 }
 
-void GADUMAdColonyAppOptionsSetGDPRRequired(BOOL gdprRequired) {
+void GADUMAdColonyAppOptionsSetPrivacyConsentString(GADUMAdColonyPrivacyFramework privacyFramework,
+                                                    const char *consentString) {
+  NSString *adColonyPrivacyFramework = GADUMAdColonyPrivacyFrameworkFromUnity(privacyFramework);
+  if (!adColonyPrivacyFramework.length) {
+    NSLog(@"[AdColony Plugin] Error: Invalid AdColonyPrivacyFramework value provided to the "
+          @"AdColony adapter: %ld",
+          privacyFramework);
+    return;
+  }
+
   AdColonyAppOptions *appOptions = [GADMediationAdapterAdColony appOptions];
-  [appOptions setGdprRequired:gdprRequired];
+  [appOptions setPrivacyConsentString:@(consentString) forType:adColonyPrivacyFramework];
 }
 
-void GADUMAdColonyAppOptionsSetUserId(const char *userId) {
-  NSString *customUserId = @"";
-  if (customUserId) {
-    customUserId = [NSString stringWithUTF8String:userId];
-  }
+void GADUMAdColonyAppOptionsSetUserID(const char *userID) {
+  NSString *customUserID = [NSString stringWithUTF8String:userID];
   AdColonyAppOptions *appOptions = [GADMediationAdapterAdColony appOptions];
-  [appOptions setUserID:customUserId];
+  [appOptions setUserID:customUserID];
 }
 
 void GADUMAdColonyAppOptionsSetTestMode(BOOL isTestMode) {
@@ -59,17 +88,35 @@ void GADUMAdColonyAppOptionsSetTestMode(BOOL isTestMode) {
   [appOptions setTestMode:isTestMode];
 }
 
-const char *GADUMAdColonyAppOptionsGetGDPRConsentString() {
+BOOL GADUMAdColonyAppOptionsGetPrivacyFrameworkRequired(
+    GADUMAdColonyPrivacyFramework privacyFramework) {
+  NSString *adColonyPrivacyFramework = GADUMAdColonyPrivacyFrameworkFromUnity(privacyFramework);
+  if (!adColonyPrivacyFramework.length) {
+    NSLog(@"[AdColony Plugin] Error: Invalid AdColonyPrivacyFramework value provided to the "
+          @"AdColony adapter: %ld",
+          privacyFramework);
+    return NO;
+  }
+
   AdColonyAppOptions *appOptions = [GADMediationAdapterAdColony appOptions];
-  return NSStringToCString(appOptions.gdprConsentString);
+  return [appOptions getPrivacyFrameworkRequiredForType:adColonyPrivacyFramework];
 }
 
-BOOL GADUMAdColonyAppOptionsIsGDPRRequired() {
+const char *GADUMAdColonyAppOptionsGetPrivacyConsentString(
+    GADUMAdColonyPrivacyFramework privacyFramework) {
+  NSString *adColonyPrivacyFramework = GADUMAdColonyPrivacyFrameworkFromUnity(privacyFramework);
+  if (!adColonyPrivacyFramework.length) {
+    NSLog(@"[AdColony Plugin] Error: Invalid AdColonyPrivacyFramework value provided to the "
+          @"AdColony adapter: %ld",
+          privacyFramework);
+    return "";
+  }
+
   AdColonyAppOptions *appOptions = [GADMediationAdapterAdColony appOptions];
-  return appOptions.gdprRequired;
+  return NSStringToCString([appOptions getPrivacyConsentStringForType:adColonyPrivacyFramework]);
 }
 
-const char *GADUMAdColonyAppOptionsGetUserId() {
+const char *GADUMAdColonyAppOptionsGetUserID() {
   AdColonyAppOptions *appOptions = [GADMediationAdapterAdColony appOptions];
   return NSStringToCString(appOptions.userID);
 }

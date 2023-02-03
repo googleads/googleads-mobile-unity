@@ -1,4 +1,4 @@
-﻿// Copyright 2019 Google LLC
+// Copyright 2019 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,6 +17,12 @@ using GoogleMobileAds.Mediation;
 
 namespace GoogleMobileAds.Api.Mediation.AdColony
 {
+    public enum AdColonyPrivacyFramework
+    {
+        GDPR = 0,
+        CCPA = 1,
+    }
+
     public class AdColonyAppOptions
     {
         public static readonly IAdColonyAppOptionsClient client = GetAdColonyAppOptionsClient();
@@ -26,14 +32,26 @@ namespace GoogleMobileAds.Api.Mediation.AdColony
             return AdColonyAppOptionsClientFactory.getAdColonyAppOptionsInstance();
         }
 
-        public static void SetGDPRConsentString(string consentString)
+        public static void SetPrivacyFrameworkRequired(AdColonyPrivacyFramework privacyFramework,
+                                                       bool isRequired)
         {
-            client.SetGDPRConsentString(consentString);
+            client.SetPrivacyFrameworkRequired(privacyFramework, isRequired);
         }
 
-        public static void SetGDPRRequired(bool gdprRequired)
+        public static bool GetPrivacyFrameworkRequired(AdColonyPrivacyFramework privacyFramework)
         {
-            client.SetGDPRRequired(gdprRequired);
+            return client.GetPrivacyFrameworkRequired(privacyFramework);
+        }
+
+        public static void SetPrivacyConsentString(AdColonyPrivacyFramework privacyFramework,
+                                                   string consentString)
+        {
+            client.SetPrivacyConsentString(privacyFramework, consentString);
+        }
+
+        public static string GetPrivacyConsentString(AdColonyPrivacyFramework privacyFramework)
+        {
+            return client.GetPrivacyConsentString(privacyFramework);
         }
 
         public static void SetUserId(string userId)
@@ -41,24 +59,14 @@ namespace GoogleMobileAds.Api.Mediation.AdColony
             client.SetUserId(userId);
         }
 
-        public static void SetTestMode(bool isTestMode)
-        {
-            client.SetTestMode(isTestMode);
-        }
-
-        public static string GetGDPRConsentString()
-        {
-            return client.GetGDPRConsentString();
-        }
-
-        public static bool IsGDPRRequired()
-        {
-            return client.IsGDPRRequired();
-        }
-
         public static string GetUserId()
         {
             return client.GetUserId();
+        }
+
+        public static void SetTestMode(bool isTestMode)
+        {
+            client.SetTestMode(isTestMode);
         }
 
         public static bool IsTestMode()
