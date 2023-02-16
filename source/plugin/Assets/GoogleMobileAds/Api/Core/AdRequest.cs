@@ -40,7 +40,7 @@ namespace GoogleMobileAds.Api
         static AdRequest()
         {
             Version version = typeof(AdRequest).Assembly.GetName().Version;
-            Version = string.Format("{0}.{1}.{2}", version.Major, version.Minor, version.Revision);
+            Version = string.Format("{0}.{1}.{2}", version.Major, version.Minor, version.Build);
         }
 
         private AdRequest(Builder builder)
