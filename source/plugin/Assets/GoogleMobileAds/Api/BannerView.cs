@@ -63,38 +63,6 @@ namespace GoogleMobileAds.Api
         public event Action OnAdFullScreenContentClosed;
 
         /// <summary>
-        /// Raised when an ad is loaded into the banner view.
-        /// </summary>
-        [Obsolete("Use OnBannerAdLoaded.")]
-        public event EventHandler<EventArgs> OnAdLoaded;
-
-        /// <summary>
-        /// Raised when an ad fails to load into the banner view.
-        /// </summary>
-        [Obsolete("Use OnBannerAdLoadFailed.")]
-        public event EventHandler<AdFailedToLoadEventArgs> OnAdFailedToLoad;
-
-        /// <summary>
-        /// Raised when an ad opened full-screen content.
-        /// </summary>
-        [Obsolete("Use OnAdFullScreenContentOpened.")]
-        public event EventHandler<EventArgs> OnAdOpening;
-
-        /// <summary>
-        /// Raised when the ad closed full-screen content.
-        /// On iOS, this event is only raised when an ad opens an overlay, not when opening a new
-        /// application such as Safari or the App Store.
-        /// </summary>
-        [Obsolete("Use OnAdFullScreenContentClosed.")]
-        public event EventHandler<EventArgs> OnAdClosed;
-
-        /// <summary>
-        /// Raised when the ad is estimated to have earned money.
-        /// </summary>
-        [Obsolete("Use OnAdPaid.")]
-        public event EventHandler<AdValueEventArgs> OnPaidEvent;
-
-        /// <summary>
         /// Returns true if Destroy() has been called.
         /// </summary>
         public bool IsDestroyed { get { return _client == null; } }
@@ -219,10 +187,6 @@ namespace GoogleMobileAds.Api
 
             _client.OnAdLoaded += (sender, args) =>
             {
-                if (OnAdLoaded != null)
-                {
-                    OnAdLoaded(this, args);
-                }
                 if (OnBannerAdLoaded != null)
                 {
                     OnBannerAdLoaded();
@@ -232,13 +196,6 @@ namespace GoogleMobileAds.Api
             _client.OnAdFailedToLoad += (sender, args) =>
             {
                 LoadAdError loadAdError = new LoadAdError(args.LoadAdErrorClient);
-                if (OnAdFailedToLoad != null)
-                {
-                    OnAdFailedToLoad(this, new AdFailedToLoadEventArgs()
-                    {
-                        LoadAdError = loadAdError
-                    });
-                }
                 if (OnBannerAdLoadFailed != null)
                 {
                     OnBannerAdLoadFailed(loadAdError);
@@ -247,10 +204,6 @@ namespace GoogleMobileAds.Api
 
             _client.OnAdOpening += (sender, args) =>
             {
-                if (OnAdOpening != null)
-                {
-                    OnAdOpening(this, args);
-                }
                 if (OnAdFullScreenContentOpened != null)
                 {
                     OnAdFullScreenContentOpened();
@@ -259,10 +212,6 @@ namespace GoogleMobileAds.Api
 
             _client.OnAdClosed += (sender, args) =>
             {
-                if (OnAdClosed != null)
-                {
-                    OnAdClosed(this, args);
-                }
                 if (OnAdFullScreenContentClosed != null)
                 {
                     OnAdFullScreenContentClosed();
@@ -271,10 +220,6 @@ namespace GoogleMobileAds.Api
 
             _client.OnPaidEvent += (sender, args) =>
             {
-                if (OnPaidEvent != null)
-                {
-                    OnPaidEvent(this, args);
-                }
                 if (OnAdPaid != null)
                 {
                     OnAdPaid(args.AdValue);
