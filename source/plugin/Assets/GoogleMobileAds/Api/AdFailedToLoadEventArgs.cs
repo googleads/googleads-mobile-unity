@@ -17,6 +17,7 @@ using System;
 namespace GoogleMobileAds.Api
 {
     // Event that occurs when an ad fails to load.
+    /// @deprecated Use @ref LoadAdError directly.
     public class AdFailedToLoadEventArgs : EventArgs
     {
         public LoadAdError LoadAdError { get; set; }

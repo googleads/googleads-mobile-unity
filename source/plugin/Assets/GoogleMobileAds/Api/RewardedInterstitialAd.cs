@@ -61,18 +61,21 @@ namespace GoogleMobileAds.Api
         /// <summary>
         /// Raised when the ad is estimated to have earned money.
         /// </summary>
+        /// @deprecated Use @ref OnAdPaid.
         [Obsolete("Use OnAdPaid.")]
         public event EventHandler<AdValueEventArgs> OnPaidEvent;
 
         /// <summary>
         /// Raised when the ad failed to open full-screen content.
         /// </summary>
+        /// @deprecated Use @ref OnAdFullScreenContentFailed.
         [Obsolete("Use OnAdFullScreenContentFailed.")]
         public event EventHandler<AdErrorEventArgs> OnAdFailedToPresentFullScreenContent;
 
         /// <summary>
         /// Raised when an ad opened full-screen content.
         /// </summary>
+        /// @deprecated Use @ref OnAdFullScreenContentOpened.
         [Obsolete("Use OnAdFullScreenContentOpened.")]
         public event EventHandler<EventArgs> OnAdDidPresentFullScreenContent;
 
@@ -81,12 +84,14 @@ namespace GoogleMobileAds.Api
         /// On iOS, this event is only raised when an ad opens an overlay, not when opening a new
         /// application such as Safari or the App Store,
         /// </summary>
+        /// @deprecated Use @ref OnFullScreenAdClosed.
         [Obsolete("Use OnFullScreenAdClosed.")]
         public event EventHandler<EventArgs> OnAdDidDismissFullScreenContent;
 
         /// <summary>
         /// Raised when an impression is recorded for an ad.
         /// </summary>
+        /// @deprecated Use @ref OnAdImpressionRecorded.
         [Obsolete("Use OnAdImpressionRecorded.")]
         public event EventHandler<EventArgs> OnAdDidRecordImpression;
 
@@ -131,6 +136,7 @@ namespace GoogleMobileAds.Api
         /// <summary>
         /// Loads a rewarded interstitial ad.
         /// </summary>
+        /// @deprecated Use @ref RewardedInterstitialAd.Load().
         [Obsolete("Use RewardedInterstitialAd.Load().")]
         public static void LoadAd(string adUnitID, AdRequest request,
             Action<RewardedInterstitialAd, AdFailedToLoadEventArgs> adLoadCallback)
@@ -162,6 +168,7 @@ namespace GoogleMobileAds.Api
         /// <summary>
         /// Returns true if the ad is loaded.
         /// </summary>
+        /// @deprecated Use @ref CanShowAd().
         [Obsolete("Use CanShowAd().")]
         public bool IsLoaded()
         {

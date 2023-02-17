@@ -17,6 +17,10 @@ using System.Collections.Generic;
 
 namespace GoogleMobileAds.Api
 {
+    /// <summary>
+    /// An immutable snapshot of the Unity plugin's initialization status,
+    /// categorized by mediation adapter.
+    /// </summary>
     public class InitializationStatus
     {
         private IInitializationStatusClient client;
@@ -26,11 +30,19 @@ namespace GoogleMobileAds.Api
             this.client = client;
         }
 
+        /// <summary>
+        /// Returns the status of a specific ad network.
+        /// </summary>
+        /// <param name="className">The ad network's adapter class name.</param>
+        /// @param[in] className The ad network's adapter class name.
         public AdapterStatus getAdapterStatusForClassName(string className)
         {
             return client.getAdapterStatusForClassName(className);
         }
 
+        /// <summary>
+        /// Initialization status of each known ad network, keyed by its adapter's class name.
+        /// </summary>
         public Dictionary<string, AdapterStatus> getAdapterStatusMap()
         {
             return client.getAdapterStatusMap();

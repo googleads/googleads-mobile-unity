@@ -61,14 +61,19 @@ namespace GoogleMobileAds.Api
         public event Action<AdError> OnAdFullScreenContentFailed;
 
         // Called when the ad is estimated to have earned money.
+        /// @deprecated Use @ref OnAdPaid.
         [Obsolete("Use OnAdPaid.")]
         public event EventHandler<AdValueEventArgs> OnPaidEvent;
+        /// @deprecated Use @ref OnAdFullScreenContentFailed.
         [Obsolete("Use OnAdFullScreenContentFailed.")]
         public event EventHandler<AdErrorEventArgs> OnAdFailedToPresentFullScreenContent;
+        /// @deprecated Use @ref OnAdFullScreenContentOpened.
         [Obsolete("Use OnAdFullScreenContentOpened.")]
         public event EventHandler<EventArgs> OnAdDidPresentFullScreenContent;
+        /// @deprecated Use @ref OnAdFullScreenContentClosed.
         [Obsolete("Use OnAdFullScreenContentClosed.")]
         public event EventHandler<EventArgs> OnAdDidDismissFullScreenContent;
+        /// @deprecated Use @ref OnAdImpressionRecorded.
         [Obsolete("Use OnAdImpressionRecorded.")]
         public event EventHandler<EventArgs> OnAdDidRecordImpression;
 
@@ -112,6 +117,7 @@ namespace GoogleMobileAds.Api
         }
 
         // Loads a new app open ad.
+        /// @deprecated Use @ref AppOpenAd.Load().
         [Obsolete("Use AppOpenAd.Load().")]
         public static void LoadAd(string adUnitID,
             ScreenOrientation orientation,
@@ -154,6 +160,7 @@ namespace GoogleMobileAds.Api
         /// Returns true if the ad is loaded.
         /// </summary>
         [Obsolete("Use CanShowAd().")]
+        /// @deprecated Use @ref CanShowAd().
         public bool IsLoaded()
         {
             return CanShowAd();

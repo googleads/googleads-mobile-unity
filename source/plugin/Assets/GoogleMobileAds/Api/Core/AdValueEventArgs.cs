@@ -20,6 +20,7 @@ namespace GoogleMobileAds.Api
     /// <summary>
     /// Event args for a paid event.
     /// </summary>
+    /// @deprecated Use @ref AdValue directly.
     public class AdValueEventArgs : EventArgs
     {
         /// <summary>

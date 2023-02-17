@@ -58,18 +58,21 @@ namespace GoogleMobileAds.Api
         /// <summary>
         /// Raised when an ad is loaded.
         /// </summary>
+        /// @deprecated Use @ref RewardedAd.Load().
         [Obsolete("Use RewardedAd.Load().")]
         public event EventHandler<EventArgs> OnAdLoaded;
 
         /// <summary>
         /// Raised when the ad failed to open full-screen content.
         /// </summary>
+        /// @deprecated Use @ref RewardedAd.Load().
         [Obsolete("Use RewardedAd.Load().")]
         public event EventHandler<AdFailedToLoadEventArgs> OnAdFailedToLoad;
 
         /// <summary>
         /// Raised when an ad opened full-screen content.
         /// </summary>
+        /// @deprecated Use @ref OnAdFullScreenContentOpened.
         [Obsolete("Use OnAdFullScreenContentOpened.")]
         public event EventHandler<EventArgs> OnAdOpening;
 
@@ -78,30 +81,35 @@ namespace GoogleMobileAds.Api
         /// On iOS, this event is only raised when an ad opens an overlay, not when opening a new
         /// application such as Safari or the App Store.
         /// </summary>
+        /// @deprecated Use @ref OnAdFullScreenContentClosed.
         [Obsolete("Use OnAdFullScreenContentClosed.")]
         public event EventHandler<EventArgs> OnAdClosed;
 
         /// <summary>
         /// Raised when the ad failed to open full-screen content.
         /// </summary>
+        /// @deprecated Use @ref OnAdFullScreenContentFailed.
         [Obsolete("Use OnAdFullScreenContentFailed.")]
         public event EventHandler<AdErrorEventArgs> OnAdFailedToShow;
 
         /// <summary>
         /// Raised when an impression is recorded for an ad.
         /// </summary>
+        /// @deprecated Use @ref OnAdImpressionRecorded.
         [Obsolete("Use OnAdImpressionRecorded.")]
         public event EventHandler<EventArgs> OnAdDidRecordImpression;
 
         /// <summary>
         /// Raised when a user reward is earned.
         /// </summary>
+        /// @deprecated Use @ref OnAdPaid.
         [Obsolete("Use OnAdPaid.")]
         public event EventHandler<Reward> OnUserEarnedReward;
 
         /// <summary>
         /// Raised when the ad is estimated to have earned money.
         /// </summary>
+        /// @deprecated Use @ref OnUserRewardEarned.
         [Obsolete("Use OnUserRewardEarned.")]
         public event EventHandler<AdValueEventArgs> OnPaidEvent;
 
@@ -110,6 +118,7 @@ namespace GoogleMobileAds.Api
         private bool _canShowAd;
         private Action<Reward> _userRewardEarnedCallback;
 
+        /// @deprecated Use @ref RewardedAd.Load().
         [Obsolete("Use RewardedAd.Load().")]
         public RewardedAd(string adUnitId)
         {
@@ -150,6 +159,7 @@ namespace GoogleMobileAds.Api
             client.LoadAd(adUnitId, request);
         }
 
+        /// @deprecated Use @ref RewardedAd.Load().
         [Obsolete("Use RewardedAd.Load().")]
         public void LoadAd(AdRequest request)
         {
@@ -181,6 +191,7 @@ namespace GoogleMobileAds.Api
         /// <summary>
         /// Returns true if the ad is loaded.
         /// </summary>
+        /// @deprecated Use @ref CanShowAd().
         [Obsolete("Use CanShowAd().")]
         public bool IsLoaded()
         {
@@ -198,6 +209,7 @@ namespace GoogleMobileAds.Api
         /// <summary>
         /// Shows the rewarded ad.
         /// </summary>
+        /// @deprecated Use @ref Show().
         [Obsolete("Use Show(Action<Reward> userRewardEarnedCallback).")]
         public void Show()
         {
