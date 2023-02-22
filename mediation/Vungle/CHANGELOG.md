@@ -1,10 +1,13 @@
 ## Vungle Unity Mediation Plugin Changelog
 
-#### Next Version
+#### Version 3.9.2 (In Progress)
 - Updated the `Vungle` class:
   * Added the `UpdateCCPAStatus(VungleCCPAStatus)` method.
   * Removed the `GetCurrentConsentStatus()` method.
   * Removed the `GetCurrentConsentMessageVersion()` method.
+- Supports [Vungle Android adapter version 6.12.1.0](https://github.com/googleads/googleads-mobile-android-mediation/blob/main/ThirdPartyAdapters/vungle/CHANGELOG.md#version-61210).
+- Supports [Vungle iOS adapter version 6.12.2.0](https://github.com/googleads/googleads-mobile-ios-mediation/blob/main/adapters/Vungle/CHANGELOG.md#version-61220).
+- Built and tested with the Google Mobile Ads Unity Plugin version 7.4.1.
 
 #### [Version 3.9.1](https://dl.google.com/googleadmobadssdk/mediation/unity/vungle/VungleUnityAdapter-3.9.1.zip)
 - Supports [Vungle Android adapter version 6.12.1.0](https://github.com/googleads/googleads-mobile-android-mediation/blob/main/ThirdPartyAdapters/vungle/CHANGELOG.md#version-61210).
