@@ -1,6 +1,13 @@
 Google Mobile Ads Unity Plugin Change Log
 
 **************
+Version Next
+**************
+
+Plugin:
+- Removed obsolete APIs for AppOpenAd.
+
+**************
 Version 7.4.1
 **************
 
