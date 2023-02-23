@@ -25,7 +25,7 @@ namespace GoogleMobileAds.Ump.Api
         /// <summary>
         /// The debug geography for testing purposes.
         /// </summary>
-        public DebugGeography DebugGeography;
+        public DebugGeography DebugGeography = DebugGeography.Disabled;
         /// <summary>
         /// <para>
         ///     Registers a device as a test device.
