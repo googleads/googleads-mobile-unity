@@ -55,75 +55,9 @@ namespace GoogleMobileAds.Api
         /// </summary>
         public event Action<AdError> OnAdFullScreenContentFailed;
 
-        /// <summary>
-        /// Raised when an ad is loaded.
-        /// </summary>
-        /// @deprecated Use @ref RewardedAd.Load().
-        [Obsolete("Use RewardedAd.Load().")]
-        public event EventHandler<EventArgs> OnAdLoaded;
-
-        /// <summary>
-        /// Raised when the ad failed to open full-screen content.
-        /// </summary>
-        /// @deprecated Use @ref RewardedAd.Load().
-        [Obsolete("Use RewardedAd.Load().")]
-        public event EventHandler<AdFailedToLoadEventArgs> OnAdFailedToLoad;
-
-        /// <summary>
-        /// Raised when an ad opened full-screen content.
-        /// </summary>
-        /// @deprecated Use @ref OnAdFullScreenContentOpened.
-        [Obsolete("Use OnAdFullScreenContentOpened.")]
-        public event EventHandler<EventArgs> OnAdOpening;
-
-        /// <summary>
-        /// Raised when the ad closed full-screen content.
-        /// On iOS, this event is only raised when an ad opens an overlay, not when opening a new
-        /// application such as Safari or the App Store.
-        /// </summary>
-        /// @deprecated Use @ref OnAdFullScreenContentClosed.
-        [Obsolete("Use OnAdFullScreenContentClosed.")]
-        public event EventHandler<EventArgs> OnAdClosed;
-
-        /// <summary>
-        /// Raised when the ad failed to open full-screen content.
-        /// </summary>
-        /// @deprecated Use @ref OnAdFullScreenContentFailed.
-        [Obsolete("Use OnAdFullScreenContentFailed.")]
-        public event EventHandler<AdErrorEventArgs> OnAdFailedToShow;
-
-        /// <summary>
-        /// Raised when an impression is recorded for an ad.
-        /// </summary>
-        /// @deprecated Use @ref OnAdImpressionRecorded.
-        [Obsolete("Use OnAdImpressionRecorded.")]
-        public event EventHandler<EventArgs> OnAdDidRecordImpression;
-
-        /// <summary>
-        /// Raised when a user reward is earned.
-        /// </summary>
-        /// @deprecated Use @ref OnAdPaid.
-        [Obsolete("Use OnAdPaid.")]
-        public event EventHandler<Reward> OnUserEarnedReward;
-
-        /// <summary>
-        /// Raised when the ad is estimated to have earned money.
-        /// </summary>
-        /// @deprecated Use @ref OnUserRewardEarned.
-        [Obsolete("Use OnUserRewardEarned.")]
-        public event EventHandler<AdValueEventArgs> OnPaidEvent;
-
         private IRewardedAdClient _client;
-        private string _adUnitId;
         private bool _canShowAd;
         private Action<Reward> _userRewardEarnedCallback;
-
-        /// @deprecated Use @ref RewardedAd.Load().
-        [Obsolete("Use RewardedAd.Load().")]
-        public RewardedAd(string adUnitId)
-        {
-            _adUnitId = adUnitId;
-        }
 
         private RewardedAd(IRewardedAdClient client)
         {
@@ -159,65 +93,12 @@ namespace GoogleMobileAds.Api
             client.LoadAd(adUnitId, request);
         }
 
-        /// @deprecated Use @ref RewardedAd.Load().
-        [Obsolete("Use RewardedAd.Load().")]
-        public void LoadAd(AdRequest request)
-        {
-            _client = MobileAds.GetClientFactory().BuildRewardedAdClient();
-            _client.CreateRewardedAd();
-            _client.OnAdLoaded += (sender, args) =>
-            {
-                _canShowAd = true;
-                RegisterAdEvents();
-                if (OnAdLoaded != null)
-                {
-                    OnAdLoaded(this, EventArgs.Empty);
-                }
-            };
-            _client.OnAdFailedToLoad += (sender, error) =>
-            {
-                var loadAdError = new LoadAdError(error.LoadAdErrorClient);
-                if (OnAdFailedToLoad != null)
-                {
-                    OnAdFailedToLoad(this, new AdFailedToLoadEventArgs
-                    {
-                        LoadAdError = loadAdError
-                    });
-                }
-            };
-            _client.LoadAd(_adUnitId, request);
-        }
-
-        /// <summary>
-        /// Returns true if the ad is loaded.
-        /// </summary>
-        /// @deprecated Use @ref CanShowAd().
-        [Obsolete("Use CanShowAd().")]
-        public bool IsLoaded()
-        {
-            return CanShowAd();
-        }
-
         /// <summary>
         /// Returns true if the ad is loaded and not shown.
         /// </summary>
         public bool CanShowAd()
         {
             return _client != null && _canShowAd;
-        }
-
-        /// <summary>
-        /// Shows the rewarded ad.
-        /// </summary>
-        /// @deprecated Use @ref Show().
-        [Obsolete("Use Show(Action<Reward> userRewardEarnedCallback).")]
-        public void Show()
-        {
-            if (CanShowAd())
-            {
-                _canShowAd = false;
-                _client.Show();
-            }
         }
 
         /// <summary>
@@ -284,10 +165,6 @@ namespace GoogleMobileAds.Api
 
             _client.OnAdDidDismissFullScreenContent += (sender, args) =>
             {
-                if (OnAdClosed != null)
-                {
-                    OnAdClosed(this, args);
-                }
                 if (OnAdFullScreenContentClosed != null)
                 {
                     OnAdFullScreenContentClosed();
@@ -296,10 +173,6 @@ namespace GoogleMobileAds.Api
 
             _client.OnAdDidPresentFullScreenContent += (sender, args) =>
             {
-                if (OnAdOpening != null)
-                {
-                    OnAdOpening(this, args);
-                }
                 if (OnAdFullScreenContentOpened != null)
                 {
                     OnAdFullScreenContentOpened();
@@ -308,10 +181,6 @@ namespace GoogleMobileAds.Api
 
             _client.OnAdDidRecordImpression += (sender, args) =>
             {
-                if (OnAdDidRecordImpression != null)
-                {
-                    OnAdDidRecordImpression(this, args);
-                }
                 if (OnAdImpressionRecorded != null)
                 {
                     OnAdImpressionRecorded();
@@ -321,11 +190,6 @@ namespace GoogleMobileAds.Api
             _client.OnAdFailedToPresentFullScreenContent += (sender, error) =>
             {
                 var adError = new AdError(error.AdErrorClient);
-                if (OnAdFailedToShow != null)
-                {
-                    OnAdFailedToShow(this,
-                            new AdErrorEventArgs { AdError = adError });
-                }
                 if (OnAdFullScreenContentFailed != null)
                 {
                     OnAdFullScreenContentFailed(adError);
@@ -334,10 +198,6 @@ namespace GoogleMobileAds.Api
 
             _client.OnPaidEvent += (sender, args) =>
             {
-                if (OnPaidEvent != null)
-                {
-                    OnPaidEvent(this, args);
-                }
                 if (OnAdPaid != null)
                 {
                     OnAdPaid(args.AdValue);
@@ -346,10 +206,6 @@ namespace GoogleMobileAds.Api
 
             _client.OnUserEarnedReward += (sender, args) =>
             {
-                if (OnUserEarnedReward != null)
-                {
-                    OnUserEarnedReward(sender, args);
-                }
                 if(_userRewardEarnedCallback != null)
                 {
                     _userRewardEarnedCallback(args);
