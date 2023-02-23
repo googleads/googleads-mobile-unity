@@ -6,6 +6,7 @@ Version Next
 
 Plugin:
 - Removed obsolete APIs for AppOpenAd.
+- Removed obsolete APIs for InterstitialAd.
 
 **************
 Version 7.4.1
