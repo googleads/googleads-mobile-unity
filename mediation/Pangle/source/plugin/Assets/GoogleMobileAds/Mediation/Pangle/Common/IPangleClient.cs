@@ -14,9 +14,9 @@
 
 using System;
 
-using GoogleMobileAds.Api.Mediation.Pangle;
+using GoogleMobileAds.Mediation.Pangle.Api;
 
-namespace GoogleMobileAds.Common.Mediation.Pangle
+namespace GoogleMobileAds.Mediation.Pangle.Common
 {
     public interface IPangleClient
     {

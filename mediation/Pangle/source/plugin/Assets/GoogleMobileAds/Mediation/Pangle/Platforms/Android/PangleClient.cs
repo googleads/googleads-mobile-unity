@@ -12,18 +12,21 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#if UNITY_IOS
+#if UNITY_ANDROID
 
 using UnityEngine;
 
-using GoogleMobileAds.Common.Mediation.Pangle;
+using GoogleMobileAds.Mediation.Pangle.Common;
 
-namespace GoogleMobileAds.iOS.Mediation.Pangle
+namespace GoogleMobileAds.Mediation.Pangle.Android
 {
     public class PangleClient : IPangleClient
     {
         private static PangleClient instance = new PangleClient();
         private PangleClient() { }
+
+        private const string pangleMediationAdapterClassName =
+               "com.google.ads.mediation.pangle.PangleMediationAdapter";
 
         public static PangleClient Instance
         {
@@ -35,12 +38,16 @@ namespace GoogleMobileAds.iOS.Mediation.Pangle
 
         public void SetGDPRConsent(int gdpr)
         {
-            Externs.GADUMPangleSetGDPRConsent(gdpr);
+            AndroidJavaClass PangleMediationAdapter =
+                    new AndroidJavaClass(pangleMediationAdapterClassName);
+            PangleMediationAdapter.CallStatic("setGDPRConsent", gdpr);
         }
 
         public void SetDoNotSell(int doNotSell)
         {
-            Externs.GADUMPangleSetDoNotSell(doNotSell);
+            AndroidJavaClass PangleMediationAdapter =
+                    new AndroidJavaClass(pangleMediationAdapterClassName);
+            PangleMediationAdapter.CallStatic("setDoNotSell", doNotSell);
         }
     }
 }

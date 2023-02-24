@@ -16,22 +16,22 @@ using System;
 using System.Collections;
 using UnityEngine;
 
-using GoogleMobileAds.Common.Mediation.Pangle;
+using GoogleMobileAds.Mediation.Pangle.Common;
 
-namespace GoogleMobileAds.Mediation
+namespace GoogleMobileAds.Mediation.Pangle
 {
     public class PangleClientFactory
     {
         public static IPangleClient PangleInstance()
         {
             #if UNITY_EDITOR
-            return new GoogleMobileAds.Common.Mediation.Pangle.DummyClient();
+            return new GoogleMobileAds.Mediation.Pangle.Common.DummyClient();
             #elif UNITY_ANDROID
-            return GoogleMobileAds.Android.Mediation.Pangle.PangleClient.Instance;
+            return GoogleMobileAds.Mediation.Pangle.Android.PangleClient.Instance;
             #elif UNITY_IOS
-            return GoogleMobileAds.iOS.Mediation.Pangle.PangleClient.Instance;
+            return GoogleMobileAds.Mediation.Pangle.iOS.PangleClient.Instance;
             #else
-            return new GoogleMobileAds.Common.Mediation.Pangle.DummyClient();
+            return new GoogleMobileAds.Mediation.Pangle.Common.DummyClient();
             #endif
         }
     }

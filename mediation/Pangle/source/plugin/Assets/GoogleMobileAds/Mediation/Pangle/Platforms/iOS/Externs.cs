@@ -12,27 +12,22 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+#if UNITY_IOS
+
 using System;
-using System.Reflection;
-using UnityEngine;
+using System.Runtime.InteropServices;
 
-namespace GoogleMobileAds.Common.Mediation.Pangle
+namespace GoogleMobileAds.Mediation.Pangle.iOS
 {
-    public class DummyClient : IPangleClient
+    // Externs used by the iOS component.
+    internal class Externs
     {
-        public DummyClient()
-        {
-            Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
-        }
+        [DllImport("__Internal")]
+        internal static extern void GADUMPangleSetGDPRConsent(int gdpr);
 
-        public void SetGDPRConsent(int gdpr)
-        {
-            Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
-        }
-
-        public void SetDoNotSell(int doNotSell)
-        {
-            Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
-        }
+        [DllImport("__Internal")]
+        internal static extern void GADUMPangleSetDoNotSell(int doNotSell);
     }
 }
+
+#endif

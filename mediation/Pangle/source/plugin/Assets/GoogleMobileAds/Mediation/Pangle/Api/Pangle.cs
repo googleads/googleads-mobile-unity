@@ -14,10 +14,10 @@
 
 using UnityEngine;
 
-using GoogleMobileAds.Common.Mediation.Pangle;
-using GoogleMobileAds.Mediation;
+using GoogleMobileAds.Mediation.Pangle;
+using GoogleMobileAds.Mediation.Pangle.Common;
 
-namespace GoogleMobileAds.Api.Mediation.Pangle
+namespace GoogleMobileAds.Mediation.Pangle.Api
 {
     public class Pangle
     {
@@ -36,6 +36,29 @@ namespace GoogleMobileAds.Api.Mediation.Pangle
         private static IPangleClient GetPangleClient()
         {
             return PangleClientFactory.PangleInstance();
+        }
+    }
+}
+
+
+namespace GoogleMobileAds.Api.Mediation.Pangle
+{
+    [System.Obsolete("Use `GoogleMobileAds.Mediation.Pangle.Api.Pangle` instead.")]
+    public class Pangle
+    {
+        public static void SetGDPRConsent(int gdpr)
+        {
+            GoogleMobileAds.Mediation.Pangle.Api.Pangle.SetGDPRConsent(gdpr);
+        }
+
+        public static void SetDoNotSell(int doNotSell)
+        {
+            GoogleMobileAds.Mediation.Pangle.Api.Pangle.SetDoNotSell(doNotSell);
+        }
+
+        private static IPangleClient GetPangleClient()
+        {
+            return GoogleMobileAds.Mediation.Pangle.Api.Pangle.GetPangleClient();
         }
     }
 }
