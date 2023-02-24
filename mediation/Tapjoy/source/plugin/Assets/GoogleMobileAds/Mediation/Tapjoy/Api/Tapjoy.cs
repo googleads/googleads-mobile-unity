@@ -1,4 +1,4 @@
-﻿// Copyright 2018 Google LLC
+// Copyright 2018 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,10 +14,10 @@
 
 using UnityEngine;
 
-using GoogleMobileAds.Common.Mediation.Tapjoy;
-using GoogleMobileAds.Mediation;
+using GoogleMobileAds.Mediation.Tapjoy.Common;
+using GoogleMobileAds.Mediation.Tapjoy;
 
-namespace GoogleMobileAds.Api.Mediation.Tapjoy
+namespace GoogleMobileAds.Mediation.Tapjoy.Api
 {
     public class Tapjoy
     {
@@ -36,6 +36,28 @@ namespace GoogleMobileAds.Api.Mediation.Tapjoy
         public static void SetUSPrivacy(string privacyString)
         {
             client.SetUSPrivacy(privacyString);
+        }
+    }
+}
+
+namespace GoogleMobileAds.Api.Mediation.Tapjoy
+{
+    [System.Obsolete("Use `GoogleMobileAds.Mediation.Tapjoy.Api.Tapjoy` instead.")]
+    public class Tapjoy
+    {
+        public static void SetUserConsent(string consentString)
+        {
+            GoogleMobileAds.Mediation.Tapjoy.Api.Tapjoy.SetUserConsent(consentString);
+        }
+
+        public static void SubjectToGDPR(bool gdprApplicability)
+        {
+            GoogleMobileAds.Mediation.Tapjoy.Api.Tapjoy.SubjectToGDPR(gdprApplicability);
+        }
+
+        public static void SetUSPrivacy(string privacyString)
+        {
+            GoogleMobileAds.Mediation.Tapjoy.Api.Tapjoy.SetUSPrivacy(privacyString);
         }
     }
 }

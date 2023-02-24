@@ -1,4 +1,4 @@
-﻿// Copyright 2018 Google LLC
+// Copyright 2018 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,22 +16,22 @@ using System;
 using System.Collections;
 using UnityEngine;
 
-using GoogleMobileAds.Common.Mediation.Tapjoy;
+using GoogleMobileAds.Mediation.Tapjoy.Common;
 
-namespace GoogleMobileAds.Mediation
+namespace GoogleMobileAds.Mediation.Tapjoy
 {
     public class TapjoyClientFactory
     {
         public static ITapjoyClient CreateTapjoyClient()
         {
             #if UNITY_EDITOR
-            return new GoogleMobileAds.Common.Mediation.Tapjoy.DummyClient();
+            return new GoogleMobileAds.Mediation.Tapjoy.Common.DummyClient();
             #elif UNITY_ANDROID
-            return GoogleMobileAds.Android.Mediation.Tapjoy.TapjoyClient.Instance;
+            return GoogleMobileAds.Mediation.Tapjoy.Android.TapjoyClient.Instance;
             #elif UNITY_IOS
-            return GoogleMobileAds.iOS.Mediation.Tapjoy.TapjoyClient.Instance;
+            return GoogleMobileAds.Mediation.Tapjoy.iOS.TapjoyClient.Instance;
             #else
-            return new GoogleMobileAds.Common.Mediation.Tapjoy.DummyClient();
+            return new GoogleMobileAds.Mediation.Common.Tapjoy.DummyClient();
             #endif
         }
     }
