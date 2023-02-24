@@ -1,4 +1,4 @@
-﻿// Copyright 2018 Google LLC
+// Copyright 2018 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,22 +15,22 @@
 using System;
 using UnityEngine;
 
-using GoogleMobileAds.Common.Mediation.UnityAds;
+using GoogleMobileAds.Mediation.UnityAds.Common;
 
-namespace GoogleMobileAds.Mediation
+namespace GoogleMobileAds.Mediation.UnityAds
 {
     public class UnityAdsClientFactory
     {
         public static IUnityAdsClient CreateUnityAdsClient()
         {
             #if UNITY_EDITOR
-            return new GoogleMobileAds.Common.Mediation.UnityAds.DummyClient();
+            return new GoogleMobileAds.Mediation.UnityAds.Common.DummyClient();
             #elif UNITY_ANDROID
-            return GoogleMobileAds.Android.Mediation.UnityAds.UnityAdsClient.Instance;
+            return GoogleMobileAds.Mediation.UnityAds.Android.UnityAdsClient.Instance;
             #elif UNITY_IOS
-            return GoogleMobileAds.iOS.Mediation.UnityAds.UnityAdsClient.Instance;
+            return GoogleMobileAds.Mediation.UnityAds.iOS.UnityAdsClient.Instance;
             #else
-            return new GoogleMobileAds.Common.Mediation.UnityAds.DummyClient();
+            return new GoogleMobileAds.Mediation.UnityAds.Common.DummyClient();
             #endif
         }
     }

@@ -1,4 +1,4 @@
-﻿// Copyright 2018 Google LLC
+// Copyright 2018 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,9 +16,9 @@
 
 using UnityEngine;
 
-using GoogleMobileAds.Common.Mediation.UnityAds;
+using GoogleMobileAds.Mediation.UnityAds.Common;
 
-namespace GoogleMobileAds.iOS.Mediation.UnityAds
+namespace GoogleMobileAds.Mediation.UnityAds.iOS
 {
     public class UnityAdsClient : IUnityAdsClient
     {

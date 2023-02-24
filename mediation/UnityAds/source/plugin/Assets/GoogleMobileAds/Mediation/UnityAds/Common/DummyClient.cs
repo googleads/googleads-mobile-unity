@@ -1,4 +1,4 @@
-﻿// Copyright 2018 Google LLC
+// Copyright 2018 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -13,11 +13,22 @@
 // limitations under the License.
 
 using System;
+using System.Reflection;
 
-namespace GoogleMobileAds.Common.Mediation.UnityAds
+using UnityEngine;
+
+namespace GoogleMobileAds.Mediation.UnityAds.Common
 {
-    public interface IUnityAdsClient
+    public class DummyClient : IUnityAdsClient
     {
-        void SetConsentMetaData(string key, bool metaDataValue);
+        public DummyClient ()
+        {
+            Debug.Log ("Dummy " + MethodBase.GetCurrentMethod ().Name);
+        }
+
+        public void SetConsentMetaData(string key, bool metaDataValue)
+        {
+            Debug.Log ("Dummy " + MethodBase.GetCurrentMethod ().Name);
+        }
     }
 }

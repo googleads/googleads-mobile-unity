@@ -1,4 +1,4 @@
-﻿// Copyright 2018 Google LLC
+// Copyright 2018 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,21 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using UnityEngine;
+using System;
 
-using GoogleMobileAds.Common.Mediation.UnityAds;
-using GoogleMobileAds.Mediation;
-
-namespace GoogleMobileAds.Api.Mediation.UnityAds
+namespace GoogleMobileAds.Mediation.UnityAds.Common
 {
-    public class UnityAds
+    public interface IUnityAdsClient
     {
-        private static readonly IUnityAdsClient client =
-                UnityAdsClientFactory.CreateUnityAdsClient();
-
-        public static void SetConsentMetaData(string key, bool metaDataValue)
-        {
-            client.SetConsentMetaData(key, metaDataValue);
-        }
+        void SetConsentMetaData(string key, bool metaDataValue);
     }
 }

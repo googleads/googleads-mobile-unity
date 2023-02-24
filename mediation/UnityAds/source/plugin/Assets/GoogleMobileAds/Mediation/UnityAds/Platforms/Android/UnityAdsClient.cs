@@ -17,9 +17,9 @@
 using System.Reflection;
 using UnityEngine;
 
-using GoogleMobileAds.Common.Mediation.UnityAds;
+using GoogleMobileAds.Mediation.UnityAds.Common;
 
-namespace GoogleMobileAds.Android.Mediation.UnityAds
+namespace GoogleMobileAds.Mediation.UnityAds.Android
 {
     public class UnityAdsClient : IUnityAdsClient
     {

@@ -1,4 +1,4 @@
-﻿// Copyright 2018 Google LLC
+// Copyright 2018 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,23 +12,19 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+#if UNITY_IOS
+
 using System;
-using System.Reflection;
+using System.Runtime.InteropServices;
 
-using UnityEngine;
-
-namespace GoogleMobileAds.Common.Mediation.UnityAds
+namespace GoogleMobileAds.Mediation.UnityAds.iOS
 {
-    public class DummyClient : IUnityAdsClient
+    // Externs used by the iOS component
+    internal class Externs
     {
-        public DummyClient ()
-        {
-            Debug.Log ("Dummy " + MethodBase.GetCurrentMethod ().Name);
-        }
-
-        public void SetConsentMetaData(string key, bool metaDataValue)
-        {
-            Debug.Log ("Dummy " + MethodBase.GetCurrentMethod ().Name);
-        }
+        [DllImport("__Internal")]
+        internal static extern void GADUMSetConsentMetaData(string key, bool metaDataValue);
     }
 }
+
+#endif
