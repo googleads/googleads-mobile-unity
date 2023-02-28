@@ -1,6 +1,6 @@
 ## Vungle Unity Mediation Plugin Changelog
 
-#### Version 3.9.2 (In Progress)
+#### [Version 3.9.2](https://dl.google.com/googleadmobadssdk/mediation/unity/vungle/VungleUnityAdapter-3.9.2.zip)
 - Updated the `Vungle` class:
   * Added the `UpdateCCPAStatus(VungleCCPAStatus)` method.
   * Removed the `GetCurrentConsentStatus()` method.
