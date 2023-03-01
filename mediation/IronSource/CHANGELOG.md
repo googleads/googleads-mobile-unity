@@ -2,8 +2,8 @@
 
 #### Version 2.2.7 (In Progress)
 - Supports [IronSource Android adapter version 7.2.7.0](https://github.com/googleads/googleads-mobile-android-mediation/blob/main/ThirdPartyAdapters/ironsource/CHANGELOG.md#version-7270).
-- Supports [IronSource iOS adapter version 7.2.7.0.0](https://github.com/googleads/googleads-mobile-ios-mediation/blob/main/adapters/IronSource/CHANGELOG.md#version-72700).
-- Built and tested with the Google Mobile Ads Unity Plugin version 7.4.0.
+- Supports [IronSource iOS adapter version 7.2.7.0.1](https://github.com/googleads/googleads-mobile-ios-mediation/blob/main/adapters/IronSource/CHANGELOG.md#version-72701).
+- Built and tested with the Google Mobile Ads Unity Plugin version 7.4.1.
 
 #### [Version 2.2.6](https://dl.google.com/googleadmobadssdk/mediation/unity/ironsource/IronSourceUnityAdapter-2.2.6.zip)
 - Supports [IronSource Android adapter version 7.2.6.0](https://github.com/googleads/googleads-mobile-android-mediation/blob/main/ThirdPartyAdapters/ironsource/CHANGELOG.md#version-7260).
