@@ -12,45 +12,37 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#if UNITY_IOS
-
+using System;
+using System.Reflection;
 using UnityEngine;
-using GoogleMobileAds.Common.Mediation.AppLovin;
 
-namespace GoogleMobileAds.iOS.Mediation.AppLovin
+namespace GoogleMobileAds.Mediation.AppLovin.Common
 {
-    public class AppLovinClient : IAppLovinClient
+    public class DummyClient : IAppLovinClient
     {
-        private static readonly AppLovinClient instance = new AppLovinClient();
-        private AppLovinClient() {}
-
-        public static AppLovinClient Instance
+        public DummyClient()
         {
-            get {
-                return instance;
-            }
+            Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
         }
 
         public void Initialize()
         {
-            Externs.GADUMInitializeAppLovin();
+            Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
         }
 
         public void SetHasUserConsent(bool hasUserConsent)
         {
-            Externs.GADUMAppLovinSetHasUserConsent(hasUserConsent);
+            Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
         }
 
         public void SetIsAgeRestrictedUser(bool isAgeRestrictedUser)
         {
-            Externs.GADUMAppLovinSetIsAgeRestrictedUser(isAgeRestrictedUser);
+            Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
         }
 
         public void SetDoNotSell(bool doNotSell)
         {
-            Externs.GADUMAppLovinSetDoNotSell(doNotSell);
+            Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
         }
     }
 }
-
-#endif

@@ -12,37 +12,45 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System;
-using System.Reflection;
-using UnityEngine;
+#if UNITY_IOS
 
-namespace GoogleMobileAds.Common.Mediation.AppLovin
+using UnityEngine;
+using GoogleMobileAds.Mediation.AppLovin.Common;
+
+namespace GoogleMobileAds.Mediation.AppLovin.iOS
 {
-    public class DummyClient : IAppLovinClient
+    public class AppLovinClient : IAppLovinClient
     {
-        public DummyClient()
+        private static readonly AppLovinClient instance = new AppLovinClient();
+        private AppLovinClient() {}
+
+        public static AppLovinClient Instance
         {
-            Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
+            get {
+                return instance;
+            }
         }
 
         public void Initialize()
         {
-            Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
+            Externs.GADUMInitializeAppLovin();
         }
 
         public void SetHasUserConsent(bool hasUserConsent)
         {
-            Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
+            Externs.GADUMAppLovinSetHasUserConsent(hasUserConsent);
         }
 
         public void SetIsAgeRestrictedUser(bool isAgeRestrictedUser)
         {
-            Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
+            Externs.GADUMAppLovinSetIsAgeRestrictedUser(isAgeRestrictedUser);
         }
 
         public void SetDoNotSell(bool doNotSell)
         {
-            Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
+            Externs.GADUMAppLovinSetDoNotSell(doNotSell);
         }
     }
 }
+
+#endif

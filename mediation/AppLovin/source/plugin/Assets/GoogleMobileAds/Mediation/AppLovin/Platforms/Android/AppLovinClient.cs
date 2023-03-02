@@ -16,9 +16,9 @@
 
 using System.Reflection;
 using UnityEngine;
-using GoogleMobileAds.Common.Mediation.AppLovin;
+using GoogleMobileAds.Mediation.AppLovin.Common;
 
-namespace GoogleMobileAds.Android.Mediation.AppLovin
+namespace GoogleMobileAds.Mediation.AppLovin.Android
 {
     public class AppLovinClient : IAppLovinClient
     {

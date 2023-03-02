@@ -13,10 +13,10 @@
 // limitations under the License.
 
 using System;
-using GoogleMobileAds.Common.Mediation.AppLovin;
-using GoogleMobileAds.Mediation;
+using GoogleMobileAds.Mediation.AppLovin.Common;
+using GoogleMobileAds.Mediation.AppLovin;
 
-namespace GoogleMobileAds.Api.Mediation.AppLovin
+namespace GoogleMobileAds.Mediation.AppLovin.Api
 {
     public class AppLovin
     {
@@ -45,6 +45,40 @@ namespace GoogleMobileAds.Api.Mediation.AppLovin
         private static IAppLovinClient GetAppLovinClient()
         {
             return AppLovinClientFactory.AppLovinInstance();
+        }
+    }
+}
+
+
+namespace GoogleMobileAds.Api.Mediation.AppLovin
+{
+    [System.Obsolete("Use `GoogleMobileAds.Mediation.AppLovin.Api.AppLovin` instead.")]
+    public class AppLovin
+    {
+        public static void Initialize()
+        {
+            GoogleMobileAds.Mediation.AppLovin.Api.AppLovin.Initialize();
+        }
+
+        public static void SetHasUserConsent(bool hasUserConsent)
+        {
+            GoogleMobileAds.Mediation.AppLovin.Api.AppLovin.SetHasUserConsent(hasUserConsent);
+        }
+
+        public static void SetIsAgeRestrictedUser(bool isAgeRestrictedUser)
+        {
+            GoogleMobileAds.Mediation.AppLovin.Api.
+                AppLovin.SetIsAgeRestrictedUser(isAgeRestrictedUser);
+        }
+
+        public static void SetDoNotSell(bool doNotSell)
+        {
+            GoogleMobileAds.Mediation.AppLovin.Api.AppLovin.SetDoNotSell(doNotSell);
+        }
+
+        private static IAppLovinClient GetAppLovinClient()
+        {
+            return GoogleMobileAds.Mediation.AppLovin.Api.AppLovin.GetAppLovinClient();
         }
     }
 }

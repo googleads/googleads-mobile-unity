@@ -1,4 +1,4 @@
-﻿// Copyright (C) 2017 Google, Inc.
+// Copyright (C) 2017 Google, Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -19,7 +19,7 @@ using UnityEditor.Callbacks;
 using UnityEditor.iOS.Xcode;
 using System.IO;
 
-namespace GoogleMobileAds.Common.Mediation.AppLovin
+namespace GoogleMobileAds.Mediation.AppLovin.Common
 {
     public class AppLovinPostProcessBuild
     {

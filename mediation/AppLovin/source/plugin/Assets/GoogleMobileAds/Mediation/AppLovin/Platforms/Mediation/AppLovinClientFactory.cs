@@ -15,9 +15,9 @@
 using UnityEngine;
 using System.Collections;
 
-using GoogleMobileAds.Common.Mediation.AppLovin;
+using GoogleMobileAds.Mediation.AppLovin.Common;
 
-namespace GoogleMobileAds.Mediation
+namespace GoogleMobileAds.Mediation.AppLovin
 {
     public class AppLovinClientFactory
     {
@@ -26,13 +26,13 @@ namespace GoogleMobileAds.Mediation
             #if UNITY_EDITOR
             // Testing UNITY_EDITOR first because the editor also responds to the currently
             // selected platform.
-            return new GoogleMobileAds.Common.Mediation.AppLovin.DummyClient();
+            return new GoogleMobileAds.Mediation.AppLovin.Common.DummyClient();
             #elif UNITY_ANDROID
-            return GoogleMobileAds.Android.Mediation.AppLovin.AppLovinClient.Instance;
+            return GoogleMobileAds.Mediation.AppLovin.Android.AppLovinClient.Instance;
             #elif UNITY_IOS
-            return GoogleMobileAds.iOS.Mediation.AppLovin.AppLovinClient.Instance;
+            return GoogleMobileAds.Mediation.AppLovin.iOS.AppLovinClient.Instance;
             #else
-            return new GoogleMobileAds.Common.Mediation.AppLovin.DummyClient();
+            return new GoogleMobileAds.Mediation.AppLovin.Common.DummyClient();
             #endif
         }
     }

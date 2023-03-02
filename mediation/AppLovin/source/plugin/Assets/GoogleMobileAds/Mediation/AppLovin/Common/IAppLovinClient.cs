@@ -15,7 +15,7 @@
 using UnityEngine;
 using System.Collections;
 
-namespace GoogleMobileAds.Common.Mediation.AppLovin
+namespace GoogleMobileAds.Mediation.AppLovin.Common
 {
     public interface IAppLovinClient
     {
