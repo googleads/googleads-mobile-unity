@@ -89,12 +89,18 @@ namespace GoogleMobileAds.Api
             client.CreateAppOpenAd();
             client.OnAdLoaded += (sender, args) =>
             {
-                adLoadCallback(new AppOpenAd(client), null);
+                MobileAds.RaiseAction(() =>
+                {
+                    adLoadCallback(new AppOpenAd(client), null);
+                });
             };
             client.OnAdFailedToLoad += (sender, args) =>
             {
-                var loadAdError = new LoadAdError(args.LoadAdErrorClient);
-                adLoadCallback(null, loadAdError);
+                LoadAdError loadAdError = new LoadAdError(args.LoadAdErrorClient);
+                MobileAds.RaiseAction(() =>
+                {
+                    adLoadCallback(null, loadAdError);
+                });
             };
             client.LoadAd(adUnitId, request, orientation);
         }
@@ -145,52 +151,70 @@ namespace GoogleMobileAds.Api
         {
             _client.OnAdClicked += () =>
             {
-                if (OnAdClicked != null)
+                MobileAds.RaiseAction(() =>
                 {
-                    OnAdClicked();
-                }
+                    if (OnAdClicked != null)
+                    {
+                        OnAdClicked();
+                    }
+                });
             };
 
             _client.OnAdDidDismissFullScreenContent += (sender, args) =>
             {
-                if (OnAdFullScreenContentClosed != null)
+                MobileAds.RaiseAction(() =>
                 {
-                    OnAdFullScreenContentClosed();
-                }
+                    if (OnAdFullScreenContentClosed != null)
+                    {
+                        OnAdFullScreenContentClosed();
+                    }
+                });
             };
 
             _client.OnAdDidPresentFullScreenContent += (sender, args) =>
             {
-                if (OnAdFullScreenContentOpened != null)
+                MobileAds.RaiseAction(() =>
                 {
-                    OnAdFullScreenContentOpened();
-                }
+                    if (OnAdFullScreenContentOpened != null)
+                    {
+                        OnAdFullScreenContentOpened();
+                    }
+                });
             };
 
             _client.OnAdDidRecordImpression += (sender, args) =>
             {
-                if (OnAdImpressionRecorded != null)
+                MobileAds.RaiseAction(() =>
                 {
-                    OnAdImpressionRecorded();
-                }
+                    if (OnAdImpressionRecorded != null)
+                    {
+                        OnAdImpressionRecorded();
+                    }
+                });
             };
 
             _client.OnAdFailedToPresentFullScreenContent += (sender, error) =>
             {
-                var adError = new AdError(error.AdErrorClient);
-                if (OnAdFullScreenContentFailed != null)
+                AdError adError = new AdError(error.AdErrorClient);
+                MobileAds.RaiseAction(() =>
                 {
-                    OnAdFullScreenContentFailed(adError);
-                }
+                    if (OnAdFullScreenContentFailed != null)
+                    {
+                        OnAdFullScreenContentFailed(adError);
+                    }
+                });
             };
 
             _client.OnPaidEvent += (sender, args) =>
             {
-                if (OnAdPaid != null)
+                MobileAds.RaiseAction(() =>
                 {
-                    OnAdPaid(args.AdValue);
-                }
-             };
+                    if (OnAdPaid != null)
+                    {
+                        OnAdPaid(args.AdValue);
+                    }
+                });
+            };
         }
     }
 }

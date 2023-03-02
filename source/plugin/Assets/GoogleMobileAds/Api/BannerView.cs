@@ -187,59 +187,80 @@ namespace GoogleMobileAds.Api
 
             _client.OnAdLoaded += (sender, args) =>
             {
-                if (OnBannerAdLoaded != null)
+                MobileAds.RaiseAction(() =>
                 {
-                    OnBannerAdLoaded();
-                }
+                    if (OnBannerAdLoaded != null)
+                    {
+                        OnBannerAdLoaded();
+                    }
+                });
             };
 
             _client.OnAdFailedToLoad += (sender, args) =>
             {
                 LoadAdError loadAdError = new LoadAdError(args.LoadAdErrorClient);
-                if (OnBannerAdLoadFailed != null)
+                MobileAds.RaiseAction(() =>
                 {
-                    OnBannerAdLoadFailed(loadAdError);
-                }
+                    if (OnBannerAdLoadFailed != null)
+                    {
+                        OnBannerAdLoadFailed(loadAdError);
+                    }
+                });
             };
 
             _client.OnAdOpening += (sender, args) =>
             {
-                if (OnAdFullScreenContentOpened != null)
+                MobileAds.RaiseAction(() =>
                 {
-                    OnAdFullScreenContentOpened();
-                }
+                    if (OnAdFullScreenContentOpened != null)
+                    {
+                        OnAdFullScreenContentOpened();
+                    }
+                });
             };
 
             _client.OnAdClosed += (sender, args) =>
             {
-                if (OnAdFullScreenContentClosed != null)
+                MobileAds.RaiseAction(() =>
                 {
-                    OnAdFullScreenContentClosed();
-                }
+                    if (OnAdFullScreenContentClosed != null)
+                    {
+                        OnAdFullScreenContentClosed();
+                    }
+                });
             };
 
             _client.OnPaidEvent += (sender, args) =>
             {
-                if (OnAdPaid != null)
+                MobileAds.RaiseAction(() =>
                 {
-                    OnAdPaid(args.AdValue);
-                }
+                    if (OnAdPaid != null)
+                    {
+                        OnAdPaid(args.AdValue);
+                    }
+                });
             };
 
             _client.OnAdClicked += () =>
             {
-                if (OnAdClicked != null)
+                MobileAds.RaiseAction(() =>
                 {
-                    OnAdClicked();
-                }
+                    if (OnAdClicked != null)
+                    {
+                        OnAdClicked();
+                    }
+                });
             };
 
             _client.OnAdImpressionRecorded += () =>
             {
-                if (OnAdImpressionRecorded != null)
+                MobileAds.RaiseAction(() =>
                 {
-                    OnAdImpressionRecorded();
-                }
+                    if (OnAdImpressionRecorded != null)
+                    {
+                        OnAdImpressionRecorded();
+                    }
+                });
             };
         }
     }
