@@ -40,7 +40,6 @@ namespace GoogleMobileAds.Mediation.Pangle.Api
     }
 }
 
-
 namespace GoogleMobileAds.Api.Mediation.Pangle
 {
     [System.Obsolete("Use `GoogleMobileAds.Mediation.Pangle.Api.Pangle` instead.")]
@@ -58,7 +57,7 @@ namespace GoogleMobileAds.Api.Mediation.Pangle
 
         private static IPangleClient GetPangleClient()
         {
-            return GoogleMobileAds.Mediation.Pangle.Api.Pangle.GetPangleClient();
+            return GoogleMobileAds.Mediation.Pangle.Api.Pangle.client;
         }
     }
 }
