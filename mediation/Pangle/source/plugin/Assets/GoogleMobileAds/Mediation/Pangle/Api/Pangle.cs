@@ -33,13 +33,12 @@ namespace GoogleMobileAds.Mediation.Pangle.Api
             client.SetDoNotSell(doNotSell);
         }
 
-        private static IPangleClient GetPangleClient()
+        internal static IPangleClient GetPangleClient()
         {
             return PangleClientFactory.PangleInstance();
         }
     }
 }
-
 
 namespace GoogleMobileAds.Api.Mediation.Pangle
 {
