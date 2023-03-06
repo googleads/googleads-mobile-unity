@@ -20,7 +20,7 @@ namespace GoogleMobileAds.Mediation.AppLovin.Api
 {
     public class AppLovin
     {
-        private static readonly IAppLovinClient client = GetAppLovinClient();
+        internal static readonly IAppLovinClient client = GetAppLovinClient();
 
         public static void Initialize()
         {
@@ -42,7 +42,7 @@ namespace GoogleMobileAds.Mediation.AppLovin.Api
             client.SetDoNotSell(doNotSell);
         }
 
-        private static IAppLovinClient GetAppLovinClient()
+        internal static IAppLovinClient GetAppLovinClient()
         {
             return AppLovinClientFactory.AppLovinInstance();
         }
