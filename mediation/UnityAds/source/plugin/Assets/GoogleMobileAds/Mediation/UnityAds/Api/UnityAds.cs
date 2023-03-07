@@ -21,7 +21,7 @@ namespace GoogleMobileAds.Mediation.UnityAds.Api
 {
     public class UnityAds
     {
-        private static readonly IUnityAdsClient client =
+        internal static readonly IUnityAdsClient client =
                 UnityAdsClientFactory.CreateUnityAdsClient();
 
         public static void SetConsentMetaData(string key, bool metaDataValue)
