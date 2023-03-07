@@ -1,4 +1,4 @@
-﻿// Copyright 2018 Google LLC
+// Copyright 2018 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,10 +17,10 @@
 using System;
 using UnityEngine;
 
-using GoogleMobileAds.Api.Mediation.Vungle;
-using GoogleMobileAds.Common.Mediation.Vungle;
+using GoogleMobileAds.Mediation.Vungle.Api;
+using GoogleMobileAds.Mediation.Vungle.Common;
 
-namespace GoogleMobileAds.Android.Mediation.Vungle
+namespace GoogleMobileAds.Mediation.Vungle.Android
 {
     public class VungleClient : IVungleClient
     {

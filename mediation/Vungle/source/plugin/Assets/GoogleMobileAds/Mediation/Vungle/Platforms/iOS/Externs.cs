@@ -1,4 +1,4 @@
-﻿// Copyright 2018 Google LLC
+// Copyright 2018 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,16 +12,24 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+#if UNITY_IOS
+
 using System;
+using System.Runtime.InteropServices;
 
-using GoogleMobileAds.Api.Mediation.Vungle;
+using GoogleMobileAds.Mediation.Vungle.Api;
 
-namespace GoogleMobileAds.Common.Mediation.Vungle
+namespace GoogleMobileAds.Mediation.Vungle.iOS
 {
-    public interface IVungleClient
+    internal class Externs
     {
-        void UpdateConsentStatus(VungleConsentStatus consentStatus,
-                                 String consentMessageVersion);
-        void UpdateCCPAStatus(VungleCCPAStatus consentStatus);
+        [DllImport("__Internal")]
+        internal static extern void GADUMVungleUpdateConsentStatus(int consentStatus,
+                                                                   string consentMessageVersion);
+
+        [DllImport("__Internal")]
+        internal static extern void GADUMVungleUpdateCCPAStatus(int ccpaStatus);
     }
 }
+
+#endif

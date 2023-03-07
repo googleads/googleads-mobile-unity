@@ -1,4 +1,4 @@
-﻿// Copyright 2018 Google LLC
+// Copyright 2018 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,22 +16,22 @@ using System;
 using System.Collections;
 using UnityEngine;
 
-using GoogleMobileAds.Common.Mediation.Vungle;
+using GoogleMobileAds.Mediation.Vungle.Common;
 
-namespace GoogleMobileAds.Mediation
+namespace GoogleMobileAds.Mediation.Vungle
 {
     public class VungleClientFactory
     {
         public static IVungleClient CreateVungleClient()
         {
             #if UNITY_EDITOR
-            return new GoogleMobileAds.Common.Mediation.Vungle.DummyClient();
+            return new GoogleMobileAds.Mediation.Vungle.Common.DummyClient();
             #elif UNITY_ANDROID
-            return GoogleMobileAds.Android.Mediation.Vungle.VungleClient.Instance;
+            return GoogleMobileAds.Mediation.Vungle.Android.VungleClient.Instance;
             #elif UNITY_IOS
-            return GoogleMobileAds.iOS.Mediation.Vungle.VungleClient.Instance;
+            return GoogleMobileAds.Mediation.Vungle.iOS.VungleClient.Instance;
             #else
-            return new GoogleMobileAds.Common.Mediation.Vungle.DummyClient();
+            return new GoogleMobileAds.Mediation.Vungle.Common.DummyClient();
             #endif
         }
     }

@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace GoogleMobileAds.Api.Mediation.Vungle
+namespace GoogleMobileAds.Mediation.Vungle.Api
 {
     public abstract class VungleMediationExtras : MediationExtras
     {
@@ -32,5 +32,15 @@ namespace GoogleMobileAds.Api.Mediation.Vungle
         {
             this.Extras.Add(SoundEnabledKey, soundEnabled.ToString());
         }
+    }
+}
+
+
+namespace GoogleMobileAds.Api.Mediation.Vungle
+{
+    [System.Obsolete("Use `GoogleMobileAds.Mediation.Vungle.Api.VungleMediationExtras` instead.")]
+    public abstract class VungleMediationExtras :
+                          GoogleMobileAds.Mediation.Vungle.Api.VungleMediationExtras
+    {
     }
 }

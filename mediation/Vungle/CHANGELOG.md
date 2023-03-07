@@ -1,5 +1,9 @@
 ## Vungle Unity Mediation Plugin Changelog
 
+#### Next Version
+- Moved adapter content to `GoogleMobileAds/Mediation/Vungle/`.
+- Refactored adapter namespace to use `GoogleMobileAds.Mediation.Vungle`.
+
 #### [Version 3.9.2](https://dl.google.com/googleadmobadssdk/mediation/unity/vungle/VungleUnityAdapter-3.9.2.zip)
 - Updated the `Vungle` class:
   * Added the `UpdateCCPAStatus(VungleCCPAStatus)` method.

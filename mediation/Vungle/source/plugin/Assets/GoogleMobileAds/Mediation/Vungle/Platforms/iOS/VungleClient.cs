@@ -17,10 +17,10 @@
 using System;
 using UnityEngine;
 using System.Runtime.InteropServices;
-using GoogleMobileAds.Api.Mediation.Vungle;
-using GoogleMobileAds.Common.Mediation.Vungle;
+using GoogleMobileAds.Mediation.Api.Vungle;
+using GoogleMobileAds.Mediation.Common.Vungle;
 
-namespace GoogleMobileAds.iOS.Mediation.Vungle
+namespace GoogleMobileAds.Mediation.iOS.Vungle
 {
     public class VungleClient : IVungleClient
     {
