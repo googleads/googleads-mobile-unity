@@ -67,7 +67,6 @@ public class GoogleAdMobController : MonoBehaviour
         MobileAdsEventExecutor.ExecuteInUpdate(() =>
         {
             statusText.text = "Initialization complete.";
-            RequestBannerAd();
         });
     }
 
@@ -135,6 +134,14 @@ public class GoogleAdMobController : MonoBehaviour
         {
             PrintStatus("Banner ad failed to load with error: "+ error.GetMessage());
             OnAdFailedToLoadEvent.Invoke();
+        };
+        bannerView.OnAdImpressionRecorded += () =>
+        {
+          PrintStatus("Banner ad recorded an impression.");
+        };
+        bannerView.OnAdClicked += () =>
+        {
+            PrintStatus("Banner ad recorded a click.");
         };
         bannerView.OnAdFullScreenContentOpened += () =>
         {
