@@ -15,16 +15,16 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-using GoogleMobileAds.Common.Mediation.InMobi;
-using GoogleMobileAds.Mediation;
+using GoogleMobileAds.Mediation.InMobi;
+using GoogleMobileAds.Mediation.InMobi.Common;
 
-namespace GoogleMobileAds.Api.Mediation.InMobi
+namespace GoogleMobileAds.Mediation.InMobi.Api
 {
     public class InMobi
     {
         public static readonly IInMobiClient client = GetInMobiClient();
 
-        private static IInMobiClient GetInMobiClient()
+        internal static IInMobiClient GetInMobiClient()
         {
             return InMobiClientFactory.InMobiInstance();
         }
@@ -37,6 +37,18 @@ namespace GoogleMobileAds.Api.Mediation.InMobi
             }
 
             client.UpdateGDPRConsent(consentObject);
+        }
+    }
+}
+
+namespace GoogleMobileAds.Api.Mediation.InMobi
+{
+    [System.Obsolete("Use `GoogleMobileAds.Mediation.InMobi.Api.InMobi` instead.")]
+    public class InMobi
+    {
+        public static void UpdateGDPRConsent(Dictionary<string, string> consentObject)
+        {
+            GoogleMobileAds.Mediation.InMobi.Api.UpdateGDPRConsent(consentObject);
         }
     }
 }
