@@ -1,6 +1,6 @@
 ## AdColony Unity Mediation Plugin Changelog
 
-#### Version 2.6.1 (In Progress)
+#### [Version 2.6.1](https://dl.google.com/googleadmobadssdk/mediation/unity/adcolony/AdColonyUnityAdapter-2.6.1.zip)
 - Updated the privacy APIs from the `AdColonyAppOptions` class to the following methods to support GDPR and CCPA:
   * `SetGDPRRequired(bool)` -> `SetPrivacyFrameworkRequired(AdColonyPrivacyFramework, bool)`
   * `IsGDPRRequired()` -> `GetPrivacyFrameworkRequired(AdColonyPrivacyFramework)`
