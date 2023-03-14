@@ -39,7 +39,7 @@ namespace GoogleMobileAds.Api.Mediation.UnityAds
     {
         public static void SetConsentMetaData(string key, bool metaDataValue)
         {
-            GoogleMobileAds.Mediation.UnityAds.Api.SetConsentMetaData(key, metaDataValue);
+            GoogleMobileAds.Mediation.UnityAds.Api.UnityAds.SetConsentMetaData(key, metaDataValue);
         }
     }
 }
