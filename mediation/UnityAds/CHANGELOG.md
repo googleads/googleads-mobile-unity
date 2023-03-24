@@ -1,6 +1,6 @@
 ## Unity Ads Unity Mediation Plugin Changelog
 
-#### Version 3.6.0 (In Progress)
+#### [Version 3.6.0](https://dl.google.com/googleadmobadssdk/mediation/unity/unity/UnityAdsUnityAdapter-3.6.0.zip)
 - Moved adapter content to `GoogleMobileAds/Mediation/UnityAds/`.
 - Refactored adapter namespace to use `GoogleMobileAds.Mediation.UnityAds`.
 - Supports [Unity Ads Android adapter version 4.6.0.0](https://github.com/googleads/googleads-mobile-android-mediation/blob/main/ThirdPartyAdapters/unity/CHANGELOG.md#version-4600).
