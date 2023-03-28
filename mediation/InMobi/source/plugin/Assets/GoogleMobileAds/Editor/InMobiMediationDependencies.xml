@@ -1,6 +1,6 @@
 <dependencies>
   <androidPackages>
-    <androidPackage spec="com.google.ads.mediation:inmobi:10.1.2.1">
+    <androidPackage spec="com.google.ads.mediation:inmobi:10.5.4.0">
       <repositories>
         <repository>https://repo.maven.apache.org/maven2/</repository>
         <repository>https://dl.google.com/dl/android/maven2/</repository>
@@ -9,7 +9,7 @@
   </androidPackages>
 
   <iosPods>
-    <iosPod name="GoogleMobileAdsMediationInMobi" version="10.1.2.1">
+    <iosPod name="GoogleMobileAdsMediationInMobi" version="10.5.4.0">
       <sources>
         <source>https://github.com/CocoaPods/Specs</source>
       </sources>
