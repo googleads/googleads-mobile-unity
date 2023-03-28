@@ -44,7 +44,7 @@ public class UnityAppOpenAd {
   private AppOpenAd appOpenAd;
 
   /**
-   * The {@code Activity} on which the app open add will display.
+   * The {@code Activity} on which the app open ad will display.
    */
   private final Activity activity;
 
@@ -190,7 +190,7 @@ public class UnityAppOpenAd {
 
   public void show() {
     if (appOpenAd == null) {
-      Log.e(PluginUtils.LOGTAG, "Tried to show rewarded ad before it was ready. This should "
+      Log.e(PluginUtils.LOGTAG, "Tried to show app open ad before it was ready. This should "
           + "in theory never happen. If it does, please contact the plugin owners.");
       return;
     }
