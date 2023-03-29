@@ -88,19 +88,21 @@ namespace GoogleMobileAds.Unity
             {
                 LoadAndSetPrefabAd("PlaceholderAds/Banners/ADAPTIVE");
             }
-            else
+            else if (prefabAds.ContainsKey(adSize))
             {
                 LoadAndSetPrefabAd(prefabAds[adSize]);
             }
-            if (prefabAd != null) {
-                if (adSize == AdSize.SmartBanner || adSize.AdType == AdSize.Type.AnchoredAdaptive)
-                {
-                    SetAndStretchAd(prefabAd, position, adSize);
-                }
-                else
-                {
-                    AnchorAd(prefabAd, position);
-                }
+            if (prefabAd == null)
+            {
+                return;
+            }
+            if (adSize == AdSize.SmartBanner || adSize.AdType == AdSize.Type.AnchoredAdaptive)
+            {
+                SetAndStretchAd(prefabAd, position, adSize);
+            }
+            else
+            {
+                AnchorAd(prefabAd, position);
             }
         }
 
@@ -111,22 +113,23 @@ namespace GoogleMobileAds.Unity
             {
                 LoadAndSetPrefabAd("PlaceholderAds/Banners/ADAPTIVE");
             }
-            else
+            else if (prefabAds.ContainsKey(adSize))
             {
                 LoadAndSetPrefabAd(prefabAds[adSize]);
             }
-            if (prefabAd != null) {
-                RectTransform rect = getRectTransform(prefabAd);
-
-                if (adSize == AdSize.SmartBanner || adSize.AdType == AdSize.Type.AnchoredAdaptive)
-                {
-                    SetAndStretchAd(prefabAd, 0, adSize);
-                    rect.anchoredPosition = new Vector3(0, y, 1);
-                }
-                else
-                {
-                    rect.anchoredPosition = new Vector3(x, y, 1);
-                }
+            if (prefabAd == null)
+            {
+                return;
+            }
+            RectTransform rect = getRectTransform(prefabAd);
+            if (adSize == AdSize.SmartBanner || adSize.AdType == AdSize.Type.AnchoredAdaptive)
+            {
+                SetAndStretchAd(prefabAd, 0, adSize);
+                rect.anchoredPosition = new Vector3(0, y, 1);
+            }
+            else
+            {
+                rect.anchoredPosition = new Vector3(x, y, 1);
             }
         }
 
