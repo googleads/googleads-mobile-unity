@@ -121,6 +121,7 @@ namespace GoogleMobileAds.Unity
             {
                 return;
             }
+
             RectTransform rect = getRectTransform(prefabAd);
             if (adSize == AdSize.SmartBanner || adSize.AdType == AdSize.Type.AnchoredAdaptive)
             {
@@ -129,7 +130,15 @@ namespace GoogleMobileAds.Unity
             }
             else
             {
-                rect.anchoredPosition = new Vector3(x, y, 1);
+                // Account for banner size and refactor coordinates
+                float xWithOffset = (float)rect.sizeDelta.x/2 + x;
+                float yWithOffset = (float)rect.sizeDelta.y/2 + y;
+
+                // Anchor the banner relative to the top left
+                rect.pivot = new Vector2(0.5f, 0.5f);
+                rect.anchorMin = new Vector2(0, 1);
+                rect.anchorMax = new Vector2(0, 1);
+                rect.anchoredPosition = new Vector2(xWithOffset, -yWithOffset);
             }
         }
 
@@ -208,14 +217,22 @@ namespace GoogleMobileAds.Unity
         // Set the position of the banner view using custom position.
         public void SetPosition(int x, int y)
         {
-            if (dummyAd != null)
-            {
-                RectTransform rect = getRectTransform(dummyAd);
-                rect.anchoredPosition = new Vector2(x, y);
-            } else
+            if (dummyAd == null)
             {
                 Debug.Log("No existing banner in game");
+                return;
             }
+
+            // Account for banner size and refactor coordinates
+            RectTransform rect = getRectTransform(dummyAd);
+            float xWithOffset = (float)rect.sizeDelta.x/2 + x;
+            float yWithOffset = (float)rect.sizeDelta.y/2 + y;
+
+            // Anchor the banner relative to the top left
+            rect.pivot = new Vector2(0.5f, 0.5f);
+            rect.anchorMin = new Vector2(0, 1);
+            rect.anchorMax = new Vector2(0, 1);
+            rect.anchoredPosition = new Vector2(xWithOffset, -yWithOffset);
         }
 
         private void SetAndStretchAd(GameObject dummyAd, AdPosition pos, AdSize adSize)
