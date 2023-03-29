@@ -8,10 +8,12 @@ Plugin:
 - Removed obsolete APIs for AppOpenAd.
 - Removed obsolete APIs for InterstitialAd.
 - Added the MobileAds.RaiseAdEventsOnUnityMainThread option for raising ad events on the Unity main thread.
+- Added support for GMA Android SDK v22.0.0. Requires using GMA Android SDK v22.0.0 or higher.
+- Added support for GMA iOS SDK v10.3. Requires using GMA iOS SDK v10.3 or higher.
 
 Built and tested with:
-- Google Mobile Ads Android SDK 21.3.0
-- Google Mobile Ads iOS SDK 9.11.0
+- Google Mobile Ads Android SDK 22.0.0
+- Google Mobile Ads iOS SDK 10.3
 - Google User Messaging Platform 2.0.0
 - External Dependency Manager for Unity 1.2.175
 
