@@ -1,13 +1,19 @@
 Google Mobile Ads Unity Plugin Change Log
 
 **************
-Version Next
+Version 8.0.0
 **************
 
 Plugin:
 - Removed obsolete APIs for AppOpenAd.
 - Removed obsolete APIs for InterstitialAd.
 - Added the MobileAds.RaiseAdEventsOnUnityMainThread option for raising ad events on the Unity main thread.
+- Dropped support for `armv7` and `i386` architectures.
+- Requires minimum iOS version 11.0.
+- Fixed [#2543] NullReferenceException when UMP ConsentDebugSettings are null.
+- Fixed [#2531] Xcode 13 compile time error.
+- Fixed [#1779] Crash with custom Banner Ad Sizes on the Unity platform.
+- Fixed [#2553] Banner position in Unity Editor to reflect Android and iOS position.
 - Added support for GMA Android SDK v22.0.0. Requires using GMA Android SDK v22.0.0 or higher.
 - Added support for GMA iOS SDK v10.3. Requires using GMA iOS SDK v10.3 or higher.
 
@@ -23,6 +29,12 @@ Version 7.4.1
 
 Plugin:
 - Added support for GMA iOS SDK v10. Requires using Google Mobile Ads iOS SDK v10.0 or higher.
+
+Built and tested with:
+- Google Mobile Ads Android SDK 21.3.0
+- Google Mobile Ads iOS SDK 10.0
+- Google User Messaging Platform 2.0.0
+- External Dependency Manager for Unity 1.2.175
 
 **************
 Version 7.4.0
