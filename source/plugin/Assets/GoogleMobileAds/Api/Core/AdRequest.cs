@@ -37,6 +37,8 @@ namespace GoogleMobileAds.Api
         /// </summary>
         public const string TestDeviceSimulator = "SIMULATOR";
 
+        protected AdRequest() {}
+        
         static AdRequest()
         {
             Version version = typeof(AdRequest).Assembly.GetName().Version;
@@ -53,17 +55,17 @@ namespace GoogleMobileAds.Api
         /// <summary>
         /// Returns targeting information keywords. Returns an empty set if no keywords were added.
         /// </summary>
-        public HashSet<string> Keywords { get; private set; }
+        public HashSet<string> Keywords { get; protected set; }
 
         /// <summary>
         /// Returns extra parameters to be sent in the ad request.
         /// </summary>
-        public Dictionary<string, string> Extras { get; private set; }
+        public Dictionary<string, string> Extras { get; protected set; }
 
         /// <summary>
         /// Returns extra parameters to be sent to a specific ad partner in the ad request.
         /// </summary>
-        public List<MediationExtras> MediationExtras { get; private set; }
+        public List<MediationExtras> MediationExtras { get; protected set; }
 
         internal static string BuildVersionString(string nativePluginVersion = null)
         {
