@@ -25,10 +25,20 @@ namespace GoogleMobileAds.Unity
     {
         protected static AdBehaviour AdBehaviour = new GameObject().AddComponent<AdBehaviour>();
         protected GameObject prefabAd, dummyAd = null;
-        public void LoadAndSetPrefabAd(string prefabName) {
+        public void LoadAndSetPrefabAd(string prefabName)
+        {
             prefabAd = Resources.Load(prefabName) as GameObject;
-            if (prefabAd == null) {
+            if (prefabAd == null)
+            {
                 Debug.Log ("No Prefab found");
+                return;
+            }
+            // Setting the maximum sortingOrder ensures highest priority for rendering the ad.
+            Canvas canvas = prefabAd.GetComponent<Canvas>();
+            if (canvas != null)
+            {
+                // sortingOrder is a 16 bit int so the maximum value is 32767.
+                canvas.sortingOrder = 32767;
             }
         }
 
