@@ -28,6 +28,6 @@ namespace GoogleMobileAds.Ump.Api
         /// <summary>
         /// Debug settings for the request.
         /// </summary>
-        public ConsentDebugSettings ConsentDebugSettings;
+        public ConsentDebugSettings ConsentDebugSettings = new ConsentDebugSettings();
     }
 }
