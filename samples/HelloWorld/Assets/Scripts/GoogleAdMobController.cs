@@ -377,13 +377,13 @@ public class GoogleAdMobController : MonoBehaviour
             {
                 if (loadError != null)
                 {
-                    PrintStatus("Rewarded intersitial ad failed to load with error: " +
+                    PrintStatus("Rewarded interstitial ad failed to load with error: " +
                                 loadError.GetMessage());
                     return;
                 }
                 else if (ad == null)
                 {
-                    PrintStatus("Rewarded intersitial ad failed to load.");
+                    PrintStatus("Rewarded interstitial ad failed to load.");
                     return;
                 }
 
@@ -392,31 +392,31 @@ public class GoogleAdMobController : MonoBehaviour
 
                 ad.OnAdFullScreenContentOpened += () =>
                 {
-                    PrintStatus("Rewarded intersitial ad opening.");
+                    PrintStatus("Rewarded interstitial ad opening.");
                     OnAdOpeningEvent.Invoke();
                 };
                 ad.OnAdFullScreenContentClosed += () =>
                 {
-                    PrintStatus("Rewarded intersitial ad closed.");
+                    PrintStatus("Rewarded interstitial ad closed.");
                     OnAdClosedEvent.Invoke();
                 };
                 ad.OnAdImpressionRecorded += () =>
                 {
-                    PrintStatus("Rewarded intersitial ad recorded an impression.");
+                    PrintStatus("Rewarded interstitial ad recorded an impression.");
                 };
                 ad.OnAdClicked += () =>
                 {
-                    PrintStatus("Rewarded intersitial ad recorded a click.");
+                    PrintStatus("Rewarded interstitial ad recorded a click.");
                 };
                 ad.OnAdFullScreenContentFailed += (AdError error) =>
                 {
-                    PrintStatus("Rewarded intersitial ad failed to show with error: " +
+                    PrintStatus("Rewarded interstitial ad failed to show with error: " +
                                 error.GetMessage());
                 };
                 ad.OnAdPaid += (AdValue adValue) =>
                 {
                     string msg = string.Format("{0} (currency: {1}, value: {2}",
-                                                "Rewarded intersitial ad received a paid event.",
+                                                "Rewarded interstitial ad received a paid event.",
                                                 adValue.CurrencyCode,
                                                 adValue.Value);
                     PrintStatus(msg);
@@ -435,7 +435,7 @@ public class GoogleAdMobController : MonoBehaviour
         }
         else
         {
-            PrintStatus("Rewarded Interstitial ad is not ready yet.");
+            PrintStatus("Rewarded interstitial ad is not ready yet.");
         }
     }
 
