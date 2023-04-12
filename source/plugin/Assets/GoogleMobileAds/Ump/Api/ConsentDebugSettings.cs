@@ -40,6 +40,6 @@ namespace GoogleMobileAds.Ump.Api
         /// </summary>
         /// <typeparam name="string">hashedId The hashed device ID that
         /// should be considered a debug device.</typeparam>
-        public List<string> TestDeviceHashedIds;
+        public List<string> TestDeviceHashedIds = new List<string>();
     }
 }
