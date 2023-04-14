@@ -1,8 +1,8 @@
-## Verizon Media Unity Mediation Plugin Changelog
+## Yahoo Unity Mediation Plugin Changelog
 
 #### Next Version
-- Moved adapter content to `GoogleMobileAds/Mediation/VerizonMedia/`.
-- Refactored adapter namespace to use `GoogleMobileAds.Mediation.VerizonMedia`.
+- Rebranded Verizon Media Unity mediation plugin to Yahoo Unity mediation plugin.
+- Moved adapter content to `GoogleMobileAds/Mediation/Yahoo/`.
 
 #### [Version 1.8.1](https://dl.google.com/googleadmobadssdk/mediation/unity/verizonmedia/VerizonMediaUnityAdapter-1.8.1.zip)
 - Supports [Verizon Media Android adapter version 1.14.0.1](https://github.com/googleads/googleads-mobile-android-mediation/blob/main/ThirdPartyAdapters/verizonmedia/CHANGELOG.md#version-11401).

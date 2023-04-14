@@ -1,5 +1,6 @@
 /*
-*   Gradle file to build a Unity package to add Verizon Media mediation support to the Google Mobile Ads Unity plugin.
+*   Gradle file to build a Unity package to add Yahoo mediation support
+*   to the Google Mobile Ads Unity plugin.
 *   Usage: ./gradlew exportPackage
 */
 defaultTasks 'exportPackage'
@@ -19,8 +20,8 @@ project.ext {
                 'UNITY_EXE environment variable and point it to your Unity installation.')
     }
 
-    versionString = '1.8.1'
-    adapterName = 'VerizonMedia'
+    versionString = '1.0.0'
+    adapterName = 'Yahoo'
     pluginName = "GoogleMobileAds${adapterName}Mediation"
     pluginFileName = "${pluginName}.unitypackage"
     zipName = "${adapterName}UnityAdapter-${versionString}"
@@ -32,8 +33,11 @@ project.ext {
 }
 
 // Build unity package using through command line interface.
-// Create new unity project with files in temporary build directory and export files to a unity package.
-// Command line usage and arguments documented at http://docs.unity3d.com/Manual/CommandLineArguments.html.
+// Create new unity project with files in temporary build directory
+// and export files to a unity package.
+//
+// Command line usage and arguments documented at
+// http://docs.unity3d.com/Manual/CommandLineArguments.html.
 task exportPackage(type: Exec) {
     description = "Creates and exports the Plugin unity package"
     executable "${unity_exe}"
@@ -86,6 +90,7 @@ task clearZip(type: Delete) {
 task makeZip(type: Zip) {
     // Targets to be added to the zip archive.
     from('./' + pluginFileName, './README.md')
+    from('./' + pluginFileName, './LICENSE')
     // Root directory name for the zip archive.
     into(zipName)
     // Name of the zip archive.
