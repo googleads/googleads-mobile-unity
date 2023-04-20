@@ -1,10 +1,12 @@
 Google Mobile Ads Unity Plugin Change Log
 
 **************
-Version Next
+Version 8.1.0
 **************
 
 - Fixed [#2646] Android Banner 'Descendant focus' crash.
+- TestDeviceHashedIds initialized in ConsentDebugSettings with an empty list.
+- ConsentDebugSettings initialized in ConsentRequestParameters.
 
 **************
 Version 8.0.0
