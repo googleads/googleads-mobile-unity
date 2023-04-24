@@ -16,22 +16,22 @@ using System;
 using System.Collections;
 using UnityEngine;
 
-using GoogleMobileAds.Common.Mediation.Chartboost;
+using GoogleMobileAds.Mediation.Chartboost.Common;
 
-namespace GoogleMobileAds.Mediation
+namespace GoogleMobileAds.Mediation.Chartboost
 {
     public class ChartboostClientFactory
     {
         public static IChartboostClient ChartboostInstance()
         {
             #if UNITY_EDITOR
-            return new GoogleMobileAds.Common.Mediation.Chartboost.DummyClient();
+            return new GoogleMobileAds.Mediation.Chartboost.Common.DummyClient();
             #elif UNITY_ANDROID
-            return GoogleMobileAds.Android.Mediation.Chartboost.ChartboostClient.Instance;
+            return GoogleMobileAds.Mediation.Chartboost.Android.ChartboostClient.Instance;
             #elif UNITY_IOS
-            return GoogleMobileAds.iOS.Mediation.Chartboost.ChartboostClient.Instance;
+            return GoogleMobileAds.Mediation.Chartboost.iOS.ChartboostClient.Instance;
             #else
-            return new GoogleMobileAds.Common.Mediation.Chartboost.DummyClient();
+            return new GoogleMobileAds.Mediation.Chartboost.Common.DummyClient();
             #endif
         }
     }

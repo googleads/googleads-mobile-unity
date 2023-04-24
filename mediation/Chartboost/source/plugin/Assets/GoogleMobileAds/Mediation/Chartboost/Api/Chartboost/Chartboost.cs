@@ -14,10 +14,10 @@
 
 using UnityEngine;
 
-using GoogleMobileAds.Common.Mediation.Chartboost;
-using GoogleMobileAds.Mediation;
+using GoogleMobileAds.Mediation.Chartboost;
+using GoogleMobileAds.Mediation.Chartboost.Common;
 
-namespace GoogleMobileAds.Api.Mediation.Chartboost
+namespace GoogleMobileAds.Mediation.Chartboost.Api
 {
     public enum CBGDPRDataUseConsent
     {
@@ -33,7 +33,7 @@ namespace GoogleMobileAds.Api.Mediation.Chartboost
 
     public class Chartboost
     {
-        public static readonly IChartboostClient client = GetChartboostClient();
+        internal static readonly IChartboostClient client = GetChartboostClient();
 
         private static IChartboostClient GetChartboostClient()
         {
@@ -59,6 +59,31 @@ namespace GoogleMobileAds.Api.Mediation.Chartboost
             }
 
             client.AddDataUseConsent(customConsentName, customConsentValue);
+        }
+    }
+}
+
+namespace GoogleMobileAds.Api.Mediation.Chartboost
+{
+    [System.Obsolete("Use `GoogleMobileAds.Mediation.Chartboost.Api.Chartboost` instead.")]
+    public class Chartboost
+    {
+        public static void AddDataUseConsent(
+                GoogleMobileAds.Mediation.Chartboost.Api.CBGDPRDataUseConsent gdprConsent)
+        {
+            GoogleMobileAds.Mediation.Chartboost.Api.Chartboost.AddDataUseConsent(gdprConsent);
+        }
+
+        public static void AddDataUseConsent(
+                GoogleMobileAds.Mediation.Chartboost.Api.CBCCPADataUseConsent ccpaConsent)
+        {
+            GoogleMobileAds.Mediation.Chartboost.Api.Chartboost.AddDataUseConsent(ccpaConsent);
+        }
+
+        public static void AddDataUseConsent(string customConsentName, string customConsentValue)
+        {
+            GoogleMobileAds.Mediation.Chartboost.Api.Chartboost
+                    .AddDataUseConsent(customConsentName, customConsentValue);
         }
     }
 }

@@ -16,10 +16,10 @@
 
 using UnityEngine;
 
-using GoogleMobileAds.Api.Mediation.Chartboost;
-using GoogleMobileAds.Common.Mediation.Chartboost;
+using GoogleMobileAds.Mediation.Chartboost.Api;
+using GoogleMobileAds.Mediation.Chartboost.Common;
 
-namespace GoogleMobileAds.iOS.Mediation.Chartboost
+namespace GoogleMobileAds.Mediation.Chartboost.iOS
 {
     public class ChartboostClient : IChartboostClient
     {

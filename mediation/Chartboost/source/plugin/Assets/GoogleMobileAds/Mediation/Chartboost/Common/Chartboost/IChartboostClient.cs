@@ -12,25 +12,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#if UNITY_IOS
-
 using System;
-using System.Runtime.InteropServices;
 
-namespace GoogleMobileAds.iOS.Mediation.Chartboost
+using GoogleMobileAds.Mediation.Chartboost.Api;
+
+namespace GoogleMobileAds.Mediation.Chartboost.Common
 {
-    // Externs used by the iOS component.
-    internal class Externs
+    public interface IChartboostClient
     {
-        [DllImport("__Internal")]
-        internal static extern void GADUMChartboostAddGDPRDataUseConsent(int gdprConsent);
-
-        [DllImport("__Internal")]
-        internal static extern void GADUMChartboostAddCCPADataUseConsent(int ccpaConsent);
-
-        [DllImport("__Internal")]
-        internal static extern void GADUMChartboostAddCustomDataUseConsent(string customConsentName, string customConsentValue);
+        void AddDataUseConsent(CBGDPRDataUseConsent gdprConsent);
+        void AddDataUseConsent(CBCCPADataUseConsent ccpaConsent);
+        void AddDataUseConsent(string customConsentName, string customConsentValue);
     }
 }
-
-#endif

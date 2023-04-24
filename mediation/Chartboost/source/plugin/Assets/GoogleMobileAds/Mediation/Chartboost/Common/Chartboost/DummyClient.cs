@@ -17,9 +17,9 @@ using System.Reflection;
 
 using UnityEngine;
 
-using GoogleMobileAds.Api.Mediation.Chartboost;
+using GoogleMobileAds.Mediation.Chartboost.Api;
 
-namespace GoogleMobileAds.Common.Mediation.Chartboost
+namespace GoogleMobileAds.Mediation.Chartboost.Common
 {
     public class DummyClient : IChartboostClient
     {
