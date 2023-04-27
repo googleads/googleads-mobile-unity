@@ -17,7 +17,7 @@ using System.Reflection;
 
 using UnityEngine;
 
-namespace GoogleMobileAds.Common.Mediation.MyTarget
+namespace GoogleMobileAds.Mediation.MyTarget.Common
 {
     public class DummyClient : IMyTargetClient
     {

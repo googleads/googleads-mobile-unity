@@ -16,9 +16,9 @@
 
 using UnityEngine;
 
-using GoogleMobileAds.Common.Mediation.MyTarget;
+using GoogleMobileAds.Mediation.MyTarget.Common;
 
-namespace GoogleMobileAds.iOS.Mediation.MyTarget
+namespace GoogleMobileAds.Mediation.MyTarget.iOS
 {
     public class MyTargetClient : IMyTargetClient
     {

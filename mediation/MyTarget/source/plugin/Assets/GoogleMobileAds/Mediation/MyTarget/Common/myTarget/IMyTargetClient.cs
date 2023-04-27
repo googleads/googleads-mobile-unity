@@ -14,7 +14,7 @@
 
 using System;
 
-namespace GoogleMobileAds.Common.Mediation.MyTarget
+namespace GoogleMobileAds.Mediation.MyTarget.Common
 {
     public interface IMyTargetClient
     {

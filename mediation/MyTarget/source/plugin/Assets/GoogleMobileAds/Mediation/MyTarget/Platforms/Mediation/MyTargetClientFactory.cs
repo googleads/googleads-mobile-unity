@@ -16,22 +16,22 @@ using System;
 using System.Collections;
 using UnityEngine;
 
-using GoogleMobileAds.Common.Mediation.MyTarget;
+using GoogleMobileAds.Mediation.MyTarget.Common;
 
-namespace GoogleMobileAds.Mediation
+namespace GoogleMobileAds.Mediation.MyTarget
 {
     public class MyTargetClientFactory
     {
         public static IMyTargetClient CreateMyTargetClient()
         {
             #if UNITY_EDITOR
-            return new GoogleMobileAds.Common.Mediation.MyTarget.DummyClient();
+            return new GoogleMobileAds.Mediation.MyTarget.Common.DummyClient();
             #elif UNITY_ANDROID
-            return GoogleMobileAds.Android.Mediation.MyTarget.MyTargetClient.Instance;
+            return GoogleMobileAds.Mediation.MyTarget.Android.MyTargetClient.Instance;
             #elif UNITY_IOS
-            return GoogleMobileAds.iOS.Mediation.MyTarget.MyTargetClient.Instance;
+            return GoogleMobileAds.Mediation.MyTarget.iOS.MyTargetClient.Instance;
             #else
-            return new GoogleMobileAds.Common.Mediation.MyTarget.DummyClient();
+            return new GoogleMobileAds.Mediation.MyTarget.Common.DummyClient();
             #endif
         }
     }

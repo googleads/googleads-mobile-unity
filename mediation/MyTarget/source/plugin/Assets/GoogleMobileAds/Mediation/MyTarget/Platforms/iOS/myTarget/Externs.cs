@@ -17,7 +17,7 @@
 using System;
 using System.Runtime.InteropServices;
 
-namespace GoogleMobileAds.iOS.Mediation.MyTarget
+namespace GoogleMobileAds.Mediation.MyTarget.iOS
 {
     // Externs used by the iOS component.
     internal class Externs
