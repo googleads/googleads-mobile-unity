@@ -14,14 +14,14 @@
 
 using UnityEngine;
 
-using GoogleMobileAds.Common.Mediation.DTExchange;
-using GoogleMobileAds.Mediation;
+using GoogleMobileAds.Mediation.DTExchange;
+using GoogleMobileAds.Mediation.DTExchange.Common;
 
-namespace GoogleMobileAds.Api.Mediation.DTExchange
+namespace GoogleMobileAds.Mediation.DTExchange.Api
 {
     public class DTExchange
     {
-        private static readonly IDTExchangeClient client =
+        internal static readonly IDTExchangeClient client =
                 DTExchangeClientFactory.CreateDTExchangeClient();
 
         public static void SetGDPRConsent(bool consent)
@@ -53,6 +53,39 @@ namespace GoogleMobileAds.Api.Mediation.DTExchange
         public static void ClearCCPAString()
         {
             client.ClearCCPAString();
+        }
+    }
+}
+
+namespace GoogleMobileAds.Api.Mediation.DTExchange
+{
+    [System.Obsolete("Use `GoogleMobileAds.Mediation.DTExchange.Api.DTExchange` instead.")]
+    public class DTExchange
+    {
+        public static void SetGDPRConsent(bool consent)
+        {
+            GoogleMobileAds.Mediation.DTExchange.Api.DTExchange.SetGDPRConsent(consent);
+        }
+
+        public static void SetGDPRConsentString(string consentString)
+        {
+            GoogleMobileAds.Mediation.DTExchange.Api.DTExchange
+                    .SetGDPRConsentString(consentString);
+        }
+
+        public static void ClearGDPRConsentData()
+        {
+            GoogleMobileAds.Mediation.DTExchange.Api.DTExchange.ClearGDPRConsentData();
+        }
+
+        public static void SetCCPAString(string ccpaString)
+        {
+            GoogleMobileAds.Mediation.DTExchange.Api.DTExchange.SetCCPAString(ccpaString);
+        }
+
+        public static void ClearCCPAString()
+        {
+            GoogleMobileAds.Mediation.DTExchange.Api.DTExchange.ClearCCPAString();
         }
     }
 }

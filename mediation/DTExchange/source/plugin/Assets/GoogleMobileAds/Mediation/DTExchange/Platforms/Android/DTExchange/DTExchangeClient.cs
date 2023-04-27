@@ -15,9 +15,9 @@
 #if UNITY_ANDROID
 
 using UnityEngine;
-using GoogleMobileAds.Common.Mediation.DTExchange;
+using GoogleMobileAds.Mediation.DTExchange.Common;
 
-namespace GoogleMobileAds.Android.Mediation.DTExchange
+namespace GoogleMobileAds.Mediation.DTExchange.Android
 {
     public class DTExchangeClient : IDTExchangeClient
     {

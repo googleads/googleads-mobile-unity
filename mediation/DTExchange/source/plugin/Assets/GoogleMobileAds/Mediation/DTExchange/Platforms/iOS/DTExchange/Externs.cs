@@ -16,7 +16,7 @@
 
 using System.Runtime.InteropServices;
 
-namespace GoogleMobileAds.iOS.Mediation.DTExchange
+namespace GoogleMobileAds.Mediation.DTExchange.iOS
 {
     // Externs used by the iOS component
     internal class Externs

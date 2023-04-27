@@ -12,22 +12,22 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using GoogleMobileAds.Common.Mediation.DTExchange;
+using GoogleMobileAds.Mediation.DTExchange.Common;
 
-namespace GoogleMobileAds.Mediation
+namespace GoogleMobileAds.Mediation.DTExchange
 {
     public class DTExchangeClientFactory
     {
         public static IDTExchangeClient CreateDTExchangeClient()
         {
             #if UNITY_EDITOR
-            return new GoogleMobileAds.Common.Mediation.DTExchange.DummyClient();
+            return new GoogleMobileAds.Mediation.DTExchange.Common.DummyClient();
             #elif UNITY_ANDROID
-            return GoogleMobileAds.Android.Mediation.DTExchange.DTExchangeClient.Instance;
+            return GoogleMobileAds.Mediation.DTExchange.Android.DTExchangeClient.Instance;
             #elif UNITY_IOS
-            return GoogleMobileAds.iOS.Mediation.DTExchange.DTExchangeClient.Instance;
+            return GoogleMobileAds.Mediation.DTExchange.iOS.DTExchangeClient.Instance;
             #else
-            return new GoogleMobileAds.Common.Mediation.DTExchange.DummyClient();
+            return new GoogleMobileAds.Mediation.DTExchange.Common.DummyClient();
             #endif
         }
     }

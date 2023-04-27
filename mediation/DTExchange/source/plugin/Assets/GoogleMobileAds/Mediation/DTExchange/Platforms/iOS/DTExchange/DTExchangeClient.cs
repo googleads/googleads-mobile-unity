@@ -12,41 +12,50 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System.Reflection;
-using UnityEngine;
+#if UNITY_IOS
 
-namespace GoogleMobileAds.Common.Mediation.DTExchange
+using GoogleMobileAds.Mediation.DTExchange.Common;
+
+namespace GoogleMobileAds.Mediation.DTExchange.iOS
 {
-    public class DummyClient : IDTExchangeClient
+    public class DTExchangeClient : IDTExchangeClient
     {
-        public DummyClient()
+        private static DTExchangeClient instance = new DTExchangeClient();
+        private DTExchangeClient() {}
+
+        public static DTExchangeClient Instance
         {
-            Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
+            get
+            {
+                return instance;
+            }
         }
 
         public void SetGDPRConsent(bool consent)
         {
-            Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
+            Externs.GADUMDTExchangeSetGDPRConsent(consent);
         }
 
         public void SetGDPRConsentString(string consentString)
         {
-            Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
+            Externs.GADUMDTExchangeSetGDPRConsentString(consentString);
         }
 
         public void ClearGDPRConsentData()
         {
-            Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
+            Externs.GADUMDTExchangeClearGDPRConsentData();
         }
 
         public void SetCCPAString(string ccpaString)
         {
-            Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
+            Externs.GADUMDTExchangeSetCCPAString(ccpaString);
         }
 
         public void ClearCCPAString()
         {
-            Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
+            Externs.GADUMDTExchangeClearCCPAString();
         }
     }
 }
+
+#endif

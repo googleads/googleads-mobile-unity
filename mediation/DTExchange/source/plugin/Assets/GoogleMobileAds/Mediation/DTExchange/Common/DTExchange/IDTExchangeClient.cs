@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-namespace GoogleMobileAds.Common.Mediation.DTExchange
+namespace GoogleMobileAds.Mediation.DTExchange.Common
 {
     public interface IDTExchangeClient
     {
