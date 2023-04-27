@@ -15,22 +15,22 @@
 using System;
 using UnityEngine;
 
-using GoogleMobileAds.Common.Mediation.InMobi;
+using GoogleMobileAds.Mediation.InMobi.Common;
 
-namespace GoogleMobileAds.Mediation
+namespace GoogleMobileAds.Mediation.InMobi
 {
     public class InMobiClientFactory
     {
         public static IInMobiClient InMobiInstance()
         {
             #if UNITY_EDITOR
-            return new GoogleMobileAds.Common.Mediation.InMobi.DummyClient();
+            return new GoogleMobileAds.Mediation.InMobi.Common.DummyClient();
             #elif UNITY_ANDROID
-            return GoogleMobileAds.Android.Mediation.InMobi.InMobiClient.Instance;
+            return GoogleMobileAds.Mediation.InMobi.Android.InMobiClient.Instance;
             #elif UNITY_IOS
-            return GoogleMobileAds.iOS.Mediation.InMobi.InMobiClient.Instance;
+            return GoogleMobileAds.Mediation.InMobi.iOS.InMobiClient.Instance;
             #else
-            return new GoogleMobileAds.Common.Mediation.InMobi.DummyClient();
+            return new GoogleMobileAds.Mediation.InMobi.Common.DummyClient();
             #endif
         }
     }

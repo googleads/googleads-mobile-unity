@@ -18,9 +18,9 @@ using System.Reflection;
 using System.Collections.Generic;
 using UnityEngine;
 
-using GoogleMobileAds.Common.Mediation.InMobi;
+using GoogleMobileAds.Mediation.InMobi.Common;
 
-namespace GoogleMobileAds.Android.Mediation.InMobi
+namespace GoogleMobileAds.Mediation.InMobi.Android
 {
     public class InMobiClient : IInMobiClient
     {
@@ -38,7 +38,8 @@ namespace GoogleMobileAds.Android.Mediation.InMobi
         public void UpdateGDPRConsent(Dictionary<string, string> consentObject)
         {
             AndroidJavaObject consentObjectJSON = new AndroidJavaObject("org.json.JSONObject");
-            AndroidJavaClass inMobi = new AndroidJavaClass("com.google.ads.mediation.inmobi.InMobiConsent");
+            AndroidJavaClass inMobi =
+                    new AndroidJavaClass("com.google.ads.mediation.inmobi.InMobiConsent");
 
             foreach (KeyValuePair<string, string> entry in consentObject) {
                 consentObjectJSON.Call<AndroidJavaObject>("put", entry.Key, entry.Value);

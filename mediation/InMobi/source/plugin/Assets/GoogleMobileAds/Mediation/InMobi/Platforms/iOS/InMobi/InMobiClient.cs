@@ -17,9 +17,9 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-using GoogleMobileAds.Common.Mediation.InMobi;
+using GoogleMobileAds.Mediation.InMobi.Common;
 
-namespace GoogleMobileAds.iOS.Mediation.InMobi
+namespace GoogleMobileAds.Mediation.InMobi.iOS
 {
     public class InMobiClient : IInMobiClient
     {
@@ -36,8 +36,8 @@ namespace GoogleMobileAds.iOS.Mediation.InMobi
 
         public void UpdateGDPRConsent(Dictionary<string, string> consentObject)
         {
-            // Since a Dictionary cannot be converted to an NSDictionary object, we parse the dictionary
-            // as a delimited string to be interpreted.
+            // Since a Dictionary cannot be converted to an NSDictionary object, we parse the
+            // dictionary as a delimited string to be interpreted.
             string consentObjectString = "";
             foreach (KeyValuePair<string, string> entry in consentObject) {
                 consentObjectString += entry.Key + "=" + entry.Value + ";";
