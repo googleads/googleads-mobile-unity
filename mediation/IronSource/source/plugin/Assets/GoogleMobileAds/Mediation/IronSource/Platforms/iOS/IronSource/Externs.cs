@@ -12,28 +12,22 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+#if UNITY_IOS
+
 using System;
-using System.Reflection;
+using System.Runtime.InteropServices;
 
-using UnityEngine;
-
-namespace GoogleMobileAds.Common.Mediation.IronSource
+namespace GoogleMobileAds.Mediation.IronSource.iOS
 {
-    public class DummyClient : IIronSourceClient
+    // Externs used by the iOS component.
+    internal class Externs
     {
-        public DummyClient ()
-        {
-            Debug.Log ("Dummy " + MethodBase.GetCurrentMethod ().Name);
-        }
+        [DllImport("__Internal")]
+        internal static extern void GADUMIronSourceSetConsent(bool consent);
 
-        public void SetConsent(bool consent)
-        {
-            Debug.Log ("Dummy " + MethodBase.GetCurrentMethod ().Name);
-        }
-
-        public void SetMetaData(string key, string metaDataValue)
-        {
-            Debug.Log ("Dummy " + MethodBase.GetCurrentMethod ().Name);
-        }
+        [DllImport("__Internal")]
+        internal static extern void GADUMIronSourceSetMetaData(string key, string metaDataValue);
     }
 }
+
+#endif

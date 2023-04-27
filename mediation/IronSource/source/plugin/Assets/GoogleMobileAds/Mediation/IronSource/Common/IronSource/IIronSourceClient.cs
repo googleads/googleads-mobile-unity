@@ -12,22 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#if UNITY_IOS
-
 using System;
-using System.Runtime.InteropServices;
 
-namespace GoogleMobileAds.iOS.Mediation.IronSource
+namespace GoogleMobileAds.Mediation.IronSource.Common
 {
-    // Externs used by the iOS component.
-    internal class Externs
+    public interface IIronSourceClient
     {
-        [DllImport("__Internal")]
-        internal static extern void GADUMIronSourceSetConsent(bool consent);
-
-        [DllImport("__Internal")]
-        internal static extern void GADUMIronSourceSetMetaData(string key, string metaDataValue);
+        void SetConsent(bool consent);
+        void SetMetaData(string key, string metaDataValue);
     }
 }
-
-#endif

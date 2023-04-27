@@ -14,14 +14,14 @@
 
 using UnityEngine;
 
-using GoogleMobileAds.Common.Mediation.IronSource;
-using GoogleMobileAds.Mediation;
+using GoogleMobileAds.Mediation.IronSource;
+using GoogleMobileAds.Mediation.IronSource.Common;
 
-namespace GoogleMobileAds.Api.Mediation.IronSource
+namespace GoogleMobileAds.Mediation.IronSource.Api
 {
     public class IronSource
     {
-        private static readonly IIronSourceClient client =
+        internal static readonly IIronSourceClient client =
                 IronSourceClientFactory.CreateIronSourceClient();
 
         public static void SetConsent(bool consent)
@@ -32,6 +32,23 @@ namespace GoogleMobileAds.Api.Mediation.IronSource
         public static void SetMetaData(string key, string metaDataValue)
         {
             client.SetMetaData(key, metaDataValue);
+        }
+    }
+}
+
+namespace GoogleMobileAds.Api.Mediation.IronSource
+{
+    [System.Obsolete("Use `GoogleMobileAds.Mediation.IronSource.Api.IronSource` instead.")]
+    public class IronSource
+    {
+        public static void SetConsent(bool consent)
+        {
+            GoogleMobileAds.Mediation.IronSource.Api.IronSource.SetConsent(consent);
+        }
+
+        public static void SetMetaData(string key, string metaDataValue)
+        {
+            GoogleMobileAds.Mediation.IronSource.Api.IronSource.SetMetaData(key, metaDataValue);
         }
     }
 }

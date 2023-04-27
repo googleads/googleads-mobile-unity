@@ -16,22 +16,22 @@ using System;
 using System.Collections;
 using UnityEngine;
 
-using GoogleMobileAds.Common.Mediation.IronSource;
+using GoogleMobileAds.Mediation.IronSource.Common;
 
-namespace GoogleMobileAds.Mediation
+namespace GoogleMobileAds.Mediation.IronSource
 {
     public class IronSourceClientFactory
     {
         public static IIronSourceClient CreateIronSourceClient()
         {
             #if UNITY_EDITOR
-            return new GoogleMobileAds.Common.Mediation.IronSource.DummyClient();
+            return new GoogleMobileAds.Mediation.IronSource.Common.DummyClient();
             #elif UNITY_ANDROID
-            return GoogleMobileAds.Android.Mediation.IronSource.IronSourceClient.Instance;
+            return GoogleMobileAds.Mediation.IronSource.Android.IronSourceClient.Instance;
             #elif UNITY_IOS
-            return GoogleMobileAds.iOS.Mediation.IronSource.IronSourceClient.Instance;
+            return GoogleMobileAds.Mediation.IronSource.iOS.IronSourceClient.Instance;
             #else
-            return new GoogleMobileAds.Common.Mediation.IronSource.DummyClient();
+            return new GoogleMobileAds.Mediation.IronSource.Common.DummyClient();
             #endif
         }
     }

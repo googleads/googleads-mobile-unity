@@ -12,16 +12,19 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#if UNITY_IOS
+#if UNITY_ANDROID
 
 using UnityEngine;
+using System.Reflection;
 
-using GoogleMobileAds.Common.Mediation.IronSource;
+using GoogleMobileAds.Mediation.IronSource.Common;
 
-namespace GoogleMobileAds.iOS.Mediation.IronSource
+namespace GoogleMobileAds.Mediation.IronSource.Android
 {
     public class IronSourceClient : IIronSourceClient
     {
+        private const string IRONSOURCE_CLASS_NAME = "com.ironsource.mediationsdk.IronSource";
+
         private static IronSourceClient instance = new IronSourceClient();
         private IronSourceClient() { }
 
@@ -35,12 +38,14 @@ namespace GoogleMobileAds.iOS.Mediation.IronSource
 
         public void SetConsent(bool consent)
         {
-            Externs.GADUMIronSourceSetConsent(consent);
+            AndroidJavaClass ironSource = new AndroidJavaClass(IRONSOURCE_CLASS_NAME);
+            ironSource.CallStatic("setConsent", consent);
         }
 
         public void SetMetaData(string key, string metaDataValue)
         {
-            Externs.GADUMIronSourceSetMetaData(key, metaDataValue);
+            AndroidJavaClass ironSource = new AndroidJavaClass(IRONSOURCE_CLASS_NAME);
+            ironSource.CallStatic("setMetaData", key, metaDataValue);
         }
     }
 }

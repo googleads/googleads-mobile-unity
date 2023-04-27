@@ -13,12 +13,27 @@
 // limitations under the License.
 
 using System;
+using System.Reflection;
 
-namespace GoogleMobileAds.Common.Mediation.IronSource
+using UnityEngine;
+
+namespace GoogleMobileAds.Mediation.IronSource.Common
 {
-    public interface IIronSourceClient
+    public class DummyClient : IIronSourceClient
     {
-        void SetConsent(bool consent);
-        void SetMetaData(string key, string metaDataValue);
+        public DummyClient ()
+        {
+            Debug.Log ("Dummy " + MethodBase.GetCurrentMethod ().Name);
+        }
+
+        public void SetConsent(bool consent)
+        {
+            Debug.Log ("Dummy " + MethodBase.GetCurrentMethod ().Name);
+        }
+
+        public void SetMetaData(string key, string metaDataValue)
+        {
+            Debug.Log ("Dummy " + MethodBase.GetCurrentMethod ().Name);
+        }
     }
 }
