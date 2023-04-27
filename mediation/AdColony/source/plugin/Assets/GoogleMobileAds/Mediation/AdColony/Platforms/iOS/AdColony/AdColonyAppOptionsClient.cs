@@ -18,10 +18,10 @@ using UnityEngine;
 using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
-using GoogleMobileAds.Api.Mediation.AdColony;
-using GoogleMobileAds.Common.Mediation.AdColony;
+using GoogleMobileAds.Mediation.AdColony.Api;
+using GoogleMobileAds.Mediation.AdColony.Common;
 
-namespace GoogleMobileAds.iOS.Mediation.AdColony
+namespace GoogleMobileAds.Mediation.AdColony.iOS
 {
     public class AdColonyAppOptionsClient : IAdColonyAppOptionsClient
     {

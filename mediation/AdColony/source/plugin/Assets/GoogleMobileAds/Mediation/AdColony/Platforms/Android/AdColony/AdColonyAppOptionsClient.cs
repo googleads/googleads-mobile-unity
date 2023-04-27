@@ -15,10 +15,10 @@
 #if UNITY_ANDROID
 
 using UnityEngine;
-using GoogleMobileAds.Api.Mediation.AdColony;
-using GoogleMobileAds.Common.Mediation.AdColony;
+using GoogleMobileAds.Mediation.AdColony.Api;
+using GoogleMobileAds.Mediation.AdColony.Common;
 
-namespace GoogleMobileAds.Android.Mediation.AdColony
+namespace GoogleMobileAds.Mediation.AdColony.Android
 {
     public class AdColonyAppOptionsClient : IAdColonyAppOptionsClient
     {

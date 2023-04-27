@@ -14,7 +14,9 @@
 
 using System;
 
-namespace GoogleMobileAds.Api.Mediation.AdColony
+using GoogleMobileAds.Api.Mediation;
+
+namespace GoogleMobileAds.Mediation.AdColony.Api
 {
     public class AdColonyMediationExtras : MediationExtras
     {

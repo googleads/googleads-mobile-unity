@@ -12,22 +12,22 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using GoogleMobileAds.Common.Mediation.AdColony;
+using GoogleMobileAds.Mediation.AdColony.Common;
 
-namespace GoogleMobileAds.Mediation
+namespace GoogleMobileAds.Mediation.AdColony
 {
     public class AdColonyAppOptionsClientFactory
     {
         public static IAdColonyAppOptionsClient getAdColonyAppOptionsInstance()
         {
             #if UNITY_EDITOR
-            return new GoogleMobileAds.Common.Mediation.AdColony.DummyClient();
+            return new GoogleMobileAds.Mediation.AdColony.Common.DummyClient();
             #elif UNITY_ANDROID
-            return GoogleMobileAds.Android.Mediation.AdColony.AdColonyAppOptionsClient.Instance;
+            return GoogleMobileAds.Mediation.AdColony.Android.AdColonyAppOptionsClient.Instance;
             #elif UNITY_IOS
-            return GoogleMobileAds.iOS.Mediation.AdColony.AdColonyAppOptionsClient.Instance;
+            return GoogleMobileAds.Mediation.AdColony.iOS.AdColonyAppOptionsClient.Instance;
             #else
-            return new GoogleMobileAds.Common.Mediation.AdColony.DummyClient();
+            return new GoogleMobileAds.Mediation.AdColony.Common.DummyClient();
             #endif
         }
     }

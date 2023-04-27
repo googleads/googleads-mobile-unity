@@ -40,13 +40,13 @@ task buildAndroidPluginAar(type: GradleBuild) {
 // Move android plugin AAR library to temporary build directory.
 task copyAndroidLibraryAar(type: Copy) {
     from('source/android-library/adcolony/build/libs/adcolony-unity-android-library.aar')
-    into("${pluginBuildDir}/Assets/Plugins/Android/")
+    into("${pluginBuildDir}/Assets/GoogleMobileAds/Mediation/AdColony/Plugins/Android/")
 }
 
 // Copy Unity mediation extras interface to temporary build directory.
 task copyExtrasInterface(type: Copy) {
     from("../../source/plugin/Assets/GoogleMobileAds/Api/Mediation/")
-    into("${pluginBuildDir}/Assets/GoogleMobileAds/Api/Mediation/")
+    into("${pluginBuildDir}/Assets/GoogleMobileAds/Mediation/AdColony/Api/")
     include('MediationExtras.cs')
 }
 
@@ -64,7 +64,6 @@ task exportPackage(type: Exec) {
             "-logFile", "temp/unity.log",
             "-exportPackage",
             "Assets/GoogleMobileAds",
-            "Assets/Plugins",
             "${exportPath}",
             "-quit"
 

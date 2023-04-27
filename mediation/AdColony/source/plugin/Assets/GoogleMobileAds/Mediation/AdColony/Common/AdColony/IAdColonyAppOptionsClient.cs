@@ -12,9 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using GoogleMobileAds.Api.Mediation.AdColony;
+using GoogleMobileAds.Mediation.AdColony.Api;
 
-namespace GoogleMobileAds.Common.Mediation.AdColony
+namespace GoogleMobileAds.Mediation.AdColony.Common
 {
     public interface IAdColonyAppOptionsClient
     {
