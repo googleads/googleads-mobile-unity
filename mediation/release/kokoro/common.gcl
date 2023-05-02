@@ -1,0 +1,23 @@
+config build = {
+  env_vars = [
+    {
+      key = 'ADAPTER_DIR'
+      value = ''
+    },
+    {
+      key = 'VERSION_NAME_SUFFIX'
+      value = ''
+    }
+  ]
+  action = [
+    {
+      define_artifacts = {
+        regex = [
+          '**/*.zip',
+        ]
+      }
+    },
+  ]
+  build_file =
+      'java/com/google/android/libraries/admob/demo/unity/googlemobileads/mediation/release/kokoro/scripts/kokoro_build.sh'
+}
