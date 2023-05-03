@@ -19,7 +19,7 @@ project.ext {
                 'UNITY_EXE environment variable and point it to your Unity installation.')
     }
 
-    versionString = '6.0.1'
+    versionString = '7.0.0'
     adapterName = 'Nend'
     pluginName = "GoogleMobileAds${adapterName}Mediation"
     pluginFileName = "${pluginName}.unitypackage"
@@ -42,7 +42,7 @@ task exportPackage(type: Exec) {
             "-projectPath", "${pluginBuildDir}",
             "-logFile", "temp/unity.log",
             "-exportPackage",
-            "Assets/GoogleMobileAds/Editor",
+            "Assets/GoogleMobileAds",
             "${exportPath}",
             "-quit"
 
