@@ -1,5 +1,12 @@
 ## Pangle Unity Mediation Plugin Changelog
 
+#### Version 2.1.0 (In Progress)
+- Moved adapter content to `GoogleMobileAds/Mediation/Pangle/`.
+- Refactored adapter namespace to use `GoogleMobileAds.Mediation.Pangle`.
+- Supports [Pangle Android adapter version 5.1.0.6.0](https://github.com/googleads/googleads-mobile-android-mediation/blob/main/ThirdPartyAdapters/pangle/CHANGELOG.md#version-51060).
+- Supports [Pangle iOS adapter version 5.1.0.6.0](https://github.com/googleads/googleads-mobile-ios-mediation/blob/main/adapters/Pangle/CHANGELOG.md#version-51060).
+- Built and tested with the Google Mobile Ads Unity Plugin version 7.4.1.
+
 #### [Version 2.0.0](https://dl.google.com/googleadmobadssdk/mediation/unity/pangle/PangleUnityAdapter-2.0.0.zip)
 - Moved adapter content to `GoogleMobileAds/Mediation/Pangle/`.
 - Refactored adapter namespace to use `GoogleMobileAds.Mediation.Pangle`.
