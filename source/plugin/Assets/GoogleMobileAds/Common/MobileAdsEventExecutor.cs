@@ -35,10 +35,10 @@ namespace GoogleMobileAds.Common
                 return;
             }
 
-            // Add an invisible game object to the scene
+            // // Add an invisible game object to the scene
             GameObject obj = new GameObject("MobileAdsMainThreadExecuter");
-            obj.hideFlags = HideFlags.HideAndDontSave;
-            DontDestroyOnLoad(obj);
+            // obj.hideFlags = HideFlags.HideAndDontSave;
+            // DontDestroyOnLoad(obj);
             instance = obj.AddComponent<MobileAdsEventExecutor>();
         }
 
@@ -82,7 +82,7 @@ namespace GoogleMobileAds.Common
             {
                 stagedAdEventsQueue.AddRange(adEventsQueue);
                 adEventsQueue.Clear();
-                adEventsQueueEmpty = true;
+                adEventsQueueEmpty = false;
             }
 
             foreach (Action stagedEvent in stagedAdEventsQueue)
