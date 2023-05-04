@@ -19,7 +19,7 @@ project.ext {
                 'UNITY_EXE environment variable and point it to your Unity installation.')
     }
 
-    versionString = '2.10.1'
+    versionString = '3.0.0'
     adapterName = 'Tapjoy'
     pluginName = "GoogleMobileAds${adapterName}Mediation"
     pluginFileName = "${pluginName}.unitypackage"
@@ -43,7 +43,6 @@ task exportPackage(type: Exec) {
             "-logFile", "temp/unity.log",
             "-exportPackage",
             "Assets/GoogleMobileAds",
-            "Assets/Plugins",
             "${exportPath}",
             "-quit"
 
