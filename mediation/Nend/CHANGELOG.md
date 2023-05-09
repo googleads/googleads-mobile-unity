@@ -1,6 +1,6 @@
 ## nend Unity Mediation Plugin Changelog
 
-#### Version 7.0.0 (In Progress)
+#### [Version 7.0.0](https://dl.google.com/googleadmobadssdk/mediation/unity/nend/NendUnityAdapter-7.0.0.zip)
 - Moved adapter content to `GoogleMobileAds/Mediation/Nend/`.
 - Refactored adapter namespace to use `GoogleMobileAds.Mediation.Nend`.
 - Supports [nend Android adapter version 9.0.1.0](https://github.com/googleads/googleads-mobile-android-mediation/blob/main/ThirdPartyAdapters/nend/CHANGELOG.md#version-9010).
