@@ -1,7 +1,10 @@
 ## Meta Audience Network Unity Mediation Plugin Changelog
 
-#### Next Version
+#### Version 3.10.0 (In Progress)
 - Moved adapter content to `GoogleMobileAds/Mediation/MetaAudienceNetwork/`.
+- Supports [Meta Audience Network Android adapter version 6.14.0.0](https://github.com/googleads/googleads-mobile-android-mediation/blob/main/ThirdPartyAdapters/meta/CHANGELOG.md#61400).
+- Supports [Meta Audience Network iOS adapter version 6.12.0.1](https://github.com/googleads/googleads-mobile-ios-mediation/blob/main/adapters/Meta/CHANGELOG.md#version-61201).
+- Built and tested with the Google Mobile Ads Unity Plugin version 8.1.0.
 
 #### [Version 3.9.1](https://dl.google.com/googleadmobadssdk/mediation/unity/meta/MetaAudienceNetworkUnityAdapter-3.9.1.zip)
 - Supports [Meta Audience Network Android adapter version 6.12.0.0](https://github.com/googleads/googleads-mobile-android-mediation/blob/main/ThirdPartyAdapters/meta/CHANGELOG.md#61200).

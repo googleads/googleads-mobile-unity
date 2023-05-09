@@ -16,7 +16,7 @@
 
 <dependencies>
   <androidPackages>
-    <androidPackage spec="com.google.ads.mediation:facebook:6.12.0.0">
+    <androidPackage spec="com.google.ads.mediation:facebook:6.14.0.0">
       <repositories>
         <repository>https://repo.maven.apache.org/maven2/</repository>
         <repository>https://dl.google.com/dl/android/maven2/</repository>
