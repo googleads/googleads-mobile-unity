@@ -5,6 +5,7 @@ Version Next
 **************
 
 - Deprecated builder pattern in AdRequest, RequestConfiguration and ServerSideVerificationOptions Class. Utilize fields instead.
+- Added AdManagerAdRequest class to allow passing CustomTargeting, CategoryExclusions and PublisherProvidedId as part of AdManager requests.
 
 **************
 Version 8.1.0
