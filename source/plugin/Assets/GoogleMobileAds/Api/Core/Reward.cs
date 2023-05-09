@@ -13,22 +13,32 @@
 // limitations under the License.
 
 using System;
+using UnityEngine;
 
 namespace GoogleMobileAds.Api
 {
     /// <summary>
     /// Describes a reward credited to a user for interacting with rewarded ads.
     /// </summary>
+    [Serializable]
     public class Reward : EventArgs
     {
         /// <summary>
         /// The type of the reward.
         /// </summary>
-        public string Type { get; set; }
+        public string Type;
 
         /// <summary>
         /// The reward amount.
         /// </summary>
-        public double Amount { get; set; }
+        public double Amount;
+
+        public Reward() {}
+
+        public Reward(Reward reward)
+        {
+            Type = reward.Type;
+            Amount = reward.Amount;
+        }
     }
 }

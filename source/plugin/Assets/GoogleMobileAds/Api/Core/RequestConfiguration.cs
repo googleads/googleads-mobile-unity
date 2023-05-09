@@ -13,23 +13,25 @@
 // limitations under the License.
 
 using System.Collections.Generic;
+using System;
 
 namespace GoogleMobileAds.Api
 {
     /// <summary>
     /// Global configuration used for every <see cref="AdRequest"/>.
     /// </summary>
+    [Serializable]
     public class RequestConfiguration
     {
         /// <summary>
         /// A maximum ad content rating. AdMob ads returned for these requests have
         /// a content rating at or below the level set.
         /// </summary>
-        public MaxAdContentRating MaxAdContentRating { get; private set; }
+        public MaxAdContentRating MaxAdContentRating;
 
         /// <summary>
         /// This property allows you to specify whether you would like your app to be treated as
-        /// child-directed for purposes of the Children’s Online Privacy Protection Act (COPPA) - 
+        /// child-directed for purposes of the Children’s Online Privacy Protection Act (COPPA) -
         /// <seealso href="http://business.ftc.gov/privacy-and-security/childrens-privacy">
         /// http://business.ftc.gov/privacy-and-security/childrens-privacy</seealso>.
         ///
@@ -52,35 +54,39 @@ namespace GoogleMobileAds.Api
         /// Note: it may take some time for this designation to be fully implemented in applicable
         /// Google services.
         /// </remarks>
-        public TagForChildDirectedTreatment? TagForChildDirectedTreatment { get; private set; }
+        public TagForChildDirectedTreatment? TagForChildDirectedTreatment;
 
         /// <summary>
         /// Indicates the publisher specified that the ad request should receive treatment for
         /// users in the European Economic Area (EEA) under the age of consent.
         /// </summary>
-        public TagForUnderAgeOfConsent? TagForUnderAgeOfConsent { get; private set; }
+        public TagForUnderAgeOfConsent? TagForUnderAgeOfConsent;
 
         /// <summary>
         /// The test device IDs corresponding to test device that will always request
         /// test ads. Returns an empty list if test device IDs were not previously set.
         /// </summary>
-        public List<string> TestDeviceIds { get; private set; }
+        public List<string> TestDeviceIds = new List<string>();
 
         /// <summary>
         /// Controls whether the Google Mobile Ads SDK Same App Key is enabled.
         /// The value set persists across app sessions. The key is enabled by default.
         /// </summary>
-        public bool? SameAppKeyEnabled { get; private set; }
+        public bool? SameAppKeyEnabled;
 
-        private RequestConfiguration(Builder builder)
+        public RequestConfiguration() {}
+
+        public RequestConfiguration(RequestConfiguration requestConfiguration)
         {
-            MaxAdContentRating = builder.MaxAdContentRating;
-            TagForChildDirectedTreatment = builder.TagForChildDirectedTreatment;
-            TagForUnderAgeOfConsent = builder.TagForUnderAgeOfConsent;
-            TestDeviceIds = builder.TestDeviceIds;
-            SameAppKeyEnabled = builder.SameAppKeyEnabled;
+            MaxAdContentRating = requestConfiguration.MaxAdContentRating;
+            TagForChildDirectedTreatment =
+                        requestConfiguration.TagForChildDirectedTreatment;
+            TagForUnderAgeOfConsent = requestConfiguration.TagForUnderAgeOfConsent;
+            TestDeviceIds = requestConfiguration.TestDeviceIds;
+            SameAppKeyEnabled = requestConfiguration.SameAppKeyEnabled;
         }
 
+        [Obsolete("Use RequestConfiguration directly instead.")]
         public Builder ToBuilder()
         {
           Builder builder = new Builder()
@@ -95,6 +101,7 @@ namespace GoogleMobileAds.Api
           return builder;
         }
 
+        [Obsolete("Use RequestConfiguration directly instead.")]
         public class Builder
         {
             internal MaxAdContentRating MaxAdContentRating{ get; private set; }
@@ -168,7 +175,15 @@ namespace GoogleMobileAds.Api
 
             public RequestConfiguration build()
             {
-                return new RequestConfiguration(this);
+                RequestConfiguration requestConfiguration = new RequestConfiguration()
+                {
+                    MaxAdContentRating = this.MaxAdContentRating,
+                    TagForChildDirectedTreatment = this.TagForChildDirectedTreatment,
+                    TagForUnderAgeOfConsent = this.TagForUnderAgeOfConsent,
+                    TestDeviceIds = this.TestDeviceIds,
+                    SameAppKeyEnabled = this.SameAppKeyEnabled
+                };
+                return requestConfiguration;
             }
         }
     }

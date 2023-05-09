@@ -15,6 +15,7 @@
 using System;
 using System.Text;
 using System.Collections.Generic;
+using UnityEngine;
 
 using GoogleMobileAds.Api.Mediation;
 
@@ -24,6 +25,7 @@ namespace GoogleMobileAds.Api
     /// An <see cref="AdRequest"/> contains targeting information used to fetch an ad.
     /// Ad requests are created using <see cref="AdRequest.Builder"/>.
     /// </summary>
+    [Serializable]
     public class AdRequest
     {
         /// <summary>
@@ -43,27 +45,29 @@ namespace GoogleMobileAds.Api
             Version = string.Format("{0}.{1}.{2}", version.Major, version.Minor, version.Build);
         }
 
-        private AdRequest(Builder builder)
+        public AdRequest() {}
+
+        public AdRequest(AdRequest request)
         {
-            this.Keywords = new HashSet<string>(builder.Keywords);
-            this.Extras = new Dictionary<string, string>(builder.Extras);
-            this.MediationExtras = builder.MediationExtras;
+            Keywords = request.Keywords;
+            Extras = request.Extras;
+            MediationExtras = request.MediationExtras;
         }
 
         /// <summary>
         /// Returns targeting information keywords. Returns an empty set if no keywords were added.
         /// </summary>
-        public HashSet<string> Keywords { get; private set; }
+        public HashSet<string> Keywords = new HashSet<string>();
 
         /// <summary>
         /// Returns extra parameters to be sent in the ad request.
         /// </summary>
-        public Dictionary<string, string> Extras { get; private set; }
+        public Dictionary<string, string> Extras = new Dictionary<string, string>();
 
         /// <summary>
         /// Returns extra parameters to be sent to a specific ad partner in the ad request.
         /// </summary>
-        public List<MediationExtras> MediationExtras { get; private set; }
+        public List<MediationExtras> MediationExtras = new List<MediationExtras>();
 
         internal static string BuildVersionString(string nativePluginVersion = null)
         {
@@ -79,6 +83,7 @@ namespace GoogleMobileAds.Api
         /// <summary>
         /// Constructs a <see cref="Builder"/>.
         /// </summary>
+        [Obsolete("Use AdRequest directly instead.")]
         public class Builder
         {
             public Builder()
@@ -111,7 +116,11 @@ namespace GoogleMobileAds.Api
             /// </summary>
             public AdRequest Build()
             {
-                return new AdRequest(this);
+                AdRequest adRequest = new AdRequest();
+                adRequest.Keywords = this.Keywords;
+                adRequest.Extras = this.Extras;
+                adRequest.MediationExtras = this.MediationExtras;
+                return adRequest;
             }
 
             /// <summary>

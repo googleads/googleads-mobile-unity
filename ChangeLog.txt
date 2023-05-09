@@ -1,6 +1,12 @@
 Google Mobile Ads Unity Plugin Change Log
 
 **************
+Version Next
+**************
+
+- Deprecated builder pattern in AdRequest, RequestConfiguration and ServerSideVerificationOptions Class. Utilize fields instead.
+
+**************
 Version 8.1.0
 **************
 
