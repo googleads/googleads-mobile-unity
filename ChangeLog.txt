@@ -4,8 +4,7 @@ Google Mobile Ads Unity Plugin Change Log
 Version Next
 **************
 
-- Deprecated builder pattern in AdRequest, RequestConfiguration and ServerSideVerificationOptions Class. Utilize fields instead.
-- Added AdManagerAdRequest class to allow passing CustomTargeting, CategoryExclusions and PublisherProvidedId as part of AdManager requests.
+- Updated Google Mobile Ads SDK dependency to use v10.4 on iOS.
 
 **************
 Version 8.1.0
