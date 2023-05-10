@@ -4,6 +4,7 @@ Google Mobile Ads Unity Plugin Change Log
 Version Next
 **************
 
+- Fixed [#2646] Android Banner 'Descendant focus' crash.
 - Updated Google Mobile Ads SDK dependency to use v10.4 on iOS.
 
 **************
