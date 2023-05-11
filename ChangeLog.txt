@@ -13,7 +13,7 @@ Built and tested with:
 - Google Mobile Ads Android SDK 22.0.0
 - Google Mobile Ads iOS SDK 10.4
 - Google User Messaging Platform 2.0.0
-- External Dependency Manager for Unity 1.2.175
+- External Dependency Manager for Unity 1.2.176
 
 **************
 Version 8.1.0
