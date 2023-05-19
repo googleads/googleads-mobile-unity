@@ -39,6 +39,9 @@ namespace GoogleMobileAds.Android
         public const string AdRequestBuilderClassName =
                 "com.google.android.gms.ads.AdRequest$Builder";
 
+        public const string AdManagerAdRequestBuilderClassName =
+                "com.google.android.gms.ads.admanager.AdManagerAdRequest$Builder";
+
         public const string AdSizeClassName = "com.google.android.gms.ads.AdSize";
 
         public const string AppOpenAdClassName =

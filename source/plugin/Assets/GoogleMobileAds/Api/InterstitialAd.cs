@@ -57,8 +57,10 @@ namespace GoogleMobileAds.Api
         /// </summary>
         public event Action<AdError> OnAdFullScreenContentFailed;
 
-        private IInterstitialClient _client;
-        private bool _canShowAd;
+        protected internal IInterstitialClient _client;
+        protected internal bool _canShowAd;
+
+        protected internal InterstitialAd() {}
 
         private InterstitialAd(IInterstitialClient client)
         {
@@ -141,7 +143,7 @@ namespace GoogleMobileAds.Api
             return _client != null ? new ResponseInfo(_client.GetResponseInfoClient()) : null;
         }
 
-        private void RegisterAdEvents()
+        protected internal virtual void RegisterAdEvents()
         {
             _client.OnAdClicked += () =>
             {

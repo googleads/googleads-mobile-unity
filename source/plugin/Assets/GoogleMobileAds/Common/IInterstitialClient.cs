@@ -15,6 +15,7 @@
 using System;
 
 using GoogleMobileAds.Api;
+using GoogleMobileAds.Api.AdManager;
 
 namespace GoogleMobileAds.Common
 {
