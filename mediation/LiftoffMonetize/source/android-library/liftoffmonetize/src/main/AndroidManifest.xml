@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+This Google Mobile Ads plugin library manifest will get merged with your
+application's manifest, adding the necessary activity and permissions
+required for displaying ads.
+-->
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.google.unity.mediation.liftoffmonetize">
+</manifest>
