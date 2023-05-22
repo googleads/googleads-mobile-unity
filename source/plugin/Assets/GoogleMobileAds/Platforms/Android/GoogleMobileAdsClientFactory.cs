@@ -66,6 +66,18 @@ namespace GoogleMobileAds
             " on non-Android runtime");
         }
 
+        public IAdManagerInterstitialClient BuildAdManagerInterstitialClient()
+        {
+            if (Application.platform == RuntimePlatform.Android)
+            {
+                // TODO(srichakradhar): Return android AdManagerInterstitialClient implementation.
+                var interstitialClient = new GoogleMobileAds.Android.InterstitialClient();
+                return interstitialClient as IAdManagerInterstitialClient;
+            }
+            throw new InvalidOperationException(@"Called " + MethodBase.GetCurrentMethod().Name +
+            " on non-Android runtime");
+        }
+
         public IRewardedAdClient BuildRewardedAdClient()
         {
             if (Application.platform == RuntimePlatform.Android)
