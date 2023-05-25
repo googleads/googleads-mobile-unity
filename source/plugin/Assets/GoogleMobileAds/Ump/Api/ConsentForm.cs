@@ -39,8 +39,25 @@ namespace GoogleMobileAds.Ump.Api
         public static void Load(Action<ConsentForm, FormError> formLoadCallback)
         {
             IConsentFormClient client = ConsentInformation.ClientFactory.ConsentFormClient();
-            client.Load(() => formLoadCallback(new ConsentForm(client), null),
-                        error => formLoadCallback(null, error));
+            client.Load(() =>
+            {
+                if (formLoadCallback != null)
+                {
+                    GoogleMobileAds.Api.MobileAds.RaiseAction(() =>
+                    {
+                        formLoadCallback(new ConsentForm(client), null);
+                    });
+                }
+            }, error =>
+            {
+                if (formLoadCallback != null)
+                {
+                    GoogleMobileAds.Api.MobileAds.RaiseAction(() =>
+                    {
+                        formLoadCallback(null, error);
+                    });
+                }
+            });
         }
 
         /// <summary>

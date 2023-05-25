@@ -66,8 +66,26 @@ namespace GoogleMobileAds.Ump.Api
                                   Action<FormError> consentInfoUpdateCallback)
         {
             IConsentInformationClient client = ClientFactory.ConsentInformationClient();
-            client.Update(request, () => consentInfoUpdateCallback(null),
-                          error => consentInfoUpdateCallback(error));
+
+            client.Update(request, () =>
+            {
+                if (consentInfoUpdateCallback != null)
+                {
+                    GoogleMobileAds.Api.MobileAds.RaiseAction(() =>
+                    {
+                        consentInfoUpdateCallback(null);
+                    });
+                }
+            }, error =>
+            {
+                if (consentInfoUpdateCallback != null)
+                {
+                    GoogleMobileAds.Api.MobileAds.RaiseAction(() =>
+                    {
+                        consentInfoUpdateCallback(error);
+                    });
+                }
+            });
         }
 
         /// <summary>
