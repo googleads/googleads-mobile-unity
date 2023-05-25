@@ -70,9 +70,7 @@ namespace GoogleMobileAds
         {
             if (Application.platform == RuntimePlatform.Android)
             {
-                // TODO(srichakradhar): Return android AdManagerInterstitialClient implementation.
-                var interstitialClient = new GoogleMobileAds.Android.InterstitialClient();
-                return interstitialClient as IAdManagerInterstitialClient;
+                return new GoogleMobileAds.Android.AdManagerInterstitialClient();
             }
             throw new InvalidOperationException(@"Called " + MethodBase.GetCurrentMethod().Name +
             " on non-Android runtime");
