@@ -70,11 +70,20 @@ typedef const void *GADUTypeBannerRef;
 /// Type representing a GADUInterstitial.
 typedef const void *GADUTypeInterstitialRef;
 
+/// Type representing a GAMUInterstitial.
+typedef const void *GAMUTypeInterstitialRef;
+
+/// Type representing an Ad Manager interstitial client.
+typedef const void *GAMUTypeInterstitialClientRef;
+
 /// Type representing a GADURewardedAd.
 typedef const void *GADUTypeRewardedAdRef;
 
 /// Type representing a GADURequest.
 typedef const void *GADUTypeRequestRef;
+
+/// Type representing a GAMURequest.
+typedef const void *GAMUTypeRequestRef;
 
 /// Type representing a GADUTypeRequestConfigurationRef
 typedef const void *GADUTypeRequestConfigurationRef;
@@ -197,6 +206,13 @@ typedef void (*GADUInterstitialAdDidRecordClickCallback)(
 typedef void (*GADUInterstitialPaidEventCallback)(GADUTypeInterstitialClientRef *interstitialClient,
                                                   int precision, int64_t value,
                                                   const char *currencyCode);
+
+// MARK: - GAMUInterstitial
+
+/// Callback when an Ad Manager interstitial ad sends an app event.
+typedef void (*GAMUInterstitialAppEventCallback)(GAMUTypeInterstitialClientRef *interstitialClient,
+                                                 const char *name, const char *info);
+
 // MARK: - GADURewarded
 
 /// Callback for when a rewarded ad request was successfully loaded.

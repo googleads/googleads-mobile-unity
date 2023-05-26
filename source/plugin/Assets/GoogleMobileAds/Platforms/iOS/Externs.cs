@@ -65,6 +65,9 @@ namespace GoogleMobileAds.iOS
         internal static extern IntPtr GADUCreateRequest();
 
         [DllImport("__Internal")]
+        internal static extern IntPtr GAMUCreateRequest();
+
+        [DllImport("__Internal")]
         internal static extern IntPtr GADUCreateMutableDictionary();
 
         [DllImport("__Internal")]
@@ -84,6 +87,16 @@ namespace GoogleMobileAds.iOS
 
         [DllImport("__Internal")]
         internal static extern void GADUSetExtra(IntPtr request, string key, string value);
+
+        [DllImport("__Internal")]
+        internal static extern void GAMUSetPublisherProvidedID(IntPtr request,
+                                                               string publisherProvidedID);
+
+        [DllImport("__Internal")]
+        internal static extern void GAMUAddCategoryExclusion(IntPtr request, string category);
+
+        [DllImport("__Internal")]
+        internal static extern void GAMUSetCustomTargeting(IntPtr request, string key, string value);
 
         [DllImport("__Internal")]
         internal static extern void GADUSetRequestAgent(IntPtr request, string requestAgent);
@@ -316,7 +329,7 @@ namespace GoogleMobileAds.iOS
             InterstitialClient.GADUInterstitialAdFailedToLoadCallback adFailedCallback,
             InterstitialClient.GADUInterstitialAdWillPresentFullScreenContentCallback
                 adWillPresentFullScreenContentCallback,
-          InterstitialClient.GADUInterstitialAdFailedToPresentFullScreenContentCallback
+            InterstitialClient.GADUInterstitialAdFailedToPresentFullScreenContentCallback
                 adFailToPresentFullScreenContentCallback,
             InterstitialClient.GADUInterstitialAdDidDismissFullScreenContentCallback
                 adDidDismissFullScreenContentCallback,
@@ -329,6 +342,40 @@ namespace GoogleMobileAds.iOS
 
         [DllImport("__Internal")]
         internal static extern void GADUShowInterstitial(IntPtr interstitial);
+
+        #endregion
+
+        #region AdManager Interstitial externs
+
+        [DllImport("__Internal")]
+        internal static extern IntPtr GAMUCreateInterstitial(IntPtr interstitialClient);
+
+        [DllImport("__Internal")]
+        internal static extern IntPtr GAMULoadInterstitialAd(IntPtr interstitialAd, string adUnitID,
+            IntPtr request);
+
+        [DllImport("__Internal")]
+        internal static extern void GAMUSetInterstitialCallbacks(
+            IntPtr interstitial,
+            AdManagerInterstitialClient.GADUInterstitialAdLoadedCallback adLoadedCallback,
+            AdManagerInterstitialClient.GADUInterstitialAdFailedToLoadCallback
+                adFailedToLoadCallback,
+            AdManagerInterstitialClient.GADUInterstitialAdWillPresentFullScreenContentCallback
+                adWillPresentFullScreenContentCallback,
+            AdManagerInterstitialClient.GADUInterstitialAdFailedToPresentFullScreenContentCallback
+                adFailToPresentFullScreenContentCallback,
+            AdManagerInterstitialClient.GADUInterstitialAdDidDismissFullScreenContentCallback
+                adDidDismissFullScreenContentCallback,
+            AdManagerInterstitialClient.GADUInterstitialAdDidRecordImpressionCallback
+                adDidRecordImpressionCallback,
+            AdManagerInterstitialClient.GADUInterstitialAdDidRecordClickCallback
+                adDidRecordClickCallback,
+            AdManagerInterstitialClient.GADUInterstitialPaidEventCallback paidEventCallback,
+            AdManagerInterstitialClient.GAMUInterstitialAppEventCallback appEventCallback
+        );
+
+        [DllImport("__Internal")]
+        internal static extern void GAMUShowInterstitial(IntPtr interstitial);
 
         #endregion
 
