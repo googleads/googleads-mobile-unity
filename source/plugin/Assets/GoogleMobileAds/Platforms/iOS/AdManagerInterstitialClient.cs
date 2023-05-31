@@ -83,8 +83,10 @@ namespace GoogleMobileAds.iOS
 
         private IntPtr _interstitialClientPtr;
 
+        private IntPtr _interstitialPtr;
+
         // This property should be used when setting the _interstitialPtr.
-        private IntPtr _interstitialPtr
+        private IntPtr InterstitialPtr
         {
             get
             {
@@ -103,10 +105,10 @@ namespace GoogleMobileAds.iOS
         public void CreateInterstitialAd()
         {
             this._interstitialClientPtr = (IntPtr)GCHandle.Alloc(this);
-            this._interstitialPtr = Externs.GAMUCreateInterstitial(this._interstitialClientPtr);
+            this.InterstitialPtr = Externs.GAMUCreateInterstitial(this._interstitialClientPtr);
 
             Externs.GAMUSetInterstitialCallbacks(
-                this._interstitialPtr,
+                this.InterstitialPtr,
                 InterstitialLoadedCallback,
                 InterstitialFailedToLoadCallback,
                 AdWillPresentFullScreenContentCallback,
@@ -120,25 +122,25 @@ namespace GoogleMobileAds.iOS
 
         public void LoadAd(string adUnitID, AdRequest request) {
             IntPtr requestPtr = Utils.BuildAdManagerAdRequest(request);
-            Externs.GAMULoadInterstitialAd(this._interstitialPtr, adUnitID, requestPtr);
+            Externs.GAMULoadInterstitialAd(this.InterstitialPtr, adUnitID, requestPtr);
             Externs.GADURelease(requestPtr);
         }
 
         // Show the interstitial ad on the screen.
         public void Show()
         {
-            Externs.GADUShowInterstitial(this._interstitialPtr);
+            Externs.GADUShowInterstitial(this.InterstitialPtr);
         }
 
         public IResponseInfoClient GetResponseInfoClient()
         {
-            return new ResponseInfoClient(ResponseInfoClientType.AdLoaded, this._interstitialPtr);
+            return new ResponseInfoClient(ResponseInfoClientType.AdLoaded, this.InterstitialPtr);
         }
 
         // Destroys the interstitial ad.
         public void DestroyInterstitial()
         {
-            this._interstitialPtr = IntPtr.Zero;
+            this.InterstitialPtr = IntPtr.Zero;
         }
 
         public void Dispose()
