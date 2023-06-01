@@ -1,9 +1,11 @@
 Google Mobile Ads Unity Plugin Change Log
 
 **************
-Version Next
+Version 8.3.0
 **************
 
+- Added support to RaiseAdEventsOnUnityMainThread for UMP callbacks.
+- Added support for Ad Manager interstitial ad.
 - Updated Google Mobile Ads SDK dependency to use v22.1.0 on Android.
 - Updated Google Mobile Ads SDK dependency to use v10.5 on iOS.
 
