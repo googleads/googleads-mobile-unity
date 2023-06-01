@@ -44,9 +44,9 @@ public class GoogleAdMobController : MonoBehaviour
 
         // Configure TagForChildDirectedTreatment and test device IDs.
         RequestConfiguration requestConfiguration =
-            new RequestConfiguration.Builder()
-            .SetTagForChildDirectedTreatment(TagForChildDirectedTreatment.Unspecified)
-            .SetTestDeviceIds(deviceIds).build();
+            new RequestConfiguration();
+            requestConfiguration.TagForChildDirectedTreatment(TagForChildDirectedTreatment.Unspecified)
+            requestConfiguration.TestDeviceIds.AddRange(deviceIds);
         MobileAds.SetRequestConfiguration(requestConfiguration);
 
         // Initialize the Google Mobile Ads SDK.
