@@ -1,6 +1,7 @@
 using GoogleMobileAds.Api;
 using GoogleMobileAds.Common;
 using GoogleMobileAds.Ump.Api;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -9,7 +10,7 @@ using UnityEngine.UI;
 namespace GoogleMobileAds.Sample
 {
     /// <summary>
-    /// Demonstrates how to use the Google Mobile Ads User Messaging Platform
+    /// Demonstrates how to use Google Mobile Ads User Messaging Platform
     /// to manage user consent and privacy settings.
     /// </summary>
     public class GoogleUmpController : MonoBehaviour
@@ -35,14 +36,12 @@ namespace GoogleMobileAds.Sample
 
         [Header("User Interface")]
         public Text TextConsent;
-        public Text TextStatus;
         public Dropdown SelectChildUser;
         public Dropdown SelectDebugGeography;
         public Button BtnResetConsentInformation;
         public Button BtnUpdateConsentInformation;
         public Button BtnLoadConsentForm;
         public Button BtnShowConsentForm;
-        public Button BtnLoadMainScene;
 
         private ConsentForm _consentForm;
 
@@ -50,6 +49,9 @@ namespace GoogleMobileAds.Sample
 
         private void Awake()
         {
+            // For dispatching events back onto the Unity main thread.
+            MobileAds.RaiseAdEventsOnUnityMainThread = true;
+
             // On Android, Unity is paused when displaying interstitial or rewarded video.
             // This behavior should be made consistent with iOS.
             MobileAds.SetiOSAppPauseOnBackground(true);
@@ -60,13 +62,6 @@ namespace GoogleMobileAds.Sample
             // This method will redraw the UI.
             // Call it whenever there is a change.
             UpdateUI();
-
-            UpdateStatus("Google Mobile Ads is initializing.");
-
-            MobileAds.Initialize((InitializationStatus status) =>
-            {
-                UpdateStatus("Google Mobile Ads is ready.");
-            });
         }
 
         #endregion
@@ -81,7 +76,7 @@ namespace GoogleMobileAds.Sample
         {
             ConsentInformation.Reset();
             UpdateUI();
-            UpdateStatus("Consent information has been reset.");
+            Debug.Log("Consent information has been reset.");
         }
 
         /// <summary>
@@ -89,7 +84,7 @@ namespace GoogleMobileAds.Sample
         /// </summary>
         public void UpdateConsentInformation()
         {
-            UpdateStatus("Updating consent information.");
+            Debug.Log("Updating consent information.");
 
             var debugGeography = (DebugGeography)SelectDebugGeography.value;
             var tagForUnderAgeOfConsent = SelectChildUser.value == 1;
@@ -114,14 +109,14 @@ namespace GoogleMobileAds.Sample
                     if (error == null)
                     {
                         // The consent information updated successfully.
-                        UpdateStatus(string.Format(
+                        Debug.Log(string.Format(
                                 "Consent information updated to {0}. You may load the consent " +
                                 "form.", ConsentInformation.ConsentStatus));
                     }
                     else
                     {
                         // The consent information failed to update.
-                        UpdateErrorStatus("Failed to update consent information with error: " +
+                        Debug.LogError("Failed to update consent information with error: " +
                                 error.Message);
                     }
 
@@ -137,7 +132,7 @@ namespace GoogleMobileAds.Sample
         /// </remarks>
         public void LoadConsentForm()
         {
-            UpdateStatus("Loading consent form.");
+            Debug.Log("Loading consent form.");
 
             ConsentForm.Load(
                 // OnConsentFormLoad
@@ -149,12 +144,12 @@ namespace GoogleMobileAds.Sample
                         // The consent form was loaded.
                         // We cache the consent form for showing later.
                         _consentForm = form;
-                        UpdateStatus("Consent form is loaded and is ready to show.");
+                        Debug.Log("Consent form is loaded and is ready to show.");
                     }
                     else
                     {
                         // The consent form failed to load.
-                        UpdateErrorStatus("Failed to load consent form with error: " +
+                        Debug.LogError("Failed to load consent form with error: " +
                             error == null ? "unknown error" : error.Message);
                     }
                 });
@@ -182,7 +177,7 @@ namespace GoogleMobileAds.Sample
                      {
                          // The consent form failed to show.
                          UpdateUI();
-                         UpdateErrorStatus("Failed to show consent form with error: " +
+                         Debug.LogError("Failed to show consent form with error: " +
                                            error.Message);
                      }
                  });
@@ -193,14 +188,6 @@ namespace GoogleMobileAds.Sample
         #region Utility methods
 
         /// <summary>
-        /// Returns to the main Google mobile ads sample scene.
-        /// </summary>
-        public void LoadMainScene()
-        {
-            SceneManager.LoadScene("MainScene");
-        }
-
-        /// <summary>
         /// This method will initialize the UI elements.
         /// </summary>
         private void InitUI()
@@ -209,7 +196,6 @@ namespace GoogleMobileAds.Sample
             BtnUpdateConsentInformation.onClick.AddListener(UpdateConsentInformation);
             BtnLoadConsentForm.onClick.AddListener(LoadConsentForm);
             BtnShowConsentForm.onClick.AddListener(ShowConsentForm);
-            BtnLoadMainScene.onClick.AddListener(LoadMainScene);
         }
 
         /// <summary>
@@ -217,38 +203,10 @@ namespace GoogleMobileAds.Sample
         /// </summary>
         private void UpdateUI()
         {
-            // Google Mobile Ads is not thread safe.
-            // Use the MobileAdsEventExecutor to run this code on the Main Unity Thread.
-            // This will prevent errors related to mutating the Unity UI from a background thread.
-            MobileAdsEventExecutor.ExecuteInUpdate(() =>
-            {
-                BtnLoadConsentForm.interactable = _consentForm == null;
-                BtnShowConsentForm.interactable = _consentForm != null;
-                TextConsent.text = string.Format("Consent status is {0}",
-                                                 ConsentInformation.ConsentStatus);
-            });
-        }
-
-        private void UpdateStatus(string message)
-        {
-            Debug.Log(message);
-            // Google Mobile Ads is not thread safe. There is a chance that events being raised
-            // are not on the main Unity thread. Please dispatch to the Unity main thread.
-            MobileAdsEventExecutor.ExecuteInUpdate(() =>
-            {
-                TextStatus.text = message;
-            });
-        }
-
-        private void UpdateErrorStatus(string message)
-        {
-            Debug.LogError(message);
-            // Google Mobile Ads is not thread safe. There is a chance that events being raised
-            // are not on the main Unity thread. Please dispatch to the Unity main thread.
-            MobileAdsEventExecutor.ExecuteInUpdate(() =>
-            {
-                TextStatus.text = message;
-            });
+            BtnLoadConsentForm.interactable = _consentForm == null;
+            BtnShowConsentForm.interactable = _consentForm != null;
+            TextConsent.text = string.Format("Consent status is {0}",
+                                                ConsentInformation.ConsentStatus);
         }
 
         #endregion

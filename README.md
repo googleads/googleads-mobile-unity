@@ -20,30 +20,17 @@ for the latest official version of the plugin.
 ## Documentation
 
 For instructions on using the plugin, please refer to
-[this developer guide](//firebase.google.com/docs/admob/unity/start).
+[this developer guide](//developers.google.com/admob/unity/quick-start).
 
-Be sure to also join the developer community on
-[our forum](//groups.google.com/forum/#!categories/google-admob-ads-sdk/game-engines).
-
-Native ads enable publishers to render ads that are seamless with content.
-For more information please visit the [AdMob native ads Devsite](https://developers.google.com/admob/unity/native-advanced-unified).
-
-## Analytics
-
-You can help improve the Google Mobile Ads Unity plugin by opting-in to sending
-usage data to Google.
-
-The data collected is general information about how you are using the plugin
-(such as ad unit creation and processing errors).
-
-You can enable/disable analytics settings in the Google Mobile Ads plugin
-settings, which is available from **Assets > Google Mobile Ads > Settings**
-in the Unity Editor.
+For a sample application demonstrating how to use Google Mobile Ads see [The HelloWorld Unity project](https://github.com/googleads/googleads-mobile-unity/tree/main/samples).
 
 ## Suggesting improvements
 
 To file bugs, make feature requests, or to suggest other improvements,
 please use [github's issue tracker](//github.com/googleads/googleads-mobile-unity/issues).
+
+Be sure to also join the developer community on
+[our forum](//groups.google.com/forum/#!categories/google-admob-ads-sdk/game-engines).
 
 ## License
 
