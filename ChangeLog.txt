@@ -1,6 +1,12 @@
 Google Mobile Ads Unity Plugin Change Log
 
 **************
+Version Next
+**************
+
+- Fixed [#2757] Rewarded Interstitial events not raising on the main thread.
+
+**************
 Version 8.3.0
 **************
 

@@ -86,12 +86,18 @@ namespace GoogleMobileAds.Api
             client.CreateRewardedInterstitialAd();
             client.OnAdLoaded += (sender, args) =>
             {
-                adLoadCallback(new RewardedInterstitialAd(client), null);
+                MobileAds.RaiseAction(() =>
+                {
+                    adLoadCallback(new RewardedInterstitialAd(client), null);
+                });
             };
             client.OnAdFailedToLoad += (sender, args) =>
             {
                 LoadAdError loadAdError = new LoadAdError(args.LoadAdErrorClient);
-                adLoadCallback(null, loadAdError);
+                MobileAds.RaiseAction(() =>
+                {
+                    adLoadCallback(null, loadAdError);
+                });
             };
             client.LoadAd(adUnitId, request);
         }
@@ -165,60 +171,81 @@ namespace GoogleMobileAds.Api
         {
             _client.OnAdClicked += () =>
             {
-                if (OnAdClicked != null)
+                MobileAds.RaiseAction(() =>
                 {
-                    OnAdClicked();
-                }
+                    if (OnAdClicked != null)
+                    {
+                        OnAdClicked();
+                    }
+                });
             };
 
             _client.OnAdDidDismissFullScreenContent += (sender, args) =>
             {
-                if (OnAdFullScreenContentClosed != null)
+                MobileAds.RaiseAction(() =>
                 {
-                    OnAdFullScreenContentClosed();
-                }
+                    if (OnAdFullScreenContentClosed != null)
+                    {
+                        OnAdFullScreenContentClosed();
+                    }
+                });
             };
 
             _client.OnAdDidPresentFullScreenContent += (sender, args) =>
             {
-                if (OnAdFullScreenContentOpened != null)
+                MobileAds.RaiseAction(() =>
                 {
-                    OnAdFullScreenContentOpened();
-                }
+                    if (OnAdFullScreenContentOpened != null)
+                    {
+                        OnAdFullScreenContentOpened();
+                    }
+                });
             };
 
             _client.OnAdDidRecordImpression += (sender, args) =>
             {
-                if (OnAdImpressionRecorded != null)
+                MobileAds.RaiseAction(() =>
                 {
-                    OnAdImpressionRecorded();
-                }
+                    if (OnAdImpressionRecorded != null)
+                    {
+                        OnAdImpressionRecorded();
+                    }
+                });
             };
 
             _client.OnAdFailedToPresentFullScreenContent += (sender, error) =>
             {
                 var adError = new AdError(error.AdErrorClient);
-                if (OnAdFullScreenContentFailed != null)
+                MobileAds.RaiseAction(() =>
                 {
-                    OnAdFullScreenContentFailed(adError);
-                }
+                    if (OnAdFullScreenContentFailed != null)
+                    {
+                        OnAdFullScreenContentFailed(adError);
+                    }
+                });
             };
 
             _client.OnPaidEvent += (sender, args) =>
             {
-                if (OnAdPaid != null)
+                MobileAds.RaiseAction(() =>
                 {
-                    OnAdPaid(args.AdValue);
-                }
+                    if (OnAdPaid != null)
+                    {
+                        OnAdPaid(args.AdValue);
+                    }
+                });
             };
 
             _client.OnUserEarnedReward += (sender, args) =>
             {
-                if (_userRewardEarnedCallback != null)
+                MobileAds.RaiseAction(() =>
                 {
-                    _userRewardEarnedCallback(args);
-                    _userRewardEarnedCallback = null;
-                }
+                    if (_userRewardEarnedCallback != null)
+                    {
+                        _userRewardEarnedCallback(args);
+                        _userRewardEarnedCallback = null;
+                    }
+                });
             };
         }
     }
