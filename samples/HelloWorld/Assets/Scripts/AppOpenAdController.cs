@@ -61,7 +61,7 @@ namespace GoogleMobileAds.Sample
             Debug.Log("Loading app open ad.");
 
             // Create our request used to load the ad.
-            var adRequest = new AdRequest.Builder().Build();
+            var adRequest = new AdRequest();
 
             // Send the request to load the ad.
             AppOpenAd.Load(_adUnitId, ScreenOrientation.Portrait, adRequest,

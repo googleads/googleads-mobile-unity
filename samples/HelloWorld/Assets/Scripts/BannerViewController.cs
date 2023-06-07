@@ -61,7 +61,7 @@ namespace GoogleMobileAds.Sample
             }
 
             // Create our request used to load the ad.
-            var adRequest = new AdRequest.Builder().Build();
+            var adRequest = new AdRequest();
 
             // Send the request to load the ad.
             Debug.Log("Loading banner ad.");

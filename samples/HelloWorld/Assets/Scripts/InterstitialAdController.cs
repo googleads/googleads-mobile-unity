@@ -45,7 +45,7 @@ namespace GoogleMobileAds.Sample
             Debug.Log("Loading interstitial ad.");
 
             // Create our request used to load the ad.
-            var adRequest = new AdRequest.Builder().Build();
+            var adRequest = new AdRequest();
 
             // Send the request to load the ad.
             InterstitialAd.Load(_adUnitId, adRequest, (InterstitialAd ad, LoadAdError error) =>

@@ -50,10 +50,10 @@ namespace GoogleMobileAds.Samples
 
             // Configure your RequestConfiguration with Child Directed Treatment
             // and the Test Device Ids.
-            RequestConfiguration requestConfiguration =
-                new RequestConfiguration.Builder()
-                .SetTestDeviceIds(deviceIds)
-                .build();
+            RequestConfiguration requestConfiguration = new RequestConfiguration
+            {
+                TestDeviceIds = deviceIds
+            };
             MobileAds.SetRequestConfiguration(requestConfiguration);
 
             // Initialize the Google Mobile Ads SDK.
