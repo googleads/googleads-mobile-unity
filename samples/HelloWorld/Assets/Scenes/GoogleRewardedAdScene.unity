@@ -158,10 +158,10 @@ RectTransform:
   m_Father: {fileID: 1938022532}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 366, y: -176.31558}
-  m_SizeDelta: {x: 358, y: 81.15779}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 1, y: 1}
 --- !u!114 &62980829
 MonoBehaviour:
@@ -292,10 +292,10 @@ RectTransform:
   m_Father: {fileID: 1938022532}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 366, y: -354.63116}
-  m_SizeDelta: {x: 358, y: 81.15779}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 1, y: 1}
 --- !u!114 &346803637
 MonoBehaviour:
@@ -947,10 +947,10 @@ RectTransform:
   m_Father: {fileID: 1938022532}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 366, y: -87.15779}
-  m_SizeDelta: {x: 358, y: 81.15779}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 1, y: 1}
 --- !u!114 &1472153081
 MonoBehaviour:
@@ -1216,10 +1216,10 @@ RectTransform:
   m_Father: {fileID: 1938022532}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 366, y: -265.4734}
-  m_SizeDelta: {x: 358, y: 81.15779}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 1, y: 1}
 --- !u!114 &1889439068
 MonoBehaviour:
@@ -1370,7 +1370,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8b914fa3323ca480aacf51740a68ce63, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  AdLoadedBanner: {fileID: 1560655538}
+  AdLoadedStatus: {fileID: 0}
 --- !u!114 &1938022535
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1378,7 +1378,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1938022531}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 59f8146938fff824cb5fd77236b75775, type: 3}
   m_Name: 
@@ -1612,7 +1612,7 @@ PrefabInstance:
     - target: {fileID: 7547914932056881335, guid: 14b7f179c2c5148188b1b282d47b96ee,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -299.9999
+      value: -299.99997
       objectReference: {fileID: 0}
     - target: {fileID: 7547914932589224673, guid: 14b7f179c2c5148188b1b282d47b96ee,
         type: 3}
