@@ -105,7 +105,7 @@ namespace GoogleMobileAds.Sample
         public void ShowAd()
         {
             // App open ads can be preloaded for up to 4 hours.
-            if (_appOpenAd != null && _appOpenAd.CanShowAd() && DateTime.Now < _expireTime.Value)
+            if (_appOpenAd != null && _appOpenAd.CanShowAd() && DateTime.Now < _expireTime)
             {
                Debug.Log("Showing app open ad.");
                 _appOpenAd.Show();
