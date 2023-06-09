@@ -23,7 +23,7 @@ using GoogleMobileAds.Common;
 
 namespace GoogleMobileAds.Unity
 {
-    public class AppOpenAdClient : BaseAdDummyClient, IAppOpenAdClient
+    public class AppOpenAdClient : BaseAdClient, IAppOpenAdClient
     {
         public event EventHandler<EventArgs> OnAdLoaded;
 
@@ -39,9 +39,11 @@ namespace GoogleMobileAds.Unity
 
         public event EventHandler<EventArgs> OnAdDidRecordImpression;
 
+        public event Action OnAdClicked;
+
         private Dictionary<AdSize, string> prefabAds = new Dictionary<AdSize, string>() {
-            { new AdSize(768, 1024), "DummyAds/AppOpen/768x1024" },
-            { new AdSize(1024, 768), "DummyAds/AppOpen/1024x768" }
+            { new AdSize(768, 1024), "PlaceholderAds/AppOpen/768x1024" },
+            { new AdSize(1024, 768), "PlaceholderAds/AppOpen/1024x768" }
         };
 
         private ButtonBehaviour buttonBehaviour;
@@ -52,6 +54,10 @@ namespace GoogleMobileAds.Unity
             Image adImage = images[1];
             Button button = adImage.GetComponentInChildren<Button>();
             button.onClick.AddListener(() => {
+                if (OnAdClicked != null)
+                {
+                    OnAdClicked();
+                }
                 buttonBehaviour.OpenURL();
             });
 
@@ -121,6 +127,10 @@ namespace GoogleMobileAds.Unity
               if(OnAdDidPresentFullScreenContent != null)
               {
                 OnAdDidPresentFullScreenContent.Invoke(this, EventArgs.Empty);
+              }
+              if (OnAdDidRecordImpression != null)
+              {
+                  OnAdDidRecordImpression(this, EventArgs.Empty);
               }
           }
           else

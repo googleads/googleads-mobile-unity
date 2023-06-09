@@ -70,17 +70,29 @@ typedef const void *GADUTypeBannerRef;
 /// Type representing a GADUInterstitial.
 typedef const void *GADUTypeInterstitialRef;
 
+/// Type representing a GAMUInterstitial.
+typedef const void *GAMUTypeInterstitialRef;
+
+/// Type representing an Ad Manager interstitial client.
+typedef const void *GAMUTypeInterstitialClientRef;
+
 /// Type representing a GADURewardedAd.
 typedef const void *GADUTypeRewardedAdRef;
 
 /// Type representing a GADURequest.
 typedef const void *GADUTypeRequestRef;
 
+/// Type representing a GAMURequest.
+typedef const void *GAMUTypeRequestRef;
+
 /// Type representing a GADUTypeRequestConfigurationRef
 typedef const void *GADUTypeRequestConfigurationRef;
 
 /// Type representing a GADUTypeResponseInfoRef
 typedef const void *GADUTypeResponseInfoRef;
+
+/// Type representing a GADUTypeAdapterResponseInfoRef type
+typedef const void *GADUTypeAdapterResponseInfoRef;
 
 /// Type representing a AdError type
 typedef const void *GADUTypeErrorRef;
@@ -114,6 +126,11 @@ typedef void (*GADUAppOpenAdWillPresentFullScreenContentCallback)(
 /// Callback when an ad impression has been recorded for the app open ad.
 typedef void (*GADUAppOpenAdDidRecordImpressionCallback)(
     GADUTypeAppOpenAdClientRef *appOpenAdClient);
+
+/// Callback when an ad click has been recorded for the app open ad.
+typedef void (*GADUAppOpenAdDidRecordClickCallback)(
+    GADUTypeAppOpenAdClientRef *appOpenAdClient);
+
 
 /// Callback when an app open ad dismissed full screen content.
 typedef void (*GADUAppOpenAdDidDismissFullScreenContentCallback)(
@@ -149,6 +166,13 @@ typedef void (*GADUAdViewWillLeaveApplicationCallback)(GADUTypeBannerClientRef *
 typedef void (*GADUAdViewPaidEventCallback)(GADUTypeBannerClientRef *bannerClient, int precision,
                                             int64_t value, const char *currencyCode);
 
+/// Callback for when an ad reports an impression.
+typedef void (*GADUAdViewImpressionCallback)(GADUTypeBannerClientRef *bannerClient);
+
+/// Callback for when an ad reports a click.
+typedef void (*GADUAdViewClickCallback)(GADUTypeBannerClientRef *bannerClient);
+
+
 // MARK: - GADUInterstitial
 
 /// Callback for when a interstitial ad request was successfully loaded.
@@ -174,10 +198,21 @@ typedef void (*GADUInterstitialAdDidDismissFullScreenContentCallback)(
 typedef void (*GADUInterstitialAdDidRecordImpressionCallback)(
     GADUTypeInterstitialRef *interstitialClient);
 
+/// Callback when an interstitial ad has made a click.
+typedef void (*GADUInterstitialAdDidRecordClickCallback)(
+    GADUTypeInterstitialRef *interstitialClient);
+
 /// Callback when an interstitial ad is estimated to have earned money.
 typedef void (*GADUInterstitialPaidEventCallback)(GADUTypeInterstitialClientRef *interstitialClient,
                                                   int precision, int64_t value,
                                                   const char *currencyCode);
+
+// MARK: - GAMUInterstitial
+
+/// Callback when an Ad Manager interstitial ad sends an app event.
+typedef void (*GAMUInterstitialAppEventCallback)(GAMUTypeInterstitialClientRef *interstitialClient,
+                                                 const char *name, const char *info);
+
 // MARK: - GADURewarded
 
 /// Callback for when a rewarded ad request was successfully loaded.
@@ -201,6 +236,9 @@ typedef void (*GADURewardedAdDidDismissFullScreenContentCallback)(
 
 /// Callback when a rewarded ad has made an impression.
 typedef void (*GADURewardedAdDidRecordImpressionCallback)(GADUTypeRewardedAdRef *rewardedAdClient);
+
+/// Callback when a rewarded ad has made a click.
+typedef void (*GADURewardedAdDidRecordClickCallback)(GADUTypeRewardedAdRef *rewardedAdClient);
 
 /// Callback for when a user earned a reward.
 typedef void (*GADURewardedAdUserEarnedRewardCallback)(
@@ -245,6 +283,10 @@ typedef void (*GADURewardedInterstitialAdDidDismissFullScreenContentCallback)(
 
 /// Callback when a rewarded interstitial ad has made an impression.
 typedef void (*GADURewardedInterstitialAdDidRecordImpressionCallback)(
+    GADUTypeRewardedInterstitialAdRef *rewardedInterstitialAdClient);
+
+/// Callback when a rewarded interstitial ad has made a click.
+typedef void (*GADURewardedInterstitialAdDidRecordClickCallback)(
     GADUTypeRewardedInterstitialAdRef *rewardedInterstitialAdClient);
 
 // MARK: - GADUAdInspector

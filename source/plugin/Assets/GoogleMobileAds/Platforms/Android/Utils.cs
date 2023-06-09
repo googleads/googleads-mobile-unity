@@ -12,11 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using UnityEngine;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using UnityEngine;
 
 using GoogleMobileAds.Api;
+using GoogleMobileAds.Api.AdManager;
 using GoogleMobileAds.Api.Mediation;
 using GoogleMobileAds.Common;
 
@@ -37,6 +39,9 @@ namespace GoogleMobileAds.Android
 
         public const string AdRequestBuilderClassName =
                 "com.google.android.gms.ads.AdRequest$Builder";
+
+        public const string AdManagerAdRequestBuilderClassName =
+                "com.google.android.gms.ads.admanager.AdManagerAdRequest$Builder";
 
         public const string AdSizeClassName = "com.google.android.gms.ads.AdSize";
 
@@ -84,6 +89,12 @@ namespace GoogleMobileAds.Android
             "com.google.unity.ads.UnityRewardedAdCallback";
 
         public const string UnityInterstitialAdCallbackClassName = "com.google.unity.ads.UnityInterstitialAdCallback";
+
+        public const string UnityAdManagerInterstitialAdClassName =
+                "com.google.unity.ads.admanager.UnityAdManagerInterstitialAd";
+
+        public const string UnityAdManagerInterstitialAdCallbackClassName =
+                "com.google.unity.ads.admanager.UnityAdManagerInterstitialAdCallback";
 
         public const string UnityFullScreenContentCallbackClassName = "com.google.unity.ads.UnityFullScreenContentCallback";
 
@@ -186,6 +197,25 @@ namespace GoogleMobileAds.Android
             return appOpenAdClass.GetStatic<int>(orientationFieldName);
         }
 
+        public static Dictionary<string, string> GetDictionary(AndroidJavaObject androidBundle)
+        {
+            AndroidJavaObject bundleKeySet = androidBundle.Call<AndroidJavaObject>("keySet");
+            int length = bundleKeySet.Call<int>("size");
+
+            AndroidJavaObject bundleKeyArray = bundleKeySet.Call<AndroidJavaObject>("toArray");
+            IntPtr bundleKeyArrayPtr = bundleKeyArray.GetRawObject();
+
+            Dictionary<string, string> dict = new Dictionary<string, string>();
+            for (int i = 0; i < length; i++)
+            {
+                IntPtr keyPtr = AndroidJNI.GetObjectArrayElement(bundleKeyArrayPtr, i);
+                string key = AndroidJNI.GetStringUTFChars(keyPtr);
+                string val = androidBundle.Call<string>("getString", key);
+                dict.Add(key, val);
+            }
+            return dict;
+        }
+
         internal static int GetScreenWidth()
         {
             DisplayMetrics metrics = new DisplayMetrics();
@@ -256,6 +286,90 @@ namespace GoogleMobileAds.Android
             }
 
             return adRequestBuilder.Call<AndroidJavaObject>("build");
+        }
+
+        /// <summary>
+        /// Converts the plugin AdRequest or AdManagerAdRequest object to a native java proxy object
+        /// for use by the sdk.
+        /// </summary>
+        /// <param name="AdRequest">the AdRequest from the unity plugin.</param>
+        /// <param name="nativePluginVersion">the version string of the native plugin.</param>
+        public static AndroidJavaObject GetAdManagerAdRequestJavaObject(AdRequest request,
+                string nativePluginVersion = null)
+        {
+            if (!typeof(AdManagerAdRequest).IsInstanceOfType(request))
+            {
+                return GetAdRequestJavaObject(request, nativePluginVersion);
+            }
+
+            AdManagerAdRequest adManagerAdRequest = (AdManagerAdRequest)request;
+            AndroidJavaObject adManagerAdRequestBuilder =
+                    new AndroidJavaObject(AdManagerAdRequestBuilderClassName);
+            foreach (string keyword in adManagerAdRequest.Keywords)
+            {
+                adManagerAdRequestBuilder.Call<AndroidJavaObject>("addKeyword", keyword);
+            }
+
+            // Denote that the request is coming from this Unity plugin.
+            adManagerAdRequestBuilder.Call<AndroidJavaObject>(
+                    "setRequestAgent",
+                    AdRequest.BuildVersionString(nativePluginVersion));
+            AndroidJavaObject bundle = new AndroidJavaObject(BundleClassName);
+            foreach (KeyValuePair<string, string> entry in adManagerAdRequest.Extras)
+            {
+                bundle.Call("putString", entry.Key, entry.Value);
+            }
+
+            bundle.Call("putString", "is_unity", "1");
+
+            // Makes ads that contain WebP ad assets ineligible.
+            bundle.Call("putString", "adw", "true");
+
+            AndroidJavaClass adMobAdapter = new AndroidJavaClass(AdMobAdapterClassName);
+            adManagerAdRequestBuilder.Call<AndroidJavaObject>(
+                "addNetworkExtrasBundle",
+                adMobAdapter,
+                bundle);
+
+            foreach (MediationExtras mediationExtra in adManagerAdRequest.MediationExtras)
+            {
+                AndroidJavaObject mediationExtrasBundleBuilder =
+                    new AndroidJavaObject(mediationExtra.AndroidMediationExtraBuilderClassName);
+                AndroidJavaObject map = new AndroidJavaObject("java.util.HashMap");
+
+                foreach (KeyValuePair<string, string> entry in mediationExtra.Extras)
+                {
+                    map.Call<AndroidJavaObject>("put", entry.Key, entry.Value);
+                }
+
+                AndroidJavaObject mediationExtras =
+                        mediationExtrasBundleBuilder.Call<AndroidJavaObject>("buildExtras", map);
+
+                if (mediationExtras != null)
+                {
+                    adManagerAdRequestBuilder.Call<AndroidJavaObject>(
+                        "addNetworkExtrasBundle",
+                        mediationExtrasBundleBuilder.Call<AndroidJavaClass>("getAdapterClass"),
+                        mediationExtras);
+
+                    adManagerAdRequestBuilder.Call<AndroidJavaObject>(
+                        "addCustomEventExtrasBundle",
+                        mediationExtrasBundleBuilder.Call<AndroidJavaClass>("getAdapterClass"),
+                        mediationExtras);
+                }
+            }
+
+            adManagerAdRequestBuilder.Call<AndroidJavaObject>("setPublisherProvidedId",
+                    adManagerAdRequest.PublisherProvidedId);
+            foreach (string category in adManagerAdRequest.CategoryExclusions)
+            {
+                adManagerAdRequestBuilder.Call<AndroidJavaObject>("addCategoryExclusion", category);
+            }
+            foreach (KeyValuePair<string, string> entry in adManagerAdRequest.CustomTargeting)
+            {
+                adManagerAdRequestBuilder.Call("addCustomTargeting", entry.Key, entry.Value);
+            }
+            return adManagerAdRequestBuilder.Call<AndroidJavaObject>("build");
         }
 
         public static AndroidJavaObject GetJavaListObject(List<String> csTypeList)

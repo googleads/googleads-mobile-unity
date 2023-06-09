@@ -1,0 +1,4 @@
+include 'liftoffmonetize'
+include 'app'
+project(':app').projectDir = new File('${projectDir}/../../../../../source/android-library/app')
+

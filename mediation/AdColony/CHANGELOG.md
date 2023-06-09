@@ -1,5 +1,22 @@
 ## AdColony Unity Mediation Plugin Changelog
 
+#### [Version 2.6.2](https://dl.google.com/googleadmobadssdk/mediation/unity/adcolony/AdColonyUnityAdapter-2.6.2.zip)
+- Moved adapter content to `GoogleMobileAds/Mediation/AdColony/`.
+- Refactored adapter namespace to use `GoogleMobileAds.Mediation.AdColony`.
+- Supports [AdColony Android adapter version 4.8.0.2](https://github.com/googleads/googleads-mobile-android-mediation/blob/main/ThirdPartyAdapters/adcolony/CHANGELOG.md#version-4802).
+- Supports [AdColony iOS adapter version 4.9.0.2](https://github.com/googleads/googleads-mobile-ios-mediation/blob/main/adapters/AdColony/CHANGELOG.md#version-4902).
+- Built and tested with the Google Mobile Ads Unity Plugin version 8.1.0.
+
+#### [Version 2.6.1](https://dl.google.com/googleadmobadssdk/mediation/unity/adcolony/AdColonyUnityAdapter-2.6.1.zip)
+- Updated the privacy APIs from the `AdColonyAppOptions` class to the following methods to support GDPR and CCPA:
+  * `SetGDPRRequired(bool)` -> `SetPrivacyFrameworkRequired(AdColonyPrivacyFramework, bool)`
+  * `IsGDPRRequired()` -> `GetPrivacyFrameworkRequired(AdColonyPrivacyFramework)`
+  * `SetGDPRConsentString(string)`-> `SetPrivacyConsentString(AdColonyPrivacyFramework, string)`
+  * `GetGDPRConsentString()` -> `GetPrivacyConsentString(AdColonyPrivacyFramework)`
+- Supports [AdColony Android adapter version 4.8.0.1](https://github.com/googleads/googleads-mobile-android-mediation/blob/main/ThirdPartyAdapters/adcolony/CHANGELOG.md#version-4801).
+- Supports [AdColony iOS adapter version 4.9.0.2](https://github.com/googleads/googleads-mobile-ios-mediation/blob/main/adapters/AdColony/CHANGELOG.md#version-4902).
+- Built and tested with the Google Mobile Ads Unity Plugin version 7.4.1.
+
 #### [Version 2.6.0](https://dl.google.com/googleadmobadssdk/mediation/unity/adcolony/AdColonyUnityAdapter-2.6.0.zip)
 - Supports [AdColony Android adapter version 4.8.0.0](https://github.com/googleads/googleads-mobile-android-mediation/blob/main/ThirdPartyAdapters/adcolony/CHANGELOG.md#version-4800).
 - Supports [AdColony iOS adapter version 4.9.0.0](https://github.com/googleads/googleads-mobile-ios-mediation/blob/main/adapters/AdColony/CHANGELOG.md#version-4900).

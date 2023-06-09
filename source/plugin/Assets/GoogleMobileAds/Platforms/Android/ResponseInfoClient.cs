@@ -13,43 +13,103 @@
 // limitations under the License.
 
 using System;
+using System.Linq;
 using UnityEngine;
 
-using GoogleMobileAds.Api;
 using GoogleMobileAds.Common;
+using System.Collections.Generic;
 
 namespace GoogleMobileAds.Android
 {
     internal class ResponseInfoClient : IResponseInfoClient
     {
-        private AndroidJavaObject androidResponseInfo;
+        private AndroidJavaObject _androidResponseInfo;
 
         public ResponseInfoClient(ResponseInfoClientType type, AndroidJavaObject androidJavaObject)
         {
-            androidResponseInfo = androidJavaObject.Call<AndroidJavaObject>("getResponseInfo");
+            _androidResponseInfo = androidJavaObject.Call<AndroidJavaObject>("getResponseInfo");
+        }
+
+        public List<IAdapterResponseInfoClient> GetAdapterResponses()
+        {
+            List<IAdapterResponseInfoClient> adapterList = new List<IAdapterResponseInfoClient>();
+            if (_androidResponseInfo == null)
+            {
+                return adapterList;
+            }
+
+            var androidAdapterList =
+                _androidResponseInfo.Call<AndroidJavaObject>("getAdapterResponses");
+            var size = androidAdapterList.Call<int>("size");
+            for (int i = 0; i < size; i++)
+            {
+                var androidAdapterResponseInfo =
+                        androidAdapterList.Call<AndroidJavaObject>("get", i);
+                var client = new AdapterResponseInfoClient(androidAdapterResponseInfo);
+                adapterList.Add(client);
+            }
+            return adapterList;
+        }
+
+        public IAdapterResponseInfoClient GetLoadedAdapterResponseInfo()
+        {
+            if (_androidResponseInfo == null)
+            {
+                return null;
+            }
+
+            var androidAdapterResponseInfo =
+                _androidResponseInfo.Call<AndroidJavaObject>("getLoadedAdapterResponseInfo");
+
+            return androidAdapterResponseInfo == null
+                    ? null
+                    : new AdapterResponseInfoClient(androidAdapterResponseInfo);
         }
 
         public string GetMediationAdapterClassName()
         {
-            if (androidResponseInfo != null)
+            if (_androidResponseInfo == null)
             {
-                return androidResponseInfo.Call<string>("getMediationAdapterClassName");
+                return string.Empty;
             }
-            return null;
+
+            return _androidResponseInfo.Call<string>("getMediationAdapterClassName");
+        }
+
+        public Dictionary<string, string> GetResponseExtras()
+        {
+            if (_androidResponseInfo == null)
+            {
+                return new Dictionary<string, string>();
+            }
+
+            var androidBundle = _androidResponseInfo.Call<AndroidJavaObject>("getResponseExtras");
+            if (androidBundle == null)
+            {
+                return new Dictionary<string, string>();
+            }
+
+            return Utils.GetDictionary(androidBundle);
         }
 
         public string GetResponseId()
         {
-            if (androidResponseInfo != null)
+            if (_androidResponseInfo == null)
             {
-                return androidResponseInfo.Call<string>("getResponseId");
+                return string.Empty;
             }
-            return null;
+
+            return _androidResponseInfo.Call<string>("getResponseId");
         }
 
         public override string ToString()
         {
-            return androidResponseInfo.Call<string>("toString");
+            if (_androidResponseInfo == null)
+            {
+                return string.Empty;
+            }
+
+            return _androidResponseInfo.Call<string>("toString");
         }
     }
 }

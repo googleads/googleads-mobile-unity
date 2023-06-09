@@ -14,6 +14,10 @@
 
 namespace GoogleMobileAds.Api
 {
+    /// <summary>
+    /// Indicates the publisher specified that the ad request should receive treatment for
+    /// users in the European Economic Area (EEA) under the age of consent.
+    /// </summary>
     public enum TagForUnderAgeOfConsent
     {
         Unspecified = -1,

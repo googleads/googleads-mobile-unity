@@ -13,13 +13,32 @@
 // limitations under the License.
 
 using System;
+using UnityEngine;
 
 namespace GoogleMobileAds.Api
 {
-    // Event that occurs when a user is rewarded by a reward based video ad.
+    /// <summary>
+    /// Describes a reward credited to a user for interacting with rewarded ads.
+    /// </summary>
+    [Serializable]
     public class Reward : EventArgs
     {
-        public string Type { get; set; }
-        public double Amount { get; set; }
+        /// <summary>
+        /// The type of the reward.
+        /// </summary>
+        public string Type;
+
+        /// <summary>
+        /// The reward amount.
+        /// </summary>
+        public double Amount;
+
+        public Reward() {}
+
+        public Reward(Reward reward)
+        {
+            Type = reward.Type;
+            Amount = reward.Amount;
+        }
     }
 }

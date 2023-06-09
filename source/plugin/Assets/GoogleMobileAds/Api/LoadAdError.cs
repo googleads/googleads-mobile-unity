@@ -12,34 +12,45 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-
 using GoogleMobileAds.Common;
 
 namespace GoogleMobileAds.Api
 {
+    /// <summary>
+    /// Error information about why an ad load operation failed.
+    /// </summary>
     public class LoadAdError : AdError
     {
-        ILoadAdErrorClient client;
+        ILoadAdErrorClient _client;
 
+        /// <summary>
+        /// Creates a <see cref="LoadAdError"/>.
+        /// </summary>
+        /// <param name="client">
+        /// A platform level <see cref="ILoadAdErrorClient"/> implementation.
+        /// </param>
         public LoadAdError(ILoadAdErrorClient client) : base(client)
         {
-            this.client = client;
+            _client = client;
         }
 
         /// <summary>
-        /// Gets ResponseInfo Object for the failed request.
-        /// See https://developers.google.com/admob/unity/response-info
-        /// for more inforomation about Response Info.
+        /// Returns ResponseInfo object for the failed request.
+        /// <seealso href="https://developers.google.com/admob/unity/response-info">
+        /// response-info</seealso> for more inforomation about Response Info.
         /// <summary>
-        /// <returns>ResponseInfo Object</returns>
+        /// <returns>The <see cref="ResponseInfo"/> of this error.</returns>
         public ResponseInfo GetResponseInfo()
         {
-            return new ResponseInfo(client.GetResponseInfoClient());
+            return new ResponseInfo(_client.GetResponseInfoClient());
         }
 
+        /// <summary>
+        /// Returns a log friendly string version of this object.
+        /// </summary>
         public override string ToString()
         {
-            return client.ToString();
+            return _client.ToString();
         }
     }
 }

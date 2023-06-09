@@ -47,6 +47,8 @@ namespace GoogleMobileAds.Android
 
         public event EventHandler<AdValueEventArgs> OnPaidEvent;
 
+        public event Action OnAdClicked;
+
         #region IGoogleMobileAdsInterstitialClient implementation
 
         // Creates an interstitial ad.
@@ -138,6 +140,14 @@ namespace GoogleMobileAds.Android
             if (this.OnAdDidRecordImpression != null)
             {
                 this.OnAdDidRecordImpression(this, EventArgs.Empty);
+            }
+        }
+
+        internal void onAdClicked()
+        {
+            if (this.OnAdClicked != null)
+            {
+                this.OnAdClicked();
             }
         }
 

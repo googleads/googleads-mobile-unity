@@ -15,6 +15,7 @@
 using System;
 
 using GoogleMobileAds.Api;
+using GoogleMobileAds.Api.AdManager;
 
 namespace GoogleMobileAds.Common
 {
@@ -34,6 +35,8 @@ namespace GoogleMobileAds.Common
         event EventHandler<EventArgs> OnAdDidDismissFullScreenContent;
         // Ad event fired when an ad impression has been recorded.
         event EventHandler<EventArgs> OnAdDidRecordImpression;
+        // Ad event fired when an ad has been clicked.
+        event Action OnAdClicked;
 
         // Creates an interstitial ad.
         void CreateInterstitialAd();

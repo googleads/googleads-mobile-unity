@@ -20,7 +20,7 @@ project.ext {
                 'UNITY_EXE environment variable and point it to your Unity installation.')
     }
 
-    versionString = '2.2.3'
+    versionString = '2.3.0'
     adapterName = 'IronSource'
     pluginName = "GoogleMobileAds${adapterName}Mediation"
     pluginFileName = "${pluginName}.unitypackage"
@@ -44,7 +44,6 @@ task exportPackage(type: Exec) {
             "-logFile", "temp/unity.log",
             "-exportPackage",
             "Assets/GoogleMobileAds",
-            "Assets/Plugins",
             "${exportPath}",
             "-quit"
 
@@ -88,6 +87,7 @@ task clearZip(type: Delete) {
 task makeZip(type: Zip) {
     // Targets to be added to the zip archive.
     from('./' + pluginFileName, './README.md')
+    from('./' + pluginFileName, './LICENSE')
     // Root directory name for the zip archive.
     into(zipName)
     // Name of the zip archive.

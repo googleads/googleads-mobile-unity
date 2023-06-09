@@ -19,7 +19,7 @@ project.ext {
                 'UNITY_EXE environment variable and point it to your Unity installation.')
     }
 
-    versionString = '1.4.1'
+    versionString = '1.4.3'
     adapterName = 'Maio'
     pluginName = "GoogleMobileAds${adapterName}Mediation"
     pluginFileName = "${pluginName}.unitypackage"
@@ -42,7 +42,7 @@ task exportPackage(type: Exec) {
             "-projectPath", "${pluginBuildDir}",
             "-logFile", "temp/unity.log",
             "-exportPackage",
-            "Assets/GoogleMobileAds/Editor",
+            "Assets/GoogleMobileAds",
             "${exportPath}",
             "-quit"
 
@@ -86,6 +86,7 @@ task clearZip(type: Delete) {
 task makeZip(type: Zip) {
     // Targets to be added to the zip archive.
     from('./' + pluginFileName, './README.md')
+    from('./' + pluginFileName, './LICENSE')
     // Root directory name for the zip archive.
     into(zipName)
     // Name of the zip archive.

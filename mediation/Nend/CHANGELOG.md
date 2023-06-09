@@ -1,5 +1,22 @@
 ## nend Unity Mediation Plugin Changelog
 
+#### [Version 7.0.0](https://dl.google.com/googleadmobadssdk/mediation/unity/nend/NendUnityAdapter-7.0.0.zip)
+- Moved adapter content to `GoogleMobileAds/Mediation/Nend/`.
+- Refactored adapter namespace to use `GoogleMobileAds.Mediation.Nend`.
+- Supports [nend Android adapter version 9.0.1.0](https://github.com/googleads/googleads-mobile-android-mediation/blob/main/ThirdPartyAdapters/nend/CHANGELOG.md#version-9010).
+- Supports [nend iOS adapter version 8.0.1.0](https://github.com/googleads/googleads-mobile-ios-mediation/blob/main/adapters/Nend/CHANGELOG.md#version-8010).
+- Built and tested with the Google Mobile Ads Unity Plugin version 8.1.0.
+
+#### [Version 6.0.1](https://dl.google.com/googleadmobadssdk/mediation/unity/nend/NendUnityAdapter-6.0.1.zip)
+- Supports [nend Android adapter version 9.0.0.0](https://github.com/googleads/googleads-mobile-android-mediation/blob/main/ThirdPartyAdapters/nend/CHANGELOG.md#version-9000).
+- Supports [nend iOS adapter version 7.4.0.1](https://github.com/googleads/googleads-mobile-ios-mediation/blob/main/adapters/Nend/CHANGELOG.md#version-7401).
+- Built and tested with the Google Mobile Ads Unity Plugin version 7.4.1.
+
+#### [Version 6.0.0](https://dl.google.com/googleadmobadssdk/mediation/unity/nend/NendUnityAdapter-6.0.0.zip)
+- Supports [nend Android adapter version 9.0.0.0](https://github.com/googleads/googleads-mobile-android-mediation/blob/main/ThirdPartyAdapters/nend/CHANGELOG.md#version-9000).
+- Supports [nend iOS adapter version 7.4.0.0](https://github.com/googleads/googleads-mobile-ios-mediation/blob/main/adapters/Nend/CHANGELOG.md#version-7400).
+- Built and tested with the Google Mobile Ads Unity Plugin version 7.2.0.
+
 #### [Version 5.2.0](https://dl.google.com/googleadmobadssdk/mediation/unity/nend/NendUnityAdapter-5.2.0.zip)
 - Supports [nend Android adapter version 8.1.0.1](https://github.com/googleads/googleads-mobile-android-mediation/blob/main/ThirdPartyAdapters/nend/CHANGELOG.md#version-8101).
 - Supports [nend iOS adapter version 7.3.0.0](https://github.com/googleads/googleads-mobile-ios-mediation/blob/main/adapters/Nend/CHANGELOG.md#version-7300).

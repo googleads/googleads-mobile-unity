@@ -24,3 +24,7 @@ using System.Runtime.CompilerServices;
 [assembly:InternalsVisibleTo("GoogleMobileAdsNative")]
 [assembly:InternalsVisibleTo("GoogleMobileAdsNative.iOS")]
 [assembly:InternalsVisibleTo("GoogleMobileAdsNative.Android")]
+[assembly:InternalsVisibleTo("GoogleMobileAdsNative.unobfuscate")]
+[assembly:InternalsVisibleTo("GoogleMobileAdsNative.iOS.unobfuscate")]
+[assembly:InternalsVisibleTo("GoogleMobileAdsNative.Android.unobfuscate")]
+[assembly:InternalsVisibleTo("GoogleMobileAds.Ump")]
