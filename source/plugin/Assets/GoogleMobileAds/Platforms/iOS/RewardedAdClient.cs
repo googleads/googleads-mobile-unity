@@ -52,6 +52,8 @@ namespace GoogleMobileAds.iOS
 
         internal delegate void GADURewardedAdDidRecordImpressionCallback(IntPtr rewardedAdClient);
 
+        internal delegate void GADURewardedAdDidRecordClickCallback(IntPtr rewardedAdClient);
+
 #endregion
 
         public event EventHandler<EventArgs> OnAdLoaded;
@@ -69,6 +71,8 @@ namespace GoogleMobileAds.iOS
         public event EventHandler<EventArgs> OnAdDidDismissFullScreenContent;
 
         public event EventHandler<EventArgs> OnAdDidRecordImpression;
+
+        public event Action OnAdClicked;
 
         // This property should be used when setting the rewardedAdPtr.
         private IntPtr RewardedAdPtr
@@ -100,6 +104,7 @@ namespace GoogleMobileAds.iOS
                 AdFailedToPresentFullScreenContentCallback,
                 AdDidDismissFullScreenContentCallback,
                 AdDidRecordImpressionCallback,
+                AdDidRecordClickCallback,
                 RewardedAdUserDidEarnRewardCallback,
                 RewardedAdPaidEventCallback);
         }
@@ -267,6 +272,16 @@ namespace GoogleMobileAds.iOS
             if (client.OnAdDidRecordImpression != null)
             {
                 client.OnAdDidRecordImpression(client, EventArgs.Empty);
+            }
+        }
+
+        [MonoPInvokeCallback(typeof(GADURewardedAdDidRecordClickCallback))]
+        private static void AdDidRecordClickCallback(IntPtr rewardedAdClient)
+        {
+            RewardedAdClient client = IntPtrToRewardedAdClient(rewardedAdClient);
+            if (client.OnAdClicked != null)
+            {
+                client.OnAdClicked();
             }
         }
 

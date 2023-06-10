@@ -17,6 +17,8 @@ using System;
 namespace GoogleMobileAds.Api
 {
     // Event arguments that return when an ad operation fails.
+
+    /// @deprecated Use @ref AdError directly.
     public class AdErrorEventArgs : EventArgs
     {
         // AdError Object that returns when an ad operation fails.

@@ -1,0 +1,36 @@
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion 31
+    defaultConfig {
+        minSdkVersion 19
+        targetSdkVersion 31
+        versionCode 1
+        versionName "1.0"
+        consumerProguardFiles 'proguard-rules.pgcfg'
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pgcfg'
+        }
+    }
+}
+
+dependencies {
+    api project(':app')
+    api 'com.google.ads.mediation:vungle:6.12.1.1'
+}
+
+task clearAar(type: Delete) {
+    delete 'build/libs/liftoffmonetize-unity-android-library.aar'
+}
+
+task makeAar(type: Copy) {
+    from('build/outputs/aar/')
+    into('build/libs/')
+    include('liftoffmonetize-release.aar')
+    rename('liftoffmonetize-release.aar', 'liftoffmonetize-unity-android-library.aar')
+}
+
+makeAar.dependsOn(clearAar, build)

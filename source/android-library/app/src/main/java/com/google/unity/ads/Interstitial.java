@@ -150,6 +150,19 @@ public class Interstitial {
                               }
                             }).start();
                       }
+
+                      @Override
+                      public void onAdClicked() {
+                        new Thread(
+                            new Runnable() {
+                              @Override
+                              public void run() {
+                                if (callback != null) {
+                                  callback.onAdClicked();
+                                }
+                              }
+                            }).start();
+                      }
                     });
 
                 new Thread(

@@ -36,6 +36,8 @@ namespace GoogleMobileAds.Common
         event EventHandler<EventArgs> OnAdDidDismissFullScreenContent;
         // Ad event fired when the rewarded interstitial ad has recorded an impression.
         event EventHandler<EventArgs> OnAdDidRecordImpression;
+        // Ad event fired when an ad is clicked.
+        event Action OnAdClicked;
 
         // Creates a rewarded interstitial ad.
         void CreateRewardedInterstitialAd();

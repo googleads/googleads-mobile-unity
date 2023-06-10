@@ -47,6 +47,8 @@ namespace GoogleMobileAds.Android
 
         public event EventHandler<EventArgs> OnAdDidRecordImpression;
 
+        public event Action OnAdClicked;
+
         public void CreateRewardedInterstitialAd()
         {
             // Do nothing.
@@ -92,6 +94,8 @@ namespace GoogleMobileAds.Android
         {
             this.androidRewardedInterstitialAd.Call("destroy");
         }
+
+        #region Callbacks from RewardedInterstitialAdClientCallback.
 
         void onRewardedInterstitialAdLoaded()
         {
@@ -150,6 +154,14 @@ namespace GoogleMobileAds.Android
             }
         }
 
+        internal void onAdClicked()
+        {
+            if (this.OnAdClicked != null)
+            {
+                this.OnAdClicked();
+            }
+        }
+
         void onUserEarnedReward(string type, float amount)
         {
             if (this.OnUserEarnedReward != null)
@@ -181,5 +193,8 @@ namespace GoogleMobileAds.Android
                 this.OnPaidEvent(this, args);
             }
         }
+
+        #endregion
+
     }
 }

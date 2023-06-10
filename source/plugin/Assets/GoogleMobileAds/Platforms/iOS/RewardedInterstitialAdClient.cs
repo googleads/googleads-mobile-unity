@@ -52,6 +52,8 @@ namespace GoogleMobileAds.iOS
 
         internal delegate void GADURewardedInterstitialAdDidRecordImpressionCallback(IntPtr rewardedInterstitialAdClient);
 
+        internal delegate void GADURewardedInterstitialAdDidRecordClickCallback(IntPtr rewardedInterstitialAdClient);
+
 #endregion
 
         public event EventHandler<EventArgs> OnAdLoaded;
@@ -69,6 +71,8 @@ namespace GoogleMobileAds.iOS
         public event EventHandler<EventArgs> OnAdDidDismissFullScreenContent;
 
         public event EventHandler<EventArgs> OnAdDidRecordImpression;
+
+        public event Action OnAdClicked;
 
         // This property should be used when setting the rewardedInterstitialAdPtr.
         private IntPtr RewardedInterstitialAdPtr
@@ -101,7 +105,8 @@ namespace GoogleMobileAds.iOS
                 AdFailedToPresentFullScreenContentCallback,
                 AdWillPresentFullScreenContentCallback,
                 AdDidDismissFullScreenContentCallback,
-                AdDidRecordImpressionCallback);
+                AdDidRecordImpressionCallback,
+                AdDidRecordClickCallback);
         }
 
         public void LoadAd(string adUnitID, AdRequest request) {
@@ -267,6 +272,17 @@ namespace GoogleMobileAds.iOS
             if (client.OnAdDidRecordImpression != null)
             {
                 client.OnAdDidRecordImpression(client, EventArgs.Empty);
+            }
+        }
+
+        [MonoPInvokeCallback(typeof(GADURewardedInterstitialAdDidRecordClickCallback))]
+        private static void AdDidRecordClickCallback(IntPtr rewardedInterstitialAdClient)
+        {
+            RewardedInterstitialAdClient client =
+                IntPtrToRewardedInterstitialAdClient(rewardedInterstitialAdClient);
+            if (client.OnAdClicked != null)
+            {
+                client.OnAdClicked();
             }
         }
 

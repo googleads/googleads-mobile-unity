@@ -148,6 +148,7 @@ public class Banner {
     mAdView.setAdUnitId(publisherId);
     mAdView.setAdSize(adSize);
     mAdView.setVisibility(View.GONE);
+    mAdView.setDescendantFocusability(ViewGroup.FOCUS_BLOCK_DESCENDANTS);
     mUnityPlayerActivity.addContentView(mAdView, getLayoutParams());
     mAdView.setAdListener(
         new AdListener() {
@@ -218,8 +219,39 @@ public class Banner {
                   .start();
             }
           }
-        });
 
+          @Override
+          public void onAdImpression() {
+            if (mUnityListener != null) {
+              new Thread(
+                      new Runnable() {
+                        @Override
+                        public void run() {
+                          if (mUnityListener != null) {
+                            mUnityListener.onAdImpression();
+                          }
+                        }
+                      })
+                  .start();
+            }
+          }
+
+          @Override
+          public void onAdClicked() {
+            if (mUnityListener != null) {
+              new Thread(
+                      new Runnable() {
+                        @Override
+                        public void run() {
+                          if (mUnityListener != null) {
+                            mUnityListener.onAdClicked();
+                          }
+                        }
+                      })
+                  .start();
+            }
+          }
+        });
 
     mAdView.setOnPaidEventListener(
         new OnPaidEventListener() {

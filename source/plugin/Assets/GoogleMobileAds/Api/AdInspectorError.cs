@@ -16,7 +16,7 @@ using GoogleMobileAds.Common;
 
 namespace GoogleMobileAds.Api {
 
-  ///< summary>
+  /// <summary>
   /// Error information about why the ad inspector failed.
   /// <summary>
   public class AdInspectorError : AdError {

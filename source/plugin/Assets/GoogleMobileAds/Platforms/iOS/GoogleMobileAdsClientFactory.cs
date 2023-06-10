@@ -17,8 +17,10 @@ using System;
 using System.Reflection;
 using UnityEngine;
 using UnityEngine.Scripting;
+
 using GoogleMobileAds;
 using GoogleMobileAds.Api;
+using GoogleMobileAds.Api.AdManager;
 using GoogleMobileAds.Common;
 
 namespace GoogleMobileAds
@@ -61,6 +63,16 @@ namespace GoogleMobileAds
       if (Application.platform == RuntimePlatform.IPhonePlayer)
       {
         return new GoogleMobileAds.iOS.InterstitialClient();
+      }
+      throw new InvalidOperationException(@"Called " + MethodBase.GetCurrentMethod().Name +
+                                          " on non-iOS runtime");
+    }
+
+    public IAdManagerInterstitialClient BuildAdManagerInterstitialClient()
+    {
+      if (Application.platform == RuntimePlatform.IPhonePlayer)
+      {
+        return new GoogleMobileAds.iOS.AdManagerInterstitialClient();
       }
       throw new InvalidOperationException(@"Called " + MethodBase.GetCurrentMethod().Name +
                                           " on non-iOS runtime");

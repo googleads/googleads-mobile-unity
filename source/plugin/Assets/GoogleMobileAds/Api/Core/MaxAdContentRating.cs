@@ -12,21 +12,56 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System;
-
 namespace GoogleMobileAds.Api
 {
-   public class MaxAdContentRating {
-      private MaxAdContentRating(string value){Value = value;}
-      public string Value {get; set;}
-      public static MaxAdContentRating G {get{return new MaxAdContentRating("G");}}
-      public static MaxAdContentRating MA {get{return new MaxAdContentRating("MA");}}
-      public static MaxAdContentRating PG {get{return new MaxAdContentRating("PG");}}
-      public static MaxAdContentRating T {get{return new MaxAdContentRating("T");}}
-      public static MaxAdContentRating Unspecified {get{return new MaxAdContentRating("");}}
+    /// <summary>
+    /// The maximum ad content rating. All Google ads will have this content rating or lower.
+    /// </summary>
+    public class MaxAdContentRating
+    {
+        /// <summary>
+        /// Content suitable for general audiences, including families.
+        /// </summary>
+        public static MaxAdContentRating G { get { return new MaxAdContentRating("G"); } }
 
-      public static MaxAdContentRating ToMaxAdContentRating(string value){
-         return new MaxAdContentRating(value);
-      }
-   }
+        /// <summary>
+        /// Content suitable for most audiences with parental guidance.
+        /// </summary>
+        public static MaxAdContentRating PG { get { return new MaxAdContentRating("PG"); } }
+
+        /// <summary>
+        /// Content suitable for teen and older audiences.
+        /// </summary>
+        public static MaxAdContentRating T { get { return new MaxAdContentRating("T"); } }
+
+        /// <summary>
+        /// Content suitable only for mature audiences.
+        /// </summary>
+        public static MaxAdContentRating MA { get { return new MaxAdContentRating("MA"); } }
+
+        /// <summary>
+        /// Content suitability is unspecified.
+        /// </summary>
+        public static MaxAdContentRating Unspecified { get { return new MaxAdContentRating(""); } }
+
+        /// <summary>
+        /// Parses <see cref="MaxAdContentRating"/> from a string constant.
+        /// </summary>
+        /// <param name="value">String constant representing the content rating.</param>
+        /// <returns>The parsed <see cref="MaxAdContentRating"/>.</returns>
+        public static MaxAdContentRating ToMaxAdContentRating(string value)
+        {
+            return new MaxAdContentRating(value);
+        }
+
+        /// <summary>
+        /// String representation of <see cref="MaxAdContentRating"/>.
+        /// </summary>
+        public string Value { get; set; }
+
+        private MaxAdContentRating(string value)
+        {
+            Value = value;
+        }
+    }
 }

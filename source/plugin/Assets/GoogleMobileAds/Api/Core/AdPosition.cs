@@ -14,7 +14,9 @@
 
 namespace GoogleMobileAds.Api
 {
-    // The position of the ad on the screen.
+    /// <summary>
+    /// The position of the ad in screen space.
+    /// </summary>
     public enum AdPosition
     {
         Top = 0,

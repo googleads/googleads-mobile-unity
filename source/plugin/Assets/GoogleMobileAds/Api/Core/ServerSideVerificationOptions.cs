@@ -13,47 +13,77 @@
 // limitations under the License.
 
 using System;
-using System.Collections.Generic;
 
 namespace GoogleMobileAds.Api
 {
+    /// <summary>
+    /// Options for rewarded ad types server-side verification callbacks.
+    /// Options are created using <see cref="ServerSideVerificationOptions.Builder"/>.
+    /// </summary>
+    [Serializable]
     public class ServerSideVerificationOptions
     {
-        public string UserId { get; private set; }
-        public string CustomData { get; private set; }
+        /// <summary>
+        /// The user id of the current user.
+        /// </summary>
+        public string UserId;
 
-        private ServerSideVerificationOptions(Builder builder)
+        /// <summary>
+        /// Custom data of the current user.
+        /// </summary>
+        public string CustomData;
+
+        public ServerSideVerificationOptions() {}
+
+        public ServerSideVerificationOptions(ServerSideVerificationOptions options)
         {
-            UserId = builder.UserId;
-            CustomData = builder.CustomData;
+            UserId = options.UserId;
+            CustomData = options.CustomData;
         }
 
+        /// <summary>
+        /// Constructs a <see cref="Builder"/>.
+        /// </summary>
+        [Obsolete("Use ServerSideVerificationOptions directly instead.")]
         public class Builder
         {
-            internal string UserId { get; private set; }
-            internal string CustomData { get; private set; }
+            internal string UserId;
+            internal string CustomData;
 
             public Builder()
             {
             }
 
+            /// <summary>
+            /// Sets the user id of the current user.
+            /// </summary>
             public Builder SetUserId(string userId)
             {
                 UserId = userId;
                 return this;
             }
 
+            /// <summary>
+            /// Set custom data of the current user.
+            /// </summary>
             public Builder SetCustomData(string customData)
             {
                 CustomData = customData;
                 return this;
             }
 
+            /// <summary>
+            /// Constructs an <see cref="ServerSideVerificationOptions"/>
+            /// with the specified attributes.
+            /// </summary>
             public ServerSideVerificationOptions Build()
             {
-                return new ServerSideVerificationOptions(this);
+                return new ServerSideVerificationOptions()
+                {
+                    UserId = this.UserId,
+                    CustomData = this.CustomData
+                };
             }
         }
     }
 }
-

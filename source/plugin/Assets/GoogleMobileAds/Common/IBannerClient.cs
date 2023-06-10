@@ -30,6 +30,10 @@ namespace GoogleMobileAds.Common
         event EventHandler<EventArgs> OnAdClosed;
         // Ad event fired when the banner ad is estimated to have earned money.
         event EventHandler<AdValueEventArgs> OnPaidEvent;
+        // Ad event fired when the banner ad is clicked.
+        event Action OnAdClicked;
+        // Ad event fired when the banner ad records an impression.
+        event Action OnAdImpressionRecorded;
 
         // Creates a banner view and adds it to the view hierarchy.
         void CreateBannerView(string adUnitId, AdSize adSize, AdPosition position);

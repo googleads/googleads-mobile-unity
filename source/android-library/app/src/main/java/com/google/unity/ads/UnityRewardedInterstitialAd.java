@@ -81,7 +81,6 @@ public class UnityRewardedInterstitialAd {
                   @Override
                   public void onAdLoaded(@NonNull RewardedInterstitialAd ad) {
                     rewardedInterstitialAd = ad;
-
                     rewardedInterstitialAd.setOnPaidEventListener(
                         new OnPaidEventListener() {
                           @Override
@@ -101,7 +100,6 @@ public class UnityRewardedInterstitialAd {
                             ).start();
                           }
                         });
-
                     rewardedInterstitialAd.setFullScreenContentCallback(
                         new FullScreenContentCallback() {
                           @Override
@@ -117,7 +115,6 @@ public class UnityRewardedInterstitialAd {
                                 })
                                 .start();
                           }
-
                           @Override
                           public void onAdShowedFullScreenContent() {
                             new Thread(
@@ -131,7 +128,6 @@ public class UnityRewardedInterstitialAd {
                                 })
                                 .start();
                           }
-
                           @Override
                           public void onAdDismissedFullScreenContent() {
                             new Thread(
@@ -145,7 +141,6 @@ public class UnityRewardedInterstitialAd {
                                 })
                                 .start();
                           }
-
                           @Override
                           public void onAdImpression() {
                             new Thread(
@@ -159,8 +154,19 @@ public class UnityRewardedInterstitialAd {
                                 })
                                 .start();
                           }
+                          @Override
+                          public void onAdClicked() {
+                            new Thread(
+                                new Runnable() {
+                                  @Override
+                                  public void run() {
+                                    if (callback != null) {
+                                      callback.onAdClicked();
+                                    }
+                                  }
+                                }).start();
+                          }
                         });
-
                     new Thread(
                         new Runnable() {
                           @Override
@@ -172,7 +178,6 @@ public class UnityRewardedInterstitialAd {
                         })
                         .start();
                   }
-
                   @Override
                   public void onAdFailedToLoad(final LoadAdError error) {
                     new Thread(

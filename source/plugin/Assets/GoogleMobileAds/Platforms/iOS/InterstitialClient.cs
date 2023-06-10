@@ -49,6 +49,8 @@ namespace GoogleMobileAds.iOS
 
         internal delegate void GADUInterstitialAdDidRecordImpressionCallback(IntPtr interstitialClient);
 
+        internal delegate void GADUInterstitialAdDidRecordClickCallback(IntPtr interstitialClient);
+
 #endregion
 
         public event EventHandler<EventArgs> OnAdLoaded;
@@ -64,6 +66,8 @@ namespace GoogleMobileAds.iOS
         public event EventHandler<EventArgs> OnAdDidDismissFullScreenContent;
 
         public event EventHandler<EventArgs> OnAdDidRecordImpression;
+
+        public event Action OnAdClicked;
 
         // This property should be used when setting the interstitialPtr.
         private IntPtr InterstitialPtr
@@ -95,6 +99,7 @@ namespace GoogleMobileAds.iOS
                 AdFailedToPresentFullScreenContentCallback,
                 AdDidDismissFullScreenContentCallback,
                 AdDidRecordImpressionCallback,
+                AdDidRecordClickCallback,
                 InterstitialPaidEventCallback);
         }
 
@@ -224,6 +229,16 @@ namespace GoogleMobileAds.iOS
             if (client.OnAdDidRecordImpression != null)
             {
                 client.OnAdDidRecordImpression(client, EventArgs.Empty);
+            }
+        }
+
+        [MonoPInvokeCallback(typeof(GADUInterstitialAdDidRecordClickCallback))]
+        private static void AdDidRecordClickCallback(IntPtr interstitialClient)
+        {
+            InterstitialClient client = IntPtrToInterstitialClient(interstitialClient);
+            if (client.OnAdClicked != null)
+            {
+                client.OnAdClicked();
             }
         }
 

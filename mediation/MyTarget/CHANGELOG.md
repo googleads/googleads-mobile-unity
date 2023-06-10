@@ -1,5 +1,36 @@
 ## myTarget Unity Mediation Plugin Changelog
 
+#### [Version 3.13.1](https://dl.google.com/googleadmobadssdk/mediation/unity/mytarget/MyTargetUnityAdapter-3.13.1.zip)
+- Moved adapter content to `GoogleMobileAds/Mediation/MyTarget/`.
+- Refactored adapter namespace to use `GoogleMobileAds.Mediation.MyTarget`.
+- Supports [myTarget Android adapter version 5.16.4.1](https://github.com/googleads/googleads-mobile-android-mediation/blob/main/ThirdPartyAdapters/mytarget/CHANGELOG.md#version-51641).
+- Supports [myTarget iOS adapter version 5.17.4.0](https://github.com/googleads/googleads-mobile-ios-mediation/blob/main/adapters/MyTarget/CHANGELOG.md#version-51740).
+- Built and tested with the Google Mobile Ads Unity Plugin version 8.1.0.
+
+#### [Version 3.13.0](https://dl.google.com/googleadmobadssdk/mediation/unity/mytarget/MyTargetUnityAdapter-3.13.0.zip)
+- Supports [myTarget Android adapter version 5.16.4.0](https://github.com/googleads/googleads-mobile-android-mediation/blob/main/ThirdPartyAdapters/mytarget/CHANGELOG.md#version-51640).
+- Supports [myTarget iOS adapter version 5.17.4.0](https://github.com/googleads/googleads-mobile-ios-mediation/blob/main/adapters/MyTarget/CHANGELOG.md#version-51740).
+- Built and tested with the Google Mobile Ads Unity Plugin version 8.0.0.
+
+#### [Version 3.12.0](https://dl.google.com/googleadmobadssdk/mediation/unity/mytarget/MyTargetUnityAdapter-3.12.0.zip)
+- Supports [myTarget Android adapter version 5.15.5.0](https://github.com/googleads/googleads-mobile-android-mediation/blob/main/ThirdPartyAdapters/mytarget/CHANGELOG.md#version-51550).
+- Supports [myTarget iOS adapter version 5.16.0.0](https://github.com/googleads/googleads-mobile-ios-mediation/blob/main/adapters/MyTarget/CHANGELOG.md#version-51600).
+- Built and tested with the Google Mobile Ads Unity Plugin version 7.3.0.
+
+#### [Version 3.11.4](https://dl.google.com/googleadmobadssdk/mediation/unity/mytarget/MyTargetUnityAdapter-3.11.4.zip)
+- Supports [myTarget Android adapter version 5.15.4.0](https://github.com/googleads/googleads-mobile-android-mediation/blob/main/ThirdPartyAdapters/mytarget/CHANGELOG.md#version-51540).
+- Supports [myTarget iOS adapter version 5.15.2.0](https://github.com/googleads/googleads-mobile-ios-mediation/blob/main/adapters/MyTarget/CHANGELOG.md#version-51520).
+- Built and tested with the Google Mobile Ads Unity Plugin version 7.2.0.
+
+#### [Version 3.11.3](https://dl.google.com/googleadmobadssdk/mediation/unity/mytarget/MyTargetUnityAdapter-3.11.3.zip)
+- Renamed the `IsConsent()` method from the `MyTarget` class to `GetUserConsent()`.
+- Added the following methods to the `MyTarget` class:
+  * `SetCCPAUserConsent(bool)`
+  * `GetCCPAUserConsent()`
+- Supports [myTarget Android adapter version 5.15.3.0](https://github.com/googleads/googleads-mobile-android-mediation/blob/main/ThirdPartyAdapters/mytarget/CHANGELOG.md#version-51530).
+- Supports [myTarget iOS adapter version 5.15.2.0](https://github.com/googleads/googleads-mobile-ios-mediation/blob/main/adapters/MyTarget/CHANGELOG.md#version-51520).
+- Built and tested with the Google Mobile Ads Unity Plugin version 7.2.0.
+
 #### [Version 3.11.2](https://dl.google.com/googleadmobadssdk/mediation/unity/mytarget/MyTargetUnityAdapter-3.11.2.zip)
 - Supports [myTarget Android adapter version 5.15.2.1](https://github.com/googleads/googleads-mobile-android-mediation/blob/main/ThirdPartyAdapters/mytarget/CHANGELOG.md#version-51521).
 - Supports [myTarget iOS adapter version 5.15.2.0](https://github.com/googleads/googleads-mobile-ios-mediation/blob/main/adapters/MyTarget/CHANGELOG.md#version-51520).

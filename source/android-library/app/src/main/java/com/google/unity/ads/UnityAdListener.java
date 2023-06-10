@@ -28,4 +28,6 @@ public interface UnityAdListener extends UnityPaidEventListener {
     void onAdOpened();
     void onAdClosed();
     void onAdLeftApplication();
+    void onAdImpression();
+    void onAdClicked();
 }

@@ -1,5 +1,43 @@
 ## Unity Ads Unity Mediation Plugin Changelog
 
+#### [Version 3.7.0](https://dl.google.com/googleadmobadssdk/mediation/unity/unity/UnityAdsUnityAdapter-3.7.0.zip)
+- Supports [Unity Ads Android adapter version 4.7.0.0](https://github.com/googleads/googleads-mobile-android-mediation/blob/main/ThirdPartyAdapters/unity/CHANGELOG.md#version-4700).
+- Supports [Unity Ads iOS adapter version 4.7.0.0](https://github.com/googleads/googleads-mobile-ios-mediation/blob/main/adapters/Unity/CHANGELOG.md#version-4700).
+- Built and tested with the Google Mobile Ads Unity Plugin version 8.1.0.
+
+#### [Version 3.6.1](https://dl.google.com/googleadmobadssdk/mediation/unity/unity/UnityAdsUnityAdapter-3.6.1.zip)
+- Supports [Unity Ads Android adapter version 4.6.1.0](https://github.com/googleads/googleads-mobile-android-mediation/blob/main/ThirdPartyAdapters/unity/CHANGELOG.md#version-4610).
+- Supports [Unity Ads iOS adapter version 4.6.1.0](https://github.com/googleads/googleads-mobile-ios-mediation/blob/main/adapters/Unity/CHANGELOG.md#version-4610).
+- Built and tested with the Google Mobile Ads Unity Plugin version 8.0.0.
+
+#### [Version 3.6.0](https://dl.google.com/googleadmobadssdk/mediation/unity/unity/UnityAdsUnityAdapter-3.6.0.zip)
+- Moved adapter content to `GoogleMobileAds/Mediation/UnityAds/`.
+- Refactored adapter namespace to use `GoogleMobileAds.Mediation.UnityAds`.
+- Supports [Unity Ads Android adapter version 4.6.0.0](https://github.com/googleads/googleads-mobile-android-mediation/blob/main/ThirdPartyAdapters/unity/CHANGELOG.md#version-4600).
+- Supports [Unity Ads iOS adapter version 4.6.0.0](https://github.com/googleads/googleads-mobile-ios-mediation/blob/main/adapters/Unity/CHANGELOG.md#version-4600).
+- Built and tested with the Google Mobile Ads Unity Plugin version 7.4.1.
+
+#### [Version 3.5.0](https://dl.google.com/googleadmobadssdk/mediation/unity/unity/UnityAdsUnityAdapter-3.5.0.zip)
+- Supports [Unity Ads Android adapter version 4.5.0.0](https://github.com/googleads/googleads-mobile-android-mediation/blob/main/ThirdPartyAdapters/unity/CHANGELOG.md#version-4500).
+- Supports [Unity Ads iOS adapter version 4.5.0.0](https://github.com/googleads/googleads-mobile-ios-mediation/blob/main/adapters/Unity/CHANGELOG.md#version-4500).
+- Built and tested with the Google Mobile Ads Unity Plugin version 7.3.1.
+
+#### [Version 3.4.1](https://dl.google.com/googleadmobadssdk/mediation/unity/unity/UnityAdsUnityAdapter-3.4.1.zip)
+- Supports [Unity Ads Android adapter version 4.4.1.0](https://github.com/googleads/googleads-mobile-android-mediation/blob/main/ThirdPartyAdapters/unity/CHANGELOG.md#version-4410).
+- Supports [Unity Ads iOS adapter version 4.4.1.0](https://github.com/googleads/googleads-mobile-ios-mediation/blob/main/adapters/Unity/CHANGELOG.md#version-4410).
+- Built and tested with the Google Mobile Ads Unity Plugin version 7.2.0.
+
+#### [Version 3.4.0](https://dl.google.com/googleadmobadssdk/mediation/unity/unity/UnityAdsUnityAdapter-3.4.0.zip)
+- Supports [Unity Ads Android adapter version 4.4.0.0](https://github.com/googleads/googleads-mobile-android-mediation/blob/main/ThirdPartyAdapters/unity/CHANGELOG.md#version-4400).
+- Supports [Unity Ads iOS adapter version 4.4.0.0](https://github.com/googleads/googleads-mobile-ios-mediation/blob/main/adapters/Unity/CHANGELOG.md#version-4400).
+- Built and tested with the Google Mobile Ads Unity Plugin version 7.2.0.
+
+#### [Version 3.3.0](https://dl.google.com/googleadmobadssdk/mediation/unity/unity/UnityAdsUnityAdapter-3.3.0.zip)
+- Updated the `SetGDPRConsentMetaData(bool)` method from the `UnityAds` class to `SetConsentMetaData(string, bool)`.
+- Supports [Unity Ads Android adapter version 4.3.0.0](https://github.com/googleads/googleads-mobile-android-mediation/blob/main/ThirdPartyAdapters/unity/CHANGELOG.md#version-4300).
+- Supports [Unity Ads iOS adapter version 4.3.0.0](https://github.com/googleads/googleads-mobile-ios-mediation/blob/main/adapters/Unity/CHANGELOG.md#version-4300).
+- Built and tested with the Google Mobile Ads Unity Plugin version 7.2.0.
+
 #### [Version 3.2.1](https://dl.google.com/googleadmobadssdk/mediation/unity/unity/UnityAdsUnityAdapter-3.2.1.zip)
 - Supports [Unity Ads Android adapter version 4.2.1.1](https://github.com/googleads/googleads-mobile-android-mediation/blob/main/ThirdPartyAdapters/unity/CHANGELOG.md#version-4211).
 - Supports [Unity Ads iOS adapter version 4.2.1.0](https://github.com/googleads/googleads-mobile-ios-mediation/blob/main/adapters/Unity/CHANGELOG.md#version-4210).

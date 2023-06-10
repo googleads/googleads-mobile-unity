@@ -36,6 +36,8 @@ namespace GoogleMobileAds.Common
         event EventHandler<EventArgs> OnAdDidDismissFullScreenContent;
         // Ad event fired when an ad impression has been recorded.
         event EventHandler<EventArgs> OnAdDidRecordImpression;
+        // Ad event fired when an ad has been clicked.
+        event Action OnAdClicked;
 
         // Creates a rewarded ad.
         void CreateRewardedAd();

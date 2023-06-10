@@ -18,6 +18,7 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 
 using GoogleMobileAds.Api;
+using GoogleMobileAds.Api.AdManager;
 using GoogleMobileAds.Api.Mediation;
 using GoogleMobileAds.Common;
 
@@ -70,6 +71,66 @@ namespace GoogleMobileAds.iOS
 
             Externs.GADUSetRequestAgent(requestPtr,
                     AdRequest.BuildVersionString(nativePluginVersion));
+            return requestPtr;
+        }
+
+        public static IntPtr BuildAdManagerAdRequest(AdRequest request,
+                                                     string nativePluginVersion = null)
+        {
+            if (!typeof(AdManagerAdRequest).IsInstanceOfType(request))
+            {
+                return BuildAdRequest(request, nativePluginVersion);
+            }
+            AdManagerAdRequest adManagerAdRequest = (AdManagerAdRequest)request;
+            IntPtr requestPtr = Externs.GAMUCreateRequest();
+
+            foreach (string keyword in adManagerAdRequest.Keywords)
+            {
+                Externs.GADUAddKeyword(requestPtr, keyword);
+            }
+
+            foreach (KeyValuePair<string, string> entry in adManagerAdRequest.Extras)
+            {
+                Externs.GADUSetExtra(requestPtr, entry.Key, entry.Value);
+            }
+
+            Externs.GADUSetExtra(requestPtr, "is_unity", "1");
+
+            // Makes ads that contain WebP ad assets ineligible.
+            Externs.GADUSetExtra(requestPtr, "adw", "true");
+
+            foreach (MediationExtras mediationExtra in adManagerAdRequest.MediationExtras)
+            {
+                IntPtr mutableDictionaryPtr = Externs.GADUCreateMutableDictionary();
+                if (mutableDictionaryPtr != IntPtr.Zero)
+                {
+                    foreach (KeyValuePair<string, string> entry in mediationExtra.Extras)
+                    {
+                        Externs.GADUMutableDictionarySetValue(
+                                mutableDictionaryPtr,
+                                entry.Key,
+                                entry.Value);
+                    }
+
+                    Externs.GADUSetMediationExtras(
+                            requestPtr,
+                            mutableDictionaryPtr,
+                            mediationExtra.IOSMediationExtraBuilderClassName);
+                }
+            }
+
+            Externs.GADUSetRequestAgent(requestPtr,
+                                        AdRequest.BuildVersionString(nativePluginVersion));
+
+            Externs.GAMUSetPublisherProvidedID(requestPtr, adManagerAdRequest.PublisherProvidedId);
+            foreach (string category in adManagerAdRequest.CategoryExclusions)
+            {
+                Externs.GAMUAddCategoryExclusion(requestPtr, category);
+            }
+            foreach (KeyValuePair<string, string> entry in adManagerAdRequest.CustomTargeting)
+            {
+                Externs.GAMUSetCustomTargeting(requestPtr, entry.Key, entry.Value);
+            }
             return requestPtr;
         }
 
