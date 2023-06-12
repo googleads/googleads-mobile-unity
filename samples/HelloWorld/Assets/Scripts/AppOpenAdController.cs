@@ -1,11 +1,7 @@
 using System;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
-using GoogleMobileAds;
 using GoogleMobileAds.Api;
 using GoogleMobileAds.Common;
-using GoogleMobileAds.Samples;
 
 namespace GoogleMobileAds.Sample
 {

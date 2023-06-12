@@ -1,7 +1,6 @@
 using System;
 using UnityEngine;
 using GoogleMobileAds.Api;
-using GoogleMobileAds.Samples;
 
 namespace GoogleMobileAds.Sample
 {
