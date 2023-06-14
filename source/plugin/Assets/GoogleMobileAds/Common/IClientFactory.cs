@@ -26,6 +26,8 @@ namespace GoogleMobileAds
 
         IBannerClient BuildBannerClient();
 
+        IAdManagerBannerClient BuildAdManagerBannerClient();
+
         IInterstitialClient BuildInterstitialClient();
 
         IAdManagerInterstitialClient BuildAdManagerInterstitialClient();

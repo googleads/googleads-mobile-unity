@@ -58,6 +58,18 @@ namespace GoogleMobileAds
                                           " on non-iOS runtime");
     }
 
+    public IAdManagerBannerClient BuildAdManagerBannerClient()
+    {
+      if (Application.platform == RuntimePlatform.IPhonePlayer)
+      {
+        // TODO (b/267370785): Update after iOS client is implemented.
+        var bannerClient = new GoogleMobileAds.iOS.BannerClient();
+        return bannerClient as IAdManagerBannerClient;
+      }
+      throw new InvalidOperationException(@"Called " + MethodBase.GetCurrentMethod().Name +
+                                          " on non-iOS runtime");
+    }
+
     public IInterstitialClient BuildInterstitialClient()
     {
       if (Application.platform == RuntimePlatform.IPhonePlayer)

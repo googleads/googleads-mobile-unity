@@ -67,7 +67,9 @@ namespace GoogleMobileAds.Api
         /// </summary>
         public bool IsDestroyed { get { return _client == null; } }
 
-        private IBannerClient _client;
+        protected internal IBannerClient _client;
+
+        protected internal BannerView() {}
 
         /// <summary>
         /// Creates a banner view with a standard position.
@@ -182,7 +184,7 @@ namespace GoogleMobileAds.Api
             }
         }
 
-        private void ConfigureBannerEvents()
+        protected internal virtual void ConfigureBannerEvents()
         {
 
             _client.OnAdLoaded += (sender, args) =>

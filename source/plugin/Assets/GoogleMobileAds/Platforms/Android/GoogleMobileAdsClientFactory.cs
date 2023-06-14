@@ -56,6 +56,18 @@ namespace GoogleMobileAds
             " on non-Android runtime");
         }
 
+        public IAdManagerBannerClient BuildAdManagerBannerClient()
+        {
+            if (Application.platform == RuntimePlatform.Android)
+            {
+                // TODO (b/267369991): Update after Android client is implemented.
+                var bannerClient = new GoogleMobileAds.Android.BannerClient();
+                return bannerClient as IAdManagerBannerClient;
+            }
+            throw new InvalidOperationException(@"Called " + MethodBase.GetCurrentMethod().Name +
+            " on non-Android runtime");
+        }
+
         public IInterstitialClient BuildInterstitialClient()
         {
             if (Application.platform == RuntimePlatform.Android)
