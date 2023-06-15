@@ -109,7 +109,9 @@ namespace GoogleMobileAds.Api
                     }
                 });
             });
+#if !VSTUDIO
             MobileAdsEventExecutor.Initialize();
+#endif
         }
 
         /// <summary>
