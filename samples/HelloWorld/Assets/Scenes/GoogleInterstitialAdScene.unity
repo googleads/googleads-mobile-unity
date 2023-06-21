@@ -602,6 +602,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7547914932026193985, guid: 14b7f179c2c5148188b1b282d47b96ee,
+        type: 3}
+      propertyPath: m_Size
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7547914932056881335, guid: 14b7f179c2c5148188b1b282d47b96ee,
         type: 3}
       propertyPath: m_SizeDelta.y
@@ -610,10 +615,9 @@ PrefabInstance:
     - target: {fileID: 7547914932056881335, guid: 14b7f179c2c5148188b1b282d47b96ee,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -299.99997
+      value: -300
       objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 7547914932056881333, guid: 14b7f179c2c5148188b1b282d47b96ee, type: 3}
+    m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 14b7f179c2c5148188b1b282d47b96ee, type: 3}
 --- !u!224 &544895096 stripped
 RectTransform:
@@ -621,46 +625,6 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 544895095}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &544895097 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7547914932056881328, guid: 14b7f179c2c5148188b1b282d47b96ee,
-    type: 3}
-  m_PrefabInstance: {fileID: 544895095}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &544895098
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 544895097}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f075ca01a22564fedb9ae6b79dbb7731, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_FontData:
-    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 14
-    m_FontStyle: 0
-    m_BestFit: 0
-    m_MinSize: 10
-    m_MaxSize: 40
-    m_Alignment: 0
-    m_AlignByGeometry: 0
-    m_RichText: 1
-    m_HorizontalOverflow: 0
-    m_VerticalOverflow: 0
-    m_LineSpacing: 1
-  m_Text: 
 --- !u!1 &876420937
 GameObject:
   m_ObjectHideFlags: 0
