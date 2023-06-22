@@ -40,7 +40,7 @@ namespace GoogleMobileAds.Unity
 
         public event Action OnAdImpressionRecorded;
 
-        private Dictionary<AdSize, string> prefabAds = new Dictionary<AdSize, string>()
+        protected internal Dictionary<AdSize, string> prefabAds = new Dictionary<AdSize, string>()
         {
             {AdSize.Banner, "PlaceholderAds/Banners/BANNER"},
             {AdSize.SmartBanner, "PlaceholderAds/Banners/SMART_BANNER" },
@@ -82,7 +82,7 @@ namespace GoogleMobileAds.Unity
         }
 
         // Creates a banner view and adds it to the view hierarchy.
-        public void CreateBannerView(string adUnitId, AdSize adSize, AdPosition position)
+        public virtual void CreateBannerView(string adUnitId, AdSize adSize, AdPosition position)
         {
             if (adSize.AdType == AdSize.Type.AnchoredAdaptive)
             {
@@ -107,7 +107,7 @@ namespace GoogleMobileAds.Unity
         }
 
         // Creates a banner view and adds it to the view hierarchy with a custom position.
-        public void CreateBannerView(string adUnitId, AdSize adSize, int x, int y)
+        public virtual void CreateBannerView(string adUnitId, AdSize adSize, int x, int y)
         {
             if (adSize.AdType == AdSize.Type.AnchoredAdaptive)
             {
@@ -143,7 +143,7 @@ namespace GoogleMobileAds.Unity
         }
 
         // Requests a new ad for the banner view.
-        public void LoadAd(AdRequest request)
+        public virtual void LoadAd(AdRequest request)
         {
 
             if (prefabAd != null) {
@@ -235,7 +235,7 @@ namespace GoogleMobileAds.Unity
             rect.anchoredPosition = new Vector2(xWithOffset, -yWithOffset);
         }
 
-        private void SetAndStretchAd(GameObject dummyAd, AdPosition pos, AdSize adSize)
+        protected internal void SetAndStretchAd(GameObject dummyAd, AdPosition pos, AdSize adSize)
         {
             if (dummyAd != null) {
                 Image myImage = dummyAd.GetComponentInChildren<Image>();
@@ -279,7 +279,7 @@ namespace GoogleMobileAds.Unity
             }
         }
 
-        private void AnchorAd(GameObject dummyAd, AdPosition position)
+        protected internal void AnchorAd(GameObject dummyAd, AdPosition position)
         {
             if (dummyAd != null) {
                 Image myImage = dummyAd.GetComponentInChildren<Image>();

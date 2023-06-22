@@ -40,9 +40,7 @@ namespace GoogleMobileAds
 
         public IAdManagerBannerClient BuildAdManagerBannerClient()
         {
-            // TODO (b/283326347): Update after Unity editor client is implemented.
-            var bannerClient = new GoogleMobileAds.Unity.BannerClient();
-            return bannerClient as IAdManagerBannerClient;
+            return new GoogleMobileAds.Unity.AdManagerBannerClient();
         }
 
         public IInterstitialClient BuildInterstitialClient()
