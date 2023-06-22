@@ -313,6 +313,56 @@ namespace GoogleMobileAds.iOS
 
         #endregion
 
+        #region
+        [DllImport("__Internal")]
+        internal static extern IntPtr GAMUCreateBannerView(
+            IntPtr bannerClient, string adUnitId, int width, int height, int adPosition);
+
+        [DllImport("__Internal")]
+        internal static extern IntPtr GAMUCreateBannerViewWithCustomPosition(
+            IntPtr bannerClient,
+            string adUnitId,
+            int width,
+            int height,
+            int x,
+            int y);
+
+        [DllImport("__Internal")]
+        internal static extern IntPtr GAMUCreateAnchoredAdaptiveBannerView(
+            IntPtr bannerClient,
+            string adUnitId,
+            int width,
+            int orientation,
+            int adPosition);
+
+        [DllImport("__Internal")]
+        internal static extern IntPtr GAMUCreateAnchoredAdaptiveBannerViewWithCustomPosition(
+                IntPtr bannerClient,
+                string adUnitId,
+                int width,
+                int orientation,
+                int x,
+                int y);
+
+        [DllImport("__Internal")]
+        internal static extern void GAMUSetBannerCallbacks(
+            IntPtr bannerView,
+            AdManagerBannerClient.GADUAdViewDidReceiveAdCallback adReceivedCallback,
+            AdManagerBannerClient.GADUAdViewDidFailToReceiveAdWithErrorCallback adFailedCallback,
+            AdManagerBannerClient.GADUAdViewWillPresentScreenCallback willPresentCallback,
+            AdManagerBannerClient.GADUAdViewDidDismissScreenCallback didDismissCallback,
+            AdManagerBannerClient.GADUAdViewPaidEventCallback paidEventCallback,
+            AdManagerBannerClient.GADUAdViewImpressionCallback adImpressionCallback,
+            AdManagerBannerClient.GADUAdViewClickCallback adClickCallback,
+            AdManagerBannerClient.GAMUAdViewAppEventCallback appEventCallback
+        );
+
+        [DllImport("__Internal")]
+        internal static extern void GAMUBannerViewSetValidAdSizes(
+                IntPtr bannerView, int[] validAdSizesArray, int validAdSizesLength);
+
+        #endregion
+
         #region Interstitial externs
 
         [DllImport("__Internal")]

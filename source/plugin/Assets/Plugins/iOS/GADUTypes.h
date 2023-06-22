@@ -49,6 +49,9 @@ typedef const void *GADUTypeAppOpenAdClientRef;
 /// Type representing a Unity banner client.
 typedef const void *GADUTypeBannerClientRef;
 
+/// Type representing a Unity Ad Manager banner client.
+typedef const void *GAMUTypeBannerClientRef;
+
 /// Type representing a Unity interstitial client.
 typedef const void *GADUTypeInterstitialClientRef;
 
@@ -172,6 +175,11 @@ typedef void (*GADUAdViewImpressionCallback)(GADUTypeBannerClientRef *bannerClie
 /// Callback for when an ad reports a click.
 typedef void (*GADUAdViewClickCallback)(GADUTypeBannerClientRef *bannerClient);
 
+// MARK: - GAMUAdView
+
+/// Callback when an Ad Manager ad view sends an app event.
+typedef void (*GAMUAdViewAppEventCallback)(GAMUTypeBannerClientRef *bannerClient, const char *name,
+                                           const char *info);
 
 // MARK: - GADUInterstitial
 

@@ -12,6 +12,7 @@
 #import "GADURewardedAd.h"
 #import "GADURewardedInterstitialAd.h"
 #import "GADUTypes.h"
+#import "GAMUBanner.h"
 #import "GAMUInterstitial.h"
 #import "GAMURequest.h"
 
@@ -234,6 +235,93 @@ GADUTypeBannerRef GADUCreateAnchoredAdaptiveBannerViewWithCustomPosition(
   return (__bridge GADUTypeBannerRef)banner;
 }
 
+/// Creates a GAMBannerView with the specified width, height, and position. Returns a reference to
+/// the GADUBannerView.
+GADUTypeBannerRef GAMUCreateBannerView(GAMUTypeBannerClientRef *bannerClient, const char *adUnitID,
+                                       NSInteger width, NSInteger height,
+                                       GADAdPosition adPosition) {
+  GAMUBanner *banner =
+      [[GAMUBanner alloc] initWithAdManagerBannerClientReference:bannerClient
+                                                        adUnitID:GADUStringFromUTF8String(adUnitID)
+                                                           width:(int)width
+                                                          height:(int)height
+                                                      adPosition:adPosition];
+  GADUObjectCache *cache = GADUObjectCache.sharedInstance;
+  cache[banner.gadu_referenceKey] = banner;
+  return (__bridge GADUTypeBannerRef)banner;
+}
+
+/// Creates a GAMBannerView with the specified width, height, and custom position. Returns
+/// a reference to the GAMUBannerView.
+GADUTypeBannerRef GAMUCreateBannerViewWithCustomPosition(GAMUTypeBannerClientRef *bannerClient,
+                                                         const char *adUnitID, NSInteger width,
+                                                         NSInteger height, NSInteger x,
+                                                         NSInteger y) {
+  CGPoint adPosition = CGPointMake(x, y);
+  GAMUBanner *banner =
+      [[GAMUBanner alloc] initWithAdManagerBannerClientReference:bannerClient
+                                                        adUnitID:GADUStringFromUTF8String(adUnitID)
+                                                           width:(int)width
+                                                          height:(int)height
+                                                customAdPosition:adPosition];
+  GADUObjectCache *cache = GADUObjectCache.sharedInstance;
+  cache[banner.gadu_referenceKey] = banner;
+  return (__bridge GADUTypeBannerRef)banner;
+}
+
+/// Creates a an adaptive sized GAMBannerView with the specified width, orientation, and position.
+/// Returns a reference to the GAMUBannerView.
+GADUTypeBannerRef GAMUCreateAnchoredAdaptiveBannerView(GAMUTypeBannerClientRef *bannerClient,
+                                                       const char *adUnitID, NSInteger width,
+                                                       GADUBannerOrientation orientation,
+                                                       GADAdPosition adPosition) {
+  GAMUBanner *banner = [[GAMUBanner alloc]
+      initWithAdaptiveBannerSizeAndAdManagerBannerClientReference:bannerClient
+                                                         adUnitID:GADUStringFromUTF8String(adUnitID)
+                                                            width:(int)width
+                                                      orientation:orientation
+                                                       adPosition:adPosition];
+  GADUObjectCache *cache = GADUObjectCache.sharedInstance;
+  cache[banner.gadu_referenceKey] = banner;
+  return (__bridge GADUTypeBannerRef)banner;
+}
+
+/// Creates a an adaptive sized GAMBannerView with the specified width, orientation, and position.
+/// Returns a reference to the GAMUBannerView.
+GADUTypeBannerRef GAMUCreateAnchoredAdaptiveBannerViewWithCustomPosition(
+    GAMUTypeBannerClientRef *bannerClient, const char *adUnitID, NSInteger width,
+    GADUBannerOrientation orientation, NSInteger x, NSInteger y) {
+  CGPoint adPosition = CGPointMake(x, y);
+  GAMUBanner *banner = [[GAMUBanner alloc]
+      initWithAdaptiveBannerSizeAndAdManagerBannerClientReference:bannerClient
+                                                         adUnitID:GADUStringFromUTF8String(adUnitID)
+                                                            width:(int)width
+                                                      orientation:orientation
+                                                 customAdPosition:adPosition];
+  GADUObjectCache *cache = GADUObjectCache.sharedInstance;
+  cache[banner.gadu_referenceKey] = banner;
+  return (__bridge GADUTypeBannerRef)banner;
+}
+
+/// Set GAMBannerView Valid Ad Sizes
+void GAMUBannerViewSetValidAdSizes(GADUTypeBannerRef banner, const int *validAdSizesLinearArray,
+                                   NSInteger validAdSizesLength) {
+  GAMUBanner *internalBanner = (__bridge GAMUBanner *)banner;
+  if (validAdSizesLinearArray) {
+    int validAdSizesArrayIndex = 0;
+    NSMutableArray *validAdSizes = [[NSMutableArray alloc] init];
+    for (int i = 0; i < validAdSizesLength; i++) {
+      // validAdSizesLinearArray contains AdSizes as [width1, height1, width2, height2, ...].
+      int width = validAdSizesLinearArray[validAdSizesArrayIndex++];
+      int height = validAdSizesLinearArray[validAdSizesArrayIndex++];
+      [validAdSizes addObject:NSValueFromGADAdSize(GADAdSizeFromCGSize(CGSizeMake(width, height)))];
+    }
+    [internalBanner setValidAdSizes:validAdSizes];
+  } else {
+    [internalBanner setValidAdSizes:NULL];
+  }
+}
+
 /// Creates a GADUInterstitial and returns its reference.
 GADUTypeInterstitialRef GADUCreateInterstitial(GADUTypeInterstitialClientRef *interstitialClient) {
   GADUInterstitial *interstitial =
@@ -311,6 +399,27 @@ void GADUSetBannerCallbacks(GADUTypeBannerRef banner,
   internalBanner.paidEventCallback = paidEventCallback;
   internalBanner.adImpressionCallback = adImpressionCallback;
   internalBanner.adClickedCallback = adClickedCallback;
+}
+
+/// Sets the ad manager banner callback methods to be invoked during banner ad events.
+void GAMUSetBannerCallbacks(GADUTypeBannerRef banner,
+                            GADUAdViewDidReceiveAdCallback adReceivedCallback,
+                            GADUAdViewDidFailToReceiveAdWithErrorCallback adFailedCallback,
+                            GADUAdViewWillPresentScreenCallback willPresentCallback,
+                            GADUAdViewDidDismissScreenCallback didDismissCallback,
+                            GADUAdViewPaidEventCallback paidEventCallback,
+                            GADUAdViewImpressionCallback adImpressionCallback,
+                            GADUAdViewClickCallback adClickedCallback,
+                            GAMUInterstitialAppEventCallback appEventCallback) {
+  GAMUBanner *internalBanner = (__bridge GAMUBanner *)banner;
+  internalBanner.adReceivedCallback = adReceivedCallback;
+  internalBanner.adFailedCallback = adFailedCallback;
+  internalBanner.willPresentCallback = willPresentCallback;
+  internalBanner.didDismissCallback = didDismissCallback;
+  internalBanner.paidEventCallback = paidEventCallback;
+  internalBanner.adImpressionCallback = adImpressionCallback;
+  internalBanner.adClickedCallback = adClickedCallback;
+  internalBanner.appEventCallback = appEventCallback;
 }
 
 /// Sets the interstitial callback methods to be invoked during interstitial ad events.
