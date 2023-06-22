@@ -31,6 +31,7 @@ import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.AdValue;
 import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.BaseAdView;
 import com.google.android.gms.ads.LoadAdError;
 import com.google.android.gms.ads.OnPaidEventListener;
 import com.google.android.gms.ads.ResponseInfo;
@@ -46,7 +47,7 @@ import java.util.concurrent.FutureTask;
 public class Banner {
 
   /** Class to hold the insets of the cutout area. */
-  private static class Insets {
+  protected static class Insets {
     int top = 0;
     int bottom = 0;
     int left = 0;
@@ -54,10 +55,10 @@ public class Banner {
   }
 
   /** The {@link AdView} to display to the user. */
-  private AdView mAdView;
+  protected BaseAdView adView;
 
   /** The {@code Activity} that the banner will be displayed in. */
-  private Activity mUnityPlayerActivity;
+  protected Activity unityPlayerActivity;
 
   /** A code indicating where to place the ad. */
   private int mPositionCode;
@@ -75,16 +76,18 @@ public class Banner {
   private int mVerticalOffset;
 
   /** A boolean indicating whether the ad has been hidden. */
-  private boolean mHidden;
+  protected boolean hidden;
 
   /** A listener implemented in Unity via {@code AndroidJavaProxy} to receive ad events. */
-  private UnityAdListener mUnityListener;
+  protected UnityAdListener unityListener;
 
   /**
    * A {@code View.OnLayoutChangeListener} used to detect orientation changes and reposition banner
    * ads as required.
    */
   private View.OnLayoutChangeListener mLayoutChangeListener;
+
+  protected Banner() {}
 
   /**
    * Creates an instance of {@code Banner}.
@@ -93,8 +96,8 @@ public class Banner {
    * @param listener The {@link UnityAdListener} used to receive synchronous ad events in Unity.
    */
   public Banner(Activity activity, UnityAdListener listener) {
-    this.mUnityPlayerActivity = activity;
-    this.mUnityListener = listener;
+    this.unityPlayerActivity = activity;
+    this.unityListener = listener;
   }
 
   /**
@@ -105,7 +108,7 @@ public class Banner {
    * @param positionCode A code indicating where to place the ad.
    */
   public void create(final String publisherId, final AdSize adSize, final int positionCode) {
-    mUnityPlayerActivity.runOnUiThread(
+    unityPlayerActivity.runOnUiThread(
         new Runnable() {
           @Override
           public void run() {
@@ -113,7 +116,7 @@ public class Banner {
             mHorizontalOffset = 0;
             mVerticalOffset = 0;
             mPositionCode = positionCode;
-            mHidden = false;
+            hidden = false;
           }
         });
   }
@@ -128,7 +131,7 @@ public class Banner {
    */
   public void create(
       final String publisherId, final AdSize adSize, final int positionX, final int positionY) {
-    mUnityPlayerActivity.runOnUiThread(
+    unityPlayerActivity.runOnUiThread(
         new Runnable() {
           @Override
           public void run() {
@@ -136,26 +139,26 @@ public class Banner {
             mPositionCode = PluginUtils.POSITION_CUSTOM;
             mHorizontalOffset = positionX;
             mVerticalOffset = positionY;
-            mHidden = false;
+            hidden = false;
           }
         });
   }
 
-  private void createAdView(final String publisherId, final AdSize adSize) {
-    mAdView = new AdView(mUnityPlayerActivity);
+  protected void createAdView(final String publisherId, final AdSize adSize) {
+    adView = new AdView(unityPlayerActivity);
     // Setting the background color works around an issue where the first ad isn't visible.
-    mAdView.setBackgroundColor(Color.TRANSPARENT);
-    mAdView.setAdUnitId(publisherId);
-    mAdView.setAdSize(adSize);
-    mAdView.setVisibility(View.GONE);
-    mAdView.setDescendantFocusability(ViewGroup.FOCUS_BLOCK_DESCENDANTS);
-    mUnityPlayerActivity.addContentView(mAdView, getLayoutParams());
-    mAdView.setAdListener(
+    adView.setBackgroundColor(Color.TRANSPARENT);
+    adView.setAdUnitId(publisherId);
+    adView.setAdSize(adSize);
+    adView.setVisibility(View.GONE);
+    adView.setDescendantFocusability(ViewGroup.FOCUS_BLOCK_DESCENDANTS);
+    unityPlayerActivity.addContentView(adView, getLayoutParams());
+    adView.setAdListener(
         new AdListener() {
           @Override
           public void onAdLoaded() {
-            if (mUnityListener != null) {
-              if (!mHidden) {
+            if (unityListener != null) {
+              if (!hidden) {
                 show();
               }
 
@@ -163,8 +166,8 @@ public class Banner {
                       new Runnable() {
                         @Override
                         public void run() {
-                          if (mUnityListener != null) {
-                            mUnityListener.onAdLoaded();
+                          if (unityListener != null) {
+                            unityListener.onAdLoaded();
                           }
                         }
                       })
@@ -174,13 +177,13 @@ public class Banner {
 
           @Override
           public void onAdFailedToLoad(final LoadAdError error) {
-            if (mUnityListener != null) {
+            if (unityListener != null) {
               new Thread(
                       new Runnable() {
                         @Override
                         public void run() {
-                          if (mUnityListener != null) {
-                            mUnityListener.onAdFailedToLoad(error);
+                          if (unityListener != null) {
+                            unityListener.onAdFailedToLoad(error);
                           }
                         }
                       })
@@ -190,13 +193,13 @@ public class Banner {
 
           @Override
           public void onAdOpened() {
-            if (mUnityListener != null) {
+            if (unityListener != null) {
               new Thread(
                       new Runnable() {
                         @Override
                         public void run() {
-                          if (mUnityListener != null) {
-                            mUnityListener.onAdOpened();
+                          if (unityListener != null) {
+                            unityListener.onAdOpened();
                           }
                         }
                       })
@@ -206,13 +209,13 @@ public class Banner {
 
           @Override
           public void onAdClosed() {
-            if (mUnityListener != null) {
+            if (unityListener != null) {
               new Thread(
                       new Runnable() {
                         @Override
                         public void run() {
-                          if (mUnityListener != null) {
-                            mUnityListener.onAdClosed();
+                          if (unityListener != null) {
+                            unityListener.onAdClosed();
                           }
                         }
                       })
@@ -222,13 +225,13 @@ public class Banner {
 
           @Override
           public void onAdImpression() {
-            if (mUnityListener != null) {
+            if (unityListener != null) {
               new Thread(
                       new Runnable() {
                         @Override
                         public void run() {
-                          if (mUnityListener != null) {
-                            mUnityListener.onAdImpression();
+                          if (unityListener != null) {
+                            unityListener.onAdImpression();
                           }
                         }
                       })
@@ -238,13 +241,13 @@ public class Banner {
 
           @Override
           public void onAdClicked() {
-            if (mUnityListener != null) {
+            if (unityListener != null) {
               new Thread(
                       new Runnable() {
                         @Override
                         public void run() {
-                          if (mUnityListener != null) {
-                            mUnityListener.onAdClicked();
+                          if (unityListener != null) {
+                            unityListener.onAdClicked();
                           }
                         }
                       })
@@ -253,17 +256,17 @@ public class Banner {
           }
         });
 
-    mAdView.setOnPaidEventListener(
+    adView.setOnPaidEventListener(
         new OnPaidEventListener() {
           @Override
           public void onPaidEvent(final AdValue adValue) {
-            if (mUnityListener != null) {
+            if (unityListener != null) {
               new Thread(
                       new Runnable() {
                         @Override
                         public void run() {
-                          if (mUnityListener != null) {
-                            mUnityListener.onPaidEvent(
+                          if (unityListener != null) {
+                            unityListener.onPaidEvent(
                                 adValue.getPrecisionType(),
                                 adValue.getValueMicros(),
                                 adValue.getCurrencyCode());
@@ -275,7 +278,10 @@ public class Banner {
           }
         });
 
+    setLayoutChangeListener();
+  }
 
+  protected void setLayoutChangeListener() {
     mLayoutChangeListener =
         new View.OnLayoutChangeListener() {
           @Override
@@ -295,13 +301,13 @@ public class Banner {
               return;
             }
 
-            if (!mHidden) {
+            if (!hidden) {
               updatePosition();
             }
           }
         };
 
-    mUnityPlayerActivity
+    unityPlayerActivity
         .getWindow()
         .getDecorView()
         .getRootView()
@@ -314,63 +320,63 @@ public class Banner {
    * @param request The {@link AdRequest} object with targeting parameters.
    */
   public void loadAd(final AdRequest request) {
-    mUnityPlayerActivity.runOnUiThread(
+    unityPlayerActivity.runOnUiThread(
         new Runnable() {
           @Override
           public void run() {
             Log.d(PluginUtils.LOGTAG, "Calling loadAd() on Android");
-            mAdView.loadAd(request);
+            adView.loadAd(request);
           }
         });
   }
 
   /** Sets the {@link AdView} to be visible. */
   public void show() {
-    mUnityPlayerActivity.runOnUiThread(
+    unityPlayerActivity.runOnUiThread(
         new Runnable() {
           @Override
           public void run() {
             Log.d(PluginUtils.LOGTAG, "Calling show() on Android");
-            mHidden = false;
-            mAdView.setVisibility(View.VISIBLE);
+            hidden = false;
+            adView.setVisibility(View.VISIBLE);
             updatePosition();
-            mAdView.resume();
+            adView.resume();
           }
         });
   }
 
   /** Sets the {@link AdView} to be gone. */
   public void hide() {
-    mUnityPlayerActivity.runOnUiThread(
+    unityPlayerActivity.runOnUiThread(
         new Runnable() {
           @Override
           public void run() {
             Log.d(PluginUtils.LOGTAG, "Calling hide() on Android");
-            mHidden = true;
-            mAdView.setVisibility(View.GONE);
-            mAdView.pause();
+            hidden = true;
+            adView.setVisibility(View.GONE);
+            adView.pause();
           }
         });
   }
 
   /** Destroys the {@link AdView}. */
   public void destroy() {
-    mUnityPlayerActivity.runOnUiThread(
+    unityPlayerActivity.runOnUiThread(
         new Runnable() {
           @Override
           public void run() {
             Log.d(PluginUtils.LOGTAG, "Calling destroy() on Android");
-            if (mAdView != null) {
-              mAdView.destroy();
-              ViewParent parentView = mAdView.getParent();
+            if (adView != null) {
+              adView.destroy();
+              ViewParent parentView = adView.getParent();
               if (parentView instanceof ViewGroup) {
-                ((ViewGroup) parentView).removeView(mAdView);
+                ((ViewGroup) parentView).removeView(adView);
               }
             }
           }
         });
 
-    mUnityPlayerActivity
+    unityPlayerActivity
         .getWindow()
         .getDecorView()
         .getRootView()
@@ -388,10 +394,10 @@ public class Banner {
             new Callable<Integer>() {
               @Override
               public Integer call() throws Exception {
-                return mAdView.getAdSize().getHeightInPixels(mUnityPlayerActivity);
+                return adView.getAdSize().getHeightInPixels(unityPlayerActivity);
               }
             });
-    mUnityPlayerActivity.runOnUiThread(task);
+    unityPlayerActivity.runOnUiThread(task);
 
     float result = -1;
     try {
@@ -419,10 +425,10 @@ public class Banner {
             new Callable<Integer>() {
               @Override
               public Integer call() throws Exception {
-                return mAdView.getAdSize().getWidthInPixels(mUnityPlayerActivity);
+                return adView.getAdSize().getWidthInPixels(unityPlayerActivity);
               }
             });
-    mUnityPlayerActivity.runOnUiThread(task);
+    unityPlayerActivity.runOnUiThread(task);
 
     float result = -1;
     try {
@@ -445,7 +451,7 @@ public class Banner {
    * @param positionCode A code indicating where to place the ad.
    */
   public void setPosition(final int positionCode) {
-    mUnityPlayerActivity.runOnUiThread(
+    unityPlayerActivity.runOnUiThread(
         new Runnable() {
           @Override
           public void run() {
@@ -462,7 +468,7 @@ public class Banner {
    * @param positionY Position of banner ad on the y axis.
    */
   public void setPosition(final int positionX, final int positionY) {
-    mUnityPlayerActivity.runOnUiThread(
+    unityPlayerActivity.runOnUiThread(
         new Runnable() {
           @Override
           public void run() {
@@ -479,7 +485,7 @@ public class Banner {
    *
    * @return configured {@link FrameLayout.LayoutParams }.
    */
-  private FrameLayout.LayoutParams getLayoutParams() {
+  protected FrameLayout.LayoutParams getLayoutParams() {
     final FrameLayout.LayoutParams adParams =
         new FrameLayout.LayoutParams(
             FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT);
@@ -515,15 +521,15 @@ public class Banner {
 
   /** Update the {@link AdView} position based on current parameters. */
   private void updatePosition() {
-    if (mAdView == null || mHidden) {
+    if (adView == null || hidden) {
       return;
     }
-    mUnityPlayerActivity.runOnUiThread(
+    unityPlayerActivity.runOnUiThread(
         new Runnable() {
           @Override
           public void run() {
             FrameLayout.LayoutParams layoutParams = getLayoutParams();
-            mAdView.setLayoutParams(layoutParams);
+            adView.setLayoutParams(layoutParams);
           }
         });
   }
@@ -534,7 +540,7 @@ public class Banner {
     if (Build.VERSION.SDK_INT < Build.VERSION_CODES.P) {
       return insets;
     }
-    Window window = mUnityPlayerActivity.getWindow();
+    Window window = unityPlayerActivity.getWindow();
     if (window == null) {
       return insets;
     }
@@ -557,22 +563,13 @@ public class Banner {
    * Returns the request response info.
    */
   public ResponseInfo getResponseInfo() {
-    FutureTask<ResponseInfo> task = new FutureTask<>(new Callable<ResponseInfo>() {
-      @Override
-      public ResponseInfo call() {
-        return mAdView.getResponseInfo();
-      }
-    });
-    mUnityPlayerActivity.runOnUiThread(task);
+    FutureTask<ResponseInfo> task = new FutureTask<>(() -> adView.getResponseInfo());
+    unityPlayerActivity.runOnUiThread(task);
 
     ResponseInfo result = null;
     try {
       result = task.get();
-    } catch (InterruptedException exception) {
-      Log.e(PluginUtils.LOGTAG,
-              String.format("Unable to check banner response info: %s",
-                      exception.getLocalizedMessage()));
-    } catch (ExecutionException exception) {
+    } catch (InterruptedException | ExecutionException exception) {
       Log.e(PluginUtils.LOGTAG,
               String.format("Unable to check banner response info: %s",
                       exception.getLocalizedMessage()));

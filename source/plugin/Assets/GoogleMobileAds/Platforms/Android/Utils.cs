@@ -79,14 +79,20 @@ namespace GoogleMobileAds.Android
 
         public const string UnityAdListenerClassName = "com.google.unity.ads.UnityAdListener";
 
+        public const string UnityAdManagerAdListenerClassName =
+                "com.google.unity.ads.admanager.UnityAdManagerAdListener";
+
         public const string UnityAppStateEventNotifierClassName =
-            "com.google.unity.ads.UnityAppStateEventNotifier";
+                "com.google.unity.ads.UnityAppStateEventNotifier";
 
         public const string UnityAppStateEventCallbackClassName =
-            "com.google.unity.ads.UnityAppStateEventCallback";
+                "com.google.unity.ads.UnityAppStateEventCallback";
 
         public const string UnityRewardedAdCallbackClassName =
-            "com.google.unity.ads.UnityRewardedAdCallback";
+                "com.google.unity.ads.UnityRewardedAdCallback";
+
+        public const string UnityAdManagerBannerViewClassName =
+                "com.google.unity.ads.admanager.UnityAdManagerBannerView";
 
         public const string UnityInterstitialAdCallbackClassName = "com.google.unity.ads.UnityInterstitialAdCallback";
 

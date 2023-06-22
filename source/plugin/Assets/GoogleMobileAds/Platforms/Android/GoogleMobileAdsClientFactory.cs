@@ -60,9 +60,7 @@ namespace GoogleMobileAds
         {
             if (Application.platform == RuntimePlatform.Android)
             {
-                // TODO (b/267369991): Update after Android client is implemented.
-                var bannerClient = new GoogleMobileAds.Android.BannerClient();
-                return bannerClient as IAdManagerBannerClient;
+                return new GoogleMobileAds.Android.AdManagerBannerClient();
             }
             throw new InvalidOperationException(@"Called " + MethodBase.GetCurrentMethod().Name +
             " on non-Android runtime");

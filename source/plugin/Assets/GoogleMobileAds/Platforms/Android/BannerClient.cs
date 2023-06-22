@@ -22,7 +22,9 @@ namespace GoogleMobileAds.Android
 {
     public class BannerClient : AndroidJavaProxy, IBannerClient
     {
-        private AndroidJavaObject bannerView;
+        protected internal AndroidJavaObject bannerView;
+
+        protected internal BannerClient(string className) : base(className) {}
 
         public BannerClient() : base(Utils.UnityAdListenerClassName)
         {
@@ -64,7 +66,7 @@ namespace GoogleMobileAds.Android
         }
 
         // Loads an ad.
-        public void LoadAd(AdRequest request)
+        public virtual void LoadAd(AdRequest request)
         {
             this.bannerView.Call("loadAd", Utils.GetAdRequestJavaObject(request));
         }
