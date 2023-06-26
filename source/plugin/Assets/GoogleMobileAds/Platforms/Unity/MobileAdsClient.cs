@@ -85,175 +85,97 @@ namespace GoogleMobileAds.Unity
         {
             get
             {
-                Debug.Log("Placeholder " + MethodBase.GetCurrentMethod().Name);
                 return "UserId";
             }
 
-            set
-            {
-                Debug.Log("Placeholder " + MethodBase.GetCurrentMethod().Name);
-            }
+            set {}
         }
 
-        public void Initialize(string appId)
-        {
-            Debug.Log("Placeholder " + MethodBase.GetCurrentMethod().Name);
-        }
+        public void Initialize(string appId) {}
 
         public void Initialize(Action<IInitializationStatusClient> initCompleteAction)
         {
-            Debug.Log("Placeholder " + MethodBase.GetCurrentMethod().Name);
             var initStatusClient = new InitializationStatusClient();
             initCompleteAction(initStatusClient);
         }
 
-        public void DisableMediationInitialization()
-        {
-            Debug.Log("Placeholder " + MethodBase.GetCurrentMethod().Name);
-        }
+        public void DisableMediationInitialization() {}
 
-        public void SetApplicationMuted(bool muted)
-        {
-            Debug.Log("Placeholder " + MethodBase.GetCurrentMethod().Name);
-        }
+        public void SetApplicationMuted(bool muted) {}
 
-        public void SetRequestConfiguration(RequestConfiguration requestConfiguration)
-        {
-            Debug.Log("Placeholder " + MethodBase.GetCurrentMethod().Name);
-        }
+        public void SetRequestConfiguration(RequestConfiguration requestConfiguration) {}
 
         public RequestConfiguration GetRequestConfiguration()
         {
-            Debug.Log("Placeholder " + MethodBase.GetCurrentMethod().Name);
             return null;
-
         }
 
-        public void SetApplicationVolume(float volume)
-        {
-            Debug.Log("Placeholder " + MethodBase.GetCurrentMethod().Name);
-        }
+        public void SetApplicationVolume(float volume) {}
 
-        public void SetiOSAppPauseOnBackground(bool pause)
-        {
-            Debug.Log("Placeholder " + MethodBase.GetCurrentMethod().Name);
-        }
+        public void SetiOSAppPauseOnBackground(bool pause) {}
 
         public float GetDeviceScale()
         {
-            Debug.Log("Placeholder " + MethodBase.GetCurrentMethod().Name);
             return 0;
         }
 
         public int GetDeviceSafeWidth()
         {
-            Debug.Log("Placeholder " + MethodBase.GetCurrentMethod().Name);
             return 0;
         }
 
-        public void CreateBannerView(string adUnitId, AdSize adSize, AdPosition position)
-        {
-            Debug.Log("Placeholder " + MethodBase.GetCurrentMethod().Name);
-        }
+        public void CreateBannerView(string adUnitId, AdSize adSize, AdPosition position) {}
 
-        public void CreateBannerView(string adUnitId, AdSize adSize, int positionX, int positionY)
-        {
-            Debug.Log("Placeholder " + MethodBase.GetCurrentMethod().Name);
-        }
+        public void CreateBannerView(string adUnitId, AdSize adSize, int positionX, int positionY) {}
 
-        public void LoadAd(AdRequest request)
-        {
-            Debug.Log("Placeholder " + MethodBase.GetCurrentMethod().Name);
-        }
+        public void LoadAd(AdRequest request) {}
 
-        public void ShowBannerView()
-        {
-            Debug.Log("Placeholder " + MethodBase.GetCurrentMethod().Name);
-        }
+        public void ShowBannerView() {}
 
-        public void HideBannerView()
-        {
-            Debug.Log("Placeholder " + MethodBase.GetCurrentMethod().Name);
-        }
+        public void HideBannerView() {}
 
-        public void DestroyBannerView()
-        {
-            Debug.Log("Placeholder " + MethodBase.GetCurrentMethod().Name);
-        }
+        public void DestroyBannerView() {}
 
         public float GetHeightInPixels()
         {
-            Debug.Log("Placeholder " + MethodBase.GetCurrentMethod().Name);
             return 0;
         }
 
         public float GetWidthInPixels()
         {
-            Debug.Log("Placeholder " + MethodBase.GetCurrentMethod().Name);
             return 0;
         }
 
-        public void SetPosition(AdPosition adPosition)
-        {
-            Debug.Log("Placeholder " + MethodBase.GetCurrentMethod().Name);
-        }
+        public void SetPosition(AdPosition adPosition) {}
 
-        public void SetPosition(int x, int y)
-        {
-            Debug.Log("Placeholder " + MethodBase.GetCurrentMethod().Name);
-        }
+        public void SetPosition(int x, int y) {}
 
-        public void CreateInterstitialAd()
-        {
-            Debug.Log("Placeholder " + MethodBase.GetCurrentMethod().Name);
-        }
+        public void CreateInterstitialAd() {}
 
-        public void Show()
-        {
-            Debug.Log("Placeholder " + MethodBase.GetCurrentMethod().Name);
-        }
+        public void Show() {}
 
-        public void DestroyInterstitial()
-        {
-            Debug.Log("Placeholder " + MethodBase.GetCurrentMethod().Name);
-        }
+        public void DestroyInterstitial() {}
 
-        public void SetUserId(string userId)
-        {
-            Debug.Log("Placeholder " + MethodBase.GetCurrentMethod().Name);
-        }
+        public void SetUserId(string userId) {}
 
-        public void LoadAd(string adUnitId, AdRequest request)
-        {
-            Debug.Log("Placeholder " + MethodBase.GetCurrentMethod().Name);
-        }
+        public void LoadAd(string adUnitId, AdRequest request) {}
 
-        public void Load(AdRequest request)
-        {
-            Debug.Log("Placeholder " + MethodBase.GetCurrentMethod().Name);
-        }
+        public void Load(AdRequest request) {}
 
-        public void SetAdSize(AdSize adSize)
-        {
-            Debug.Log("Placeholder " + MethodBase.GetCurrentMethod().Name);
-        }
+        public void SetAdSize(AdSize adSize) {}
 
         public string MediationAdapterClassName()
         {
-            Debug.Log("Placeholder " + MethodBase.GetCurrentMethod().Name);
             return null;
         }
 
         public IResponseInfoClient GetResponseInfoClient()
         {
-            Debug.Log("Placeholder " + MethodBase.GetCurrentMethod().Name);
             return null;
         }
 
-        public void SetServerSideVerificationOptions(ServerSideVerificationOptions serverSideVerificationOptions)
-        {
-            Debug.Log("Placeholder " + MethodBase.GetCurrentMethod().Name);
-        }
+        public void SetServerSideVerificationOptions(
+            ServerSideVerificationOptions serverSideVerificationOptions) {}
 
         public void OpenAdInspector(Action<AdInspectorErrorClientEventArgs> onAdInspectorClosed)
         {
@@ -273,7 +195,6 @@ namespace GoogleMobileAds.Unity
             {
                 Debug.Log("No Ad Loaded");
             }
-            Debug.Log("Placeholder " + MethodBase.GetCurrentMethod().Name);
             onAdInspectorClosed(null);
         }
 

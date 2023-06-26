@@ -1,4 +1,9 @@
 Google Mobile Ads Unity Plugin Change Log
+**************
+Version Next
+**************
+
+Removed method call logs from showing up in Unity Editor Console.
 
 **************
 Version Next
