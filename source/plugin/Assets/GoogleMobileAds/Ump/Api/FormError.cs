@@ -34,7 +34,7 @@ namespace GoogleMobileAds.Ump.Api
         /// </summary>
         public string Message { get; private set; }
 
-        internal FormError(int errorCode, string message)
+        public FormError(int errorCode, string message)
         {
             ErrorCode = errorCode;
             Message = message;
