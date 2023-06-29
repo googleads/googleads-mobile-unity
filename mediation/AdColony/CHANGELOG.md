@@ -1,5 +1,8 @@
 ## AdColony Unity Mediation Plugin Changelog
 
+#### Next Version
+- Fixed a duplicate definition warning for `MediationExtras`.
+
 #### [Version 2.6.2](https://dl.google.com/googleadmobadssdk/mediation/unity/adcolony/AdColonyUnityAdapter-2.6.2.zip)
 - Moved adapter content to `GoogleMobileAds/Mediation/AdColony/`.
 - Refactored adapter namespace to use `GoogleMobileAds.Mediation.AdColony`.

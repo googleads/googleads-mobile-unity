@@ -46,7 +46,7 @@ task copyAndroidLibraryAar(type: Copy) {
 // Copy Unity mediation extras interface to temporary build directory.
 task copyExtrasInterface(type: Copy) {
     from("../../source/plugin/Assets/GoogleMobileAds/Api/Mediation/")
-    into("${pluginBuildDir}/Assets/GoogleMobileAds/Mediation/AdColony/Api/")
+    into("${pluginBuildDir}/Assets/GoogleMobileAdsApi/Mediation/")
     include('MediationExtras.cs')
 }
 
