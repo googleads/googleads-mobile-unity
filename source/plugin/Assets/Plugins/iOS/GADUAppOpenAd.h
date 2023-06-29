@@ -48,6 +48,10 @@
 @property(nonatomic, readonly, copy) GADResponseInfo *responseInfo;
 
 /// Makes an ad request. Additional targeting options can be supplied with a request object.
+- (void)loadWithAdUnitID:(nonnull NSString *)adUnit
+                 request:(nonnull GADRequest *)request;
+
+/// Makes an ad request. Additional targeting options can be supplied with a request object.
 - (void)loadWithAdUnitID:(NSString *)adUnit
              orientation:(GADUScreenOrientation)orientation
                  request:(GADRequest *)request;

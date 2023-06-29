@@ -58,6 +58,107 @@ public class UnityAppOpenAd {
     this.callback = callback;
   }
 
+  public void loadAd(final String adUnitId, final AdRequest request) {
+    activity.runOnUiThread(
+        () ->
+            AppOpenAd.load(
+                activity,
+                adUnitId,
+                request,
+                new AppOpenAdLoadCallback() {
+                  @Override
+                  public void onAdLoaded(@NonNull AppOpenAd ad) {
+                    appOpenAd = ad;
+
+                    appOpenAd.setOnPaidEventListener(
+                        new OnPaidEventListener() {
+                          @Override
+                          public void onPaidEvent(final AdValue adValue) {
+                            runOnNewThread(
+                                () -> {
+                                  if (callback != null) {
+                                    callback.onPaidEvent(
+                                        adValue.getPrecisionType(),
+                                        adValue.getValueMicros(),
+                                        adValue.getCurrencyCode());
+                                  }
+                                });
+                          }
+                        });
+
+                    appOpenAd.setFullScreenContentCallback(
+                        new FullScreenContentCallback() {
+                          @Override
+                          public void onAdFailedToShowFullScreenContent(final AdError error) {
+                            runOnNewThread(
+                                () -> {
+                                  if (callback != null) {
+                                    callback.onAdFailedToShowFullScreenContent(error);
+                                  }
+                                });
+                          }
+
+                          @Override
+                          public void onAdShowedFullScreenContent() {
+                            runOnNewThread(
+                                () -> {
+                                  if (callback != null) {
+                                    callback.onAdShowedFullScreenContent();
+                                  }
+                                });
+                          }
+
+                          @Override
+                          public void onAdDismissedFullScreenContent() {
+                            runOnNewThread(
+                                () -> {
+                                  if (callback != null) {
+                                    callback.onAdDismissedFullScreenContent();
+                                  }
+                                });
+                          }
+
+                          @Override
+                          public void onAdImpression() {
+                            runOnNewThread(
+                                () -> {
+                                  if (callback != null) {
+                                    callback.onAdImpression();
+                                  }
+                                });
+                          }
+
+                          @Override
+                          public void onAdClicked() {
+                            runOnNewThread(
+                                () -> {
+                                  if (callback != null) {
+                                    callback.onAdClicked();
+                                  }
+                                });
+                          }
+                        });
+
+                    runOnNewThread(
+                        () -> {
+                          if (callback != null) {
+                            callback.onAppOpenAdLoaded();
+                          }
+                        });
+                  }
+
+                  @Override
+                  public void onAdFailedToLoad(@NonNull final LoadAdError error) {
+                    runOnNewThread(
+                        () -> {
+                          if (callback != null) {
+                            callback.onAppOpenAdFailedToLoad(error);
+                          }
+                        });
+                  }
+                }));
+  }
+
   public void loadAd(final String adUnitId, final AdRequest request, final int orientation) {
     activity.runOnUiThread(
         new Runnable() {

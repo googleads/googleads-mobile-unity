@@ -924,6 +924,16 @@ void GADULoadAppOpenAd(GADUTypeAppOpenAdRef appOpenAd, const char *adUnitID, int
                               request:[internalRequest request]];
 }
 
+/// Makes an app open ad request.
+void GADULoadAppOpenAdWithAdUnitID(GADUTypeAppOpenAdRef appOpenAd, const char *adUnitID,
+                       GADUTypeRequestRef request) {
+  GADUAppOpenAd *internalAppOpenAd = (__bridge GADUAppOpenAd *)appOpenAd;
+  GADURequest *internalRequest = (__bridge GADURequest *)request;
+
+  [internalAppOpenAd loadWithAdUnitID:GADUStringFromUTF8String(adUnitID)
+                              request:[internalRequest request]];
+}
+
 /// Makes a rewarded interstitial ad request.
 void GADULoadRewardedInterstitialAd(GADUTypeRewardedInterstitialAdRef rewardedInterstitialAd,
                                     const char *adUnitID, GADUTypeRequestRef request) {

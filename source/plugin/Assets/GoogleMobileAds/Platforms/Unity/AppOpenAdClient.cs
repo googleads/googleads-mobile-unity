@@ -84,6 +84,28 @@ namespace GoogleMobileAds.Unity
             // Do nothing.
         }
 
+        public void LoadAd(string adUnitID, AdRequest request)
+        {
+            LoadAndSetPrefabAd(prefabAds[new AdSize(768, 1024)]);
+            if (prefabAd != null)
+            {
+                if(OnAdLoaded != null)
+                {
+                    OnAdLoaded.Invoke(this, EventArgs.Empty);
+                }
+            }
+            else
+            {
+                if(OnAdFailedToLoad != null)
+                {
+                    OnAdFailedToLoad.Invoke(this, new LoadAdErrorClientEventArgs()
+                    {
+                        LoadAdErrorClient = new LoadAdErrorClient()
+                    });
+                }
+            }
+        }
+
         public void LoadAd(string adUnitID, AdRequest request, ScreenOrientation orientation)
         {
             if (Screen.width > Screen.height) // Landscape

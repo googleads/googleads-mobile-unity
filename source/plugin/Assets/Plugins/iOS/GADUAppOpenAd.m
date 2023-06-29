@@ -24,6 +24,40 @@
   return self;
 }
 
+- (void)loadWithAdUnitID:(nonnull NSString *)adUnit
+                 request:(nonnull GADRequest *)request {
+  __weak GADUAppOpenAd *weakSelf = self;
+
+  [GADAppOpenAd loadWithAdUnitID:adUnit
+                         request:request
+               completionHandler:^(GADAppOpenAd *_Nullable appOpenAd, NSError *_Nullable error) {
+                 GADUAppOpenAd *strongSelf = weakSelf;
+                 if (error) {
+                   if (strongSelf.adFailedToLoadCallback) {
+                     _lastLoadError = error;
+                     strongSelf.adFailedToLoadCallback(strongSelf.appOpenAdClient,
+                                                       (__bridge GADUTypeErrorRef)error);
+                   }
+                   return;
+                 }
+                 strongSelf.appOpenAd = appOpenAd;
+                 strongSelf.appOpenAd.fullScreenContentDelegate = strongSelf;
+                 strongSelf.appOpenAd.paidEventHandler = ^void(GADAdValue *_Nonnull adValue) {
+                   GADUAppOpenAd *strongSecondSelf = weakSelf;
+                   if (strongSecondSelf.paidEventCallback) {
+                     int64_t valueInMicros =
+                         [adValue.value decimalNumberByMultiplyingByPowerOf10:6].longLongValue;
+                     strongSecondSelf.paidEventCallback(
+                         strongSecondSelf.appOpenAdClient, (int)adValue.precision, valueInMicros,
+                         [adValue.currencyCode cStringUsingEncoding:NSUTF8StringEncoding]);
+                   }
+                 };
+                 if (strongSelf.adLoadedCallback) {
+                   strongSelf.adLoadedCallback(self.appOpenAdClient);
+                 }
+               }];
+}
+
 - (void)loadWithAdUnitID:(NSString *)adUnit
              orientation:(GADUScreenOrientation)orientation
                  request:(GADRequest *)request {

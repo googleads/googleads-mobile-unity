@@ -75,6 +75,40 @@ namespace GoogleMobileAds.Api
         /// Loads an app open ad.
         /// </summary>
         public static void Load(string adUnitId,
+                                AdRequest request,
+                                Action<AppOpenAd, LoadAdError> adLoadCallback)
+        {
+            if (adLoadCallback == null)
+            {
+                UnityEngine.Debug.LogError("adLoadCallback is null. No ad was loaded.");
+                return;
+            }
+
+            var client = MobileAds.GetClientFactory().BuildAppOpenAdClient();
+            client.CreateAppOpenAd();
+            client.OnAdLoaded += (sender, args) =>
+            {
+                MobileAds.RaiseAction(() =>
+                {
+                    adLoadCallback(new AppOpenAd(client), null);
+                });
+            };
+            client.OnAdFailedToLoad += (sender, args) =>
+            {
+                LoadAdError loadAdError = new LoadAdError(args.LoadAdErrorClient);
+                MobileAds.RaiseAction(() =>
+                {
+                    adLoadCallback(null, loadAdError);
+                });
+            };
+            client.LoadAd(adUnitId, request);
+        }
+
+        /// <summary>
+        /// Loads an app open ad.
+        /// </summary>
+        [Obsolete("Use Load(string, AdRequest, Action<AppOpenAd, LoadAdError>) instead.")]
+        public static void Load(string adUnitId,
                                 ScreenOrientation orientation,
                                 AdRequest request,
                                 Action<AppOpenAd, LoadAdError> adLoadCallback)
