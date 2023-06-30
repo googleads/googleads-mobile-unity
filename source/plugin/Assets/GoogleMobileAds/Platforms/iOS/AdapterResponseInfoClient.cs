@@ -75,7 +75,7 @@ namespace GoogleMobileAds.iOS
         {
             get
             {
-                double latency = Externs.GADUAdapterResponseInfoLatency(_adapterResponseInfoPtr);
+                long latency = Externs.GADUAdapterResponseInfoLatency(_adapterResponseInfoPtr);
                 return Convert.ToInt64(latency * 1000);
             }
         }
