@@ -1,5 +1,11 @@
 Google Mobile Ads Unity Plugin Change Log
 **************
+Version Next
+**************
+
+- Add ApplicationPreferences class and APIs to manage GMA preferences.
+
+**************
 Version 8.4.0
 **************
 

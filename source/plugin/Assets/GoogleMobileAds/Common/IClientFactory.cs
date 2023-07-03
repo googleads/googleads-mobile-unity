@@ -36,6 +36,8 @@ namespace GoogleMobileAds
 
         IRewardedInterstitialAdClient BuildRewardedInterstitialAdClient();
 
+        IApplicationPreferencesClient ApplicationPreferencesInstance();
+
         IMobileAdsClient MobileAdsInstance();
     }
 }

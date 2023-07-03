@@ -63,6 +63,11 @@ namespace GoogleMobileAds
             return new GoogleMobileAds.Unity.RewardedInterstitialAdClient();
         }
 
+        public IApplicationPreferencesClient ApplicationPreferencesInstance()
+        {
+            return new GoogleMobileAds.Unity.ApplicationPreferencesClient();
+        }
+
         public IMobileAdsClient MobileAdsInstance()
         {
             return new GoogleMobileAds.Unity.MobileAdsClient();

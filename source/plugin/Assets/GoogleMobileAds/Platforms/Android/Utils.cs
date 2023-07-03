@@ -135,6 +135,8 @@ namespace GoogleMobileAds.Android
 
         public const string PluginUtilsClassName = "com.google.unity.ads.PluginUtils";
 
+        public const string PreferenceManagerClassName = "android.preference.PreferenceManager";
+
         #endregion
 
         #region Unity class names

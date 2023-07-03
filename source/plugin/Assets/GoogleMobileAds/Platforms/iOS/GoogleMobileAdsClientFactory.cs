@@ -108,6 +108,16 @@ namespace GoogleMobileAds
                                           " on non-iOS runtime");
     }
 
+    public IApplicationPreferencesClient ApplicationPreferencesInstance()
+    {
+      if (Application.platform == RuntimePlatform.IPhonePlayer)
+      {
+        return GoogleMobileAds.iOS.ApplicationPreferencesClient.Instance;
+      }
+      throw new InvalidOperationException(@"Called " + MethodBase.GetCurrentMethod().Name +
+                                          " on non-iOS runtime");
+    }
+
     public IMobileAdsClient MobileAdsInstance()
     {
       if (Application.platform == RuntimePlatform.IPhonePlayer)

@@ -118,6 +118,15 @@ void GADUSetiOSAppPauseOnBackground(BOOL pause) { [GADUPluginUtil setPauseOnBack
 
 float GADUDeviceScale() { return UIScreen.mainScreen.scale; }
 
+void GADUSetUserDefaultsInteger(const char *key, NSInteger value) {
+  [NSUserDefaults.standardUserDefaults setInteger:value forKey:GADUStringFromUTF8String(key)];
+}
+
+void GADUSetUserDefaultsString(const char *key, const char *value) {
+  [NSUserDefaults.standardUserDefaults setObject:GADUStringFromUTF8String(value)
+                                          forKey:GADUStringFromUTF8String(key)];
+}
+
 /// Returns the safe width of the device.
 int GADUDeviceSafeWidth() {
   CGRect screenBounds = [UIScreen mainScreen].bounds;
