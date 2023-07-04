@@ -1,9 +1,4 @@
 Google Mobile Ads Unity Plugin Change Log
-**************
-Version Next
-**************
-
-- Add ApplicationPreferences class and APIs to manage GMA preferences.
 
 **************
 Version 8.4.0
@@ -14,6 +9,7 @@ Version 8.4.0
 - Removed method call logs from showing up in Unity Editor Console.
 - Updated Google Mobile Ads SDK dependency to use v10.7 on iOS.
 - Deprecated ScreenOrientation parameter of the AppOpenAd Load() API. Added AppOpenAd.Load() API for loading AppOpen Ads using ad unit ID, ad request and ad load callbacks.
+- Added ApplicationPreferences API to manage GMA preferences.
 
 Built and tested with:
 - Google Mobile Ads Android SDK 22.1.0
