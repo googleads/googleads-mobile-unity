@@ -7,12 +7,13 @@ Version 8.4.0
 - Fixed [#2757] Rewarded Interstitial events not raising on the main thread.
 - Added support for rendering Ad Manager banner ad.
 - Removed method call logs from showing up in Unity Editor Console.
-- Updated Google Mobile Ads SDK dependency to use v10.7 on iOS.
 - Deprecated ScreenOrientation parameter of the AppOpenAd Load() API. Added AppOpenAd.Load() API for loading AppOpen Ads using ad unit ID, ad request and ad load callbacks.
 - Added ApplicationPreferences API to manage GMA preferences.
+- Updated Google Mobile Ads SDK dependency to use v10.7 on iOS.
+- Updated Google Mobile Ads SDK dependency to use v22.2.0 on Android.
 
 Built and tested with:
-- Google Mobile Ads Android SDK 22.1.0
+- Google Mobile Ads Android SDK 22.2.0
 - Google Mobile Ads iOS SDK 10.7
 - Google User Messaging Platform 2.0.0
 - External Dependency Manager for Unity 1.2.176
