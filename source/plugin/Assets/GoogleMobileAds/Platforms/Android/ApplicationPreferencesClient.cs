@@ -34,10 +34,15 @@ namespace GoogleMobileAds.Android
 
         public void SetInt(string key, int value)
         {
+            // TODO (b/290781398): Move the logic into android-library
+            AndroidJavaClass playerClass = new AndroidJavaClass(Utils.UnityActivityClassName);
+            AndroidJavaObject activity =
+                    playerClass.GetStatic<AndroidJavaObject>("currentActivity");
             AndroidJavaClass preferenceManagerClass =
                     new AndroidJavaClass(Utils.PreferenceManagerClassName);
             AndroidJavaObject sharedPreferences =
-                    preferenceManagerClass.Call<AndroidJavaObject>("getDefaultSharedPreferences");
+                    preferenceManagerClass.CallStatic<AndroidJavaObject>(
+                            "getDefaultSharedPreferences", activity);
             AndroidJavaObject sharedPrefsEditor = sharedPreferences.Call<AndroidJavaObject>("edit");
             sharedPrefsEditor.Call<AndroidJavaObject>("putInt", key, value);
             sharedPrefsEditor.Call("apply");
@@ -45,10 +50,15 @@ namespace GoogleMobileAds.Android
 
         public void SetString(string key, string value)
         {
+            // TODO (b/290781398): Move the logic into android-library
+            AndroidJavaClass playerClass = new AndroidJavaClass(Utils.UnityActivityClassName);
+            AndroidJavaObject activity =
+                    playerClass.GetStatic<AndroidJavaObject>("currentActivity");
             AndroidJavaClass preferenceManagerClass =
                     new AndroidJavaClass(Utils.PreferenceManagerClassName);
             AndroidJavaObject sharedPreferences =
-                    preferenceManagerClass.Call<AndroidJavaObject>("getDefaultSharedPreferences");
+                    preferenceManagerClass.CallStatic<AndroidJavaObject>(
+                            "getDefaultSharedPreferences", activity);
             AndroidJavaObject sharedPrefsEditor = sharedPreferences.Call<AndroidJavaObject>("edit");
             sharedPrefsEditor.Call<AndroidJavaObject>("putString", key, value);
             sharedPrefsEditor.Call("apply");

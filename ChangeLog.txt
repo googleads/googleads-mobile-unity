@@ -1,6 +1,12 @@
 Google Mobile Ads Unity Plugin Change Log
 
 **************
+Version Next
+**************
+
+- Fixed [#2815] Setting ApplicationPreferences on Android.
+
+**************
 Version 8.4.0
 **************
 
