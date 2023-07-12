@@ -1,10 +1,16 @@
 Google Mobile Ads Unity Plugin Change Log
 
 **************
-Version Next
+Version 8.4.1
 **************
 
 - Fixed [#2815] Setting ApplicationPreferences on Android.
+
+Built and tested with:
+- Google Mobile Ads Android SDK 22.2.0
+- Google Mobile Ads iOS SDK 10.7
+- Google User Messaging Platform 2.0.0
+- External Dependency Manager for Unity 1.2.176
 
 **************
 Version 8.4.0
