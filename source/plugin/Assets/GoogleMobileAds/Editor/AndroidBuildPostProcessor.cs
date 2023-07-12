@@ -11,7 +11,7 @@ public static class AndroidBuildPostProcessor
     [PostProcessBuild]
     public static void OnPostProcessBuild(BuildTarget buildTarget, string path)
     {
-        if (GoogleMobileAdsSettings.Instance.GoogleMobileAdsAndroidAppId.Length == 0)
+        if (GoogleMobileAdsSettings.LoadInstance().GoogleMobileAdsAndroidAppId.Length == 0)
         {
             NotifyBuildFailure(
                 "Android Google Mobile Ads app ID is empty. Please enter a valid app ID to run ads properly.");
