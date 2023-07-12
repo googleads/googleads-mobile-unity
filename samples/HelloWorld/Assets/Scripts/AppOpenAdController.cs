@@ -60,8 +60,7 @@ namespace GoogleMobileAds.Sample
             var adRequest = new AdRequest();
 
             // Send the request to load the ad.
-            AppOpenAd.Load(_adUnitId, ScreenOrientation.Portrait, adRequest,
-                (AppOpenAd ad, LoadAdError error) =>
+            AppOpenAd.Load(_adUnitId, adRequest, (AppOpenAd ad, LoadAdError error) =>
                 {
                     // If the operation failed with a reason.
                     if (error != null)
