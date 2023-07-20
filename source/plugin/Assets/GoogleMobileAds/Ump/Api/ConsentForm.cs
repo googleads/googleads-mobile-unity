@@ -66,7 +66,16 @@ namespace GoogleMobileAds.Ump.Api
         /// <param name="onDismissed">Called when the consent form is dismissed. </param>
         public void Show(Action<FormError> onDismissed)
         {
-            _client.Show(onDismissed);
+            _client.Show((FormError error) =>
+            {
+                if (onDismissed != null)
+                {
+                    GoogleMobileAds.Api.MobileAds.RaiseAction(() =>
+                    {
+                        onDismissed(error);
+                    });
+                }
+            });
         }
     }
 }
