@@ -55,7 +55,7 @@ namespace GoogleMobileAds.Mediation.LiftoffMonetize.Android
                     LiftoffMonetizeConsentStatusObject, consentMessageVersion);
         }
 
-        public void UpdateCCPAStatus(LiftoffMonetizeCCPAStatus ccpaStatus)
+        public void UpdateCCPAStatus(VungleCCPAStatus ccpaStatus)
         {
             AndroidJavaObject LiftoffMonetizeCCPAStatusObject =
                     GetCCPAStatusAndroidJavaObject(ccpaStatus);
@@ -68,6 +68,24 @@ namespace GoogleMobileAds.Mediation.LiftoffMonetize.Android
 
             AndroidJavaClass vungle = new AndroidJavaClass(VUNGLE_CLASS_NAME);
             vungle.CallStatic("updateCCPAStatus", LiftoffMonetizeCCPAStatusObject);
+        }
+
+        public void SetGDPRStatus(bool gdprStatus)
+        {
+            MonoBehaviour.print("[LiftoffMonetize Plugin] 'SetGDPRStatus' is a no-op for " +
+                    "Android. Use 'UpdateConsentStatus' instead.");
+        }
+
+        public void SetGDPRMessageVersion(String gdprMessageVersion)
+        {
+            MonoBehaviour.print("[LiftoffMonetize Plugin] 'SetGDPRMessageVersion' is a no-op " +
+                    "for Android. Use 'UpdateConsentStatus' instead.");
+        }
+
+        public void SetCCPAStatus(bool ccpaStatus)
+        {
+            MonoBehaviour.print("[LiftoffMonetize Plugin] 'SetCCPAStatus' is a no-op for " +
+                    "Android. Use 'UpdateCCPAStatus' instead.");
         }
 
         // Private utility methods.
@@ -87,15 +105,15 @@ namespace GoogleMobileAds.Mediation.LiftoffMonetize.Android
         }
 
         private AndroidJavaObject GetCCPAStatusAndroidJavaObject(
-                LiftoffMonetizeCCPAStatus ccpaStatus)
+                VungleCCPAStatus ccpaStatus)
         {
             AndroidJavaClass LiftoffMonetizeCCPAStatusEnum =
                     new AndroidJavaClass(VUNGLE_CONSENT_ENUM_NAME);
             switch (ccpaStatus)
             {
-                case LiftoffMonetizeCCPAStatus.OPTED_IN:
+                case VungleCCPAStatus.OPTED_IN:
                     return LiftoffMonetizeCCPAStatusEnum.GetStatic<AndroidJavaObject>("OPTED_IN");
-                case LiftoffMonetizeCCPAStatus.OPTED_OUT:
+                case VungleCCPAStatus.OPTED_OUT:
                     return LiftoffMonetizeCCPAStatusEnum.GetStatic<AndroidJavaObject>("OPTED_OUT");
                 default:
                     return null;

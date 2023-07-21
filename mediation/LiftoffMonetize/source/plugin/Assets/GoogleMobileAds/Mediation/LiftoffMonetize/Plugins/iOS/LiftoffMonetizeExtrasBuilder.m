@@ -12,31 +12,17 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#import "VungleExtrasBuilder.h"
+#import "LiftoffMonetizeExtrasBuilder.h"
 
-#import <VungleAdapter/VungleAdNetworkExtras.h>
+#import <LiftoffMonetizeAdapter/VungleAdNetworkExtras.h>
 
-@implementation VungleExtrasBuilder
-
-NSString *const AllPlacementsKey = @"all_placements";
+@implementation LiftoffMonetizeExtrasBuilder
 
 NSString *const UserIdKey = @"user_id";
 
-NSString *const SoundEnabledKey = @"sound_enabled";
-
 - (id<GADAdNetworkExtras>)adNetworkExtrasWithDictionary:
     (NSDictionary<NSString *, NSString *> *)extras {
-  NSString *placements = extras[AllPlacementsKey];
-  if (!placements) {
-    return nil;
-  }
   VungleAdNetworkExtras *vungleExtras = [[VungleAdNetworkExtras alloc] init];
-  vungleExtras.allPlacements = [placements componentsSeparatedByString:@","];
-
-  NSString *soundEnabled = extras[SoundEnabledKey];
-  if (soundEnabled) {
-    vungleExtras.muted = ![soundEnabled boolValue];
-  }
 
   NSString *userId = extras[UserIdKey];
   if (userId) {

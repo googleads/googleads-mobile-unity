@@ -12,46 +12,18 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#import <VungleSDK/VungleSDK.h>
+#import <VungleAdsSDK/VungleAdsSDK.h>
 
-#pragma mark - Utility
+#pragma mark - GADUMLiftoffMonetizeInterface implementation
 
-typedef NS_ENUM(NSUInteger, GADUMLiftoffMonetizeConsentStatus) {
-  GADUMLiftoffMonetizeConsentStatusAccepted = 0,
-  GADUMLiftoffMonetizeConsentStatusDenied = 1
-};
-
-typedef NS_ENUM(NSUInteger, GADUMLiftoffMonetizeCCPAStatus) {
-  GADUMLiftoffMonetizeCCPAStatusAccepted = 0,
-  GADUMLiftoffMonetizeCCPAStatusDenied = 1
-};
-
-#pragma mark - GADUMVungleInterface implementation
-
-void GADUMLiftoffMonetizeUpdateConsentStatus(int consentStatus, const char *consentMessageVersion) {
-  switch (consentStatus) {
-    case GADUMLiftoffMonetizeConsentStatusAccepted:
-      [[VungleSDK sharedSDK] updateConsentStatus:VungleConsentAccepted
-                           consentMessageVersion:@(consentMessageVersion)];
-      break;
-    case GADUMLiftoffMonetizeConsentStatusDenied:
-      [[VungleSDK sharedSDK] updateConsentStatus:VungleConsentDenied
-                           consentMessageVersion:@(consentMessageVersion)];
-      break;
-    default:
-      break;
-  }
+void GADUMLiftoffMonetizeSetGDPRStatus(BOOL gdprStatus) {
+  [VunglePrivacySettings setGDPRStatus:gdprStatus];
 }
 
-void GADUMLiftoffMonetizeUpdateCCPAStatus(int ccpaStatus) {
-  switch (ccpaStatus) {
-    case GADUMLiftoffMonetizeCCPAStatusAccepted:
-      [[VungleSDK sharedSDK] updateCCPAStatus:VungleCCPAAccepted];
-      break;
-    case GADUMLiftoffMonetizeCCPAStatusDenied:
-      [[VungleSDK sharedSDK] updateCCPAStatus:VungleCCPADenied];
-      break;
-    default:
-      break;
-  }
+void GADUMLiftoffMonetizeSetGDPRMessageVersion(const char *_Nonnull consentMessageVersion) {
+  [VunglePrivacySettings setGDPRMessageVersion:@(consentMessageVersion)];
+}
+
+void GADUMLiftoffMonetizeSetCCPAStatus(BOOL ccpaStatus) {
+  [VunglePrivacySettings setCCPAStatus:ccpaStatus];
 }

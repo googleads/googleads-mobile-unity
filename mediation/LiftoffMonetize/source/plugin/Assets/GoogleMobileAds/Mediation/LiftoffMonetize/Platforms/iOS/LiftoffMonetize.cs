@@ -38,13 +38,29 @@ namespace GoogleMobileAds.Mediation.LiftoffMonetize.iOS
         public void UpdateConsentStatus(VungleConsentStatus consentStatus,
                                         String consentMessageVersion)
         {
-            Externs.GADUMLiftoffMonetizeUpdateConsentStatus((int)consentStatus,
-                    consentMessageVersion);
+            MonoBehaviour.print("[LiftoffMonetize Plugin] 'UpdateConsentStatus' is a no-op for " +
+                    "iOS. Use 'SetGDPRStatus' or 'SetGDPRMessageVersion' instead.");
         }
 
-        public void UpdateCCPAStatus(LiftoffMonetizeCCPAStatus ccpaStatus)
+        public void UpdateCCPAStatus(VungleCCPAStatus ccpaStatus)
         {
-            Externs.GADUMLiftoffMonetizeUpdateCCPAStatus((int)ccpaStatus);
+            MonoBehaviour.print("[LiftoffMonetize Plugin] 'UpdateCCPAStatus' is a no-op for " +
+                    "iOS. Use 'SetCCPAStatus' instead.");
+        }
+
+        public void SetGDPRStatus(bool gdprStatus)
+        {
+            Externs.GADUMLiftoffMonetizeSetGDPRStatus(gdprStatus);
+        }
+
+        public void SetGDPRMessageVersion(String gdprMessageVersion)
+        {
+            Externs.GADUMLiftoffMonetizeSetGDPRMessageVersion(gdprMessageVersion);
+        }
+
+        public void SetCCPAStatus(bool ccpaStatus)
+        {
+            Externs.GADUMLiftoffMonetizeSetCCPAStatus(ccpaStatus);
         }
     }
 }

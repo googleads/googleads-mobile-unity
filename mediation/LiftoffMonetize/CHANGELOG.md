@@ -4,6 +4,10 @@
 - Rebranded Unity mediation plugin from Vungle to Liftoff Monetize.
 - Moved adapter content to `GoogleMobileAds/Mediation/LiftoffMonetize/`.
 - Refactored adapter namespace to use `GoogleMobileAds.Mediation.LiftoffMonetize`.
+- Added the following methods to the `LiftoffMonetize` class:
+  * `SetGDPRStatus(bool)`
+  * `SetGDPRMessageVersion(String)`
+  * `SetCCPAStatus(bool)`
 - Supports [Liftoff Monetize Android adapter version 6.12.1.1](https://github.com/googleads/googleads-mobile-android-mediation/blob/main/ThirdPartyAdapters/liftoffmonetize/CHANGELOG.md#version-61211).
 - Supports [Liftoff Monetize iOS adapter version 7.0.0.0](https://github.com/googleads/googleads-mobile-ios-mediation/blob/main/adapters/LiftoffMonetize/CHANGELOG.md#version-7000).
 - Built and tested with the Google Mobile Ads Unity Plugin version 8.2.0.

@@ -24,11 +24,14 @@ namespace GoogleMobileAds.Mediation.LiftoffMonetize.iOS
     internal class Externs
     {
         [DllImport("__Internal")]
-        internal static extern void GADUMLiftoffMonetizeUpdateConsentStatus(int consentStatus,
-                                                                    string consentMessageVersion);
+        internal static extern void GADUMLiftoffMonetizeSetGDPRStatus(bool gdprStatus);
 
         [DllImport("__Internal")]
-        internal static extern void GADUMLiftoffMonetizeUpdateCCPAStatus(int ccpaStatus);
+        internal static extern void GADUMLiftoffMonetizeSetGDPRMessageVersion(
+                string consentMessageVersion);
+
+        [DllImport("__Internal")]
+        internal static extern void GADUMLiftoffMonetizeSetCCPAStatus(bool ccpaStatus);
     }
 }
 

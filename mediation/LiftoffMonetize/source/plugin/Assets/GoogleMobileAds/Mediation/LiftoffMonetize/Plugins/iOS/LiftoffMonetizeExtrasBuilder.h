@@ -13,11 +13,10 @@
 // limitations under the License.
 
 #import <Foundation/Foundation.h>
-
 #import <GoogleMobileAds/GoogleMobileAds.h>
 
 #import "GADUAdNetworkExtras.h"
 
-@interface VungleExtrasBuilder : NSObject <GADUAdNetworkExtras>
+@interface LiftoffMonetizeExtrasBuilder : NSObject <GADUAdNetworkExtras>
 
 @end

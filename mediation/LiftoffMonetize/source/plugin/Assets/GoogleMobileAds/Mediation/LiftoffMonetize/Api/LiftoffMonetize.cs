@@ -25,7 +25,7 @@ namespace GoogleMobileAds.Mediation.LiftoffMonetize.Api
         OPTED_OUT = 1
     }
 
-    public enum LiftoffMonetizeCCPAStatus
+    public enum VungleCCPAStatus
     {
         OPTED_IN = 0,
         OPTED_OUT = 1
@@ -42,9 +42,24 @@ namespace GoogleMobileAds.Mediation.LiftoffMonetize.Api
             client.UpdateConsentStatus(consentStatus, consentMessageVersion);
         }
 
-        public static void UpdateCCPAStatus(LiftoffMonetizeCCPAStatus consentStatus)
+        public static void UpdateCCPAStatus(VungleCCPAStatus consentStatus)
         {
             client.UpdateCCPAStatus(consentStatus);
+        }
+
+        public static void SetGDPRStatus(bool gdprStatus)
+        {
+            client.SetGDPRStatus(gdprStatus);
+        }
+
+        public static void SetGDPRMessageVersion(String gdprMessageVersion)
+        {
+            client.SetGDPRMessageVersion(gdprMessageVersion);
+        }
+
+        public static void SetCCPAStatus(bool ccpaStatus)
+        {
+            client.SetCCPAStatus(ccpaStatus);
         }
     }
 }
@@ -59,8 +74,8 @@ namespace GoogleMobileAds.Api.Mediation.LiftoffMonetize
         OPTED_OUT = 1
     }
 
-    [System.Obsolete("Use `GoogleMobileAds.Mediation.LiftoffMonetize.Api.LiftoffMonetizeCCPAStatus` instead.")]
-    public enum LiftoffMonetizeCCPAStatus
+    [System.Obsolete("Use `GoogleMobileAds.Mediation.LiftoffMonetize.Api.VungleCCPAStatus` instead.")]
+    public enum VungleCCPAStatus
     {
         OPTED_IN = 0,
         OPTED_OUT = 1
@@ -77,10 +92,10 @@ namespace GoogleMobileAds.Api.Mediation.LiftoffMonetize
                 consentMessageVersion);
         }
 
-        public static void UpdateCCPAStatus(LiftoffMonetizeCCPAStatus consentStatus)
+        public static void UpdateCCPAStatus(VungleCCPAStatus consentStatus)
         {
             GoogleMobileAds.Mediation.LiftoffMonetize.Api.LiftoffMonetize.UpdateCCPAStatus(
-                (GoogleMobileAds.Mediation.LiftoffMonetize.Api.LiftoffMonetizeCCPAStatus)consentStatus);
+                (GoogleMobileAds.Mediation.LiftoffMonetize.Api.VungleCCPAStatus)consentStatus);
         }
     }
 }
