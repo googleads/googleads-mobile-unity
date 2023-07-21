@@ -23,6 +23,8 @@ namespace GoogleMobileAds.Sample
         private readonly List<string> TEST_DEVICE_IDS = new List<string>
         {
             AdRequest.TestDeviceSimulator,
+            "emulator",
+            "D3008DE61F37216C4657717D479A6463",
             // Add your test device IDs (replace with your own device IDs).
             #if UNITY_IPHONE
                 "96e23e80653bb28980d3f40beb58915c",
@@ -53,9 +55,6 @@ namespace GoogleMobileAds.Sample
             // This behavior should be made consistent with iOS.
             MobileAds.SetiOSAppPauseOnBackground(true);
 
-            // This method will configure the UI events.
-            InitUI();
-
             // This method will redraw the UI.
             // Call it whenever there is a change.
             UpdateUI();
@@ -72,8 +71,8 @@ namespace GoogleMobileAds.Sample
         public void ResetConsentInformation()
         {
             ConsentInformation.Reset();
-            UpdateUI();
             Debug.Log("Consent information has been reset.");
+            UpdateUI();
         }
 
         /// <summary>
@@ -101,8 +100,6 @@ namespace GoogleMobileAds.Sample
                 // OnConsentInformationUpdate
                 (FormError error) =>
                 {
-                    UpdateUI();
-
                     if (error == null)
                     {
                         // The consent information updated successfully.
@@ -116,7 +113,7 @@ namespace GoogleMobileAds.Sample
                         Debug.LogError("Failed to update consent information with error: " +
                                 error.Message);
                     }
-
+                    UpdateUI();
                 });
         }
 
@@ -135,7 +132,6 @@ namespace GoogleMobileAds.Sample
                 // OnConsentFormLoad
                 (ConsentForm form, FormError error) =>
                 {
-                    UpdateUI();
                     if (form != null)
                     {
                         // The consent form was loaded.
@@ -149,6 +145,7 @@ namespace GoogleMobileAds.Sample
                         Debug.LogError("Failed to load consent form with error: " +
                             error == null ? "unknown error" : error.Message);
                     }
+                    UpdateUI();
                 });
         }
 
@@ -163,9 +160,6 @@ namespace GoogleMobileAds.Sample
                  {
                      if (error == null)
                      {
-                         // If the error parameter is null,
-                         // we showed the consent form without error.
-                         UpdateUI();
 
                          // Load another consent form for use later.
                          LoadConsentForm();
@@ -173,27 +167,16 @@ namespace GoogleMobileAds.Sample
                      else
                      {
                          // The consent form failed to show.
-                         UpdateUI();
                          Debug.LogError("Failed to show consent form with error: " +
                                            error.Message);
                      }
+                     UpdateUI();
                  });
         }
 
         #endregion
 
         #region Utility methods
-
-        /// <summary>
-        /// This method will initialize the UI elements.
-        /// </summary>
-        private void InitUI()
-        {
-            BtnResetConsentInformation.onClick.AddListener(ResetConsentInformation);
-            BtnUpdateConsentInformation.onClick.AddListener(UpdateConsentInformation);
-            BtnLoadConsentForm.onClick.AddListener(LoadConsentForm);
-            BtnShowConsentForm.onClick.AddListener(ShowConsentForm);
-        }
 
         /// <summary>
         /// This method will update the UI elements with the newly loaded application state.
