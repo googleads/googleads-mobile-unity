@@ -9,8 +9,8 @@
   * `SetGDPRMessageVersion(String)`
   * `SetCCPAStatus(bool)`
 - Supports [Liftoff Monetize Android adapter version 6.12.1.1](https://github.com/googleads/googleads-mobile-android-mediation/blob/main/ThirdPartyAdapters/liftoffmonetize/CHANGELOG.md#version-61211).
-- Supports [Liftoff Monetize iOS adapter version 7.0.0.0](https://github.com/googleads/googleads-mobile-ios-mediation/blob/main/adapters/LiftoffMonetize/CHANGELOG.md#version-7000).
-- Built and tested with the Google Mobile Ads Unity Plugin version 8.2.0.
+- Supports [Liftoff Monetize iOS adapter version 7.0.1.0](https://github.com/googleads/googleads-mobile-ios-mediation/blob/main/adapters/LiftoffMonetize/CHANGELOG.md#version-7010).
+- Built and tested with the Google Mobile Ads Unity Plugin version 8.4.1.
 
 #### [Version 3.9.2](https://dl.google.com/googleadmobadssdk/mediation/unity/vungle/VungleUnityAdapter-3.9.2.zip)
 - Updated the `Vungle` class:
