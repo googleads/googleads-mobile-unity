@@ -1,6 +1,6 @@
 <dependencies>
   <androidPackages>
-    <androidPackage spec="com.google.android.ump:user-messaging-platform:2.0.0">
+    <androidPackage spec="com.google.android.ump:user-messaging-platform:2.1.0">
       <repositories>
         <repository>https://maven.google.com/</repository>
       </repositories>

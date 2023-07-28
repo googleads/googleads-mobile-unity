@@ -1,6 +1,12 @@
 Google Mobile Ads Unity Plugin Change Log
 
 **************
+Version Next
+**************
+
+- Updated the Android User Messaging Platform dependency version to 2.1.0.
+
+**************
 Version 8.4.1
 **************
 
