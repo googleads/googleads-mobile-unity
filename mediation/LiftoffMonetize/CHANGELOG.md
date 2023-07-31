@@ -1,6 +1,6 @@
 ## Vungle Unity Mediation Plugin Changelog
 
-#### Version 4.0.0 (In Progress)
+#### [Version 4.0.0](https://dl.google.com/googleadmobadssdk/mediation/unity/liftoffmonetize/LiftoffMonetizeUnityAdapter-4.0.0.zip)
 - Rebranded Unity mediation plugin from Vungle to Liftoff Monetize.
 - Moved adapter content to `GoogleMobileAds/Mediation/LiftoffMonetize/`.
 - Refactored adapter namespace to use `GoogleMobileAds.Mediation.LiftoffMonetize`.
