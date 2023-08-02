@@ -9,14 +9,11 @@ EditorBuildSettings:
     path: Assets/Scenes/GoogleMobileAdsScene.unity
     guid: 1de1a74c0b30d4d2f8ed4cd020ce61c8
   - enabled: 1
-    path: Assets/Scenes/GoogleUmpScene.unity
-    guid: 519bac61a0bdc4f9499da1e60252500d
+    path: Assets/Scenes/GoogleAppOpenAdScene.unity
+    guid: 96a30099f000b431c89175db943e4bb5
   - enabled: 1
     path: Assets/Scenes/GoogleBannerViewScene.unity
     guid: 45a43bb05372041729f7acb6c61ab2fc
-  - enabled: 1
-    path: Assets/Scenes/GoogleAppOpenAdScene.unity
-    guid: 96a30099f000b431c89175db943e4bb5
   - enabled: 1
     path: Assets/Scenes/GoogleInterstitialAdScene.unity
     guid: 0de950eca967a4139982e75645f80544
