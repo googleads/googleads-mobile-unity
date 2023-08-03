@@ -36,5 +36,19 @@ namespace GoogleMobileAds.Ump.Common
         /// </summary>
         /// <param name="onDismissed">Called when the consent form is dismissed. </param>
         void Show(Action<FormError> onDismissed);
+
+        /// <summary>
+        /// Load and show the consent form when the user consent is required but not yet obtained.
+        /// <param name="onDismissed">The listener that gets called when the consent form is
+        /// dismissed or fails to show.</param>
+        /// </summary>
+        void LoadAndShowConsentFormIfRequired(Action<FormError> onDismissed);
+
+        /// <summary>
+        /// Show the privacy options form when the privacy options are required.
+        /// <param name="onDismissed">The listener that gets called when the privacy options form
+        /// is dismissed or fails to show.</param>
+        /// </summary>
+        void ShowPrivacyOptionsForm(Action<FormError> onDismissed);
     }
 }

@@ -57,6 +57,18 @@ namespace GoogleMobileAds.Ump.Api
         }
 
         /// <summary>
+        /// Privacy options requirement status.
+        /// </summary>
+        public static PrivacyOptionsRequirementStatus PrivacyOptionsRequirementStatus
+        {
+            get
+            {
+                IConsentInformationClient client = ClientFactory.ConsentInformationClient();
+                return (PrivacyOptionsRequirementStatus)client.GetPrivacyOptionsRequirementStatus();
+            }
+        }
+
+        /// <summary>
         /// Requests consent information update.
         /// </summary>
         /// <param name="request">The request params.</param>
@@ -86,6 +98,15 @@ namespace GoogleMobileAds.Ump.Api
                     });
                 }
             });
+        }
+
+        /// <summary>
+        /// Check if the app has finished all the required consent flow and can request ads now.
+        /// </summary>
+        public static bool CanRequestAds()
+        {
+            IConsentInformationClient client = ClientFactory.ConsentInformationClient();
+            return client.CanRequestAds();
         }
 
         /// <summary>

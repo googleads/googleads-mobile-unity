@@ -107,6 +107,23 @@ namespace GoogleMobileAds.Ump.Android
         }
 
         /// <summary>
+        /// Get the privacy options requirement status.
+        /// </summary>
+        public int GetPrivacyOptionsRequirementStatus()
+        {
+            return 0; // Placeholder value until implemented.
+        }
+
+        /// <summary>
+        /// Check if the app has finished all the required consent flow and can request ads now.
+        /// A return value of true means the app can request ads now.
+        /// </summary>
+        public bool CanRequestAds()
+        {
+            return true; // Placeholder value until implemented.
+        }
+
+        /// <summary>
         /// Returns <c>true</c> if a <see cref="GoogleMobileAds.Ump.Api.ConsentForm">
         /// ConsentForm</see> is available, <c>false</c> otherwise.
         /// </summary>
