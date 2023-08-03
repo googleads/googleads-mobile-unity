@@ -111,7 +111,12 @@ namespace GoogleMobileAds.Ump.Android
         /// </summary>
         public int GetPrivacyOptionsRequirementStatus()
         {
-            return 0; // Placeholder value until implemented.
+            if (Application.platform == RuntimePlatform.Android)
+            {
+                return _consentInformation.Call<int>("getPrivacyOptionsRequirementStatus");
+            }
+            throw new InvalidOperationException(@"Called " + MethodBase.GetCurrentMethod().Name +
+                                                " on non-Android runtime");
         }
 
         /// <summary>
@@ -120,7 +125,12 @@ namespace GoogleMobileAds.Ump.Android
         /// </summary>
         public bool CanRequestAds()
         {
-            return true; // Placeholder value until implemented.
+            if (Application.platform == RuntimePlatform.Android)
+            {
+                return _consentInformation.Call<bool>("canRequestAds");
+            }
+            throw new InvalidOperationException(@"Called " + MethodBase.GetCurrentMethod().Name +
+                                                " on non-Android runtime");
         }
 
         /// <summary>

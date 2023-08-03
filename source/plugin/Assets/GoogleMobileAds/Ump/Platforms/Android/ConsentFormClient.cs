@@ -78,8 +78,8 @@ namespace GoogleMobileAds.Ump.Android
                     }
                     catch (Exception e)
                     {
-                        // Logging a message as the user won't be able to see any callbacks
-                        // fired if there is an error.
+                        // Logging a message as the user won't be able to see any callbacks fired if
+                        // there is an error.
                         Debug.LogError("Error calling loadConsentForm: " + e.StackTrace);
                     }
                 }));
@@ -104,8 +104,8 @@ namespace GoogleMobileAds.Ump.Android
                     }
                     catch (Exception e)
                     {
-                        // Logging a message as the user won't be able to see any callbacks
-                        // fired if there is an error.
+                        // Logging a message as the user won't be able to see any callbacks fired if
+                        // there is an error.
                         Debug.LogError("Error calling show: " + e.StackTrace);
                     }
                 }));
@@ -114,17 +114,60 @@ namespace GoogleMobileAds.Ump.Android
 
         /// <summary>
         /// Load and show the consent form when the user consent is required but not yet obtained.
-        /// <param name="onDismissed"> The listener that gets called when the consent form is
-        /// dismissed or fails to show. </param>
+        /// <param name="onDismissed">The listener that gets called when the consent form is
+        /// dismissed or fails to show.</param>
         /// </summary>
-        public void LoadAndShowConsentFormIfRequired(Action<FormError> onDismissed) {}
+        public void LoadAndShowConsentFormIfRequired(Action<FormError> onDismissed)
+        {
+            _onDismissed = new OnConsentFormDismissedListener(onDismissed);
+
+            if (Application.platform == RuntimePlatform.Android)
+            {
+                _activity.Call("runOnUiThread", new AndroidJavaRunnable(() =>
+                {
+                    try
+                    {
+                        _userMessagingPlatformClass.CallStatic("loadAndShowConsentFormIfRequired",
+                                                               _activity, _onDismissed);
+                    }
+                    catch (Exception e)
+                    {
+                        // Logging a message as the user won't be able to see any callbacks fired if
+                        // there is an error.
+                        Debug.LogError("Error calling loadAndShowConsentFormIfRequired: " +
+                                       e.Message);
+                    }
+                }));
+            }
+        }
 
         /// <summary>
         /// Show the privacy options form when the privacy options are required.
-        /// <param name="onDismissed"> The listener that gets called when the privacy options form
-        /// is dismissed or fails to show. </param>
+        /// <param name="onDismissed">The listener that gets called when the privacy options form is
+        /// dismissed or fails to show.</param>
         /// </summary>
-        public void ShowPrivacyOptionsForm(Action<FormError> onDismissed) {}
+        public void ShowPrivacyOptionsForm(Action<FormError> onDismissed)
+        {
+            _onDismissed = new OnConsentFormDismissedListener(onDismissed);
+
+            if (Application.platform == RuntimePlatform.Android)
+            {
+                _activity.Call("runOnUiThread", new AndroidJavaRunnable(() =>
+                {
+                    try
+                    {
+                        _userMessagingPlatformClass.CallStatic("showPrivacyOptionsForm",
+                                                               _activity, _onDismissed);
+                    }
+                    catch (Exception e)
+                    {
+                        // Logging a message as the user won't be able to see any callbacks fired if
+                        // there is an error.
+                        Debug.LogError("Error calling showPrivacyOptionsForm: " + e.Message);
+                    }
+                }));
+            }
+        }
     }
 }
 #endif
