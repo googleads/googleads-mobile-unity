@@ -35,6 +35,9 @@ public class ManifestProcessor : IPreprocessBuild
     private const string MANIFEST_RELATIVE_PATH =
             "Plugins/Android/GoogleMobileAdsPlugin.androidlib/AndroidManifest.xml";
 
+    private const string PROPERTIES_RELATIVE_PATH =
+            "Plugins/Android/GoogleMobileAdsPlugin.androidlib/project.properties";
+
     private const string METADATA_APPLICATION_ID  =
             "com.google.android.gms.ads.APPLICATION_ID";
 
@@ -57,8 +60,25 @@ public class ManifestProcessor : IPreprocessBuild
     public void OnPreprocessBuild(BuildTarget target, string path)
 #endif
     {
-        string manifestPath = Path.Combine(
-                Application.dataPath, MANIFEST_RELATIVE_PATH);
+        string manifestPath = Path.Combine(Application.dataPath, MANIFEST_RELATIVE_PATH);
+        string propertiesPath = Path.Combine(Application.dataPath, PROPERTIES_RELATIVE_PATH);
+
+        /*
+         * Handle importing GMA via Unity Package Manager.
+         */
+        EditorPathUtils pathUtils =
+            ScriptableObject.CreateInstance<EditorPathUtils>();
+        if (pathUtils.IsPackageRootPath())
+        {
+            // pathUtils.GetParentDirectoryAssetPath() returns "Packages/.../GoogleMobileAds" but
+            // Plugins is at the same level of GoogleMobileAds so we go up one directory before
+            // appending MANIFEST_RELATIVE_PATH.
+            string packagesPathPrefix =
+                    Path.GetDirectoryName(pathUtils.GetParentDirectoryAssetPath());
+            manifestPath = Path.Combine(packagesPathPrefix, MANIFEST_RELATIVE_PATH);
+            propertiesPath = Path.Combine(packagesPathPrefix, PROPERTIES_RELATIVE_PATH);
+        }
+
         if (AssetDatabase.IsValidFolder("Packages/com.google.ads.mobile"))
         {
             manifestPath = Path.Combine("Packages/com.google.ads.mobile", MANIFEST_RELATIVE_PATH);
@@ -121,6 +141,25 @@ public class ManifestProcessor : IPreprocessBuild
                            instance.OptimizeAdLoading);
 
         elemManifest.Save(manifestPath);
+
+        // If GMA is imported via Unity Package Manager, we need to make sure that the
+        // AndroidManifest.xml and project.properties files exist under Assets. Otherwise Unity
+        // will ignore the AndroidManifest.xml.
+        if (!AssetDatabase.IsValidFolder("Assets/Plugins"))
+        {
+            AssetDatabase.CreateFolder("Assets", "Plugins");
+        }
+        if (!AssetDatabase.IsValidFolder("Assets/Plugins/Android"))
+        {
+            AssetDatabase.CreateFolder("Assets/Plugins", "Android");
+        }
+        if (!AssetDatabase.IsValidFolder("Assets/Plugins/Android/GoogleMobileAdsPlugin.androidlib"))
+        {
+            AssetDatabase.CreateFolder("Assets/Plugins/Android",
+                                       "GoogleMobileAdsPlugin.androidlib");
+        }
+        AssetDatabase.CopyAsset(manifestPath, "Assets/" + MANIFEST_RELATIVE_PATH);
+        AssetDatabase.CopyAsset(propertiesPath, "Assets/" + PROPERTIES_RELATIVE_PATH);
     }
 
     private XElement CreateMetaElement(string name, object value)
