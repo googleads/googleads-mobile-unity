@@ -25,8 +25,8 @@ namespace GoogleMobileAds.Ump.Unity
     {
         internal const int ErrorCode = 7; // Form is unavailable.
         internal const string ErrorMessage = "Form not found!";
-        internal GameObject _prefabForm;
-        internal GameObject _placeholderForm;
+        internal static GameObject _prefabForm;
+        internal static GameObject _placeholderForm;
         private static readonly PlaceholderFormBehaviour _formBehaviour =
                 new GameObject().AddComponent<PlaceholderFormBehaviour>();
         private ButtonBehaviour _buttonBehaviour;
@@ -80,17 +80,29 @@ namespace GoogleMobileAds.Ump.Unity
 
         /// <summary>
         /// Load and show the consent form when the user consent is required but not yet obtained.
-        /// <param name="onDismissed"> The listener that gets called when the consent form is
-        /// dismissed or fails to show. </param>
+        /// <param name="onDismissed">The listener that gets called when the consent form is
+        /// dismissed or fails to show.</param>
         /// </summary>
-        public void LoadAndShowConsentFormIfRequired(Action<FormError> onDismissed) {}
+        public void LoadAndShowConsentFormIfRequired(Action<FormError> onDismissed)
+        {
+            if (ConsentInformationClient.Instance.CanRequestAds())
+            {
+                onDismissed(null);
+                return;
+            }
+            Load(() => {}, (FormError error) => {});
+            Show(onDismissed);
+        }
 
         /// <summary>
         /// Show the privacy option form when the privacy options are required.
         /// <param name="onDismissed">The listener that gets called when the privacy options form is
-        /// dismissed or fails to show. </param>
+        /// dismissed or fails to show.</param>
         /// </summary>
-        public void ShowPrivacyOptionsForm(Action<FormError> onDismissed) {}
+        public void ShowPrivacyOptionsForm(Action<FormError> onDismissed)
+        {
+            Show(onDismissed);
+        }
 
         /// <summary>
         /// Adds <see cref="Button.ButtonClickedEvent"/> to the Consent button.

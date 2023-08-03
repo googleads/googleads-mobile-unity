@@ -107,7 +107,7 @@ namespace GoogleMobileAds.Ump.Unity
         /// </summary>
         public int GetPrivacyOptionsRequirementStatus()
         {
-            return 0; // Placeholder value until implemented.
+            return (int)PrivacyOptionsRequirementStatus.Required;
         }
 
         /// <summary>
@@ -116,7 +116,9 @@ namespace GoogleMobileAds.Ump.Unity
         /// </summary>
         public bool CanRequestAds()
         {
-            return true; // Placeholder value until implemented.
+            ConsentStatus consentStatus = (ConsentStatus)GetConsentStatus();
+            return consentStatus == ConsentStatus.NotRequired ||
+                   consentStatus == ConsentStatus.Obtained;
         }
 
         /// <summary>
