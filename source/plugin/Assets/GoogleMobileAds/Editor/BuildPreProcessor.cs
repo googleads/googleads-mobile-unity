@@ -1,5 +1,7 @@
 using System;
+using System.IO;
 using UnityEditor;
+using UnityEngine;
 using UnityEditor.Build;
 #if UNITY_2018_1_OR_NEWER
 using UnityEditor.Build.Reporting;
@@ -28,9 +30,20 @@ public class BuildPreProcessor : IPreprocessBuild
             AssetDatabase.CreateFolder("Assets", "GoogleMobileAds");
         }
 
-        if (AssetDatabase.IsValidFolder("Packages/com.google.ads.mobile"))
+        /*
+         * Handle importing GMA via Unity Package Manager.
+         */
+        EditorPathUtils pathUtils = ScriptableObject.CreateInstance<EditorPathUtils>();
+        if (pathUtils.IsPackageRootPath())
         {
-            AssetDatabase.CopyAsset("Packages/com.google.ads.mobile/GoogleMobileAds/link.xml", "Assets/GoogleMobileAds/link.xml");
+            string parentDirectoryPath = pathUtils.GetParentDirectoryAssetPath();
+            string linkXmlPath = Path.Combine(parentDirectoryPath, "link.xml");
+
+            /*
+             * Copy link.xml to Assets/GoogleMobileAds to ensure all platform dependent libraries
+             * are included in the build.
+             */
+            AssetDatabase.CopyAsset(linkXmlPath, "Assets/GoogleMobileAds/link.xml");
         }
     }
 }
