@@ -24,12 +24,19 @@ using UnityEngine;
 public class EditorPathUtils : ScriptableObject
 {
     /*
+     * Returns the asset path of EditorPathUtils.cs
+     */
+    private String GetFilePath()
+    {
+        return AssetDatabase.GetAssetPath(MonoScript.FromScriptableObject(this));
+    }
+
+    /*
      * Returns the asset directory path of EditorPathUtils.cs
      */
     public String GetDirectoryAssetPath()
     {
-        return Path.GetDirectoryName(
-            AssetDatabase.GetAssetPath(MonoScript.FromScriptableObject(this)));
+        return Path.GetDirectoryName(GetFilePath());
     }
 
     /*
