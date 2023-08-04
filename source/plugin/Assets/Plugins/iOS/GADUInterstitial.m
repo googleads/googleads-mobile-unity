@@ -8,7 +8,6 @@
 #import "GADUPluginUtil.h"
 #import "UnityInterface.h"
 
-
 @interface GADUInterstitial () <GADFullScreenContentDelegate>
 @end
 
@@ -33,6 +32,9 @@
                 request:request
       completionHandler:^(GADInterstitialAd *_Nullable interstitialAd, NSError *_Nullable error) {
         GADUInterstitial *strongSelf = weakSelf;
+        if (!strongSelf) {
+          return;
+        }
         if (error || !interstitialAd) {
           if (strongSelf.adFailedToLoadCallback) {
             _lastLoadError = error;
@@ -45,6 +47,9 @@
         strongSelf.interstitialAd.fullScreenContentDelegate = strongSelf;
         strongSelf.interstitialAd.paidEventHandler = ^void(GADAdValue *_Nonnull adValue) {
           GADUInterstitial *strongSecondSelf = weakSelf;
+          if (!strongSecondSelf) {
+            return;
+          }
           if (strongSecondSelf.paidEventCallback) {
             int64_t valueInMicros =
                 [adValue.value decimalNumberByMultiplyingByPowerOf10:6].longLongValue;
@@ -90,9 +95,10 @@
 
 - (void)adDidDismissFullScreenContent:(nonnull id<GADFullScreenPresentingAd>)ad {
   extern bool _didResignActive;
-  if(_didResignActive) {
-    // We are in the middle of the shutdown sequence, and at this point unity runtime is already destroyed.
-    // We shall not call unity API, and definitely not script callbacks, so nothing to do here
+  if (_didResignActive) {
+    // We are in the middle of the shutdown sequence, and at this point unity runtime is already
+    // destroyed. We shall not call unity API, and definitely not script callbacks, so nothing to do
+    // here
     return;
   }
   if (UnityIsPaused()) {

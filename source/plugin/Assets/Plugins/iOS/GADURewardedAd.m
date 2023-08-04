@@ -31,6 +31,9 @@
                           request:request
                 completionHandler:^(GADRewardedAd *_Nullable rewardedAd, NSError *_Nullable error) {
                   GADURewardedAd *strongSelf = weakSelf;
+                  if (!strongSelf) {
+                    return;
+                  }
                   if (error || !rewardedAd) {
                     if (strongSelf.adFailedToLoadCallback) {
                       _lastLoadError = error;
@@ -43,6 +46,9 @@
                   rewardedAd.fullScreenContentDelegate = strongSelf;
                   rewardedAd.paidEventHandler = ^void(GADAdValue *_Nonnull adValue) {
                     GADURewardedAd *strongSecondSelf = weakSelf;
+                    if (!strongSecondSelf) {
+                      return;
+                    }
                     if (strongSecondSelf.paidEventCallback) {
                       int64_t valueInMicros =
                           [adValue.value decimalNumberByMultiplyingByPowerOf10:6].longLongValue;
@@ -65,6 +71,9 @@
       presentFromRootViewController:unityController
            userDidEarnRewardHandler:^void() {
              GADURewardedAd *strongSelf = weakSelf;
+             if (!strongSelf) {
+               return;
+             }
              if (strongSelf.didEarnRewardCallback) {
                strongSelf.didEarnRewardCallback(
                    strongSelf.rewardedAdClient,
@@ -115,7 +124,7 @@
 
 - (void)adDidDismissFullScreenContent:(nonnull id<GADFullScreenPresentingAd>)ad {
   extern bool _didResignActive;
-  if(_didResignActive) {
+  if (_didResignActive) {
     // We are in the middle of the shutdown sequence, and at this point unity runtime is already
     // destroyed. We shall not call unity API, and definitely not script callbacks, so nothing to do
     // here

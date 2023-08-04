@@ -34,11 +34,14 @@
       completionHandler:^(GADRewardedInterstitialAd *_Nullable rewardedInterstitialAd,
                           NSError *_Nullable error) {
         GADURewardedInterstitialAd *strongSelf = weakSelf;
+        if (!strongSelf) {
+          return;
+        }
         if (error || !rewardedInterstitialAd) {
           if (strongSelf.adFailedToLoadCallback) {
             _lastLoadError = error;
-            strongSelf.adFailedToLoadCallback(
-                strongSelf.rewardedInterstitialAdClient, (__bridge GADUTypeErrorRef)error);
+            strongSelf.adFailedToLoadCallback(strongSelf.rewardedInterstitialAdClient,
+                                              (__bridge GADUTypeErrorRef)error);
           }
           return;
         }
@@ -46,6 +49,9 @@
         strongSelf.rewardedInterstitialAd.fullScreenContentDelegate = strongSelf;
         strongSelf.rewardedInterstitialAd.paidEventHandler = ^void(GADAdValue *_Nonnull adValue) {
           GADURewardedInterstitialAd *strongSecondSelf = weakSelf;
+          if (!strongSecondSelf) {
+            return;
+          }
           if (strongSecondSelf.paidEventCallback) {
             int64_t valueInMicros =
                 [adValue.value decimalNumberByMultiplyingByPowerOf10:6].longLongValue;
@@ -68,6 +74,9 @@
       presentFromRootViewController:unityController
            userDidEarnRewardHandler:^void() {
              GADURewardedInterstitialAd *strongSelf = weakSelf;
+             if (!strongSelf) {
+               return;
+             }
              if (strongSelf.didEarnRewardCallback) {
                strongSelf.didEarnRewardCallback(
                    strongSelf.rewardedInterstitialAdClient,
@@ -92,9 +101,8 @@
     didFailToPresentFullScreenContentWithError:(nonnull NSError *)error {
   if (self.adFailedToPresentFullScreenContentCallback) {
     _lastPresentError = error;
-    self.adFailedToPresentFullScreenContentCallback(
-        self.rewardedInterstitialAdClient,
-        (__bridge GADUTypeErrorRef)error);
+    self.adFailedToPresentFullScreenContentCallback(self.rewardedInterstitialAdClient,
+                                                    (__bridge GADUTypeErrorRef)error);
   }
 }
 
@@ -109,9 +117,10 @@
 
 - (void)adDidDismissFullScreenContent:(nonnull id<GADFullScreenPresentingAd>)ad {
   extern bool _didResignActive;
-  if(_didResignActive) {
-    // We are in the middle of the shutdown sequence, and at this point unity runtime is already destroyed.
-    // We shall not call unity API, and definitely not script callbacks, so nothing to do here
+  if (_didResignActive) {
+    // We are in the middle of the shutdown sequence, and at this point unity runtime is already
+    // destroyed. We shall not call unity API, and definitely not script callbacks, so nothing to do
+    // here
     return;
   }
   if (UnityIsPaused()) {
