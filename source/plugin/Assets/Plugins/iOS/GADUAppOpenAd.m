@@ -24,14 +24,16 @@
   return self;
 }
 
-- (void)loadWithAdUnitID:(nonnull NSString *)adUnit
-                 request:(nonnull GADRequest *)request {
+- (void)loadWithAdUnitID:(nonnull NSString *)adUnit request:(nonnull GADRequest *)request {
   __weak GADUAppOpenAd *weakSelf = self;
 
   [GADAppOpenAd loadWithAdUnitID:adUnit
                          request:request
                completionHandler:^(GADAppOpenAd *_Nullable appOpenAd, NSError *_Nullable error) {
                  GADUAppOpenAd *strongSelf = weakSelf;
+                 if (!strongSelf) {
+                   return;
+                 }
                  if (error) {
                    if (strongSelf.adFailedToLoadCallback) {
                      _lastLoadError = error;
@@ -44,6 +46,9 @@
                  strongSelf.appOpenAd.fullScreenContentDelegate = strongSelf;
                  strongSelf.appOpenAd.paidEventHandler = ^void(GADAdValue *_Nonnull adValue) {
                    GADUAppOpenAd *strongSecondSelf = weakSelf;
+                   if (!strongSecondSelf) {
+                     return;
+                   }
                    if (strongSecondSelf.paidEventCallback) {
                      int64_t valueInMicros =
                          [adValue.value decimalNumberByMultiplyingByPowerOf10:6].longLongValue;
@@ -71,6 +76,9 @@
                      orientation:uiOrientation
                completionHandler:^(GADAppOpenAd *_Nullable appOpenAd, NSError *_Nullable error) {
                  GADUAppOpenAd *strongSelf = weakSelf;
+                 if (!strongSelf) {
+                   return;
+                 }
                  if (error) {
                    if (strongSelf.adFailedToLoadCallback) {
                      _lastLoadError = error;
@@ -83,6 +91,9 @@
                  strongSelf.appOpenAd.fullScreenContentDelegate = strongSelf;
                  strongSelf.appOpenAd.paidEventHandler = ^void(GADAdValue *_Nonnull adValue) {
                    GADUAppOpenAd *strongSecondSelf = weakSelf;
+                   if (!strongSecondSelf) {
+                     return;
+                   }
                    if (strongSecondSelf.paidEventCallback) {
                      int64_t valueInMicros =
                          [adValue.value decimalNumberByMultiplyingByPowerOf10:6].longLongValue;

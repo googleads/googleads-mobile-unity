@@ -150,6 +150,9 @@
   __weak GADUBanner *weakSelf = self;
   _bannerView.paidEventHandler = ^void(GADAdValue *_Nonnull adValue) {
     GADUBanner *strongSelf = weakSelf;
+    if (!strongSelf) {
+      return;
+    }
     if (strongSelf.paidEventCallback) {
       int64_t valueInMicros = [adValue.value decimalNumberByMultiplyingByPowerOf10:6].longLongValue;
       strongSelf.paidEventCallback(
