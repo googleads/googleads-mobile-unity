@@ -47,6 +47,11 @@ namespace GoogleMobileAds.Api
             }
         }
 
+        static MobileAds()
+        {
+            SetUnityMainThreadSynchronizationContext();
+        }
+
         private readonly IMobileAdsClient client = GetMobileAdsClient();
 
         private static IClientFactory clientFactory;
@@ -55,7 +60,6 @@ namespace GoogleMobileAds.Api
         private static SynchronizationContext _synchronizationContext;
 
         private static int _unityMainThreadId;
-
 
         private static MobileAds instance;
 
@@ -93,12 +97,6 @@ namespace GoogleMobileAds.Api
         /// </param>
         public static void Initialize(Action<InitializationStatus> initCompleteAction)
         {
-            // Cache the Threading variables for RaiseAdEventsOnUnityMainThread.
-            // This assumes Initialize() is called from the Unity main thread.
-            // SynchronizationContext.Current is null if initialized from a background thread.
-            _synchronizationContext = SynchronizationContext.Current;
-            _unityMainThreadId = Thread.CurrentThread.ManagedThreadId;
-
             Instance.client.Initialize((initStatusClient) =>
             {
                 RaiseAction(() =>
@@ -274,6 +272,17 @@ namespace GoogleMobileAds.Api
             {
                 action();
             }, action);
+        }
+
+        /// <summary>
+        /// Sets the SynchronizationContext used for RaiseAdEventsOnUnityMainThread.
+        /// </summary>
+        internal static void SetUnityMainThreadSynchronizationContext()
+        {
+            // Cache the Threading variables for RaiseAdEventsOnUnityMainThread.
+            // SynchronizationContext.Current is null if initialized from a background thread.
+            _synchronizationContext = SynchronizationContext.Current;
+            _unityMainThreadId = Thread.CurrentThread.ManagedThreadId;
         }
 
         private static IMobileAdsClient GetMobileAdsClient()
