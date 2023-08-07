@@ -75,20 +75,6 @@ namespace GoogleMobileAds.Ump.iOS
         }
 
         /// <summary>
-        /// Load and show the consent form when the user consent is required but not yet obtained.
-        /// <param name="onDismissed"> The listener that gets called when the consent form
-        /// is dismissed or fails to show. </param>
-        /// </summary>
-        public void LoadAndShowConsentFormIfRequired(Action<FormError> onDismissed) {}
-
-        /// <summary>
-        /// Show the privacy option form when the privacy options are required.
-        /// <param name="onDismissed"> The listener that gets called when the consent form is
-        /// dismissed or fails to show. </param>
-        /// </summary>
-        public void ShowPrivacyOptionsForm(Action<FormError> onDismissed) {}
-
-        /// <summary>
         /// Shows the consent form.
         /// <param name="onDismissed">Called when the consent form is dismissed. </param>
         /// </summary>
@@ -98,6 +84,36 @@ namespace GoogleMobileAds.Ump.iOS
             if (Application.platform == RuntimePlatform.IPhonePlayer)
             {
                 Externs.GADUPresentConsentForm(_consentForm,
+                        ConsentFormPresentCompletionHandler);
+            }
+        }
+
+        /// <summary>
+        /// Load and show the consent form when the user consent is required but not yet obtained.
+        /// <param name="onDismissed">The listener that gets called when the consent form is
+        /// dismissed or fails to show.</param>
+        /// </summary>
+        public void LoadAndShowConsentFormIfRequired(Action<FormError> onDismissed)
+        {
+            _consentFormDismissedAction = onDismissed;
+            if (Application.platform == RuntimePlatform.IPhonePlayer)
+            {
+                Externs.GADULoadAndPresentConsentForm(_consentForm,
+                        ConsentFormPresentCompletionHandler);
+            }
+        }
+
+        /// <summary>
+        /// Show the privacy option form when the privacy options are required.
+        /// <param name="onDismissed">The listener that gets called when the consent form is
+        /// dismissed or fails to show.</param>
+        /// </summary>
+        public void ShowPrivacyOptionsForm(Action<FormError> onDismissed)
+        {
+            _consentFormDismissedAction = onDismissed;
+            if (Application.platform == RuntimePlatform.IPhonePlayer)
+            {
+                Externs.GADUPresentPrivacyOptionsForm(_consentForm,
                         ConsentFormPresentCompletionHandler);
             }
         }

@@ -4,6 +4,7 @@
 #import <UserMessagingPlatform/UMPConsentInformation.h>
 
 #import "GADUDebugSettings.h"
+#import "GADUDispatch.h"
 #import "GADUPluginUtil.h"
 #import "GADURequestParameters.h"
 #import "UnityInterface.h"
@@ -25,11 +26,54 @@
 }
 
 - (GADUConsentStatus)consentStatus {
-  return (GADUConsentStatus)UMPConsentInformation.sharedInstance.consentStatus;
+  __block GADUConsentStatus status;
+  if (NSThread.isMainThread) {
+    status = (GADUConsentStatus)UMPConsentInformation.sharedInstance.consentStatus;
+  } else {
+    dispatch_sync(dispatch_get_main_queue(), ^{
+      status = (GADUConsentStatus)UMPConsentInformation.sharedInstance.consentStatus;
+    });
+  }
+  return status;
+}
+
+- (BOOL)canRequestAds {
+  __block BOOL status;
+  if (NSThread.isMainThread) {
+    status = UMPConsentInformation.sharedInstance.canRequestAds;
+  } else {
+    dispatch_sync(dispatch_get_main_queue(), ^{
+      status = UMPConsentInformation.sharedInstance.canRequestAds;
+    });
+  }
+  return status;
+}
+
+- (GADUPrivacyOptionsRequirementStatus)privacyOptionsRequirementStatus {
+  __block GADUPrivacyOptionsRequirementStatus status;
+  if (NSThread.isMainThread) {
+    status =
+        (GADUPrivacyOptionsRequirementStatus)[UMPConsentInformation
+                                                  .sharedInstance privacyOptionsRequirementStatus];
+  } else {
+    dispatch_sync(dispatch_get_main_queue(), ^{
+      status = (GADUPrivacyOptionsRequirementStatus)[UMPConsentInformation.sharedInstance
+                                                         privacyOptionsRequirementStatus];
+    });
+  }
+  return status;
 }
 
 - (BOOL)isConsentFormAvailable {
-  return UMPConsentInformation.sharedInstance.formStatus == kGADUFormStatusAvailable;
+  __block BOOL status;
+  if (NSThread.isMainThread) {
+    status = UMPConsentInformation.sharedInstance.formStatus == kGADUFormStatusAvailable;
+  } else {
+    dispatch_sync(dispatch_get_main_queue(), ^{
+      status = UMPConsentInformation.sharedInstance.formStatus == kGADUFormStatusAvailable;
+    });
+  }
+  return status;
 }
 
 - (void)requestConsentInfoUpdateWithParameters: (GADURequestParameters *)bridgeParams
@@ -42,26 +86,30 @@
   debugSettings.geography = (NSInteger)bridgeParams.debugSettings.geography;
   debugSettings.testDeviceIdentifiers = bridgeParams.debugSettings.testDeviceIdentifiers;
   parameters.debugSettings = debugSettings;
-  [UMPConsentInformation.sharedInstance requestConsentInfoUpdateWithParameters:parameters
-    completionHandler:^(NSError *_Nullable error) {
-      GADUConsentInformation *strongSelf = weakSelf;
-      if (!strongSelf) {
-        NSLog(@"<UMP SDK Bridge> Consent information unavailable. Please restart the application "
-              @"and try again.");
-        return;
-      }
-      if (consentInfoUpdateCompletionHandler) {
-        if (error) {
-          strongSelf->_lastUpdateError = error;
-        }
-        consentInfoUpdateCompletionHandler(strongSelf->_consentInformationClient,
-            (__bridge GADUTypeFormErrorRef)error);
-      }
-  }];
+  GADUDispatchAsyncSafeMainQueue(^{
+    [UMPConsentInformation.sharedInstance
+        requestConsentInfoUpdateWithParameters:parameters
+                             completionHandler:^(NSError *_Nullable error) {
+                               GADUConsentInformation *strongSelf = weakSelf;
+                               if (!strongSelf) {
+                                 NSLog(@"Consent information unavailable. Please restart the "
+                                       @"application and try again.");
+                                 return;
+                               }
+                               if (consentInfoUpdateCompletionHandler) {
+                                 strongSelf->_lastUpdateError = error;
+                                 consentInfoUpdateCompletionHandler(
+                                     strongSelf->_consentInformationClient,
+                                     (__bridge GADUTypeFormErrorRef)error);
+                               }
+                             }];
+  });
 }
 
 - (void)reset {
-  [UMPConsentInformation.sharedInstance reset];
+  GADUDispatchAsyncSafeMainQueue(^{
+    [UMPConsentInformation.sharedInstance reset];
+  });
 }
 
 @end

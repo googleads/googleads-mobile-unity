@@ -159,7 +159,12 @@ namespace GoogleMobileAds.Ump.iOS
         /// </summary>
         public int GetPrivacyOptionsRequirementStatus()
         {
-            return 0; // Placeholder value until implemented.
+            if (Application.platform == RuntimePlatform.IPhonePlayer)
+            {
+                return Externs.GADUGetPrivacyOptionsRequirementStatus(ConsentInformationPtr);
+            }
+            throw new InvalidOperationException(@"Called " + MethodBase.GetCurrentMethod().Name +
+                                                " on non-iOS runtime");
         }
 
         /// <summary>
@@ -168,7 +173,12 @@ namespace GoogleMobileAds.Ump.iOS
         /// </summary>
         public bool CanRequestAds()
         {
-            return true; // Placeholder value until implemented.
+            if (Application.platform == RuntimePlatform.IPhonePlayer)
+            {
+                return Externs.GADUUMPCanRequestAds(ConsentInformationPtr);
+            }
+            throw new InvalidOperationException(@"Called " + MethodBase.GetCurrentMethod().Name +
+                                                " on non-iOS runtime");
         }
 
         /// <summary>

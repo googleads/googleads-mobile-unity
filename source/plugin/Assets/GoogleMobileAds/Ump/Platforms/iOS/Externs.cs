@@ -62,6 +62,12 @@ namespace GoogleMobileAds.Ump.iOS
         internal static extern int GADUGetConsentStatus(IntPtr consentInfoRef);
 
         [DllImport("__Internal")]
+        internal static extern int GADUGetPrivacyOptionsRequirementStatus(IntPtr consentInfoRef);
+
+        [DllImport("__Internal")]
+        internal static extern bool GADUUMPCanRequestAds(IntPtr consentInfoRef);
+
+        [DllImport("__Internal")]
         internal static extern bool GADUIsConsentFormAvailable(IntPtr consentInfoRef);
 
         [DllImport("__Internal")]
@@ -78,6 +84,16 @@ namespace GoogleMobileAds.Ump.iOS
 
         [DllImport("__Internal")]
         internal static extern void GADUPresentConsentForm(IntPtr formRef,
+                ConsentFormClient.GADUConsentFormPresentCompletionHandler
+                consentFormPresentCallback);
+
+        [DllImport("__Internal")]
+        internal static extern void GADULoadAndPresentConsentForm(IntPtr formRef,
+                ConsentFormClient.GADUConsentFormPresentCompletionHandler
+                consentFormPresentCallback);
+
+        [DllImport("__Internal")]
+        internal static extern void GADUPresentPrivacyOptionsForm(IntPtr formRef,
                 ConsentFormClient.GADUConsentFormPresentCompletionHandler
                 consentFormPresentCallback);
 

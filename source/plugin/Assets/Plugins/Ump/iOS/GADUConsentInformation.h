@@ -29,12 +29,30 @@ typedef NS_ENUM(NSInteger, GADUFormStatus) {
   kGADUFormStatusUnavailable = 2,
 };
 
+/// State values for whether the user needs to be provided a way to modify their privacy options.
+typedef NS_ENUM(NSInteger, GADUPrivacyOptionsRequirementStatus) {
+  /// Requirement unknown.
+  kGADUPrivacyOptionsRequirementStatusUnknown = 0,
+  /// A way must be provided for the user to modify their privacy options.
+  kGADUPrivacyOptionsRequirementStatusRequired = 1,
+  /// User does not need to modify their privacy options. Either consent is not required, or the
+  /// consent type does not require modification.
+  kGADUPrivacyOptionsRequirementStatusNotRequired = 2,
+};
+
 /// Utility methods for collecting consent from users.
 @interface GADUConsentInformation : NSObject
 
 /// The user's consent status. This value is cached between app sessions and can be read before
 /// requesting updated parameters.
 @property(readonly, nonatomic) GADUConsentStatus consentStatus;
+
+/// Check if the app has finished all the required consent flow and can request ads now.
+/// A return value of true means the app can request ads now.
+@property(nonatomic, readonly) BOOL canRequestAds;
+
+/// The privacy options requirement status.
+@property(nonatomic, readonly) GADUPrivacyOptionsRequirementStatus privacyOptionsRequirementStatus;
 
 /// YES if consent form is available, NO otherwise. An update should be requested using
 /// requestConsentInfoUpdateWithParameters.

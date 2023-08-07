@@ -119,6 +119,21 @@ const int GADUGetConsentStatus(GADUTypeConsentInformationRef consentInformation)
   return internalConsentInfo.consentStatus;
 }
 
+/// Get the privacy options requirement status.
+const int GADUGetPrivacyOptionsRequirementStatus(GADUTypeConsentInformationRef consentInformation) {
+  GADUConsentInformation *internalConsentInfo =
+      (__bridge GADUConsentInformation *)consentInformation;
+  return internalConsentInfo.privacyOptionsRequirementStatus;
+}
+
+/// Check if the app has finished all the required consent flow and can request ads now.
+/// A return value of true means the app can request ads now.
+const bool GADUUMPCanRequestAds(GADUTypeConsentInformationRef consentInformation) {
+  GADUConsentInformation *internalConsentInfo =
+      (__bridge GADUConsentInformation *)consentInformation;
+  return internalConsentInfo.canRequestAds;
+}
+
 /// Check if there is a GADUConsentForm available to load.
 const bool GADUIsConsentFormAvailable(GADUTypeConsentInformationRef consentInformation) {
   GADUConsentInformation *internalConsentInfo =
@@ -147,14 +162,26 @@ GADUTypeConsentFormRef GADUCreateConsentForm(
 
 /// Try loading a GADUConsentForm if required / available.
 void GADULoadConsentForm(GADUTypeConsentFormRef form,
-    GADUConsentFormLoadCompletionHandler CompletionHandler) {
+                         GADUConsentFormLoadCompletionHandler completionHandler) {
   GADUConsentForm *internalConsentForm = (__bridge GADUConsentForm *)form;
-  [internalConsentForm loadFormWithCompletionHandler:CompletionHandler];
+  [internalConsentForm loadFormWithCompletionHandler:completionHandler];
 }
 
 /// Present the loaded GADUConsentForm.
 void GADUPresentConsentForm(GADUTypeConsentFormRef form,
-    GADUConsentFormPresentCompletionHandler CompletionHandler) {
+                            GADUConsentFormPresentCompletionHandler completionHandler) {
   GADUConsentForm *internalConsentForm = (__bridge GADUConsentForm *)form;
-  [internalConsentForm showWithCompletionHandler:CompletionHandler];
+  [internalConsentForm showWithCompletionHandler:completionHandler];
+}
+
+void GADULoadAndPresentConsentForm(GADUTypeConsentFormRef form,
+                                   GADUConsentFormPresentCompletionHandler completionHandler) {
+  GADUConsentForm *internalConsentForm = (__bridge GADUConsentForm *)form;
+  [internalConsentForm loadAndPresentIfRequiredWithCompletionHandler:completionHandler];
+}
+
+void GADUPresentPrivacyOptionsForm(GADUTypeConsentFormRef form,
+                                   GADUConsentFormPresentCompletionHandler completionHandler) {
+  GADUConsentForm *internalConsentForm = (__bridge GADUConsentForm *)form;
+  [internalConsentForm presentPrivacyOptionsFormWithCompletionHandler:completionHandler];
 }
