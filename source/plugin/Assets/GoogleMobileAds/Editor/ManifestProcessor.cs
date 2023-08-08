@@ -153,13 +153,19 @@ public class ManifestProcessor : IPreprocessBuild
         {
             AssetDatabase.CreateFolder("Assets/Plugins", "Android");
         }
-        if (!AssetDatabase.IsValidFolder("Assets/Plugins/Android/GoogleMobileAdsPlugin.androidlib"))
+        if (!Directory.Exists("Assets/Plugins/Android/GoogleMobileAdsPlugin.androidlib"))
         {
             AssetDatabase.CreateFolder("Assets/Plugins/Android",
                                        "GoogleMobileAdsPlugin.androidlib");
         }
-        AssetDatabase.CopyAsset(manifestPath, "Assets/" + MANIFEST_RELATIVE_PATH);
-        AssetDatabase.CopyAsset(propertiesPath, "Assets/" + PROPERTIES_RELATIVE_PATH);
+        if (!File.Exists("Assets/" + MANIFEST_RELATIVE_PATH))
+        {
+            File.Copy(manifestPath, "Assets/" + MANIFEST_RELATIVE_PATH);
+        }
+        if (!File.Exists("Assets/" + PROPERTIES_RELATIVE_PATH))
+        {
+            File.Copy(propertiesPath, "Assets/" + PROPERTIES_RELATIVE_PATH);
+        }
     }
 
     private XElement CreateMetaElement(string name, object value)
