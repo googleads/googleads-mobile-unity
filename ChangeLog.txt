@@ -5,6 +5,7 @@ Version Next
 **************
 
 - Updated the Android User Messaging Platform dependency version to 2.1.0.
+- Updated GoogleMobileAdsSKAdNetworkItems.xml.
 
 **************
 Version 8.4.1
