@@ -141,31 +141,6 @@ public class ManifestProcessor : IPreprocessBuild
                            instance.OptimizeAdLoading);
 
         elemManifest.Save(manifestPath);
-
-        // If GMA is imported via Unity Package Manager, we need to make sure that the
-        // AndroidManifest.xml and project.properties files exist under Assets. Otherwise Unity
-        // will ignore the AndroidManifest.xml.
-        if (!AssetDatabase.IsValidFolder("Assets/Plugins"))
-        {
-            AssetDatabase.CreateFolder("Assets", "Plugins");
-        }
-        if (!AssetDatabase.IsValidFolder("Assets/Plugins/Android"))
-        {
-            AssetDatabase.CreateFolder("Assets/Plugins", "Android");
-        }
-        if (!Directory.Exists("Assets/Plugins/Android/GoogleMobileAdsPlugin.androidlib"))
-        {
-            AssetDatabase.CreateFolder("Assets/Plugins/Android",
-                                       "GoogleMobileAdsPlugin.androidlib");
-        }
-        if (!File.Exists("Assets/" + MANIFEST_RELATIVE_PATH))
-        {
-            File.Copy(manifestPath, "Assets/" + MANIFEST_RELATIVE_PATH);
-        }
-        if (!File.Exists("Assets/" + PROPERTIES_RELATIVE_PATH))
-        {
-            File.Copy(propertiesPath, "Assets/" + PROPERTIES_RELATIVE_PATH);
-        }
     }
 
     private XElement CreateMetaElement(string name, object value)
