@@ -322,6 +322,7 @@ Version 6.0.2
 
 Plugin:
 - Fixed https://github.com/googleads/googleads-mobile-unity/issues/1677 This version requires Xcode 12.4 where the previous version required Xcode 12.5.1.
+- You no longer need to enable "Link frameworks statically" for the Google Mobile Ads plugin to work.
 
 Built and tested with:
 - Google Play services 20.2.0
