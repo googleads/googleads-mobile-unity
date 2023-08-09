@@ -113,7 +113,10 @@ namespace GoogleMobileAds.Ump.Android
         {
             if (Application.platform == RuntimePlatform.Android)
             {
-                return _consentInformation.Call<int>("getPrivacyOptionsRequirementStatus");
+                AndroidJavaObject privacyOptionsRequirementStatusEnum =
+                        _consentInformation.Call<AndroidJavaObject>(
+                                "getPrivacyOptionsRequirementStatus");
+                return privacyOptionsRequirementStatusEnum.Call<int>("ordinal");
             }
             throw new InvalidOperationException(@"Called " + MethodBase.GetCurrentMethod().Name +
                                                 " on non-Android runtime");
