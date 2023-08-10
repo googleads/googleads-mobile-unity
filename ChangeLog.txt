@@ -1,6 +1,20 @@
 Google Mobile Ads Unity Plugin Change Log
 
 **************
+Version 8.5.1
+**************
+
+- Version 8.5.0 has been deprecated. Please upgrade to 8.5.1 instead.
+- Fixed [#2866] Read enum from getPrivacyOptionsRequirementStatus.
+- Removed double quotes from GoogleMobileAdsSKAdNetworkItems.xml.
+
+Built and tested with:
+- Google Mobile Ads Android SDK 22.2.0
+- Google Mobile Ads iOS SDK 10.9
+- Google User Messaging Platform 2.1.0
+- External Dependency Manager for Unity 1.2.176
+
+**************
 Version 8.5.0
 **************
 
