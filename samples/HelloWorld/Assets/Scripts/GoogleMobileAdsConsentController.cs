@@ -73,13 +73,13 @@ namespace GoogleMobileAds.Samples
             // IAB Certified consent management platform) as one solution to capture
             // consent for users in GDPR impacted countries. This is an example and
             // you can choose another consent management platform to capture consent.
-            ConsentInformation.Update(requestParameters, (FormError updateError) =>
+            ConsentInformation.Update(requestParameters, (FormError error) =>
             {
                 UpdatePrivacyButton();
 
-                if (updateError != null)
+                if (error != null)
                 {
-                    onComplete(updateError.Message);
+                    onComplete(error.Message);
                     return;
                 }
 
@@ -90,25 +90,41 @@ namespace GoogleMobileAds.Samples
                 {
                     // Consent has already been gathered or not required.
                     // Return control back to the user.
-                    onComplete(null);
+                    if (onComplete != null)
+                    {
+                        onComplete(null);
+                    }
+
+                    // Always load another consent form in the background so that
+                    // privacy options form may show on user request.
+                    LoadConsentForm(null);
                     return;
                 }
 
                 // Consent not obtained and is required.
                 // Load the initial consent request form for the user.
-                ConsentForm.LoadAndShowConsentFormIfRequired((FormError showError) =>
+                LoadConsentForm((string loadError) =>
                 {
-                    if (showError != null)
+                    if (loadError != null)
                     {
-                        // Consent gathering failed.
                         if (onComplete != null)
                         {
-                            onComplete(showError.Message);
+                            onComplete(loadError);
                         }
                         return;
                     }
+
+                    // Show the initial consent request form for the user.
+                    ShowConsentForm((string showError) =>
+                    {
+                        if (onComplete != null)
+                        {
+                            onComplete(showError);
+                        }
+                    });
                 });
             });
+
         }
 
         /// <summary>
@@ -127,18 +143,99 @@ namespace GoogleMobileAds.Samples
                 ? UpdateErrorPopup
                 : onComplete + UpdateErrorPopup;
 
-            ConsentForm.LoadAndShowConsentFormIfRequired((FormError showError) =>
+            LoadConsentForm((string loadError) =>
             {
-                if (showError != null)
+                if (loadError != null)
                 {
-                    // Consent gathering failed.
+                    onComplete(loadError);
+                    return;
+                }
+
+                ShowConsentForm(onComplete);
+            });
+        }
+
+        private void ShowConsentForm(Action<string> onComplete)
+        {
+            // Error, no consent form is loaded.
+            if (_consentForm == null)
+            {
+                var errorMessage = "No form available. Please try again later.";
+                if (onComplete != null)
+                {
+                    onComplete(errorMessage);
+                }
+                else
+                {
+                    Debug.LogError(errorMessage);
+                }
+
+                // Always load another consent form in the background so that
+                // privacy options form may show on user request.
+                LoadConsentForm(null);
+                return;
+            }
+
+            Debug.Log("Showing consent form.");
+
+            // Show the loaded consent form.
+            _consentForm.Show((FormError showError) =>
+            {
+                _consentForm = null;
+
+                if (onComplete != null)
+                {
+                    var showErrorMessage = showError == null ? "Error showing consent form." 
+                                                             : showError.Message;
+                    onComplete(showErrorMessage);
+                }
+
+                // Always load another consent form in the background so that
+                // privacy options form may show on user request.
+                LoadConsentForm(null);
+            });
+        }
+
+        private void LoadConsentForm(Action<string> onComplete)
+        {
+            // The consent form is already loaded and reeady.
+            if (_consentForm != null)
+            {
+                if (onComplete != null)
+                {
+                    onComplete(null);
+                }
+                return;
+            }
+
+            Debug.Log("Loading consent form.");
+
+            // The consent form is not loaded. Loading a consent form.
+            ConsentForm.Load((ConsentForm form, FormError loadError) =>
+            {
+                if (loadError != null)
+                {
                     if (onComplete != null)
                     {
-                        onComplete(showError.Message);
+                        onComplete(loadError.Message);
                     }
                     return;
                 }
+
+                if (form == null)
+                {
+                    if (onComplete != null)
+                    {
+                        onComplete("Error loading consent form.");
+                    }
+                    return;
+                }
+
+                _consentForm = form;
+                UpdatePrivacyButton();
+                Debug.Log("Consent form loaded.");
             });
+
         }
 
         void UpdatePrivacyButton()
