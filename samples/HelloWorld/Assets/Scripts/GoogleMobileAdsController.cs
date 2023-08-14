@@ -2,41 +2,30 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using GoogleMobileAds.Api;
-using GoogleMobileAds.Ump.Api;
+using UnityEngine.SceneManagement;
 
 namespace GoogleMobileAds.Samples
 {
     /// <summary>
-    /// Demonstrates how to use the Google Mobile Ads Unity plugin.
+    /// Demonstrates how to use the Google Mobile Ads MobileAds Instance.
     /// </summary>
     [AddComponentMenu("GoogleMobileAds/Samples/GoogleMobileAdsController")]
     public class GoogleMobileAdsController : MonoBehaviour
     {
-        // Always use test ads.
-        // https://developers.google.com/admob/unity/test-ads
-        internal static List<string> TestDeviceIds = new List<string>()
-        {
-            AdRequest.TestDeviceSimulator,
-#if UNITY_IPHONE
-            "96e23e80653bb28980d3f40beb58915c",
-#elif UNITY_ANDROID
-            "702815ACFC14FF222DA1DC767672A573"
-#endif
-        };
-
-        // The Google Mobile Ads Unity plugin needs to be run only once.
-        private static bool? _isInitialized;
-
-        // Helper class that implements consent using the
-        // Google User Messaging Platform (UMP) Unity plugin.
-        [SerializeField, Tooltip("Controller for the Google User Messaging Platform (UMP) Unity plugin.")]
-        private GoogleMobileAdsConsentController _consentController;
+        private static bool _isInitialized;
 
         /// <summary>
-        /// Demonstrates how to configure Google Mobile Ads Unity plugin.
+        /// Initializes the MobileAds SDK
         /// </summary>
         private void Start()
         {
+            // Demonstrates how to configure Google Mobile Ads.
+            // Google Mobile Ads needs to be run only once and before loading any ads.
+            if (_isInitialized)
+            {
+                return;
+            }
+
             // On Android, Unity is paused when displaying interstitial or rewarded video.
             // This setting makes iOS behave consistently with Android.
             MobileAds.SetiOSAppPauseOnBackground(true);
@@ -46,70 +35,34 @@ namespace GoogleMobileAds.Samples
             // https://developers.google.com/admob/unity/quick-start#raise_ad_events_on_the_unity_main_thread
             MobileAds.RaiseAdEventsOnUnityMainThread = true;
 
+            // Set your test devices.
+            // https://developers.google.com/admob/unity/test-ads
+            List<string> deviceIds = new List<string>()
+            {
+                AdRequest.TestDeviceSimulator,
+                // Add your test device IDs (replace with your own device IDs).
+                #if UNITY_IPHONE
+                "96e23e80653bb28980d3f40beb58915c"
+                #elif UNITY_ANDROID
+                "75EF8D155528C04DACBBA6F36F433035"
+                #endif
+            };
+
             // Configure your RequestConfiguration with Child Directed Treatment
             // and the Test Device Ids.
-            MobileAds.SetRequestConfiguration(new RequestConfiguration
+            RequestConfiguration requestConfiguration = new RequestConfiguration
             {
-                TestDeviceIds = TestDeviceIds
-            });
+                TestDeviceIds = deviceIds
+            };
+            MobileAds.SetRequestConfiguration(requestConfiguration);
 
-            // If we can request ads, we should initialize the Google Mobile Ads Unity plugin.
-            if (_consentController.CanRequestAds)
-            {
-                InitializeGoogleMobileAds();
-            }
-
-            // Ensures that privacy and consent information is up to date.
-            InitializeGoogleMobileAdsConsent();
-        }
-
-        /// <summary>
-        /// Ensures that privacy and consent information is up to date.
-        /// </summary>
-        private void InitializeGoogleMobileAdsConsent()
-        {
-            Debug.Log("Google Mobile Ads gathering consent.");
-
-            _consentController.GatherConsent((string error) =>
-            {
-                if (error != null)
-                {
-                    Debug.LogError("Failed to gather consent with error: " +
-                        error);
-                }
-                else
-                {
-                    Debug.Log("Google Mobile Ads consent updated.");
-                }
-
-                if (_consentController.CanRequestAds)
-                {
-                    InitializeGoogleMobileAds();
-                }
-            });
-        }
-
-        /// <summary>
-        /// Initializes the Google Mobile Ads Unity plugin.
-        /// </summary>
-        private void InitializeGoogleMobileAds()
-        {
-            // The Google Mobile Ads Unity plugin needs to be run only once and before loading any ads.
-            if (_isInitialized.HasValue)
-            {
-                return;
-            }
-
-            _isInitialized = false;
-
-            // Initialize the Google Mobile Ads Unity plugin.
+            // Initialize the Google Mobile Ads SDK.
             Debug.Log("Google Mobile Ads Initializing.");
             MobileAds.Initialize((InitializationStatus initstatus) =>
             {
                 if (initstatus == null)
                 {
                     Debug.LogError("Google Mobile Ads initialization failed.");
-                    _isInitialized = null;
                     return;
                 }
 
@@ -146,24 +99,6 @@ namespace GoogleMobileAds.Samples
                 }
 
                 Debug.Log("Ad Inspector opened successfully.");
-            });
-        }
-
-        /// <summary>
-        /// Opens the privacy options form for the user.
-        /// </summary>
-        /// <remarks>
-        /// Your app needs to allow the user to change their consent status at any time.
-        /// </remarks>
-        public void OpenPrivacyOptions()
-        {
-            _consentController.ShowPrivacyOptionsForm((string error) =>
-            {
-                if (error != null)
-                {
-                    Debug.LogError("Failed to show consent privacy form with error: " +
-                        error);
-                }
             });
         }
     }
