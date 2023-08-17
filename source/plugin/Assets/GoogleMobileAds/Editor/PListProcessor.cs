@@ -71,6 +71,12 @@ public static class PListProcessor
             AddSKAdNetworkIdentifier(plist, skNetworkIds);
         }
 
+        string unityVersion = Application.unityVersion;
+        if (!string.IsNullOrEmpty(unityVersion))
+        {
+            plist.root.SetString("GADUUnityVersion", unityVersion);
+        }
+
         File.WriteAllText(plistPath, plist.WriteToString());
     }
 
