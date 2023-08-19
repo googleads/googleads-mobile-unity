@@ -375,7 +375,8 @@ namespace GoogleMobileAds.Android
             }
             foreach (KeyValuePair<string, string> entry in adManagerAdRequest.CustomTargeting)
             {
-                adManagerAdRequestBuilder.Call("addCustomTargeting", entry.Key, entry.Value);
+                adManagerAdRequestBuilder.Call<AndroidJavaObject>("addCustomTargeting",
+                                                                   entry.Key, entry.Value);
             }
             return adManagerAdRequestBuilder.Call<AndroidJavaObject>("build");
         }

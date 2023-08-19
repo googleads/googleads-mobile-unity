@@ -1,6 +1,12 @@
 Google Mobile Ads Unity Plugin Change Log
 
 **************
+Version Next
+**************
+
+- Fixed AndroidJavaException when using AdManagerAdRequest custom targeting.
+
+**************
 Version 8.5.1
 **************
 
