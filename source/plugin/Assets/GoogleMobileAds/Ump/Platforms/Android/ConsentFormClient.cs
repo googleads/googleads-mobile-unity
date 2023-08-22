@@ -22,17 +22,19 @@ using GoogleMobileAds.Ump.Common;
 
 namespace GoogleMobileAds.Ump.Android
 {
-    internal class ConsentFormClient : IConsentFormClient
+    internal class ConsentFormClient : AndroidJavaProxy, IConsentFormClient
     {
         internal OnConsentFormLoadSuccessListener _onSuccess;
         internal OnConsentFormLoadFailureListener _onFailure;
         internal OnConsentFormDismissedListener _onDismissed;
+        private static readonly ConsentFormClient _instance = new ConsentFormClient();
         private readonly AndroidJavaObject _activity;
         private readonly AndroidJavaObject _userMessagingPlatformClass;
         private AndroidJavaObject _consentForm;
-        private static readonly ConsentFormClient _instance = new ConsentFormClient();
+        private AndroidJavaObject _unityConsentForm;
+        private Action<FormError> _onConsentFormDismissed;
 
-        private ConsentFormClient()
+        public ConsentFormClient() : base(Utils.UnityConsentFormCallbackClassName)
         {
             if (Application.platform == RuntimePlatform.Android)
             {
@@ -40,6 +42,8 @@ namespace GoogleMobileAds.Ump.Android
                 _activity = playerClass.GetStatic<AndroidJavaObject>("currentActivity");
                 _userMessagingPlatformClass =
                         new AndroidJavaClass(Utils.UserMessagingPlatformClassName);
+                _unityConsentForm = new AndroidJavaObject(Utils.UnityConsentFormClassName,
+                                                          _activity, this);
             }
         }
 
@@ -92,7 +96,7 @@ namespace GoogleMobileAds.Ump.Android
         /// </summary>
         public void Show(Action<FormError> onDismissed)
         {
-            _onDismissed = new OnConsentFormDismissedListener(onDismissed);
+            _onConsentFormDismissed = onDismissed;
 
             if (Application.platform == RuntimePlatform.Android)
             {
@@ -100,7 +104,7 @@ namespace GoogleMobileAds.Ump.Android
                 {
                     try
                     {
-                        _consentForm.Call("show", _activity, _onDismissed);
+                        _unityConsentForm.Call("show", _consentForm);
                     }
                     catch (Exception e)
                     {
@@ -119,7 +123,7 @@ namespace GoogleMobileAds.Ump.Android
         /// </summary>
         public void LoadAndShowConsentFormIfRequired(Action<FormError> onDismissed)
         {
-            _onDismissed = new OnConsentFormDismissedListener(onDismissed);
+            _onConsentFormDismissed = onDismissed;
 
             if (Application.platform == RuntimePlatform.Android)
             {
@@ -127,8 +131,7 @@ namespace GoogleMobileAds.Ump.Android
                 {
                     try
                     {
-                        _userMessagingPlatformClass.CallStatic("loadAndShowConsentFormIfRequired",
-                                                               _activity, _onDismissed);
+                        _unityConsentForm.Call("loadAndShowConsentFormIfRequired");
                     }
                     catch (Exception e)
                     {
@@ -148,7 +151,7 @@ namespace GoogleMobileAds.Ump.Android
         /// </summary>
         public void ShowPrivacyOptionsForm(Action<FormError> onDismissed)
         {
-            _onDismissed = new OnConsentFormDismissedListener(onDismissed);
+            _onConsentFormDismissed = onDismissed;
 
             if (Application.platform == RuntimePlatform.Android)
             {
@@ -156,8 +159,7 @@ namespace GoogleMobileAds.Ump.Android
                 {
                     try
                     {
-                        _userMessagingPlatformClass.CallStatic("showPrivacyOptionsForm",
-                                                               _activity, _onDismissed);
+                        _unityConsentForm.Call("showPrivacyOptionsForm");
                     }
                     catch (Exception e)
                     {
@@ -168,6 +170,25 @@ namespace GoogleMobileAds.Ump.Android
                 }));
             }
         }
+
+        #region Callbacks from UnityConsentFormCallback.
+
+        public void onConsentFormDismissed(AndroidJavaObject error)
+        {
+            if (_onConsentFormDismissed != null)
+            {
+                var args = error == null ? null : new FormError(error.Call<int>("getErrorCode"),
+                                                                error.Call<string>("getMessage"));
+                _onConsentFormDismissed(args);
+                _onConsentFormDismissed = null;
+            }
+            else
+            {
+                Debug.LogError("The consent form dismiss callback is null.");
+            }
+        }
+
+        #endregion
     }
 }
 #endif

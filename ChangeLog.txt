@@ -5,6 +5,7 @@ Version Next
 **************
 
 - Fixed AndroidJavaException when using AdManagerAdRequest custom targeting.
+- Fixed [#2826] "No such proxy method" error within GoogleMobileAds.Ump.
 
 **************
 Version 8.5.1

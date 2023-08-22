@@ -29,6 +29,11 @@ namespace GoogleMobileAds.Ump.Android
             public const string ConsentDebugSettingsBuilderClassName =
                     "com.google.android.ump.ConsentDebugSettings$Builder";
 
+            public const string UnityConsentFormClassName = "com.google.unity.ump.UnityConsentForm";
+
+            public const string UnityConsentFormCallbackClassName =
+                    "com.google.unity.ump.UnityConsentFormCallback";
+
             public const string ConsentRequestParametersBuilderClassName =
                     "com.google.android.ump.ConsentRequestParameters$Builder";
 
