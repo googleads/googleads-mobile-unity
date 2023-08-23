@@ -50,6 +50,10 @@ public class ManifestProcessor : IPreprocessBuild
     private const string METADATA_OPTIMIZE_AD_LOADING =
             "com.google.android.gms.ads.flag.OPTIMIZE_AD_LOADING";
 
+    // LINT.IfChange
+    private const string METADATA_UNITY_VERSION  = "com.google.unity.ads.UNITY_VERSION";
+    // LINT.ThenChange(//depot/google3/javatests/com/google/android/gmscore/integ/modules/admob/tests/robolectric/src/com/google/android/gms/ads/nonagon/signals/StaticDeviceSignalSourceTest.java)
+
     private XNamespace ns = "http://schemas.android.com/apk/res/android";
 
     public int callbackOrder { get { return 0; } }
@@ -139,6 +143,11 @@ public class ManifestProcessor : IPreprocessBuild
                            metas,
                            METADATA_OPTIMIZE_AD_LOADING,
                            instance.OptimizeAdLoading);
+
+        SetMetadataElement(elemApplication,
+                           metas,
+                           METADATA_UNITY_VERSION,
+                           Application.unityVersion);
 
         elemManifest.Save(manifestPath);
     }
