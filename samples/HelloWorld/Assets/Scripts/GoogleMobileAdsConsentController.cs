@@ -26,8 +26,6 @@ namespace GoogleMobileAds.Samples
         [SerializeField, Tooltip("Error message for the error popup,")]
         private Text _errorText;
 
-        private ConsentForm _consentForm;
-
         private void Start()
         {
             // Disable the privacy settings button.
@@ -75,8 +73,6 @@ namespace GoogleMobileAds.Samples
             // you can choose another consent management platform to capture consent.
             ConsentInformation.Update(requestParameters, (FormError updateError) =>
             {
-                UpdatePrivacyButton();
-
                 if (updateError != null)
                 {
                     onComplete(updateError.Message);
@@ -84,6 +80,13 @@ namespace GoogleMobileAds.Samples
                 }
 
                 Debug.Log("Consent information updated.");
+
+                // Enable the privacy settings button.
+                if (_privacyButton != null)
+                {
+                    _privacyButton.interactable =
+                        ConsentInformation.ConsentStatus != ConsentStatus.Unknown;
+                }
 
                 // Determine the consent-related action to take based on the ConsentStatus.
                 if (CanRequestAds)
@@ -139,15 +142,6 @@ namespace GoogleMobileAds.Samples
                     return;
                 }
             });
-        }
-
-        void UpdatePrivacyButton()
-        {
-            // Enable our privacy settings button.
-            if (_privacyButton != null)
-            {
-                _privacyButton.interactable = ConsentInformation.IsConsentFormAvailable();
-            }
         }
 
         void UpdateErrorPopup(string message)
