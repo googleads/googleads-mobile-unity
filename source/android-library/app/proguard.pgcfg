@@ -20,3 +20,8 @@
 -keep class com.google.unity.ads.** {
    *;
 }
+
+# Keep User Messaging Platform Unity plugin classes.
+-keep class com.google.unity.ump.** {
+   *;
+}
