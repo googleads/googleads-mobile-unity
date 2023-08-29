@@ -79,7 +79,8 @@ namespace GoogleMobileAds.Samples
                 }
                 else
                 {
-                    Debug.Log("Google Mobile Ads consent updated.");
+                    Debug.Log("Google Mobile Ads consent updated: "
+                        + ConsentInformation.ConsentStatus);
                 }
 
                 if (_consentController.CanRequestAds)
@@ -163,6 +164,10 @@ namespace GoogleMobileAds.Samples
                 {
                     Debug.LogError("Failed to show consent privacy form with error: " +
                         error);
+                }
+                else
+                {
+                    Debug.Log("Privacy form opened successfully.");
                 }
             });
         }

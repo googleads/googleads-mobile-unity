@@ -73,19 +73,13 @@ namespace GoogleMobileAds.Samples
             // you can choose another consent management platform to capture consent.
             ConsentInformation.Update(requestParameters, (FormError updateError) =>
             {
+                // Enable the change privacy settings button.
+                UpdatePrivacyButton();
+
                 if (updateError != null)
                 {
                     onComplete(updateError.Message);
                     return;
-                }
-
-                Debug.Log("Consent information updated.");
-
-                // Enable the privacy settings button.
-                if (_privacyButton != null)
-                {
-                    _privacyButton.interactable =
-                        ConsentInformation.ConsentStatus != ConsentStatus.Unknown;
                 }
 
                 // Determine the consent-related action to take based on the ConsentStatus.
@@ -101,14 +95,19 @@ namespace GoogleMobileAds.Samples
                 // Load the initial consent request form for the user.
                 ConsentForm.LoadAndShowConsentFormIfRequired((FormError showError) =>
                 {
+                    UpdatePrivacyButton();
                     if (showError != null)
                     {
-                        // Consent gathering failed.
+                        // Form showing failed.
                         if (onComplete != null)
                         {
                             onComplete(showError.Message);
                         }
-                        return;
+                    }
+                    // Form showing succeeded.
+                    else if (onComplete != null)
+                    {
+                        onComplete(null);
                     }
                 });
             });
@@ -132,21 +131,44 @@ namespace GoogleMobileAds.Samples
 
             ConsentForm.LoadAndShowConsentFormIfRequired((FormError showError) =>
             {
+                UpdatePrivacyButton();
                 if (showError != null)
                 {
-                    // Consent gathering failed.
+                    // Form showing failed.
                     if (onComplete != null)
                     {
                         onComplete(showError.Message);
                     }
-                    return;
+                }
+                // Form showing succeeded.
+                else if (onComplete != null)
+                {
+                    onComplete(null);
                 }
             });
         }
 
+        /// <summary>
+        /// Reset ConsentInformation for the user.
+        /// </summary>
+        public void ResetConsentInformation()
+        {
+            ConsentInformation.Reset();
+            UpdatePrivacyButton();
+        }
+
+        void UpdatePrivacyButton()
+        {
+            if (_privacyButton != null)
+            {
+                _privacyButton.interactable =
+                        ConsentInformation.ConsentStatus == ConsentStatus.Required;
+            }
+        }
+
         void UpdateErrorPopup(string message)
         {
-            if (string.IsNullOrEmpty(message) || _errorPopup == null)
+            if (string.IsNullOrEmpty(message))
             {
                 return;
             }
@@ -156,7 +178,10 @@ namespace GoogleMobileAds.Samples
                 _errorText.text = message;
             }
 
-            _errorPopup.SetActive(true);
+            if (_errorPopup != null)
+            {
+                _errorPopup.SetActive(true);
+            }
         }
     }
 }
