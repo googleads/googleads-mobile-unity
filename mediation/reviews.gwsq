@@ -1,0 +1,37 @@
+//
+// Test syntactic correctness of this file (from a google3 root) with
+// /google/data/ro/teams/gwsq/analyze \
+//   --input_file=java/com/google/android/libraries/admob/demo/unity/googlemobileads/mediation/reviews.gwsq
+//
+// See how GWSQ might assign your CL by running (for example)
+// /google/data/ro/teams/gwsq/analyze \
+//   --input_file=java/com/google/android/libraries/admob/demo/unity/googlemobileads/mediation/reviews.gwsq \
+//   --iterations=10000 \
+//   --author=${USER} \
+//   --trace \
+//
+//
+// or to see how it would assign a specific CL, use (for example):
+// /google/data/ro/teams/gwsq/analyze \
+//   --input_file=java/com/google/android/libraries/admob/demo/unity/googlemobileads/mediation/reviews.gwsq \
+//   --cl=<changelist number> \
+//   --trace
+//
+// For complete and up-to-date testing documentation, see
+// https://g3doc.corp.google.com/gws/tools/gwsq/v3/g3doc/testing.md?cl=head
+
+send_cls_to('gma-extensions+adapterreviews-unity');
+
+// The main entry point for the GwsQ assignment process.
+define Main {
+  // if we bump versions (change podspec file)
+  if (file('^.+MediationDependencies.xml$')) {
+    // send to the secondary oncall
+    // https://rotations.corp.google.com/rotation/5848503444570112
+    reassign_to_list(oncallers('5848503444570112', 2));
+    // notify all extension engineers
+    add_cc('gma-extensions+adapterreviews');
+    // notify TVC
+    add_cc('joshuaja');
+  }
+}
