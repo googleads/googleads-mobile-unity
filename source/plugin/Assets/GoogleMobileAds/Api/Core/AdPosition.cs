@@ -19,12 +19,19 @@ namespace GoogleMobileAds.Api
     /// </summary>
     public enum AdPosition
     {
+        /// Top
         Top = 0,
+        /// Bottom
         Bottom = 1,
+        /// Top left
         TopLeft = 2,
+        /// Top right
         TopRight = 3,
+        /// Bottom left
         BottomLeft = 4,
+        /// Bottom right
         BottomRight = 5,
+        /// Center
         Center = 6
     }
 }

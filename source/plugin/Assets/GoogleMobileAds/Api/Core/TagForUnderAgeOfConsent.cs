@@ -20,9 +20,11 @@ namespace GoogleMobileAds.Api
     /// </summary>
     public enum TagForUnderAgeOfConsent
     {
+        /// Unspecified
         Unspecified = -1,
+        /// False
         False = 0,
+        /// True
         True = 1,
     }
-
 }
