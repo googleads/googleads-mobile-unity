@@ -1,6 +1,12 @@
 Google Mobile Ads Unity Plugin Change Log
 
 **************
+Version Next
+**************
+
+- Fixed "cannot find symbol" error when building the Android bridge project using gradle.
+
+**************
 Version 8.5.2
 **************
 
