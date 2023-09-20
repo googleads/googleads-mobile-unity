@@ -14,8 +14,6 @@
 
 #import <UIKit/UIKit.h>
 
-#import "GADUNativeTemplateFontStyle.h"
-
 /// Font Styles for Native Templates
 typedef NS_ENUM(NSInteger, GADUNativeTemplateFontStyle) {
   GADUNativeTemplateFontNormal,
@@ -35,7 +33,7 @@ typedef NS_ENUM(NSInteger, GADUNativeTemplateFontStyle) {
 
 @property(readonly, nullable) UIColor *textColor;
 @property(readonly, nullable) UIColor *backgroundColor;
-@property(readonly, nullable) GADUNativeTemplateFontStyle fontStyle;
+@property(readonly) GADUNativeTemplateFontStyle fontStyle;
 @property(readonly, nullable) NSNumber *size;
 
 /// UIFont that has the corresponding fontStyle and size.

@@ -187,12 +187,12 @@ static NSString *_Nonnull const GADTBlue = @"#5C84F0";
   adBadge.layer.cornerRadius = 3.0;
 }
 
-- (void)setStyles:(nonnull NSDictionary<GADTNativeTemplateStyleKey, NSObject *> *)styles {
+- (void)setStyles:(nullable NSDictionary<GADTNativeTemplateStyleKey, NSObject *> *)styles {
   _styles = [styles copy];
   [self applyStyles];
 }
 
-- (void)setNativeAd:(nonnull GADNativeAd *)nativeAd {
+- (void)setNativeAd:(nullable GADNativeAd *)nativeAd {
   ((UILabel *)self.headlineView).text = nativeAd.headline;
 
   // Some of the assets are not guaranteed to be present. This is to check
