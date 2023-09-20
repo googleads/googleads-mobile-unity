@@ -16,6 +16,12 @@
 #import "GAMUInterstitial.h"
 #import "GAMURequest.h"
 
+@interface GADMobileAds (Plugin)
+
+- (void)setPlugin:(nullable NSString *)plugin;
+
+@end
+
 /// Returns an NSString copying the characters from |bytes|, a C array of UTF8-encoded bytes.
 /// Returns nil if |bytes| is NULL.
 static NSString *GADUStringFromUTF8String(const char *bytes) { return bytes ? @(bytes) : nil; }
@@ -110,6 +116,13 @@ void GADUSetApplicationVolume(float volume) {
 // (e.g., custom music or sound effect muting). Defaults to NO.
 void GADUSetApplicationMuted(BOOL muted) {
   [[GADMobileAds sharedInstance] setApplicationMuted:muted];
+}
+
+void GADUSetPlugin(const char *plugin) {
+  GADMobileAds *mobileAds = GADMobileAds.sharedInstance;
+  if ([mobileAds respondsToSelector:@selector(setPlugin:)]) {
+    [mobileAds setPlugin:GADUStringFromUTF8String(plugin)];
+  }
 }
 
 // Indicates if the Unity app should be paused when a full screen ad (interstitial

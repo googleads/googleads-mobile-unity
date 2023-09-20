@@ -13,6 +13,8 @@
 // limitations under the License.
 
 using System;
+using System.IO;
+using System.Reflection;
 using UnityEngine;
 
 using GoogleMobileAds.Api;
@@ -123,6 +125,24 @@ namespace GoogleMobileAds.Android
                 IInitializationStatusClient statusClient = new InitializationStatusClient(initStatus);
                 initCompleteAction(statusClient);
             }
+            string nativePluginVersion = "";
+            try
+            {
+                Assembly assembly = Assembly.Load("GoogleMobileAdsNative.Common");
+                Version assemblyVersion = assembly.GetName().Version;
+                nativePluginVersion = string.Format("{0}.{1}.{2}",
+                        assemblyVersion.Major,
+                        assemblyVersion.Minor,
+                        assemblyVersion.Revision);
+            }
+            catch (Exception) {}
+            string versionString = AdRequest.BuildVersionString(nativePluginVersion);
+            AndroidJavaClass mobileAdsClass = new AndroidJavaClass(Utils.MobileAdsClassName);
+            try
+            {
+                mobileAdsClass.CallStatic("setPlugin", versionString);
+            }
+            catch (AndroidJavaException) {}
         }
 
         #endregion
