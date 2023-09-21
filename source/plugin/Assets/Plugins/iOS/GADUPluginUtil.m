@@ -181,4 +181,9 @@ static BOOL _pauseOnBackground = NO;
 + (BOOL)isNull:(nullable id)object {
   return object == nil || [[NSNull null] isEqual:object];
 }
+
+
++ (BOOL)isNotNull:(nullable id)object {
+  return ![GADUPluginUtil isNull:object];
+}
 @end

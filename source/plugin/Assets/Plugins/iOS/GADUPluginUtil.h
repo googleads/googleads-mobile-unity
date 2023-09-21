@@ -52,4 +52,7 @@ UIInterfaceOrientation GADUUIInterfaceOrientationForGADUScreenOrientation(
 /// Return true if object is null.
 + (BOOL)isNull:(nullable id)object;
 
+/// Return true if object is not null.
++ (BOOL)isNotNull:(nullable id)object;
+
 @end
