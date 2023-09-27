@@ -233,6 +233,37 @@ typedef void (*GADUInterstitialPaidEventCallback)(GADUTypeInterstitialClientRef 
 typedef void (*GAMUInterstitialAppEventCallback)(GAMUTypeInterstitialClientRef *interstitialClient,
                                                  const char *name, const char *info);
 
+// MARK: - GADUNativeTemplateAd
+
+/// Callback for when a native ad request was successfully loaded.
+typedef void (*GADUNativeTemplateAdLoadedCallback)(
+    GADUTypeNativeTemplateAdClientRef *nativeTemplateAdClient);
+
+/// Callback for when an native ad request failed.
+typedef void (*GADUNativeTemplateAdFailedToLoadCallback)(
+    GADUTypeNativeTemplateAdClientRef *nativeTemplateAdClient, const char *error);
+
+/// Callback when an native ad has made an impression.
+typedef void (*GADUNativeTemplateAdDidRecordImpressionCallback)(
+    GADUTypeNativeTemplateAdClientRef *nativeTemplateAdClient);
+
+/// Callback when an native ad has made a click.
+typedef void (*GADUNativeTemplateAdDidRecordClickCallback)(
+    GADUTypeNativeTemplateAdClientRef *nativeTemplateAdClient);
+
+/// Callback when an native ad is estimated to have earned money.
+typedef void (*GADUNativeTemplateAdPaidEventCallback)(
+    GADUTypeNativeTemplateAdClientRef *nativeTemplateAdClient, int precision, int64_t value,
+    const char *currencyCode);
+
+/// Callback when a full screen view will be presented to the user.
+typedef void (*GADUNativeTemplateAdWillPresentScreenCallback)(
+    GADUTypeNativeTemplateAdClientRef *nativeTemplateAdClient);
+
+/// Callback when a full screen view will be dismissed.
+typedef void (*GADUNativeTemplateAdDidDismissScreenCallback)(
+    GADUTypeNativeTemplateAdClientRef *nativeTemplateAdClient);
+
 // MARK: - GADURewarded
 
 /// Callback for when a rewarded ad request was successfully loaded.
