@@ -17,16 +17,10 @@
 
 @implementation GADUNativeTemplateTextStyle
 
-- (nonnull instancetype)initWithTextColor:(nullable UIColor *)textColor
-                          backgroundColor:(nullable UIColor *)backgroundColor
-                                fontStyle:(GADUNativeTemplateFontStyle)fontStyle
-                                     size:(nullable NSNumber *)size {
+- (nonnull instancetype)init {
   self = [super init];
   if (self) {
-    _textColor = textColor;
-    _backgroundColor = backgroundColor;
-    _fontStyle = fontStyle;
-    _size = size;
+    _fontStyle = GADUNativeTemplateFontNormal;
   }
   return self;
 }

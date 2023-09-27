@@ -5,6 +5,8 @@
 #import "GADUAppOpenAd.h"
 #import "GADUBanner.h"
 #import "GADUInterstitial.h"
+#import "GADUNativeAdOptions.h"
+#import "GADUNativeTemplateTextStyle.h"
 #import "GADUObjectCache.h"
 #import "GADUPluginUtil.h"
 #import "GADURequest.h"
@@ -633,6 +635,81 @@ double GADURewardedInterstitialAdGetRewardAmount(
       (__bridge GADURewardedInterstitialAd *)rewardedInterstitialAd;
   GADAdReward *reward = internalRewardedInterstitialAd.rewardedInterstitialAd.adReward;
   return reward.amount.doubleValue;
+}
+
+/// Creates a UIColor object and returns it.
+GADUTypeUIColorRef GADUCreateUIColor(float alpha, float red, float green, float blue)
+{
+  UIColor *color = [UIColor colorWithRed:red green:green blue:blue alpha:alpha];
+  GADUObjectCache *cache = GADUObjectCache.sharedInstance;
+  cache[color.gadu_referenceKey] = color;
+  return (__bridge GADUTypeUIColorRef)(color);
+}
+
+/// Creates a GADVideoOptions object and returns it.
+GADUTypeVideoOptionsRef GADUCreateVideoOptions(BOOL startMuted, BOOL clickToExpandRequested,
+                                               BOOL customControlsRequested) {
+  GADVideoOptions *videoOptions = [[GADVideoOptions alloc] init];
+  videoOptions.startMuted = startMuted;
+  videoOptions.clickToExpandRequested = clickToExpandRequested;
+  videoOptions.customControlsRequested = customControlsRequested;
+  GADUObjectCache *cache = GADUObjectCache.sharedInstance;
+  cache[videoOptions.gadu_referenceKey] = videoOptions;
+  return (__bridge GADUTypeVideoOptionsRef)(videoOptions);
+}
+
+/// Creates a GADUNativeAdOptions and returns its reference.
+GADUTypeNativeAdOptionsRef GADUCreateNativeAdOptions(int adChoicesPlacement, int mediaAspectRatio,
+                                                     GADUTypeVideoOptionsRef videoOptions) {
+  GADVideoOptions *vidOptions = (__bridge GADVideoOptions *)videoOptions;
+  GADUNativeAdOptions *options =
+      [[GADUNativeAdOptions alloc] initWithAdChoicesPlacement:adChoicesPlacement
+                                             mediaAspectRatio:mediaAspectRatio
+                                                 videoOptions:vidOptions];
+  GADUObjectCache *cache = [GADUObjectCache sharedInstance];
+  cache[options.gadu_referenceKey] = options;
+  return (__bridge GADUTypeNativeAdOptionsRef)(options);
+}
+
+GADUTypeNativeTemplateTextStyleRef GADUCreateNativeTemplateTextStyle() {
+  GADUNativeTemplateTextStyle *templateTextStyle = [[GADUNativeTemplateTextStyle alloc] init];
+  GADUObjectCache *cache = GADUObjectCache.sharedInstance;
+  cache[templateTextStyle.gadu_referenceKey] = templateTextStyle;
+  return (__bridge GADUTypeNativeTemplateTextStyleRef)(templateTextStyle);
+}
+
+GADUTypeNativeTemplateTextStyleRef GADUSetNativeTemplateTextColor(
+    GADUTypeNativeTemplateTextStyleRef templateTextStyle, GADUTypeUIColorRef textColor) {
+  GADUNativeTemplateTextStyle *tplTextStyle =
+      (__bridge GADUNativeTemplateTextStyle *)templateTextStyle;
+  UIColor *color = (__bridge UIColor *)textColor;
+  tplTextStyle.textColor = color;
+  return (__bridge GADUTypeNativeTemplateTextStyleRef)(tplTextStyle);
+}
+
+GADUTypeNativeTemplateTextStyleRef GADUSetNativeTemplateTextBackgroundColor(
+    GADUTypeNativeTemplateTextStyleRef templateTextStyle, GADUTypeUIColorRef bgColor) {
+  GADUNativeTemplateTextStyle *tplTextStyle =
+      (__bridge GADUNativeTemplateTextStyle *)templateTextStyle;
+  UIColor *backgroundColor = (__bridge UIColor *)bgColor;
+  tplTextStyle.backgroundColor = backgroundColor;
+  return (__bridge GADUTypeNativeTemplateTextStyleRef)(tplTextStyle);
+}
+
+GADUTypeNativeTemplateTextStyleRef GADUSetNativeTemplateTextFontStyle(
+    GADUTypeNativeTemplateTextStyleRef templateTextStyle, GADUNativeTemplateFontStyle fontStyle) {
+  GADUNativeTemplateTextStyle *tplTextStyle =
+      (__bridge GADUNativeTemplateTextStyle *)templateTextStyle;
+  tplTextStyle.fontStyle = fontStyle;
+  return (__bridge GADUTypeNativeTemplateTextStyleRef)(tplTextStyle);
+}
+
+GADUTypeNativeTemplateTextStyleRef GADUSetNativeTemplateTextFontSize(
+    GADUTypeNativeTemplateTextStyleRef templateTextStyle, int fontSize) {
+  GADUNativeTemplateTextStyle *tplTextStyle =
+      (__bridge GADUNativeTemplateTextStyle *)templateTextStyle;
+  tplTextStyle.size = [NSNumber numberWithInt:fontSize];
+  return (__bridge GADUTypeNativeTemplateTextStyleRef)tplTextStyle;
 }
 
 /// Create an empty CreateRequestConfiguration

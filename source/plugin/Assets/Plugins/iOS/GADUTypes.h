@@ -79,6 +79,12 @@ typedef const void *GAMUTypeInterstitialRef;
 /// Type representing an Ad Manager interstitial client.
 typedef const void *GAMUTypeInterstitialClientRef;
 
+/// Type representing a GADUNativeAdOptions.
+typedef const void *GADUTypeNativeAdOptionsRef;
+
+/// Type representing a GADUNativeTemplateTextStyle.
+typedef const void *GADUTypeNativeTemplateTextStyleRef;
+
 /// Type representing a GADURewardedAd.
 typedef const void *GADUTypeRewardedAdRef;
 
@@ -108,6 +114,12 @@ typedef const void *GADUTypeAdNetworkExtrasRef;
 
 /// Type representing a GADUServerSideVerificationOptions.
 typedef const void *GADUTypeServerSideVerificationOptionsRef;
+
+/// Type representing UIColor.
+typedef const void *GADUTypeUIColorRef;
+
+/// Type representing a GADVideoOptions.
+typedef const void *GADUTypeVideoOptionsRef;
 
 // MARK: - GADUAppOpenAd
 

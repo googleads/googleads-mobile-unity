@@ -160,6 +160,15 @@ namespace GoogleMobileAds.iOS
         internal static extern bool GADUGetRequestConfigurationSameAppKeyEnabled(
             IntPtr requestConfiguration);
 
+        [DllImport("__Internal")]
+        internal static extern IntPtr GADUCreateUIColor(float alpha, float red, float green,
+                                                        float blue);
+
+        [DllImport("__Internal")]
+        internal static extern IntPtr GADUCreateVideoOptions(bool startMuted,
+                                                             bool clickToExpandRequested,
+                                                             bool customControlsRequested);
+
 #endregion
 
         #region AppOpenAd externs
@@ -545,7 +554,35 @@ namespace GoogleMobileAds.iOS
 
         #endregion
 
-        #region AdInspector externs
+#region NativeOverlay externs
+
+        [DllImport("__Internal")]
+        internal static extern IntPtr GADUCreateNativeAdOptions(int adChoicesPlacement,
+                                                                int mediaAspectRatio,
+                                                                IntPtr videoOptions);
+
+        [DllImport("__Internal")]
+        internal static extern IntPtr GADUCreateNativeTemplateTextStyle();
+
+        [DllImport("__Internal")]
+        internal static extern IntPtr GADUSetNativeTemplateTextColor(IntPtr templateTextStyle,
+                                                                     IntPtr color);
+
+        [DllImport("__Internal")]
+        internal static extern IntPtr GADUSetNativeTemplateTextBackgroundColor(
+            IntPtr templateTextStyle, IntPtr color);
+
+        [DllImport("__Internal")]
+        internal static extern IntPtr GADUSetNativeTemplateTextFontStyle(IntPtr templateTextStyle,
+                                                                         int fontType);
+
+        [DllImport("__Internal")]
+        internal static extern IntPtr GADUSetNativeTemplateTextFontSize(IntPtr templateTextStyle,
+                                                                        int size);
+
+#endregion
+
+#region AdInspector externs
 
 
         [DllImport("__Internal")]

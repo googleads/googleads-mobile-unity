@@ -25,16 +25,10 @@ typedef NS_ENUM(NSInteger, GADUNativeTemplateFontStyle) {
 /// Contains style options that can be applied to text in a native template.
 @interface GADUNativeTemplateTextStyle : NSObject
 
-/// Returns an initialized native template text style for the given configuration.
-- (nonnull instancetype)initWithTextColor:(nullable UIColor *)textColor
-                          backgroundColor:(nullable UIColor *)backgroundColor
-                                fontStyle:(GADUNativeTemplateFontStyle)fontStyle
-                                     size:(nullable NSNumber *)size;
-
-@property(readonly, nullable) UIColor *textColor;
-@property(readonly, nullable) UIColor *backgroundColor;
-@property(readonly) GADUNativeTemplateFontStyle fontStyle;
-@property(readonly, nullable) NSNumber *size;
+@property(nonatomic, nullable) UIColor *textColor;
+@property(nonatomic, nullable) UIColor *backgroundColor;
+@property(nonatomic) GADUNativeTemplateFontStyle fontStyle;
+@property(nonatomic, nullable) NSNumber *size;
 
 /// UIFont that has the corresponding fontStyle and size.
 @property(readonly, nullable) UIFont *font;
