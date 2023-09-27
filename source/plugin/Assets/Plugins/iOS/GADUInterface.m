@@ -6,6 +6,7 @@
 #import "GADUBanner.h"
 #import "GADUInterstitial.h"
 #import "GADUNativeAdOptions.h"
+#import "GADUNativeTemplateStyle.h"
 #import "GADUNativeTemplateTextStyle.h"
 #import "GADUObjectCache.h"
 #import "GADUPluginUtil.h"
@@ -710,6 +711,43 @@ GADUTypeNativeTemplateTextStyleRef GADUSetNativeTemplateTextFontSize(
       (__bridge GADUNativeTemplateTextStyle *)templateTextStyle;
   tplTextStyle.size = [NSNumber numberWithInt:fontSize];
   return (__bridge GADUTypeNativeTemplateTextStyleRef)tplTextStyle;
+}
+
+/// Creates a GADUNativeTemplatesStyle and returns its reference.
+GADUTypeNativeTemplateStyleRef GADUCreateNativeTemplateStyle(char *templateName) {
+  GADUNativeTemplateStyle *nativeTemplateStyle =
+      [[GADUNativeTemplateStyle alloc] initWithTemplateName:GADUStringFromUTF8String(templateName)];
+  GADUObjectCache *cache = GADUObjectCache.sharedInstance;
+  cache[nativeTemplateStyle.gadu_referenceKey] = nativeTemplateStyle;
+  return (__bridge GADUTypeNativeTemplateStyleRef)(nativeTemplateStyle);
+}
+
+/// Sets the main background color of the GADUNativeTemplateStyle object.
+GADUTypeNativeTemplateStyleRef GADUSetNativeTemplateStyleBackgroundColor(
+    GADUTypeNativeTemplateStyleRef nativeTemplateStyle, GADUTypeUIColorRef bgColor) {
+  UIColor *color = (__bridge UIColor *)bgColor;
+  GADUNativeTemplateStyle *tplStyle = (__bridge GADUNativeTemplateStyle *)nativeTemplateStyle;
+  tplStyle.mainBackgroundColor = color;
+  return (__bridge GADUTypeNativeTemplateStyleRef)(tplStyle);
+}
+
+/// Sets the primary, secondary, tertiary and call to action text styles.
+GADUTypeNativeTemplateStyleRef GADUSetNativeTemplateStyleText(
+    GADUTypeNativeTemplateStyleRef templateStyle, char *textType,
+    GADUTypeNativeTemplateTextStyleRef textStyle) {
+  GADUNativeTemplateTextStyle *txtStyle = (__bridge GADUNativeTemplateTextStyle *)textStyle;
+  GADUNativeTemplateStyle *tplStyle = (__bridge GADUNativeTemplateStyle *)templateStyle;
+  NSString *type = GADUStringFromUTF8String(textType);
+  if ([type isEqualToString:@"primary"]) {
+    tplStyle.primaryTextStyle = txtStyle;
+  } else if ([type isEqualToString:@"secondary"]) {
+    tplStyle.secondaryTextStyle = txtStyle;
+  } else if ([type isEqualToString:@"tertiary"]) {
+    tplStyle.tertiaryTextStyle = txtStyle;
+  } else if ([type isEqualToString:@"callToAction"]) {
+    tplStyle.callToActionStyle = txtStyle;
+  }
+  return (__bridge GADUTypeNativeTemplateStyleRef)(tplStyle);
 }
 
 /// Create an empty CreateRequestConfiguration

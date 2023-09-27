@@ -85,6 +85,9 @@ typedef const void *GADUTypeNativeAdOptionsRef;
 /// Type representing a GADUNativeTemplateTextStyle.
 typedef const void *GADUTypeNativeTemplateTextStyleRef;
 
+/// Type representing a GADUNativeTemplateStyle.
+typedef const void *GADUTypeNativeTemplateStyleRef;
+
 /// Type representing a GADURewardedAd.
 typedef const void *GADUTypeRewardedAdRef;
 

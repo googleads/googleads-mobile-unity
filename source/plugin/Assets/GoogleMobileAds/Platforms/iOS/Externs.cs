@@ -580,6 +580,16 @@ namespace GoogleMobileAds.iOS
         internal static extern IntPtr GADUSetNativeTemplateTextFontSize(IntPtr templateTextStyle,
                                                                         int size);
 
+        [DllImport("__Internal")]
+        internal static extern IntPtr GADUCreateNativeTemplateStyle(string templateName);
+
+        [DllImport("__Internal")]
+        internal static extern IntPtr GADUSetNativeTemplateStyleBackgroundColor(
+            IntPtr templateStyle, IntPtr color);
+
+        [DllImport("__Internal")]
+        internal static extern IntPtr GADUSetNativeTemplateStyleText(IntPtr templateStyle,
+                                                                     string textType, IntPtr color);
 #endregion
 
 #region AdInspector externs
