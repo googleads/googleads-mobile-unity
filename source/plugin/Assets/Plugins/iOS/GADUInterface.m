@@ -1218,7 +1218,7 @@ const GADUTypeResponseInfoRef GADUGetResponseInfo(GADUTypeRef adFormat) {
     GADUAppOpenAd *internalGADUAppOpenAd = (GADUAppOpenAd *)internalAd;
     responseInfo = internalGADUAppOpenAd.responseInfo;
   } else if ([internalAd isKindOfClass:[GADUNativeTemplateAd class]]) {
-    GADUAppOpenAd *internalGADUNativeTemplateAd = (GADUNativeTemplateAd *)internalAd;
+    GADUNativeTemplateAd *internalGADUNativeTemplateAd = (GADUNativeTemplateAd *)internalAd;
     responseInfo = internalGADUNativeTemplateAd.responseInfo;
   }
 
