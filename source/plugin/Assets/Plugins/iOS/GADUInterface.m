@@ -8,6 +8,7 @@
 #import "GADUNativeAdOptions.h"
 #import "GADUNativeTemplateStyle.h"
 #import "GADUNativeTemplateTextStyle.h"
+#import "GADUNativeTemplateAd.h"
 #import "GADUObjectCache.h"
 #import "GADUPluginUtil.h"
 #import "GADURequest.h"
@@ -384,6 +385,16 @@ GADUTypeRewardedInterstitialAdRef GADUCreateRewardedInterstitialAd(
   return (__bridge GADUTypeRewardedInterstitialAdRef)rewardedInterstitialAd;
 }
 
+/// Creates a GADUNativeTemplateAd and returns its reference.
+GADUTypeNativeTemplateAdRef GADUCreateNativeTemplateAd(
+    GADUTypeNativeTemplateAdClientRef *nativeClient) {
+  GADUNativeTemplateAd *nativeAd =
+      [[GADUNativeTemplateAd alloc] initWithNativeTemplateAdClientReference:nativeClient];
+  GADUObjectCache *cache = [GADUObjectCache sharedInstance];
+  cache[nativeAd.gadu_referenceKey] = nativeAd;
+  return (__bridge GADUTypeNativeTemplateAdRef)nativeAd;
+}
+
 /// Sets the app open ad callback methods to be invoked during app open ad events.
 void GADUSetAppOpenAdCallbacks(
     GADUTypeAppOpenAdRef appOpenAd, GADUAppOpenAdLoadedCallback adLoadedCallback,
@@ -547,6 +558,25 @@ void GADUSetRewardedInterstitialAdCallbacks(
   internalRewardedInterstitialAd.adDidRecordClickCallback = adDidRecordClickCallback;
 }
 
+/// Sets the Native Template Ad callback methods to be invoked during Native ad events.
+void GADUSetNativeTemplateAdCallbacks(
+    GADUTypeNativeTemplateAdRef nativeAd, GADUNativeTemplateAdLoadedCallback adLoadedCallback,
+    GADUNativeTemplateAdFailedToLoadCallback adFailedToLoadCallback,
+    GADUNativeTemplateAdDidRecordImpressionCallback adDidRecordImpressionCallback,
+    GADUNativeTemplateAdDidRecordClickCallback adDidRecordClickCallback,
+    GADUNativeTemplateAdPaidEventCallback paidEventCallback,
+    GADUNativeTemplateAdWillPresentScreenCallback adWillPresentScreentCallback,
+    GADUNativeTemplateAdDidDismissScreenCallback adDidDismissScreenCallback) {
+  GADUNativeTemplateAd *nativeTemplateAd = (__bridge GADUNativeTemplateAd *)nativeAd;
+  nativeTemplateAd.adLoadedCallback = adLoadedCallback;
+  nativeTemplateAd.adFailedToLoadCallback = adFailedToLoadCallback;
+  nativeTemplateAd.adDidRecordImpressionCallback = adDidRecordImpressionCallback;
+  nativeTemplateAd.adDidRecordClickCallback = adDidRecordClickCallback;
+  nativeTemplateAd.paidEventCallback = paidEventCallback;
+  nativeTemplateAd.adWillPresentScreenCallback = adWillPresentScreentCallback;
+  nativeTemplateAd.adDidDismissScreenCallback = adDidDismissScreenCallback;
+}
+
 /// Shows the GADAppOpenAd.
 void GADUShowAppOpenAd(GADUTypeAppOpenAdRef appOpenAd) {
   GADUAppOpenAd *internalAppOpenAd = (__bridge GADUAppOpenAd *)appOpenAd;
@@ -636,6 +666,57 @@ double GADURewardedInterstitialAdGetRewardAmount(
       (__bridge GADURewardedInterstitialAd *)rewardedInterstitialAd;
   GADAdReward *reward = internalRewardedInterstitialAd.rewardedInterstitialAd.adReward;
   return reward.amount.doubleValue;
+}
+
+/// Shows the GADNativeTemplateAd.
+void GADUShowNativeTemplateAd(GADUTypeNativeTemplateAdRef nativeAd,
+                              GADUTypeNativeTemplateStyleRef templateStyle, int height, int width) {
+  GADUNativeTemplateAd *internalNativeTemplateAd = (__bridge GADUNativeTemplateAd *)nativeAd;
+  GADUNativeTemplateStyle *tplStyle = (__bridge GADUNativeTemplateStyle *)templateStyle;
+  [internalNativeTemplateAd show:tplStyle width:width height:height];
+}
+
+/// Positions the Native template ad to a predefined AdPosition.
+void GADUSetNativeTemplateAdPosition(GADUTypeNativeTemplateAdRef nativeAd, int position) {
+  GADUNativeTemplateAd *internalNativeTemplateAd = (__bridge GADUNativeTemplateAd *)nativeAd;
+  [internalNativeTemplateAd setAdPosition:(GADAdPosition)position];
+}
+
+/// Positions the Native template ad at the provided (x, y) coordinate.
+void GADUSetNativeTemplateAdCustomPosition(GADUTypeNativeTemplateAdRef nativeAd, int x, int y) {
+  CGPoint adPosition = CGPointMake(x, y);
+  GADUNativeTemplateAd *internalNativeTemplateAd = (__bridge GADUNativeTemplateAd *)nativeAd;
+  [internalNativeTemplateAd setCustomAdPosition:adPosition];
+}
+
+/// Hides the GADNativeTemplateAd.
+void GADUHideNativeTemplateAd(GADUTypeNativeTemplateAdRef nativeAd) {
+  GADUNativeTemplateAd *internalNativeTemplateAd = (__bridge GADUNativeTemplateAd *)nativeAd;
+  [internalNativeTemplateAd hide];
+}
+
+/// Shows the previously loaded GADNativeTemplateAd.
+void GADUDisplayNativeTemplateAd(GADUTypeNativeTemplateAdRef nativeAd) {
+  GADUNativeTemplateAd *internalNativeTemplateAd = (__bridge GADUNativeTemplateAd *)nativeAd;
+  [internalNativeTemplateAd show];
+}
+
+/// Destroy the GADNativeTemplateAd.
+void GADUDestroyNativeTemplateAd(GADUTypeNativeTemplateAdRef nativeAd) {
+  GADUNativeTemplateAd *internalNativeTemplateAd = (__bridge GADUNativeTemplateAd *)nativeAd;
+  [internalNativeTemplateAd destroy];
+}
+
+/// Returns the height of the Native Template Ad in pixels.
+float GADUGetNativeTemplateAdHeightInPixels(GADUTypeNativeTemplateAdRef nativeAd) {
+  GADUNativeTemplateAd *internalNativeTemplateAd = (__bridge GADUNativeTemplateAd *)nativeAd;
+  return internalNativeTemplateAd.heightInPixels;
+}
+
+/// Returns the width of the Native Template Ad in pixels.
+float GADUGetNativeTemplateAdWidthInPixels(GADUTypeNativeTemplateAdRef nativeAd) {
+  GADUNativeTemplateAd *internalNativeTemplateAd = (__bridge GADUNativeTemplateAd *)nativeAd;
+  return internalNativeTemplateAd.widthInPixels;
 }
 
 /// Creates a UIColor object and returns it.
@@ -1136,6 +1217,9 @@ const GADUTypeResponseInfoRef GADUGetResponseInfo(GADUTypeRef adFormat) {
   } else if ([internalAd isKindOfClass:[GADUAppOpenAd class]]) {
     GADUAppOpenAd *internalGADUAppOpenAd = (GADUAppOpenAd *)internalAd;
     responseInfo = internalGADUAppOpenAd.responseInfo;
+  } else if ([internalAd isKindOfClass:[GADUNativeTemplateAd class]]) {
+    GADUAppOpenAd *internalGADUNativeTemplateAd = (GADUNativeTemplateAd *)internalAd;
+    responseInfo = internalGADUNativeTemplateAd.responseInfo;
   }
 
   if (responseInfo) {
