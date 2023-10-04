@@ -26,10 +26,6 @@
   </androidPackages>
 
   <iosPods>
-    <iosPod name="GoogleMobileAdsMediationPangle" version="5.4.0.8.0">
-      <sources>
-        <source>https://github.com/CocoaPods/Specs</source>
-      </sources>
-    </iosPod>
+    <iosPod name="GoogleMobileAdsMediationPangle" version="5.4.0.8.0"/>
   </iosPods>
 </dependencies>

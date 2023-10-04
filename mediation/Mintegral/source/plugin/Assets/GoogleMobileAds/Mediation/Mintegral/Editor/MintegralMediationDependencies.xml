@@ -26,10 +26,6 @@
   </androidPackages>
 
   <iosPods>
-    <iosPod name="GoogleMobileAdsMediationMintegral" version="7.4.1.0">
-      <sources>
-        <source>https://github.com/CocoaPods/Specs</source>
-      </sources>
-    </iosPod>
+    <iosPod name="GoogleMobileAdsMediationMintegral" version="7.4.1.0"/>
   </iosPods>
 </dependencies>

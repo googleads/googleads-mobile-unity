@@ -26,10 +26,6 @@
   </androidPackages>
 
   <iosPods>
-    <iosPod name="GoogleMobileAdsMediationNend" version="8.0.1.0">
-      <sources>
-        <source>https://github.com/CocoaPods/Specs</source>
-      </sources>
-    </iosPod>
+    <iosPod name="GoogleMobileAdsMediationNend" version="8.0.1.0"/>
   </iosPods>
 </dependencies>

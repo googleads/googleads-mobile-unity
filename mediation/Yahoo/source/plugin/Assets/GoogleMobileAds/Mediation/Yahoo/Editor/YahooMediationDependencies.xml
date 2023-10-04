@@ -25,10 +25,6 @@
   </androidPackages>
 
   <iosPods>
-    <iosPod name="GoogleMobileAdsMediationYahoo" version="1.4.0.0">
-      <sources>
-        <source>https://github.com/CocoaPods/Specs</source>
-      </sources>
-    </iosPod>
+    <iosPod name="GoogleMobileAdsMediationYahoo" version="1.4.0.0"/>
   </iosPods>
 </dependencies>
