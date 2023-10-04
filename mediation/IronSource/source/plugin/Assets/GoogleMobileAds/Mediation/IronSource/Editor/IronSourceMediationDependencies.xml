@@ -16,7 +16,7 @@
 
 <dependencies>
   <androidPackages>
-    <androidPackage spec="com.google.ads.mediation:ironsource:7.4.0.0">
+    <androidPackage spec="com.google.ads.mediation:ironsource:7.5.1.0">
       <repositories>
         <repository>https://android-sdk.is.com/</repository>
         <repository>https://dl.google.com/dl/android/maven2/</repository>
