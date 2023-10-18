@@ -162,7 +162,8 @@ namespace GoogleMobileAds.Samples
             if (_privacyButton != null)
             {
                 _privacyButton.interactable =
-                        ConsentInformation.ConsentStatus == ConsentStatus.Required;
+                    ConsentInformation.PrivacyOptionsRequirementStatus ==
+                        PrivacyOptionsRequirementStatus.Required;
             }
         }
 
