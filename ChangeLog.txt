@@ -5,7 +5,7 @@ Version 8.5.3
 **************
 
 - Fixed "cannot find symbol" error when building the Android bridge project using gradle.
-- Pins the Google Mobile Ads SDK dependency to use v22.3.0 on Android. This will ensure that the version of the Google Mobile Ads Android SDK doesn't exceed 22.3.0 after dependency resolution.
+- Fixed [#2930] by pinning the Google Mobile Ads SDK dependency to use v22.3.0 on Android.
 
 Built and tested with:
 - Google Mobile Ads Android SDK 22.3.0
