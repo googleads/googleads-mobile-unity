@@ -67,24 +67,15 @@ namespace GoogleMobileAds.Ump.Android
 
         #region JavaObject creators
 
-        // TODO: @srichakradhar - we need to revisit the way we are testing the platform code.
+        // TODO: b/284206705 - we need to revisit the way we are testing the platform code.
         // We can use integration tests for the untestable platform dependencies. For now, we are
         // using this static internal varialbe for dependency injection that returns an
         // AndroidJavaObject for the unit test (e.g: TestUpdateSuccess in 
         // ConsentInformationClientTestLine 32).
-        internal static AndroidJavaObject _consentRequestParametersJavaObject;
 
         public static AndroidJavaObject GetConsentRequestParametersJavaObject(
                 ConsentRequestParameters consentRequestParameters, AndroidJavaObject activity)
         {
-            if (_consentRequestParametersJavaObject != null)
-            {
-                AndroidJavaObject consentRequestParams = _consentRequestParametersJavaObject;
-                // Clear previous params to be updated in the next call to RequestConsentInfoUpdate.
-                _consentRequestParametersJavaObject = null;
-                return consentRequestParams;
-            }
-
             // Build ConsentRequestParameters object
             AndroidJavaObject consentRequestParametersBuilder =
                     new AndroidJavaObject(ConsentRequestParametersBuilderClassName);
@@ -120,9 +111,9 @@ namespace GoogleMobileAds.Ump.Android
             consentRequestParametersBuilder =
                     consentRequestParametersBuilder.Call<AndroidJavaObject>(
                             "setConsentDebugSettings", consentDebugSettingsJavaObject);
-            _consentRequestParametersJavaObject =
+            AndroidJavaObject consentRequestParametersJavaObject =
                     consentRequestParametersBuilder.Call<AndroidJavaObject>("build");
-            return _consentRequestParametersJavaObject;
+            return consentRequestParametersJavaObject;
         }
 
     #endregion
