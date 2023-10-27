@@ -6,6 +6,7 @@ Version 8.5.3
 
 - Fixed "cannot find symbol" error when building the Android bridge project using gradle.
 - Fixed [#2930] by pinning the Google Mobile Ads SDK dependency to use v22.3.0 on Android.
+- Fixed [#2974] ConsentInformation.Update() wasn't working as expected on consecutive requests.
 
 Built and tested with:
 - Google Mobile Ads Android SDK 22.3.0
