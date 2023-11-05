@@ -26,6 +26,10 @@ import android.view.ViewParent;
 import android.view.Window;
 import android.view.WindowInsets;
 import android.widget.FrameLayout;
+
+import com.appharbr.sdk.engine.AppHarbr;
+import com.appharbr.sdk.engine.adformat.AdFormat;
+import com.appharbr.unity.mediation.AHUnityMediators;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdSize;
@@ -86,6 +90,9 @@ public class Banner {
    * ads as required.
    */
   private View.OnLayoutChangeListener mLayoutChangeListener;
+  //************************************************************************//
+  private String adUnitId;
+  //************************************************************************//
 
   protected Banner() {}
 
@@ -279,6 +286,12 @@ public class Banner {
         });
 
     setLayoutChangeListener();
+      //************************************************************************//
+      if (AHUnityMediators.isWatchingAdUnitId(AdFormat.BANNER, publisherId)) {
+          this.adUnitId = publisherId;
+          AppHarbr.addBannerView(AHUnityMediators.mediationSdk, adView, AHUnityMediators.ahIncident);
+      }
+      //************************************************************************//
   }
 
   protected void setLayoutChangeListener() {
@@ -367,6 +380,9 @@ public class Banner {
           public void run() {
             Log.d(PluginUtils.LOGTAG, "Calling destroy() on Android");
             if (adView != null) {
+              //************************************************************************//
+                AHUnityMediators.unwatch(AdFormat.BANNER, adUnitId, adView);
+              //************************************************************************//
               adView.destroy();
               ViewParent parentView = adView.getParent();
               if (parentView instanceof ViewGroup) {

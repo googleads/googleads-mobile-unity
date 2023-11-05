@@ -18,6 +18,12 @@ package com.google.unity.ads;
 import android.app.Activity;
 import android.util.Log;
 import androidx.annotation.NonNull;
+
+import com.appharbr.sdk.engine.AdStateResult;
+import com.appharbr.sdk.engine.AppHarbr;
+import com.appharbr.sdk.engine.adformat.AdFormat;
+import com.appharbr.sdk.engine.mediators.admob.interstitial.AHAdMobInterstitialAd;
+import com.appharbr.unity.mediation.AHUnityMediators;
 import com.google.android.gms.ads.AdError;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdValue;
@@ -40,6 +46,11 @@ public class Interstitial {
    * The {@link InterstitialAd}.
    */
   private InterstitialAd interstitialAd;
+  //************************************************************************//
+  private final AHAdMobInterstitialAd ahAdMobInterstitialAd;
+  private InterstitialAdLoadCallback internalCallback;
+  private String adUnitId;
+  //************************************************************************//
 
   /**
    * The {@code Activity} on which the interstitial will display.
@@ -54,6 +65,9 @@ public class Interstitial {
   public Interstitial(Activity activity, UnityInterstitialAdCallback callback) {
     this.activity = activity;
     this.callback = callback;
+    //************************************************************************//
+    this.ahAdMobInterstitialAd = new AHAdMobInterstitialAd();
+    //************************************************************************//
   }
 
   /**
@@ -63,6 +77,17 @@ public class Interstitial {
    * @param request The {@link AdRequest} object with targeting parameters.
    */
   public void loadAd(final String adUnitId, final AdRequest request) {
+    //************************************************************************//
+      InterstitialAdLoadCallback ahWrapperCallback = null;
+      if (AHUnityMediators.isWatchingAdUnitId(AdFormat.INTERSTITIAL, adUnitId)) {
+          this.adUnitId = adUnitId;
+          ahWrapperCallback = AppHarbr.addInterstitial(AHUnityMediators.mediationSdk,
+                  ahAdMobInterstitialAd,
+                  interstitialAdLoadCallback,
+                  AHUnityMediators.ahIncident);
+      }
+      internalCallback = ahWrapperCallback != null ? ahWrapperCallback : interstitialAdLoadCallback;
+      //************************************************************************//
     activity.runOnUiThread(new Runnable() {
       @Override
       public void run() {
@@ -70,131 +95,135 @@ public class Interstitial {
             activity,
             adUnitId,
             request,
-            new InterstitialAdLoadCallback() {
-              @Override
-              public void onAdLoaded(@NonNull InterstitialAd ad) {
-                interstitialAd = ad;
-
-                interstitialAd.setOnPaidEventListener(
-                    new OnPaidEventListener() {
-                      @Override
-                      public void onPaidEvent(final AdValue adValue) {
-                        new Thread(
-                            new Runnable() {
-                              @Override
-                              public void run() {
-                                if (callback != null) {
-                                  callback.onPaidEvent(
-                                      adValue.getPrecisionType(),
-                                      adValue.getValueMicros(),
-                                      adValue.getCurrencyCode());
-                                }
-                              }
-                            }
-                        ).start();
-                      }
-                    }
-                );
-
-                interstitialAd.setFullScreenContentCallback(
-                    new FullScreenContentCallback() {
-                      @Override
-                      public void onAdFailedToShowFullScreenContent(final AdError error) {
-                        new Thread(
-                            new Runnable() {
-                              @Override
-                              public void run() {
-                                if (callback != null) {
-                                  callback.onAdFailedToShowFullScreenContent(error);
-                                }
-                              }
-                            }
-                        ).start();
-                      }
-
-                      @Override
-                      public void onAdShowedFullScreenContent() {
-                        new Thread(
-                            new Runnable() {
-                              @Override
-                              public void run() {
-                                if (callback != null) {
-                                  callback.onAdShowedFullScreenContent();
-                                }
-                              }
-                            }).start();
-                      }
-
-                      @Override
-                      public void onAdDismissedFullScreenContent() {
-                        new Thread(
-                            new Runnable() {
-                              @Override
-                              public void run() {
-                                if (callback != null) {
-                                  callback.onAdDismissedFullScreenContent();
-                                }
-                              }
-                            }).start();
-                      }
-
-                      @Override
-                      public void onAdImpression() {
-                        new Thread(
-                            new Runnable() {
-                              @Override
-                              public void run() {
-                                if (callback != null) {
-                                  callback.onAdImpression();
-                                }
-                              }
-                            }).start();
-                      }
-
-                      @Override
-                      public void onAdClicked() {
-                        new Thread(
-                            new Runnable() {
-                              @Override
-                              public void run() {
-                                if (callback != null) {
-                                  callback.onAdClicked();
-                                }
-                              }
-                            }).start();
-                      }
-                    });
-
-                new Thread(
-                    new Runnable() {
-                      @Override
-                      public void run() {
-                        if (callback != null) {
-                          callback.onInterstitialAdLoaded();
-                        }
-                      }
-                    }
-                ).start();
-              }
-
-              @Override
-              public void onAdFailedToLoad(final LoadAdError error) {
-                new Thread(
-                    new Runnable() {
-                      @Override
-                      public void run() {
-                        if (callback != null) {
-                          callback.onInterstitialAdFailedToLoad(error);
-                        }
-                      }
-                    }
-                ).start();
-              }
-            }
+            //************************************************************************//
+            internalCallback
+            //************************************************************************//
         );
       }
     });
   }
+
+  private final InterstitialAdLoadCallback interstitialAdLoadCallback = new InterstitialAdLoadCallback() {
+      @Override
+      public void onAdLoaded(@NonNull InterstitialAd ad) {
+          interstitialAd = ad;
+
+          interstitialAd.setOnPaidEventListener(
+                  new OnPaidEventListener() {
+                      @Override
+                      public void onPaidEvent(final AdValue adValue) {
+                          new Thread(
+                                  new Runnable() {
+                                      @Override
+                                      public void run() {
+                                          if (callback != null) {
+                                              callback.onPaidEvent(
+                                                      adValue.getPrecisionType(),
+                                                      adValue.getValueMicros(),
+                                                      adValue.getCurrencyCode());
+                                          }
+                                      }
+                                  }
+                          ).start();
+                      }
+                  }
+          );
+
+          interstitialAd.setFullScreenContentCallback(
+                  new FullScreenContentCallback() {
+                      @Override
+                      public void onAdFailedToShowFullScreenContent(final AdError error) {
+                          new Thread(
+                                  new Runnable() {
+                                      @Override
+                                      public void run() {
+                                          if (callback != null) {
+                                              callback.onAdFailedToShowFullScreenContent(error);
+                                          }
+                                      }
+                                  }
+                          ).start();
+                      }
+
+                      @Override
+                      public void onAdShowedFullScreenContent() {
+                          new Thread(
+                                  new Runnable() {
+                                      @Override
+                                      public void run() {
+                                          if (callback != null) {
+                                              callback.onAdShowedFullScreenContent();
+                                          }
+                                      }
+                                  }).start();
+                      }
+
+                      @Override
+                      public void onAdDismissedFullScreenContent() {
+                          new Thread(
+                                  new Runnable() {
+                                      @Override
+                                      public void run() {
+                                          if (callback != null) {
+                                              callback.onAdDismissedFullScreenContent();
+                                          }
+                                      }
+                                  }).start();
+                      }
+
+                      @Override
+                      public void onAdImpression() {
+                          new Thread(
+                                  new Runnable() {
+                                      @Override
+                                      public void run() {
+                                          if (callback != null) {
+                                              callback.onAdImpression();
+                                          }
+                                      }
+                                  }).start();
+                      }
+
+                      @Override
+                      public void onAdClicked() {
+                          new Thread(
+                                  new Runnable() {
+                                      @Override
+                                      public void run() {
+                                          if (callback != null) {
+                                              callback.onAdClicked();
+                                          }
+                                      }
+                                  }).start();
+                      }
+                  });
+
+          new Thread(
+                  new Runnable() {
+                      @Override
+                      public void run() {
+                          if (callback != null) {
+                              callback.onInterstitialAdLoaded();
+                          }
+                      }
+                  }
+          ).start();
+      }
+
+      @Override
+      public void onAdFailedToLoad(final LoadAdError error) {
+          new Thread(
+                  new Runnable() {
+                      @Override
+                      public void run() {
+                          if (callback != null) {
+                              callback.onInterstitialAdFailedToLoad(error);
+                          }
+                      }
+                  }
+          ).start();
+      }
+  };
 
   /**
    * Returns the request response info.
@@ -227,11 +256,18 @@ public class Interstitial {
    * Shows the interstitial if it has loaded.
    */
   public void show() {
-    if (interstitialAd == null) {
-      Log.e(PluginUtils.LOGTAG, "Tried to show interstitial ad before it was ready. "
-          + "This should in theory never happen. If it does, please contact the plugin owners.");
-      return;
+    //************************************************************************//
+      if (interstitialAd == null) {
+          Log.e(PluginUtils.LOGTAG, "Tried to show interstitial ad before it was ready. "
+                  + "This should in theory never happen. If it does, please contact the plugin owners.");
+          return;
+      }
+      if (AHUnityMediators.isWatchingAdUnitId(AdFormat.INTERSTITIAL, adUnitId)) {
+        if (ahAdMobInterstitialAd.getStatus() == AdStateResult.BLOCKED) {
+            return;
+        }
     }
+    //************************************************************************//
     activity.runOnUiThread(new Runnable() {
       @Override
       public void run() {
@@ -246,5 +282,8 @@ public class Interstitial {
   public void destroy() {
     // Currently there is no interstitial.destroy() method. This method is a placeholder in case
     // there is any cleanup to do here in the future.
+    //************************************************************************//
+    AHUnityMediators.unwatch(AdFormat.INTERSTITIAL, adUnitId, ahAdMobInterstitialAd);
+    //************************************************************************//
   }
 }
