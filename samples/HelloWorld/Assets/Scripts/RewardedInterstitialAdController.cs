@@ -82,6 +82,7 @@ namespace GoogleMobileAds.Sample
         /// </summary>
         public void ShowAd()
         {
+            // Get status of Rewarded-Interstitial Ad from AppHarbr SDK
             AHAdStateResult state = AppHarbr.GetRewardedInterstitialState(_adUnitId);
             if (state == AHAdStateResult.Blocked)
             {

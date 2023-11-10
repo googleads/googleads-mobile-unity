@@ -79,7 +79,7 @@ namespace GoogleMobileAds.Sample
         /// </summary>
         public void ShowAd()
         {
-            //Get status of Interstitial Ad from AppHarbr SDK
+            // Get status of Interstitial Ad from AppHarbr SDK
             AHAdStateResult adState = AppHarbr.GetInterstitialState(_adUnitId);
             if (adState == AHAdStateResult.Blocked)
             {
