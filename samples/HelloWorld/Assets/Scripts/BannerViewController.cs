@@ -39,6 +39,8 @@ namespace GoogleMobileAds.Sample
                 DestroyAd();
             }
 
+            //Start monitoring of banner by AppHarbr SDK
+            AppHarbr.WatchBanner(_adUnitId);
             // Create a 320x50 banner at top of the screen.
             _bannerView = new BannerView(_adUnitId, AdSize.Banner, AdPosition.Top);
 
@@ -98,6 +100,7 @@ namespace GoogleMobileAds.Sample
         /// </summary>
         public void DestroyAd()
         {
+            AppHarbr.UnwatchBanner(_adUnitId); //Remove destroyed banner from AppHarbr SDK
             if (_bannerView != null)
             {
                 Debug.Log("Destroying banner view.");

@@ -37,6 +37,8 @@ namespace GoogleMobileAds.Samples
         /// </summary>
         private void Start()
         {
+            SetupAppHarbrSdk();
+
             // On Android, Unity is paused when displaying interstitial or rewarded video.
             // This setting makes iOS behave consistently with Android.
             MobileAds.SetiOSAppPauseOnBackground(true);
@@ -61,6 +63,68 @@ namespace GoogleMobileAds.Samples
 
             // Ensures that privacy and consent information is up to date.
             InitializeGoogleMobileAdsConsent();
+        }
+
+        /// <summary>
+        /// Initialization of AppHarbr SDK to watch Ads.
+        /// </summary>
+        private void SetupAppHarbrSdk()
+        {
+            AppHarbrSdkCallbacks.OnAppHarbrInitializationComplete += (string error) =>
+            {
+                if (error != null)
+                {
+                    Debug.Log("AppHarbr Initialization Failed with Error: " + error);
+                }
+                else
+                {
+                    Debug.Log("AppHarbr Initialization complete successfully!");
+                }
+
+            };
+
+            AppHarbrSdkCallbacks.OnAdBlockedEvent += (AHIncidentData aHIncidentData) =>
+            {
+                if (aHIncidentData != null)
+                {
+                    string separator = "\n\t";
+                    PrintStatus("AppHarbr OnAdBlockedEvent:" + separator +
+                        "Ad Unit Id: " + aHIncidentData.UnitId + separator +
+                        "Ad Format:  " + aHIncidentData.AdFormat + separator +
+                        "Block Reasons  [" + string.Join(",", aHIncidentData.BlockReasons) + "]\n"
+                        );
+                }
+            };
+
+            AppHarbrSdkCallbacks.OnAdIncidentEvent += (AHIncidentData aHIncidentData) =>
+            {
+                if (aHIncidentData != null)
+                {
+                    string separator = "\n\t";
+                    PrintStatus("AppHarbr onAdIncidentEvent:" + separator +
+                        "Creative Id: " + aHIncidentData.CreativeId + separator +
+                        "Ad Unit Id:  " + aHIncidentData.UnitId + separator +
+                        "Ad Netowrk:  " + aHIncidentData.AdNetwork + separator +
+                        "Ad Format:   " + aHIncidentData.AdFormat + separator +
+                        "Block Reasons  [" + string.Join(",", aHIncidentData.BlockReasons) + "]" + separator +
+                        "Report Reasons [" + string.Join(",", aHIncidentData.ReportReasons) + "]\n"
+                        );
+                }
+            };
+
+            var config = new AHSdkConfiguration(
+                    androidApiKey: "AppHarbrAPIKey_for_Andorid_contact_to_AppHarbr_Support",
+                    iOSApiKey: "AppHarbrAPIKey_for_IOS_contact_to_AppHarbr_Support",
+                    limitFullscreenAdsInSeconds: 15,
+                    muteAd: true,
+                    ahSdkDebug: new AHSdkDebug(
+                            isDebug: true,
+                            isBlockAll: false,
+                            isReportAll: false
+                        )
+                );
+
+            AppHarbr.Initialize(AHAdSdk.ADMOB, config);
         }
 
         /// <summary>
