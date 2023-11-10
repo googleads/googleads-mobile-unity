@@ -42,6 +42,9 @@ namespace GoogleMobileAds.Sample
             // Create our request used to load the ad.
             var adRequest = new AdRequest();
 
+            // Start monitoring of Interstitial Ad by AppHarbr SDK
+            AppHarbr.WatchInterstitial(_adUnitId);
+
             // Send the request to load the ad.
             InterstitialAd.Load(_adUnitId, adRequest, (InterstitialAd ad, LoadAdError error) =>
             {
@@ -76,6 +79,14 @@ namespace GoogleMobileAds.Sample
         /// </summary>
         public void ShowAd()
         {
+            // Get status of Interstitial Ad from AppHarbr SDK
+            AHAdStateResult adState = AppHarbr.GetInterstitialState(_adUnitId);
+            if (adState == AHAdStateResult.Blocked)
+            {
+                Debug.Log("Interstitial Ad was blocked by AppHarbr, you may reload Interstitial Ad.");
+                return;
+            }   
+
             if (_interstitialAd != null && _interstitialAd.CanShowAd())
             {
                 Debug.Log("Showing interstitial ad.");
@@ -95,6 +106,9 @@ namespace GoogleMobileAds.Sample
         /// </summary>
         public void DestroyAd()
         {
+            // Remove destroyed Interstitial Ad from AppHarbr SDK
+            AppHarbr.UnwatchInterstitial(_adUnitId);
+
             if (_interstitialAd != null)
             {
                 Debug.Log("Destroying interstitial ad.");

@@ -42,6 +42,9 @@ namespace GoogleMobileAds.Sample
             // Create our request used to load the ad.
             var adRequest = new AdRequest();
 
+            // Start monitoring of Rewarded-Interstitial Ad by AppHarbr SDK
+            AppHarbr.WatchRewardedInterstitial(_adUnitId);
+
             // Send the request to load the ad.
             RewardedInterstitialAd.Load(_adUnitId, adRequest,
                 (RewardedInterstitialAd ad, LoadAdError error) =>
@@ -79,6 +82,14 @@ namespace GoogleMobileAds.Sample
         /// </summary>
         public void ShowAd()
         {
+            // Get status of Rewarded-Interstitial Ad from AppHarbr SDK
+            AHAdStateResult state = AppHarbr.GetRewardedInterstitialState(_adUnitId);
+            if (state == AHAdStateResult.Blocked)
+            {
+                Debug.Log("Rewarded-Interstitial Ad was blocked by AppHarbr, you may reload Rewarded-Interstitial Ad.");
+                return;
+            }
+
             if (_rewardedInterstitialAd != null && _rewardedInterstitialAd.CanShowAd())
             {
                 _rewardedInterstitialAd.Show((Reward reward) =>
@@ -100,6 +111,9 @@ namespace GoogleMobileAds.Sample
         /// </summary>
         public void DestroyAd()
         {
+            // Remove destroyed Rewarded-Interstitial Ad from AppHarbr SDK
+            AppHarbr.UnwatchRewardedInterstitial(_adUnitId);
+
             if (_rewardedInterstitialAd != null)
             {
                 Debug.Log("Destroying rewarded interstitial ad.");

@@ -39,6 +39,9 @@ namespace GoogleMobileAds.Sample
 
             Debug.Log("Loading rewarded ad.");
 
+            // Start monitoring of Rewarded Ad by AppHarbr SDK
+            AppHarbr.WatchRewarded(_adUnitId);
+
             // Create our request used to load the ad.
             var adRequest = new AdRequest();
 
@@ -76,6 +79,14 @@ namespace GoogleMobileAds.Sample
         /// </summary>
         public void ShowAd()
         {
+            // Get status of Rewarded Ad from AppHarbr SDK
+            AHAdStateResult state = AppHarbr.GetRewardedState(_adUnitId);
+            if (state == AHAdStateResult.Blocked)
+            {
+                Debug.Log("Rewarded Ad was blocked by AppHarbr, you may reload Rewarded Ad.");
+                return;
+            }
+
             if (_rewardedAd != null && _rewardedAd.CanShowAd())
             {
                 Debug.Log("Showing rewarded ad.");
@@ -100,6 +111,9 @@ namespace GoogleMobileAds.Sample
         /// </summary>
         public void DestroyAd()
         {
+            // Remove destroyed Rewarded Ad from AppHarbr SDK
+            AppHarbr.UnwatchRewarded(_adUnitId);
+
             if (_rewardedAd != null)
             {
                 Debug.Log("Destroying rewarded ad.");
