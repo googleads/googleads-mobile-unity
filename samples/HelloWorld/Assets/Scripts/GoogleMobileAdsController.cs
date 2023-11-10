@@ -88,7 +88,7 @@ namespace GoogleMobileAds.Samples
                 if (aHIncidentData != null)
                 {
                     string separator = "\n\t";
-                    PrintStatus("AppHarbr OnAdBlockedEvent:" + separator +
+                    Debug.Log("AppHarbr OnAdBlockedEvent:" + separator +
                         "Ad Unit Id: " + aHIncidentData.UnitId + separator +
                         "Ad Format:  " + aHIncidentData.AdFormat + separator +
                         "Block Reasons  [" + string.Join(",", aHIncidentData.BlockReasons) + "]\n"
@@ -96,12 +96,12 @@ namespace GoogleMobileAds.Samples
                 }
             };
 
-            AppHarbrSdkCallbacks.OnAdIncidentEvent += (AHIncidentData aHIncidentData) =>
+            AppHarbrSdkCallbacks.onAdIncidentEvent += (AHIncidentData aHIncidentData) =>
             {
                 if (aHIncidentData != null)
                 {
                     string separator = "\n\t";
-                    PrintStatus("AppHarbr onAdIncidentEvent:" + separator +
+                    Debug.Log("AppHarbr onAdIncidentEvent:" + separator +
                         "Creative Id: " + aHIncidentData.CreativeId + separator +
                         "Ad Unit Id:  " + aHIncidentData.UnitId + separator +
                         "Ad Netowrk:  " + aHIncidentData.AdNetwork + separator +
@@ -126,6 +126,7 @@ namespace GoogleMobileAds.Samples
 
             AppHarbr.Initialize(AHAdSdk.ADMOB, config);
         }
+
 
         /// <summary>
         /// Ensures that privacy and consent information is up to date.
