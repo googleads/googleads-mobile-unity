@@ -17,10 +17,17 @@ package com.google.unity.ads.admanager;
 
 import android.app.Activity;
 import android.util.Log;
+
+import com.appharbr.sdk.engine.AdStateResult;
+import com.appharbr.sdk.engine.AppHarbr;
+import com.appharbr.sdk.engine.adformat.AdFormat;
+import com.appharbr.sdk.engine.mediators.gam.interstitial.AHGamInterstitialAd;
+import com.appharbr.unity.mediation.AHUnityMediators;
 import com.google.android.gms.ads.ResponseInfo;
 import com.google.android.gms.ads.admanager.AdManagerAdRequest;
 import com.google.android.gms.ads.admanager.AdManagerInterstitialAd;
 import com.google.unity.ads.PluginUtils;
+
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.FutureTask;
 
@@ -30,6 +37,12 @@ public class UnityAdManagerInterstitialAd {
 
   /** The {@link AdManagerInterstitialAd}. */
   private AdManagerInterstitialAd adManagerInterstitialAd;
+
+  //************************************************************************//
+  private final AHGamInterstitialAd ahGamInterstitialAd;
+  private AdManagerInterstitialAdCallback internalCallback;
+  private String adUnitId;
+  //************************************************************************//
 
   /** The {@code Activity} on which the interstitial will display. */
   private final Activity activity;
@@ -41,6 +54,9 @@ public class UnityAdManagerInterstitialAd {
       Activity activity, UnityAdManagerInterstitialAdCallback callback) {
     this.activity = activity;
     this.callback = callback;
+    //************************************************************************//
+    this.ahGamInterstitialAd = new AHGamInterstitialAd();
+    //************************************************************************//
   }
 
   /**
@@ -50,13 +66,30 @@ public class UnityAdManagerInterstitialAd {
    * @param request The {@link AdManagerAdRequest} object with targeting parameters.
    */
   public void loadAd(final String adUnitId, final AdManagerAdRequest request) {
+
     AdManagerInterstitialAdCallback adManagerInterstitialAdCallback =
-        new AdManagerInterstitialAdCallback(adManagerInterstitialAd, callback);
+            new AdManagerInterstitialAdCallback(adManagerInterstitialAd, callback);
+    //************************************************************************//
+    AdManagerInterstitialAdCallback ahWrapperListener = null;
+    if (AHUnityMediators.isWatchingAdUnitId(AdFormat.INTERSTITIAL, adUnitId)) {
+      this.adUnitId = adUnitId;
+      ahWrapperListener = AppHarbr.addInterstitial(AHUnityMediators.mediationSdk,
+              ahGamInterstitialAd,
+              adManagerInterstitialAdCallback,
+              AHUnityMediators.ahIncident);
+    }
+    internalCallback = ahWrapperListener != null ? ahWrapperListener : adManagerInterstitialAdCallback;
+    //************************************************************************//
+
 
     activity.runOnUiThread(
         () ->
             AdManagerInterstitialAd.load(
-                activity, adUnitId, request, adManagerInterstitialAdCallback));
+                activity, adUnitId, request,
+                    //************************************************************************//
+                    internalCallback
+                    //************************************************************************//
+            ));
   }
 
   /** Returns the request response info. */
@@ -80,6 +113,7 @@ public class UnityAdManagerInterstitialAd {
 
   /** Shows the interstitial if it has loaded. */
   public void show() {
+    //************************************************************************//
     if (adManagerInterstitialAd == null) {
       Log.e(
           PluginUtils.LOGTAG,
@@ -87,6 +121,13 @@ public class UnityAdManagerInterstitialAd {
               + "never happen. If it does, please contact the plugin owners.");
       return;
     }
+    if (AHUnityMediators.isWatchingAdUnitId(AdFormat.INTERSTITIAL, adUnitId)) {
+      if (ahGamInterstitialAd.getStatus() == AdStateResult.BLOCKED) {
+        return;
+      }
+    }
+    //************************************************************************//
+
     activity.runOnUiThread(() -> adManagerInterstitialAd.show(activity));
   }
 
@@ -94,5 +135,8 @@ public class UnityAdManagerInterstitialAd {
   public void destroy() {
     // Currently there is no interstitial.destroy() method. This method is a placeholder in case
     // there is any cleanup to do here in the future.
+    //************************************************************************//
+    AHUnityMediators.unwatch(AdFormat.INTERSTITIAL, adUnitId, ahGamInterstitialAd);
+    //************************************************************************//
   }
 }

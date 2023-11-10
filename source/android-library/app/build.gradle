@@ -1,6 +1,7 @@
 apply plugin: 'com.android.library'
 
 android {
+    namespace 'googleads.mobile.unity'
     compileSdkVersion 31
 
     defaultConfig {
@@ -9,6 +10,7 @@ android {
         versionCode 1
         versionName "1.0"
         consumerProguardFiles 'proguard.pgcfg'
+        multiDexEnabled true
     }
 
     buildTypes {
@@ -24,6 +26,18 @@ android {
 }
 
 dependencies {
+
+    //************************************************************************//
+    // AppHarbr Additional Resources
+    compileOnly files('libs/appharbr-unity-mediations-plugin.aar')
+    compileOnly files('libs/AppHarbr.aar')
+    implementation 'com.google.code.gson:gson:2.9.0'
+    implementation 'androidx.core:core-ktx:1.9.0'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4'
+    implementation 'androidx.lifecycle:lifecycle-common:2.5.1'
+    //************************************************************************//
+
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'com.google.android.gms:play-services-ads:22.3.0'
