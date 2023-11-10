@@ -90,7 +90,6 @@ namespace GoogleMobileAds.Sample
                 return;
             }
 
-
             if (_rewardedInterstitialAd != null && _rewardedInterstitialAd.CanShowAd())
             {
                 _rewardedInterstitialAd.Show((Reward reward) =>
@@ -114,6 +113,7 @@ namespace GoogleMobileAds.Sample
         {
             // Remove destroyed Rewarded-Interstitial Ad from AppHarbr SDK
             AppHarbr.UnwatchRewardedInterstitial(_adUnitId);
+
             if (_rewardedInterstitialAd != null)
             {
                 Debug.Log("Destroying rewarded interstitial ad.");
