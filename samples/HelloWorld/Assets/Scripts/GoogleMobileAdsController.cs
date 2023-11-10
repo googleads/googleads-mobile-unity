@@ -96,7 +96,7 @@ namespace GoogleMobileAds.Samples
                 }
             };
 
-            AppHarbrSdkCallbacks.onAdIncidentEvent += (AHIncidentData aHIncidentData) =>
+            AppHarbrSdkCallbacks.OnAdIncidentEvent += (AHIncidentData aHIncidentData) =>
             {
                 if (aHIncidentData != null)
                 {
