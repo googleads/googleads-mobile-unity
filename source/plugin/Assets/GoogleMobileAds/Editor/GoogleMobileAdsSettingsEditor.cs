@@ -11,6 +11,7 @@ namespace GoogleMobileAds.Editor
         SerializedProperty _appIdAndroid;
         SerializedProperty _appIdiOS;
         SerializedProperty _delayAppMeasurement;
+        SerializedProperty _enableKotlinXCoroutinesPackagingOption;
         SerializedProperty _optimizeInitialization;
         SerializedProperty _optimizeAdLoading;
         SerializedProperty _userTrackingUsageDescription;
@@ -27,6 +28,8 @@ namespace GoogleMobileAds.Editor
             _appIdAndroid = serializedObject.FindProperty("adMobAndroidAppId");
             _appIdiOS = serializedObject.FindProperty("adMobIOSAppId");
             _delayAppMeasurement = serializedObject.FindProperty("delayAppMeasurementInit");
+            _enableKotlinXCoroutinesPackagingOption =
+                serializedObject.FindProperty("enableKotlinXCoroutinesPackagingOption");
             _optimizeInitialization = serializedObject.FindProperty("optimizeInitialization");
             _optimizeAdLoading = serializedObject.FindProperty("optimizeAdLoading");
             _userTrackingUsageDescription =
@@ -60,10 +63,22 @@ namespace GoogleMobileAds.Editor
             EditorGUI.indentLevel--;
             EditorGUILayout.Separator();
 
-            EditorGUILayout.LabelField("Android optimization settings", EditorStyles.boldLabel);
+            EditorGUILayout.LabelField("Android settings", EditorStyles.boldLabel);
             EditorGUI.indentLevel++;
 
             EditorGUI.BeginChangeCheck();
+
+            EditorGUILayout.PropertyField(_enableKotlinXCoroutinesPackagingOption,
+                              new GUIContent("Enable kotlinx.coroutines packaging option."));
+
+            if (settings.EnableKotlinXCoroutinesPackagingOption)
+            {
+                EditorGUILayout.HelpBox(
+                        "Adds instruction to fix a build.gradle build error with message"+
+                        " '2 files found with path 'META-INF/kotlinx_coroutines_core.version'."+
+                        " For more details see https://developers.google.com/admob/unity/gradle",
+                        MessageType.Info);
+            }
 
             EditorGUILayout.PropertyField(_optimizeInitialization,
                                           new GUIContent("Optimize initialization"));

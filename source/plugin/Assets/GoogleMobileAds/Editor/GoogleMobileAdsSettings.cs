@@ -42,6 +42,9 @@ namespace GoogleMobileAds.Editor
         private bool delayAppMeasurementInit;
 
         [SerializeField]
+        private bool enableKotlinXCoroutinesPackagingOption = true;
+
+        [SerializeField]
         private bool optimizeInitialization;
 
         [SerializeField]
@@ -55,6 +58,12 @@ namespace GoogleMobileAds.Editor
             get { return adMobAndroidAppId; }
 
             set { adMobAndroidAppId = value; }
+        }
+
+        public bool EnableKotlinXCoroutinesPackagingOption
+        {
+            get { return enableKotlinXCoroutinesPackagingOption; }
+            set { enableKotlinXCoroutinesPackagingOption = value; }
         }
 
         public string GoogleMobileAdsIOSAppId
