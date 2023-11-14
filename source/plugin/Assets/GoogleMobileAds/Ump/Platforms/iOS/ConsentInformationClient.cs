@@ -136,16 +136,16 @@ namespace GoogleMobileAds.Ump.iOS
             {
                 int status = Externs.GADUGetConsentStatus(ConsentInformationPtr);
                 /// The consent status values change depending on the runtime platform.
-                /// iOS - https://developers.google.com/admob/ump/ios/api/reference/Enums/ConsentStatus
-                /// Android - https://developers.google.com/admob/ump/android/api/reference/com/google/android/ump/ConsentInformation.ConsentStatus
+                /// iOS - https://developers.google.com/admob/ios/privacy/api/reference/Enums/UMPConsentStatus
+                /// Android - https://developers.google.com/admob/android/privacy/api/reference/com/google/android/ump/ConsentInformation.ConsentStatus
                 /// We are converting consent status values to match those in Unity and Android.
                 switch(status) {
-                    case 1:
-                        return 2;
-                    case 2:
-                        return 1;
-                    case 0:
-                    case 3:
+                    case 1: // UMPConsentInformation.UMPConsentStatusRequired
+                        return (int) ConsentStatus.Required;
+                    case 2: // UMPConsentInformation.UMPConsentStatusNotRequired
+                        return (int) ConsentStatus.NotRequired;
+                    case 0: // UMPConsentInformation.UMPConsentStatusUnknown
+                    case 3: // UMPConsentInformation.UMPConsentStatusObtained
                     default:
                         return status;
                 }
@@ -161,7 +161,20 @@ namespace GoogleMobileAds.Ump.iOS
         {
             if (Application.platform == RuntimePlatform.IPhonePlayer)
             {
-                return Externs.GADUGetPrivacyOptionsRequirementStatus(ConsentInformationPtr);
+                int status = Externs.GADUGetPrivacyOptionsRequirementStatus(ConsentInformationPtr);
+                /// The privacy options values change depending on the runtime platform.
+                /// iOS - https://developers.google.com/admob/ios/privacy/api/reference/Enums/UMPPrivacyOptionsRequirementStatus
+                /// Android - https://developers.google.com/admob/android/privacy/api/reference/com/google/android/ump/ConsentInformation.PrivacyOptionsRequirementStatus
+                /// We are converting privacy options values to match those in Unity and Android.
+                switch(status) {
+                    case 1: // UMPConsentInformation.UMPPrivacyOptionsRequirementStatusRequired
+                        return (int) PrivacyOptionsRequirementStatus.Required;
+                    case 2: // UMPConsentInformation.UMPPrivacyOptionsRequirementStatusNotRequired
+                        return (int) PrivacyOptionsRequirementStatus.NotRequired;
+                    case 0: // UMPConsentInformation.UMPPrivacyOptionsRequirementStatusUnknown
+                    default:
+                        return status;
+                }
             }
             throw new InvalidOperationException(@"Called " + MethodBase.GetCurrentMethod().Name +
                                                 " on non-iOS runtime");
