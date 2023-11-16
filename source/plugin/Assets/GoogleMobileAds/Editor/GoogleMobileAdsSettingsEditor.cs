@@ -12,6 +12,7 @@ namespace GoogleMobileAds.Editor
         SerializedProperty _appIdiOS;
         SerializedProperty _delayAppMeasurement;
         SerializedProperty _enableKotlinXCoroutinesPackagingOption;
+        SerializedProperty _overrideAapt2;
         SerializedProperty _optimizeInitialization;
         SerializedProperty _optimizeAdLoading;
         SerializedProperty _userTrackingUsageDescription;
@@ -30,6 +31,8 @@ namespace GoogleMobileAds.Editor
             _delayAppMeasurement = serializedObject.FindProperty("delayAppMeasurementInit");
             _enableKotlinXCoroutinesPackagingOption =
                 serializedObject.FindProperty("enableKotlinXCoroutinesPackagingOption");
+            _overrideAapt2 =
+                serializedObject.FindProperty("overrideAapt2");
             _optimizeInitialization = serializedObject.FindProperty("optimizeInitialization");
             _optimizeAdLoading = serializedObject.FindProperty("optimizeAdLoading");
             _userTrackingUsageDescription =
@@ -78,6 +81,18 @@ namespace GoogleMobileAds.Editor
                         " '2 files found with path 'META-INF/kotlinx_coroutines_core.version'."+
                         " For more details see https://developers.google.com/admob/unity/gradle",
                         MessageType.Info);
+            }
+
+            EditorGUILayout.PropertyField(_overrideAapt2,
+                              new GUIContent("Enable overriding default AAPT2"));
+
+            if (settings.OverrideAapt2)
+            {
+                EditorGUILayout.HelpBox(
+                    "Enabling this option, instructs the Android Gradle Plugin to use the AAPT2"+
+                    " library packaged as part of the GMA Unity Plugin. This option is only"+
+                    " required for projects that use Android Gradle Plugin beneath version 4.2.2.",
+                    MessageType.Info);
             }
 
             EditorGUILayout.PropertyField(_optimizeInitialization,
