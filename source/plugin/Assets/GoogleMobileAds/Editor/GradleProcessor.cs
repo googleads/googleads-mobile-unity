@@ -42,11 +42,11 @@ public class GradleProcessor : IPostGenerateGradleAndroidProject
                 continue;
             }
 
-            if (path.Contains("unityLibrary/build.gradle"))
+            if (gradlepath.Contains("unityLibrary/build.gradle"))
             {
                 contents += Environment.NewLine + GMA_PACKAGING_OPTIONS;
             }
-            else if (path.Contains("launcher/build.gradle"))
+            else if (gradlepath.Contains("launcher/build.gradle"))
             {
                 contents += Environment.NewLine + GMA_PACKAGING_OPTIONS_LAUNCHER;
             }
