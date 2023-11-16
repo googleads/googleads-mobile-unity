@@ -16,7 +16,7 @@
 
 <dependencies>
   <androidPackages>
-    <androidPackage spec="com.google.ads.mediation:tapjoy:13.1.2.0">
+    <androidPackage spec="com.google.ads.mediation:tapjoy:13.2.1.0">
       <repositories>
         <repository>https://sdk.tapjoy.com/</repository>
         <repository>https://dl.google.com/dl/android/maven2/</repository>
@@ -25,6 +25,6 @@
   </androidPackages>
 
   <iosPods>
-    <iosPod name="GoogleMobileAdsMediationTapjoy" version="13.1.2.0"/>
+    <iosPod name="GoogleMobileAdsMediationTapjoy" version="13.2.1.0"/>
   </iosPods>
 </dependencies>
