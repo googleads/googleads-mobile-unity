@@ -16,7 +16,7 @@
 
 <dependencies>
   <androidPackages>
-    <androidPackage spec="com.google.ads.mediation:nend:9.0.1.0">
+    <androidPackage spec="com.google.ads.mediation:nend:10.0.0.0">
       <repositories>
         <repository>https://repo.maven.apache.org/maven2/</repository>
         <repository>https://dl.google.com/dl/android/maven2/</repository>
@@ -26,6 +26,6 @@
   </androidPackages>
 
   <iosPods>
-    <iosPod name="GoogleMobileAdsMediationNend" version="8.0.1.0"/>
+    <iosPod name="GoogleMobileAdsMediationNend" version="8.2.0.0"/>
   </iosPods>
 </dependencies>
