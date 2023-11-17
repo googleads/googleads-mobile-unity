@@ -1,6 +1,23 @@
 Google Mobile Ads Unity Plugin Change Log
 
 **************
+Version 8.6.0
+**************
+
+- Fixed [#3007] by aligning the PrivacyOptionsRequirementStatus Enum on iOS with Android Plugin.
+- Fixed [#2930] for Projects using Android Gradle Plugin less than 4.2.2.
+- Added Editor Options to toggle adding packagingOptions to gradle files to pick the first occurrence of META-INF/kotlinx_coroutines_core.version file.
+- Added Editor Options to enable removing the property tag from the Android Manifest of the GMA Android SDK. This is enabled by default for projects using Android Gradle Plugin version 4.2.1 and lower.
+- Updated Google Mobile Ads SDK dependency to use v22.5.0 on Android.
+- Updated Google Mobile Ads SDK dependency to use v10.13 on iOS.
+
+Built and tested with:
+- Google Mobile Ads Android SDK 22.5.0
+- Google Mobile Ads iOS SDK 10.13
+- Google User Messaging Platform 2.1.0
+- External Dependency Manager for Unity 1.2.177
+
+**************
 Version 8.5.3
 **************
 
