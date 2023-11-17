@@ -52,7 +52,7 @@ public static class Utils
         private set {}
         get {
             if (!Directory.Exists(AndroidPluginsDir) || !File.Exists(GradleTemplatePath)) {
-                return GooglePlayServices.PlayServicesResolver.AndroidGradlePluginVersion;
+                return "0.0.0";
             }
             var gradleTemplates = Directory.GetFiles(AndroidPluginsDir, "*.gradle",
                                                         SearchOption.TopDirectoryOnly);
@@ -68,8 +68,8 @@ public static class Utils
                     }
                 }
             }
-            // Fallback to the gradle templates in Unity installation folder with EDM4U.
-            return GooglePlayServices.PlayServicesResolver.AndroidGradlePluginVersion;
+            // Couldn't compute the AGP version
+            return "0.0.0";
         }
     }
 }
