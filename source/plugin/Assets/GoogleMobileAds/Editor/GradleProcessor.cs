@@ -83,7 +83,7 @@ public class GradleProcessor : IPostGenerateGradleAndroidProject
     private string DeleteLineContainingSubstring(string file, string substring)
     {
         string newFile = "";
-        var lines = file.Split(Environment.NewLine);
+        var lines = file.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
         foreach (var line in lines)
         {
             if (!line.Contains(substring))
