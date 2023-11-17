@@ -29,12 +29,10 @@ namespace GoogleMobileAds.Editor
                 AssetDatabase.CreateAsset(instance, assetPath);
                 AssetDatabase.SaveAssets();
                 Version agp = Version.Parse(Utils.AndroidGradlePluginVersion);
-                instance.overrideAapt2 = true;
                 instance.validateGradleDependencies = true;
-                // use default AAPT2 if using AGP > 4.2.2
+                // Turn on Gradle Dependency Validation if AGP < 4.2.2
                 if (agp.Major > 4 || (agp.Major == 4 && agp.Minor >= 2 && agp.Build >= 2))
                 {
-                    instance.overrideAapt2 = false;
                     instance.validateGradleDependencies = false;
                 }
             }
@@ -53,9 +51,6 @@ namespace GoogleMobileAds.Editor
 
         [SerializeField]
         private bool enableKotlinXCoroutinesPackagingOption = true;
-
-        [SerializeField]
-        private bool overrideAapt2;
 
         [SerializeField]
         private bool optimizeInitialization;
@@ -81,13 +76,6 @@ namespace GoogleMobileAds.Editor
             get { return enableKotlinXCoroutinesPackagingOption; }
 
             set { enableKotlinXCoroutinesPackagingOption = value; }
-        }
-
-        public bool OverrideAapt2
-        {
-            get { return overrideAapt2; }
-
-            set { overrideAapt2 = value; }
         }
 
         public string GoogleMobileAdsIOSAppId

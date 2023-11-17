@@ -12,7 +12,6 @@ namespace GoogleMobileAds.Editor
         SerializedProperty _appIdiOS;
         SerializedProperty _delayAppMeasurement;
         SerializedProperty _enableKotlinXCoroutinesPackagingOption;
-        SerializedProperty _overrideAapt2;
         SerializedProperty _optimizeInitialization;
         SerializedProperty _optimizeAdLoading;
         SerializedProperty _userTrackingUsageDescription;
@@ -32,8 +31,6 @@ namespace GoogleMobileAds.Editor
             _delayAppMeasurement = serializedObject.FindProperty("delayAppMeasurementInit");
             _enableKotlinXCoroutinesPackagingOption =
                 serializedObject.FindProperty("enableKotlinXCoroutinesPackagingOption");
-            _overrideAapt2 =
-                serializedObject.FindProperty("overrideAapt2");
             _optimizeInitialization = serializedObject.FindProperty("optimizeInitialization");
             _optimizeAdLoading = serializedObject.FindProperty("optimizeAdLoading");
             _userTrackingUsageDescription =
@@ -86,20 +83,8 @@ namespace GoogleMobileAds.Editor
                         MessageType.Info);
             }
 
-            EditorGUILayout.PropertyField(_overrideAapt2,
-                              new GUIContent("Enable overriding default AAPT2"));
-
-            if (settings.OverrideAapt2)
-            {
-                EditorGUILayout.HelpBox(
-                    "Enabling this option, instructs the Android Gradle Plugin to use the AAPT2"+
-                    " library packaged as part of the GMA Unity Plugin. This option is only"+
-                    " required for projects that use Android Gradle Plugin beneath version 4.2.2.",
-                    MessageType.Info);
-            }
-
             EditorGUILayout.PropertyField(_validateGradleDependencies,
-                              new GUIContent("Remove property tag from Android Manifest"));
+                              new GUIContent("Remove property tag from GMA Android SDK"));
 
             if (settings.ValidateGradleDependencies)
             {
