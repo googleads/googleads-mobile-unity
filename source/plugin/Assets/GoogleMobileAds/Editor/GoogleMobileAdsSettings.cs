@@ -62,7 +62,7 @@ namespace GoogleMobileAds.Editor
         private string userTrackingUsageDescription;
 
         [SerializeField]
-        private bool validateGradleDependencies;
+        private bool validateGradleDependencies = true;
 
         public string GoogleMobileAdsAndroidAppId
         {
