@@ -14,6 +14,9 @@ public class GradleProcessor : IPostGenerateGradleAndroidProject
     private const string GMA_PACKAGING_OPTIONS =
       "apply from: 'GoogleMobileAdsPlugin.androidlib/packaging_options.gradle'";
 
+    private const string GMA_VALIDATE_GRADLE_DEPENDENCIES =
+      "apply from: 'GoogleMobileAdsPlugin.androidlib/validate_dependencies.gradle'";
+
     public void OnPostGenerateGradleAndroidProject(string path)
     {
         var rootDirinfo = new DirectoryInfo(path);
@@ -51,6 +54,29 @@ public class GradleProcessor : IPostGenerateGradleAndroidProject
                 contents += Environment.NewLine + GMA_PACKAGING_OPTIONS_LAUNCHER;
             }
             File.WriteAllText(gradlepath, contents);
+        }
+
+        // TODO (b/311555203) Use delete then write approach above to update this Gradle script too.
+        var unityLibraryGradle = Directory.GetFiles(rootPath, "unityLibrary/build.gradle",
+                    SearchOption.TopDirectoryOnly);
+
+        foreach (var gradlePath in unityLibraryGradle)
+        {
+            var contents = File.ReadAllText(gradlePath);
+            if (GoogleMobileAdsSettings.LoadInstance().ValidateGradleDependencies)
+            {
+                if (!contents.Contains(GMA_VALIDATE_GRADLE_DEPENDENCIES))
+                {
+                    contents += Environment.NewLine + GMA_VALIDATE_GRADLE_DEPENDENCIES;
+                    File.WriteAllText(gradlePath, contents);
+                }
+            }
+            else
+            {
+                contents = DeleteLineContainingSubstring(
+                        contents, GMA_VALIDATE_GRADLE_DEPENDENCIES);
+                File.WriteAllText(gradlePath, contents);
+            }
         }
     }
 

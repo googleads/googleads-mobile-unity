@@ -16,6 +16,7 @@ namespace GoogleMobileAds.Editor
         SerializedProperty _optimizeInitialization;
         SerializedProperty _optimizeAdLoading;
         SerializedProperty _userTrackingUsageDescription;
+        SerializedProperty _validateGradleDependencies;
 
 
         [MenuItem("Assets/Google Mobile Ads/Settings...")]
@@ -37,6 +38,8 @@ namespace GoogleMobileAds.Editor
             _optimizeAdLoading = serializedObject.FindProperty("optimizeAdLoading");
             _userTrackingUsageDescription =
                     serializedObject.FindProperty("userTrackingUsageDescription");
+            _validateGradleDependencies =
+                    serializedObject.FindProperty("validateGradleDependencies");
         }
 
         public override void OnInspectorGUI()
@@ -92,6 +95,18 @@ namespace GoogleMobileAds.Editor
                     "Enabling this option, instructs the Android Gradle Plugin to use the AAPT2"+
                     " library packaged as part of the GMA Unity Plugin. This option is only"+
                     " required for projects that use Android Gradle Plugin beneath version 4.2.2.",
+                    MessageType.Info);
+            }
+
+            EditorGUILayout.PropertyField(_validateGradleDependencies,
+                              new GUIContent("Remove property tag from Android Manifest"));
+
+            if (settings.ValidateGradleDependencies)
+            {
+                EditorGUILayout.HelpBox(
+                    "This option ensures the GMA Android SDK is compatible with the version of " +
+                    "Android Gradle Plugin being used. Enabling this option is required for Unity" +
+                    " Projects that use Android Gradle Plugin under version 4.2.2.",
                     MessageType.Info);
             }
 

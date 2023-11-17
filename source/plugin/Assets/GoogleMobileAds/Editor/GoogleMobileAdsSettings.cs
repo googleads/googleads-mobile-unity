@@ -28,15 +28,15 @@ namespace GoogleMobileAds.Editor
                     MobileAdsSettingsFile + MobileAdsSettingsFileExtension);
                 AssetDatabase.CreateAsset(instance, assetPath);
                 AssetDatabase.SaveAssets();
-
                 Version agp = Version.Parse(Utils.AndroidGradlePluginVersion);
                 instance.overrideAapt2 = true;
+                instance.validateGradleDependencies = true;
                 // use default AAPT2 if using AGP > 4.2.2
                 if (agp.Major > 4 || (agp.Major == 4 && agp.Minor >= 2 && agp.Build >= 2))
                 {
                     instance.overrideAapt2 = false;
+                    instance.validateGradleDependencies = false;
                 }
-
             }
 
             return instance;
@@ -65,6 +65,9 @@ namespace GoogleMobileAds.Editor
 
         [SerializeField]
         private string userTrackingUsageDescription;
+
+        [SerializeField]
+        private bool validateGradleDependencies;
 
         public string GoogleMobileAdsAndroidAppId
         {
@@ -120,6 +123,13 @@ namespace GoogleMobileAds.Editor
             get { return userTrackingUsageDescription; }
 
             set { userTrackingUsageDescription = value; }
+        }
+
+        public bool ValidateGradleDependencies
+        {
+            get { return validateGradleDependencies; }
+
+            set { validateGradleDependencies = value; }
         }
     }
 }
