@@ -49,7 +49,7 @@ task exportPackage(type: Exec) {
     ignoreExitValue true
 
     doLast {
-        if (execResult.getExitValue() != 0) {
+        if (executionResult.get().exitValue != 0) {
             copy {
                 from "temp/"
                 into "./"
@@ -90,9 +90,9 @@ task makeZip(type: Zip) {
     // Root directory name for the zip archive.
     into(zipName)
     // Name of the zip archive.
-    archiveName zipFileName
+    archiveFileName = zipFileName
     // Destination directory in which the archive needs to be saved.
-    destinationDir file('.')
+    destinationDirectory = file('.')
 }
 
 makeZip.dependsOn([clearZip, exportPackage])
