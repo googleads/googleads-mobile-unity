@@ -16,7 +16,7 @@
 
 <dependencies>
   <androidPackages>
-    <androidPackage spec="com.google.ads.mediation:pangle:5.4.1.1.0">
+    <androidPackage spec="com.google.ads.mediation:pangle:5.5.0.8.0">
       <repositories>
         <repository>https://repo.maven.apache.org/maven2/</repository>
         <repository>https://dl.google.com/dl/android/maven2/</repository>
@@ -26,6 +26,6 @@
   </androidPackages>
 
   <iosPods>
-    <iosPod name="GoogleMobileAdsMediationPangle" version="5.4.1.1.0"/>
+    <iosPod name="GoogleMobileAdsMediationPangle" version="5.5.0.9.0"/>
   </iosPods>
 </dependencies>
