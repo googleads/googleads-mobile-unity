@@ -1,7 +1,7 @@
 # AppHarbr Wrapper Google Mobile Ads Unity Plugin
 
-AppHarbr is Ad Quality realtime service.  
-Our mission is to ensure high quality in-app ads and secure the mobile user experience.  
+AppHarbr is an Ad Quality realtime service.  
+Our mission is to ensure high-quality in-app ads and secure the mobile user experience.  
 AppHarbr ensures that disruptive and offensive ads don't reach app users with proactive ad quality controls.  
 Real-time ad quality protection equips app publishers with control against disruptive, unwanted, malicious, and offensive ads.
 
@@ -12,7 +12,7 @@ maximize their monetization in native mobile apps.
 
 This repository is a fork from the [Google Mobile Ads Unity Plugin](//github.com/googleads/googleads-mobile-unity) repository.
 
-In this source code AppHarbr SDK is integrated into the Google Mobile Ads Unity Plugin as Publishers
+In this source code, AppHarbr SDK is integrated into the Google Mobile Ads Unity Plugin as Publishers
 are integrating AppHarbr SDK on Native Applications on Android/iOS.
 
 AppHarbr's modifications are specific for Ad Quality and obviously transparent to the publisher.
@@ -27,11 +27,11 @@ The following classes were modified:
 Every block code that AppHarbr added or modified will be separated with
 `//************************************************************************//`
 
-AppHarbr Ad Quality enter into action only when:
+AppHarbr Ad Quality enters into action only when:
 - AppHarbr SDK initialized through the C# Script.
-- Ad Unit Id required by the publisher to be watched by AppHarbr SDK through the C# Script.
+- Ad Unit ID required by the publisher to be watched by AppHarbr SDK through the C# Script.
 
-Otherwise, The Google Mobile Ads SDK will functional regularly.
+Otherwise, The Google Mobile Ads SDK will function regularly.
 
 This repository contains the source code for the Google Mobile Ads Unity
 plugin and AppHarbr Integration.
@@ -42,21 +42,19 @@ scripts in your Unity project.
 
 ## Release Process
 
-On each new release of Google Mobile Ads Unity Plugin version, AppHarbr creating new branch on this repository.
-Then AppHarbr is integrating the Ad quality, then having internal testing, committing the changes and releasing a newer version with the same version number of Google Mobile Ads Unity Plugin.
+On each new release of the Google Mobile Ads Unity Plugin version, AppHarbr creates a new branch on this repository.
+Then AppHarbr integrates the Ad quality, has internal testing, commits the changes and releases a newer version with the same version number of Google Mobile Ads Unity Plugin.
 
 ## Usage
 
-The Publisher need to download this AppHarbr Wrapper Google Mobile Ads Unity Plugin
-and import it into his project instead of using the official Google Mobile Ads Unity Plugin.
-In addition the publisher need to download the AppHarbr SDK Unity Plugin and import it into his project.
+The Publisher needs to download this AppHarbr Wrapper Google Mobile Ads Unity Plugin
+and import it into his project after importing the official Google Mobile Ads Unity Plugin.
+In addition, the publisher needs to download the AppHarbr SDK Unity Plugin from AppHarbr Dashboard and import it into his project:
 
-- Download from the releases the AppHarbr Wrapper Google Mobile Ads Unity Plugin unitypackage.
-- Go to Unity IDE -> Assets -> Import Package -> Custom Package...
-- Choose the downloaded AppHarbr Wrapper Google Mobile Ads Unity Plugin unitypackage and import.
-- Download from Publihser UI the AppHarbr SDK Unity Plugin.
-- Go to Unity IDE -> Assets -> Import Package -> Custom Package...
-- Choose the downloaded AppHarbr SDK Unity Plugin unitypackage and import.
+
+- Download from Publisher UI the AppHarbr SDK Unity Plugin and import (Unity IDE -> Assets -> Import Package -> Custom Package...).
+- Download the [Google Mobile Ads Unity Plugin from the official releases](//github.com/googleads/googleads-mobile-unity/releases) repository and import (Unity IDE -> Assets -> Import Package -> Custom Package...).
+- Download from the releases the [AppHarbr Wrapper Google Mobile Ads unitypackage](//github.com/appharbr/appharbr-wrapper-googleads-mobile-unity/releases) and import (Unity IDE -> Assets -> Import Package -> Custom Package...).
 
 
 ## Download
