@@ -13,9 +13,7 @@ namespace GoogleMobileAds.Samples
         /// <summary>
         /// If true, it is safe to call MobileAds.Initialize() and load Ads.
         /// </summary>
-        public bool CanRequestAds =>
-            ConsentInformation.ConsentStatus == ConsentStatus.Obtained ||
-            ConsentInformation.ConsentStatus == ConsentStatus.NotRequired;
+        public bool CanRequestAds => ConsentInformation.CanRequestAds();
 
         [SerializeField, Tooltip("Button to show user consent and privacy settings.")]
         private Button _privacyButton;
