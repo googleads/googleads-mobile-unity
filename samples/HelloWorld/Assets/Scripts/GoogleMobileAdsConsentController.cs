@@ -127,7 +127,7 @@ namespace GoogleMobileAds.Samples
                 ? UpdateErrorPopup
                 : onComplete + UpdateErrorPopup;
 
-            ConsentForm.LoadAndShowConsentFormIfRequired((FormError showError) =>
+            ConsentForm.ShowPrivacyOptionsForm((FormError showError) =>
             {
                 UpdatePrivacyButton();
                 if (showError != null)
