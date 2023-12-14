@@ -31,6 +31,7 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-common-java8:2.4.1'
     implementation 'androidx.lifecycle:lifecycle-process:2.4.1'
 }
+
 task clearAar(type: Delete) {
     delete 'build/libs/googlemobileads-unity.aar'
 }

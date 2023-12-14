@@ -49,7 +49,7 @@ namespace GoogleMobileAds.Android
                 "com.google.android.gms.ads.appopen.AppOpenAd";
 
         public const string PlayStorePurchaseListenerClassName =
-            "com.google.android.gms.ads.purchase.PlayStorePurchaseListener";
+                "com.google.android.gms.ads.purchase.PlayStorePurchaseListener";
 
         public const string MobileAdsClassName = "com.google.android.gms.ads.MobileAds";
 
@@ -58,10 +58,10 @@ namespace GoogleMobileAds.Android
         public const string RequestConfigurationBuilderClassName = "com.google.android.gms.ads.RequestConfiguration$Builder";
 
         public const string ServerSideVerificationOptionsClassName =
-            "com.google.android.gms.ads.rewarded.ServerSideVerificationOptions";
+                "com.google.android.gms.ads.rewarded.ServerSideVerificationOptions";
 
         public const string ServerSideVerificationOptionsBuilderClassName =
-            "com.google.android.gms.ads.rewarded.ServerSideVerificationOptions$Builder";
+                "com.google.android.gms.ads.rewarded.ServerSideVerificationOptions$Builder";
 
         #endregion
 
@@ -113,27 +113,30 @@ namespace GoogleMobileAds.Android
                 "com.google.unity.ads.UnityAppOpenAdCallback";
 
         public const string OnInitializationCompleteListenerClassName =
-            "com.google.android.gms.ads.initialization.OnInitializationCompleteListener";
+                "com.google.android.gms.ads.initialization.OnInitializationCompleteListener";
 
         public const string UnityAdLoaderListenerClassName =
-            "com.google.unity.ads.UnityAdLoaderListener";
+                "com.google.unity.ads.UnityAdLoaderListener";
 
         public const string UnityAdInspectorClassName =
-            "com.google.unity.ads.UnityAdInspector";
+                "com.google.unity.ads.UnityAdInspector";
 
         public const string UnityAdInspectorListenerClassname =
-            "com.google.unity.ads.UnityAdInspectorListener";
+                "com.google.unity.ads.UnityAdInspectorListener";
 
         public const string UnityPaidEventListenerClassName =
-            "com.google.unity.ads.UnityPaidEventListener";
+                "com.google.unity.ads.UnityPaidEventListener";
 
         public const string UnityRewardedInterstitialAdClassName =
-            "com.google.unity.ads.UnityRewardedInterstitialAd";
+                "com.google.unity.ads.UnityRewardedInterstitialAd";
 
         public const string UnityRewardedInterstitialAdCallbackClassName =
-            "com.google.unity.ads.UnityRewardedInterstitialAdCallback";
+                "com.google.unity.ads.UnityRewardedInterstitialAdCallback";
 
         public const string PluginUtilsClassName = "com.google.unity.ads.PluginUtils";
+
+        public const string UnityApplicationPreferencesClassName =
+                "com.google.unity.ads.UnityApplicationPreferences";
 
         public const string PreferenceManagerClassName = "android.preference.PreferenceManager";
 

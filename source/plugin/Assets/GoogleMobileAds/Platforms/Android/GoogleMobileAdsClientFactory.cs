@@ -110,7 +110,7 @@ namespace GoogleMobileAds
         {
             if (Application.platform == RuntimePlatform.Android)
             {
-                return GoogleMobileAds.Android.ApplicationPreferencesClient.Instance;
+                return new GoogleMobileAds.Android.ApplicationPreferencesClient();
             }
             throw new InvalidOperationException(@"Called " + MethodBase.GetCurrentMethod().Name +
             " on non-Android runtime");

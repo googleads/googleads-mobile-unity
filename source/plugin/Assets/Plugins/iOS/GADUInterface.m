@@ -144,6 +144,16 @@ void GADUSetUserDefaultsString(const char *key, const char *value) {
                                           forKey:GADUStringFromUTF8String(key)];
 }
 
+int GADUGetUserDefaultsInteger(const char *key) {
+  return (int)[NSUserDefaults.standardUserDefaults integerForKey:GADUStringFromUTF8String(key)];
+}
+
+const char *GADUGetUserDefaultsString(const char *key) {
+  NSString *value = [NSUserDefaults.standardUserDefaults
+                        stringForKey:GADUStringFromUTF8String(key)];
+  return cStringCopy(value.UTF8String);
+}
+
 /// Returns the safe width of the device.
 int GADUDeviceSafeWidth() {
   CGRect screenBounds = [UIScreen mainScreen].bounds;

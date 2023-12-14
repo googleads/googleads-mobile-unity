@@ -45,7 +45,6 @@ namespace GoogleMobileAds.iOS
         [DllImport("__Internal")]
         internal static extern int GADUGetInitNumberOfAdapterClasses(IntPtr status);
 
-
         [DllImport("__Internal")]
         internal static extern void GADUSetApplicationVolume(float volume);
 
@@ -69,6 +68,12 @@ namespace GoogleMobileAds.iOS
 
         [DllImport("__Internal")]
         internal static extern void GADUSetUserDefaultsString(string key, string value);
+
+        [DllImport("__Internal")]
+        internal static extern int GADUGetUserDefaultsInteger(string key);
+
+        [DllImport("__Internal")]
+        internal static extern string GADUGetUserDefaultsString(string key);
 
         [DllImport("__Internal")]
         internal static extern IntPtr GADUCreateRequest();

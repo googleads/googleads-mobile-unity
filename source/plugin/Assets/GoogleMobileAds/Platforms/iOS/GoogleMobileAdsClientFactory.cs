@@ -112,7 +112,7 @@ namespace GoogleMobileAds
     {
       if (Application.platform == RuntimePlatform.IPhonePlayer)
       {
-        return GoogleMobileAds.iOS.ApplicationPreferencesClient.Instance;
+        return new GoogleMobileAds.iOS.ApplicationPreferencesClient();
       }
       throw new InvalidOperationException(@"Called " + MethodBase.GetCurrentMethod().Name +
                                           " on non-iOS runtime");

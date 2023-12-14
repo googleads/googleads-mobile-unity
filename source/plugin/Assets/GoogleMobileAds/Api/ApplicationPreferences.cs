@@ -19,8 +19,8 @@ using GoogleMobileAds.Common;
 namespace GoogleMobileAds.Api
 {
     /// <summary>
-    /// Interface for accessing and modifying platform preference data (SharedPreferences on
-    /// Android and NSUserDefaults on iOS). Values saved by this interface are saved on an
+    /// Interface for accessing and modifying application preference data (SharedPreferences on
+    /// Android and NSUserDefaults on iOS). Values saved by this interface are saved in an
     /// application scope, and are shared by SDKs included in this application.
     /// </summary>
     public class ApplicationPreferences
@@ -58,6 +58,24 @@ namespace GoogleMobileAds.Api
         public static void SetString(string key, string value)
         {
             _client.SetString(key, value);
+        }
+
+        /// <summary>
+        /// Read an int value from the application preferences.
+        /// <param name="key">The key with which to retrieve the value.</param>
+        /// </summary>
+        public static int GetInt(string key)
+        {
+            return _client.GetInt(key);
+        }
+
+        /// <summary>
+        /// Read a string value from the application preferences.
+        /// <param name="key">The key with which to retrieve the value.</param>
+        /// </summary>
+        public static string GetString(string key)
+        {
+            return _client.GetString(key);
         }
     }
 }
