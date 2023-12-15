@@ -72,7 +72,7 @@ namespace GoogleMobileAds.Api
         /// Controls whether the Google Mobile Ads SDK Same App Key is enabled.
         /// The value set persists across app sessions. The key is enabled by default.
         /// </summary>
-        public bool? SameAppKeyEnabled;
+        public bool? SameAppKeyEnabled = true;
 
         public RequestConfiguration() {}
 
@@ -116,7 +116,7 @@ namespace GoogleMobileAds.Api
                 TagForChildDirectedTreatment = null;
                 TagForUnderAgeOfConsent = null;
                 TestDeviceIds = new List<string>();
-                SameAppKeyEnabled = null;
+                SameAppKeyEnabled = true;
             }
 
             /// <summary>
