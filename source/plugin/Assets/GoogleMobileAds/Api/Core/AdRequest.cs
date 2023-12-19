@@ -83,6 +83,7 @@ namespace GoogleMobileAds.Api
         /// <summary>
         /// Constructs a <see cref="Builder"/>.
         /// </summary>
+        /// @deprecated Use @ref AdRequest directly.
         [Obsolete("Use AdRequest directly instead.")]
         public class Builder
         {

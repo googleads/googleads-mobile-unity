@@ -101,6 +101,7 @@ namespace GoogleMobileAds.Api
           return builder;
         }
 
+        /// @deprecated Use @ref RequestConfiguration directly.
         [Obsolete("Use RequestConfiguration directly instead.")]
         public class Builder
         {

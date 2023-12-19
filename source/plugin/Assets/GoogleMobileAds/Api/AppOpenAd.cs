@@ -107,6 +107,7 @@ namespace GoogleMobileAds.Api
         /// <summary>
         /// Loads an app open ad.
         /// </summary>
+        /// @deprecated Use @ref AppOpen.Load(string, AdRequest, Action<AppOpenAd, LoadAdError>).
         [Obsolete("Use Load(string, AdRequest, Action<AppOpenAd, LoadAdError>) instead.")]
         public static void Load(string adUnitId,
                                 ScreenOrientation orientation,

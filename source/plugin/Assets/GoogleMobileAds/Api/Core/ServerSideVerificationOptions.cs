@@ -44,6 +44,7 @@ namespace GoogleMobileAds.Api
         /// <summary>
         /// Constructs a <see cref="Builder"/>.
         /// </summary>
+        /// @deprecated Use @ref ServerSideVerificationOptions directly instead.
         [Obsolete("Use ServerSideVerificationOptions directly instead.")]
         public class Builder
         {
