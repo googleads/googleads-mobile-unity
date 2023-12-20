@@ -859,30 +859,25 @@ void GADUSetRequestConfiguration(GADUTypeRequestConfigurationRef requestConfigur
       internalRequestConfiguration.testDeviceIdentifiers;
 
   switch (internalRequestConfiguration.tagForUnderAgeOfConsent) {
-    case (kGADURequestConfigurationTagForUnderAgeOfConsentTrue): {
-      [GADMobileAds.sharedInstance.requestConfiguration tagForUnderAgeOfConsent:true];
+    case kGADURequestConfigurationTagForUnderAgeOfConsentTrue:
+      GADMobileAds.sharedInstance.requestConfiguration.tagForUnderAgeOfConsent = @YES;
       break;
-    }
-    case (kGADURequestConfigurationTagForUnderAgeOfConsentFalse): {
-      [GADMobileAds.sharedInstance.requestConfiguration tagForUnderAgeOfConsent:false];
+    case kGADURequestConfigurationTagForUnderAgeOfConsentFalse:
+      GADMobileAds.sharedInstance.requestConfiguration.tagForUnderAgeOfConsent = @NO;
       break;
-    }
-    case (kGADURequestConfigurationTagForUnderAgeOfConsentUnspecified): {
+    case kGADURequestConfigurationTagForUnderAgeOfConsentUnspecified:
       break;
-    }
   }
+
   switch (internalRequestConfiguration.tagForChildDirectedTreatment) {
-    case (kGADURequestConfigurationTagForChildDirectedTreatmentTrue): {
-      [GADMobileAds.sharedInstance.requestConfiguration tagForChildDirectedTreatment:true];
+    case kGADURequestConfigurationTagForChildDirectedTreatmentTrue:
+      GADMobileAds.sharedInstance.requestConfiguration.tagForChildDirectedTreatment = @YES;
       break;
-    }
-    case (kGADURequestConfigurationTagForChildDirectedTreatmentFalse): {
-      [GADMobileAds.sharedInstance.requestConfiguration tagForChildDirectedTreatment:false];
+    case kGADURequestConfigurationTagForChildDirectedTreatmentFalse:
+      GADMobileAds.sharedInstance.requestConfiguration.tagForChildDirectedTreatment = @NO;
       break;
-    }
-    case (kGADURequestConfigurationTagForChildDirectedTreatmentUnspecified): {
+    case kGADURequestConfigurationTagForChildDirectedTreatmentUnspecified:
       break;
-    }
   }
 
   [GADMobileAds.sharedInstance.requestConfiguration
