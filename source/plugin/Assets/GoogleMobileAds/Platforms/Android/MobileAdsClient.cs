@@ -73,6 +73,13 @@ namespace GoogleMobileAds.Android
         public void SetRequestConfiguration(RequestConfiguration requestConfiguration)
         {
             AndroidJavaClass mobileAdsClass = new AndroidJavaClass(Utils.MobileAdsClassName);
+
+            // putPublisherFirstPartyIdEnabled resides in MobileAds class in Android.
+            if (requestConfiguration.PublisherFirstPartyIdEnabled.HasValue)
+            {
+                mobileAdsClass.CallStatic("putPublisherFirstPartyIdEnabled", requestConfiguration.PublisherFirstPartyIdEnabled.Value);
+            }
+
             AndroidJavaObject requestConfigurationAndroidObject = RequestConfigurationClient.BuildRequestConfiguration(requestConfiguration);
             mobileAdsClass.CallStatic("setRequestConfiguration", requestConfigurationAndroidObject);
         }

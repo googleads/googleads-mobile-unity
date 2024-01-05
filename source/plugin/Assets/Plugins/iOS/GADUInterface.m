@@ -929,6 +929,11 @@ void GADUSetRequestConfigurationSameAppKeyEnabled(
   internalRequestConfiguration.sameAppKeyEnabled = enabled;
 }
 
+/// Calls the RequestConfiguration's setPublisherFirstPartyIDEnabled
+void GADUSetRequestConfigurationPublisherFirstPartyIDEnabled(BOOL enabled) {
+  [GADMobileAds.sharedInstance.requestConfiguration setPublisherFirstPartyIDEnabled:enabled];
+}
+
 /// Returns RequestConfiguration Max Ad Content Rating
 const char *GADUGetMaxAdContentRating(GADUTypeRequestConfigurationRef requestConfiguration) {
   GADURequestConfiguration *internalRequestConfiguration =

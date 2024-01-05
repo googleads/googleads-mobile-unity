@@ -145,6 +145,10 @@ namespace GoogleMobileAds.iOS
             IntPtr requestConfiguration, bool enabled);
 
         [DllImport("__Internal")]
+        internal static extern void GADUSetRequestConfigurationPublisherFirstPartyIDEnabled(
+            bool enabled);
+
+        [DllImport("__Internal")]
         internal static extern IntPtr GADUGetTestDeviceIdentifiers(IntPtr request);
 
         [DllImport("__Internal")]

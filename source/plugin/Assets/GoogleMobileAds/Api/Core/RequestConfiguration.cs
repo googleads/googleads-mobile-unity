@@ -74,6 +74,13 @@ namespace GoogleMobileAds.Api
         /// </summary>
         public bool? SameAppKeyEnabled = true;
 
+        /// <summary>
+        /// Controls whether the Google Mobile Ads SDK publisher first-party ID, formerly known as
+        /// the same app key, is enabled. The value set persists across app sessions.
+        /// The key is enabled by default.
+        /// </summary>
+        public bool? PublisherFirstPartyIdEnabled;
+
         public RequestConfiguration() {}
 
         public RequestConfiguration(RequestConfiguration requestConfiguration)
@@ -84,6 +91,7 @@ namespace GoogleMobileAds.Api
             TagForUnderAgeOfConsent = requestConfiguration.TagForUnderAgeOfConsent;
             TestDeviceIds = requestConfiguration.TestDeviceIds;
             SameAppKeyEnabled = requestConfiguration.SameAppKeyEnabled;
+            PublisherFirstPartyIdEnabled = requestConfiguration.PublisherFirstPartyIdEnabled;
         }
 
         [Obsolete("Use RequestConfiguration directly instead.")]
