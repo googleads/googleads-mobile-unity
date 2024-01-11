@@ -51,6 +51,9 @@ namespace GoogleMobileAds.Android
         public const string PlayStorePurchaseListenerClassName =
                 "com.google.android.gms.ads.purchase.PlayStorePurchaseListener";
 
+        public const string PublisherPrivacyPersonalizationStateEnumName =
+            "com.google.android.gms.ads.RequestConfiguration$PublisherPrivacyPersonalizationState";
+
         public const string MobileAdsClassName = "com.google.android.gms.ads.MobileAds";
 
         public const string RequestConfigurationClassName = "com.google.android.gms.ads.RequestConfiguration";

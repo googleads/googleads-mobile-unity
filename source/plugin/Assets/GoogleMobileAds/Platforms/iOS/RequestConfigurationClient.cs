@@ -65,6 +65,13 @@ namespace GoogleMobileAds.iOS
                     requestConfiguration.PublisherFirstPartyIdEnabled.Value);
             }
 
+            if (requestConfiguration.PublisherPrivacyPersonalizationState.HasValue)
+            {
+              Externs.GADUSetRequestConfigurationPublisherPrivacyPersonalizationState(
+                  (int)requestConfiguration.PublisherPrivacyPersonalizationState
+                      .GetValueOrDefault());
+            }
+
             Externs.GADUSetRequestConfiguration(requestConfigurationPtr);
 
         }
@@ -81,13 +88,17 @@ namespace GoogleMobileAds.iOS
             bool sameAppKeyEnabled =
                 Externs.GADUGetRequestConfigurationSameAppKeyEnabled(requestConfigurationPtr);
 
+            PublisherPrivacyPersonalizationState publisherPrivacyPersonalizationState =
+                (PublisherPrivacyPersonalizationState)Externs.GADUGetRequestConfigurationPublisherPrivacyPersonalizationState();
+
             RequestConfiguration requestConfiguration = new RequestConfiguration()
             {
                 MaxAdContentRating = maxAdContentRating,
                 TagForChildDirectedTreatment = tagForChildDirectedTreatment,
                 TagForUnderAgeOfConsent = tagForUnderAgeOfConsent,
                 TestDeviceIds = testDeviceIds,
-                SameAppKeyEnabled = sameAppKeyEnabled
+                SameAppKeyEnabled = sameAppKeyEnabled,
+                PublisherPrivacyPersonalizationState = publisherPrivacyPersonalizationState
             };
             return requestConfiguration;
         }

@@ -149,6 +149,10 @@ namespace GoogleMobileAds.iOS
             bool enabled);
 
         [DllImport("__Internal")]
+        internal static extern void GADUSetRequestConfigurationPublisherPrivacyPersonalizationState(
+            int state);
+
+        [DllImport("__Internal")]
         internal static extern IntPtr GADUGetTestDeviceIdentifiers(IntPtr request);
 
         [DllImport("__Internal")]
@@ -168,6 +172,9 @@ namespace GoogleMobileAds.iOS
         [DllImport("__Internal")]
         internal static extern bool GADUGetRequestConfigurationSameAppKeyEnabled(
             IntPtr requestConfiguration);
+
+        [DllImport("__Internal")]
+        internal static extern int GADUGetRequestConfigurationPublisherPrivacyPersonalizationState();
 
         [DllImport("__Internal")]
         internal static extern IntPtr GADUCreateUIColor(float alpha, float red, float green,

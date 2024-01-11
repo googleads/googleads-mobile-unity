@@ -63,6 +63,12 @@ namespace GoogleMobileAds.Api
         public TagForUnderAgeOfConsent? TagForUnderAgeOfConsent;
 
         /// <summary>
+        /// This property lets you specify the personalization treatment that applies to subsequent
+        /// ad requests.
+        /// </summary>
+        public PublisherPrivacyPersonalizationState? PublisherPrivacyPersonalizationState;
+
+        /// <summary>
         /// The test device IDs corresponding to test device that will always request
         /// test ads. Returns an empty list if test device IDs were not previously set.
         /// </summary>
@@ -89,6 +95,8 @@ namespace GoogleMobileAds.Api
             TagForChildDirectedTreatment =
                         requestConfiguration.TagForChildDirectedTreatment;
             TagForUnderAgeOfConsent = requestConfiguration.TagForUnderAgeOfConsent;
+            PublisherPrivacyPersonalizationState =
+                requestConfiguration.PublisherPrivacyPersonalizationState;
             TestDeviceIds = requestConfiguration.TestDeviceIds;
             SameAppKeyEnabled = requestConfiguration.SameAppKeyEnabled;
             PublisherFirstPartyIdEnabled = requestConfiguration.PublisherFirstPartyIdEnabled;

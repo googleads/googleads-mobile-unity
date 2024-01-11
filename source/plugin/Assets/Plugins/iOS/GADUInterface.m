@@ -934,6 +934,24 @@ void GADUSetRequestConfigurationPublisherFirstPartyIDEnabled(BOOL enabled) {
   [GADMobileAds.sharedInstance.requestConfiguration setPublisherFirstPartyIDEnabled:enabled];
 }
 
+/// Sets the RequestConfiguration's publisherPrivacyPersonalizationState property
+void GADUSetRequestConfigurationPublisherPrivacyPersonalizationState(int state) {
+  switch (state) {
+    case kGADURequestConfigurationPublisherPrivacyPersonalizationStateDefault:
+      GADMobileAds.sharedInstance.requestConfiguration.publisherPrivacyPersonalizationState =
+          GADPublisherPrivacyPersonalizationStateDefault;
+      break;
+    case kGADURequestConfigurationPublisherPrivacyPersonalizationStateDisabled:
+      GADMobileAds.sharedInstance.requestConfiguration.publisherPrivacyPersonalizationState =
+          GADPublisherPrivacyPersonalizationStateDisabled;
+      break;
+    case kGADURequestConfigurationPublisherPrivacyPersonalizationStateEnabled:
+      GADMobileAds.sharedInstance.requestConfiguration.publisherPrivacyPersonalizationState =
+          GADPublisherPrivacyPersonalizationStateEnabled;
+      break;
+  }
+}
+
 /// Returns RequestConfiguration Max Ad Content Rating
 const char *GADUGetMaxAdContentRating(GADUTypeRequestConfigurationRef requestConfiguration) {
   GADURequestConfiguration *internalRequestConfiguration =
@@ -979,6 +997,20 @@ BOOL GADUGetRequestConfigurationSameAppKeyEnabled(
   GADURequestConfiguration *internalRequestConfiguration =
       (__bridge GADURequestConfiguration *)requestConfiguration;
   return internalRequestConfiguration.sameAppKeyEnabled;
+}
+
+/// Returns the current value of publisherPrivacyPersonalizationState from requestConfiguration.
+int GADUGetRequestConfigurationPublisherPrivacyPersonalizationState() {
+  GADPublisherPrivacyPersonalizationState privacyPersonalizationState =
+      GADMobileAds.sharedInstance.requestConfiguration.publisherPrivacyPersonalizationState;
+  switch (privacyPersonalizationState) {
+    case GADPublisherPrivacyPersonalizationStateDefault:
+      return kGADURequestConfigurationPublisherPrivacyPersonalizationStateDefault;
+    case GADPublisherPrivacyPersonalizationStateDisabled:
+      return kGADURequestConfigurationPublisherPrivacyPersonalizationStateDisabled;
+    case GADPublisherPrivacyPersonalizationStateEnabled:
+      return kGADURequestConfigurationPublisherPrivacyPersonalizationStateEnabled;
+  }
 }
 
 /// Creates an empty GADRequest and returns its reference.
