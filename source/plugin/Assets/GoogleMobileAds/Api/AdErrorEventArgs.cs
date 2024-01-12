@@ -24,6 +24,7 @@ namespace GoogleMobileAds.Api
         // AdError Object that returns when an ad operation fails.
         public AdError AdError { get; set; }
 
+        /// @deprecated Use @ref AdError.GetMessage() instead.
         [Obsolete ("use AdError.GetMessage() instead.")]
         public string Message { get; set; }
     }
