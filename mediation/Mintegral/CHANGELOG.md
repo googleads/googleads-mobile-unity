@@ -1,9 +1,12 @@
 ## Mintegral Unity Mediation Plugin Changelog
 
-#### Next Version
+#### [Version 1.3.0](https://dl.google.com/googleadmobadssdk/mediation/unity/mintegral/MintegralUnityAdapter-1.3.0.zip)
+- Supports [Mintegral Android adapter version 16.5.91.0](https://github.com/googleads/googleads-mobile-android-mediation/blob/main/ThirdPartyAdapters/mintegral/CHANGELOG.md#version-165910).
+- Supports [Mintegral iOS adapter version 7.5.3.0](https://github.com/googleads/googleads-mobile-ios-mediation/blob/main/adapters/Mintegral/CHANGELOG.md#version-7530).
 - Added the following methods to the `Mintegral` class:
   * `SetConsentStatus(bool)`
   * `SetDoNotTrackStatus(bool)`
+- Built and tested with the Google Mobile Ads Unity Plugin version 8.6.0.
 
 #### [Version 1.2.1](https://dl.google.com/googleadmobadssdk/mediation/unity/mintegral/MintegralUnityAdapter-1.2.1.zip)
 - Supports [Mintegral Android adapter version 16.4.61.0](https://github.com/googleads/googleads-mobile-android-mediation/blob/main/ThirdPartyAdapters/mintegral/CHANGELOG.md#version-164610).
