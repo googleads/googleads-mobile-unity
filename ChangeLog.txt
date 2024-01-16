@@ -6,6 +6,7 @@ Version Next
 
 - Added PublisherPrivacyPersonalizationState property accessible via RequestConfiguration.
 - Deprecated SameAppKeyEnabled in RequestConfiguration. Use PublisherFirstPartyIdEnabled instead.
+- Added ApplicationPreferences GetString and GetInt APIs.
 - Updated Google Mobile Ads SDK dependency to use v22.6.0 on Android.
 - Updated Google Mobile Ads SDK dependency to use v10.14 on iOS.
 
