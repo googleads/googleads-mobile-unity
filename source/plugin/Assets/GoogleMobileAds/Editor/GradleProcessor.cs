@@ -23,20 +23,32 @@ public class GradleProcessor : IPostGenerateGradleAndroidProject
         var rootPath = rootDirinfo.Parent.FullName;
         var gradleList = Directory.GetFiles(rootPath, "build.gradle", SearchOption.AllDirectories);
 
+        var packagingOptionsLauncher = GMA_PACKAGING_OPTIONS_LAUNCHER;
+        var packagingOptionsUnityLibrary = GMA_PACKAGING_OPTIONS;
+        var validateGradleDependencies = GMA_VALIDATE_GRADLE_DEPENDENCIES;
+
+        // Windows path requires '\\'
+#if UNITY_EDITOR_WIN
+        packagingOptionsLauncher = packagingOptionsLauncher.Replace("/","\\\\");
+        packagingOptionsUnityLibrary = packagingOptionsUnityLibrary.Replace("/","\\\\");
+        validateGradleDependencies = validateGradleDependencies.Replace("/","\\\\");
+#endif
+
         foreach (var gradlepath in gradleList)
         {
             if (!gradlepath.Contains("unityLibrary/build.gradle") &&
-                !gradlepath.Contains("launcher/build.gradle"))
+                !gradlepath.Contains("launcher/build.gradle") &&
+                !gradlepath.Contains("unityLibrary\\build.gradle") &&
+                !gradlepath.Contains("launcher\\build.gradle"))
             {
                 continue;
             }
 
             var contents = File.ReadAllText(gradlepath);
             // Delete existing packaging_options and then set it if enabled.
-            if (contents.Contains("GoogleMobileAdsPlugin.androidlib/packaging_options"))
+            if (contents.Contains("packaging_options.gradle"))
             {
-                contents = DeleteLineContainingSubstring(
-                    contents, "GoogleMobileAdsPlugin.androidlib/packaging_options");
+                contents = DeleteLineContainingSubstring(contents, "packaging_options.gradle");
             }
 
             if (!GoogleMobileAdsSettings.LoadInstance().EnableKotlinXCoroutinesPackagingOption)
@@ -45,13 +57,13 @@ public class GradleProcessor : IPostGenerateGradleAndroidProject
                 continue;
             }
 
-            if (gradlepath.Contains("unityLibrary/build.gradle"))
+            if (gradlepath.Contains("unityLibrary/build.gradle") || gradlepath.Contains("unityLibrary\\build.gradle"))
             {
-                contents += Environment.NewLine + GMA_PACKAGING_OPTIONS;
+                contents += Environment.NewLine + packagingOptionsUnityLibrary;
             }
-            else if (gradlepath.Contains("launcher/build.gradle"))
+            else if (gradlepath.Contains("launcher/build.gradle") || gradlepath.Contains("launcher\\build.gradle"))
             {
-                contents += Environment.NewLine + GMA_PACKAGING_OPTIONS_LAUNCHER;
+                contents += Environment.NewLine + packagingOptionsLauncher;
             }
             File.WriteAllText(gradlepath, contents);
         }
@@ -65,16 +77,15 @@ public class GradleProcessor : IPostGenerateGradleAndroidProject
             var contents = File.ReadAllText(gradlePath);
             if (GoogleMobileAdsSettings.LoadInstance().ValidateGradleDependencies)
             {
-                if (!contents.Contains(GMA_VALIDATE_GRADLE_DEPENDENCIES))
+                if (!contents.Contains(validateGradleDependencies))
                 {
-                    contents += Environment.NewLine + GMA_VALIDATE_GRADLE_DEPENDENCIES;
+                    contents += Environment.NewLine + validateGradleDependencies;
                     File.WriteAllText(gradlePath, contents);
                 }
             }
             else
             {
-                contents = DeleteLineContainingSubstring(
-                        contents, GMA_VALIDATE_GRADLE_DEPENDENCIES);
+                contents = DeleteLineContainingSubstring(contents, validateGradleDependencies);
                 File.WriteAllText(gradlePath, contents);
             }
         }
