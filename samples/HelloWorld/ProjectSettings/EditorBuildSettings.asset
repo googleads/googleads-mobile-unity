@@ -23,4 +23,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/GoogleRewardedInterstitialAdScene.unity
     guid: 8c04fc67812034997b8ab4a88058e1dc
+  - enabled: 1
+    path: Assets/Scenes/GoogleNativeOverlayAdScene.unity
+    guid: 7dae6ce369eac46f1bdd0f6c2e80928f
   m_configObjects: {}
