@@ -65,6 +65,9 @@
        width:(CGFloat)width
       height:(CGFloat)height;
 
+/// Shows the native ad using default height and width.
+- (void)show:(nonnull GADUNativeTemplateStyle *)templateStyle;
+
 /// Hides the native ad.
 - (void)hide;
 

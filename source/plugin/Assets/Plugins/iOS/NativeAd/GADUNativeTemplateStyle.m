@@ -104,8 +104,9 @@
   }
   templateView.styles = styles;
 
+  CGRect frame = CGRectMake(0, 0, templateView.frame.size.width, templateView.frame.size.height);
   GADUNativeTemplateViewWrapper *wrapper =
-      [[GADUNativeTemplateViewWrapper alloc] initWithFrame:CGRectZero];
+      [[GADUNativeTemplateViewWrapper alloc] initWithFrame:frame];
   wrapper.templateView = templateView;
   return wrapper;
 }

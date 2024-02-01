@@ -606,6 +606,10 @@ namespace GoogleMobileAds.iOS
         [DllImport("__Internal")]
         internal static extern IntPtr GADUSetNativeTemplateStyleText(IntPtr templateStyle,
                                                                      string textType, IntPtr color);
+
+        [DllImport("__Internal")]
+        internal static extern void GADUShowDefaultNativeTemplateAd(IntPtr nativeTemplateAd,
+                                                                    IntPtr templateStyle);
 #endregion
 
 #region AdInspector externs

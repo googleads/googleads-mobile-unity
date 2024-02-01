@@ -686,6 +686,15 @@ void GADUShowNativeTemplateAd(GADUTypeNativeTemplateAdRef nativeAd,
   [internalNativeTemplateAd show:tplStyle width:width height:height];
 }
 
+/// Shows the GADNativeTemplateAd using default sizing.
+void GADUShowDefaultNativeTemplateAd(GADUTypeNativeTemplateAdRef nativeTemplateAd,
+                                     GADUTypeNativeTemplateStyleRef templateStyle) {
+  GADUNativeTemplateAd *internalNativeTemplateAd =
+      (__bridge GADUNativeTemplateAd *)nativeTemplateAd;
+  GADUNativeTemplateStyle *tplStyle = (__bridge GADUNativeTemplateStyle *)templateStyle;
+  [internalNativeTemplateAd show:tplStyle];
+}
+
 /// Positions the Native template ad to a predefined AdPosition.
 void GADUSetNativeTemplateAdPosition(GADUTypeNativeTemplateAdRef nativeAd, int position) {
   GADUNativeTemplateAd *internalNativeTemplateAd = (__bridge GADUNativeTemplateAd *)nativeAd;
