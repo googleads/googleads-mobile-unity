@@ -75,14 +75,6 @@ namespace GoogleMobileAds.Api
         public List<string> TestDeviceIds = new List<string>();
 
         /// <summary>
-        /// Controls whether the Google Mobile Ads SDK Same App Key is enabled.
-        /// The value set persists across app sessions. The key is enabled by default.
-        /// </summary>
-        /// @deprecated Use @ref PublisherFirstPartyIdEnabled.
-        [Obsolete("Use PublisherFirstPartyIdEnabled instead.")]
-        public bool? SameAppKeyEnabled = true;
-
-        /// <summary>
         /// Controls whether the Google Mobile Ads SDK publisher first-party ID, formerly known as
         /// the same app key, is enabled. The value set persists across app sessions.
         /// The key is enabled by default.
@@ -100,9 +92,6 @@ namespace GoogleMobileAds.Api
             PublisherPrivacyPersonalizationState =
                 requestConfiguration.PublisherPrivacyPersonalizationState;
             TestDeviceIds = requestConfiguration.TestDeviceIds;
-#pragma warning disable 0618
-            SameAppKeyEnabled = requestConfiguration.SameAppKeyEnabled;
-#pragma warning restore 0618
             PublisherFirstPartyIdEnabled = requestConfiguration.PublisherFirstPartyIdEnabled;
         }
     }

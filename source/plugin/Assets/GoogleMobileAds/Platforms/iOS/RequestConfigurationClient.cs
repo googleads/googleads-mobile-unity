@@ -55,11 +55,6 @@ namespace GoogleMobileAds.iOS
                 Externs.GADUSetRequestConfigurationTagForUnderAgeOfConsent(requestConfigurationPtr, (int)TagForUnderAgeOfConsent.GetValueOrDefault());
             }
 
-            if (requestConfiguration.SameAppKeyEnabled.HasValue) {
-              Externs.GADUSetRequestConfigurationSameAppKeyEnabled(
-                  requestConfigurationPtr, requestConfiguration.SameAppKeyEnabled.Value);
-            }
-
             if (requestConfiguration.PublisherFirstPartyIdEnabled.HasValue) {
                 Externs.GADUSetRequestConfigurationPublisherFirstPartyIDEnabled(
                     requestConfiguration.PublisherFirstPartyIdEnabled.Value);
@@ -84,10 +79,6 @@ namespace GoogleMobileAds.iOS
 
             TagForChildDirectedTreatment tagForChildDirectedTreatment = (TagForChildDirectedTreatment)Externs.GADUGetRequestConfigurationTagForChildDirectedTreatment(requestConfigurationPtr);
             TagForUnderAgeOfConsent tagForUnderAgeOfConsent = (TagForUnderAgeOfConsent)Externs.GADUGetRequestConfigurationTagForUnderAgeOfConsent(requestConfigurationPtr);
-
-            bool sameAppKeyEnabled =
-                Externs.GADUGetRequestConfigurationSameAppKeyEnabled(requestConfigurationPtr);
-
             PublisherPrivacyPersonalizationState publisherPrivacyPersonalizationState =
                 (PublisherPrivacyPersonalizationState)Externs.GADUGetRequestConfigurationPublisherPrivacyPersonalizationState();
 
@@ -97,7 +88,6 @@ namespace GoogleMobileAds.iOS
                 TagForChildDirectedTreatment = tagForChildDirectedTreatment,
                 TagForUnderAgeOfConsent = tagForUnderAgeOfConsent,
                 TestDeviceIds = testDeviceIds,
-                SameAppKeyEnabled = sameAppKeyEnabled,
                 PublisherPrivacyPersonalizationState = publisherPrivacyPersonalizationState
             };
             return requestConfiguration;

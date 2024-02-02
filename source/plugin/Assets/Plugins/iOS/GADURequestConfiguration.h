@@ -30,6 +30,4 @@ typedef NS_ENUM(NSInteger, GADURequestConfigurationPublisherPrivacyPersonalizati
 @property(nonatomic, assign)
     GADURequestConfigurationTagForUnderAgeOfConsent tagForUnderAgeOfConsent;
 
-@property(nonatomic, assign) BOOL sameAppKeyEnabled;
-
 @end

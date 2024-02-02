@@ -4,6 +4,7 @@ Version Next
 **************
 
 - Removed Builder in RequestConfiguration.Builder. Use RequestConfiguration directly.
+- Removed SameAppKeyEnabled in RequestConfiguration. Use PublisherFirstPartyIdEnabled instead.
 
 **************
 Version 8.7.0

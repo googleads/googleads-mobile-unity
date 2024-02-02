@@ -888,9 +888,6 @@ void GADUSetRequestConfiguration(GADUTypeRequestConfigurationRef requestConfigur
     case kGADURequestConfigurationTagForChildDirectedTreatmentUnspecified:
       break;
   }
-
-  [GADMobileAds.sharedInstance.requestConfiguration
-      setSameAppKeyEnabled:internalRequestConfiguration.sameAppKeyEnabled];
 }
 
 /// Set RequestConfiguration Max Ad Content Rating
@@ -928,14 +925,6 @@ void GADUSetRequestConfigurationTagForChildDirectedTreatment(
   GADURequestConfiguration *internalRequestConfiguration =
       (__bridge GADURequestConfiguration *)requestConfiguration;
   internalRequestConfiguration.tagForChildDirectedTreatment = tagForChildDirectedTreatment;
-}
-
-/// Set RequestConfiguration setSameAppKeyEnabled
-void GADUSetRequestConfigurationSameAppKeyEnabled(
-    GADUTypeRequestConfigurationRef requestConfiguration, BOOL enabled) {
-  GADURequestConfiguration *internalRequestConfiguration =
-      (__bridge GADURequestConfiguration *)requestConfiguration;
-  internalRequestConfiguration.sameAppKeyEnabled = enabled;
 }
 
 /// Calls the RequestConfiguration's setPublisherFirstPartyIDEnabled
@@ -998,14 +987,6 @@ int GADUGetTestDeviceIdentifiersCount(GADUTypeRequestConfigurationRef requestCon
       (__bridge GADURequestConfiguration *)requestConfiguration;
   NSArray<NSString *> *testDeviceIDs = internalRequestConfiguration.testDeviceIdentifiers;
   return testDeviceIDs.count;
-}
-
-/// Returns RequestConfiguration sameAppKeyEnabled
-BOOL GADUGetRequestConfigurationSameAppKeyEnabled(
-    GADUTypeRequestConfigurationRef requestConfiguration) {
-  GADURequestConfiguration *internalRequestConfiguration =
-      (__bridge GADURequestConfiguration *)requestConfiguration;
-  return internalRequestConfiguration.sameAppKeyEnabled;
 }
 
 /// Returns the current value of publisherPrivacyPersonalizationState from requestConfiguration.

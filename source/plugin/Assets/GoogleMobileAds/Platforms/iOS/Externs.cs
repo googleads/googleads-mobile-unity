@@ -141,10 +141,6 @@ namespace GoogleMobileAds.iOS
             IntPtr requestConfiguration, int tagForChildDirectedTreatment);
 
         [DllImport("__Internal")]
-        internal static extern void GADUSetRequestConfigurationSameAppKeyEnabled(
-            IntPtr requestConfiguration, bool enabled);
-
-        [DllImport("__Internal")]
         internal static extern void GADUSetRequestConfigurationPublisherFirstPartyIDEnabled(
             bool enabled);
 
@@ -167,10 +163,6 @@ namespace GoogleMobileAds.iOS
 
         [DllImport("__Internal")]
         internal static extern int GADUGetRequestConfigurationTagForChildDirectedTreatment(
-            IntPtr requestConfiguration);
-
-        [DllImport("__Internal")]
-        internal static extern bool GADUGetRequestConfigurationSameAppKeyEnabled(
             IntPtr requestConfiguration);
 
         [DllImport("__Internal")]
