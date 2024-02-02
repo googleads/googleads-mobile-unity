@@ -1,4 +1,9 @@
 Google Mobile Ads Unity Plugin Change Log
+**************
+Version Next
+**************
+
+- Removed Builder in RequestConfiguration.Builder. Use RequestConfiguration directly.
 
 **************
 Version 8.7.0

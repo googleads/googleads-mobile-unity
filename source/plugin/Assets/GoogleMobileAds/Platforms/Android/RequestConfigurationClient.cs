@@ -99,7 +99,6 @@ namespace GoogleMobileAds.Android
                          tagForChildDirectedTreatmentCode);
                 }
             }
-
             if (requestConfiguration.PublisherPrivacyPersonalizationState.HasValue)
             {
                 AndroidJavaObject personalizationState = null;
@@ -128,14 +127,9 @@ namespace GoogleMobileAds.Android
                       "setPublisherPrivacyPersonalizationState", personalizationState);
                 }
             }
-
-            if (requestConfiguration.SameAppKeyEnabled.HasValue) {
-              // SameAppKey feature is for iOS only. Do nothing on Android.
-            }
-
             return requestConfigurationBuilder.Call<AndroidJavaObject>("build");
-
         }
+
         public static RequestConfiguration GetRequestConfiguration(AndroidJavaObject androidRequestConfiguration)
         {
 
