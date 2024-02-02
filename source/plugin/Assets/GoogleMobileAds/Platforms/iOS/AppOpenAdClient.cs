@@ -113,14 +113,6 @@ namespace GoogleMobileAds.iOS
             Externs.GADURelease(requestPtr);
         }
 
-        // Load an ad.
-        public void LoadAd(string adUnitID, AdRequest request, ScreenOrientation orientation)
-        {
-            IntPtr requestPtr = Utils.BuildAdRequest(request);
-            Externs.GADULoadAppOpenAd(this.AppOpenAdPtr, adUnitID, (int) orientation, requestPtr);
-            Externs.GADURelease(requestPtr);
-        }
-
         // Show the app open ad on the screen.
         public void Show()
         {

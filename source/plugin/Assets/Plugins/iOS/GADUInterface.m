@@ -1183,17 +1183,6 @@ void GADULoadRewardedAd(GADUTypeRewardedAdRef rewardedAd, const char *adUnitID,
 }
 
 /// Makes an app open ad request.
-void GADULoadAppOpenAd(GADUTypeAppOpenAdRef appOpenAd, const char *adUnitID, int orientation,
-                       GADUTypeRequestRef request) {
-  GADUAppOpenAd *internalAppOpenAd = (__bridge GADUAppOpenAd *)appOpenAd;
-  GADURequest *internalRequest = (__bridge GADURequest *)request;
-
-  [internalAppOpenAd loadWithAdUnitID:GADUStringFromUTF8String(adUnitID)
-                          orientation:(GADUScreenOrientation)orientation
-                              request:[internalRequest request]];
-}
-
-/// Makes an app open ad request.
 void GADULoadAppOpenAdWithAdUnitID(GADUTypeAppOpenAdRef appOpenAd, const char *adUnitID,
                        GADUTypeRequestRef request) {
   GADUAppOpenAd *internalAppOpenAd = (__bridge GADUAppOpenAd *)appOpenAd;

@@ -197,10 +197,6 @@ namespace GoogleMobileAds.iOS
             IntPtr appOpenAd, string adUnitID, IntPtr request);
 
         [DllImport("__Internal")]
-        internal static extern void GADULoadAppOpenAd(
-            IntPtr appOpenAd, string adUnitID, int orientation, IntPtr request);
-
-        [DllImport("__Internal")]
         internal static extern void GADUShowAppOpenAd(IntPtr appOpenAd);
 
         [DllImport("__Internal")]
