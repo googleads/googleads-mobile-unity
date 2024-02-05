@@ -1254,7 +1254,8 @@ const GADUTypeResponseInfoRef GADUGetResponseInfo(GADUTypeRef adFormat) {
 
 const char *GADUResponseInfoMediationAdapterClassName(GADUTypeResponseInfoRef responseInfo) {
   GADResponseInfo *internalResponseInfo = (__bridge GADResponseInfo *)responseInfo;
-  return cStringCopy(internalResponseInfo.adNetworkClassName.UTF8String);
+  return cStringCopy(
+      internalResponseInfo.loadedAdNetworkResponseInfo.adNetworkClassName.UTF8String);
 }
 
 const char *GADUResponseInfoResponseId(GADUTypeResponseInfoRef responseInfo) {
