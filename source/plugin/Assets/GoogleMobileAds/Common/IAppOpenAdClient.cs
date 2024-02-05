@@ -52,9 +52,6 @@ namespace GoogleMobileAds.Common
     // Loads an app open ad.
     void LoadAd(string adUnitID, AdRequest request);
 
-    // Loads an app open ad.
-    void LoadAd(string adUnitID, AdRequest request, ScreenOrientation orientation);
-
     // Shows the app open ad on the screen.
     void Show();
 
