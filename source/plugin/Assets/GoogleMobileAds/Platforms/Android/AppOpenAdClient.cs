@@ -61,13 +61,6 @@ namespace GoogleMobileAds.Android
             androidAppOpenAd.Call("loadAd", adUnitID, Utils.GetAdRequestJavaObject(request));
         }
 
-        public void LoadAd(string adUnitID, AdRequest request, ScreenOrientation orientation)
-        {
-            androidAppOpenAd.Call("loadAd", adUnitID,
-                Utils.GetAdRequestJavaObject(request),
-                Utils.GetAppOpenAdOrientation(orientation));
-        }
-
         public void Show()
         {
             androidAppOpenAd.Call("show");

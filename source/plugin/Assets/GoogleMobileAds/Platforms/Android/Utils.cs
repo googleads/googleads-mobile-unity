@@ -193,24 +193,6 @@ namespace GoogleMobileAds.Android
             }
         }
 
-        public static int GetAppOpenAdOrientation(ScreenOrientation orientation)
-        {
-            string orientationFieldName;
-            switch (orientation)
-            {
-                case ScreenOrientation.Landscape:
-                case ScreenOrientation.LandscapeRight:
-                    orientationFieldName = "APP_OPEN_AD_ORIENTATION_LANDSCAPE";
-                    break;
-                default:
-                    orientationFieldName = "APP_OPEN_AD_ORIENTATION_PORTRAIT";
-                    break;
-            }
-
-            AndroidJavaClass appOpenAdClass = new AndroidJavaClass(AppOpenAdClassName);
-            return appOpenAdClass.GetStatic<int>(orientationFieldName);
-        }
-
         public static Dictionary<string, string> GetDictionary(AndroidJavaObject androidBundle)
         {
             AndroidJavaObject bundleKeySet = androidBundle.Call<AndroidJavaObject>("keySet");
