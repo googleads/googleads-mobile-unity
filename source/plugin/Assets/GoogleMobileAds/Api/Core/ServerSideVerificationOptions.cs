@@ -40,51 +40,5 @@ namespace GoogleMobileAds.Api
             UserId = options.UserId;
             CustomData = options.CustomData;
         }
-
-        /// <summary>
-        /// Constructs a <see cref="Builder"/>.
-        /// </summary>
-        /// @deprecated Use @ref ServerSideVerificationOptions directly instead.
-        [Obsolete("Use ServerSideVerificationOptions directly instead.")]
-        public class Builder
-        {
-            internal string UserId;
-            internal string CustomData;
-
-            public Builder()
-            {
-            }
-
-            /// <summary>
-            /// Sets the user id of the current user.
-            /// </summary>
-            public Builder SetUserId(string userId)
-            {
-                UserId = userId;
-                return this;
-            }
-
-            /// <summary>
-            /// Set custom data of the current user.
-            /// </summary>
-            public Builder SetCustomData(string customData)
-            {
-                CustomData = customData;
-                return this;
-            }
-
-            /// <summary>
-            /// Constructs an <see cref="ServerSideVerificationOptions"/>
-            /// with the specified attributes.
-            /// </summary>
-            public ServerSideVerificationOptions Build()
-            {
-                return new ServerSideVerificationOptions()
-                {
-                    UserId = this.UserId,
-                    CustomData = this.CustomData
-                };
-            }
-        }
     }
 }
