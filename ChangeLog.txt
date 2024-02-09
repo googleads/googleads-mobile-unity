@@ -7,6 +7,7 @@ Version Next
 - Removed SameAppKeyEnabled in RequestConfiguration. Use PublisherFirstPartyIdEnabled instead.
 - Removed ServerSideVerificationOptions.Builder. Use ServerSideVerificationOptions directly.
 - Removed AdRequest.Builder. Use AdRequest directly.
+- Removed AdErrorEventArgs. Use AdError directly.
 
 **************
 Version 8.7.0
