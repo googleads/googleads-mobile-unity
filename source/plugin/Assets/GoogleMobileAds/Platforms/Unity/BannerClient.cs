@@ -34,7 +34,7 @@ namespace GoogleMobileAds.Unity
         // Ad event fired when the banner ad is closed.
         public event EventHandler<EventArgs> OnAdClosed;
         // Ad event fired when the banner ad is estimated to have earned money.
-        public event EventHandler<AdValueEventArgs> OnPaidEvent;
+        public event Action<AdValue> OnPaidEvent;
 
         public event Action OnAdClicked;
 
