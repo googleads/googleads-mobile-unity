@@ -1,7 +1,10 @@
 ## Liftoff Monetize Unity Mediation Plugin Changelog
 
-#### Next Version
+#### [Version 5.0.0](https://dl.google.com/googleadmobadssdk/mediation/unity/liftoffmonetize/LiftoffMonetizeUnityAdapter-5.0.0.zip)
 - Fixed a duplicate definition warning for `MediationExtras`.
+- Supports [Liftoff Monetize Android adapter version 7.1.0.0](https://github.com/googleads/googleads-mobile-android-mediation/blob/main/ThirdPartyAdapters/liftoffmonetize/CHANGELOG.md#version-7100).
+- Supports [Liftoff Monetize iOS adapter version 7.2.1.1](https://github.com/googleads/googleads-mobile-ios-mediation/blob/main/adapters/LiftoffMonetize/CHANGELOG.md#version-7211).
+- Built and tested with the Google Mobile Ads Unity Plugin version 8.7.0.
 
 #### [Version 4.0.0](https://dl.google.com/googleadmobadssdk/mediation/unity/liftoffmonetize/LiftoffMonetizeUnityAdapter-4.0.0.zip)
 - Rebranded Unity mediation plugin from Vungle to Liftoff Monetize.
