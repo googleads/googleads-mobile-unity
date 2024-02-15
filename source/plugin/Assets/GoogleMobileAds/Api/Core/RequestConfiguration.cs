@@ -76,8 +76,8 @@ namespace GoogleMobileAds.Api
 
         /// <summary>
         /// Controls whether the Google Mobile Ads SDK publisher first-party ID, formerly known as
-        /// the same app key, is enabled. The value set persists across app sessions.
-        /// The key is enabled by default.
+        /// the same app key, is enabled. The value set persists across app sessions once
+        /// MobileAds.SetRequestConfiguration() is called.
         /// </summary>
         public bool? PublisherFirstPartyIdEnabled;
 
