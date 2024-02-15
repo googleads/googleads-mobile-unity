@@ -1183,6 +1183,17 @@ void GADULoadRewardedInterstitialAd(GADUTypeRewardedInterstitialAdRef rewardedIn
                                            request:[internalRequest request]];
 }
 
+/// Makes a native ad request.
+void GADULoadNativeTemplateAd(GADUTypeNativeTemplateAdRef native, const char *adUnitID,
+                              GADUTypeNativeAdOptionsRef options, GADUTypeRequestRef request) {
+  GADUNativeTemplateAd *internalNative = (__bridge GADUNativeTemplateAd *)native;
+  GADUNativeAdOptions *internalOptions = (__bridge GADUNativeAdOptions *)options;
+  GADURequest *internalRequest = (__bridge GADURequest *)request;
+  [internalNative loadWithAdUnitID:GADUStringFromUTF8String(adUnitID)
+                           request:[internalRequest request]
+                         adOptions:internalOptions];
+}
+
 /// Shows ad inspector UI.
 void GADUPresentAdInspector(GADUTypeMobileAdsClientRef *mobileAdsClientRef,
                             GADUAdInspectorCompleteCallback adInspectorCompletionCallback) {
