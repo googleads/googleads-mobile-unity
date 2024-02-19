@@ -29,7 +29,7 @@ namespace GoogleMobileAds.Common
     event EventHandler<LoadAdErrorClientEventArgs> OnAdFailedToLoad;
 
     // Ad event fired when the app open ad is estimated to have earned money.
-    event EventHandler<AdValueEventArgs> OnPaidEvent;
+    event Action<AdValue> OnPaidEvent;
 
     // Ad event fired when the ad failed to present full screen content.
     event EventHandler<AdErrorClientEventArgs> OnAdFailedToPresentFullScreenContent;

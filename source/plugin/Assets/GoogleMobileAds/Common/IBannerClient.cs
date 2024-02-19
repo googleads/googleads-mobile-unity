@@ -29,7 +29,7 @@ namespace GoogleMobileAds.Common
         // Ad event fired when the banner ad is closed.
         event EventHandler<EventArgs> OnAdClosed;
         // Ad event fired when the banner ad is estimated to have earned money.
-        event EventHandler<AdValueEventArgs> OnPaidEvent;
+        event Action<AdValue> OnPaidEvent;
         // Ad event fired when the banner ad is clicked.
         event Action OnAdClicked;
         // Ad event fired when the banner ad records an impression.

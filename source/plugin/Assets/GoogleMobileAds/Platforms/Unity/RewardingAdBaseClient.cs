@@ -31,7 +31,7 @@ namespace GoogleMobileAds.Unity
         // Ad event fired when the rewarding ad has failed to load.
         public event EventHandler<LoadAdErrorClientEventArgs> OnAdFailedToLoad;
         // Ad event fired when the rewarding ad is estimated to have earned money.
-        public event EventHandler<AdValueEventArgs> OnPaidEvent;
+        public event Action<AdValue> OnPaidEvent;
         // Ad event fired when the rewarding ad has rewarded the user.
         public event EventHandler<Reward> OnUserEarnedReward;
         // Ad event fired when the full screen content has failed to be presented.

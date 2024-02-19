@@ -26,7 +26,7 @@ namespace GoogleMobileAds.Common
         // Ad event fired when the interstitial ad has failed to load.
         event EventHandler<LoadAdErrorClientEventArgs> OnAdFailedToLoad;
         // Ad event fired when the interstitial ad is estimated to have earned money.
-        event EventHandler<AdValueEventArgs> OnPaidEvent;
+        event Action<AdValue> OnPaidEvent;
         // Ad event fired when the full screen content has failed to be presented.
         event EventHandler<AdErrorClientEventArgs> OnAdFailedToPresentFullScreenContent;
         // Ad event fired when the full screen content has been presented.

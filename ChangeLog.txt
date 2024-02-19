@@ -8,6 +8,8 @@ Version Next
 - Removed ServerSideVerificationOptions.Builder. Use ServerSideVerificationOptions directly.
 - Removed AdRequest.Builder. Use AdRequest directly.
 - Removed AdErrorEventArgs. Use AdError directly.
+- Removed AdFailedToLoadEventArgs. Use LoadAdError directly.
+- Removed AdValueEventArgs. Use AdValue directly.
 
 **************
 Version 8.7.0
