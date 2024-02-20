@@ -8,6 +8,14 @@ Version Next
 - Removed ServerSideVerificationOptions.Builder. Use ServerSideVerificationOptions directly.
 - Removed AdRequest.Builder. Use AdRequest directly.
 - Removed AdErrorEventArgs. Use AdError directly.
+- Updated Google Mobile Ads SDK dependency to use v11.0.1 on iOS.
+- Updated the Android User Messaging Platform dependency version to 2.2.0.
+
+Built and tested with:
+- Google Mobile Ads Android SDK 22.6.0
+- Google Mobile Ads iOS SDK 11.0.1
+- Google User Messaging Platform 2.2.0
+- External Dependency Manager for Unity 1.2.177
 
 **************
 Version 8.7.0
