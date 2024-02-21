@@ -1,0 +1,8 @@
+<com.google.android.ads.nativetemplates.TemplateView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/template_medium"
+    app:gnt_template_type="@layout/gnt_medium_template_view">
+</com.google.android.ads.nativetemplates.TemplateView>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <item name="gnt_medium_template_bottom_weight" format="float" type="dimen">0.4</item>
+  <item name="gnt_text_row_weight" format="float" type="dimen">0.25</item>
+  <item name="gnt_media_view_weight" format="float" type="dimen">1.0</item>
+  <item name="gnt_medium_template_top_weight" format="float" type="dimen">0.2</item>
+  <dimen name="gnt_default_margin">10dp</dimen>
+  <dimen name="gnt_small_margin">5dp</dimen>
+  <dimen name="gnt_text_size_small">12sp</dimen>
+  <dimen name="gnt_text_size_large">15sp</dimen>
+  <dimen name="gnt_ad_indicator_width">25dp</dimen>
+  <dimen name="gnt_ad_indicator_height">20dp</dimen>
+  <dimen name="gnt_ad_indicator_bar_height">30dp</dimen>
+  <dimen name="gnt_ad_indicator_top_margin">0dp</dimen>
+  <dimen name="gnt_ad_indicator_bottom_margin">10dp</dimen>
+  <dimen name="gnt_ad_indicator_text_size">10sp</dimen>
+  <dimen name="gnt_small_cta_button_height">30dp</dimen>
+  <dimen name="gnt_medium_cta_button_height">50dp</dimen>
+  <dimen name="gnt_no_margin">0dp</dimen>
+  <dimen name="gnt_no_size">0dp</dimen>
+</resources>
