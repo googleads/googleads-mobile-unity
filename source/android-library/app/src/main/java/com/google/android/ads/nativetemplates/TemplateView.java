@@ -260,7 +260,6 @@ public final class TemplateView extends FrameLayout {
   }
 
   private void initView(Context context, AttributeSet attributeSet) {
-    System.out.println("<VINAY> Inflating layout!");
     TypedArray attributes =
         context.getTheme().obtainStyledAttributes(attributeSet, R.styleable.TemplateView, 0, 0);
 
@@ -271,17 +270,14 @@ public final class TemplateView extends FrameLayout {
     } finally {
       attributes.recycle();
     }
-    System.out.println("<VINAY> LayoutInflater!");
     LayoutInflater inflater =
         (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-    System.out.println("<VINAY> inflate!");
     inflater.inflate(templateType, this);
   }
 
   @Override
   public void onFinishInflate() {
     super.onFinishInflate();
-    System.out.println("<VINAY> onFinishInflate!");
     nativeAdView = (NativeAdView) findViewById(R.id.native_ad_view);
     primaryView = (TextView) findViewById(R.id.primary);
     secondaryView = (TextView) findViewById(R.id.secondary);

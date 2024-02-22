@@ -61,12 +61,12 @@ public final class UnityNativeTemplateTextStyle {
 
   @Override
   public boolean equals(Object o) {
-    if (o == null || !(o instanceof UnityNativeTemplateTextStyle)) {
-      return false;
-    }
-
     if (this == o) {
       return true;
+    }
+
+    if (o == null || !(o instanceof UnityNativeTemplateTextStyle)) {
+      return false;
     }
 
     UnityNativeTemplateTextStyle other = (UnityNativeTemplateTextStyle) o;
