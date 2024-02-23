@@ -31,7 +31,7 @@ namespace GoogleMobileAds.Common
         // Ad event fired when the full screen content has been dismissed.
         event EventHandler<EventArgs> OnAdDidDismissFullScreenContent;
         // Ad event fired when the native ad is estimated to have earned money.
-        event EventHandler<AdValueEventArgs> OnPaidEvent;
+        event Action<AdValue> OnPaidEvent;
         // Ad event fired when an ad has been clicked.
         event Action OnAdClicked;
 
