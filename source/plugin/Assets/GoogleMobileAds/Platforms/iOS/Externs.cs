@@ -596,8 +596,58 @@ namespace GoogleMobileAds.iOS
                                                                      string textType, IntPtr color);
 
         [DllImport("__Internal")]
+        internal static extern IntPtr GADUCreateNativeTemplateAd(IntPtr nativeAdClient);
+
+        [DllImport("__Internal")]
+        internal static extern void GADUSetNativeTemplateAdCallbacks(
+            IntPtr nativeTemplateAd,
+            NativeOverlayAdClient.GADUNativeAdLoadedCallback adLoadedCallback,
+            NativeOverlayAdClient.GADUNativeAdFailedToLoadCallback adFailedCallback,
+            NativeOverlayAdClient.GADUNativeAdDidRecordImpressionCallback
+                adDidRecordImpressionCallback,
+            NativeOverlayAdClient.GADUNativeAdDidRecordClickCallback
+                adDidRecordClickCallback,
+            NativeOverlayAdClient.GADUNativePaidEventCallback paidEventCallback,
+            NativeOverlayAdClient.GADUNativeAdWillPresentScreenCallback willPresentCallback,
+            NativeOverlayAdClient.GADUNativeAdDidDismissScreenCallback didDismissCallback);
+
+        [DllImport("__Internal")]
+        internal static extern void GADULoadNativeTemplateAd(IntPtr nativeTemplateAd,
+                                                             string adUnitID,
+                                                             IntPtr nativeAdOptions,
+                                                             IntPtr request);
+
+        [DllImport("__Internal")]
+        internal static extern void GADUShowNativeTemplateAd(IntPtr nativeTemplateAd,
+                                                             IntPtr templateStyle, int height,
+                                                             int width);
+
+        [DllImport("__Internal")]
         internal static extern void GADUShowDefaultNativeTemplateAd(IntPtr nativeTemplateAd,
                                                                     IntPtr templateStyle);
+
+        [DllImport("__Internal")]
+        internal static extern void GADUSetNativeTemplateAdPosition(IntPtr nativeTemplateAd,
+                                                                    int position);
+
+        [DllImport("__Internal")]
+        internal static extern void GADUSetNativeTemplateAdCustomPosition(IntPtr nativeTemplateAd,
+                                                                          int x, int y);
+
+        [DllImport("__Internal")]
+        internal static extern void GADUHideNativeTemplateAd(IntPtr nativeTemplateAd);
+
+        [DllImport("__Internal")]
+        internal static extern void GADUDisplayNativeTemplateAd(IntPtr nativeTemplateAd);
+
+        [DllImport("__Internal")]
+        internal static extern void GADUDestroyNativeTemplateAd(IntPtr nativeTemplateAd);
+
+        [DllImport("__Internal")]
+        internal static extern float GADUGetNativeTemplateAdHeightInPixels(IntPtr nativeTemplateAd);
+
+        [DllImport("__Internal")]
+        internal static extern float GADUGetNativeTemplateAdWidthInPixels(IntPtr nativeTemplateAd);
 #endregion
 
 #region AdInspector externs
