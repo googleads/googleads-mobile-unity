@@ -57,7 +57,7 @@ namespace GoogleMobileAds.iOS
         // Ad event fired when the full screen content has been dismissed.
         public event EventHandler<EventArgs> OnAdDidDismissFullScreenContent;
 
-        public event EventHandler<AdValueEventArgs> OnPaidEvent;
+        public event Action<AdValue> OnPaidEvent;
 
         private static NativeOverlayAdClient IntPtrToNativeClient(IntPtr nativeClient)
         {
@@ -193,7 +193,7 @@ namespace GoogleMobileAds.iOS
 
 #region native ad callback methods
 
-      [MonoPInvokeCallback(typeof(GADUNativeAdLoadedCallback))]
+        [MonoPInvokeCallback(typeof(GADUNativeAdLoadedCallback))]
         private static void NativeLoadedCallback(IntPtr nativeClient)
         {
             NativeOverlayAdClient client = IntPtrToNativeClient(nativeClient);
@@ -230,12 +230,8 @@ namespace GoogleMobileAds.iOS
                     Value = value,
                     CurrencyCode = currencyCode
                 };
-                AdValueEventArgs args = new AdValueEventArgs()
-                {
-                    AdValue = adValue
-                };
 
-                client.OnPaidEvent(client, args);
+                client.OnPaidEvent(adValue);
             }
         }
 
@@ -269,7 +265,7 @@ namespace GoogleMobileAds.iOS
             }
         }
 
-           [MonoPInvokeCallback(typeof(GADUNativeAdLoadedCallback))]
+        [MonoPInvokeCallback(typeof(GADUNativeAdLoadedCallback))]
         private static void NativeAdDidDismissScreenCallback(IntPtr nativeClient)
         {
             NativeOverlayAdClient client = IntPtrToNativeClient(nativeClient);
