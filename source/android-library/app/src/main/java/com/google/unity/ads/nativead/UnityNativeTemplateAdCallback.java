@@ -8,7 +8,7 @@ import com.google.unity.ads.UnityPaidEventListener;
  * An interface form of {@link UnityNativeTemplateAdCallback} that can be implemented via {@code
  * AndroidJavaProxy} in Unity to receive ad events synchronously.
  */
-public interface UnityNativeAdCallback
+public interface UnityNativeTemplateAdCallback
     extends UnityPaidEventListener, UnityFullScreenContentCallback {
 
   void onNativeAdLoaded();
