@@ -1,6 +1,6 @@
 ---
-name:  Bug report
-about: Found a bug in the Google Mobile Ads Unity plugin? Is the Google Mobile Ads Unity plugin crashing your app? File it here.
+name:  Github issue
+about: Interact with fellow developers on SDK integration topics.
 ---
 <!-- DO NOT DELETE
 validate_template=true
