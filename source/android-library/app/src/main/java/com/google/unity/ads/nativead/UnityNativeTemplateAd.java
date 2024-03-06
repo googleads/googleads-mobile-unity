@@ -18,6 +18,7 @@ package com.google.unity.ads.nativead;
 
 import android.app.Activity;
 import android.util.Log;
+import android.view.DisplayCutout;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdLoader;
 import com.google.android.gms.ads.AdRequest;
@@ -35,6 +36,14 @@ import java.util.concurrent.FutureTask;
 /** Native Template ad implementation for the Google Mobile Ads Unity plugin. */
 public class UnityNativeTemplateAd {
 
+  /** Class to hold the insets of the cutout area. */
+  protected static class Insets {
+    int top = 0;
+    int bottom = 0;
+    int left = 0;
+    int right = 0;
+  }
+
   /** The {@link NativeAd}. */
   private NativeAd nativeAd;
 
@@ -44,8 +53,20 @@ public class UnityNativeTemplateAd {
   /** The {@code Activity} on which the native template will display. */
   private Activity activity;
 
+  /** The template view rendering the native ad. */
+  private TemplateView templateView;
+
+  /**
+   * A {@code View.OnLayoutChangeListener} used to detect orientation changes and reposition native
+   * overlay ads as required.
+   */
+  private View.OnLayoutChangeListener mLayoutChangeListener;
+
   /** A code indicating where to place the ad. */
   private int mPositionCode;
+
+  /** AdSize to track the size of the Template view. */
+  private AdSize mAdSize;
 
   /** A boolean indicating whether the ad has been hidden. */
   protected boolean hidden;
@@ -212,5 +233,162 @@ public class UnityNativeTemplateAd {
               "Unable to check native response info: %s", exception.getLocalizedMessage()));
     }
     return result;
+  }
+
+  /** Sets the Native Template View to be visible. */
+  public void show() {
+    activity.runOnUiThread(
+        new Runnable() {
+          @Override
+          public void run() {
+            hidden = false;
+            templateView.setVisibility(View.VISIBLE);
+            updatePosition();
+          }
+        });
+  }
+
+  /** Sets the Native Template View to be gone. */
+  public void hide() {
+    activity.runOnUiThread(
+        new Runnable() {
+          @Override
+          public void run() {
+            hidden = true;
+            templateView.setVisibility(View.GONE);
+          }
+        });
+  }
+
+  /** Destroys the Native Template View. */
+  public void destroy() {
+    activity.runOnUiThread(
+        new Runnable() {
+          @Override
+          public void run() {
+            if (templateView != null) {
+              templateView.destroyNativeAd();
+              ViewParent parentView = templateView.getParent();
+              if (parentView instanceof ViewGroup) {
+                ((ViewGroup) parentView).removeView(templateView);
+              }
+            }
+          }
+        });
+
+    activity
+        .getWindow()
+        .getDecorView()
+        .getRootView()
+        .removeOnLayoutChangeListener(mLayoutChangeListener);
+  }
+
+  /** Sets a listener to update the position of the Native Overlay in case of layout changes */
+  protected void setLayoutChangeListener() {
+    mLayoutChangeListener =
+        new View.OnLayoutChangeListener() {
+          @Override
+          public void onLayoutChange(
+              View v,
+              int left,
+              int top,
+              int right,
+              int bottom,
+              int oldLeft,
+              int oldTop,
+              int oldRight,
+              int oldBottom) {
+            boolean isViewBoundsSame =
+                left == oldLeft && right == oldRight && bottom == oldBottom && top == oldTop;
+            if (isViewBoundsSame) {
+              return;
+            }
+
+            if (!hidden) {
+              updatePosition();
+            }
+          }
+        };
+
+    activity
+        .getWindow()
+        .getDecorView()
+        .getRootView()
+        .addOnLayoutChangeListener(mLayoutChangeListener);
+  }
+
+  /** Update the Native Overlay View position based on current parameters. */
+  private void updatePosition() {
+    if (templateView == null) {
+      return;
+    }
+    activity.runOnUiThread(
+        new Runnable() {
+          @Override
+          public void run() {
+            FrameLayout.LayoutParams layoutParams = getLayoutParams();
+            if (mAdSize != null) {
+              layoutParams.height = mAdSize.getHeight();
+              layoutParams.width = mAdSize.getWidth();
+            }
+            templateView.setLayoutParams(layoutParams);
+          }
+        });
+  }
+
+  /**
+   * Create layout params for the ad view with relevant positioning details.
+   *
+   * @return configured {@link FrameLayout.LayoutParams}.
+   */
+  protected FrameLayout.LayoutParams getLayoutParams() {
+    final FrameLayout.LayoutParams adParams =
+        new FrameLayout.LayoutParams(
+            FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.WRAP_CONTENT);
+    adParams.gravity = PluginUtils.getLayoutGravityForPositionCode(mPositionCode);
+
+    Insets insets = getInsets();
+    int insetLeft = insets.left;
+    int insetTop = insets.top;
+    adParams.bottomMargin = insets.bottom;
+    adParams.rightMargin = insets.right;
+    if (mPositionCode == PluginUtils.POSITION_CUSTOM) {
+      int leftOffset = (int) PluginUtils.convertDpToPixel(mHorizontalOffset);
+      if (leftOffset < insetLeft) {
+        leftOffset = insetLeft;
+      }
+      int topOffset = (int) PluginUtils.convertDpToPixel(mVerticalOffset);
+      if (topOffset < insetTop) {
+        topOffset = insetTop;
+      }
+      adParams.leftMargin = leftOffset;
+      adParams.topMargin = topOffset;
+    } else {
+      adParams.leftMargin = insetLeft;
+      if (mPositionCode == PluginUtils.POSITION_TOP
+          || mPositionCode == PluginUtils.POSITION_TOP_LEFT
+          || mPositionCode == PluginUtils.POSITION_TOP_RIGHT) {
+        adParams.topMargin = insetTop;
+      }
+    }
+    return adParams;
+  }
+
+  private Insets getInsets() {
+    Insets insets = new Insets();
+    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.P
+        || activity.getWindow() == null
+        || activity.getWindow().getDecorView().getRootWindowInsets() == null
+        || activity.getWindow().getDecorView().getRootWindowInsets().getDisplayCutout() == null) {
+      return insets;
+    }
+
+    DisplayCutout displayCutout =
+        activity.getWindow().getDecorView().getRootWindowInsets().getDisplayCutout();
+    insets.top = displayCutout.getSafeInsetTop();
+    insets.left = displayCutout.getSafeInsetLeft();
+    insets.bottom = displayCutout.getSafeInsetBottom();
+    insets.right = displayCutout.getSafeInsetRight();
+    return insets;
   }
 }
