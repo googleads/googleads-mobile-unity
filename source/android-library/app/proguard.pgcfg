@@ -21,7 +21,22 @@
    *;
 }
 
+# Keep Google Mobile Ads Android classes.
+-keep class com.google.android.gms.ads.** { 
+   *; 
+}
+
+# Keep Google Mobile Ads Android Mediation classes
+-keep class com.google.ads.mediation.** {
+   *;
+}
+
 # Keep User Messaging Platform Unity plugin classes.
 -keep class com.google.unity.ump.** {
+   *;
+}
+
+# Keep User Messaging Platform Android classes
+-keep class com.google.android.ump.** {
    *;
 }
