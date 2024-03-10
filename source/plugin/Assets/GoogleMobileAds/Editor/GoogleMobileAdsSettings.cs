@@ -15,10 +15,10 @@ namespace GoogleMobileAds.Editor
 
         internal static GoogleMobileAdsSettings LoadInstance()
         {
-            //Read from resources.
+            // Read from resources.
             var instance = Resources.Load<GoogleMobileAdsSettings>(MobileAdsSettingsFile);
 
-            //Create instance if null.
+            // Create instance if null.
             if (instance == null)
             {
                 Directory.CreateDirectory(MobileAdsSettingsResDir);
@@ -63,6 +63,9 @@ namespace GoogleMobileAds.Editor
 
         [SerializeField]
         private bool validateGradleDependencies;
+
+        [SerializeField]
+        private string userLocale = string.Empty;
 
         public string GoogleMobileAdsAndroidAppId
         {
@@ -118,6 +121,13 @@ namespace GoogleMobileAds.Editor
             get { return validateGradleDependencies; }
 
             set { validateGradleDependencies = value; }
+        }
+
+        public string UserLocale
+        {
+            get { return userLocale; }
+
+            set { userLocale = value; }
         }
     }
 }

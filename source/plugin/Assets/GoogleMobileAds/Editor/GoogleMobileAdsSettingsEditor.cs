@@ -7,7 +7,6 @@ namespace GoogleMobileAds.Editor
     [CustomEditor(typeof(GoogleMobileAdsSettings))]
     public class GoogleMobileAdsSettingsEditor : UnityEditor.Editor
     {
-
         SerializedProperty _appIdAndroid;
         SerializedProperty _appIdiOS;
         SerializedProperty _delayAppMeasurement;
@@ -16,7 +15,6 @@ namespace GoogleMobileAds.Editor
         SerializedProperty _optimizeAdLoading;
         SerializedProperty _userTrackingUsageDescription;
         SerializedProperty _validateGradleDependencies;
-
 
         [MenuItem("Assets/Google Mobile Ads/Settings...")]
         public static void OpenInspector()
@@ -34,9 +32,9 @@ namespace GoogleMobileAds.Editor
             _optimizeInitialization = serializedObject.FindProperty("optimizeInitialization");
             _optimizeAdLoading = serializedObject.FindProperty("optimizeAdLoading");
             _userTrackingUsageDescription =
-                    serializedObject.FindProperty("userTrackingUsageDescription");
+                serializedObject.FindProperty("userTrackingUsageDescription");
             _validateGradleDependencies =
-                    serializedObject.FindProperty("validateGradleDependencies");
+                serializedObject.FindProperty("validateGradleDependencies");
         }
 
         public override void OnInspectorGUI()
@@ -46,13 +44,15 @@ namespace GoogleMobileAds.Editor
 
             var settings = (GoogleMobileAdsSettings)target;
 
-            if(settings == null)
+            if (settings == null)
             {
-              UnityEngine.Debug.LogError("GoogleMobileAdsSettings is null.");
-              return;
+                UnityEngine.Debug.LogError("GoogleMobileAdsSettings is null.");
+                return;
             }
 
-            EditorGUILayout.LabelField("Google Mobile Ads App ID", EditorStyles.boldLabel);
+            EditorLocalization localization = new();
+
+            EditorGUILayout.LabelField(localization.ForKey("GMA_APP_ID_LABEL"), EditorStyles.boldLabel);
             EditorGUI.indentLevel++;
 
             EditorGUILayout.PropertyField(_appIdAndroid, new GUIContent("Android"));
@@ -60,87 +60,85 @@ namespace GoogleMobileAds.Editor
             EditorGUILayout.PropertyField(_appIdiOS, new GUIContent("iOS"));
 
             EditorGUILayout.HelpBox(
-                    "Google Mobile Ads App ID will look similar to this sample ID: ca-app-pub-3940256099942544~3347511713",
+                    localization.ForKey("GMA_APP_ID_HELPBOX"),
                     MessageType.Info);
 
             EditorGUI.indentLevel--;
             EditorGUILayout.Separator();
 
-            EditorGUILayout.LabelField("Android settings", EditorStyles.boldLabel);
+            EditorGUILayout.LabelField(localization.ForKey("ANDROID_SETTINGS_LABEL"), EditorStyles.boldLabel);
             EditorGUI.indentLevel++;
 
             EditorGUI.BeginChangeCheck();
 
             EditorGUILayout.PropertyField(_enableKotlinXCoroutinesPackagingOption,
-                              new GUIContent("Enable kotlinx.coroutines packaging option."));
+                              new GUIContent(localization.ForKey("ENABLE_KOTLINX_COROUTINES_PACKAGING_OPTION_SETTING")));
 
             if (settings.EnableKotlinXCoroutinesPackagingOption)
             {
                 EditorGUILayout.HelpBox(
-                        "Adds instruction to fix a build.gradle build error with message"+
-                        " '2 files found with path 'META-INF/kotlinx_coroutines_core.version'."+
-                        " For more details see https://developers.google.com/admob/unity/gradle",
+                        localization.ForKey("ENABLE_KOTLINX_COROUTINES_PACKAGING_OPTION_HELPBOX"),
                         MessageType.Info);
             }
 
             EditorGUILayout.PropertyField(_validateGradleDependencies,
-                              new GUIContent("Remove property tag from GMA Android SDK"));
+                              new GUIContent(localization.ForKey("VALIDATE_GRADLE_DEPENDENCIES_SETTING")));
 
             if (settings.ValidateGradleDependencies)
             {
                 EditorGUILayout.HelpBox(
-                    "This option ensures the GMA Android SDK is compatible with the version of " +
-                    "Android Gradle Plugin being used. Enabling this option is required for Unity" +
-                    " Projects that use Android Gradle Plugin under version 4.2.2.",
+                    localization.ForKey("VALIDATE_GRADLE_DEPENDENCIES_HELPBOX"),
                     MessageType.Info);
             }
 
             EditorGUILayout.PropertyField(_optimizeInitialization,
-                                          new GUIContent("Optimize initialization"));
-            if (settings.OptimizeInitialization) {
+                                          new GUIContent(localization.ForKey("OPTIMIZE_INITIALIZATION_SETTING")));
+            if (settings.OptimizeInitialization)
+            {
                 EditorGUILayout.HelpBox(
-                        "Initialization will be offloaded to a background thread.",
+                        localization.ForKey("OPTIMIZE_INITIALIZATION_HELPBOX"),
                         MessageType.Info);
             }
 
             EditorGUILayout.PropertyField(_optimizeAdLoading,
-                                          new GUIContent("Optimize ad loading"));
+                                          new GUIContent(localization.ForKey("OPTIMIZE_AD_LOADING_SETTING")));
 
-            if (settings.OptimizeAdLoading) {
+            if (settings.OptimizeAdLoading)
+            {
                 EditorGUILayout.HelpBox(
-                        "Ad loading tasks will be offloaded to a background thread.",
+                        localization.ForKey("OPTIMIZE_AD_LOADING_HELPBOX"),
                         MessageType.Info);
             }
 
             EditorGUI.indentLevel--;
             EditorGUILayout.Separator();
 
-            EditorGUILayout.LabelField("AdMob-specific settings", EditorStyles.boldLabel);
+            EditorGUILayout.LabelField(localization.ForKey("ADMOB_SPECIFIC_SETTINGS_LABEL"), EditorStyles.boldLabel);
             EditorGUI.indentLevel++;
 
             EditorGUI.BeginChangeCheck();
 
             EditorGUILayout.PropertyField(_delayAppMeasurement,
-                                          new GUIContent("Delay app measurement"));
+                                          new GUIContent(localization.ForKey("DELAY_APP_MEASUREMENT_SETTING")));
 
-            if (settings.DelayAppMeasurementInit) {
+            if (settings.DelayAppMeasurementInit)
+            {
                 EditorGUILayout.HelpBox(
-                        "Delays app measurement until you explicitly initialize the Mobile Ads SDK or load an ad.",
+                        localization.ForKey("DELAY_APP_MEASUREMENT_INIT_HELPBOX"),
                         MessageType.Info);
             }
 
             EditorGUI.indentLevel--;
             EditorGUILayout.Separator();
 
-            EditorGUILayout.LabelField("UMP-specific settings", EditorStyles.boldLabel);
+            EditorGUILayout.LabelField(localization.ForKey("UMP_SPECIFIC_SETTINGS_LABEL"), EditorStyles.boldLabel);
             EditorGUI.indentLevel++;
 
             EditorGUILayout.PropertyField(_userTrackingUsageDescription,
-                                          new GUIContent("User Tracking Usage Description"));
+                                          new GUIContent(localization.ForKey("USER_TRACKING_USAGE_DESCRIPTION_SETTING")));
 
             EditorGUILayout.HelpBox(
-                    "A message that informs the user why an iOS app is requesting permission to " +
-                    "use data for tracking the user or the device.", MessageType.Info);
+                    localization.ForKey("USER_TRACKING_USAGE_DESCRIPTION_HELPBOX"), MessageType.Info);
 
             EditorGUI.indentLevel--;
             EditorGUILayout.Separator();
