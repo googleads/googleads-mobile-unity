@@ -66,6 +66,12 @@ namespace GoogleMobileAds.Android
         public const string ServerSideVerificationOptionsBuilderClassName =
                 "com.google.android.gms.ads.rewarded.ServerSideVerificationOptions$Builder";
 
+        public const string NativeAdOptionsBuilderClassName =
+            "com.google.android.gms.ads.nativead.NativeAdOptions$Builder";
+
+        public const string VideoOptionsBuilderClassName =
+            "com.google.android.gms.ads.VideoOptions$Builder";
+
         #endregion
 
         #region Google Mobile Ads Unity Plugin class names
@@ -141,7 +147,23 @@ namespace GoogleMobileAds.Android
         public const string UnityApplicationPreferencesClassName =
                 "com.google.unity.ads.UnityApplicationPreferences";
 
-        public const string PreferenceManagerClassName = "android.preference.PreferenceManager";
+        public const string UnityNativeTemplateAdClassName =
+            "com.google.unity.ads.nativead.UnityNativeTemplateAd";
+
+        public const string UnityNativeTemplateAdCallbackClassName =
+            "com.google.unity.ads.nativead.UnityNativeTemplateAdCallback";
+
+        public const string UnityNativeTemplateFontStyleClassName =
+            "com.google.unity.ads.nativead.UnityNativeTemplateFontStyle";
+
+        public const string UnityNativeTemplateStyleClassName =
+            "com.google.unity.ads.nativead.UnityNativeTemplateStyle";
+
+        public const string UnityNativeTemplateTextStyleClassName =
+            "com.google.unity.ads.nativead.UnityNativeTemplateTextStyle";
+
+        public const string UnityNativeTemplateTypeClassName =
+            "com.google.unity.ads.nativead.UnityNativeTemplateType";
 
         #endregion
 
@@ -156,6 +178,7 @@ namespace GoogleMobileAds.Android
         public const string BundleClassName = "android.os.Bundle";
         public const string DateClassName = "java.util.Date";
         public const string DisplayMetricsClassName = "android.util.DisplayMetrics";
+        public const string PreferenceManagerClassName = "android.preference.PreferenceManager";
 
         #endregion
 
