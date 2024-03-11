@@ -423,6 +423,36 @@ namespace GoogleMobileAds.Android
 
             return serverSideVerificationOptionsBuilder.Call<AndroidJavaObject>("build");
         }
+
+        public static AndroidJavaObject GetNativeAdOptionsJavaObject(
+            NativeAdOptions nativeAdOptions)
+        {
+            AndroidJavaObject nativeAdOptionsBuilder =
+                new AndroidJavaObject(NativeAdOptionsBuilderClassName);
+            nativeAdOptionsBuilder.Call<AndroidJavaObject>("setAdChoicesPlacement",
+                                                        (int)nativeAdOptions.AdChoicesPlacement);
+            nativeAdOptionsBuilder.Call<AndroidJavaObject>("setMediaAspectRatio",
+                                                        (int)nativeAdOptions.MediaAspectRatio);
+
+            AndroidJavaObject videoOptions =
+                Utils.GetVideoOptionsJavaObject(nativeAdOptions.VideoConfiguration);
+            nativeAdOptionsBuilder.Call<AndroidJavaObject>("setVideoOptions", videoOptions);
+            return nativeAdOptionsBuilder.Call<AndroidJavaObject>("build");
+        }
+
+        public static AndroidJavaObject GetVideoOptionsJavaObject(VideoOptions videoOptions)
+        {
+            AndroidJavaObject videoOptionsBuilder =
+                new AndroidJavaObject(VideoOptionsBuilderClassName);
+            videoOptionsBuilder.Call<AndroidJavaObject>("setClickToExpandRequested",
+                                                      (bool)videoOptions.ClickToExpandRequested);
+            videoOptionsBuilder.Call<AndroidJavaObject>("setCustomControlsRequested",
+                                                      (bool)videoOptions.CustomControlsRequested);
+            videoOptionsBuilder.Call<AndroidJavaObject>("setStartMuted",
+                                                      (bool)videoOptions.StartMuted);
+            return videoOptionsBuilder.Call<AndroidJavaObject>("build");
+        }
+
         #endregion
     }
 }
