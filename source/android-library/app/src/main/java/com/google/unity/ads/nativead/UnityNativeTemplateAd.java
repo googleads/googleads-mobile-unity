@@ -206,6 +206,147 @@ public class UnityNativeTemplateAd {
         });
   }
 
+  /**
+   * Renders the Native Template position at the x,y coordinates using default sizing.
+   *
+   * @param templateStyle Template Style.
+   * @param positionX Position of template ad on the x axis.
+   * @param positionY Position of template ad on the y axis.
+   */
+  public void renderDefaultSizeAtPosition(
+      final UnityNativeTemplateStyle templateStyle, final int positionX, final int positionY) {
+    removeTemplateView();
+
+    mPositionCode = PluginUtils.POSITION_CUSTOM;
+    mHorizontalOffset = positionX;
+    mVerticalOffset = positionY;
+    mAdSize = null;
+
+    activity.runOnUiThread(
+        new Runnable() {
+          @Override
+          public void run() {
+            templateView = templateStyle.asTemplateView(activity);
+            templateView.setNativeAd(nativeAd);
+
+            FrameLayout layout = new FrameLayout(activity);
+            layout.addView(templateView, getLayoutParams());
+            activity.addContentView(
+                layout,
+                new FrameLayout.LayoutParams(
+                    FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.WRAP_CONTENT));
+            setLayoutChangeListener();
+          }
+        });
+  }
+
+  /**
+   * Renders the Native Template position at the positionCode using default sizing.
+   *
+   * @param templateStyle Template Style.
+   * @param positionCode A code indicating where to place the template ad.
+   */
+  public void renderDefaultSizeAtPositionCode(
+      final UnityNativeTemplateStyle templateStyle, final int positionCode) {
+    removeTemplateView();
+
+    mPositionCode = positionCode;
+    mAdSize = null;
+
+    activity.runOnUiThread(
+        new Runnable() {
+          @Override
+          public void run() {
+            templateView = templateStyle.asTemplateView(activity);
+            templateView.setNativeAd(nativeAd);
+
+            FrameLayout layout = new FrameLayout(activity);
+            layout.addView(templateView, getLayoutParams());
+            activity.addContentView(
+                layout,
+                new FrameLayout.LayoutParams(
+                    FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.WRAP_CONTENT));
+            setLayoutChangeListener();
+          }
+        });
+  }
+
+  /**
+   * Renders the Native Template position with the provided adsize at the x,y coordinates.
+   *
+   * @param templateStyle Template Style.
+   * @param adSize AdSize of the template to be displayed.
+   * @param positionX Position of template ad on the x axis.
+   * @param positionY Position of template ad on the y axis.
+   */
+  public void renderCustomSizeAtPosition(
+      final UnityNativeTemplateStyle templateStyle,
+      final AdSize adSize,
+      final int positionX,
+      final int positionY) {
+    removeTemplateView();
+
+    mPositionCode = PluginUtils.POSITION_CUSTOM;
+    mHorizontalOffset = positionX;
+    mVerticalOffset = positionY;
+    mAdSize = adSize;
+
+    activity.runOnUiThread(
+        new Runnable() {
+          @Override
+          public void run() {
+            templateView = templateStyle.asTemplateView(activity);
+            templateView.setNativeAd(nativeAd);
+
+            FrameLayout layout = new FrameLayout(activity);
+            FrameLayout.LayoutParams layoutParams = getLayoutParams();
+            layoutParams.height = adSize.getHeight();
+            layoutParams.width = adSize.getWidth();
+            layout.addView(templateView, layoutParams);
+            activity.addContentView(
+                layout,
+                new FrameLayout.LayoutParams(
+                    FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.WRAP_CONTENT));
+            setLayoutChangeListener();
+          }
+        });
+  }
+
+  /**
+   * Renders the Native Template ad with the provided adsize at the positionCode.
+   *
+   * @param templateStyle Template Style.
+   * @param adSize AdSize of the template to be displayed.
+   * @param positionCode A code indicating where to place the template ad.
+   */
+  public void renderCustomSizeAtPositionCode(
+      final UnityNativeTemplateStyle templateStyle, final AdSize adSize, final int positionCode) {
+    removeTemplateView();
+
+    mPositionCode = positionCode;
+    mAdSize = adSize;
+
+    activity.runOnUiThread(
+        new Runnable() {
+          @Override
+          public void run() {
+            templateView = templateStyle.asTemplateView(activity);
+            templateView.setNativeAd(nativeAd);
+
+            FrameLayout layout = new FrameLayout(activity);
+            FrameLayout.LayoutParams layoutParams = getLayoutParams();
+            layoutParams.height = adSize.getHeight();
+            layoutParams.width = adSize.getWidth();
+            layout.addView(templateView, layoutParams);
+            activity.addContentView(
+                layout,
+                new FrameLayout.LayoutParams(
+                    FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.WRAP_CONTENT));
+            setLayoutChangeListener();
+          }
+        });
+  }
+
   /** Returns the request response info. */
   public ResponseInfo getResponseInfo() {
     FutureTask<ResponseInfo> task =
@@ -281,10 +422,16 @@ public class UnityNativeTemplateAd {
         .getDecorView()
         .getRootView()
         .removeOnLayoutChangeListener(mLayoutChangeListener);
+
+    mLayoutChangeListener = null;
   }
 
   /** Sets a listener to update the position of the Native Overlay in case of layout changes */
   protected void setLayoutChangeListener() {
+    if (mLayoutChangeListener != null) {
+      return;
+    }
+
     mLayoutChangeListener =
         new View.OnLayoutChangeListener() {
           @Override
@@ -334,6 +481,20 @@ public class UnityNativeTemplateAd {
             templateView.setLayoutParams(layoutParams);
           }
         });
+  }
+
+  /** Removes the currently shown Native Overlay View. */
+  private void removeTemplateView() {
+    if (templateView != null) {
+      activity.runOnUiThread(
+          new Runnable() {
+            @Override
+            public void run() {
+              ViewGroup vg = (ViewGroup) (templateView.getParent());
+              vg.removeView(templateView);
+            }
+          });
+    }
   }
 
   /**
