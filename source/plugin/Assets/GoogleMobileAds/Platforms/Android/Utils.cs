@@ -435,7 +435,7 @@ namespace GoogleMobileAds.Android
                                                         (int)nativeAdOptions.MediaAspectRatio);
 
             AndroidJavaObject videoOptions =
-                Utils.GetVideoOptionsJavaObject(nativeAdOptions.VideoConfiguration);
+                Utils.GetVideoOptionsJavaObject(nativeAdOptions.VideoOptions);
             nativeAdOptionsBuilder.Call<AndroidJavaObject>("setVideoOptions", videoOptions);
             return nativeAdOptionsBuilder.Call<AndroidJavaObject>("build");
         }
