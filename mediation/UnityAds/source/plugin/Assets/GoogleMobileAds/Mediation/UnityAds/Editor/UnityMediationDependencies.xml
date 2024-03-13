@@ -17,7 +17,7 @@
 <dependencies>
   <androidPackages>
 
-    <androidPackage spec="com.google.ads.mediation:unity:4.9.2.0">
+    <androidPackage spec="com.google.ads.mediation:unity:4.9.3.0">
       <repositories>
         <repository>https://repo.maven.apache.org/maven2/</repository>
         <repository>https://dl.google.com/dl/android/maven2/</repository>
@@ -35,6 +35,6 @@
   </androidPackages>
 
   <iosPods>
-    <iosPod name="GoogleMobileAdsMediationUnity" version="4.9.2.0"/>
+    <iosPod name="GoogleMobileAdsMediationUnity" version="4.9.3.0"/>
   </iosPods>
 </dependencies>
