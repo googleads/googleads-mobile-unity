@@ -16,7 +16,7 @@
 
 <dependencies>
   <androidPackages>
-    <androidPackage spec="com.google.ads.mediation:fyber:8.2.5.0">
+    <androidPackage spec="com.google.ads.mediation:fyber:8.2.6.0">
       <repositories>
         <repository>https://repo.maven.apache.org/maven2/</repository>
         <repository>https://dl.google.com/dl/android/maven2/</repository>
@@ -25,6 +25,6 @@
   </androidPackages>
 
   <iosPods>
-    <iosPod name="GoogleMobileAdsMediationFyber" version="8.2.6.0"/>
+    <iosPod name="GoogleMobileAdsMediationFyber" version="8.2.6.1"/>
   </iosPods>
 </dependencies>
