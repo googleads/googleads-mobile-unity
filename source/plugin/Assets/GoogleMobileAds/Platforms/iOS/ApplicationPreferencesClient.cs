@@ -24,41 +24,41 @@ namespace GoogleMobileAds.iOS
     public class ApplicationPreferencesClient : IApplicationPreferencesClient
     {
         /// <summary>
-        /// Set an int value in the iOS user’s defaults database (NSUserDefaults).
+        /// Set an int value in the iOS Core Foundation preferences.
         /// <param name="key">The key with which to associate the value.</param>
         /// <param name="value">The value that needs to be associated to the key.</param>
         /// </summary>
         public void SetInt(string key, int value)
         {
-            Externs.GADUSetUserDefaultsInteger(key, value);
+            Externs.GADUSetIntegerPreference(key, value);
         }
 
         /// <summary>
-        /// Set a string value in the iOS user’s defaults database (NSUserDefaults).
+        /// Set a string value in the iOS Core Foundation preferences.
         /// <param name="key">The key with which to associate the value.</param>
         /// <param name="value">The value that needs to be associated to the key.</param>
         /// </summary>
         public void SetString(string key, string value)
         {
-            Externs.GADUSetUserDefaultsString(key, value);
+            Externs.GADUSetStringPreference(key, value);
         }
 
         /// <summary>
-        /// Read an int value from the iOS user’s defaults database (NSUserDefaults).
+        /// Read an int value from the iOS Core Foundation preferences.
         /// <param name="key">The key with which to retrieve the value.</param>
         /// </summary>
         public int GetInt(string key)
         {
-            return Externs.GADUGetUserDefaultsInteger(key);
+            return Externs.GADUGetIntegerPreference(key);
         }
 
         /// <summary>
-        /// Read a string value from the iOS user’s defaults database (NSUserDefaults).
+        /// Read a string value from the iOS Core Foundation preferences.
         /// <param name="key">The key with which to retrieve the value.</param>
         /// </summary>
         public string GetString(string key)
         {
-            return Externs.GADUGetUserDefaultsString(key);
+            return Externs.GADUGetStringPreference(key);
         }
     }
 }

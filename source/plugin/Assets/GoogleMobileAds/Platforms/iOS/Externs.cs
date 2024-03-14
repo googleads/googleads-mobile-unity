@@ -64,16 +64,16 @@ namespace GoogleMobileAds.iOS
         internal static extern int GADUDeviceSafeWidth();
 
         [DllImport("__Internal")]
-        internal static extern void GADUSetUserDefaultsInteger(string key, int value);
+        internal static extern void GADUSetIntegerPreference(string key, int value);
 
         [DllImport("__Internal")]
-        internal static extern void GADUSetUserDefaultsString(string key, string value);
+        internal static extern void GADUSetStringPreference(string key, string value);
 
         [DllImport("__Internal")]
-        internal static extern int GADUGetUserDefaultsInteger(string key);
+        internal static extern int GADUGetIntegerPreference(string key);
 
         [DllImport("__Internal")]
-        internal static extern string GADUGetUserDefaultsString(string key);
+        internal static extern string GADUGetStringPreference(string key);
 
         [DllImport("__Internal")]
         internal static extern IntPtr GADUCreateRequest();

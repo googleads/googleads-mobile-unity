@@ -135,23 +135,49 @@ void GADUSetiOSAppPauseOnBackground(BOOL pause) { [GADUPluginUtil setPauseOnBack
 
 float GADUDeviceScale() { return UIScreen.mainScreen.scale; }
 
-void GADUSetUserDefaultsInteger(const char *key, NSInteger value) {
-  [NSUserDefaults.standardUserDefaults setInteger:value forKey:GADUStringFromUTF8String(key)];
+void GADUSetIntegerPreference(const char *key, NSInteger value) {
+  CFStringRef cfKey = (__bridge CFStringRef)GADUStringFromUTF8String(key);
+  CFNumberRef cfValue = CFNumberCreate(kCFAllocatorDefault, kCFNumberNSIntegerType, &value);
+  CFPreferencesSetAppValue(cfKey, cfValue, kCFPreferencesCurrentApplication);
+  CFPreferencesAppSynchronize(kCFPreferencesCurrentApplication);
 }
 
-void GADUSetUserDefaultsString(const char *key, const char *value) {
-  [NSUserDefaults.standardUserDefaults setObject:GADUStringFromUTF8String(value)
-                                          forKey:GADUStringFromUTF8String(key)];
+void GADUSetStringPreference(const char *key, const char *value) {
+  CFStringRef cfKey = (__bridge CFStringRef)GADUStringFromUTF8String(key);
+  CFStringRef cfValue = (__bridge CFStringRef)GADUStringFromUTF8String(value);
+  CFPreferencesSetAppValue(cfKey, cfValue, kCFPreferencesCurrentApplication);
+  CFPreferencesAppSynchronize(kCFPreferencesCurrentApplication);
 }
 
-int GADUGetUserDefaultsInteger(const char *key) {
-  return (int)[NSUserDefaults.standardUserDefaults integerForKey:GADUStringFromUTF8String(key)];
+int GADUGetIntegerPreference(const char *key) {
+  CFStringRef cfKey = (__bridge CFStringRef)GADUStringFromUTF8String(key);
+  Boolean keyExists;
+  CFIndex retrievedValue =
+      CFPreferencesGetAppIntegerValue(cfKey, kCFPreferencesCurrentApplication, &keyExists);
+  if (!keyExists) {
+    NSLog(@"Preference with key %s not found or has an invalid format (not int).", key);
+  }
+  return (int)retrievedValue;
 }
 
-const char *GADUGetUserDefaultsString(const char *key) {
-  NSString *value = [NSUserDefaults.standardUserDefaults
-                        stringForKey:GADUStringFromUTF8String(key)];
-  return cStringCopy(value.UTF8String);
+const char *GADUGetStringPreference(const char *key) {
+  CFStringRef cfKey = (__bridge CFStringRef)GADUStringFromUTF8String(key);
+  CFPropertyListRef retrievedValue =
+      CFPreferencesCopyAppValue(cfKey, kCFPreferencesCurrentApplication);
+  if (retrievedValue != NULL) {
+    CFTypeID typeID = CFGetTypeID(retrievedValue);
+    NSString *stringPreference;
+    if (typeID == CFNumberGetTypeID()) {
+        int value;
+        CFNumberGetValue(retrievedValue, kCFNumberIntType, &value);
+        stringPreference = @(value).stringValue;
+    } else if (typeID == CFStringGetTypeID()) {
+        stringPreference = (__bridge NSString *)retrievedValue;
+    }
+    CFRelease(retrievedValue);
+    return cStringCopy(stringPreference.UTF8String);
+  }
+  return NULL;
 }
 
 /// Returns the safe width of the device.
