@@ -80,26 +80,39 @@ namespace GoogleMobileAds.Android
             this.nativeOverlayAd.Call("setPosition", x, y);
         }
 
-        // Renders the Native overlay ad on the screen using the provided style.
+        // Renders the Native overlay ad on the screen using the provided style, size and
+        // AdPosition.
         public void Render(NativeTemplateStyle templateViewStyle, AdSize adSize,
                          AdPosition adPosition)
         {
-            //TODO(@vkini):Add Render implementation.
+            this.nativeOverlayAd.Call("renderCustomSizeAtPositionCode",
+                                      GetNativeTemplateStyleJavaObject(templateViewStyle),
+                                      Utils.GetAdSizeJavaObject(adSize), (int)adPosition);
         }
 
+        // Renders the Native overlay ad on the screen using the provided style, size and
+        // coordinates.
         public void Render(NativeTemplateStyle templateViewStyle, AdSize adSize, int x, int y)
         {
-            //TODO(@vkini):Add Render implementation.
+            this.nativeOverlayAd.Call("renderCustomSizeAtPosition",
+                                      GetNativeTemplateStyleJavaObject(templateViewStyle),
+                                      Utils.GetAdSizeJavaObject(adSize), x, y);
         }
 
+        // Renders the Native overlay ad on the screen using default size at preset position.
         public void Render(NativeTemplateStyle templateViewStyle, AdPosition adPosition)
         {
-            //TODO(@vkini):Add Render implementation.
+            this.nativeOverlayAd.Call("renderDefaultSizeAtPositionCode",
+                                      GetNativeTemplateStyleJavaObject(templateViewStyle),
+                                      (int)adPosition);
         }
 
+        // Renders the Native overlay ad on the screen using default size at (x,y) coordinates.
         public void Render(NativeTemplateStyle templateViewStyle, int x, int y)
         {
-            //TODO(@vkini):Add Render implementation.
+            this.nativeOverlayAd.Call("renderDefaultSizeAtPosition",
+                                      GetNativeTemplateStyleJavaObject(templateViewStyle), x,
+                                      y);
         }
 
         // Destroys the native ad.
@@ -195,6 +208,104 @@ namespace GoogleMobileAds.Android
                 };
                 this.OnPaidEvent(adValue);
             }
+        }
+#endregion
+
+#region Native Template Styling Utilities
+
+        private AndroidJavaObject GetNativeTemplateStyleJavaObject(NativeTemplateStyle tmplStyle)
+        {
+            AndroidJavaClass nativeTemplateTypeClass =
+                new AndroidJavaClass(Utils.UnityNativeTemplateTypeClassName);
+            AndroidJavaObject nativeTemplateType = null;
+            if (tmplStyle.TemplateId == "small")
+            {
+                nativeTemplateType =
+                    nativeTemplateTypeClass.CallStatic<AndroidJavaObject>("fromIntValue", 0);
+            }
+            else
+            {
+                nativeTemplateType =
+                    nativeTemplateTypeClass.CallStatic<AndroidJavaObject>("fromIntValue", 1);
+            }
+
+            AndroidJavaObject mainBgColor = null;
+            if (!tmplStyle.MainBackgroundColor.Equals(Color.clear))
+            {
+                AndroidJavaClass colorClass = new AndroidJavaClass(Utils.ColorClassName);
+                int color = colorClass.CallStatic<int>(
+                  "argb", (int)(255 * tmplStyle.MainBackgroundColor.a),
+                  (int)(255 * tmplStyle.MainBackgroundColor.r),
+                  (int)(255 * tmplStyle.MainBackgroundColor.g),
+                  (int)(255 * tmplStyle.MainBackgroundColor.b));
+                mainBgColor = new AndroidJavaObject(Utils.ColorDrawableClassName, color);
+            }
+
+            AndroidJavaObject primaryTextStyle = null;
+            if (tmplStyle.PrimaryText != null)
+            {
+                primaryTextStyle = GetNativeTemplateTextStyleJavaObject(tmplStyle.PrimaryText);
+            }
+
+            AndroidJavaObject secondaryTextStyle = null;
+            if (tmplStyle.SecondaryText != null)
+            {
+                secondaryTextStyle = GetNativeTemplateTextStyleJavaObject(tmplStyle.SecondaryText);
+            }
+
+            AndroidJavaObject tertiaryTextStyle = null;
+            if (tmplStyle.TertiaryText != null)
+            {
+                tertiaryTextStyle = GetNativeTemplateTextStyleJavaObject(tmplStyle.TertiaryText);
+            }
+
+            AndroidJavaObject c2aTextStyle = null;
+            if (tmplStyle.CallToActionText != null)
+            {
+                c2aTextStyle = GetNativeTemplateTextStyleJavaObject(tmplStyle.CallToActionText);
+            }
+
+            AndroidJavaObject nativeAdTemplateStyle = new AndroidJavaObject(
+                Utils.UnityNativeTemplateStyleClassName, nativeTemplateType, mainBgColor,
+                c2aTextStyle, primaryTextStyle, secondaryTextStyle, tertiaryTextStyle);
+
+            return nativeAdTemplateStyle;
+        }
+
+        private AndroidJavaObject GetNativeTemplateTextStyleJavaObject(NativeTemplateTextStyle text)
+        {
+            AndroidJavaClass colorClass = new AndroidJavaClass(Utils.ColorClassName);
+            AndroidJavaObject textColorDrawable = null;
+            AndroidJavaObject bgColorDrawable = null;
+
+            if (!text.TextColor.Equals(Color.clear))
+            {
+                int color = colorClass.CallStatic<int>(
+                    "argb", (int)(255 * text.TextColor.a), (int)(255 * text.TextColor.r),
+                    (int)(255 * text.TextColor.g), (int)(255 * text.TextColor.b));
+                textColorDrawable = new AndroidJavaObject(Utils.ColorDrawableClassName, color);
+            }
+
+            if (!text.BackgroundColor.Equals(Color.clear))
+            {
+                int bgColor = colorClass.CallStatic<int>(
+                  "argb", (int)(255 * text.BackgroundColor.a), (int)(255 * text.BackgroundColor.r),
+                  (int)(255 * text.BackgroundColor.g), (int)(255 * text.BackgroundColor.b));
+                bgColorDrawable = new AndroidJavaObject(Utils.ColorDrawableClassName, bgColor);
+            }
+
+            AndroidJavaClass fontStyleClass =
+                new AndroidJavaClass(Utils.UnityNativeTemplateFontStyleClassName);
+            AndroidJavaObject fontStyle = fontStyleClass.CallStatic<AndroidJavaObject>(
+                "fromIntValue", (int)text.Style);
+
+            AndroidJavaObject fontSize =
+                new AndroidJavaObject(Utils.DoubleClassName, (double)text.FontSize);
+
+            AndroidJavaObject templateTextStyle =
+                new AndroidJavaObject(Utils.UnityNativeTemplateTextStyleClassName,
+                                      textColorDrawable, bgColorDrawable, fontStyle, fontSize);
+            return templateTextStyle;
         }
 #endregion
     }

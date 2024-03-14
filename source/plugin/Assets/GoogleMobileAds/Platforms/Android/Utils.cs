@@ -175,10 +175,13 @@ namespace GoogleMobileAds.Android
 
         #region Android SDK class names
 
+        public const string ColorClassName = "android.graphics.Color";
+        public const string ColorDrawableClassName = "android.graphics.drawable.ColorDrawable";
         public const string BundleClassName = "android.os.Bundle";
-        public const string DateClassName = "java.util.Date";
-        public const string DisplayMetricsClassName = "android.util.DisplayMetrics";
         public const string PreferenceManagerClassName = "android.preference.PreferenceManager";
+        public const string DisplayMetricsClassName = "android.util.DisplayMetrics";
+        public const string DoubleClassName = "java.lang.Double";
+        public const string DateClassName = "java.util.Date";
 
         #endregion
 
