@@ -102,19 +102,19 @@ namespace GoogleMobileAds.iOS
             Externs.GADURelease(nativeOptionsPtr);
         }
 
-        // Hides the banner view from the screen.
+        // Hides the native overlay ad from the screen.
         public void Hide()
         {
             Externs.GADUHideNativeTemplateAd(this.NativePtr);
         }
 
-        // Hides the banner view from the screen.
+        // Shows the native overlay ad on the screen.
         public void Show()
         {
             Externs.GADUDisplayNativeTemplateAd(this.NativePtr);
         }
 
-        // Shows the rewarded ad on the screen.
+        // Renders the native overlay ad on the screen given ad size and position.
         public void Render(NativeTemplateStyle templateViewStyle, AdSize adSize,
                            AdPosition adPosition)
         {
@@ -124,6 +124,7 @@ namespace GoogleMobileAds.iOS
             Externs.GADUSetNativeTemplateAdPosition(this.NativePtr, (int)adPosition);
         }
 
+        // Renders the native overlay ad on the screen given ad size and custom position.
         public void Render(NativeTemplateStyle templateViewStyle, AdSize adSize, int x, int y)
         {
             IntPtr templateStyles = BuildNativeTemplateStyles(templateViewStyle);
@@ -132,50 +133,56 @@ namespace GoogleMobileAds.iOS
           Externs.GADUSetNativeTemplateAdCustomPosition(this.NativePtr, x, y);
         }
 
-        // Shows the rewarded ad on the screen.
-        public void Render(NativeTemplateStyle templateViewStyle, AdPosition adPosition) {
+        // Renders the native overlay ad on the screen using default sizing and position.
+        public void Render(NativeTemplateStyle templateViewStyle, AdPosition adPosition)
+        {
           IntPtr templateStyles = BuildNativeTemplateStyles(templateViewStyle);
           Externs.GADUShowDefaultNativeTemplateAd(this.NativePtr, templateStyles);
           Externs.GADUSetNativeTemplateAdPosition(this.NativePtr, (int)adPosition);
         }
 
-        public void Render(NativeTemplateStyle templateViewStyle, int x, int y) {
+        // Renders the native overlay ad on the screen using default sizing and custom position.
+        public void Render(NativeTemplateStyle templateViewStyle, int x, int y)
+        {
           IntPtr templateStyles = BuildNativeTemplateStyles(templateViewStyle);
           Externs.GADUShowDefaultNativeTemplateAd(this.NativePtr, templateStyles);
           Externs.GADUSetNativeTemplateAdCustomPosition(this.NativePtr, x, y);
         }
 
-        // Destroys the native ad.
-        public void DestroyNativeAd() {
-          Externs.GADUDestroyNativeTemplateAd(this.NativePtr);
-        }
-
-        // Set the position of the banner view using standard position.
-        public void SetPosition(AdPosition adPosition) {
+        // Set the position of the native overlay ad using standard position.
+        public void SetPosition(AdPosition adPosition)
+        {
           Externs.GADUSetNativeTemplateAdPosition(this.NativePtr, (int)adPosition);
         }
 
-        // Set the position of the banner view using custom position.
-        public void SetPosition(int x, int y) {
+        // Set the position of the native overlay ad using custom position.
+        public void SetPosition(int x, int y)
+        {
           Externs.GADUSetNativeTemplateAdCustomPosition(this.NativePtr, x, y);
         }
 
-        public float GetHeightInPixels() {
+        // Returns the height of the native overlay in pixels
+        public float GetHeightInPixels()
+        {
           return Externs.GADUGetNativeTemplateAdHeightInPixels(this.NativePtr);
         }
 
         // Returns the width of the NativeTemplateView in pixels.
-        public float GetWidthInPixels() {
+        public float GetWidthInPixels()
+        {
           return Externs.GADUGetNativeTemplateAdWidthInPixels(this.NativePtr);
         }
 
-        public IResponseInfoClient GetResponseInfoClient() {
+        // Returns the ad request response info
+        public IResponseInfoClient GetResponseInfoClient()
+        {
           return new ResponseInfoClient(ResponseInfoClientType.AdLoaded, this.NativePtr);
         }
 
         // Destroys the native overlay ad.
         public void DestroyAd()
         {
+            Externs.GADUDestroyNativeTemplateAd(this.NativePtr);
             this.nativePtr = IntPtr.Zero;
         }
 
@@ -328,7 +335,7 @@ namespace GoogleMobileAds.iOS
             {
                 IntPtr c2aTemplateTextStyle =
                     BuildNativeTemplateTextStyle(templateStyle.CallToActionText);
-                templateStyles = Externs.GADUSetNativeTemplateStyleText(templateStyles, 
+                templateStyles = Externs.GADUSetNativeTemplateStyleText(templateStyles,
                                                             "callToAction", c2aTemplateTextStyle);
             }
             return templateStyles;
