@@ -157,7 +157,7 @@
                 app:layout_constraintTop_toTopOf="parent"
                 />
           </LinearLayout>
-          <android.support.v7.widget.AppCompatButton
+          <androidx.appcompat.widget.AppCompatButton
               android:id="@+id/cta"
               android:layout_width="match_parent"
               android:layout_height="@dimen/gnt_no_size"
