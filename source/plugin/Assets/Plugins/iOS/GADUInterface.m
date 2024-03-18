@@ -164,20 +164,18 @@ const char *GADUGetStringPreference(const char *key) {
   CFStringRef cfKey = (__bridge CFStringRef)GADUStringFromUTF8String(key);
   CFPropertyListRef retrievedValue =
       CFPreferencesCopyAppValue(cfKey, kCFPreferencesCurrentApplication);
-  if (retrievedValue != NULL) {
-    CFTypeID typeID = CFGetTypeID(retrievedValue);
-    NSString *stringPreference;
-    if (typeID == CFNumberGetTypeID()) {
-        int value;
-        CFNumberGetValue(retrievedValue, kCFNumberIntType, &value);
-        stringPreference = @(value).stringValue;
-    } else if (typeID == CFStringGetTypeID()) {
-        stringPreference = (__bridge NSString *)retrievedValue;
-    }
-    CFRelease(retrievedValue);
-    return cStringCopy(stringPreference.UTF8String);
+  if (retrievedValue == NULL) {
+    return NULL;
   }
-  return NULL;
+  CFTypeID typeID = CFGetTypeID(retrievedValue);
+  if (typeID != CFStringGetTypeID()) {
+    NSLog(@"Unable to find a string value for key %s.", key);
+    CFRelease(retrievedValue);
+    return NULL;
+  }
+  NSString *stringPreference = (__bridge NSString *)retrievedValue;
+  CFRelease(retrievedValue);
+  return cStringCopy(stringPreference.UTF8String);
 }
 
 /// Returns the safe width of the device.
