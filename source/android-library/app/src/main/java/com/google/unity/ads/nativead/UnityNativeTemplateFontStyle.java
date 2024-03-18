@@ -18,6 +18,7 @@ package com.google.unity.ads.nativead;
 
 import android.graphics.Typeface;
 import android.util.Log;
+import com.google.unity.ads.PluginUtils;
 
 /** Enums to specify the styling of text for Native Templates. */
 public enum UnityNativeTemplateFontStyle {
