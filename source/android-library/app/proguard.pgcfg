@@ -25,3 +25,8 @@
 -keep class com.google.unity.ump.** {
    *;
 }
+
+# Keep Google Mobile Ads Native Ad Unity plugin classes.
+-keep class com.google.unity.ads.nativead.** {
+   *;
+}
