@@ -114,6 +114,8 @@ namespace GoogleMobileAds.Unity
 
         public void SetiOSAppPauseOnBackground(bool pause) {}
 
+        public void DisableSDKCrashReporting() {}
+
         public float GetDeviceScale()
         {
             return 0;
