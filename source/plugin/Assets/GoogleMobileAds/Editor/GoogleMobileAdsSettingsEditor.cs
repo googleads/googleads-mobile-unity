@@ -52,6 +52,7 @@ namespace GoogleMobileAds.Editor
               return;
             }
 
+            EditorGUIUtility.labelWidth = 60.0f;
             EditorGUILayout.LabelField("Google Mobile Ads App ID", EditorStyles.boldLabel);
             EditorGUI.indentLevel++;
 
@@ -66,6 +67,7 @@ namespace GoogleMobileAds.Editor
             EditorGUI.indentLevel--;
             EditorGUILayout.Separator();
 
+            EditorGUIUtility.labelWidth = 325.0f;
             EditorGUILayout.LabelField("Android settings", EditorStyles.boldLabel);
             EditorGUI.indentLevel++;
 
@@ -132,6 +134,7 @@ namespace GoogleMobileAds.Editor
             EditorGUI.indentLevel--;
             EditorGUILayout.Separator();
 
+            EditorGUIUtility.labelWidth = 205.0f;
             EditorGUILayout.LabelField("UMP-specific settings", EditorStyles.boldLabel);
             EditorGUI.indentLevel++;
 
