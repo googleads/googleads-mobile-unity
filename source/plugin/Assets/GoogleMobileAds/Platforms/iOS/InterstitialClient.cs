@@ -115,6 +115,12 @@ namespace GoogleMobileAds.iOS
             Externs.GADUShowInterstitial(this.InterstitialPtr);
         }
 
+        /// Returns the ad unit ID.
+        public string GetAdUnitID()
+        {
+            return Externs.GADUGetInterstitialAdUnitID(this.InterstitialPtr);
+        }
+
         public IResponseInfoClient GetResponseInfoClient()
         {
             return new ResponseInfoClient(ResponseInfoClientType.AdLoaded, this.InterstitialPtr);

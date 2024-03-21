@@ -363,6 +363,12 @@ GADUTypeBannerRef GAMUCreateAnchoredAdaptiveBannerViewWithCustomPosition(
   return (__bridge GADUTypeBannerRef)banner;
 }
 
+// Get the GAMBannerView ad unit ID.
+const char *GAMUGetBannerViewAdUnitID(GADUTypeBannerRef banner) {
+  GAMUBanner *internalBanner = (__bridge GAMUBanner *)banner;
+  return cStringCopy(internalBanner.bannerViewGAM.adUnitID.UTF8String);
+}
+
 /// Set GAMBannerView Valid Ad Sizes
 void GAMUBannerViewSetValidAdSizes(GADUTypeBannerRef banner, const int *validAdSizesLinearArray,
                                    NSInteger validAdSizesLength) {
@@ -635,6 +641,12 @@ void GADURemoveBannerView(GADUTypeBannerRef banner) {
   [internalBanner removeBannerView];
 }
 
+// Get the Banner View ad unit ID.
+const char *GADUGetBannerViewAdUnitID(GADUTypeBannerRef banner) {
+  GADUBanner *internalBanner = (__bridge GADUBanner *)banner;
+  return cStringCopy(internalBanner.bannerView.adUnitID.UTF8String);
+}
+
 float GADUGetBannerViewHeightInPixels(GADUTypeBannerRef banner) {
   GADUBanner *internalBanner = (__bridge GADUBanner *)banner;
   return internalBanner.heightInPixels;
@@ -651,16 +663,34 @@ void GADUShowInterstitial(GADUTypeInterstitialRef interstitial) {
   [internalInterstitial show];
 }
 
+// Get the Interstitial ad unit ID.
+const char *GADUGetInterstitialAdUnitID(GADUTypeInterstitialRef interstitial) {
+  GADUInterstitial *internalInterstitial = (__bridge GADUInterstitial *)interstitial;
+  return cStringCopy(internalInterstitial.interstitialAd.adUnitID.UTF8String);
+}
+
 /// Shows the GAMInterstitial.
 void GAMUShowInterstitial(GAMUTypeInterstitialRef interstitial) {
   GAMUInterstitial *internalInterstitial = (__bridge GAMUInterstitial *)interstitial;
   [internalInterstitial show];
 }
 
+// Get the GAMInterstitial ad unit ID.
+const char *GAMUGetInterstitialAdUnitID(GADUTypeInterstitialRef interstitial) {
+  GAMUInterstitial *internalInterstitial = (__bridge GAMUInterstitial *)interstitial;
+  return cStringCopy(internalInterstitial.interstitialAdGAM.adUnitID.UTF8String);
+}
+
 /// Shows the GADRewardedAd.
 void GADUShowRewardedAd(GADUTypeRewardedAdRef rewardedAd) {
   GADURewardedAd *internalRewardedAd = (__bridge GADURewardedAd *)rewardedAd;
   [internalRewardedAd show];
+}
+
+// Get the RewardedAd ad unit ID.
+const char *GADUGetRewardedAdUnitID(GADUTypeRewardedAdRef rewardedAd) {
+  GADURewardedAd *internalRewardedAd = (__bridge GADURewardedAd *)rewardedAd;
+  return cStringCopy(internalRewardedAd.rewardedAd.adUnitID.UTF8String);
 }
 
 /// Returns the type of the reward.
