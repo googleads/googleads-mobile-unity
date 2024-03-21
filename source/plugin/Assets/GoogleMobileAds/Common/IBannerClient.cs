@@ -53,6 +53,9 @@ namespace GoogleMobileAds.Common
         // Destroys a banner view.
         void DestroyBannerView();
 
+        /// Returns the ad unit ID.
+        string GetAdUnitID();
+
         // Returns the height of the BannerView in pixels.
         float GetHeightInPixels();
 

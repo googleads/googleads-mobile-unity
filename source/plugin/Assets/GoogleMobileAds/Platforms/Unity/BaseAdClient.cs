@@ -53,6 +53,12 @@ namespace GoogleMobileAds.Unity
             return new ResponseInfoClient().GetMediationAdapterClassName();
         }
 
+        /// Returns the ad unit ID.
+        public string GetAdUnitID()
+        {
+            return "ca-app-pub-0123456789012345/0123456789";
+        }
+
         // Returns ad request Response info client.
         public IResponseInfoClient GetResponseInfoClient()
         {

@@ -276,6 +276,9 @@ namespace GoogleMobileAds.iOS
         internal static extern void GADURequestBannerAd(IntPtr bannerView, IntPtr request);
 
         [DllImport("__Internal")]
+        internal static extern string GADUGetBannerViewAdUnitID(IntPtr bannerView);
+
+        [DllImport("__Internal")]
         internal static extern float GADUGetBannerViewHeightInPixels(IntPtr bannerView);
 
         [DllImport("__Internal")]
@@ -369,6 +372,9 @@ namespace GoogleMobileAds.iOS
                 int orientation,
                 int x,
                 int y);
+
+        [DllImport("__Internal")]
+        internal static extern string GAMUGetBannerViewAdUnitID(IntPtr bannerView);
 
         [DllImport("__Internal")]
         internal static extern void GAMUSetBannerCallbacks(

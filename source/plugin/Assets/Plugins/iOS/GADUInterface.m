@@ -363,6 +363,12 @@ GADUTypeBannerRef GAMUCreateAnchoredAdaptiveBannerViewWithCustomPosition(
   return (__bridge GADUTypeBannerRef)banner;
 }
 
+// Get the GAMBannerView ad unit ID.
+const char *GAMUGetBannerViewAdUnitID(GADUTypeBannerRef banner) {
+  GAMUBanner *internalBanner = (__bridge GAMUBanner *)banner;
+  return cStringCopy(internalBanner.bannerViewGAM.adUnitID.UTF8String);
+}
+
 /// Set GAMBannerView Valid Ad Sizes
 void GAMUBannerViewSetValidAdSizes(GADUTypeBannerRef banner, const int *validAdSizesLinearArray,
                                    NSInteger validAdSizesLength) {
@@ -633,6 +639,12 @@ void GADUShowBannerView(GADUTypeBannerRef banner) {
 void GADURemoveBannerView(GADUTypeBannerRef banner) {
   GADUBanner *internalBanner = (__bridge GADUBanner *)banner;
   [internalBanner removeBannerView];
+}
+
+// Get the Banner View ad unit ID.
+const char *GADUGetBannerViewAdUnitID(GADUTypeBannerRef banner) {
+  GADUBanner *internalBanner = (__bridge GADUBanner *)banner;
+  return cStringCopy(internalBanner.bannerView.adUnitID.UTF8String);
 }
 
 float GADUGetBannerViewHeightInPixels(GADUTypeBannerRef banner) {
