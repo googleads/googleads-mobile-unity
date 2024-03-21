@@ -384,6 +384,27 @@ public class Banner {
   }
 
   /**
+   * Get {@link AdView} ad unit ID.
+   *
+   * @return the ad unit ID of the {@link AdView}.
+   */
+  public String getAdUnitId() {
+    FutureTask<String> task = new FutureTask<>(() -> adView.getAdUnitId());
+    unityPlayerActivity.runOnUiThread(task);
+
+    String result = null;
+    try {
+      result = task.get();
+    } catch (InterruptedException | ExecutionException exception) {
+      Log.e(
+          PluginUtils.LOGTAG,
+          String.format(
+              "Unable to get the banner ad unit ID: %s", exception.getLocalizedMessage()));
+    }
+    return result;
+  }
+
+  /**
    * Get {@link AdView} height.
    *
    * @return the height of the {@link AdView}.

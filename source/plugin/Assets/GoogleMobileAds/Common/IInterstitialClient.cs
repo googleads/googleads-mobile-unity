@@ -47,6 +47,9 @@ namespace GoogleMobileAds.Common
         // Shows the interstitial ad on the screen.
         void Show();
 
+        /// Returns the ad unit ID.
+        string GetAdUnitID();
+
         // Returns ad request Response info client.
         IResponseInfoClient GetResponseInfoClient();
 

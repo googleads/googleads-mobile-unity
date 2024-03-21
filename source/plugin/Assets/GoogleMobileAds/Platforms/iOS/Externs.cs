@@ -209,6 +209,9 @@ namespace GoogleMobileAds.iOS
                     adDidRecordClickCallback
         );
 
+        [DllImport("__Internal")]
+        internal static extern string GADUGetAppOpenAdUnitID(IntPtr appOpenAd);
+
         #endregion
 
         #region Banner externs
@@ -274,6 +277,9 @@ namespace GoogleMobileAds.iOS
 
         [DllImport("__Internal")]
         internal static extern void GADURequestBannerAd(IntPtr bannerView, IntPtr request);
+
+        [DllImport("__Internal")]
+        internal static extern string GADUGetBannerViewAdUnitID(IntPtr bannerView);
 
         [DllImport("__Internal")]
         internal static extern float GADUGetBannerViewHeightInPixels(IntPtr bannerView);
@@ -371,6 +377,9 @@ namespace GoogleMobileAds.iOS
                 int y);
 
         [DllImport("__Internal")]
+        internal static extern string GAMUGetBannerViewAdUnitID(IntPtr bannerView);
+
+        [DllImport("__Internal")]
         internal static extern void GAMUSetBannerCallbacks(
             IntPtr bannerView,
             AdManagerBannerClient.GADUAdViewDidReceiveAdCallback adReceivedCallback,
@@ -397,6 +406,9 @@ namespace GoogleMobileAds.iOS
         [DllImport("__Internal")]
         internal static extern IntPtr GADULoadInterstitialAd(IntPtr interstitialAd, string adUnitID,
             IntPtr request);
+
+        [DllImport("__Internal")]
+        internal static extern string GADUGetInterstitialAdUnitID(IntPtr interstitialAd);
 
         [DllImport("__Internal")]
         internal static extern void GADUSetInterstitialCallbacks(
@@ -429,6 +441,9 @@ namespace GoogleMobileAds.iOS
         [DllImport("__Internal")]
         internal static extern IntPtr GAMULoadInterstitialAd(IntPtr interstitialAd, string adUnitID,
             IntPtr request);
+
+        [DllImport("__Internal")]
+        internal static extern string GAMUGetInterstitialAdUnitID(IntPtr interstitialAd);
 
         [DllImport("__Internal")]
         internal static extern void GAMUSetInterstitialCallbacks(
@@ -466,6 +481,9 @@ namespace GoogleMobileAds.iOS
 
         [DllImport("__Internal")]
         internal static extern void GADUShowRewardedAd(IntPtr rewardedAd);
+
+        [DllImport("__Internal")]
+        internal static extern string GADUGetRewardedAdUnitID(IntPtr rewardedAd);
 
         [DllImport("__Internal")]
         internal static extern void GADUSetRewardedAdCallbacks(
@@ -521,6 +539,10 @@ namespace GoogleMobileAds.iOS
 
         [DllImport("__Internal")]
         internal static extern void GADUShowRewardedInterstitialAd(IntPtr rewardedInterstitialAd);
+
+        [DllImport("__Internal")]
+        internal static extern string GADUGetRewardedInterstitialAdUnitID(
+            IntPtr rewardedInterstitialAd);
 
         [DllImport("__Internal")]
         internal static extern void GADUSetRewardedInterstitialAdCallbacks(

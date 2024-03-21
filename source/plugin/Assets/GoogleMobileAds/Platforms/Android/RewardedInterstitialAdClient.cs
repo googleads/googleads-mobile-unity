@@ -85,6 +85,12 @@ namespace GoogleMobileAds.Android
             androidRewardedInterstitialAd.Call("setServerSideVerificationOptions", Utils.GetServerSideVerificationOptionsJavaObject(serverSideVerificationOptions));
         }
 
+        /// Returns the ad unit ID.
+        public string GetAdUnitID()
+        {
+            return this.androidRewardedInterstitialAd.Call<string>("getAdUnitId");
+        }
+
         public IResponseInfoClient GetResponseInfoClient()
         {
             return new ResponseInfoClient(ResponseInfoClientType.AdLoaded, this.androidRewardedInterstitialAd);

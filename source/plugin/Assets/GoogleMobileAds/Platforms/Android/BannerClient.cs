@@ -89,6 +89,12 @@ namespace GoogleMobileAds.Android
             this.bannerView.Call("destroy");
         }
 
+        /// Returns the ad unit ID.
+        public string GetAdUnitID()
+        {
+            return this.bannerView.Call<string>("getAdUnitId");
+        }
+
         // Returns the height of the BannerView in pixels.
         public float GetHeightInPixels()
         {

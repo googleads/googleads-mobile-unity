@@ -175,6 +175,27 @@ public class UnityAppOpenAd {
         });
   }
 
+  /**
+   * Get {@link AppOpenAd} ad unit ID.
+   *
+   * @return the ad unit ID of the {@link AppOpenAd}.
+   */
+  public String getAdUnitId() {
+    FutureTask<String> task = new FutureTask<>(() -> appOpenAd.getAdUnitId());
+    activity.runOnUiThread(task);
+
+    String result = null;
+    try {
+      result = task.get();
+    } catch (InterruptedException | ExecutionException exception) {
+      Log.e(
+          PluginUtils.LOGTAG,
+          String.format(
+              "Unable to get the app open ad unit ID: %s", exception.getLocalizedMessage()));
+    }
+    return result;
+  }
+
   @Nullable
   public ResponseInfo getResponseInfo() {
     if (appOpenAd == null) {

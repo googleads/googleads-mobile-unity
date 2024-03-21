@@ -249,6 +249,27 @@ public class UnityRewardedInterstitialAd {
         });
   }
 
+  /**
+   * Get {@link RewardedInterstitialAd} ad unit ID.
+   *
+   * @return the ad unit ID of the {@link RewardedInterstitialAd}.
+   */
+  public String getAdUnitId() {
+    FutureTask<String> task = new FutureTask<>(() -> rewardedInterstitialAd.getAdUnitId());
+    activity.runOnUiThread(task);
+
+    String result = null;
+    try {
+      result = task.get();
+    } catch (InterruptedException | ExecutionException exception) {
+      Log.e(
+          PluginUtils.LOGTAG,
+          String.format(
+              "Unable to get the app open ad unit ID: %s", exception.getLocalizedMessage()));
+    }
+    return result;
+  }
+
   /** Returns the request response info. */
   @Nullable
   public ResponseInfo getResponseInfo() {

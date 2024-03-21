@@ -75,6 +75,12 @@ namespace GoogleMobileAds.Android
             this.androidInterstitialAd.Call("destroy");
         }
 
+        /// Returns the ad unit ID.
+        public string GetAdUnitID()
+        {
+            return this.androidInterstitialAd.Call<string>("getAdUnitId");
+        }
+
         // Returns ad request response info
         public IResponseInfoClient GetResponseInfoClient()
         {

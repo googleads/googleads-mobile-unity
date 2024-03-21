@@ -66,6 +66,12 @@ namespace GoogleMobileAds.Android
             androidAppOpenAd.Call("show");
         }
 
+        /// Returns the ad unit ID.
+        public string GetAdUnitID()
+        {
+            return this.androidAppOpenAd.Call<string>("getAdUnitId");
+        }
+
         public IResponseInfoClient GetResponseInfoClient()
         {
             return new ResponseInfoClient(ResponseInfoClientType.AdLoaded, this.androidAppOpenAd);

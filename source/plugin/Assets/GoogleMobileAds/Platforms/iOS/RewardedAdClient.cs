@@ -121,6 +121,12 @@ namespace GoogleMobileAds.iOS
             Externs.GADUShowRewardedAd(this.RewardedAdPtr);
         }
 
+        /// Returns the ad unit ID.
+        public string GetAdUnitID()
+        {
+            return Externs.GADUGetRewardedAdUnitID(this.RewardedAdPtr);
+        }
+
         // Sets the server side verification options
         public void SetServerSideVerificationOptions(ServerSideVerificationOptions serverSideVerificationOptions)
         {

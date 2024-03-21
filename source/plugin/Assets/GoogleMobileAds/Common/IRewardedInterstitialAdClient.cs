@@ -51,6 +51,9 @@ namespace GoogleMobileAds.Common
         // Shows the rewarded interstitial ad on the screen.
         void Show();
 
+        /// Returns the ad unit ID.
+        string GetAdUnitID();
+
         // Sets the server side verification options
         void SetServerSideVerificationOptions(ServerSideVerificationOptions serverSideVerificationOptions);
 

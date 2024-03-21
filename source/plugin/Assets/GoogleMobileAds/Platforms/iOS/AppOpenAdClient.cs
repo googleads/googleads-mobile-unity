@@ -119,6 +119,12 @@ namespace GoogleMobileAds.iOS
             Externs.GADUShowAppOpenAd(this.AppOpenAdPtr);
         }
 
+        /// Returns the ad unit ID.
+        public string GetAdUnitID()
+        {
+            return Externs.GADUGetAppOpenAdUnitID(this.AppOpenAdPtr);
+        }
+
         public IResponseInfoClient GetResponseInfoClient()
         {
             return new ResponseInfoClient(ResponseInfoClientType.AdLoaded, this.AppOpenAdPtr);

@@ -193,6 +193,12 @@ namespace GoogleMobileAds.iOS
             this.BannerViewPtr = IntPtr.Zero;
         }
 
+        /// Returns the ad unit ID.
+        public string GetAdUnitID()
+        {
+            return Externs.GADUGetBannerViewAdUnitID(this.BannerViewPtr);
+        }
+
         // Returns the height of the BannerView in pixels.
         public float GetHeightInPixels()
         {
