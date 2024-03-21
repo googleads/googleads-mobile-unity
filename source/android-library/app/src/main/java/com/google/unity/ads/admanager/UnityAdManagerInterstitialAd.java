@@ -17,6 +17,7 @@ package com.google.unity.ads.admanager;
 
 import android.app.Activity;
 import android.util.Log;
+import androidx.annotation.Nullable;
 import com.google.android.gms.ads.ResponseInfo;
 import com.google.android.gms.ads.admanager.AdManagerAdRequest;
 import com.google.android.gms.ads.admanager.AdManagerInterstitialAd;
@@ -59,7 +60,17 @@ public class UnityAdManagerInterstitialAd {
                 activity, adUnitId, request, adManagerInterstitialAdCallback));
   }
 
+  /** Returns the {@link AdManagerInterstitialAd} ad unit ID. */
+  @Nullable
+  public String getAdUnitId() {
+    if (adManagerInterstitialAd == null) {
+      return null;
+    }
+    return adManagerInterstitialAd.getAdUnitId();
+  }
+
   /** Returns the request response info. */
+  @Nullable
   public ResponseInfo getResponseInfo() {
     FutureTask<ResponseInfo> task =
         new FutureTask<>(() -> adManagerInterstitialAd.getResponseInfo());

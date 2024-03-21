@@ -249,6 +249,15 @@ public class UnityRewardedInterstitialAd {
         });
   }
 
+  /** Returns the {@link RewardedInterstitialAd} ad unit ID. */
+  @Nullable
+  public String getAdUnitId() {
+    if (rewardedInterstitialAd == null) {
+      return null;
+    }
+    return rewardedInterstitialAd.getAdUnitId();
+  }
+
   /** Returns the request response info. */
   @Nullable
   public ResponseInfo getResponseInfo() {

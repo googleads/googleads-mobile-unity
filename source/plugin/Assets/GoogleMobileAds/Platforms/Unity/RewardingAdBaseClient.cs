@@ -100,6 +100,7 @@ namespace GoogleMobileAds.Unity
         // Load a rewarding ad.
         public void LoadAd(string adUnitId, AdRequest request)
         {
+            base._adUnitId = adUnitId;
             if (Screen.width > Screen.height) //Landscape
             {
                 LoadAndSetPrefabAd(prefabAds[new AdSize(1024, 768)]);
