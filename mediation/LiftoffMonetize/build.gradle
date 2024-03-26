@@ -31,27 +31,6 @@ project.ext {
     exportPath = file(pluginFileName).absolutePath
 }
 
-// Build AAR library from android plugin source files using existing Gradle build file.
-task buildAndroidPluginAar(type: GradleBuild) {
-    buildFile = 'source/android-library/liftoffmonetize/build.gradle'
-    tasks = ['makeAar']
-}
-
-// Move android plugin AAR library to temporary build directory.
-task copyAndroidLibraryAar(type: Copy) {
-    from('source/android-library/liftoffmonetize/build/libs/liftoffmonetize-unity-android-library.aar')
-    into("${pluginBuildDir}/Assets/GoogleMobileAds/Mediation/LiftoffMonetize/Plugins/Android/")
-}
-
-// Copy Unity mediation extras interface to temporary build directory.
-task copyExtrasInterface(type: Copy) {
-    from("../../source/plugin/Assets/GoogleMobileAds/Api/Mediation/")
-    into("${pluginBuildDir}/Assets/GoogleMobileAdsApi/Mediation/")
-    include('MediationExtras.cs')
-}
-
-copyAndroidLibraryAar.dependsOn(buildAndroidPluginAar)
-
 // Build unity package using through command line interface.
 // Create new unity project with files in temporary build directory and export files to a unity package.
 // Command line usage and arguments documented at http://docs.unity3d.com/Manual/CommandLineArguments.html.
@@ -89,7 +68,7 @@ task clearTempBuildFolder(type: Delete) {
     delete { "${buildPath}" }
 }
 
-exportPackage.dependsOn(createTempBuildFolder, copyAndroidLibraryAar, copyExtrasInterface)
+exportPackage.dependsOn(createTempBuildFolder)
 exportPackage.finalizedBy(clearTempBuildFolder)
 
 /**
