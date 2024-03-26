@@ -26,6 +26,6 @@
   </androidPackages>
 
   <iosPods>
-    <iosPod name="GoogleMobileAdsMediationMaio" version="2.1.1.0"/>
+    <iosPod name="GoogleMobileAdsMediationMaio" version="2.1.3.0"/>
   </iosPods>
 </dependencies>
