@@ -59,6 +59,28 @@ public class UnityAdManagerInterstitialAd {
                 activity, adUnitId, request, adManagerInterstitialAdCallback));
   }
 
+  /**
+   * Get {@link InterstitialAd} ad unit ID.
+   *
+   * @return the ad unit ID of the {@link InterstitialAd}.
+   */
+  public String getAdUnitId() {
+    FutureTask<String> task = new FutureTask<>(() -> adManagerInterstitialAd.getAdUnitId());
+    activity.runOnUiThread(task);
+
+    String result = null;
+    try {
+      result = task.get();
+    } catch (InterruptedException | ExecutionException exception) {
+      Log.e(
+          PluginUtils.LOGTAG,
+          String.format(
+              "Unable to get the ad manager interstitial ad unit ID: %s",
+              exception.getLocalizedMessage()));
+    }
+    return result;
+  }
+
   /** Returns the request response info. */
   public ResponseInfo getResponseInfo() {
     FutureTask<ResponseInfo> task =

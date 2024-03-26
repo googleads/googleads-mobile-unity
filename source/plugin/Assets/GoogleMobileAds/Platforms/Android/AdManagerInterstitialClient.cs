@@ -80,6 +80,12 @@ namespace GoogleMobileAds.Android
             this._androidAdmanagerInterstitialAd.Call("destroy");
         }
 
+        /// Returns the ad unit ID.
+        public string GetAdUnitID()
+        {
+            return this._androidAdmanagerInterstitialAd.Call<string>("getAdUnitId");
+        }
+
         // Returns ad request response info
         public IResponseInfoClient GetResponseInfoClient()
         {
