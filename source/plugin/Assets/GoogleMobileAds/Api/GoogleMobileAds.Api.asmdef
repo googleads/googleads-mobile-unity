@@ -1,0 +1,11 @@
+{
+    "name": "GoogleMobileAds.Api",
+    "references": [
+        "GoogleMobileAds.Core",
+        "GoogleMobileAds.Common",
+        "GoogleMobileAds.Android",
+        "GoogleMobileAds.iOS"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": []
+}
