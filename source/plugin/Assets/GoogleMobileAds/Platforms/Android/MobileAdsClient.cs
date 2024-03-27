@@ -97,6 +97,11 @@ namespace GoogleMobileAds.Android
             // Do nothing on Android. Default behavior is to pause when app is backgrounded.
         }
 
+        public void DisableSDKCrashReporting()
+        {
+            // This feature is not available for the Android platform.
+        }
+
         public void OpenAdInspector(Action<AdInspectorErrorClientEventArgs> onAdInspectorClosed)
         {
             AndroidJavaClass activityClass = new AndroidJavaClass(Utils.UnityActivityClassName);
