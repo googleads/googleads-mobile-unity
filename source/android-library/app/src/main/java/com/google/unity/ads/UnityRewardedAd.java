@@ -233,9 +233,17 @@ public class UnityRewardedAd {
         });
   }
 
-  /**
-   * Returns the request response info.
-   */
+  /** Returns the {@link RewardedAd} ad unit ID. */
+  @Nullable
+  public String getAdUnitId() {
+    if (rewardedAd == null) {
+      return null;
+    }
+    return rewardedAd.getAdUnitId();
+  }
+
+  /** Returns the request response info. */
+  @Nullable
   public ResponseInfo getResponseInfo() {
     FutureTask<ResponseInfo> task = new FutureTask<>(new Callable<ResponseInfo>() {
       @Override

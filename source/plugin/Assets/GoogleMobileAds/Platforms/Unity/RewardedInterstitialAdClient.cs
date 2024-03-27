@@ -32,7 +32,7 @@ namespace GoogleMobileAds.Unity
 
         public void DestroyRewardedInterstitialAd()
         {
-            // No op.
+            base._adUnitId = null;
         }
     }
 }

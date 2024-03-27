@@ -87,6 +87,7 @@ namespace GoogleMobileAds.Unity
         // Loads a new interstitial request.
         public void LoadAd(string adUnitId, AdRequest request)
         {
+            base._adUnitId = adUnitId;
             if (Screen.width > Screen.height) //Landscape
             {
                 LoadAndSetPrefabAd(prefabAds[new AdSize(1024, 768)]);
@@ -143,7 +144,7 @@ namespace GoogleMobileAds.Unity
         {
             AdBehaviour.DestroyAd(dummyAd);
             prefabAd = null;
+            base._adUnitId = null;
         }
-
     }
 }
