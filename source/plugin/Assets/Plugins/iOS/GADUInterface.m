@@ -1415,7 +1415,8 @@ const char *GADUAdapterResponseInfoAdSourceInstanceName(
 
 const long GADUAdapterResponseInfoLatency(GADUTypeAdapterResponseInfoRef adapterResponseInfo) {
   GADAdNetworkResponseInfo *info = (__bridge GADAdNetworkResponseInfo *)adapterResponseInfo;
-  return (long)[NSNumber numberWithLong:info.latency];
+  NSNumber *latencyMillis = [NSNumber numberWithDouble:info.latency * 1000];
+  return [latencyMillis longValue];
 }
 
 const int GADUAdapterResponseInfoAdUnitMappingCount(
