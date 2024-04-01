@@ -85,6 +85,11 @@ namespace GoogleMobileAds.iOS
             Externs.GADUSetiOSAppPauseOnBackground(pause);
         }
 
+        public void DisableSDKCrashReporting()
+        {
+            Externs.GADUDisableSDKCrashReporting();
+        }
+
         public float GetDeviceScale()
         {
             return Externs.GADUDeviceScale();

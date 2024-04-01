@@ -197,6 +197,14 @@ namespace GoogleMobileAds.Api
         }
 
         /// <summary>
+        /// Disables automated SDK crash reporting on iOS. Call this method closer to the app start.
+        /// </summary>
+        public static void DisableSDKCrashReporting()
+        {
+            Instance.client.DisableSDKCrashReporting();
+        }
+
+        /// <summary>
         /// Opens ad inspector UI.
         /// </summary>
         /// <param name="adInspectorClosedAction">Called when ad inspector UI closes.</param>

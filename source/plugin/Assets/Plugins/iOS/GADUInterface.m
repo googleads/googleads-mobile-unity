@@ -133,6 +133,11 @@ void GADUSetPlugin(const char *plugin) {
 // or rewarded video ad) is displayed.
 void GADUSetiOSAppPauseOnBackground(BOOL pause) { [GADUPluginUtil setPauseOnBackground:pause]; }
 
+// Disables automated SDK crash reporting.
+void GADUDisableSDKCrashReporting() {
+  [GADMobileAds.sharedInstance disableSDKCrashReporting];
+}
+
 float GADUDeviceScale() { return UIScreen.mainScreen.scale; }
 
 void GADUSetIntegerPreference(const char *key, NSInteger value) {

@@ -41,6 +41,9 @@ namespace GoogleMobileAds.Common
         // Set whether an iOS app should pause when a full screen ad is displayed.
         void SetiOSAppPauseOnBackground(bool pause);
 
+        // Disables automated SDK crash reporting.
+        void DisableSDKCrashReporting();
+
         // Returns the scale for the current device.
         float GetDeviceScale();
 
