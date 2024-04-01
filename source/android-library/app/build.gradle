@@ -1,6 +1,9 @@
 apply plugin: 'com.android.library'
 
 android {
+    if (project.android.hasProperty('namespace')) {
+        namespace 'com.google.unity'
+    }
     compileSdkVersion 31
 
     defaultConfig {
