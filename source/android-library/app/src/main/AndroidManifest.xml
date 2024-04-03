@@ -4,8 +4,7 @@ This Google Mobile Ads plugin library manifest will get merged with your
 application's manifest, adding the necessary metadata
 required for displaying ads.
 -->
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.google.unity">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
   <uses-sdk android:minSdkVersion="19" />
   <uses-permission android:name="android.permission.INTERNET"/>
 </manifest>

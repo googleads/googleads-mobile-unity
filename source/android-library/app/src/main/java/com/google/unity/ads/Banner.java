@@ -289,7 +289,7 @@ public class Banner {
       //************************************************************************//
       if (AHUnityMediators.isWatchingAdUnitId(AdFormat.BANNER, publisherId)) {
           this.adUnitId = publisherId;
-          AppHarbr.addBannerView(AHUnityMediators.mediationSdk, adView, AHUnityMediators.ahIncident);
+          AppHarbr.addBannerView(AHUnityMediators.mediationSdk, adView, AHUnityMediators.ahAnalyze);
       }
       //************************************************************************//
   }

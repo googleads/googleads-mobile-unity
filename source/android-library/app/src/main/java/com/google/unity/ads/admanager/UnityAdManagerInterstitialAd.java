@@ -76,7 +76,7 @@ public class UnityAdManagerInterstitialAd {
       ahWrapperListener = AppHarbr.addInterstitial(AHUnityMediators.mediationSdk,
               ahGamInterstitialAd,
               adManagerInterstitialAdCallback,
-              AHUnityMediators.ahIncident);
+              AHUnityMediators.ahAnalyze);
     }
     internalCallback = ahWrapperListener != null ? ahWrapperListener : adManagerInterstitialAdCallback;
     //************************************************************************//

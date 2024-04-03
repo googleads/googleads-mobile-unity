@@ -24,7 +24,7 @@ import androidx.annotation.Nullable;
 import com.appharbr.sdk.engine.AdStateResult;
 import com.appharbr.sdk.engine.AppHarbr;
 import com.appharbr.sdk.engine.adformat.AdFormat;
-import com.appharbr.sdk.engine.mediators.admob.rewardedinterstitial.AHRewardedInterstitialAd;
+import com.appharbr.sdk.engine.mediators.admob.rewardedinterstitial.AHAdmobRewardedInterstitialAd;
 import com.appharbr.unity.mediation.AHUnityMediators;
 import com.google.android.gms.ads.AdError;
 import com.google.android.gms.ads.AdRequest;
@@ -52,7 +52,7 @@ public class UnityRewardedInterstitialAd {
    */
   private RewardedInterstitialAd rewardedInterstitialAd;
     //************************************************************************//
-  private final AHRewardedInterstitialAd ahRewardedInterstitialAd;
+  private final AHAdmobRewardedInterstitialAd ahRewardedInterstitialAd;
   private RewardedInterstitialAdLoadCallback internalCallback;
   private String adUnitId;
     //************************************************************************//
@@ -72,7 +72,7 @@ public class UnityRewardedInterstitialAd {
     this.activity = activity;
     this.callback = callback;
       //************************************************************************//
-      ahRewardedInterstitialAd = new AHRewardedInterstitialAd();
+      ahRewardedInterstitialAd = new AHAdmobRewardedInterstitialAd();
       //************************************************************************//
   }
 
@@ -91,7 +91,7 @@ public class UnityRewardedInterstitialAd {
                   ahRewardedInterstitialAd,
                   rewardedInterstitialAdLoadCallback,
                   null,
-                  AHUnityMediators.ahIncident);
+                  AHUnityMediators.ahAnalyze);
       }
       internalCallback = ahWrapperListener != null ? ahWrapperListener : rewardedInterstitialAdLoadCallback;
   //************************************************************************//
