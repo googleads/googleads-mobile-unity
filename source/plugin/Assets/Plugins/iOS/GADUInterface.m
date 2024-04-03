@@ -668,6 +668,12 @@ void GADUShowRewardedAd(GADUTypeRewardedAdRef rewardedAd) {
   [internalRewardedAd show];
 }
 
+/// Gets the rewarded ad's ad unit ID.
+const char *GADUGetRewardedAdUnitID(GADUTypeRewardedAdRef rewardedAd) {
+  GADURewardedAd *internalRewardedAd = (__bridge GADURewardedAd *)rewardedAd;
+  return cStringCopy(internalRewardedAd.rewardedAd.adUnitID.UTF8String);
+}
+
 /// Returns the type of the reward.
 const char *GADURewardedAdGetRewardType(GADUTypeRewardedAdRef rewardedAd) {
   GADURewardedAd *internalRewardedAd = (__bridge GADURewardedAd *)rewardedAd;
