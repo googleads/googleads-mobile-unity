@@ -13,9 +13,10 @@ scripts in your Unity project.
 
 ## Downloads
 
-Please check out our
-[releases](//github.com/googleads/googleads-mobile-unity/releases)
-for the latest official version of the plugin.
+Please import the plugin using
+[Unity Package Manager](//developers.google.com/admob/unity/quick-start#import_the_mobile_ads_for_unity_plugin)
+or download the package from the
+[GitHub releases page](//github.com/googleads/googleads-mobile-unity/releases).
 
 ## Documentation
 
