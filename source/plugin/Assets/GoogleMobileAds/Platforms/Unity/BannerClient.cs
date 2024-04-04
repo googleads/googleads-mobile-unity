@@ -84,6 +84,7 @@ namespace GoogleMobileAds.Unity
         // Creates a banner view and adds it to the view hierarchy.
         public virtual void CreateBannerView(string adUnitId, AdSize adSize, AdPosition position)
         {
+            base._adUnitId = adUnitId;
             if (adSize.AdType == AdSize.Type.AnchoredAdaptive)
             {
                 LoadAndSetPrefabAd("PlaceholderAds/Banners/ADAPTIVE");
@@ -109,6 +110,7 @@ namespace GoogleMobileAds.Unity
         // Creates a banner view and adds it to the view hierarchy with a custom position.
         public virtual void CreateBannerView(string adUnitId, AdSize adSize, int x, int y)
         {
+            base._adUnitId = adUnitId;
             if (adSize.AdType == AdSize.Type.AnchoredAdaptive)
             {
                 LoadAndSetPrefabAd("PlaceholderAds/Banners/ADAPTIVE");
@@ -337,6 +339,5 @@ namespace GoogleMobileAds.Unity
                 Debug.Log("Invalid Placeholder Ad");
             }
         }
-
     }
 }
