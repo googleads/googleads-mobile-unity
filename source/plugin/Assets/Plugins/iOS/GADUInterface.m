@@ -695,6 +695,14 @@ void GADUShowRewardedInterstitialAd(GADUTypeRewardedInterstitialAdRef rewardedIn
   [internalRewardedInterstitialAd show];
 }
 
+// Get the RewardedAd Interstitial ad unit ID.
+const char *GADUGetRewardedInterstitialAdUnitID(
+    GADUTypeRewardedInterstitialAdRef rewardedInterstitialAd) {
+  GADURewardedInterstitialAd *internalRewardedInterstitialAd =
+      (__bridge GADURewardedInterstitialAd *)rewardedInterstitialAd;
+  return cStringCopy(internalRewardedInterstitialAd.rewardedInterstitialAd.adUnitID.UTF8String);
+}
+
 /// Returns the type of the reward.
 const char *GADURewardedInterstitialAdGetRewardType(
     GADUTypeRewardedInterstitialAdRef rewardedInterstitialAd) {
