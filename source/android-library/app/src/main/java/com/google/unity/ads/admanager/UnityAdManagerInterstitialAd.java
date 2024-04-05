@@ -17,11 +17,19 @@ package com.google.unity.ads.admanager;
 
 import android.app.Activity;
 import android.util.Log;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import com.google.android.gms.ads.AdError;
+import com.google.android.gms.ads.FullScreenContentCallback;
+import com.google.android.gms.ads.LoadAdError;
 import com.google.android.gms.ads.ResponseInfo;
 import com.google.android.gms.ads.admanager.AdManagerAdRequest;
 import com.google.android.gms.ads.admanager.AdManagerInterstitialAd;
+import com.google.android.gms.ads.admanager.AdManagerInterstitialAdLoadCallback;
 import com.google.unity.ads.PluginUtils;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.FutureTask;
 
 /** Android AdManager interstitial implementation for the Google Mobile Ads Unity plugin. */
@@ -35,10 +43,12 @@ public class UnityAdManagerInterstitialAd {
   private final Activity activity;
 
   /** A listener implemented in Unity via {@code AndroidJavaProxy} to receive ad events. */
-  private final UnityAdManagerInterstitialAdCallback callback;
+  private final @Nullable UnityAdManagerInterstitialAdCallback callback;
+
+  private final ExecutorService service = Executors.newSingleThreadExecutor();
 
   public UnityAdManagerInterstitialAd(
-      Activity activity, UnityAdManagerInterstitialAdCallback callback) {
+      Activity activity, @Nullable UnityAdManagerInterstitialAdCallback callback) {
     this.activity = activity;
     this.callback = callback;
   }
@@ -50,13 +60,110 @@ public class UnityAdManagerInterstitialAd {
    * @param request The {@link AdManagerAdRequest} object with targeting parameters.
    */
   public void loadAd(final String adUnitId, final AdManagerAdRequest request) {
-    AdManagerInterstitialAdCallback adManagerInterstitialAdCallback =
-        new AdManagerInterstitialAdCallback(adManagerInterstitialAd, callback);
-
     activity.runOnUiThread(
         () ->
             AdManagerInterstitialAd.load(
-                activity, adUnitId, request, adManagerInterstitialAdCallback));
+                activity,
+                adUnitId,
+                request,
+                new AdManagerInterstitialAdLoadCallback() {
+
+                  @Override
+                  public void onAdLoaded(@NonNull AdManagerInterstitialAd ad) {
+                    adManagerInterstitialAd = ad;
+
+                    adManagerInterstitialAd.setOnPaidEventListener(
+                        adValue ->
+                            service.execute(
+                                () -> {
+                                  if (callback != null) {
+                                    callback.onPaidEvent(
+                                        adValue.getPrecisionType(),
+                                        adValue.getValueMicros(),
+                                        adValue.getCurrencyCode());
+                                  }
+                                }));
+
+                    adManagerInterstitialAd.setAppEventListener(
+                        (name, data) ->
+                            service.execute(
+                                () -> {
+                                  if (callback != null) {
+                                    callback.onAppEvent(name, data);
+                                  }
+                                }));
+
+                    adManagerInterstitialAd.setFullScreenContentCallback(
+                        new FullScreenContentCallback() {
+                          @Override
+                          public void onAdFailedToShowFullScreenContent(final AdError error) {
+                            service.execute(
+                                () -> {
+                                  if (callback != null) {
+                                    callback.onAdFailedToShowFullScreenContent(error);
+                                  }
+                                });
+                          }
+
+                          @Override
+                          public void onAdShowedFullScreenContent() {
+                            service.execute(
+                                () -> {
+                                  if (callback != null) {
+                                    callback.onAdShowedFullScreenContent();
+                                  }
+                                });
+                          }
+
+                          @Override
+                          public void onAdDismissedFullScreenContent() {
+                            service.execute(
+                                () -> {
+                                  if (callback != null) {
+                                    callback.onAdDismissedFullScreenContent();
+                                  }
+                                });
+                          }
+
+                          @Override
+                          public void onAdImpression() {
+                            service.execute(
+                                () -> {
+                                  if (callback != null) {
+                                    callback.onAdImpression();
+                                  }
+                                });
+                          }
+
+                          @Override
+                          public void onAdClicked() {
+                            service.execute(
+                                () -> {
+                                  if (callback != null) {
+                                    callback.onAdClicked();
+                                  }
+                                });
+                          }
+                        });
+
+                    service.execute(
+                        () -> {
+                          if (callback != null) {
+                            callback.onInterstitialAdLoaded();
+                          }
+                        });
+                  }
+
+                  @Override
+                  public void onAdFailedToLoad(final LoadAdError error) {
+                    service.execute(
+                        () -> {
+                          if (callback != null) {
+                            callback.onInterstitialAdFailedToLoad(error);
+                          }
+                        });
+                  }
+                }));
   }
 
   /** Returns the request response info. */
