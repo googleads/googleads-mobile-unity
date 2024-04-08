@@ -27,7 +27,6 @@ import com.appharbr.unity.mediation.AHUnityMediators;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.AdValue;
-import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.LoadAdError;
 import com.google.android.gms.ads.OnPaidEventListener;
 import com.google.android.gms.ads.admanager.AdManagerAdRequest;
@@ -35,7 +34,6 @@ import com.google.android.gms.ads.admanager.AdManagerAdView;
 import com.google.android.gms.ads.admanager.AppEventListener;
 import com.google.unity.ads.Banner;
 import com.google.unity.ads.PluginUtils;
-
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -182,7 +180,7 @@ public class UnityAdManagerBannerView extends Banner {
     //************************************************************************//
       if (AHUnityMediators.isWatchingAdUnitId(AdFormat.BANNER, publisherId)) {
           this.adUnitId = publisherId;
-          AppHarbr.addBannerView(AHUnityMediators.mediationSdk, adView, AHUnityMediators.ahIncident);
+          AppHarbr.addBannerView(AHUnityMediators.mediationSdk, adView, AHUnityMediators.ahAnalyze);
       }
     //************************************************************************//
   }

@@ -84,7 +84,7 @@ public class Interstitial {
           ahWrapperCallback = AppHarbr.addInterstitial(AHUnityMediators.mediationSdk,
                   ahAdMobInterstitialAd,
                   interstitialAdLoadCallback,
-                  AHUnityMediators.ahIncident);
+                  AHUnityMediators.ahAnalyze);
       }
       internalCallback = ahWrapperCallback != null ? ahWrapperCallback : interstitialAdLoadCallback;
       //************************************************************************//

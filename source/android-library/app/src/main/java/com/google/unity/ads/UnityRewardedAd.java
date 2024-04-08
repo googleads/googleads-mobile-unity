@@ -73,7 +73,7 @@ public class UnityRewardedAd {
           ahWrapperListener = AppHarbr.addRewardedAd(AHUnityMediators.mediationSdk,
                   ahAdMobRewardedAd,
                   rewardedAdLoadCallback,
-                  AHUnityMediators.ahIncident);
+                  AHUnityMediators.ahAnalyze);
       }
       internalCallback = ahWrapperListener != null ? ahWrapperListener : rewardedAdLoadCallback;
   //************************************************************************//
