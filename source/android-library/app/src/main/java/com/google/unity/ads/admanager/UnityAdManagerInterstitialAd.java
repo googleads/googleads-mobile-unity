@@ -43,7 +43,7 @@ public class UnityAdManagerInterstitialAd {
   private final Activity activity;
 
   /** A listener implemented in Unity via {@code AndroidJavaProxy} to receive ad events. */
-  private final @Nullable UnityAdManagerInterstitialAdCallback callback;
+  @Nullable private final UnityAdManagerInterstitialAdCallback callback;
 
   private final ExecutorService service = Executors.newSingleThreadExecutor();
 
@@ -166,7 +166,17 @@ public class UnityAdManagerInterstitialAd {
                 }));
   }
 
+  /** Returns the {@link AdManagerInterstitialAd} ad unit ID. */
+  @Nullable
+  public String getAdUnitId() {
+    if (adManagerInterstitialAd == null) {
+      return null;
+    }
+    return adManagerInterstitialAd.getAdUnitId();
+  }
+
   /** Returns the request response info. */
+  @Nullable
   public ResponseInfo getResponseInfo() {
     FutureTask<ResponseInfo> task =
         new FutureTask<>(() -> adManagerInterstitialAd.getResponseInfo());

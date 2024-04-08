@@ -18,6 +18,7 @@ package com.google.unity.ads;
 import android.app.Activity;
 import android.util.Log;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import com.google.android.gms.ads.AdError;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdValue;
@@ -196,9 +197,17 @@ public class Interstitial {
     });
   }
 
-  /**
-   * Returns the request response info.
-   */
+  /** Returns the {@link InterstitialAd} ad unit ID. */
+  @Nullable
+  public String getAdUnitId() {
+    if (interstitialAd == null) {
+      return null;
+    }
+    return interstitialAd.getAdUnitId();
+  }
+
+  /** Returns the request response info. */
+  @Nullable
   public ResponseInfo getResponseInfo() {
     FutureTask<ResponseInfo> task = new FutureTask<>(new Callable<ResponseInfo>() {
       @Override

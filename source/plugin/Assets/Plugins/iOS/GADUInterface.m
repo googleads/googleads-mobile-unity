@@ -668,10 +668,22 @@ void GADUShowInterstitial(GADUTypeInterstitialRef interstitial) {
   [internalInterstitial show];
 }
 
+/// Gets the interstitial ad's ad unit ID.
+const char *GADUGetInterstitialAdUnitID(GADUTypeInterstitialRef interstitial) {
+  GADUInterstitial *internalInterstitial = (__bridge GADUInterstitial *)interstitial;
+  return cStringCopy(internalInterstitial.interstitialAd.adUnitID.UTF8String);
+}
+
 /// Shows the GAMInterstitial.
 void GAMUShowInterstitial(GAMUTypeInterstitialRef interstitial) {
   GAMUInterstitial *internalInterstitial = (__bridge GAMUInterstitial *)interstitial;
   [internalInterstitial show];
+}
+
+/// Gets the GAMInterstitial ad unit ID.
+const char *GAMUGetInterstitialAdUnitID(GAMUTypeInterstitialRef interstitial) {
+  GAMUInterstitial *internalInterstitial = (__bridge GAMUInterstitial *)interstitial;
+  return cStringCopy(internalInterstitial.interstitialAdGAM.adUnitID.UTF8String);
 }
 
 /// Shows the GADRewardedAd.
