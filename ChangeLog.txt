@@ -1,5 +1,11 @@
 Google Mobile Ads Unity Plugin Change Log
 **************
+Version Next
+**************
+
+- Removed the app measurement feature as Android/iOS SDKs [no longer](https://support.google.com/admob/answer/13973847) initialize App measurement.
+
+**************
 Version 9.0.0
 **************
 
