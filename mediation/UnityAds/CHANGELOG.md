@@ -1,5 +1,10 @@
 ## Unity Ads Unity Mediation Plugin Changelog
 
+#### [Version 3.10.0](https://dl.google.com/googleadmobadssdk/mediation/unity/unity/UnityAdsUnityAdapter-3.10.0.zip)
+- Supports [Unity Ads Android adapter version 4.10.0.0](https://github.com/googleads/googleads-mobile-android-mediation/blob/main/ThirdPartyAdapters/unity/CHANGELOG.md#version-41000).
+- Supports [Unity Ads iOS adapter version 4.10.0.0](https://github.com/googleads/googleads-mobile-ios-mediation/blob/main/adapters/Unity/CHANGELOG.md#version-41000).
+- Built and tested with the Google Mobile Ads Unity Plugin version 9.0.0.
+
 #### [Version 3.9.1](https://dl.google.com/googleadmobadssdk/mediation/unity/unity/UnityAdsUnityAdapter-3.9.1.zip)
 - Supports [Unity Ads Android adapter version 4.9.3.0](https://github.com/googleads/googleads-mobile-android-mediation/blob/main/ThirdPartyAdapters/unity/CHANGELOG.md#version-4930).
 - Supports [Unity Ads iOS adapter version 4.9.3.0](https://github.com/googleads/googleads-mobile-ios-mediation/blob/main/adapters/Unity/CHANGELOG.md#version-4930).
