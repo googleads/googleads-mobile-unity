@@ -628,6 +628,12 @@ void GADUShowAppOpenAd(GADUTypeAppOpenAdRef appOpenAd) {
   [internalAppOpenAd show];
 }
 
+// Get the Interstitial ad unit ID.
+const char *GADUGetAppOpenAdUnitID(GADUTypeAppOpenAdRef appOpenAd) {
+  GADUAppOpenAd *internalAppOpenAd = (__bridge GADUAppOpenAd *)appOpenAd;
+  return cStringCopy(internalAppOpenAd.appOpenAd.adUnitID.UTF8String);
+}
+
 /// Sets the GADBannerView's hidden property to YES.
 void GADUHideBannerView(GADUTypeBannerRef banner) {
   GADUBanner *internalBanner = (__bridge GADUBanner *)banner;

@@ -84,8 +84,9 @@ namespace GoogleMobileAds.Unity
             // Do nothing.
         }
 
-        public void LoadAd(string adUnitID, AdRequest request)
+        public void LoadAd(string adUnitId, AdRequest request)
         {
+            base._adUnitId = adUnitId;
             LoadAndSetPrefabAd(prefabAds[new AdSize(768, 1024)]);
             if (prefabAd != null)
             {
@@ -133,8 +134,9 @@ namespace GoogleMobileAds.Unity
 
         public void DestroyAppOpenAd()
         {
-          AdBehaviour.DestroyAd(dummyAd);
-          prefabAd = null;
+            AdBehaviour.DestroyAd(dummyAd);
+            prefabAd = null;
+            base._adUnitId = null;
         }
     }
 }

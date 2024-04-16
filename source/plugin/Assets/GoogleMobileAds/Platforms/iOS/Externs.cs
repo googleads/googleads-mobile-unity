@@ -212,6 +212,9 @@ namespace GoogleMobileAds.iOS
                     adDidRecordClickCallback
         );
 
+        [DllImport("__Internal")]
+        internal static extern string GADUGetAppOpenAdUnitID(IntPtr appOpenAd);
+
         #endregion
 
         #region Banner externs
