@@ -23,7 +23,10 @@ namespace GoogleMobileAds.Mediation.LiftoffMonetize.Api
 
         public override string AndroidMediationExtraBuilderClassName
         {
-            get { return "com.google.unity.mediation.liftoffmonetize.VungleUnityInterstitialExtrasBuilder"; }
+            get
+            {
+                return "com.google.unity.mediation.liftoffmonetize.VungleUnityInterstitialExtrasBuilder";
+            }
         }
     }
 }

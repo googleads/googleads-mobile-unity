@@ -15,8 +15,9 @@
 package com.google.unity.mediation.liftoffmonetize;
 
 import android.os.Bundle;
+import android.text.TextUtils;
+import com.google.ads.mediation.vungle.VungleConstants;
 import com.google.unity.ads.AdNetworkExtras;
-import com.vungle.mediation.VungleExtrasBuilder;
 import java.util.HashMap;
 
 /**
@@ -24,34 +25,17 @@ import java.util.HashMap;
  */
 abstract class VungleUnityExtrasBuilder implements AdNetworkExtras {
 
-  /**
-   * Key to add and obtain all placements.
-   */
-  private static final String ALL_PLACEMENTS_KEY = "all_placements";
-
   private static final String USER_ID_KEY = "user_id";
-
-  private static final String SOUND_ENABLED_KEY = "sound_enabled";
 
   @Override
   public Bundle buildExtras(HashMap<String, String> extras) {
-    String placements = extras.get(ALL_PLACEMENTS_KEY);
-    if (placements == null) {
-      return null;
-    }
-
-    VungleExtrasBuilder extrasBuilder = new VungleExtrasBuilder(placements.split(","));
-
-    String soundEnabled = extras.get(SOUND_ENABLED_KEY);
-    if (soundEnabled != null) {
-      extrasBuilder.setStartMuted(!Boolean.parseBoolean(soundEnabled));
-    }
+    Bundle vungleExtras = new Bundle();
 
     String userId = extras.get(USER_ID_KEY);
-    if (userId != null) {
-      extrasBuilder.setUserId(userId);
+    if (!TextUtils.isEmpty(userId)) {
+      vungleExtras.putString(VungleConstants.KEY_USER_ID, userId);
     }
 
-    return extrasBuilder.build();
+    return vungleExtras;
   }
 }

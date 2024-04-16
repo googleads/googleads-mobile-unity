@@ -1,5 +1,10 @@
 ## Liftoff Monetize Unity Mediation Plugin Changelog
 
+#### Next Version
+- Removed the following methods from the `LiftoffMonetizeMediationExtras` class:
+  * `SetAllPlacements(String[])`
+  * `SetSoundEnabled(bool)`
+
 #### [Version 5.0.0](https://dl.google.com/googleadmobadssdk/mediation/unity/liftoffmonetize/LiftoffMonetizeUnityAdapter-5.0.0.zip)
 - Fixed a duplicate definition warning for `MediationExtras`.
 - Supports [Liftoff Monetize Android adapter version 7.1.0.0](https://github.com/googleads/googleads-mobile-android-mediation/blob/main/ThirdPartyAdapters/liftoffmonetize/CHANGELOG.md#version-7100).

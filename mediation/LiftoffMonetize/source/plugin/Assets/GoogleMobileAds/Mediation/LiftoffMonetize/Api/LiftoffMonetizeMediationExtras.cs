@@ -20,11 +20,7 @@ namespace GoogleMobileAds.Mediation.LiftoffMonetize.Api
 {
     public abstract class LiftoffMonetizeMediationExtras : MediationExtras
     {
-        public const string AllPlacementsKey = "all_placements";
-
         public const string UserIdKey = "user_id";
-
-        public const string SoundEnabledKey = "sound_enabled";
 
         public LiftoffMonetizeMediationExtras() : base() { }
 
@@ -33,19 +29,9 @@ namespace GoogleMobileAds.Mediation.LiftoffMonetize.Api
             get { return "LiftoffMonetizeExtrasBuilder"; }
         }
 
-        public void SetAllPlacements(string[] allPlacements)
-        {
-            this.Extras.Add(AllPlacementsKey, String.Join(",", allPlacements));
-        }
-
         public void SetUserId(string userId)
         {
             this.Extras.Add(UserIdKey, userId);
-        }
-
-        public void SetSoundEnabled(bool soundEnabled)
-        {
-            this.Extras.Add(SoundEnabledKey, soundEnabled.ToString());
         }
     }
 }

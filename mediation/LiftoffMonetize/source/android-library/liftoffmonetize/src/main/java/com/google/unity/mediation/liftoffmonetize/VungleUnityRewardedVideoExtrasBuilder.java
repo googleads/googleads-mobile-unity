@@ -14,6 +14,8 @@
 
 package com.google.unity.mediation.liftoffmonetize;
 
+import androidx.annotation.NonNull;
+import com.google.android.gms.ads.mediation.MediationExtrasReceiver;
 import com.vungle.mediation.VungleAdapter;
 
 /**
@@ -21,8 +23,9 @@ import com.vungle.mediation.VungleAdapter;
  */
 public class VungleUnityRewardedVideoExtrasBuilder extends VungleUnityExtrasBuilder {
 
+  @NonNull
   @Override
-  public Class getAdapterClass() {
+  public Class<? extends MediationExtrasReceiver> getAdapterClass() {
     return VungleAdapter.class;
   }
 }
