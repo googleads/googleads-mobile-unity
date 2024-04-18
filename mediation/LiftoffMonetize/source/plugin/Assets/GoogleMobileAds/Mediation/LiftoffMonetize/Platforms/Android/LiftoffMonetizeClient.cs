@@ -27,8 +27,8 @@ namespace GoogleMobileAds.Mediation.LiftoffMonetize.Android
         private static LiftoffMonetizeClient instance = new LiftoffMonetizeClient();
         private LiftoffMonetizeClient() {}
 
-        private const string VUNGLE_CLASS_NAME = "com.vungle.warren.Vungle";
-        private const string VUNGLE_CONSENT_ENUM_NAME = "com.vungle.warren.Vungle$Consent";
+        private const string VUNGLE_PRIVACY_SETTINGS_CLASS_NAME =
+                "com.vungle.ads.VunglePrivacySettings";
 
         public static LiftoffMonetizeClient Instance
         {
@@ -38,86 +38,24 @@ namespace GoogleMobileAds.Mediation.LiftoffMonetize.Android
             }
         }
 
-        public void UpdateConsentStatus(VungleConsentStatus consentStatus,
-                                        String consentMessageVersion)
+        public void SetGDPRStatus(bool gdprStatus, String consentMessageVersion)
         {
-            AndroidJavaObject LiftoffMonetizeConsentStatusObject =
-                    GetConsentStatusAndroidJavaObject(consentStatus);
-            if (LiftoffMonetizeConsentStatusObject == null)
-            {
-                MonoBehaviour.print("[LiftoffMonetize Plugin] Received invalid consent status. " +
-                        "Status will not be updated.");
-                return;
-            }
-
-            AndroidJavaClass vungle = new AndroidJavaClass(VUNGLE_CLASS_NAME);
-            vungle.CallStatic("updateConsentStatus",
-                    LiftoffMonetizeConsentStatusObject, consentMessageVersion);
-        }
-
-        public void UpdateCCPAStatus(VungleCCPAStatus ccpaStatus)
-        {
-            AndroidJavaObject LiftoffMonetizeCCPAStatusObject =
-                    GetCCPAStatusAndroidJavaObject(ccpaStatus);
-            if (LiftoffMonetizeCCPAStatusObject == null)
-            {
-                MonoBehaviour.print("[LiftoffMonetize Plugin] Received invalid CCPA status. " +
-                        "Status will not be updated.");
-                return;
-            }
-
-            AndroidJavaClass vungle = new AndroidJavaClass(VUNGLE_CLASS_NAME);
-            vungle.CallStatic("updateCCPAStatus", LiftoffMonetizeCCPAStatusObject);
-        }
-
-        public void SetGDPRStatus(bool gdprStatus)
-        {
-            MonoBehaviour.print("[LiftoffMonetize Plugin] 'SetGDPRStatus' is a no-op for " +
-                    "Android. Use 'UpdateConsentStatus' instead.");
+            AndroidJavaClass vunglePrivacySettings =
+                    new AndroidJavaClass(VUNGLE_PRIVACY_SETTINGS_CLASS_NAME);
+            vunglePrivacySettings.CallStatic("setGDPRStatus", gdprStatus, consentMessageVersion);
         }
 
         public void SetGDPRMessageVersion(String gdprMessageVersion)
         {
             MonoBehaviour.print("[LiftoffMonetize Plugin] 'SetGDPRMessageVersion' is a no-op " +
-                    "for Android. Use 'UpdateConsentStatus' instead.");
+                    "for Android. Use 'SetGDPRStatus' instead.");
         }
 
         public void SetCCPAStatus(bool ccpaStatus)
         {
-            MonoBehaviour.print("[LiftoffMonetize Plugin] 'SetCCPAStatus' is a no-op for " +
-                    "Android. Use 'UpdateCCPAStatus' instead.");
-        }
-
-        // Private utility methods.
-        private AndroidJavaObject GetConsentStatusAndroidJavaObject(
-                VungleConsentStatus vungleConsent)
-        {
-            AndroidJavaClass vungleConsentEnum = new AndroidJavaClass(VUNGLE_CONSENT_ENUM_NAME);
-            switch (vungleConsent)
-            {
-                case VungleConsentStatus.OPTED_IN:
-                    return vungleConsentEnum.GetStatic<AndroidJavaObject>("OPTED_IN");
-                case VungleConsentStatus.OPTED_OUT:
-                    return vungleConsentEnum.GetStatic<AndroidJavaObject>("OPTED_OUT");
-                default:
-                    return null;
-            }
-        }
-
-        private AndroidJavaObject GetCCPAStatusAndroidJavaObject(
-                VungleCCPAStatus ccpaStatus)
-        {
-            AndroidJavaClass LiftoffMonetizeCCPAStatusEnum =
-                    new AndroidJavaClass(VUNGLE_CONSENT_ENUM_NAME);
-            switch (ccpaStatus)
-            {
-                case VungleCCPAStatus.OPTED_IN:
-                    return LiftoffMonetizeCCPAStatusEnum.GetStatic<AndroidJavaObject>("OPTED_IN");
-                case VungleCCPAStatus.OPTED_OUT:
-                    return LiftoffMonetizeCCPAStatusEnum.GetStatic<AndroidJavaObject>("OPTED_OUT");
-                default:
-                    return null;
-            }
+            AndroidJavaClass vunglePrivacySettings =
+                    new AndroidJavaClass(VUNGLE_PRIVACY_SETTINGS_CLASS_NAME);
+            vunglePrivacySettings.CallStatic("setCCPAStatus", ccpaStatus);
         }
     }
 }

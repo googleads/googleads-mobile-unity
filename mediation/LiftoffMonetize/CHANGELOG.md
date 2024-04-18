@@ -1,6 +1,10 @@
 ## Liftoff Monetize Unity Mediation Plugin Changelog
 
 #### Next Version
+- Updated the privacy APIs:
+  * Removed the `UpdateConsentStatus()` and `UpdateCCPAStatus()` methods.
+  * Removed the `VungleConsentStatus` and `VungleCCPAStatus` enums.
+  * Updated the `SetGDPRStatus(bool)` method to `SetGDPRStatus(bool, String)`.
 - Removed the following methods from the `LiftoffMonetizeMediationExtras` class:
   * `SetAllPlacements(String[])`
   * `SetSoundEnabled(bool)`

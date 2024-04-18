@@ -20,11 +20,7 @@ namespace GoogleMobileAds.Mediation.LiftoffMonetize.Common
 {
     public interface ILiftoffMonetizeClient
     {
-        void UpdateConsentStatus(VungleConsentStatus consentStatus,
-                                 String consentMessageVersion);
-        void UpdateCCPAStatus(VungleCCPAStatus consentStatus);
-
-        void SetGDPRStatus(bool gdprStatus);
+        void SetGDPRStatus(bool gdprStatus, String consentMessageVersion);
         void SetGDPRMessageVersion(String gdprMessageVersion);
         void SetCCPAStatus(bool ccpaStatus);
     }

@@ -19,37 +19,14 @@ using GoogleMobileAds.Mediation.LiftoffMonetize.Common;
 
 namespace GoogleMobileAds.Mediation.LiftoffMonetize.Api
 {
-    public enum VungleConsentStatus
-    {
-        OPTED_IN = 0,
-        OPTED_OUT = 1
-    }
-
-    public enum VungleCCPAStatus
-    {
-        OPTED_IN = 0,
-        OPTED_OUT = 1
-    }
-
     public class LiftoffMonetize
     {
         public static readonly ILiftoffMonetizeClient client =
                 LiftoffMonetizeClientFactory.CreateLiftoffMonetizeClient();
 
-        public static void UpdateConsentStatus(VungleConsentStatus consentStatus,
-                                               String consentMessageVersion)
+        public static void SetGDPRStatus(bool gdprStatus, string consentMessageVersion)
         {
-            client.UpdateConsentStatus(consentStatus, consentMessageVersion);
-        }
-
-        public static void UpdateCCPAStatus(VungleCCPAStatus consentStatus)
-        {
-            client.UpdateCCPAStatus(consentStatus);
-        }
-
-        public static void SetGDPRStatus(bool gdprStatus)
-        {
-            client.SetGDPRStatus(gdprStatus);
+            client.SetGDPRStatus(gdprStatus, consentMessageVersion);
         }
 
         public static void SetGDPRMessageVersion(String gdprMessageVersion)
@@ -67,35 +44,26 @@ namespace GoogleMobileAds.Mediation.LiftoffMonetize.Api
 
 namespace GoogleMobileAds.Api.Mediation.LiftoffMonetize
 {
-    [System.Obsolete("Use `GoogleMobileAds.Mediation.LiftoffMonetize.Api.VungleConsentStatus` instead.")]
-    public enum VungleConsentStatus
-    {
-        OPTED_IN = 0,
-        OPTED_OUT = 1
-    }
-
-    [System.Obsolete("Use `GoogleMobileAds.Mediation.LiftoffMonetize.Api.VungleCCPAStatus` instead.")]
-    public enum VungleCCPAStatus
-    {
-        OPTED_IN = 0,
-        OPTED_OUT = 1
-    }
 
     [System.Obsolete("Use `GoogleMobileAds.Mediation.LiftoffMonetize.Api.LiftoffMonetize` instead.")]
     public class LiftoffMonetize
     {
-        public static void UpdateConsentStatus(VungleConsentStatus consentStatus,
-                                               String consentMessageVersion)
+        public static void SetGDPRStatus(bool gdprStatus, string consentMessageVersion)
         {
-            GoogleMobileAds.Mediation.LiftoffMonetize.Api.LiftoffMonetize.UpdateConsentStatus(
-                (GoogleMobileAds.Mediation.LiftoffMonetize.Api.VungleConsentStatus)consentStatus,
-                consentMessageVersion);
+            GoogleMobileAds.Mediation.LiftoffMonetize.Api.LiftoffMonetize.SetGDPRStatus(
+                gdprStatus, consentMessageVersion);
         }
 
-        public static void UpdateCCPAStatus(VungleCCPAStatus consentStatus)
+        public static void SetGDPRMessageVersion(String gdprMessageVersion)
         {
-            GoogleMobileAds.Mediation.LiftoffMonetize.Api.LiftoffMonetize.UpdateCCPAStatus(
-                (GoogleMobileAds.Mediation.LiftoffMonetize.Api.VungleCCPAStatus)consentStatus);
+            GoogleMobileAds.Mediation.LiftoffMonetize.Api.LiftoffMonetize.SetGDPRMessageVersion(
+                gdprMessageVersion);
+        }
+
+        public static void SetCCPAStatus(bool ccpaStatus)
+        {
+            GoogleMobileAds.Mediation.LiftoffMonetize.Api.LiftoffMonetize.SetCCPAStatus(
+                ccpaStatus);
         }
     }
 }

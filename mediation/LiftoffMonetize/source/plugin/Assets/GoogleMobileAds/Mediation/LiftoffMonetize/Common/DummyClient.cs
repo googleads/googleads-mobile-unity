@@ -28,18 +28,7 @@ namespace GoogleMobileAds.Mediation.LiftoffMonetize.Common
             Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
         }
 
-        public void UpdateConsentStatus(VungleConsentStatus consentStatus,
-                                        String consentMessageVersion)
-        {
-            Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
-        }
-
-        public void UpdateCCPAStatus(VungleCCPAStatus consentStatus)
-        {
-            Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
-        }
-
-        public void SetGDPRStatus(bool gdprStatus)
+        public void SetGDPRStatus(bool gdprStatus, string consentMessageVersion)
         {
             Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
         }
