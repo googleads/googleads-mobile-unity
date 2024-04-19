@@ -6,6 +6,7 @@ Version Next
 - Removed the app measurement feature as Android/iOS SDKs [no longer](https://support.google.com/admob/answer/13973847) initialize App measurement.
 - Fixed [#3290] by calling static putPublisherFirstPartyIdEnabled with boolean return type.
 - Fixed [#3042] by explicitly adding gradle.projectsEvaluated for executing validate_dependencies gradle script.
+- Enable using the AdManager AdRequest for Rewarded, Rewarded Interstitial and AppOpen formats.
 
 **************
 Version 9.0.0

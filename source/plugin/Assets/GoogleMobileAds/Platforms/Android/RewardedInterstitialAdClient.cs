@@ -56,7 +56,7 @@ namespace GoogleMobileAds.Android
 
         public void LoadAd(string adUnitId, AdRequest request)
         {
-            androidRewardedInterstitialAd.Call("loadAd", adUnitId, Utils.GetAdRequestJavaObject(request));
+            androidRewardedInterstitialAd.Call("loadAd", adUnitId, Utils.GetAdManagerAdRequestJavaObject(request));
         }
 
         public void Show()

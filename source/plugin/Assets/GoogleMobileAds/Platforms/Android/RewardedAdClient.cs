@@ -59,7 +59,7 @@ namespace GoogleMobileAds.Android
 
         public void LoadAd(string adUnitId, AdRequest request)
         {
-            androidRewardedAd.Call("loadAd", adUnitId, Utils.GetAdRequestJavaObject(request));
+            androidRewardedAd.Call("loadAd", adUnitId, Utils.GetAdManagerAdRequestJavaObject(request));
         }
 
         public void Show()
