@@ -110,7 +110,7 @@ namespace GoogleMobileAds.iOS
         }
 
         public void LoadAd(string adUnitID, AdRequest request) {
-            IntPtr requestPtr = Utils.BuildAdRequest(request);
+            IntPtr requestPtr = Utils.BuildAdManagerAdRequest(request);
             Externs.GADULoadRewardedInterstitialAd(this.RewardedInterstitialAdPtr, adUnitID, requestPtr);
             Externs.GADURelease(requestPtr);
         }
