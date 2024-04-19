@@ -1,12 +1,14 @@
 Google Mobile Ads Unity Plugin Change Log
 **************
-Version Next
+Version 9.1.0
 **************
 
 - Removed the app measurement feature as Android/iOS SDKs [no longer](https://support.google.com/admob/answer/13973847) initialize App measurement.
 - Fixed [#3290] by calling static putPublisherFirstPartyIdEnabled with boolean return type.
 - Fixed [#3042] by explicitly adding gradle.projectsEvaluated for executing validate_dependencies gradle script.
-- Enable using the AdManager AdRequest for Rewarded, Rewarded Interstitial and AppOpen formats.
+- Fixed [#2801] incorrect value for `AdapterResponseInfo.LatencyMillis` on iOS.
+- Added `GetAdUnitID` API that allows reading the ad unit id for all ad formats.
+- Enabled passing AdManagerAdRequest as part of Load API for Rewarded, Rewarded Interstitial and AppOpen formats.
 
 **************
 Version 9.0.0
