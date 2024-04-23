@@ -1,0 +1,13 @@
+fileFormatVersion: 2
+guid: 9e579ef4793d34e79be6a216c0b67d78
+labels:
+- gvh
+- gvh_version-9.1.0
+- gvhp_exportpath-GoogleMobileAds/Editor/Resources/PlaceholderAds/Interstitials/768x1024.prefab
+timeCreated: 1480838400
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 100100000
+  userData:
+  assetBundleName:
+  assetBundleVariant:

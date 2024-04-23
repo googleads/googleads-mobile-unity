@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: c9ee5d47594eb43a19e795c834fdc044
+labels:
+- gvh
+- gvh_version-9.1.0
+- gvhp_exportpath-GoogleMobileAds/Editor/ManifestProcessor.cs
+timeCreated: 1480838400
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon:
+    instanceID: 0
+  userData:
+  assetBundleName:
+  assetBundleVariant:
