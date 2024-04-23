@@ -17,7 +17,7 @@ namespace GoogleMobileAds.Api
 {
 
   /// <summary>
-  /// NativeTemplateID defines the Templates that can be used to render Native ads.
+  /// Defines ID constants for templates that can be used to render native ads.
   /// </summary>
   public class NativeTemplateId
   {
@@ -38,7 +38,7 @@ namespace GoogleMobileAds.Api
   public class NativeTemplateStyle
   {
     /// <summary>
-    /// The NativeTemplateID to be loaded.
+    /// An identifier representing the native template to render.
     /// </summary>
     public string TemplateId;
 
@@ -69,7 +69,7 @@ namespace GoogleMobileAds.Api
 
     public NativeTemplateStyle()
     {
-      // Default TemplateId set to `Small` Layout.
+      // Default to using the small template.
       TemplateId = NativeTemplateId.Small;
     }
 
