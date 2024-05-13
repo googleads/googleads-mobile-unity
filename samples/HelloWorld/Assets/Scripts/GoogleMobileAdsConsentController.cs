@@ -181,6 +181,10 @@ namespace GoogleMobileAds.Samples
             {
                 _errorPopup.SetActive(true);
             }
+            if (_privacyButton != null)
+            {
+                _privacyButton.interactable = true;
+            }
         }
     }
 }
