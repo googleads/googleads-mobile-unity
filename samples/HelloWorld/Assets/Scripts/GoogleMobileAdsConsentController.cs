@@ -26,11 +26,6 @@ namespace GoogleMobileAds.Samples
 
         private void Start()
         {
-            // Disable the privacy settings button.
-            if (_privacyButton != null)
-            {
-                _privacyButton.interactable = false;
-            }
             // Disable the error popup,
             if (_errorPopup != null)
             {
