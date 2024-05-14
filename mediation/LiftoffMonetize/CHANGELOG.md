@@ -1,5 +1,10 @@
 ## Liftoff Monetize Unity Mediation Plugin Changelog
 
+#### [Version 5.1.1](https://dl.google.com/googleadmobadssdk/mediation/unity/liftoffmonetize/LiftoffMonetizeUnityAdapter-5.1.1.zip)
+- Supports [Liftoff Monetize Android adapter version 7.3.2.0](https://github.com/googleads/googleads-mobile-android-mediation/blob/main/ThirdPartyAdapters/liftoffmonetize/CHANGELOG.md#version-7320).
+- Supports [Liftoff Monetize iOS adapter version 7.3.2.0](https://github.com/googleads/googleads-mobile-ios-mediation/blob/main/adapters/LiftoffMonetize/CHANGELOG.md#version-7320).
+- Built and tested with the Google Mobile Ads Unity Plugin version 9.1.0.
+
 #### [Version 5.1.0](https://dl.google.com/googleadmobadssdk/mediation/unity/liftoffmonetize/LiftoffMonetizeUnityAdapter-5.1.0.zip)
 - Fixed a `NullPointerException` that caused a build failure when exporting as an Android project.
 - Updated the privacy APIs:
