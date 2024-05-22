@@ -14,8 +14,6 @@
 
 using System;
 
-using GoogleMobileAds.Mediation.Mintegral.Api;
-
 namespace GoogleMobileAds.Mediation.Mintegral.Common
 {
     public interface IMintegralClient
