@@ -23,19 +23,19 @@ UIInterfaceOrientation GADUUIInterfaceOrientationForGADUScreenOrientation(
 
 /// Returns an NSString copying the characters from |bytes|, a C array of UTF8-encoded bytes.
 /// Returns nil if |bytes| is NULL.
-+ (NSString *)GADUStringFromUTF8String:(const char *)bytes;
++ (nullable NSString *)GADUStringFromUTF8String:(nonnull const char *)bytes;
 
 /// Returns the Unity view controller.
-+ (UIViewController *)unityGLViewController;
++ (nullable UIViewController *)unityGLViewController;
 
 /// Position view in the parent view, corresponding to the adPosition.
-+ (void)positionView:(UIView *)view
-        inParentView:(UIView *)parentView
++ (void)positionView:(nonnull UIView *)view
+        inParentView:(nonnull UIView *)parentView
           adPosition:(GADAdPosition)adPosition;
 
 /// Position view in the parent view, corresponding to the CGPoint.
-+ (void)positionView:(UIView *)view
-        inParentView:(UIView *)parentView
++ (void)positionView:(nonnull UIView *)view
+        inParentView:(nonnull UIView *)parentView
       customPosition:(CGPoint)adPosition;
 
 /// Returns a GADAdSize for a specified width and height.

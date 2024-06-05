@@ -18,7 +18,7 @@
   NSError *_lastPresentError;
 }
 
-- (instancetype)initWithAppOpenAdClientReference:(GADUTypeAppOpenAdClientRef *)appOpenAdClient {
+- (nonnull instancetype)initWithAppOpenAdClientReference:(_Nonnull GADUTypeAppOpenAdClientRef *_Nonnull)appOpenAdClient {
   self = [super init];
   _appOpenAdClient = appOpenAdClient;
   return self;
