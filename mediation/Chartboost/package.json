@@ -1,0 +1,21 @@
+{
+  "name": "com.google.ads.mobile.mediation.chartboost",
+  "version": "4.6.0",
+  "displayName": "Google Mobile Ads Chartboost Mediation for Unity",
+  "keywords": [
+    "Google",
+    "Mobile",
+    "Ads",
+    "vh-name:GoogleMobileAdsMediationChartboost",
+    "vh-name:Google Mobile Ads Chartboost Mediation for Unity"
+  ],
+  "author": {
+    "name": "Google LLC",
+    "url": "https://github.com/googleads/googleads-mobile-unity"
+  },
+  "description": "The Google Mobile Ads mediation plugin for Chartboost package allows you to load and display ads from the Chartboost ad network using mediation, for iOS and Android using Google's native iOS and Android Mobile SDKs via a unified C# API in Unity.",
+  "unity": "2019.4",
+  "dependencies": {
+    "com.google.ads.mobile": "9.1.0"
+  }
+}

@@ -14,23 +14,10 @@
 
 using UnityEngine;
 
-using GoogleMobileAds.Mediation.Chartboost;
 using GoogleMobileAds.Mediation.Chartboost.Common;
 
 namespace GoogleMobileAds.Mediation.Chartboost.Api
 {
-    public enum CBGDPRDataUseConsent
-    {
-        NonBehavioral = 0,
-        Behavioral,
-    }
-
-    public enum CBCCPADataUseConsent
-    {
-        OptOutSale = 0,
-        OptInSale,
-    }
-
     public class Chartboost
     {
         internal static readonly IChartboostClient client = GetChartboostClient();
