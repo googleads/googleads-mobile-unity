@@ -12,9 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System;
 using GoogleMobileAds.Mediation.AppLovin.Common;
-using GoogleMobileAds.Mediation.AppLovin;
 
 namespace GoogleMobileAds.Mediation.AppLovin.Api
 {

@@ -14,7 +14,6 @@
 
 #if UNITY_IOS
 
-using UnityEngine;
 using GoogleMobileAds.Mediation.AppLovin.Common;
 
 namespace GoogleMobileAds.Mediation.AppLovin.iOS
