@@ -1,0 +1,19 @@
+{
+    "name": "GoogleMobileAds.Mediation.AppLovin.Api",
+    "rootNamespace": "",
+    "references": [
+        "GoogleMobileAds.Api.Mediation",
+        "GoogleMobileAds.Mediation.AppLovin.Common",
+        "GoogleMobileAds.Mediation.AppLovin.Android",
+        "GoogleMobileAds.Mediation.AppLovin.iOS"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
