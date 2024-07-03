@@ -1,4 +1,19 @@
 Google Mobile Ads Unity Plugin Change Log
+
+**************
+Version 9.1.1
+**************
+- Updated GoogleMobileAds Android SDK to 23.2.0.
+- Updated GoogleMobileAds iOS SDK to 11.6.0.
+- Updated External Dependency Manager for Unity to 1.2.181.
+- Added the AndroidJNI dependency to the UPM package.
+
+Built and tested with:
+- Google Mobile Ads Android SDK 23.2.0
+- Google Mobile Ads iOS SDK 11.6.0
+- Google User Messaging Platform 2.2.0
+- External Dependency Manager for Unity 1.2.181
+
 **************
 Version 9.1.0
 **************

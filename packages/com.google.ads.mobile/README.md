@@ -14,24 +14,24 @@ scripts in your Unity project.
 ## Downloads
 
 Please import the plugin using
-[Unity Package Manager](//developers.google.com/admob/unity/quick-start#import_the_mobile_ads_for_unity_plugin)
+[Unity Package Manager](https://developers.google.com/admob/unity/quick-start#import_the_mobile_ads_for_unity_plugin)
 or download the package from the
-[GitHub releases page](//github.com/googleads/googleads-mobile-unity/releases).
+[GitHub releases page](https://github.com/googleads/googleads-mobile-unity/releases).
 
 ## Documentation
 
 For instructions on using the plugin, please refer to
-[this developer guide](//developers.google.com/admob/unity/quick-start).
+[this developer guide](https://developers.google.com/admob/unity/quick-start).
 
 For a sample application demonstrating how to use Google Mobile Ads see [The HelloWorld Unity project](https://github.com/googleads/googleads-mobile-unity/tree/main/samples).
 
 ## Suggesting improvements
 
 To file bugs, make feature requests, or to suggest other improvements,
-please use [github's issue tracker](//github.com/googleads/googleads-mobile-unity/issues).
+please use [github's issue tracker](https://github.com/googleads/googleads-mobile-unity/issues).
 
 Be sure to also join the developer community on
-[our forum](//groups.google.com/forum/#!categories/google-admob-ads-sdk/game-engines).
+[our forum](https://groups.google.com/forum/#!categories/google-admob-ads-sdk/game-engines).
 
 ## License
 
