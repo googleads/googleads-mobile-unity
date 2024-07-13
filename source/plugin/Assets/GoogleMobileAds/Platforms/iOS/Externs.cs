@@ -297,6 +297,9 @@ namespace GoogleMobileAds.iOS
         internal static extern void GADUSetBannerViewCustomPosition(IntPtr bannerView, int x, int y);
 
         [DllImport("__Internal")]
+        internal static extern bool GADUIsBannerViewCollapsible(IntPtr bannerView);
+
+        [DllImport("__Internal")]
         internal static extern IntPtr GADUGetResponseInfo(IntPtr adFormat);
 
         [DllImport("__Internal")]

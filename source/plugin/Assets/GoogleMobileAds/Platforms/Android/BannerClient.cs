@@ -119,9 +119,14 @@ namespace GoogleMobileAds.Android
             this.bannerView.Call("setPosition", x, y);
         }
 
+        // Indicates whether the last loaded ad is a collapsible banner.
+        public bool IsCollapsible()
+        {
+            return this.bannerView.Call<bool>("isCollapsible");
+        }
+
         public IResponseInfoClient GetResponseInfoClient()
         {
-
             return new ResponseInfoClient(ResponseInfoClientType.AdLoaded, this.bannerView);
         }
 

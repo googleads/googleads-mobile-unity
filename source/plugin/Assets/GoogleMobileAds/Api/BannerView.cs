@@ -192,6 +192,14 @@ namespace GoogleMobileAds.Api
             }
         }
 
+        /// <summary>
+        /// Indicates whether the last loaded ad is a collapsible banner.
+        /// </summary>
+        public bool IsCollapsible()
+        {
+            return _client == null ? false : _client.IsCollapsible();
+        }
+
         protected internal virtual void ConfigureBannerEvents()
         {
 

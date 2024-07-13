@@ -257,6 +257,12 @@ namespace GoogleMobileAds.iOS
             Externs.GADUSetBannerViewCustomPosition(this.BannerViewPtr, x, y);
         }
 
+        // Returns whether the last loaded ad is a collapsible banner.
+        public bool IsCollapsible()
+        {
+            return Externs.GADUIsBannerViewCollapsible(this.BannerViewPtr);
+        }
+
         public IResponseInfoClient GetResponseInfoClient()
         {
             return new ResponseInfoClient(ResponseInfoClientType.AdLoaded, this.BannerViewPtr);

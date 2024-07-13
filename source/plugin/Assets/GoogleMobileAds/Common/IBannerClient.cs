@@ -68,6 +68,9 @@ namespace GoogleMobileAds.Common
         // Set the position of the banner view using custom position.
         void SetPosition(int x, int y);
 
+        // Indicates whether the last loaded ad is a collapsible banner.
+        bool IsCollapsible();
+
         // Returns ad request Response info client.
         IResponseInfoClient GetResponseInfoClient();
 

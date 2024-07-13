@@ -237,6 +237,12 @@ namespace GoogleMobileAds.Unity
             rect.anchoredPosition = new Vector2(xWithOffset, -yWithOffset);
         }
 
+        // Indicates whether the last loaded ad is a collapsible banner.
+        public bool IsCollapsible()
+        {
+            return false;
+        }
+
         protected internal void SetAndStretchAd(GameObject dummyAd, AdPosition pos, AdSize adSize)
         {
             if (dummyAd != null) {
