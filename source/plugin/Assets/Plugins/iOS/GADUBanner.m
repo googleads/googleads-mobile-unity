@@ -206,6 +206,10 @@
   return CGRectGetWidth(CGRectStandardize(self.bannerView.frame)) * [UIScreen mainScreen].scale;
 }
 
+- (BOOL)isCollapsible {
+  return self.bannerView.isCollapsible;
+}
+
 - (void)setAdPosition:(GADAdPosition)adPosition {
   _adPosition = adPosition;
   [self positionBannerView];

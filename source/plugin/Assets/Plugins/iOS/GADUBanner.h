@@ -99,14 +99,17 @@
 /// The ad clicked event callback into Unity.
 @property(nonatomic, assign, nullable) GADUAdViewClickCallback adClickedCallback;
 
-// Returns the banner ad response info.
+/// Returns the banner ad response info.
 @property(nonatomic, readonly, copy, nullable) GADResponseInfo *responseInfo;
 
-// Returns the height of the banner view in pixels.
+/// Returns the height of the banner view in pixels.
 @property(nonatomic, readonly) CGFloat heightInPixels;
 
-// Returns the width of the banner view in pixels.
+/// Returns the width of the banner view in pixels.
 @property(nonatomic, readonly) CGFloat widthInPixels;
+
+/// Returns whether the last loaded ad is a collapsible banner.
+@property(nonatomic, readonly) BOOL isCollapsible;
 
 /// Makes an ad request. Additional targeting options can be supplied with a request object.
 - (void)loadRequest:(nonnull GADRequest *)request;
