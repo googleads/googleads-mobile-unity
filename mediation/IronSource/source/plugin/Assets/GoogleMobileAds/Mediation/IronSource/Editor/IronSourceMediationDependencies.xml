@@ -25,6 +25,6 @@
   </androidPackages>
 
   <iosPods>
-    <iosPod name="GoogleMobileAdsMediationIronSource" version="8.1.0.0.1"/>
+    <iosPod name="GoogleMobileAdsMediationIronSource" version="8.1.1.0.0"/>
   </iosPods>
 </dependencies>
