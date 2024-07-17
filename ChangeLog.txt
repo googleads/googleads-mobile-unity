@@ -1,6 +1,11 @@
 Google Mobile Ads Unity Plugin Change Log
 
 **************
+Version Next
+**************
+- Added `IsCollapsible` API to `BannerView` to check if a collapsible banner was loaded.
+
+**************
 Version 9.1.1
 **************
 - Updated GoogleMobileAds Android SDK to 23.2.0.
