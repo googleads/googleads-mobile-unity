@@ -5,6 +5,7 @@ Version Next
 **************
 - Added `IsCollapsible` API to `BannerView` to check if a collapsible banner was loaded.
 - Fixed [#3369] by using appropriate LayoutParams.
+- Fixed [#3455] Banner ad positioning not working on iOS.
 
 **************
 Version 9.1.1
