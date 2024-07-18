@@ -4,6 +4,7 @@ Google Mobile Ads Unity Plugin Change Log
 Version Next
 **************
 - Added `IsCollapsible` API to `BannerView` to check if a collapsible banner was loaded.
+- Fixed [#3369] by using appropriate LayoutParams.
 
 **************
 Version 9.1.1

@@ -54,9 +54,6 @@ public class UnityNativeTemplateAd {
   /** The {@link NativeAd}. */
   private NativeAd nativeAd;
 
-  /** The {@link AdLoader} used to configure and load the native ad. */
-  private AdLoader adLoader;
-
   /** The {@code Activity} on which the native template will display. */
   private Activity activity;
 
@@ -241,7 +238,7 @@ public class UnityNativeTemplateAd {
             activity.addContentView(
                 layout,
                 new FrameLayout.LayoutParams(
-                    FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.WRAP_CONTENT));
+                    FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT));
             setLayoutChangeListener();
           }
         });
@@ -272,7 +269,7 @@ public class UnityNativeTemplateAd {
             activity.addContentView(
                 layout,
                 new FrameLayout.LayoutParams(
-                    FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.WRAP_CONTENT));
+                    FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT));
             setLayoutChangeListener();
           }
         });
@@ -313,7 +310,7 @@ public class UnityNativeTemplateAd {
             activity.addContentView(
                 layout,
                 new FrameLayout.LayoutParams(
-                    FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.WRAP_CONTENT));
+                    FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT));
             setLayoutChangeListener();
           }
         });
@@ -348,7 +345,7 @@ public class UnityNativeTemplateAd {
             activity.addContentView(
                 layout,
                 new FrameLayout.LayoutParams(
-                    FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.WRAP_CONTENT));
+                    FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT));
             setLayoutChangeListener();
           }
         });
