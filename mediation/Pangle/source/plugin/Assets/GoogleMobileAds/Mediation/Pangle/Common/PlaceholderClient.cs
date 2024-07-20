@@ -18,21 +18,21 @@ using UnityEngine;
 
 namespace GoogleMobileAds.Mediation.Pangle.Common
 {
-    public class DummyClient : IPangleClient
+    public class PlaceholderClient : IPangleClient
     {
-        public DummyClient()
+        public PlaceholderClient()
         {
-            Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
+            Debug.Log("Placeholder " + MethodBase.GetCurrentMethod().Name);
         }
 
         public void SetGDPRConsent(int gdpr)
         {
-            Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
+            Debug.Log("Placeholder " + MethodBase.GetCurrentMethod().Name);
         }
 
         public void SetDoNotSell(int doNotSell)
         {
-            Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
+            Debug.Log("Placeholder " + MethodBase.GetCurrentMethod().Name);
         }
     }
 }

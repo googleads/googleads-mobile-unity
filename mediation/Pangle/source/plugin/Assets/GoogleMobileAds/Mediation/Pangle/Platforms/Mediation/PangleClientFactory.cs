@@ -25,13 +25,13 @@ namespace GoogleMobileAds.Mediation.Pangle
         public static IPangleClient PangleInstance()
         {
             #if UNITY_EDITOR
-            return new GoogleMobileAds.Mediation.Pangle.Common.DummyClient();
+            return new GoogleMobileAds.Mediation.Pangle.Common.PlaceholderClient();
             #elif UNITY_ANDROID
             return GoogleMobileAds.Mediation.Pangle.Android.PangleClient.Instance;
             #elif UNITY_IOS
             return GoogleMobileAds.Mediation.Pangle.iOS.PangleClient.Instance;
             #else
-            return new GoogleMobileAds.Mediation.Pangle.Common.DummyClient();
+            return new GoogleMobileAds.Mediation.Pangle.Common.PlaceholderClient();
             #endif
         }
     }
