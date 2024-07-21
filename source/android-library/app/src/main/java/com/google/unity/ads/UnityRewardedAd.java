@@ -214,9 +214,9 @@ public class UnityRewardedAd {
   public void show() {
     //************************************************************************//
     if (rewardedAd == null) {
-        Log.e(PluginUtils.LOGTAG, "Tried to show rewarded ad before it was ready. This should "
+      Log.e(PluginUtils.LOGTAG, "Tried to show rewarded ad before it was ready. This should "
           + "in theory never happen. If it does, please contact the plugin owners.");
-        return;
+      return;
     }
     if (AHUnityMediators.isWatchingAdUnitId(AdFormat.REWARDED, adUnitId)) {
         if (ahAdMobRewardedAd.getStatus() == AdStateResult.BLOCKED) {

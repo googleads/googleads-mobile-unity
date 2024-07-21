@@ -17,7 +17,6 @@ package com.google.unity.ads.admanager;
 
 import android.app.Activity;
 import android.util.Log;
-
 import com.appharbr.sdk.engine.AdStateResult;
 import com.appharbr.sdk.engine.AppHarbr;
 import com.appharbr.sdk.engine.adformat.AdFormat;
@@ -94,14 +93,14 @@ public class UnityAdManagerInterstitialAd {
             ));
   }
 
-    /** Returns the {@link AdManagerInterstitialAd} ad unit ID. */
-    @Nullable
-    public String getAdUnitId() {
-        if (adManagerInterstitialAd == null) {
-            return null;
-        }
-        return adManagerInterstitialAd.getAdUnitId();
+  /** Returns the {@link AdManagerInterstitialAd} ad unit ID. */
+  @Nullable
+  public String getAdUnitId() {
+    if (adManagerInterstitialAd == null) {
+      return null;
     }
+    return adManagerInterstitialAd.getAdUnitId();
+  }
 
   /** Returns the request response info. */
   @Nullable
