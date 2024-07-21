@@ -23,11 +23,13 @@ import com.appharbr.sdk.engine.AppHarbr;
 import com.appharbr.sdk.engine.adformat.AdFormat;
 import com.appharbr.sdk.engine.mediators.gam.interstitial.AHGamInterstitialAd;
 import com.appharbr.unity.mediation.AHUnityMediators;
+
+import androidx.annotation.Nullable;
+
 import com.google.android.gms.ads.ResponseInfo;
 import com.google.android.gms.ads.admanager.AdManagerAdRequest;
 import com.google.android.gms.ads.admanager.AdManagerInterstitialAd;
 import com.google.unity.ads.PluginUtils;
-
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.FutureTask;
 
@@ -48,10 +50,10 @@ public class UnityAdManagerInterstitialAd {
   private final Activity activity;
 
   /** A listener implemented in Unity via {@code AndroidJavaProxy} to receive ad events. */
-  private final UnityAdManagerInterstitialAdCallback callback;
+  @Nullable private final UnityAdManagerInterstitialAdCallback callback;
 
   public UnityAdManagerInterstitialAd(
-      Activity activity, UnityAdManagerInterstitialAdCallback callback) {
+      Activity activity, @Nullable UnityAdManagerInterstitialAdCallback callback) {
     this.activity = activity;
     this.callback = callback;
     //************************************************************************//
@@ -92,7 +94,17 @@ public class UnityAdManagerInterstitialAd {
             ));
   }
 
+    /** Returns the {@link AdManagerInterstitialAd} ad unit ID. */
+    @Nullable
+    public String getAdUnitId() {
+        if (adManagerInterstitialAd == null) {
+            return null;
+        }
+        return adManagerInterstitialAd.getAdUnitId();
+    }
+
   /** Returns the request response info. */
+  @Nullable
   public ResponseInfo getResponseInfo() {
     FutureTask<ResponseInfo> task =
         new FutureTask<>(() -> adManagerInterstitialAd.getResponseInfo());

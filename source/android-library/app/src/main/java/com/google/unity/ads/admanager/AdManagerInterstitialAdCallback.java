@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import com.google.android.gms.ads.AdError;
 import com.google.android.gms.ads.AdValue;
 import com.google.android.gms.ads.FullScreenContentCallback;
+import com.google.android.gms.ads.LoadAdError;
 import com.google.android.gms.ads.OnPaidEventListener;
 import com.google.android.gms.ads.admanager.AdManagerInterstitialAd;
 import com.google.android.gms.ads.admanager.AdManagerInterstitialAdLoadCallback;
@@ -23,6 +24,8 @@ public class AdManagerInterstitialAdCallback extends AdManagerInterstitialAdLoad
   /** A listener implemented in Unity via {@code AndroidJavaProxy} to receive ad events. */
   private UnityAdManagerInterstitialAdCallback callback;
 
+    private final ExecutorService service = Executors.newSingleThreadExecutor();
+
   /**
    * Creates an instance of AdManagerInterstitialAdCallback to be as a parameter while loading an
    * AdManager interstitial ad.
@@ -35,11 +38,11 @@ public class AdManagerInterstitialAdCallback extends AdManagerInterstitialAdLoad
       UnityAdManagerInterstitialAdCallback callback) {
     this.adManagerInterstitialAd = adManagerInterstitialAd;
     this.callback = callback;
+
   }
 
   @Override
   public void onAdLoaded(@NonNull AdManagerInterstitialAd ad) {
-    ExecutorService service = Executors.newSingleThreadExecutor();
     adManagerInterstitialAd = ad;
 
     adManagerInterstitialAd.setOnPaidEventListener(
@@ -131,4 +134,14 @@ public class AdManagerInterstitialAdCallback extends AdManagerInterstitialAdLoad
           }
         });
   }
+
+    @Override
+    public void onAdFailedToLoad(final LoadAdError error) {
+        service.execute(
+                () -> {
+                    if (callback != null) {
+                        callback.onInterstitialAdFailedToLoad(error);
+                    }
+                });
+    }
 }

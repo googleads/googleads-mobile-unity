@@ -26,7 +26,7 @@ import android.view.ViewParent;
 import android.view.Window;
 import android.view.WindowInsets;
 import android.widget.FrameLayout;
-
+import androidx.annotation.Nullable;
 import com.appharbr.sdk.engine.AppHarbr;
 import com.appharbr.sdk.engine.adformat.AdFormat;
 import com.appharbr.unity.mediation.AHUnityMediators;
@@ -399,6 +399,15 @@ public class Banner {
         .removeOnLayoutChangeListener(mLayoutChangeListener);
   }
 
+  /** Returns the {@link AdView} ad unit ID. */
+  @Nullable
+  public String getAdUnitId() {
+    if (adView == null) {
+      return null;
+    }
+    return adView.getAdUnitId();
+  }
+
   /**
    * Get {@link AdView} height.
    *
@@ -575,9 +584,8 @@ public class Banner {
     return insets;
   }
 
-  /**
-   * Returns the request response info.
-   */
+  /** Returns the request response info. */
+  @Nullable
   public ResponseInfo getResponseInfo() {
     FutureTask<ResponseInfo> task = new FutureTask<>(() -> adView.getResponseInfo());
     unityPlayerActivity.runOnUiThread(task);

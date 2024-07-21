@@ -2,7 +2,7 @@ apply plugin: 'com.android.library'
 
 android {
     namespace 'googleads.mobile.unity'
-    compileSdk 33
+    compileSdk 31
 
     defaultConfig {
         minSdkVersion 19
@@ -29,16 +29,16 @@ android {
 dependencies {
 //    api project(':appharbr-unity-mediations-plugin')
     compileOnly files('libs/appharbr-unity-mediations-plugin.aar')
-    compileOnly files('libs/AH-SDK-Android-2.19.0.aar')
+    compileOnly files('libs/AH-SDK-Android-2.19.6.aar')
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     implementation 'com.google.android.gms:play-services-ads:23.0.0'
     implementation 'com.google.android.ump:user-messaging-platform:2.2.0'
     implementation 'androidx.lifecycle:lifecycle-common-java8:2.4.1'
     implementation 'androidx.lifecycle:lifecycle-process:2.4.1'
     implementation 'com.google.errorprone:error_prone_annotations:2.26.1'
-    implementation "androidx.constraintlayout:constraintlayout:2.1.4"
 
     implementation 'com.google.code.gson:gson:2.9.0'
     implementation 'androidx.core:core-ktx:1.9.0'

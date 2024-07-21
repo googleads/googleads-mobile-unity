@@ -175,6 +175,16 @@ public class UnityAppOpenAd {
         });
   }
 
+  /** Returns the {@link AppOpenAd} ad unit ID (null if the ad is not loaded). */
+  @Nullable
+  public String getAdUnitId() {
+    if (appOpenAd == null) {
+      return null;
+    }
+    return appOpenAd.getAdUnitId();
+  }
+
+  /** Returns the request response info. */
   @Nullable
   public ResponseInfo getResponseInfo() {
     if (appOpenAd == null) {
