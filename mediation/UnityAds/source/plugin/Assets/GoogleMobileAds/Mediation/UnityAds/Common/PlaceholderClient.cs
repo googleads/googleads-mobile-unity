@@ -19,16 +19,16 @@ using UnityEngine;
 
 namespace GoogleMobileAds.Mediation.UnityAds.Common
 {
-    public class DummyClient : IUnityAdsClient
+    public class PlaceholderClient : IUnityAdsClient
     {
-        public DummyClient ()
+        public PlaceholderClient ()
         {
-            Debug.Log ("Dummy " + MethodBase.GetCurrentMethod ().Name);
+            Debug.Log ("Placeholder " + MethodBase.GetCurrentMethod ().Name);
         }
 
         public void SetConsentMetaData(string key, bool metaDataValue)
         {
-            Debug.Log ("Dummy " + MethodBase.GetCurrentMethod ().Name);
+            Debug.Log ("Placeholder " + MethodBase.GetCurrentMethod ().Name);
         }
     }
 }

@@ -24,13 +24,13 @@ namespace GoogleMobileAds.Mediation.UnityAds
         public static IUnityAdsClient CreateUnityAdsClient()
         {
             #if UNITY_EDITOR
-            return new GoogleMobileAds.Mediation.UnityAds.Common.DummyClient();
+            return new GoogleMobileAds.Mediation.UnityAds.Common.PlaceholderClient();
             #elif UNITY_ANDROID
             return GoogleMobileAds.Mediation.UnityAds.Android.UnityAdsClient.Instance;
             #elif UNITY_IOS
             return GoogleMobileAds.Mediation.UnityAds.iOS.UnityAdsClient.Instance;
             #else
-            return new GoogleMobileAds.Mediation.UnityAds.Common.DummyClient();
+            return new GoogleMobileAds.Mediation.UnityAds.Common.PlaceholderClient();
             #endif
         }
     }
