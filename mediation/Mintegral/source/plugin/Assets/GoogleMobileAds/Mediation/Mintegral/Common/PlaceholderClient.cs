@@ -18,21 +18,21 @@ using UnityEngine;
 
 namespace GoogleMobileAds.Mediation.Mintegral.Common
 {
-    public class DummyClient : IMintegralClient
+    public class PlaceholderClient : IMintegralClient
     {
-        public DummyClient()
+        public PlaceholderClient()
         {
-            Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
+            Debug.Log("Placeholder " + MethodBase.GetCurrentMethod().Name);
         }
 
         public void SetConsentStatus(bool consentStatus)
         {
-            Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
+            Debug.Log("Placeholder " + MethodBase.GetCurrentMethod().Name);
         }
 
         public void SetDoNotTrackStatus(bool doNotTrack)
         {
-            Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
+            Debug.Log("Placeholder " + MethodBase.GetCurrentMethod().Name);
         }
     }
 }

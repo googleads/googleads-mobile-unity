@@ -25,13 +25,13 @@ namespace GoogleMobileAds.Mediation.Mintegral
         public static IMintegralClient MintegralInstance()
         {
 #if UNITY_EDITOR
-            return new GoogleMobileAds.Mediation.Mintegral.Common.DummyClient();
+            return new GoogleMobileAds.Mediation.Mintegral.Common.PlaceholderClient();
 #elif UNITY_ANDROID
             return GoogleMobileAds.Mediation.Mintegral.Android.MintegralClient.Instance;
 #elif UNITY_IOS
             return GoogleMobileAds.Mediation.Mintegral.iOS.MintegralClient.Instance;
 #else
-            return new GoogleMobileAds.Mediation.Mintegral.Common.DummyClient();
+            return new GoogleMobileAds.Mediation.Mintegral.Common.PlaceholderClient();
 #endif
         }
     }
