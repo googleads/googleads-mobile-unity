@@ -19,43 +19,43 @@ using UnityEngine;
 
 namespace GoogleMobileAds.Mediation.MyTarget.Common
 {
-    public class DummyClient : IMyTargetClient
+    public class PlaceholderClient : IMyTargetClient
     {
-        public DummyClient()
+        public PlaceholderClient()
         {
-            Debug.Log ("Dummy " + MethodBase.GetCurrentMethod().Name);
+            Debug.Log ("Placeholder " + MethodBase.GetCurrentMethod().Name);
         }
 
         public void SetUserConsent(bool userConsent)
         {
-            Debug.Log ("Dummy " + MethodBase.GetCurrentMethod().Name);
+            Debug.Log ("Placeholder " + MethodBase.GetCurrentMethod().Name);
         }
 
         public bool GetUserConsent()
         {
-            Debug.Log ("Dummy " + MethodBase.GetCurrentMethod().Name);
+            Debug.Log ("Placeholder " + MethodBase.GetCurrentMethod().Name);
             return false;
         }
 
         public void SetUserAgeRestricted(bool userAgeRestricted)
         {
-            Debug.Log ("Dummy " + MethodBase.GetCurrentMethod().Name);
+            Debug.Log ("Placeholder " + MethodBase.GetCurrentMethod().Name);
         }
 
         public bool IsUserAgeRestricted()
         {
-            Debug.Log ("Dummy " + MethodBase.GetCurrentMethod().Name);
+            Debug.Log ("Placeholder " + MethodBase.GetCurrentMethod().Name);
             return false;
         }
 
-        public void SetCCPAUserConsent(bool ccpaUserConsent) 
+        public void SetCCPAUserConsent(bool ccpaUserConsent)
         {
-            Debug.Log ("Dummy " + MethodBase.GetCurrentMethod().Name);
+            Debug.Log ("Placeholder " + MethodBase.GetCurrentMethod().Name);
         }
 
         public bool GetCCPAUserConsent()
         {
-            Debug.Log ("Dummy " + MethodBase.GetCurrentMethod().Name);
+            Debug.Log ("Placeholder " + MethodBase.GetCurrentMethod().Name);
             return false;
         }
     }

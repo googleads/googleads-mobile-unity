@@ -1,4 +1,4 @@
-﻿// Copyright 2018 Google LLC
+// Copyright 2018 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -25,13 +25,13 @@ namespace GoogleMobileAds.Mediation.MyTarget
         public static IMyTargetClient CreateMyTargetClient()
         {
             #if UNITY_EDITOR
-            return new GoogleMobileAds.Mediation.MyTarget.Common.DummyClient();
+            return new GoogleMobileAds.Mediation.MyTarget.Common.PlaceholderClient();
             #elif UNITY_ANDROID
             return GoogleMobileAds.Mediation.MyTarget.Android.MyTargetClient.Instance;
             #elif UNITY_IOS
             return GoogleMobileAds.Mediation.MyTarget.iOS.MyTargetClient.Instance;
             #else
-            return new GoogleMobileAds.Mediation.MyTarget.Common.DummyClient();
+            return new GoogleMobileAds.Mediation.MyTarget.Common.PlaceholderClient();
             #endif
         }
     }
