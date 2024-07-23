@@ -1,11 +1,18 @@
 Google Mobile Ads Unity Plugin Change Log
 
 **************
-Version Next
+Version 9.2.0
 **************
 - Added `IsCollapsible` API to `BannerView` to check if a collapsible banner was loaded.
 - Fixed [#3369] by using appropriate LayoutParams.
 - Fixed [#3455] Banner ad positioning not working on iOS.
+- Updated GoogleMobileAds iOS SDK to 11.7.0.
+
+Built and tested with:
+- Google Mobile Ads Android SDK 23.2.0
+- Google Mobile Ads iOS SDK 11.7.0
+- Google User Messaging Platform 2.2.0
+- External Dependency Manager for Unity 1.2.181
 
 **************
 Version 9.1.1

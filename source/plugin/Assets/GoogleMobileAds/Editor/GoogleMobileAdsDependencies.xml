@@ -13,7 +13,7 @@
   </androidPackages>
 
   <iosPods>
-    <iosPod name="Google-Mobile-Ads-SDK" version="~> 11.6.0">
+    <iosPod name="Google-Mobile-Ads-SDK" version="~> 11.7.0">
       <sources>
         <source>https://github.com/CocoaPods/Specs</source>
       </sources>
