@@ -1,4 +1,4 @@
-﻿// Copyright 2018 Google LLC
+// Copyright 2018 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -20,16 +20,16 @@ using UnityEngine;
 
 namespace GoogleMobileAds.Mediation.InMobi.Common
 {
-    public class DummyClient : IInMobiClient
+    public class PlaceholderClient : IInMobiClient
     {
-        public DummyClient()
+        public PlaceholderClient()
         {
-            Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
+            Debug.Log("Placeholder " + MethodBase.GetCurrentMethod().Name);
         }
 
         public void UpdateGDPRConsent(Dictionary<string, string> consentObject)
         {
-            Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
+            Debug.Log("Placeholder " + MethodBase.GetCurrentMethod().Name);
         }
     }
 }
