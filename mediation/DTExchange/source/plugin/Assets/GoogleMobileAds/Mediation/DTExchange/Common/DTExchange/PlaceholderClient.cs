@@ -1,4 +1,4 @@
-﻿// Copyright 2019 Google LLC
+// Copyright 2019 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,36 +17,36 @@ using UnityEngine;
 
 namespace GoogleMobileAds.Mediation.DTExchange.Common
 {
-    public class DummyClient : IDTExchangeClient
+    public class PlaceholderClient : IDTExchangeClient
     {
-        public DummyClient()
+        public PlaceholderClient()
         {
-            Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
+            Debug.Log("Placeholder " + MethodBase.GetCurrentMethod().Name);
         }
 
         public void SetGDPRConsent(bool consent)
         {
-            Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
+            Debug.Log("Placeholder " + MethodBase.GetCurrentMethod().Name);
         }
 
         public void SetGDPRConsentString(string consentString)
         {
-            Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
+            Debug.Log("Placeholder " + MethodBase.GetCurrentMethod().Name);
         }
 
         public void ClearGDPRConsentData()
         {
-            Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
+            Debug.Log("Placeholder " + MethodBase.GetCurrentMethod().Name);
         }
 
         public void SetCCPAString(string ccpaString)
         {
-            Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
+            Debug.Log("Placeholder " + MethodBase.GetCurrentMethod().Name);
         }
 
         public void ClearCCPAString()
         {
-            Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
+            Debug.Log("Placeholder " + MethodBase.GetCurrentMethod().Name);
         }
     }
 }
