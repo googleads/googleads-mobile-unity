@@ -1,10 +1,14 @@
 package com.google.unity.ads;
 
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.verify;
 
 import android.app.Activity;
+import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdSize;
+import com.google.android.gms.ads.LoadAdError;
 import com.google.unity.ads.fakes.FakeAdView;
 import org.junit.After;
 import org.junit.Before;
@@ -34,6 +38,42 @@ public class BannerTest {
     banner = new Banner(activity, mockListener);
     fakeAdView = new FakeAdView(activity, /* adViewType= */ 0);
     banner.create("test-ad-unit-id", AdSize.BANNER, PluginUtils.POSITION_TOP);
+  }
+
+  @Test
+  public void testCreateBanner_adViewIsNotNull() {
+    assertNotNull(banner.adView);
+  }
+
+  @Test
+  public void testLoadAd() {
+    banner.loadAd(new AdRequest.Builder().build());
+
+    // Simulate a successful ad load.
+    fakeAdView.setAdListener(mockListener);
+    fakeAdView.simulateAdLoaded();
+
+    // Verify that the UnityAdListener's onAdLoaded method is called.
+    verify(mockListener).onAdLoaded();
+  }
+
+  @Test
+  public void testAdFailedToLoad() {
+    banner.loadAd(new AdRequest.Builder().build());
+
+    // Simulate an ad failed to load event.
+    LoadAdError loadAdError =
+        new LoadAdError(
+            /* code= */ 0,
+            /* message= */ "Test Error",
+            /* domain= */ "domain",
+            /* cause= */ null,
+            /* responseInfo= */ null);
+    fakeAdView.setAdListener(mockListener);
+    fakeAdView.simulateAdFailedToLoad(loadAdError);
+
+    // Verify that the UnityAdListener's onAdFailedToLoad method is called.
+    verify(mockListener).onAdFailedToLoad(loadAdError);
   }
 
   @Test
