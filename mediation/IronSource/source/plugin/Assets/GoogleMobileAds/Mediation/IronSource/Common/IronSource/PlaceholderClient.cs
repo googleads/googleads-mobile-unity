@@ -1,4 +1,4 @@
-﻿// Copyright 2018 Google LLC
+// Copyright 2018 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -19,21 +19,21 @@ using UnityEngine;
 
 namespace GoogleMobileAds.Mediation.IronSource.Common
 {
-    public class DummyClient : IIronSourceClient
+    public class PlaceholderClient : IIronSourceClient
     {
-        public DummyClient ()
+        public PlaceholderClient ()
         {
-            Debug.Log ("Dummy " + MethodBase.GetCurrentMethod ().Name);
+            Debug.Log ("Placeholder " + MethodBase.GetCurrentMethod ().Name);
         }
 
         public void SetConsent(bool consent)
         {
-            Debug.Log ("Dummy " + MethodBase.GetCurrentMethod ().Name);
+            Debug.Log ("Placeholder " + MethodBase.GetCurrentMethod ().Name);
         }
 
         public void SetMetaData(string key, string metaDataValue)
         {
-            Debug.Log ("Dummy " + MethodBase.GetCurrentMethod ().Name);
+            Debug.Log ("Placeholder " + MethodBase.GetCurrentMethod ().Name);
         }
     }
 }
