@@ -21,26 +21,26 @@ using GoogleMobileAds.Mediation.LiftoffMonetize.Api;
 
 namespace GoogleMobileAds.Mediation.LiftoffMonetize.Common
 {
-    public class DummyClient : ILiftoffMonetizeClient
+    public class PlaceholderClient : ILiftoffMonetizeClient
     {
-        public DummyClient()
+        public PlaceholderClient()
         {
-            Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
+            Debug.Log("Placeholder " + MethodBase.GetCurrentMethod().Name);
         }
 
         public void SetGDPRStatus(bool gdprStatus, string consentMessageVersion)
         {
-            Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
+            Debug.Log("Placeholder " + MethodBase.GetCurrentMethod().Name);
         }
 
         public void SetGDPRMessageVersion(String gdprMessageVersion)
         {
-            Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
+            Debug.Log("Placeholder " + MethodBase.GetCurrentMethod().Name);
         }
 
         public void SetCCPAStatus(bool ccpaStatus)
         {
-            Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
+            Debug.Log("Placeholder " + MethodBase.GetCurrentMethod().Name);
         }
     }
 }

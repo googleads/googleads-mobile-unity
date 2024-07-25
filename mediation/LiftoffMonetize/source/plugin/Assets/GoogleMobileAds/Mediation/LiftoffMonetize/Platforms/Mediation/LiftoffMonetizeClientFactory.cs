@@ -25,13 +25,13 @@ namespace GoogleMobileAds.Mediation.LiftoffMonetize
         public static ILiftoffMonetizeClient CreateLiftoffMonetizeClient()
         {
             #if UNITY_EDITOR
-            return new GoogleMobileAds.Mediation.LiftoffMonetize.Common.DummyClient();
+            return new GoogleMobileAds.Mediation.LiftoffMonetize.Common.PlaceholderClient();
             #elif UNITY_ANDROID
             return GoogleMobileAds.Mediation.LiftoffMonetize.Android.LiftoffMonetizeClient.Instance;
             #elif UNITY_IOS
             return GoogleMobileAds.Mediation.LiftoffMonetize.iOS.LiftoffMonetizeClient.Instance;
             #else
-            return new GoogleMobileAds.Mediation.LiftoffMonetize.Common.DummyClient();
+            return new GoogleMobileAds.Mediation.LiftoffMonetize.Common.PlaceholderClient();
             #endif
         }
     }
