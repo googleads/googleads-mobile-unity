@@ -14,9 +14,8 @@
  * limitations under the License.
  */
 
-using System.Reflection;
 using System.Runtime.CompilerServices;
 
 [assembly:InternalsVisibleTo("basic_unittests_test_library")]
 [assembly:InternalsVisibleTo("UnitTests")]
-[assembly:InternalsVisibleTo("GoogleMobileAds.Ump")]
+[assembly:InternalsVisibleTo("GoogleMobileAds.Ump.Api")]
