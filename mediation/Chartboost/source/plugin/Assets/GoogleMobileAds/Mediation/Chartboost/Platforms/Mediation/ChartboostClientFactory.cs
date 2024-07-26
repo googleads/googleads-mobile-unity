@@ -1,4 +1,4 @@
-﻿// Copyright 2018 Google LLC
+// Copyright 2018 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -25,13 +25,13 @@ namespace GoogleMobileAds.Mediation.Chartboost
         public static IChartboostClient ChartboostInstance()
         {
             #if UNITY_EDITOR
-            return new GoogleMobileAds.Mediation.Chartboost.Common.DummyClient();
+            return new GoogleMobileAds.Mediation.Chartboost.Common.PlaceholderClient();
             #elif UNITY_ANDROID
             return GoogleMobileAds.Mediation.Chartboost.Android.ChartboostClient.Instance;
             #elif UNITY_IOS
             return GoogleMobileAds.Mediation.Chartboost.iOS.ChartboostClient.Instance;
             #else
-            return new GoogleMobileAds.Mediation.Chartboost.Common.DummyClient();
+            return new GoogleMobileAds.Mediation.Chartboost.Common.PlaceholderClient();
             #endif
         }
     }

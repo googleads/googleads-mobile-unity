@@ -21,26 +21,26 @@ using GoogleMobileAds.Mediation.Chartboost.Api;
 
 namespace GoogleMobileAds.Mediation.Chartboost.Common
 {
-    public class DummyClient : IChartboostClient
+    public class PlaceholderClient : IChartboostClient
     {
-        public DummyClient ()
+        public PlaceholderClient ()
         {
-            Debug.Log ("Dummy " + MethodBase.GetCurrentMethod ().Name);
+            Debug.Log ("Placeholder " + MethodBase.GetCurrentMethod ().Name);
         }
 
         public void AddDataUseConsent(CBGDPRDataUseConsent gdprConsent)
         {
-            Debug.Log ("Dummy " + MethodBase.GetCurrentMethod().Name);
+            Debug.Log ("Placeholder " + MethodBase.GetCurrentMethod().Name);
         }
 
         public void AddDataUseConsent(CBCCPADataUseConsent ccpaConsent)
         {
-            Debug.Log ("Dummy " + MethodBase.GetCurrentMethod().Name);
+            Debug.Log ("Placeholder " + MethodBase.GetCurrentMethod().Name);
         }
 
         public void AddDataUseConsent(string customConsentName, string customConsentValue)
         {
-            Debug.Log ("Dummy " + MethodBase.GetCurrentMethod().Name);
+            Debug.Log ("Placeholder " + MethodBase.GetCurrentMethod().Name);
         }
     }
 }
