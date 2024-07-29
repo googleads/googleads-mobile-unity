@@ -3,6 +3,11 @@
 #### Version Next
 - Renamed `DummyClient` to `PlaceholderClient`.
 
+#### [Version 3.17.1](https://dl.google.com/googleadmobadssdk/mediation/unity/mytarget/MyTargetUnityAdapter-3.17.1.zip)
+- Supports [myTarget Android adapter version 5.21.1.0](https://github.com/googleads/googleads-mobile-android-mediation/blob/main/ThirdPartyAdapters/mytarget/CHANGELOG.md#version-52110).
+- Supports [myTarget iOS adapter version 5.21.5.0](https://github.com/googleads/googleads-mobile-ios-mediation/blob/main/adapters/MyTarget/CHANGELOG.md#version-52150).
+- Built and tested with the Google Mobile Ads Unity Plugin version 9.2.0.
+
 #### [Version 3.17.0](https://dl.google.com/googleadmobadssdk/mediation/unity/mytarget/MyTargetUnityAdapter-3.17.0.zip)
 - Supports [myTarget Android adapter version 5.21.0.0](https://github.com/googleads/googleads-mobile-android-mediation/blob/main/ThirdPartyAdapters/mytarget/CHANGELOG.md#version-52100).
 - Supports [myTarget iOS adapter version 5.21.4.0](https://github.com/googleads/googleads-mobile-ios-mediation/blob/main/adapters/MyTarget/CHANGELOG.md#version-52140).
