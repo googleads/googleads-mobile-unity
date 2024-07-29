@@ -3,6 +3,11 @@
 #### Version Next
 - Renamed `DummyClient` to `PlaceholderClient`.
 
+#### [Version 1.6.5](https://dl.google.com/googleadmobadssdk/mediation/unity/mintegral/MintegralUnityAdapter-1.6.5.zip)
+- Supports [Mintegral Android adapter version 16.7.81.0](https://github.com/googleads/googleads-mobile-android-mediation/blob/main/ThirdPartyAdapters/mintegral/CHANGELOG.md#version-167810).
+- Supports [Mintegral iOS adapter version 7.6.8.0](https://github.com/googleads/googleads-mobile-ios-mediation/blob/main/adapters/Mintegral/CHANGELOG.md#version-7680).
+- Built and tested with the Google Mobile Ads Unity Plugin version 9.2.0.
+
 #### [Version 1.6.4](https://dl.google.com/googleadmobadssdk/mediation/unity/mintegral/MintegralUnityAdapter-1.6.4.zip)
 - Supports [Mintegral Android adapter version 16.7.61.0](https://github.com/googleads/googleads-mobile-android-mediation/blob/main/ThirdPartyAdapters/mintegral/CHANGELOG.md#version-167610).
 - Supports [Mintegral iOS adapter version 7.6.7.0](https://github.com/googleads/googleads-mobile-ios-mediation/blob/main/adapters/Mintegral/CHANGELOG.md#version-7670).
