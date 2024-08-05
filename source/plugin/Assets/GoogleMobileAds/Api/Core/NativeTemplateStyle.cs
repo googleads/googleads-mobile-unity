@@ -17,7 +17,7 @@ namespace GoogleMobileAds.Api
 {
 
   /// <summary>
-  /// Defines ID constants for templates that can be used to render native ads.
+  /// Defines ID constants for templates to render native ads.
   /// </summary>
   public class NativeTemplateId
   {
