@@ -12,10 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System;
-using System.Collections;
-using UnityEngine;
-
 using GoogleMobileAds.Mediation.Chartboost.Common;
 
 namespace GoogleMobileAds.Mediation.Chartboost
@@ -25,6 +21,8 @@ namespace GoogleMobileAds.Mediation.Chartboost
         public static IChartboostClient ChartboostInstance()
         {
             #if UNITY_EDITOR
+            // Testing UNITY_EDITOR first because the editor also responds to the currently
+            // selected platform.
             return new GoogleMobileAds.Mediation.Chartboost.Common.PlaceholderClient();
             #elif UNITY_ANDROID
             return GoogleMobileAds.Mediation.Chartboost.Android.ChartboostClient.Instance;
