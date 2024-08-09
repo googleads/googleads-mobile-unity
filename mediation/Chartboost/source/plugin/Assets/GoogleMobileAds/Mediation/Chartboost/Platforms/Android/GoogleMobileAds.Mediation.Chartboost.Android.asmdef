@@ -1,9 +1,0 @@
-{
-	"name": "GoogleMobileAds.Mediation.Chartboost.Android",
-	"references": [
-		"GoogleMobileAds.Mediation.Chartboost.Core",
-		"GoogleMobileAds.Mediation.Chartboost.Common"
-	],
-	"includePlatforms": [],
-	"excludePlatforms": []
-}
