@@ -15,12 +15,15 @@
 
 namespace GoogleMobileAds.Mediation.Chartboost.Api
 {
+    /// <summary>
+    /// Consent options for GDPR compliance.
+    /// </summary>
     public enum CBGDPRDataUseConsent
     {
         /// <summary>
         /// User does not consent to behavioral targeting in compliance with GDPR.
-        NonBehavioral = 0,
         /// </summary>
+        NonBehavioral = 0,
 
         /// <summary>
         /// User consents to behavioral targeting in compliance with GDPR.

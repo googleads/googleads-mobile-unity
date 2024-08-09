@@ -3,7 +3,9 @@
 	"references": [
 	    "GoogleMobileAds.Api.Mediation",
 		"GoogleMobileAds.Mediation.Chartboost.Common",
-		"GoogleMobileAds.Mediation.Chartboost.Core"
+		"GoogleMobileAds.Mediation.Chartboost.Core",
+        "GoogleMobileAds.Mediation.Chartboost.Android",
+        "GoogleMobileAds.Mediation.Chartboost.iOS"
 	],
 	"includePlatforms": [],
 	"excludePlatforms": []

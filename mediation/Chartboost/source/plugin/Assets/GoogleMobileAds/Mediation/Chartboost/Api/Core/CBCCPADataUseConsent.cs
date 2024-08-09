@@ -15,12 +15,19 @@
 
 namespace GoogleMobileAds.Mediation.Chartboost.Api
 {
+    /// <summary>
+    /// Consent options for CCPA compliance.
+    /// </summary>
     public enum CBCCPADataUseConsent
     {
-        /// User does not consent to the sale of his or her personal information in compliance with CCPA.
+        /// <summary>
+        /// User does not consent to the sale of their personal information in compliance with CCPA.
+        /// </summary>
         OptOutSale = 0,
 
-        /// User consents to the sale of his or her personal information in compliance with CCPA.
+        /// <summary>
+        /// User consents to the sale of their personal information in compliance with CCPA.
+        /// </summary>
         OptInSale,
     }
 }
