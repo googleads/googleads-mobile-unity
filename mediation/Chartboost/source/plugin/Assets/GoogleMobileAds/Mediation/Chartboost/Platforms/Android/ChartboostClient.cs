@@ -32,6 +32,7 @@ namespace GoogleMobileAds.Mediation.Chartboost.Android
         private const string chartboostCCPAModelClass = "com.chartboost.sdk.privacy.model.CCPA";
         private const string chartboostCCPAModelEnum =
                 "com.chartboost.sdk.privacy.model.CCPA$CCPA_CONSENT";
+        private const string UnityActivityClassName = "com.unity3d.player.UnityPlayer";
 
         private static ChartboostClient instance = new ChartboostClient();
         private ChartboostClient() {}
@@ -65,9 +66,7 @@ namespace GoogleMobileAds.Mediation.Chartboost.Android
                 return;
             }
 
-            AndroidJavaClass unityPlayer = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
-            AndroidJavaObject currentActivity =
-                    unityPlayer.GetStatic<AndroidJavaObject>("currentActivity");
+            AndroidJavaObject currentActivity = getCurrentActivityAndroidJavaObject();
             AndroidJavaObject dataUseConsent =
                     new AndroidJavaObject(chartboostGDPRModelClass, gdprConsentObject);
             AndroidJavaClass chartboost = new AndroidJavaClass(chartboostSDKClass);
@@ -95,9 +94,7 @@ namespace GoogleMobileAds.Mediation.Chartboost.Android
                 return;
             }
 
-            AndroidJavaClass unityPlayer = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
-            AndroidJavaObject currentActivity =
-                    unityPlayer.GetStatic<AndroidJavaObject>("currentActivity");
+            AndroidJavaObject currentActivity = getCurrentActivityAndroidJavaObject();
             AndroidJavaObject dataUseConsent =
                     new AndroidJavaObject(chartboostCCPAModelClass, ccpaConsentObject);
             AndroidJavaClass chartboost = new AndroidJavaClass(chartboostSDKClass);
@@ -106,14 +103,22 @@ namespace GoogleMobileAds.Mediation.Chartboost.Android
 
         public void AddDataUseConsent(string customConsentName, string customConsentValue)
         {
-            AndroidJavaClass unityPlayer = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
-            AndroidJavaObject currentActivity =
-                    unityPlayer.GetStatic<AndroidJavaObject>("currentActivity");
+            AndroidJavaObject currentActivity = getCurrentActivityAndroidJavaObject();
             AndroidJavaObject dataUseConsent =
                     new AndroidJavaObject(chartboostCustomPrivacyClass, customConsentName,
                             customConsentValue);
             AndroidJavaClass chartboost = new AndroidJavaClass(chartboostSDKClass);
             chartboost.CallStatic("addDataUseConsent", currentActivity, dataUseConsent);
+        }
+
+        // Private utility methods
+
+        private AndroidJavaObject getCurrentActivityAndroidJavaObject()
+        {
+            AndroidJavaClass unityPlayer = new AndroidJavaClass(UnityActivityClassName);
+            AndroidJavaObject currentActivity =
+                    unityPlayer.GetStatic<AndroidJavaObject>("currentActivity");
+            return currentActivity;
         }
     }
 }
