@@ -1,7 +1,10 @@
 ## myTarget Unity Mediation Plugin Changelog
 
-#### Version Next
+#### [Version 3.18.0](https://dl.google.com/googleadmobadssdk/mediation/unity/mytarget/MyTargetUnityAdapter-3.18.0.zip)
 - Renamed `DummyClient` to `PlaceholderClient`.
+- Supports [myTarget Android adapter version 5.22.1.0](https://github.com/googleads/googleads-mobile-android-mediation/blob/main/ThirdPartyAdapters/mytarget/CHANGELOG.md#version-52210).
+- Supports [myTarget iOS adapter version 5.21.6.0](https://github.com/googleads/googleads-mobile-ios-mediation/blob/main/adapters/MyTarget/CHANGELOG.md#version-52160).
+- Built and tested with the Google Mobile Ads Unity Plugin version 9.2.0.
 
 #### [Version 3.17.1](https://dl.google.com/googleadmobadssdk/mediation/unity/mytarget/MyTargetUnityAdapter-3.17.1.zip)
 - Supports [myTarget Android adapter version 5.21.1.0](https://github.com/googleads/googleads-mobile-android-mediation/blob/main/ThirdPartyAdapters/mytarget/CHANGELOG.md#version-52110).
