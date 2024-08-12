@@ -1,7 +1,10 @@
 ## IronSource Unity Mediation Plugin Changelog
 
-#### Version Next
+#### [Version 3.2.1](https://dl.google.com/googleadmobadssdk/mediation/unity/ironsource/IronSourceUnityAdapter-3.2.1.zip)
 - Renamed `DummyClient` to `PlaceholderClient`.
+- Supports [IronSource Android adapter version 8.2.1.0](https://github.com/googleads/googleads-mobile-android-mediation/blob/main/ThirdPartyAdapters/ironsource/CHANGELOG.md#version-8210).
+- Supports [IronSource iOS adapter version 8.2.0.0.0](https://github.com/googleads/googleads-mobile-ios-mediation/blob/main/adapters/IronSource/CHANGELOG.md#version-82000).
+- Built and tested with the Google Mobile Ads Unity Plugin version 9.2.0.
 
 #### [Version 3.2.0](https://dl.google.com/googleadmobadssdk/mediation/unity/ironsource/IronSourceUnityAdapter-3.2.0.zip)
 - Supports [IronSource Android adapter version 8.2.0.0](https://github.com/googleads/googleads-mobile-android-mediation/blob/main/ThirdPartyAdapters/ironsource/CHANGELOG.md#version-8200).
