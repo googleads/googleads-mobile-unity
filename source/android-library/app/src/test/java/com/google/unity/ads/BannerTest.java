@@ -1,11 +1,10 @@
 package com.google.unity.ads;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static com.google.common.truth.Truth.assertThat;
 import static org.mockito.Mockito.verify;
 
 import android.app.Activity;
+import android.view.View;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.LoadAdError;
@@ -41,12 +40,12 @@ public class BannerTest {
   }
 
   @Test
-  public void testCreateBanner_adViewIsNotNull() {
-    assertNotNull(banner.adView);
+  public void createBanner_adViewIsNotNull() {
+    assertThat(banner.adView).isNotNull();
   }
 
   @Test
-  public void testLoadAd() {
+  public void loadAd_callsOnAdLoaded_whenAdLoadSucceeds() {
     banner.loadAd(new AdRequest.Builder().build());
 
     // Simulate a successful ad load.
@@ -58,7 +57,7 @@ public class BannerTest {
   }
 
   @Test
-  public void testAdFailedToLoad() {
+  public void loadAd_callsOnAdFailedToLoad_whenAdLoadFails() {
     banner.loadAd(new AdRequest.Builder().build());
 
     // Simulate an ad failed to load event.
@@ -80,21 +79,33 @@ public class BannerTest {
   public void isCollapsible_returnsTrue_whenAdViewIsCollapsible() {
     fakeAdView.setCollapsible(true);
     banner.adView = fakeAdView;
-    assertTrue(banner.isCollapsible());
+    assertThat(banner.isCollapsible()).isTrue();
   }
 
   @Test
   public void isCollapsible_returnsFalse_whenAdViewIsNotCollapsible() {
     fakeAdView.setCollapsible(false);
     banner.adView = fakeAdView;
-    assertFalse(banner.isCollapsible());
+    assertThat(banner.isCollapsible()).isFalse();
   }
 
   @Test
   public void isCollapsible_returnsFalse_whenAdViewIsNull() {
     fakeAdView.setCollapsible(true);
     banner.adView = null;
-    assertFalse(banner.isCollapsible());
+    assertThat(banner.isCollapsible()).isFalse();
+  }
+
+  @Test
+  public void show_setsAdViewVisibilityToVisible() {
+    banner.show();
+    assertThat(banner.adView.getVisibility()).isEqualTo(View.VISIBLE);
+  }
+
+  @Test
+  public void hide_setsAdViewVisibilityToGone() {
+    banner.hide();
+    assertThat(banner.adView.getVisibility()).isEqualTo(View.GONE);
   }
 
   @After
