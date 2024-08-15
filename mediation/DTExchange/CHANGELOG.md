@@ -1,7 +1,10 @@
 ## DT Exchange Unity Mediation Plugin Changelog
 
-#### Version Next
+#### [Version 3.3.0](https://dl.google.com/googleadmobadssdk/mediation/unity/dtexchange/DTExchangeUnityAdapter-3.3.0.zip)
 - Renamed `DummyClient` to `PlaceholderClient`.
+- Supports [DT Exchange Android adapter version 8.3.0.0](https://github.com/googleads/googleads-mobile-android-mediation/blob/main/ThirdPartyAdapters/dtexchange/CHANGELOG.md#version-8300).
+- Supports [DT Exchange iOS adapter version 8.3.1.0](https://github.com/googleads/googleads-mobile-ios-mediation/blob/main/adapters/DTExchange/CHANGELOG.md#version-8310).
+- Built and tested with the Google Mobile Ads Unity Plugin version 9.2.0.
 
 #### [Version 3.2.1](https://dl.google.com/googleadmobadssdk/mediation/unity/dtexchange/DTExchangeUnityAdapter-3.2.1.zip)
 - Supports [DT Exchange Android adapter version 8.2.7.0](https://github.com/googleads/googleads-mobile-android-mediation/blob/main/ThirdPartyAdapters/dtexchange/CHANGELOG.md#version-8270).
