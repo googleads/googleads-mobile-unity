@@ -1,5 +1,10 @@
 ## Pangle Unity Mediation Plugin Changelog
 
+#### [Version 4.2.1](https://dl.google.com/googleadmobadssdk/mediation/unity/pangle/PangleUnityAdapter-4.2.1.zip)
+- Supports [Pangle Android adapter version 6.1.0.7.0](https://github.com/googleads/googleads-mobile-android-mediation/blob/main/ThirdPartyAdapters/pangle/CHANGELOG.md#version-61070).
+- Supports [Pangle iOS adapter version 6.1.0.6.0](https://github.com/googleads/googleads-mobile-ios-mediation/blob/main/adapters/Pangle/CHANGELOG.md#version-61060).
+- Built and tested with the Google Mobile Ads Unity Plugin version 9.2.0.
+
 #### [Version 4.2.0](https://dl.google.com/googleadmobadssdk/mediation/unity/pangle/PangleUnityAdapter-4.2.0.zip)
 - Renamed `DummyClient` to `PlaceholderClient`.
 - Supports [Pangle Android adapter version 6.1.0.6.0](https://github.com/googleads/googleads-mobile-android-mediation/blob/main/ThirdPartyAdapters/pangle/CHANGELOG.md#version-61060).
