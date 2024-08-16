@@ -14,8 +14,6 @@
 
 #if UNITY_IOS
 
-using UnityEngine;
-
 using GoogleMobileAds.Mediation.Pangle.Common;
 
 namespace GoogleMobileAds.Mediation.Pangle.iOS

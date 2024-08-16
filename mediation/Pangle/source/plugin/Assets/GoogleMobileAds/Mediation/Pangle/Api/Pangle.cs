@@ -12,9 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using UnityEngine;
-
-using GoogleMobileAds.Mediation.Pangle;
 using GoogleMobileAds.Mediation.Pangle.Common;
 
 namespace GoogleMobileAds.Mediation.Pangle.Api
