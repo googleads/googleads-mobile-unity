@@ -1,0 +1,22 @@
+{
+    "name": "GoogleMobileAds.Mediation.Pangle.Mediation",
+    "rootNamespace": "",
+    "references": [
+        "GoogleMobileAds.Mediation.Pangle.Common",
+        "GoogleMobileAds.Mediation.Pangle.Android",
+        "GoogleMobileAds.Mediation.Pangle.iOS"
+    ],
+    "includePlatforms": [
+        "Android",
+        "iOS",
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
