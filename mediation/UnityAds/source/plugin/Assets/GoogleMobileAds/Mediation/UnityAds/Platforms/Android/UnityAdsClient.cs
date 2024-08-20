@@ -14,7 +14,6 @@
 
 #if UNITY_ANDROID
 
-using System.Reflection;
 using UnityEngine;
 
 using GoogleMobileAds.Mediation.UnityAds.Common;

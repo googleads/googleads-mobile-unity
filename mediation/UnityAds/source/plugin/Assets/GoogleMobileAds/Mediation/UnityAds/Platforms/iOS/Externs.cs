@@ -14,7 +14,6 @@
 
 #if UNITY_IOS
 
-using System;
 using System.Runtime.InteropServices;
 
 namespace GoogleMobileAds.Mediation.UnityAds.iOS
