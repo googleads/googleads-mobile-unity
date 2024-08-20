@@ -1,0 +1,19 @@
+{
+    "name": "GoogleMobileAds.Mediation.UnityAds.iOS",
+    "rootNamespace": "",
+    "references": [
+        "GoogleMobileAds.Mediation.UnityAds.Common"
+    ],
+    "includePlatforms": [
+        "Editor",
+        "iOS"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
