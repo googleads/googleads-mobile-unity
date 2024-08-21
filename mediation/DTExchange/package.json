@@ -1,0 +1,21 @@
+{
+  "name": "com.google.ads.mobile.mediation.dtexchange",
+  "version": "3.3.0",
+  "displayName": "Google Mobile Ads DT Exchange Mediation",
+  "keywords": [
+    "Google",
+    "Mobile",
+    "Ads",
+    "vh-name:GoogleMobileAdsMediationDTExchange",
+    "vh-name:Google Mobile Ads DT Exchange Mediation"
+  ],
+  "author": {
+    "name": "Google LLC",
+    "url": "https://github.com/googleads/googleads-mobile-unity-mediiation"
+  },
+  "description": "The Google Mobile Ads mediation plugin for DT Exchange package allows you to load and display ads from DT Exchange using mediation, covering waterfall integrations.",
+  "unity": "2019.4",
+  "dependencies": {
+    "com.google.ads.mobile": "9.0.0"
+  }
+}
