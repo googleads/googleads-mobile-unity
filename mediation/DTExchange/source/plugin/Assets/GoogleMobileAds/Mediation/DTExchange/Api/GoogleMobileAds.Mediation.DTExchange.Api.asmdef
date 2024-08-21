@@ -1,0 +1,19 @@
+{
+    "name": "GoogleMobileAds.Mediation.DTExchange.Api",
+    "rootNamespace": "",
+    "references": [
+        "GoogleMobileAds.Api.Mediation",
+        "GoogleMobileAds.Mediation.DTExchange.Common",
+        "GoogleMobileAds.Mediation.DTExchange.Mediation"
+    ],
+    "references": [],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
