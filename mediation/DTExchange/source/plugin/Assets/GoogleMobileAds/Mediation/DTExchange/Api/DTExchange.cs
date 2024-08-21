@@ -14,7 +14,6 @@
 
 using UnityEngine;
 
-using GoogleMobileAds.Mediation.DTExchange;
 using GoogleMobileAds.Mediation.DTExchange.Common;
 
 namespace GoogleMobileAds.Mediation.DTExchange.Api
