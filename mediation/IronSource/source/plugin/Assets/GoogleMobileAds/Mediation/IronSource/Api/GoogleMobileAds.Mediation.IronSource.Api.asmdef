@@ -1,0 +1,19 @@
+{
+    "name": "GoogleMobileAds.Mediation.IronSource.Api",
+    "rootNamespace": "",
+    "references": [
+        "GoogleMobileAds.Api.Mediation",
+        "GoogleMobileAds.Mediation.IronSource.Common",
+        "GoogleMobileAds.Mediation.IronSource.Mediation"
+    ],
+    "references": [],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
