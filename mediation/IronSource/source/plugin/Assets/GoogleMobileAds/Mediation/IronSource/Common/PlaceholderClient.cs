@@ -12,37 +12,27 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#if UNITY_IOS
+using System.Reflection;
 
 using UnityEngine;
 
-using GoogleMobileAds.Mediation.IronSource.Common;
-
-namespace GoogleMobileAds.Mediation.IronSource.iOS
+namespace GoogleMobileAds.Mediation.IronSource.Common
 {
-    public class IronSourceClient : IIronSourceClient
+    public class PlaceholderClient : IIronSourceClient
     {
-        private static IronSourceClient instance = new IronSourceClient();
-        private IronSourceClient() { }
-
-        public static IronSourceClient Instance
+        public PlaceholderClient ()
         {
-            get
-            {
-                return instance;
-            }
+            Debug.Log ("Placeholder " + MethodBase.GetCurrentMethod ().Name);
         }
 
         public void SetConsent(bool consent)
         {
-            Externs.GADUMIronSourceSetConsent(consent);
+            Debug.Log ("Placeholder " + MethodBase.GetCurrentMethod ().Name);
         }
 
         public void SetMetaData(string key, string metaDataValue)
         {
-            Externs.GADUMIronSourceSetMetaData(key, metaDataValue);
+            Debug.Log ("Placeholder " + MethodBase.GetCurrentMethod ().Name);
         }
     }
 }
-
-#endif

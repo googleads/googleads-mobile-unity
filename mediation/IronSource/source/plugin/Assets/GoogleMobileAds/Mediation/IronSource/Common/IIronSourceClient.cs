@@ -1,4 +1,4 @@
-// Copyright 2018 Google LLC
+﻿// Copyright 2018 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,28 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System;
-using System.Reflection;
-
-using UnityEngine;
-
 namespace GoogleMobileAds.Mediation.IronSource.Common
 {
-    public class PlaceholderClient : IIronSourceClient
+    public interface IIronSourceClient
     {
-        public PlaceholderClient ()
-        {
-            Debug.Log ("Placeholder " + MethodBase.GetCurrentMethod ().Name);
-        }
-
-        public void SetConsent(bool consent)
-        {
-            Debug.Log ("Placeholder " + MethodBase.GetCurrentMethod ().Name);
-        }
-
-        public void SetMetaData(string key, string metaDataValue)
-        {
-            Debug.Log ("Placeholder " + MethodBase.GetCurrentMethod ().Name);
-        }
+        void SetConsent(bool consent);
+        void SetMetaData(string key, string metaDataValue);
     }
 }
