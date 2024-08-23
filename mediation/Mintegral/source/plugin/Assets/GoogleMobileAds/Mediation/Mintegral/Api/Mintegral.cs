@@ -12,9 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using UnityEngine;
-
-using GoogleMobileAds.Mediation.Mintegral;
 using GoogleMobileAds.Mediation.Mintegral.Common;
 
 namespace GoogleMobileAds.Mediation.Mintegral.Api

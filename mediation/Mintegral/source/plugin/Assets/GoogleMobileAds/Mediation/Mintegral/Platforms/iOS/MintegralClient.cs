@@ -14,8 +14,6 @@
 
 #if UNITY_IOS
 
-using UnityEngine;
-
 using GoogleMobileAds.Mediation.Mintegral.Common;
 
 namespace GoogleMobileAds.Mediation.Mintegral.iOS
