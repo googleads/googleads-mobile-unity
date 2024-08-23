@@ -1,0 +1,22 @@
+{
+    "name": "GoogleMobileAds.Mediation.Mintegral.Mediation",
+    "rootNamespace": "",
+    "references": [
+        "GoogleMobileAds.Mediation.Mintegral.Common",
+        "GoogleMobileAds.Mediation.Mintegral.Android",
+        "GoogleMobileAds.Mediation.Mintegral.iOS"
+    ],
+    "includePlatforms": [
+        "Editor",
+		"Android",
+        "iOS"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

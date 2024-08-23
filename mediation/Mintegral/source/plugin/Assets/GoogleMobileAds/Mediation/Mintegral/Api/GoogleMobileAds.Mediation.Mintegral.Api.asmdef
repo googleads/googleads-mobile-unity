@@ -1,0 +1,19 @@
+{
+	"name": "GoogleMobileAds.Mediation.Mintegral.Api",
+    "rootNamespace": "",
+    "references": [
+	    "GoogleMobileAds.Api.Mediation",
+        "GoogleMobileAds.Mediation.Mintegral.Common",
+        "GoogleMobileAds.Mediation.Mintegral.Mediation"
+    ],
+    "references": [],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
