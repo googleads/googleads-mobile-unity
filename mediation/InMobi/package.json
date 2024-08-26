@@ -1,0 +1,21 @@
+{
+  "name": "com.google.ads.mobile.mediation.inmobi",
+  "version": "4.6.3",
+  "displayName": "Google Mobile Ads InMobi Mediation",
+  "keywords": [
+    "Google",
+    "Mobile",
+    "Ads",
+    "vh-name:GoogleMobileAdsMediationInMobi",
+    "vh-name:Google Mobile Ads InMobi Mediation"
+  ],
+  "author": {
+    "name": "Google LLC",
+    "url": "https://github.com/googleads/googleads-mobile-unity-mediation"
+  },
+  "description": "The Google Mobile Ads mediation plugin for InMobi package allows you to load and display ads from InMobi using mediation, covering waterfall and bidding integrations.",
+  "unity": "2019.4",
+  "dependencies": {
+    "com.google.ads.mobile": "9.0.0"
+  }
+}
