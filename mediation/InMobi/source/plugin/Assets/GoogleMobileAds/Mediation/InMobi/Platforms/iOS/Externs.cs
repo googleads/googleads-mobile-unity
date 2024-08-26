@@ -12,24 +12,18 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System;
-using System.Reflection;
-using System.Collections.Generic;
+#if UNITY_IOS
 
-using UnityEngine;
+using System.Runtime.InteropServices;
 
-namespace GoogleMobileAds.Mediation.InMobi.Common
+namespace GoogleMobileAds.Mediation.InMobi.iOS
 {
-    public class PlaceholderClient : IInMobiClient
+    // Externs used by the iOS component
+    internal class Externs
     {
-        public PlaceholderClient()
-        {
-            Debug.Log("Placeholder " + MethodBase.GetCurrentMethod().Name);
-        }
-
-        public void UpdateGDPRConsent(Dictionary<string, string> consentObject)
-        {
-            Debug.Log("Placeholder " + MethodBase.GetCurrentMethod().Name);
-        }
+        [DllImport("__Internal")]
+        internal static extern void GADMInMobiUpdateGDPRConsent(string consentObjectString);
     }
 }
+
+#endif

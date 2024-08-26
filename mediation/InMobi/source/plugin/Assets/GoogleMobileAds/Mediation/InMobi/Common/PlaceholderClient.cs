@@ -1,4 +1,4 @@
-﻿// Copyright 2018 Google LLC
+// Copyright 2018 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,13 +12,23 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System;
+using System.Reflection;
 using System.Collections.Generic;
+
+using UnityEngine;
 
 namespace GoogleMobileAds.Mediation.InMobi.Common
 {
-    public interface IInMobiClient
+    public class PlaceholderClient : IInMobiClient
     {
-        void UpdateGDPRConsent(Dictionary<string, string> consentObject);
+        public PlaceholderClient()
+        {
+            Debug.Log("Placeholder " + MethodBase.GetCurrentMethod().Name);
+        }
+
+        public void UpdateGDPRConsent(Dictionary<string, string> consentObject)
+        {
+            Debug.Log("Placeholder " + MethodBase.GetCurrentMethod().Name);
+        }
     }
 }

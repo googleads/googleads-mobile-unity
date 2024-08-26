@@ -15,7 +15,6 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-using GoogleMobileAds.Mediation.InMobi;
 using GoogleMobileAds.Mediation.InMobi.Common;
 
 namespace GoogleMobileAds.Mediation.InMobi.Api

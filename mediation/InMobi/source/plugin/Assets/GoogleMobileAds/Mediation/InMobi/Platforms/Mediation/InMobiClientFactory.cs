@@ -12,9 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System;
-using UnityEngine;
-
 using GoogleMobileAds.Mediation.InMobi.Common;
 
 namespace GoogleMobileAds.Mediation.InMobi
