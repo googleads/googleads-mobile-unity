@@ -1,0 +1,19 @@
+{
+    "name": "GoogleMobileAds.Mediation.InMobi.Api",
+    "rootNamespace": "",
+    "references": [
+        "GoogleMobileAds.Api.Mediation",
+        "GoogleMobileAds.Mediation.InMobi.Common",
+        "GoogleMobileAds.Mediation.InMobi.Mediation"
+    ],
+    "references": [],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
