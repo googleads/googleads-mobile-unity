@@ -1,0 +1,19 @@
+{
+    "name": "GoogleMobileAds.Mediation.MyTarget.Android",
+    "rootNamespace": "",
+    "references": [
+        "GoogleMobileAds.Mediation.MyTarget.Common"
+    ],
+    "includePlatforms": [
+        "Android",
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
