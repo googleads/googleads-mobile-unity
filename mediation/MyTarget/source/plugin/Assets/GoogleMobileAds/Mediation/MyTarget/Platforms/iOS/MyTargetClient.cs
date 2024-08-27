@@ -12,51 +12,55 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System;
-using System.Reflection;
+#if UNITY_IOS
 
-using UnityEngine;
+using GoogleMobileAds.Mediation.MyTarget.Common;
 
-namespace GoogleMobileAds.Mediation.MyTarget.Common
+namespace GoogleMobileAds.Mediation.MyTarget.iOS
 {
-    public class PlaceholderClient : IMyTargetClient
+    public class MyTargetClient : IMyTargetClient
     {
-        public PlaceholderClient()
+        private static MyTargetClient instance = new MyTargetClient();
+        private MyTargetClient() { }
+
+        public static MyTargetClient Instance
         {
-            Debug.Log ("Placeholder " + MethodBase.GetCurrentMethod().Name);
+            get
+            {
+                return instance;
+            }
         }
 
         public void SetUserConsent(bool userConsent)
         {
-            Debug.Log ("Placeholder " + MethodBase.GetCurrentMethod().Name);
+            Externs.GADUMMyTargetSetUserConsent(userConsent);
         }
 
         public bool GetUserConsent()
         {
-            Debug.Log ("Placeholder " + MethodBase.GetCurrentMethod().Name);
-            return false;
+            return Externs.GADUMMyTargetGetUserConsent();
         }
 
         public void SetUserAgeRestricted(bool userAgeRestricted)
         {
-            Debug.Log ("Placeholder " + MethodBase.GetCurrentMethod().Name);
+            Externs.GADUMMyTargetSetUserAgeRestricted(userAgeRestricted);
         }
 
         public bool IsUserAgeRestricted()
         {
-            Debug.Log ("Placeholder " + MethodBase.GetCurrentMethod().Name);
-            return false;
+            return Externs.GADUMMyTargetIsUserAgeRestricted();
         }
 
         public void SetCCPAUserConsent(bool ccpaUserConsent)
         {
-            Debug.Log ("Placeholder " + MethodBase.GetCurrentMethod().Name);
+            Externs.GADUMMyTargetSetCCPAUserConsent(ccpaUserConsent);
         }
 
         public bool GetCCPAUserConsent()
         {
-            Debug.Log ("Placeholder " + MethodBase.GetCurrentMethod().Name);
-            return false;
+            return Externs.GADUMMyTargetGetCCPAUserConsent();
         }
     }
 }
+
+#endif
