@@ -6,4 +6,11 @@
       </repositories>
     </androidPackage>
   </androidPackages>
+  <iosPods>
+    <iosPod name="GoogleUserMessagingPlatform" version="2.5.0">
+      <sources>
+        <source>https://github.com/CocoaPods/Specs</source>
+      </sources>
+    </iosPod>
+  </iosPods>
 </dependencies>
