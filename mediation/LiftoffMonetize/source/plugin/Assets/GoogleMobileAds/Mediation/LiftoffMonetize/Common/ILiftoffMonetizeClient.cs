@@ -12,16 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System;
-
-using GoogleMobileAds.Mediation.LiftoffMonetize.Api;
-
 namespace GoogleMobileAds.Mediation.LiftoffMonetize.Common
 {
     public interface ILiftoffMonetizeClient
     {
-        void SetGDPRStatus(bool gdprStatus, String consentMessageVersion);
-        void SetGDPRMessageVersion(String gdprMessageVersion);
+        void SetGDPRStatus(bool gdprStatus, string consentMessageVersion);
+        void SetGDPRMessageVersion(string gdprMessageVersion);
         void SetCCPAStatus(bool ccpaStatus);
     }
 }

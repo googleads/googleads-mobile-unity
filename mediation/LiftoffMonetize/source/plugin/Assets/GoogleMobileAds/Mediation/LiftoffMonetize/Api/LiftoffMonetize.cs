@@ -12,9 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System;
-
-using GoogleMobileAds.Mediation.LiftoffMonetize;
 using GoogleMobileAds.Mediation.LiftoffMonetize.Common;
 
 namespace GoogleMobileAds.Mediation.LiftoffMonetize.Api
@@ -29,7 +26,7 @@ namespace GoogleMobileAds.Mediation.LiftoffMonetize.Api
             client.SetGDPRStatus(gdprStatus, consentMessageVersion);
         }
 
-        public static void SetGDPRMessageVersion(String gdprMessageVersion)
+        public static void SetGDPRMessageVersion(string gdprMessageVersion)
         {
             client.SetGDPRMessageVersion(gdprMessageVersion);
         }
@@ -54,7 +51,7 @@ namespace GoogleMobileAds.Api.Mediation.LiftoffMonetize
                 gdprStatus, consentMessageVersion);
         }
 
-        public static void SetGDPRMessageVersion(String gdprMessageVersion)
+        public static void SetGDPRMessageVersion(string gdprMessageVersion)
         {
             GoogleMobileAds.Mediation.LiftoffMonetize.Api.LiftoffMonetize.SetGDPRMessageVersion(
                 gdprMessageVersion);

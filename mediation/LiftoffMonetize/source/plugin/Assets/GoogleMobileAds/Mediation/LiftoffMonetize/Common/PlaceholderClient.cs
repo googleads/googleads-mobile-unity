@@ -12,12 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System;
 using System.Reflection;
 
 using UnityEngine;
-
-using GoogleMobileAds.Mediation.LiftoffMonetize.Api;
 
 namespace GoogleMobileAds.Mediation.LiftoffMonetize.Common
 {
@@ -33,7 +30,7 @@ namespace GoogleMobileAds.Mediation.LiftoffMonetize.Common
             Debug.Log("Placeholder " + MethodBase.GetCurrentMethod().Name);
         }
 
-        public void SetGDPRMessageVersion(String gdprMessageVersion)
+        public void SetGDPRMessageVersion(string gdprMessageVersion)
         {
             Debug.Log("Placeholder " + MethodBase.GetCurrentMethod().Name);
         }

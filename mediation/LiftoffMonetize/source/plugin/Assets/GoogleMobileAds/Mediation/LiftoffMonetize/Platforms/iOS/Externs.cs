@@ -14,10 +14,7 @@
 
 #if UNITY_IOS
 
-using System;
 using System.Runtime.InteropServices;
-
-using GoogleMobileAds.Mediation.LiftoffMonetize.Api;
 
 namespace GoogleMobileAds.Mediation.LiftoffMonetize.iOS
 {

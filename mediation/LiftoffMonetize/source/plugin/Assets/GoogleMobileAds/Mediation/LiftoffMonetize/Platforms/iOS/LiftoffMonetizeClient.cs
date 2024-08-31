@@ -14,10 +14,6 @@
 
 #if UNITY_IOS
 
-using System;
-using UnityEngine;
-using System.Runtime.InteropServices;
-using GoogleMobileAds.Mediation.LiftoffMonetize.Api;
 using GoogleMobileAds.Mediation.LiftoffMonetize.Common;
 
 namespace GoogleMobileAds.Mediation.LiftoffMonetize.iOS
@@ -35,12 +31,12 @@ namespace GoogleMobileAds.Mediation.LiftoffMonetize.iOS
             }
         }
 
-        public void SetGDPRStatus(bool gdprStatus, String consentMessageVersion)
+        public void SetGDPRStatus(bool gdprStatus, string consentMessageVersion)
         {
             Externs.GADUMLiftoffMonetizeSetGDPRStatus(gdprStatus);
         }
 
-        public void SetGDPRMessageVersion(String gdprMessageVersion)
+        public void SetGDPRMessageVersion(string gdprMessageVersion)
         {
             Externs.GADUMLiftoffMonetizeSetGDPRMessageVersion(gdprMessageVersion);
         }

@@ -14,10 +14,8 @@
 
 #if UNITY_ANDROID
 
-using System;
 using UnityEngine;
 
-using GoogleMobileAds.Mediation.LiftoffMonetize.Api;
 using GoogleMobileAds.Mediation.LiftoffMonetize.Common;
 
 namespace GoogleMobileAds.Mediation.LiftoffMonetize.Android
@@ -38,14 +36,14 @@ namespace GoogleMobileAds.Mediation.LiftoffMonetize.Android
             }
         }
 
-        public void SetGDPRStatus(bool gdprStatus, String consentMessageVersion)
+        public void SetGDPRStatus(bool gdprStatus, string consentMessageVersion)
         {
             AndroidJavaClass vunglePrivacySettings =
                     new AndroidJavaClass(VUNGLE_PRIVACY_SETTINGS_CLASS_NAME);
             vunglePrivacySettings.CallStatic("setGDPRStatus", gdprStatus, consentMessageVersion);
         }
 
-        public void SetGDPRMessageVersion(String gdprMessageVersion)
+        public void SetGDPRMessageVersion(string gdprMessageVersion)
         {
             MonoBehaviour.print("[LiftoffMonetize Plugin] 'SetGDPRMessageVersion' is a no-op " +
                     "for Android. Use 'SetGDPRStatus' instead.");
