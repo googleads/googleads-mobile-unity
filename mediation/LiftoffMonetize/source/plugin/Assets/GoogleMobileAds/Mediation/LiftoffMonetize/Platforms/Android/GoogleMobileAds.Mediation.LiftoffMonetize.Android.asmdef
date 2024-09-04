@@ -1,0 +1,19 @@
+{
+    "name": "GoogleMobileAds.Mediation.LiftoffMonetize.Android",
+    "rootNamespace": "",
+    "references": [
+        "GoogleMobileAds.Mediation.LiftoffMonetize.Common"
+    ],
+    "includePlatforms": [
+        "Android",
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
