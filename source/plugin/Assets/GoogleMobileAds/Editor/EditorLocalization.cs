@@ -12,8 +12,6 @@ namespace GoogleMobileAds.Editor
     private const string LOCALIZATION_DATA_JSON_RELATIVE_PATH = "GoogleMobileAds/Editor";
     private const string LOCALIZATION_DATA_JSON_FILENAME =
       "gma_settings_editor_localization_data.json";
-    private const string DEFAULT_LANG_JSON_KEY = "DefaultLanguage";
-    private const string LANG_JSON_KEY = "Languages";
     private const string LOCALIZATIONS_JSON_KEY = "LocalizationsByKey";
     private const string LOCALIZATION_KEY_PREFIX = "KEY_";
 
@@ -22,26 +20,14 @@ namespace GoogleMobileAds.Editor
     private EditorLocalizationData GetLocalizationData() => _localizationData.Value;
 
     /**
-     * Defines the available languages that should be listed in the settings editor drop-down list.
-     */
-    public Dictionary<string, string> GetLanguages()
-    {
-      return GetLocalizationData().Languages;
-    }
-
-    /**
      * Gets the default language for the settings editor.
      * We assume the default locale used belong to the list of supported cultures
      * (https://www.csharp-examples.net/culture-names/), and that each key has a default
      * localization provided.
-     * Note: As more language packs get released in Unity
-     * (https://screenshot.googleplex.com/8ovypc6xvhTPm2s), we should preferably use the Unity
-     * Hub user language instead, and only use the fallback language below as last resort if the
-     * key is missing in the user language. Then, we should get rid of the UI drop-down list.
      */
     public string GetDefaultLanguage()
     {
-      return GetLocalizationData().DefaultLanguage;
+      return "en"; // English
     }
 
     /**
@@ -53,12 +39,15 @@ namespace GoogleMobileAds.Editor
     }
 
     /**
-     * Localizes a resource key based on a provided user language (originating from a ddl field in
-     * the view).
+     * Localizes a resource key based on a provided user language.
      * Returns the key name if the key could not be localized.
      */
     public string ForKey(string key)
     {
+      key = key.ToUpper();
+      // Accept both key syntaxes.
+      if (key.StartsWith(LOCALIZATION_KEY_PREFIX))
+        key = key.Replace(LOCALIZATION_KEY_PREFIX, "");
 #nullable enable
       if (GetLocalizationData().LocalizationsByKey.TryGetValue(key, out Dictionary<string, string>? localizations))
       {
@@ -115,37 +104,18 @@ namespace GoogleMobileAds.Editor
     private static EditorLocalizationData DeserializeFromJson(string json)
     {
       var data = new EditorLocalizationData();
-      data.Languages = new Dictionary<string, string>();
       data.LocalizationsByKey = new Dictionary<string, Dictionary<string, string>>();
       // We match every field in the JSON. The order in which those matches are found is used to
-      // deserialize each of those fields into their respective object property.
+      // deserialize the localization values.
       var regex = new Regex(@"""(?<val>[^""]+)""");
       var matches = regex.Matches(json);
-      var propertyName = String.Empty;
-      var numberOfKeysPerProperty = new Dictionary<string, int>()
-      {
-        {
-          DEFAULT_LANG_JSON_KEY,
-          0
-        },
-        {
-          LANG_JSON_KEY,
-          1
-        },
-        {
-          LOCALIZATIONS_JSON_KEY,
-          2
-        }
-      };
       var currentKeys = new List<string>();
       var valueProcessed = false;
       foreach (Match match in matches)
       {
         var val = match.Groups["val"].Value;
-        var isProperty = numberOfKeysPerProperty.ContainsKey(val);
-        if (isProperty)
+        if (val.Equals(LOCALIZATIONS_JSON_KEY))
         {
-          propertyName = val;
           currentKeys.Clear();
           continue;
         }
@@ -165,42 +135,28 @@ namespace GoogleMobileAds.Editor
           }
         }
 
-        if (currentKeys.Count < numberOfKeysPerProperty[propertyName])
+        // The localization values are 2 levels deep.
+        if (currentKeys.Count < 2)
         {
           currentKeys.Add(val);
           continue;
         }
 
-        ProcessValue(data, propertyName, currentKeys, val);
+        ProcessValue(data, currentKeys, val);
         valueProcessed = true;
       }
 
       return data;
     }
 
-    private static void ProcessValue(EditorLocalizationData data, string propertyName, List<string> currentKeys, string val)
+    private static void ProcessValue(EditorLocalizationData data, List<string> currentKeys, string val)
     {
-      switch (propertyName)
-      {
-        case DEFAULT_LANG_JSON_KEY:
-          data.DefaultLanguage = val;
-          break;
-        case LANG_JSON_KEY:
-          if (currentKeys.Count != 1)
-            break;
-          data.Languages[currentKeys[0]] = val;
-          break;
-        case LOCALIZATIONS_JSON_KEY:
-          if (currentKeys.Count != 2)
-            break;
-          currentKeys[0] = currentKeys[0].Replace(LOCALIZATION_KEY_PREFIX, "");
-          if (!data.LocalizationsByKey.ContainsKey(currentKeys[0]))
-            data.LocalizationsByKey[currentKeys[0]] = new Dictionary<string, string>();
-          data.LocalizationsByKey[currentKeys[0]][currentKeys[1]] = val;
-          break;
-        default:
-          break;
-      }
+      if (currentKeys.Count != 2)
+        return;
+      currentKeys[0] = currentKeys[0].Replace(LOCALIZATION_KEY_PREFIX, "");
+      if (!data.LocalizationsByKey.ContainsKey(currentKeys[0]))
+        data.LocalizationsByKey[currentKeys[0]] = new Dictionary<string, string>();
+      data.LocalizationsByKey[currentKeys[0]][currentKeys[1]] = val;
     }
   }
 }

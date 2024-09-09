@@ -1,9 +1,4 @@
 {
-  "Languages": {
-    "English": "en",
-    "Français (French)": "fr"
-  },
-  "DefaultLanguage": "en",
   "LocalizationsByKey": {
     "KEY_ANALYTICS_ENABLED_HELPBOX": {
       "en": "Sends the usage statistics to Google to gather reports on the failures and to inform future improvements of the Google Mobile Ads Unity plugin.",

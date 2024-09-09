@@ -115,7 +115,7 @@ namespace GoogleMobileAds.Editor
       EditorGUI.indentLevel--;
       EditorGUILayout.Separator();
 
-      EditorGUIUtility.labelWidth = 205.0f;
+      EditorGUIUtility.labelWidth = 300.0f;
       EditorGUILayout.LabelField(localization.ForKey("UMP_SPECIFIC_SETTINGS_LABEL"),
                                  EditorStyles.boldLabel);
       EditorGUI.indentLevel++;
