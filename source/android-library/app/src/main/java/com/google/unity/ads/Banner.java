@@ -574,6 +574,14 @@ public class Banner {
     insets.left = displayCutout.getSafeInsetLeft();
     insets.bottom = displayCutout.getSafeInsetBottom();
     insets.right = displayCutout.getSafeInsetRight();
+    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.R) {
+      return insets;
+    }
+    boolean areNavigationBarsVisible = windowInsets.isVisible(WindowInsets.Type.navigationBars());
+    if (areNavigationBarsVisible) {
+      insets.bottom = 0;
+      return insets;
+    }
     return insets;
   }
 
