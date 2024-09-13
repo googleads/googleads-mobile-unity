@@ -12,8 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System;
-
 using GoogleMobileAds.Api.Mediation;
 
 namespace GoogleMobileAds.Mediation.Line.Api
@@ -29,7 +27,7 @@ namespace GoogleMobileAds.Mediation.Line.Api
             get { return "com.google.unity.mediation.line.LineUnityExtrasBuilder"; }
         }
 
-        public override String IOSMediationExtraBuilderClassName
+        public override string IOSMediationExtraBuilderClassName
         {
             get { return "LineExtrasBuilder"; }
         }
