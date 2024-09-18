@@ -16,7 +16,7 @@
 
 <dependencies>
   <androidPackages>
-    <androidPackage spec="com.google.ads.mediation:line:2.8.20240808.0">
+    <androidPackage spec="com.google.ads.mediation:line:2.8.20240827.0">
       <repositories>
         <repository>https://repo.maven.apache.org/maven2/</repository>
         <repository>https://dl.google.com/dl/android/maven2/</repository>
@@ -25,6 +25,6 @@
   </androidPackages>
 
   <iosPods>
-    <iosPod name="GoogleMobileAdsMediationLine" version="2.8.20240612.0"/>
+    <iosPod name="GoogleMobileAdsMediationLine" version="2.8.20240827.0"/>
   </iosPods>
 </dependencies>
