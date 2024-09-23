@@ -1,3 +1,4 @@
+using System;
 using UnityEditor;
 using UnityEngine;
 
@@ -12,8 +13,16 @@ namespace GoogleMobileAds.Editor
     SerializedProperty _enableKotlinXCoroutinesPackagingOption;
     SerializedProperty _optimizeInitialization;
     SerializedProperty _optimizeAdLoading;
+    SerializedProperty _userLanguage;
     SerializedProperty _userTrackingUsageDescription;
     SerializedProperty _validateGradleDependencies;
+
+    // Using an ordered list of languages is computationally expensive when trying to create an
+    // array out of them for purposes of showing a dropdown menu. Care should be taken to ensure
+    // these arrays are kept in sync.
+    string[] availableLanguages = new string[] { "English", "French"};
+    string[] languageCodes = new string[] { "en", "fr" };
+    int selectedIndex = 0;
 
     [MenuItem("Assets/Google Mobile Ads/Settings...")]
     public static void OpenInspector()
@@ -29,10 +38,14 @@ namespace GoogleMobileAds.Editor
           serializedObject.FindProperty("enableKotlinXCoroutinesPackagingOption");
       _optimizeInitialization = serializedObject.FindProperty("optimizeInitialization");
       _optimizeAdLoading = serializedObject.FindProperty("optimizeAdLoading");
+      _userLanguage = serializedObject.FindProperty("userLanguage");
       _userTrackingUsageDescription =
           serializedObject.FindProperty("userTrackingUsageDescription");
       _validateGradleDependencies =
           serializedObject.FindProperty("validateGradleDependencies");
+
+      selectedIndex = Array.IndexOf(languageCodes, _userLanguage.stringValue);
+      selectedIndex = selectedIndex >= 0 ? selectedIndex : 0;
     }
 
     public override void OnInspectorGUI()
@@ -49,6 +62,13 @@ namespace GoogleMobileAds.Editor
       }
 
       EditorLocalization localization = new();
+      EditorGUI.BeginChangeCheck();
+      selectedIndex = EditorGUILayout.Popup("Language", selectedIndex, availableLanguages);
+      if (EditorGUI.EndChangeCheck())
+      {
+        _userLanguage.stringValue = languageCodes[selectedIndex];
+      }
+
 
       EditorGUIUtility.labelWidth = 60.0f;
       EditorGUILayout.LabelField(localization.ForKey("GMA_APP_ID_LABEL"),

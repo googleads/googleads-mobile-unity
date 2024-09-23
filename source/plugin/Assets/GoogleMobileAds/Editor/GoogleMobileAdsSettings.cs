@@ -61,7 +61,7 @@ namespace GoogleMobileAds.Editor
     private bool validateGradleDependencies;
 
     [SerializeField]
-    private string userLanguage = string.Empty;
+    private string userLanguage = "en";
 
     public string GoogleMobileAdsAndroidAppId
     {

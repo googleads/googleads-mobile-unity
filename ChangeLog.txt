@@ -1,6 +1,11 @@
 Google Mobile Ads Unity Plugin Change Log
 
 **************
+Version Next
+**************
+- Added French language support for Settings Inspector window.
+
+**************
 Version 9.2.0
 **************
 - Added `IsCollapsible` API to `BannerView` to check if a collapsible banner was loaded.
