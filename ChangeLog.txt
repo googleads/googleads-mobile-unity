@@ -1,9 +1,11 @@
 Google Mobile Ads Unity Plugin Change Log
 
 **************
-Version Next
+Version 9.2.1
 **************
 - Added French language support for Settings Inspector window.
+- Updated the dependency version for Android GMA SDK to 23.4.0 and iOS GMA SDK to 11.10.0.
+- Updated iOS UMP SDK dependency to 2.6.0.
 
 **************
 Version 9.2.0
