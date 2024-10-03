@@ -1,0 +1,72 @@
+{
+  "LocalizationsByKey": {
+    "KEY_ANALYTICS_ENABLED_HELPBOX": {
+      "en": "Sends the usage statistics to Google to gather reports on the failures and to inform future improvements of the Google Mobile Ads Unity plugin.",
+      "fr": "Envoie les données d'utilisation à Google pour collecter des rapports d'erreurs et participer aux futures améliorations du plugin Google Mobile Ads Unity."
+    },
+    "KEY_ANALYTICS_ENABLED_SETTING": {
+      "en": "Send plugin usage statistics",
+      "fr": "Envoyer les données d'utilisation et de diagnostic du plugin"
+    },
+    "KEY_ANDROID_SETTINGS_LABEL": {
+      "en": "Android settings",
+      "fr": "Paramètres Android"
+    },
+    "KEY_ENABLE_KOTLINX_COROUTINES_PACKAGING_OPTION_HELPBOX": {
+      "en": "Adds an instruction to fix the build.gradle build error with message '2 files found with path 'META-INF/kotlinx_coroutines_core.version''. For more details, see https://developers.google.com/admob/unity/gradle",
+      "fr": "Ajoute une instruction pour corriger l'erreur de compilation de build.gradle '2 files found with path 'META-INF/kotlinx_coroutines_core.version''. Pour plus d'informations, visitez https://developers.google.com/admob/unity/gradle?hl=fr"
+    },
+    "KEY_ENABLE_KOTLINX_COROUTINES_PACKAGING_OPTION_SETTING": {
+      "en": "Enable kotlinx.coroutines packaging option",
+      "fr": "Activer l'option de packaging kotlinx.coroutines"
+    },
+    "KEY_GMA_APP_ID_HELPBOX": {
+      "en": "Google Mobile Ads App ID will look similar to this sample ID: ca-app-pub-3940256099942544~3347511713",
+      "fr": "L'ID de votre application Google Mobile Ads sera similaire à cet exemple: ca-app-pub-3940256099942544~3347511713"
+    },
+    "KEY_GMA_APP_ID_LABEL": {
+      "en": "Google Mobile Ads App ID",
+      "fr": "ID d'application Google Mobile Ads"
+    },
+    "KEY_MISC_LABEL": {
+      "en": "Misc",
+      "fr": "Divers"
+    },
+    "KEY_OPTIMIZE_AD_LOADING_HELPBOX": {
+      "en": "Ad loading tasks will be offloaded to a background thread.",
+      "fr": "Les tâches de chargement des annonces seront transférées à une thread d'arrière-plan."
+    },
+    "KEY_OPTIMIZE_AD_LOADING_SETTING": {
+      "en": "Optimize ad loading",
+      "fr": "Optimiser le chargement des annonces"
+    },
+    "KEY_OPTIMIZE_INITIALIZATION_HELPBOX": {
+      "en": "Initialization will be offloaded to a background thread.",
+      "fr": "L'initialisation sera transférée à une thread d'arrière-plan."
+    },
+    "KEY_OPTIMIZE_INITIALIZATION_SETTING": {
+      "en": "Optimize initialization",
+      "fr": "Optimiser l'initialisation"
+    },
+    "KEY_UMP_SPECIFIC_SETTINGS_LABEL": {
+      "en": "UMP-specific settings",
+      "fr": "Paramètres spécifiques UMP"
+    },
+    "KEY_USER_TRACKING_USAGE_DESCRIPTION_HELPBOX": {
+      "en": "A message that informs the user why an iOS app is requesting permission to use data for tracking the user or the device.",
+      "fr": "Un message qui informe l'utilisateur pourquoi une application iOS demande l'autorisation d'utiliser des données pour suivre l'utilisateur ou l'appareil."
+    },
+    "KEY_USER_TRACKING_USAGE_DESCRIPTION_SETTING": {
+      "en": "User Tracking Usage Description",
+      "fr": "Description de l'utilisation du suivi des utilisateurs"
+    },
+    "KEY_VALIDATE_GRADLE_DEPENDENCIES_HELPBOX": {
+      "en": "This option ensures the GMA Android SDK is compatible with the version of Android Gradle Plugin being used. Enabling this option is required for Unity Projects that use Android Gradle Plugin under version 4.2.2.",
+      "fr": "Cette option garantit que le SDK Android GMA est compatible avec la version utilisée du plugin Android Gradle. L'activation de cette option est requise pour les projets Unity utilisant le plugin Android Gradle avant la version 4.2.2."
+    },
+    "KEY_VALIDATE_GRADLE_DEPENDENCIES_SETTING": {
+      "en": "Remove property tag from GMA Android SDK",
+      "fr": "Supprimer la balise de propriété du SDK GMA Android"
+    }
+  }
+}

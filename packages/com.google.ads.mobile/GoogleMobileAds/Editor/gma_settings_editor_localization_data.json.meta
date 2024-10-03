@@ -1,9 +1,9 @@
 fileFormatVersion: 2
-guid: d6461f9591d240498f49453b73a48552
+guid: 8c0b8577289d4c24ae956f7e535f6216
 labels:
 - gvh
 - gvh_version-9.2.1
-- gvhp_exportpath-GoogleMobileAds/link.xml
+- gvhp_exportpath-GoogleMobileAds/Editor/gma_settings_editor_localization_data.json
 timeCreated: 1480838400
 DefaultImporter:
   userData:

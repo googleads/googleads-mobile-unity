@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 78dcde3244ec42b6b480f0a9cff0342b
+guid: f20300083e264cd787e68e370120d8a8
 labels:
 - gvh
 - gvh_manifest
-- gvh_version-9.2.0
-- gvhp_exportpath-GoogleMobileAds/GoogleMobileAds_version-9.2.0_manifest.txt
+- gvh_version-9.2.1
+- gvhp_exportpath-GoogleMobileAds/GoogleMobileAds_version-9.2.1_manifest.txt
 - gvhp_manifestname-0Google Mobile Ads for Unity
 - gvhp_manifestname-1GoogleMobileAds
 timeCreated: 0

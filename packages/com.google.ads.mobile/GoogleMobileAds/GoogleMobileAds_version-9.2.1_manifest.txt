@@ -1,5 +1,7 @@
 Assets/GoogleMobileAds/CHANGELOG.md
 Assets/GoogleMobileAds/Editor/BuildPreProcessor.cs
+Assets/GoogleMobileAds/Editor/EditorLocalization.cs
+Assets/GoogleMobileAds/Editor/EditorLocalizationData.cs
 Assets/GoogleMobileAds/Editor/EditorPathUtils.cs
 Assets/GoogleMobileAds/Editor/GoogleMobileAds.Editor.asmdef
 Assets/GoogleMobileAds/Editor/GoogleMobileAdsDependencies.xml
@@ -38,6 +40,7 @@ Assets/GoogleMobileAds/Editor/Resources/PlaceholderAds/Rewarded/768x1024.prefab
 Assets/GoogleMobileAds/Editor/Resources/Ump/ConsentForm.png
 Assets/GoogleMobileAds/Editor/Resources/Ump/ConsentForm.prefab
 Assets/GoogleMobileAds/Editor/Utils.cs
+Assets/GoogleMobileAds/Editor/gma_settings_editor_localization_data.json
 Assets/GoogleMobileAds/GoogleMobileAds.Android.dll
 Assets/GoogleMobileAds/GoogleMobileAds.Common.dll
 Assets/GoogleMobileAds/GoogleMobileAds.Core.dll

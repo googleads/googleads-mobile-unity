@@ -1,8 +1,8 @@
 fileFormatVersion: 2
-guid: 56a634db3b664dd5ac9cb4e2807319dc
+guid: 3fbd85863e7246c8b9de13243cc83b5d
 labels:
 - gvh
-- gvh_version-9.2.0
+- gvh_version-9.2.1
 - gvhp_exportpath-Plugins/iOS/unity-plugin-library.a
 timeCreated: 1480838400
 PluginImporter:
