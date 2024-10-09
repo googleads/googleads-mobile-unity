@@ -30,16 +30,13 @@ public class UnityRewardedAd {
    */
   private RewardedAd rewardedAd;
 
-  /**
-   * The {@code Activity} on which the rewarded ad will display.
-   */
-  private Activity activity;
+  /** The {@code Activity} on which the rewarded ad will display. */
+  private final Activity activity;
 
   /**
    * A callback implemented in Unity via {@code AndroidJavaProxy} to receive ad events.
    */
   private UnityRewardedAdCallback callback;
-
 
   public UnityRewardedAd(Activity activity, UnityRewardedAdCallback callback) {
     this.activity = activity;
@@ -178,6 +175,18 @@ public class UnityRewardedAd {
         });
   }
 
+  /**
+   * Retrieves the next rewarded ad available in Preload queue, or {@code null} if no ad is
+   * available.
+   */
+  public void pollAd(@NonNull String adUnitId) {
+    rewardedAd = RewardedAd.pollAd(activity, adUnitId);
+  }
+
+  /** Returns {@code true} if there is an interstitial ad available in the pre-load queue. */
+  public boolean isAdAvailable(@NonNull String adUnitId) {
+    return RewardedAd.isAdAvailable(activity, adUnitId);
+  }
 
   /**
    * Shows the rewarded ad if it has loaded.

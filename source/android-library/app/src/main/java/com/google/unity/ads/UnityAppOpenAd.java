@@ -159,6 +159,19 @@ public class UnityAppOpenAd {
                 }));
   }
 
+  /**
+   * Retrieves the next app open ad available in Preload queue, or {@code null} if no ad is
+   * available.
+   */
+  public void pollAd(@NonNull String adUnitId) {
+    appOpenAd = AppOpenAd.pollAd(activity, adUnitId);
+  }
+
+  /** Returns {@code true} if there is an interstitial ad available in the pre-load queue. */
+  public boolean isAdAvailable(@NonNull String adUnitId) {
+    return AppOpenAd.isAdAvailable(activity, adUnitId);
+  }
+
   public void show() {
     if (appOpenAd == null) {
       Log.e(PluginUtils.LOGTAG, "Tried to show app open ad before it was ready. This should "

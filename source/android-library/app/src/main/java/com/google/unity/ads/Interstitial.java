@@ -42,15 +42,11 @@ public class Interstitial {
    */
   private InterstitialAd interstitialAd;
 
-  /**
-   * The {@code Activity} on which the interstitial will display.
-   */
-  private Activity activity;
+  /** The {@code Activity} on which the interstitial will display. */
+  private final Activity activity;
 
-  /**
-   * A listener implemented in Unity via {@code AndroidJavaProxy} to receive ad events.
-   */
-  private UnityInterstitialAdCallback callback;
+  /** A listener implemented in Unity via {@code AndroidJavaProxy} to receive ad events. */
+  private final UnityInterstitialAdCallback callback;
 
   public Interstitial(Activity activity, UnityInterstitialAdCallback callback) {
     this.activity = activity;
@@ -195,6 +191,19 @@ public class Interstitial {
         );
       }
     });
+  }
+
+  /** Returns {@code true} if there is an interstitial ad available in the pre-load queue. */
+  public boolean isAdAvailable(@NonNull String adUnitId) {
+    return InterstitialAd.isAdAvailable(activity, adUnitId);
+  }
+
+  /**
+   * Retrieves the next interstitial ad available in pre-load queue, or {@code null} if no ad is
+   * available.
+   */
+  public void pollAd(@NonNull String adUnitId) {
+    interstitialAd = InterstitialAd.pollAd(activity, adUnitId);
   }
 
   /** Returns the {@link InterstitialAd} ad unit ID. */
