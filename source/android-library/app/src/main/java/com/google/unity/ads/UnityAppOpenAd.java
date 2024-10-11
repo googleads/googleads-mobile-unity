@@ -25,6 +25,7 @@ import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdValue;
 import com.google.android.gms.ads.FullScreenContentCallback;
 import com.google.android.gms.ads.LoadAdError;
+import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.OnPaidEventListener;
 import com.google.android.gms.ads.ResponseInfo;
 import com.google.android.gms.ads.appopen.AppOpenAd;
@@ -53,6 +54,75 @@ public class UnityAppOpenAd {
    */
   private final UnityAppOpenAdCallback callback;
 
+  private OnPaidEventListener onPaidEventListener =
+      new OnPaidEventListener() {
+        @Override
+        public void onPaidEvent(final AdValue adValue) {
+          runOnNewThread(
+              () -> {
+                if (callback != null) {
+                  callback.onPaidEvent(
+                      adValue.getPrecisionType(),
+                      adValue.getValueMicros(),
+                      adValue.getCurrencyCode());
+                }
+              });
+        }
+      };
+
+  private FullScreenContentCallback fullScreenContentCallback =
+      new FullScreenContentCallback() {
+        @Override
+        public void onAdFailedToShowFullScreenContent(final AdError error) {
+          runOnNewThread(
+              () -> {
+                if (callback != null) {
+                  callback.onAdFailedToShowFullScreenContent(error);
+                }
+              });
+        }
+
+        @Override
+        public void onAdShowedFullScreenContent() {
+          runOnNewThread(
+              () -> {
+                if (callback != null) {
+                  callback.onAdShowedFullScreenContent();
+                }
+              });
+        }
+
+        @Override
+        public void onAdDismissedFullScreenContent() {
+          runOnNewThread(
+              () -> {
+                if (callback != null) {
+                  callback.onAdDismissedFullScreenContent();
+                }
+              });
+        }
+
+        @Override
+        public void onAdImpression() {
+          runOnNewThread(
+              () -> {
+                if (callback != null) {
+                  callback.onAdImpression();
+                }
+              });
+        }
+
+        @Override
+        public void onAdClicked() {
+          runOnNewThread(
+              () -> {
+                if (callback != null) {
+                  callback.onAdClicked();
+                }
+              });
+        }
+      };
+
   public UnityAppOpenAd(Activity activity, UnityAppOpenAdCallback callback) {
     this.activity = activity;
     this.callback = callback;
@@ -69,75 +139,8 @@ public class UnityAppOpenAd {
                   @Override
                   public void onAdLoaded(@NonNull AppOpenAd ad) {
                     appOpenAd = ad;
-
-                    appOpenAd.setOnPaidEventListener(
-                        new OnPaidEventListener() {
-                          @Override
-                          public void onPaidEvent(final AdValue adValue) {
-                            runOnNewThread(
-                                () -> {
-                                  if (callback != null) {
-                                    callback.onPaidEvent(
-                                        adValue.getPrecisionType(),
-                                        adValue.getValueMicros(),
-                                        adValue.getCurrencyCode());
-                                  }
-                                });
-                          }
-                        });
-
-                    appOpenAd.setFullScreenContentCallback(
-                        new FullScreenContentCallback() {
-                          @Override
-                          public void onAdFailedToShowFullScreenContent(final AdError error) {
-                            runOnNewThread(
-                                () -> {
-                                  if (callback != null) {
-                                    callback.onAdFailedToShowFullScreenContent(error);
-                                  }
-                                });
-                          }
-
-                          @Override
-                          public void onAdShowedFullScreenContent() {
-                            runOnNewThread(
-                                () -> {
-                                  if (callback != null) {
-                                    callback.onAdShowedFullScreenContent();
-                                  }
-                                });
-                          }
-
-                          @Override
-                          public void onAdDismissedFullScreenContent() {
-                            runOnNewThread(
-                                () -> {
-                                  if (callback != null) {
-                                    callback.onAdDismissedFullScreenContent();
-                                  }
-                                });
-                          }
-
-                          @Override
-                          public void onAdImpression() {
-                            runOnNewThread(
-                                () -> {
-                                  if (callback != null) {
-                                    callback.onAdImpression();
-                                  }
-                                });
-                          }
-
-                          @Override
-                          public void onAdClicked() {
-                            runOnNewThread(
-                                () -> {
-                                  if (callback != null) {
-                                    callback.onAdClicked();
-                                  }
-                                });
-                          }
-                        });
+                    appOpenAd.setOnPaidEventListener(onPaidEventListener);
+                    appOpenAd.setFullScreenContentCallback(fullScreenContentCallback);
 
                     runOnNewThread(
                         () -> {
@@ -165,6 +168,34 @@ public class UnityAppOpenAd {
    */
   public void pollAd(@NonNull String adUnitId) {
     appOpenAd = AppOpenAd.pollAd(activity, adUnitId);
+    if (appOpenAd == null) {
+      Log.e(PluginUtils.LOGTAG, "Failed to obtain an App Open Ad from the preloader.");
+      LoadAdError error =
+          new LoadAdError(
+              AdRequest.ERROR_CODE_INTERNAL_ERROR,
+              "Failed to obtain an App Open Ad from the preloader.",
+              MobileAds.ERROR_DOMAIN,
+              /* cause= */ null,
+              /* responseInfo= */ null);
+      new Thread(
+              new Runnable() {
+                @Override
+                public void run() {
+                  if (callback != null) {
+                    callback.onAppOpenAdFailedToLoad(error);
+                  }
+                }
+              })
+          .start();
+    }
+    activity.runOnUiThread(
+        new Runnable() {
+          @Override
+          public void run() {
+            appOpenAd.setOnPaidEventListener(onPaidEventListener);
+          }
+        });
+    appOpenAd.setFullScreenContentCallback(fullScreenContentCallback);
   }
 
   /** Returns {@code true} if there is an interstitial ad available in the pre-load queue. */
