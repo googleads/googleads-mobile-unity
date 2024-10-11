@@ -9,6 +9,7 @@ import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdValue;
 import com.google.android.gms.ads.FullScreenContentCallback;
 import com.google.android.gms.ads.LoadAdError;
+import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.OnPaidEventListener;
 import com.google.android.gms.ads.OnUserEarnedRewardListener;
 import com.google.android.gms.ads.ResponseInfo;
@@ -38,6 +39,99 @@ public class UnityRewardedAd {
    */
   private UnityRewardedAdCallback callback;
 
+  private OnPaidEventListener onPaidEventListener =
+      new OnPaidEventListener() {
+        @Override
+        public void onPaidEvent(final AdValue adValue) {
+          new Thread(
+                  new Runnable() {
+                    @Override
+                    public void run() {
+                      if (callback != null) {
+                        callback.onPaidEvent(
+                            adValue.getPrecisionType(),
+                            adValue.getValueMicros(),
+                            adValue.getCurrencyCode());
+                      }
+                    }
+                  })
+              .start();
+        }
+      };
+
+  private FullScreenContentCallback fullScreenContentCallback =
+      new FullScreenContentCallback() {
+        @Override
+        public void onAdFailedToShowFullScreenContent(final AdError error) {
+          new Thread(
+                  new Runnable() {
+                    @Override
+                    public void run() {
+                      if (callback != null) {
+                        callback.onAdFailedToShowFullScreenContent(error);
+                      }
+                    }
+                  })
+              .start();
+        }
+
+        @Override
+        public void onAdShowedFullScreenContent() {
+          new Thread(
+                  new Runnable() {
+                    @Override
+                    public void run() {
+                      if (callback != null) {
+                        callback.onAdShowedFullScreenContent();
+                      }
+                    }
+                  })
+              .start();
+        }
+
+        @Override
+        public void onAdDismissedFullScreenContent() {
+          new Thread(
+                  new Runnable() {
+                    @Override
+                    public void run() {
+                      if (callback != null) {
+                        callback.onAdDismissedFullScreenContent();
+                      }
+                    }
+                  })
+              .start();
+        }
+
+        @Override
+        public void onAdImpression() {
+          new Thread(
+                  new Runnable() {
+                    @Override
+                    public void run() {
+                      if (callback != null) {
+                        callback.onAdImpression();
+                      }
+                    }
+                  })
+              .start();
+        }
+
+        @Override
+        public void onAdClicked() {
+          new Thread(
+                  new Runnable() {
+                    @Override
+                    public void run() {
+                      if (callback != null) {
+                        callback.onAdClicked();
+                      }
+                    }
+                  })
+              .start();
+        }
+      };
+
   public UnityRewardedAd(Activity activity, UnityRewardedAdCallback callback) {
     this.activity = activity;
     this.callback = callback;
@@ -61,114 +155,32 @@ public class UnityRewardedAd {
                   @Override
                   public void onAdLoaded(@NonNull RewardedAd ad) {
                     rewardedAd = ad;
-                    rewardedAd.setOnPaidEventListener(
-                        new OnPaidEventListener() {
-                          @Override
-                          public void onPaidEvent(final AdValue adValue) {
-                            new Thread(
-                                new Runnable() {
-                                  @Override
-                                  public void run() {
-                                    if (callback != null) {
-                                      callback.onPaidEvent(
-                                          adValue.getPrecisionType(),
-                                          adValue.getValueMicros(),
-                                          adValue.getCurrencyCode());
-                                    }
-                                  }
-                                }
-                            ).start();
-                          }
-                        });
-                    rewardedAd.setFullScreenContentCallback(
-                        new FullScreenContentCallback() {
-                          @Override
-                          public void onAdFailedToShowFullScreenContent(final AdError error) {
-                            new Thread(
-                                new Runnable() {
-                                  @Override
-                                  public void run() {
-                                    if (callback != null) {
-                                      callback.onAdFailedToShowFullScreenContent(error);
-                                    }
-                                  }
-                                })
-                                .start();
-                          }
-                          @Override
-                          public void onAdShowedFullScreenContent() {
-                            new Thread(
-                                new Runnable() {
-                                  @Override
-                                  public void run() {
-                                    if (callback != null) {
-                                      callback.onAdShowedFullScreenContent();
-                                    }
-                                  }
-                                })
-                                .start();
-                          }
-                          @Override
-                          public void onAdDismissedFullScreenContent() {
-                            new Thread(
-                                new Runnable() {
-                                  @Override
-                                  public void run() {
-                                    if (callback != null) {
-                                      callback.onAdDismissedFullScreenContent();
-                                    }
-                                  }
-                                })
-                                .start();
-                          }
-                          @Override
-                          public void onAdImpression() {
-                            new Thread(
-                                new Runnable() {
-                                  @Override
-                                  public void run() {
-                                    if (callback != null) {
-                                      callback.onAdImpression();
-                                    }
-                                  }
-                                })
-                                .start();
-                          }
-                          @Override
-                          public void onAdClicked() {
-                            new Thread(
-                                new Runnable() {
-                                  @Override
-                                  public void run() {
-                                    if (callback != null) {
-                                      callback.onAdClicked();
-                                    }
-                                  }
-                                }).start();
-                          }
-                        });
+                    rewardedAd.setOnPaidEventListener(onPaidEventListener);
+                    rewardedAd.setFullScreenContentCallback(fullScreenContentCallback);
                     new Thread(
-                        new Runnable() {
-                          @Override
-                          public void run() {
-                            if (callback != null) {
-                              callback.onRewardedAdLoaded();
-                            }
-                          }
-                        })
+                            new Runnable() {
+                              @Override
+                              public void run() {
+                                if (callback != null) {
+                                  callback.onRewardedAdLoaded();
+                                }
+                              }
+                            })
                         .start();
                   }
+
                   @Override
                   public void onAdFailedToLoad(final LoadAdError error) {
                     new Thread(
-                        new Runnable() {
-                          @Override
-                          public void run() {
-                            if (callback != null) {
-                              callback.onRewardedAdFailedToLoad(error);
-                            }
-                          }
-                        }).start();
+                            new Runnable() {
+                              @Override
+                              public void run() {
+                                if (callback != null) {
+                                  callback.onRewardedAdFailedToLoad(error);
+                                }
+                              }
+                            })
+                        .start();
                   }
                 });
           }
@@ -181,6 +193,38 @@ public class UnityRewardedAd {
    */
   public void pollAd(@NonNull String adUnitId) {
     rewardedAd = RewardedAd.pollAd(activity, adUnitId);
+    if (rewardedAd == null) {
+      Log.e(PluginUtils.LOGTAG, "Failed to obtain a Rewarded Ad from the preloader.");
+      LoadAdError error =
+          new LoadAdError(
+              AdRequest.ERROR_CODE_INTERNAL_ERROR,
+              "Failed to obtain a Rewarded Ad from the preloader.",
+              MobileAds.ERROR_DOMAIN,
+              /* cause= */ null,
+              /* responseInfo= */ null);
+      new Thread(
+              new Runnable() {
+                @Override
+                public void run() {
+                  if (callback != null) {
+                    callback.onRewardedAdFailedToLoad(error);
+                  }
+                }
+              })
+          .start();
+      if (callback != null) {
+        callback.onRewardedAdFailedToLoad(error);
+      }
+    }
+
+    activity.runOnUiThread(
+        new Runnable() {
+          @Override
+          public void run() {
+            rewardedAd.setOnPaidEventListener(onPaidEventListener);
+          }
+        });
+    rewardedAd.setFullScreenContentCallback(fullScreenContentCallback);
   }
 
   /** Returns {@code true} if there is an interstitial ad available in the pre-load queue. */
