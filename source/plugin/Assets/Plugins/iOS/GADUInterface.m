@@ -5,12 +5,14 @@
 #import "GADUAppOpenAd.h"
 #import "GADUBanner.h"
 #import "GADUInterstitial.h"
+#import "GADUMobileAds.h"
 #import "GADUNativeAdOptions.h"
 #import "GADUNativeTemplateStyle.h"
 #import "GADUNativeTemplateTextStyle.h"
 #import "GADUNativeTemplateAd.h"
 #import "GADUObjectCache.h"
 #import "GADUPluginUtil.h"
+#import "GADUPreloadConfiguration.h"
 #import "GADURequest.h"
 #import "GADURequestConfiguration.h"
 #import "GADURewardedAd.h"
@@ -104,6 +106,67 @@ int GADUGetInitNumberOfAdapterClasses(GADUTypeInitializationStatusRef statusRef)
   NSDictionary<NSString *, GADAdapterStatus *> *map = status.adapterStatusesByClassName;
   NSArray<NSString *> *classes = map.allKeys;
   return (int)classes.count;
+}
+
+/// Create an empty GADUPreloadConfiguration
+GADUTypePreloadConfigurationRef GADUCreatePreloadConfiguration() {
+  GADUPreloadConfiguration *preloadConfiguration = [[GADUPreloadConfiguration alloc] init];
+  GADUObjectCache *cache = GADUObjectCache.sharedInstance;
+  cache[preloadConfiguration.gadu_referenceKey] = preloadConfiguration;
+  return (__bridge GADUTypePreloadConfigurationRef)(preloadConfiguration);
+}
+
+const char *GADUGetPreloadConfigurationAdUnitId(GADUTypePreloadConfigurationRef preloadConfiguration) {
+  GADUPreloadConfiguration *internalPreloadConfiguration = (__bridge GADUPreloadConfiguration *)preloadConfiguration;
+  return cStringCopy(internalPreloadConfiguration.adUnitId.UTF8String);
+}
+
+void GADUSetPreloadConfigurationAdUnitId(GADUTypePreloadConfigurationRef preloadConfiguration,
+                                         const char *adUnitId) {
+  GADUPreloadConfiguration *internalPreloadConfiguration = (__bridge GADUPreloadConfiguration *)preloadConfiguration;
+  [internalPreloadConfiguration setAdUnitId:GADUStringFromUTF8String(adUnitId)];
+}
+
+int GADUGetPreloadConfigurationAdFormat(GADUTypePreloadConfigurationRef preloadConfiguration) {
+  GADUPreloadConfiguration *internalPreloadConfiguration = (__bridge GADUPreloadConfiguration *)preloadConfiguration;
+  return (int)internalPreloadConfiguration.format;
+}
+void GADUSetPreloadConfigurationAdFormat(GADUTypePreloadConfigurationRef preloadConfiguration,
+                                         NSInteger adFormat) {
+  GADUPreloadConfiguration *internalPreloadConfiguration = (__bridge GADUPreloadConfiguration *)preloadConfiguration;
+  [internalPreloadConfiguration setFormat:(GADAdFormat)adFormat];
+}
+
+void GADUSetPreloadConfigurationAdRequest(GADUTypePreloadConfigurationRef preloadConfiguration,
+                                          GADUTypeRequestRef request) {
+  GADUPreloadConfiguration *internalPreloadConfiguration = (__bridge GADUPreloadConfiguration *)preloadConfiguration;
+  GADURequest *internalRequest = (__bridge GADURequest *)request;
+  [internalPreloadConfiguration setRequest:[internalRequest request]];
+}
+
+void GADUPreloadWithCallback(GADUTypeMobileAdsClientRef *mobileAdsClient,
+                             GADUTypePreloadConfigurationRef *configurations,
+                             NSInteger configurationsLength,
+                             GADUAdAvailableForPreloadConfigurationCallback adAvailableCallback,
+                             GADUAdsExhaustedForPreloadConfigurationCallback adsExhaustedCallback) {
+  GADUMobileAds *mobileAds =
+      [[GADUMobileAds alloc] initWithMobileAdsClientReference:mobileAdsClient];
+  GADUObjectCache *cache = GADUObjectCache.sharedInstance;
+  cache[mobileAds.gadu_referenceKey] = mobileAds;
+  mobileAds.adAvailableForPreloadConfigurationCallback = adAvailableCallback;
+  mobileAds.adsExhaustedForPreloadConfigurationCallback = adsExhaustedCallback;
+//    NSMutableArray *newArray = [NSMutableArray array];
+//    [configurations enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+//         [newArray addObject:[obj name]];
+//    }];
+    NSMutableArray<GADPreloadConfiguration *> *GADConfigurations = [[NSMutableArray alloc] init];
+    NSLog(@"configurationsLength: %d", (int)configurationsLength);
+    for (int i = 0; i < (int)configurationsLength; i++) {
+        GADUPreloadConfiguration *internalPreloadConfig = (__bridge GADUPreloadConfiguration * _Nonnull)(configurations[i]);
+        [GADConfigurations addObject: [GADUPreloadConfiguration preloadConfiguration: internalPreloadConfig]];
+    }
+  [[GADMobileAds sharedInstance] startPreloadingWithConfigurations:GADConfigurations
+                                                          delegate:mobileAds];
 }
 
 // The application’s audio volume. Affects audio volumes of all ads relative to
@@ -928,7 +991,7 @@ GADUTypeNativeTemplateStyleRef GADUSetNativeTemplateStyleText(
   return (__bridge GADUTypeNativeTemplateStyleRef)(tplStyle);
 }
 
-/// Create an empty CreateRequestConfiguration
+/// Create an empty GADURequestConfiguration
 GADUTypeRequestConfigurationRef GADUCreateRequestConfiguration() {
   GADURequestConfiguration *requestConfiguration = [[GADURequestConfiguration alloc] init];
   GADUObjectCache *cache = GADUObjectCache.sharedInstance;
