@@ -105,6 +105,19 @@ namespace GoogleMobileAds.iOS
                     AdDidRecordClickCallback);
         }
 
+        // Verify if an ad is preloaded and available to show.
+        public bool IsAdAvailable(string adUnitId)
+        {
+            return Externs.GADUAppOpenAdIsPreloadedAdAvailable(adUnitId);
+        }
+
+        // Returns the next pre-loaded app open ad and null if no ad is available.
+        public IAppOpenAdClient PollAd(string adUnitId)
+        {
+            Externs.GADUAppOpenAdPreloadedAdWithAdUnitID(this.AppOpenAdPtr, adUnitId);
+            return this;
+        }
+
         // Load an ad.
         public void LoadAd(string adUnitID, AdRequest request)
         {

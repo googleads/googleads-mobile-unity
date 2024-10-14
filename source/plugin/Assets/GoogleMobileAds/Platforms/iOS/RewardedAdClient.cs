@@ -109,6 +109,19 @@ namespace GoogleMobileAds.iOS
                 RewardedAdPaidEventCallback);
         }
 
+        // Verify if an ad is preloaded and available to show.
+        public bool IsAdAvailable(string adUnitId)
+        {
+            return Externs.GADURewardedAdIsPreloadedAdAvailable(adUnitId);
+        }
+
+        // Returns the next pre-loaded rewarded ad and null if no ad is available.
+        public IRewardedAdClient PollAd(string adUnitId)
+        {
+            Externs.GADURewardedAdPreloadedAdWithAdUnitID(this.RewardedAdPtr, adUnitId);
+            return this;
+        }
+
         public void LoadAd(string adUnitID, AdRequest request) {
             IntPtr requestPtr = Utils.BuildAdManagerAdRequest(request);
             Externs.GADULoadRewardedAd(this.RewardedAdPtr, adUnitID, requestPtr);
