@@ -24,6 +24,45 @@
   return self;
 }
 
++ (BOOL)isPreloadedAdAvailable:(NSString *)adUnitId {
+  return [GADAppOpenAd isPreloadedAdAvailable:adUnitId];
+}
+
+- (void)preloadedAdWithAdUnitID:(nonnull NSString *)adUnitId {
+  __weak GADUAppOpenAd *weakSelf = self;
+  GADUAppOpenAd *strongSelf = weakSelf;
+  if (!strongSelf) {
+    return;
+  }
+  strongSelf.appOpenAd = [GADAppOpenAd preloadedAdWithAdUnitID:adUnitId];
+  if (!strongSelf.appOpenAd) {
+    if (strongSelf.adFailedToLoadCallback) {
+      NSError *error = [[NSError alloc] initWithDomain:GADErrorDomain
+                                                  code:GADErrorInternalError
+                                              userInfo:nil];
+      strongSelf.adFailedToLoadCallback(strongSelf.appOpenAdClient,
+                                        (__bridge GADUTypeErrorRef)error);
+    }
+    return;
+  }
+  strongSelf.appOpenAd.fullScreenContentDelegate = strongSelf;
+  strongSelf.appOpenAd.paidEventHandler = ^void(GADAdValue *_Nonnull adValue) {
+    GADUAppOpenAd *strongSecondSelf = weakSelf;
+    if (!strongSecondSelf) {
+      return;
+    }
+    if (strongSecondSelf.paidEventCallback) {
+      int64_t valueInMicros = [adValue.value decimalNumberByMultiplyingByPowerOf10:6].longLongValue;
+      strongSecondSelf.paidEventCallback(
+          strongSecondSelf.appOpenAdClient, (int)adValue.precision, valueInMicros,
+          [adValue.currencyCode cStringUsingEncoding:NSUTF8StringEncoding]);
+    }
+  };
+  if (strongSelf.adLoadedCallback) {
+    strongSelf.adLoadedCallback(self.appOpenAdClient);
+  }
+}
+
 - (void)loadWithAdUnitID:(nonnull NSString *)adUnit request:(nonnull GADRequest *)request {
   __weak GADUAppOpenAd *weakSelf = self;
 
@@ -36,7 +75,7 @@
                  }
                  if (error) {
                    if (strongSelf.adFailedToLoadCallback) {
-                     _lastLoadError = error;
+                     self->_lastLoadError = error;
                      strongSelf.adFailedToLoadCallback(strongSelf.appOpenAdClient,
                                                        (__bridge GADUTypeErrorRef)error);
                    }
