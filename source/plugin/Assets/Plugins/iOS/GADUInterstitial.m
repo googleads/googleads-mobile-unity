@@ -24,6 +24,46 @@
   return self;
 }
 
++ (BOOL)isPreloadedAdAvailable:(NSString *)adUnitId {
+  return [GADInterstitialAd isPreloadedAdAvailable:adUnitId];
+}
+
+- (void)preloadedAdWithAdUnitID:(NSString *)adUnitId {
+  __weak GADUInterstitial *weakSelf = self;
+
+  GADUInterstitial *strongSelf = weakSelf;
+  if (!strongSelf) {
+    return;
+  }
+  strongSelf.interstitialAd = [GADInterstitialAd preloadedAdWithAdUnitID:adUnitId];
+  if (!strongSelf.interstitialAd) {
+    if (strongSelf.adFailedToLoadCallback) {
+      NSError *error = [[NSError alloc] initWithDomain:GADErrorDomain
+                                                  code:GADErrorInternalError
+                                              userInfo:nil];
+      strongSelf.adFailedToLoadCallback(strongSelf.interstitialClient,
+                                        (__bridge GADUTypeErrorRef)error);
+    }
+    return;
+  }
+  strongSelf.interstitialAd.fullScreenContentDelegate = strongSelf;
+  strongSelf.interstitialAd.paidEventHandler = ^void(GADAdValue *_Nonnull adValue) {
+    GADUInterstitial *strongSecondSelf = weakSelf;
+    if (!strongSecondSelf) {
+      return;
+    }
+    if (strongSecondSelf.paidEventCallback) {
+      int64_t valueInMicros = [adValue.value decimalNumberByMultiplyingByPowerOf10:6].longLongValue;
+      strongSecondSelf.paidEventCallback(
+          strongSecondSelf.interstitialClient, (int)adValue.precision, valueInMicros,
+          [adValue.currencyCode cStringUsingEncoding:NSUTF8StringEncoding]);
+    }
+  };
+  if (strongSelf.adLoadedCallback) {
+    strongSelf.adLoadedCallback(self.interstitialClient);
+  }
+}
+
 - (void)loadWithAdUnitID:(NSString *)adUnitID request:(GADRequest *)request {
   __weak GADUInterstitial *weakSelf = self;
 

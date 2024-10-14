@@ -106,6 +106,83 @@ namespace GoogleMobileAds.iOS
             Externs.GADUPresentAdInspector(this.mobileAdsClientPtr, AdInspectorClosedCallback);
         }
 
+        public void Preload(List<PreloadConfiguration> configurations,
+                            Action<PreloadConfiguration> onAdsAvailable,
+                            Action<PreloadConfiguration> onAdsExhausted)
+        {
+            this.adsAvailableAction = onAdsAvailable;
+            this.adsExhaustedAction = onAdsExhausted;
+            IntPtr[] configurationsArray = new IntPtr[configurations.Count];
+            for(int configIndex = 0; configIndex < configurations.Count; configIndex++)
+            {
+                PreloadConfiguration preloadConfig = configurations[configIndex];
+                IntPtr preloadConfigRef = Externs.GADUCreatePreloadConfiguration();
+                Externs.GADUSetPreloadConfigurationAdUnitId(preloadConfigRef, preloadConfig.AdUnitId);
+                int format;
+                switch(preloadConfig.Format)
+                {
+                    case AdFormat.BANNER:
+                        format = 0; // GADAdFormatBanner
+                        break;
+                    case AdFormat.INTERSTITIAL:
+                        format = 1; // GADAdFormatInterstitial
+                        break;
+                    case AdFormat.REWARDED:
+                        format = 2; // GADAdFormatRewarded
+                        break;
+                    case AdFormat.REWARDED_INTERSTITIAL:
+                        format = 4; // GADAdFormatRewardedInterstitial
+                        break;
+                    case AdFormat.NATIVE:
+                        format = 3; // GADAdFormatNative
+                        break;
+                    case AdFormat.APP_OPEN_AD:
+                        format = 6; // GADAdFormatAppOpen
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException("PreloadConfig.Format");
+                }
+                Externs.GADUSetPreloadConfigurationAdFormat(preloadConfigRef, format);
+                if (preloadConfig.Request != null)
+                {
+                    IntPtr requestPtr = Utils.BuildAdManagerAdRequest(preloadConfig.Request);
+                    Externs.GADUSetPreloadConfigurationAdRequest(preloadConfigRef, requestPtr);
+                }
+                configurationsArray[configIndex] = preloadConfigRef;
+            }
+            Externs.GADUPreloadWithCallback(this.mobileAdsClientPtr, configurationsArray, configurations.Count, AdsAvailableCallback, AdsExhaustedCallback);
+        }
+
+        [MonoPInvokeCallback(typeof(GADUAdsAvailableCallback))]
+        private static void AdsAvailableCallback(IntPtr mobileAdsClient, IntPtr config)
+        {
+            MobileAdsClient client = IntPtrToMobileAdsClient(mobileAdsClient);
+            if (client.adsAvailableAction != null)
+            {
+                PreloadConfigurationClient preloadConfigClient = new PreloadConfigurationClient(config);
+                client.adsAvailableAction(new PreloadConfiguration()
+                {
+                    AdUnitId = preloadConfigClient.AdUnitId,
+                    Format = preloadConfigClient.Format
+                });
+            }
+        }
+
+        [MonoPInvokeCallback(typeof(GADUAdsExhaustedCallback))]
+        private static void AdsExhaustedCallback(IntPtr mobileAdsClient, IntPtr config)
+        {
+            MobileAdsClient client = IntPtrToMobileAdsClient(mobileAdsClient);
+            if (client.adsExhaustedAction!= null)
+            {
+                PreloadConfigurationClient preloadConfigClient = new PreloadConfigurationClient(config);
+                client.adsExhaustedAction(new PreloadConfiguration()
+                {
+                    AdUnitId = preloadConfigClient.AdUnitId,
+                    Format = preloadConfigClient.Format
+                });
+            }
+        }
+
         [MonoPInvokeCallback(typeof(GADUAdInspectorClosedCallback))]
         private static void AdInspectorClosedCallback(IntPtr mobileAdsClient, IntPtr errorRef)
         {
