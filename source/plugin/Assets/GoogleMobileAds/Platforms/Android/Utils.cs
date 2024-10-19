@@ -56,6 +56,14 @@ namespace GoogleMobileAds.Android
 
         public const string MobileAdsClassName = "com.google.android.gms.ads.MobileAds";
 
+        public const string PreloadConfigurationClassName = "com.google.android.gms.ads.preload.PreloadConfiguration";
+
+        public const string PreloadConfigurationBuilderClassName = "com.google.android.gms.ads.preload.PreloadConfiguration$Builder";
+
+        public const string PreloadListenerClassname = "com.google.android.gms.ads.preload.PreloadCallback";
+
+        public const string AdFormatEnumName = "com.google.android.gms.ads.AdFormat";
+
         public const string RequestConfigurationClassName = "com.google.android.gms.ads.RequestConfiguration";
 
         public const string RequestConfigurationBuilderClassName = "com.google.android.gms.ads.RequestConfiguration$Builder";
@@ -395,6 +403,29 @@ namespace GoogleMobileAds.Android
             return adManagerAdRequestBuilder.Call<AndroidJavaObject>("build");
         }
 
+        public static AndroidJavaObject GetPreloadConfigurationJavaObject(
+                PreloadConfiguration preloadConfiguration)
+        {
+            if(preloadConfiguration.AdUnitId == null)
+            {
+                throw new ArgumentNullException(nameof(preloadConfiguration.AdUnitId));
+            }
+            AndroidJavaClass adFormat = new AndroidJavaClass(Utils.AdFormatEnumName);
+            AndroidJavaObject adFormatEnum = adFormat.GetStatic<AndroidJavaObject>(
+                    preloadConfiguration.Format.ToString());
+            AndroidJavaObject preloadConfigurationBuilder =
+                    new AndroidJavaObject(Utils.PreloadConfigurationBuilderClassName,
+                                          preloadConfiguration.AdUnitId,
+                                          adFormatEnum);
+            if (preloadConfiguration.Request != null)
+            {
+                preloadConfigurationBuilder =
+                        preloadConfigurationBuilder.Call<AndroidJavaObject>("setAdRequest",
+                                Utils.GetAdRequestJavaObject(preloadConfiguration.Request));
+            }
+            return preloadConfigurationBuilder.Call<AndroidJavaObject>("build");
+        }
+
         public static AndroidJavaObject GetJavaListObject(List<String> csTypeList)
         {
 
@@ -454,6 +485,18 @@ namespace GoogleMobileAds.Android
             videoOptionsBuilder.Call<AndroidJavaObject>("setStartMuted",
                                                       (bool)videoOptions.StartMuted);
             return videoOptionsBuilder.Call<AndroidJavaObject>("build");
+        }
+
+        #endregion
+
+        #region Internal utility methods
+
+        internal static AndroidJavaObject GetCurrentActivityAndroidJavaObject()
+        {
+            AndroidJavaClass unityPlayer = new AndroidJavaClass(UnityActivityClassName);
+            AndroidJavaObject currentActivity =
+                    unityPlayer.GetStatic<AndroidJavaObject>("currentActivity");
+            return currentActivity;
         }
 
         #endregion
