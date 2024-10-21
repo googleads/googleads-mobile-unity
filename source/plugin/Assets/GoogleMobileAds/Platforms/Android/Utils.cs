@@ -408,7 +408,7 @@ namespace GoogleMobileAds.Android
         {
             if(preloadConfiguration.AdUnitId == null)
             {
-                throw new ArgumentNullException(nameof(preloadConfiguration.AdUnitId));
+                throw new ArgumentNullException("PreloadConfiguration.AdUnitId");
             }
             AndroidJavaClass adFormat = new AndroidJavaClass(Utils.AdFormatEnumName);
             AndroidJavaObject adFormatEnum = adFormat.GetStatic<AndroidJavaObject>(
@@ -421,9 +421,28 @@ namespace GoogleMobileAds.Android
             {
                 preloadConfigurationBuilder =
                         preloadConfigurationBuilder.Call<AndroidJavaObject>("setAdRequest",
-                                Utils.GetAdRequestJavaObject(preloadConfiguration.Request));
+                                Utils.GetAdManagerAdRequestJavaObject(
+                                        preloadConfiguration.Request));
             }
             return preloadConfigurationBuilder.Call<AndroidJavaObject>("build");
+        }
+
+        public static PreloadConfiguration GetPreloadConfiguration(
+                AndroidJavaObject configurationJavaObject)
+        {
+            if (configurationJavaObject == null)
+            {
+                return null;
+            }
+            string adUnitId = configurationJavaObject.Call<string>("getAdUnitId");
+            AndroidJavaObject format =
+                    configurationJavaObject.Call<AndroidJavaObject>("getAdFormat");
+            string enumValue = format.Call<string>("name");
+            AdFormat adFormat = (AdFormat)Enum.Parse(typeof(AdFormat), enumValue);
+            return new PreloadConfiguration() {
+                AdUnitId = adUnitId,
+                Format = adFormat
+            };
         }
 
         public static AndroidJavaObject GetJavaListObject(List<String> csTypeList)

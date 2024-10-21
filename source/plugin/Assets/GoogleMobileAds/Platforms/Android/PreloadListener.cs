@@ -34,15 +34,11 @@ namespace GoogleMobileAds.Android {
 
     void onAdsAvailable(AndroidJavaObject preloadConfiguration)
     {
-        if (onAdsAvailableAction == null) {
+        if (onAdsAvailableAction == null)
+        {
             return;
         }
-        PreloadConfigurationClient client = new PreloadConfigurationClient(preloadConfiguration);
-        onAdsAvailableAction(new PreloadConfiguration
-                {
-                    AdUnitId =  client.GetAdUnitId(),
-                    Format = client.GetAdFormat(),
-                });
+        onAdsAvailableAction(Utils.GetPreloadConfiguration(preloadConfiguration));
     }
 
     void onAdsExhausted(AndroidJavaObject preloadConfiguration)
@@ -51,12 +47,7 @@ namespace GoogleMobileAds.Android {
         {
             return;
         }
-        PreloadConfigurationClient client = new PreloadConfigurationClient(preloadConfiguration);
-        onAdsExhaustedAction(new PreloadConfiguration
-                {
-                    AdUnitId =  client.GetAdUnitId(),
-                    Format = client.GetAdFormat(),
-                });
+        onAdsExhaustedAction(Utils.GetPreloadConfiguration(preloadConfiguration));
     }
 
     #endregion
