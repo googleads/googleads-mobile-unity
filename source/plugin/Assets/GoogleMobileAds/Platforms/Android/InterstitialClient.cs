@@ -81,6 +81,17 @@ namespace GoogleMobileAds.Android
             return this.androidInterstitialAd.Call<string>("getAdUnitId");
         }
 
+        public bool IsAdAvailable(string adUnitId)
+        {
+            return this.androidInterstitialAd.Call<bool>("isAdAvailable", adUnitId);
+        }
+
+        public IInterstitialClient PollAd(string adUnitId)
+        {
+            this.androidInterstitialAd.Call("pollAd", adUnitId);
+            return this;
+        }
+
         // Returns ad request response info
         public IResponseInfoClient GetResponseInfoClient()
         {
