@@ -12,13 +12,16 @@ using UnityEditor.UI;
 namespace GoogleMobileAds.Samples.Utility
 {
     /// <summary>
-    /// Button with scene loading functionality.
+    /// Button for loading a scene.
     /// </summary>
-    [AddComponentMenu("GoogleMobileAds/Samples/Utility/SceneManagerButton")]
-    public class SceneManagerButton : Button
+    [AddComponentMenu("GoogleMobileAds/Samples/Utility/SceneMenuButton")]
+    public class SceneMenuButton : Button
     {
         [Tooltip("Name of the scene to load.")]
         public string SceneToLoadName = "GoogleMobileAdsScene";
+
+        [Tooltip("Text element for the label.")]
+        public Text Label;
 
         public override void OnPointerClick(PointerEventData eventData)
         {
@@ -32,12 +35,12 @@ namespace GoogleMobileAds.Samples.Utility
     }
 
 #if UNITY_EDITOR
-    [CustomEditor(typeof(SceneManagerButton))]
-    public class SceneManagerButtonEditor : ButtonEditor
+    [CustomEditor(typeof(SceneMenuButton))]
+    public class SceneMenuButtonEditor : ButtonEditor
     {
         public override void OnInspectorGUI()
         {
-            SceneManagerButton targetMyButton = target as SceneManagerButton;
+            SceneMenuButton targetMyButton = target as SceneMenuButton;
 
             var sceneToLoadName = EditorGUILayout.TextField(
                 "Scene To Load",
@@ -49,6 +52,9 @@ namespace GoogleMobileAds.Samples.Utility
                 targetMyButton.SceneToLoadName = sceneToLoadName;
             }
 
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("Label"),
+                                            new GUIContent("Label"));
+            serializedObject.ApplyModifiedProperties();
             base.OnInspectorGUI();
         }
     }
