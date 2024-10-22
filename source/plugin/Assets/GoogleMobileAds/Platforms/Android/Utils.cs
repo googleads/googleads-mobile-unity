@@ -406,7 +406,7 @@ namespace GoogleMobileAds.Android
         public static AndroidJavaObject GetPreloadConfigurationJavaObject(
                 PreloadConfiguration preloadConfiguration)
         {
-            if(preloadConfiguration.AdUnitId == null)
+            if (preloadConfiguration.AdUnitId == null)
             {
                 throw new ArgumentNullException("PreloadConfiguration.AdUnitId");
             }
@@ -424,6 +424,12 @@ namespace GoogleMobileAds.Android
                                 Utils.GetAdManagerAdRequestJavaObject(
                                         preloadConfiguration.Request));
             }
+            if (preloadConfiguration.BufferSize > 0)
+            {
+                preloadConfigurationBuilder =
+                        preloadConfigurationBuilder.Call<AndroidJavaObject>("setBufferSize",
+                                preloadConfiguration.BufferSize);
+            }
             return preloadConfigurationBuilder.Call<AndroidJavaObject>("build");
         }
 
@@ -439,15 +445,16 @@ namespace GoogleMobileAds.Android
                     configurationJavaObject.Call<AndroidJavaObject>("getAdFormat");
             string enumValue = format.Call<string>("name");
             AdFormat adFormat = (AdFormat)Enum.Parse(typeof(AdFormat), enumValue);
+            int bufferSize = configurationJavaObject.Call<int>("getBufferSize");
             return new PreloadConfiguration() {
                 AdUnitId = adUnitId,
-                Format = adFormat
+                Format = adFormat,
+                BufferSize = bufferSize
             };
         }
 
         public static AndroidJavaObject GetJavaListObject(List<String> csTypeList)
         {
-
             AndroidJavaObject javaTypeArrayList = new AndroidJavaObject("java.util.ArrayList");
             foreach (string itemList in csTypeList)
             {

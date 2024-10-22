@@ -37,6 +37,11 @@ namespace GoogleMobileAds.Api
         /// </summary>
         public AdRequest Request;
 
+        /// <summary>
+        /// The maximum amount of ads buffered for this configuration.
+        /// </summary>
+        public int BufferSize;
+
         public PreloadConfiguration() { }
 
         public PreloadConfiguration(PreloadConfiguration configuration)
@@ -44,6 +49,7 @@ namespace GoogleMobileAds.Api
             AdUnitId = configuration.AdUnitId;
             Format = configuration.Format;
             Request = configuration.Request;
+            BufferSize = configuration.BufferSize;
         }
     }
 }
