@@ -42,6 +42,12 @@ namespace GoogleMobileAds.Common
         // Creates a rewarded ad.
         void CreateRewardedAd();
 
+        // Verify if a rewarded ad is preloaded and is available to show.
+        bool IsAdAvailable(string adUnitId);
+
+        // Returns the next pre-loaded rewarded ad and null if no ad is available.
+        IRewardedAdClient PollAd(string adUnitId);
+
         // Loads a rewarded ad.
         void LoadAd(string adUnitID, AdRequest request);
 

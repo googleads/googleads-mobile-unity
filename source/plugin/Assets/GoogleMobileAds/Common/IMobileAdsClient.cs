@@ -13,6 +13,7 @@
 // limitations under the License.
 
 using System;
+using System.Collections.Generic;
 
 using GoogleMobileAds.Api;
 
@@ -23,6 +24,18 @@ namespace GoogleMobileAds.Common
 
         // Initialize the Mobile Ads SDK and mediation adapters.
         void Initialize(Action<IInitializationStatusClient> initCompleteAction);
+
+        /// <summary>
+        /// Preload ads for the given configurations.
+        /// </summary>
+        /// <param name="configurations">The configurations to preload ads.</param>
+        /// <param name="onAdAvailable">Called when an ad becomes available for the configuration.
+        /// </param>
+        /// <param name="onAdsExhausted">Called when the last available ad is exhausted for the
+        /// configuration.</param>
+        void Preload(List<PreloadConfiguration> configurations,
+                Action<PreloadConfiguration> onAdAvailable,
+                Action<PreloadConfiguration> onAdsExhausted);
 
         // Disable initialization of mediation adapters by the Mobile Ads SDK.
         void DisableMediationInitialization();

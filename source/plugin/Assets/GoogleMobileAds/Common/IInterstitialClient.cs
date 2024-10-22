@@ -41,6 +41,12 @@ namespace GoogleMobileAds.Common
         // Creates an interstitial ad.
         void CreateInterstitialAd();
 
+        // Verify if an interstitial ad is preloaded and is available to show.
+        bool IsAdAvailable(string adUnitId);
+
+        // Returns the next pre-loaded interstitial ad and null if no ad is available.
+        IInterstitialClient PollAd(string adUnitId);
+
         // Loads an interstitial ad.
         void LoadAd(string adUnitID, AdRequest request);
 
