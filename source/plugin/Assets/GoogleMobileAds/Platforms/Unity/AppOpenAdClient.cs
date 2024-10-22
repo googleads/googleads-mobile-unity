@@ -84,6 +84,18 @@ namespace GoogleMobileAds.Unity
             // Do nothing.
         }
 
+        public bool IsAdAvailable(string adUnitId)
+        {
+            Debug.Log("Preloaded ads are not supported on the Unity editor platform.");
+            return false;
+        }
+
+        public IAppOpenAdClient PollAd(string adUnitId)
+        {
+            Debug.Log("Preloaded ads are not supported on the Unity editor platform.");
+            return new AppOpenAdClient();
+        }
+
         public void LoadAd(string adUnitId, AdRequest request)
         {
             base._adUnitId = adUnitId;

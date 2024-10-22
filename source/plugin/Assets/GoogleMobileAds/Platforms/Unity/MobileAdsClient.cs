@@ -130,6 +130,12 @@ namespace GoogleMobileAds.Unity
 
         public void CreateBannerView(string adUnitId, AdSize adSize, int positionX, int positionY) {}
 
+        public void Preload(List<PreloadConfiguration> configurations,
+                Action<PreloadConfiguration> onAdsAvailable,
+                Action<PreloadConfiguration> onAdsExhausted) {
+            Debug.Log("Preloaded ads are not supported on the Unity editor platform.");
+        }
+
         public void LoadAd(AdRequest request) {}
 
         public void ShowBannerView() {}
