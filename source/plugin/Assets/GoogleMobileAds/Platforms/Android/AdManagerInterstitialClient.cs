@@ -61,6 +61,22 @@ namespace GoogleMobileAds.Android
             // No op.
         }
 
+        public bool IsAdAvailable(string adUnitId)
+        {
+            return this._androidAdmanagerInterstitialAd.Call<bool>("isAdAvailable", adUnitId);
+        }
+
+        public IInterstitialClient PollAd(string adUnitId)
+        {
+            return PollAdManagerAd(adUnitId);
+        }
+
+        public IAdManagerInterstitialClient PollAdManagerAd(string adUnitId)
+        {
+            this._androidAdmanagerInterstitialAd.Call("pollAd", adUnitId);
+            return this;
+        }
+
         // Loads an AdManager Interstitial ad.
         public void LoadAd(string adUnitId, AdRequest request)
         {

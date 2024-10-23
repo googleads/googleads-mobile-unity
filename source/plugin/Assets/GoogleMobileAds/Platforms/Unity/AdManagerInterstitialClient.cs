@@ -14,14 +14,20 @@
 
 using System;
 
-using GoogleMobileAds.Api;
 using GoogleMobileAds.Api.AdManager;
 using GoogleMobileAds.Common;
+using UnityEngine;
 
 namespace GoogleMobileAds.Unity
 {
     public class AdManagerInterstitialClient : InterstitialClient, IAdManagerInterstitialClient
     {
         public event Action<AppEvent> OnAppEvent;
+
+        public IAdManagerInterstitialClient PollAdManagerAd(string adUnitId)
+        {
+            Debug.Log("Preloaded ads are not supported on the Unity editor platform.");
+            return new AdManagerInterstitialClient();
+        }
     }
 }
