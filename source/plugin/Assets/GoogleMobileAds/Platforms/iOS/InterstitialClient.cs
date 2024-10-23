@@ -103,6 +103,20 @@ namespace GoogleMobileAds.iOS
                 InterstitialPaidEventCallback);
         }
 
+        // Verify if an ad is preloaded and available to show.
+        public bool IsAdAvailable(string adUnitId)
+        {
+            Debug.LogError("IsAdAvailable API is not implemented for iOS in this version.");
+            return false;
+        }
+
+        // Returns the next pre-loaded interstitial ad and null if no ad is available.
+        public IInterstitialClient PollAd(string adUnitId)
+        {
+            Debug.LogError("PollAd API is not implemented for iOS in this version.");
+            return this;
+        }
+
         public void LoadAd(string adUnitID, AdRequest request) {
             IntPtr requestPtr = Utils.BuildAdRequest(request);
             Externs.GADULoadInterstitialAd(this.InterstitialPtr, adUnitID, requestPtr);

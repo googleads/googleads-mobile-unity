@@ -105,6 +105,20 @@ namespace GoogleMobileAds.iOS
                     AdDidRecordClickCallback);
         }
 
+        // Verify if an ad is preloaded and available to show.
+        public bool IsAdAvailable(string adUnitId)
+        {
+            Debug.LogError("IsAdAvailable API is not implemented for iOS in this version.");
+            return false;
+        }
+
+        // Returns the next pre-loaded app open ad and null if no ad is available.
+        public IAppOpenAdClient PollAd(string adUnitId)
+        {
+            Debug.LogError("PollAd API is not implemented for iOS in this version.");
+            return this;
+        }
+
         // Load an ad.
         public void LoadAd(string adUnitID, AdRequest request)
         {

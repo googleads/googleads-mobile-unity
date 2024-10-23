@@ -15,6 +15,7 @@
 using System;
 using System.Reflection;
 using System.Collections.Generic;
+
 using GoogleMobileAds.Api;
 using GoogleMobileAds.Common;
 using UnityEngine;
@@ -90,7 +91,7 @@ namespace GoogleMobileAds.Unity
             return false;
         }
 
-        public IInterstitialAdClient PollAd(string adUnitId)
+        public IInterstitialClient PollAd(string adUnitId)
         {
             Debug.Log("Preloaded ads are not supported on the Unity editor platform.");
             return new InterstitialAdClient();

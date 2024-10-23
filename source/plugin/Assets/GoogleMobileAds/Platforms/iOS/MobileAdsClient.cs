@@ -100,6 +100,13 @@ namespace GoogleMobileAds.iOS
             return Externs.GADUDeviceSafeWidth();
         }
 
+        public void Preload(List<PreloadConfiguration> configurations,
+                            Action<PreloadConfiguration> onAdsAvailable,
+                            Action<PreloadConfiguration> onAdsExhausted)
+        {
+            Debug.Log("Preload API is not implemented for iOS in this version.");
+        }
+
         public void OpenAdInspector(Action<AdInspectorErrorClientEventArgs> onAdInspectorClosed)
         {
             adInspectorClosedAction = onAdInspectorClosed;
