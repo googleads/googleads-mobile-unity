@@ -106,7 +106,7 @@ namespace GoogleMobileAds.Unity
         public IRewardedAdClient PollAd(string adUnitId)
         {
             Debug.Log("Preloaded ads are not supported on the Unity editor platform.");
-            return new RewardingAdBaseClient();
+            return new RewardedAdClient();
         }
 
         // Load a rewarding ad.

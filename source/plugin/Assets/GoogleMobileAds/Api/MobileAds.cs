@@ -13,9 +13,11 @@
 // limitations under the License.
 
 using System;
-using UnityEngine;
-using GoogleMobileAds.Common;
+using System.Collections.Generic;
 using System.Threading;
+using UnityEngine;
+
+using GoogleMobileAds.Common;
 
 namespace GoogleMobileAds.Api
 {
@@ -202,6 +204,41 @@ namespace GoogleMobileAds.Api
         public static void DisableSDKCrashReporting()
         {
             Instance.client.DisableSDKCrashReporting();
+        }
+
+        /// <summary>
+        /// Preloads ads for the given configurations.
+        /// </summary>
+        /// <param name="configurations">The configurations to preload ads.</param>
+        /// <param name="onAdAvailable">Called when an ad becomes available for the configuration.
+        /// </param>
+        /// <param name="onAdsExhausted">Called when the last available ad is exhausted for the
+        /// configuration.</param>
+        public static void Preload(List<PreloadConfiguration> configurations,
+                                   Action<PreloadConfiguration> onAdAvailable,
+                                   Action<PreloadConfiguration> onAdsExhausted)
+        {
+            Action<PreloadConfiguration> onAdAvailableAction = (preloadConfiguration) =>
+                    {
+                        MobileAds.RaiseAction(() =>
+                                {
+                                    if (onAdAvailable != null)
+                                    {
+                                        onAdAvailable(preloadConfiguration);
+                                    }
+                                });
+                    };
+            Action<PreloadConfiguration> onAdsExhaustedAction = (preloadConfiguration) =>
+                    {
+                        MobileAds.RaiseAction(() =>
+                                {
+                                    if (onAdsExhausted != null)
+                                    {
+                                        onAdsExhausted(preloadConfiguration);
+                                    }
+                                });
+                    };
+            Instance.client.Preload(configurations, onAdAvailableAction, onAdsExhaustedAction);
         }
 
         /// <summary>

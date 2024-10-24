@@ -108,11 +108,11 @@ namespace GoogleMobileAds.Android
         }
 
         public void Preload(List<PreloadConfiguration> configurations,
-                Action<PreloadConfiguration> onAdsAvailable,
-                Action<PreloadConfiguration> onAdsExhausted)
+                            Action<PreloadConfiguration> onAdAvailable,
+                            Action<PreloadConfiguration> onAdsExhausted)
         {
             AndroidJavaObject activity = Utils.GetCurrentActivityAndroidJavaObject();
-            PreloadListener listener = new PreloadListener(onAdsAvailable, onAdsExhausted);
+            PreloadListener listener = new PreloadListener(onAdAvailable, onAdsExhausted);
             var configurationsArrayList = new AndroidJavaObject("java.util.ArrayList");
             foreach (PreloadConfiguration configuration in configurations)
             {

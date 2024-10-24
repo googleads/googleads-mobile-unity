@@ -13,8 +13,6 @@
 // limitations under the License.
 
 using System;
-using System.Collections.Generic;
-
 using UnityEngine;
 
 using GoogleMobileAds.Common;
@@ -69,6 +67,44 @@ namespace GoogleMobileAds.Api
             _client = client;
 
             RegisterAdEvents();
+        }
+
+        /// <summary>
+        /// Verify if an ad is preloaded and available to show.
+        /// </summary>
+        /// <param name="adUnitId">The ad Unit Id of the ad to verify. </param>
+        public static bool IsAdAvailable(string adUnitId)
+        {
+            if (string.IsNullOrEmpty(adUnitId))
+            {
+                Debug.LogError("adUnitId cannot be null or empty.");
+                return false;
+            }
+            var client = MobileAds.GetClientFactory().BuildAppOpenAdClient();
+            if (client == null)
+            {
+                return false;
+            }
+            return client.IsAdAvailable(adUnitId);
+        }
+
+        /// <summary>
+        /// Returns the next pre-loaded app open ad and null if no ad is available.
+        /// </summary>
+        /// <param name="adUnitId">The ad Unit ID of the ad to poll.</param>
+        public static AppOpenAd PollAd(string adUnitId)
+        {
+            if (string.IsNullOrEmpty(adUnitId))
+            {
+                Debug.LogError("adUnitId cannot be null or empty.");
+                return null;
+            }
+            var client = MobileAds.GetClientFactory().BuildAppOpenAdClient();
+            if (client == null)
+            {
+                return null;
+            }
+            return new AppOpenAd(client.PollAd(adUnitId));
         }
 
         /// <summary>

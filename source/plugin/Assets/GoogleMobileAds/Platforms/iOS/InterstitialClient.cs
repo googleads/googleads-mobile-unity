@@ -114,7 +114,7 @@ namespace GoogleMobileAds.iOS
         public IInterstitialClient PollAd(string adUnitId)
         {
             Debug.LogError("PollAd API is not implemented for iOS in this version.");
-            return this;
+            return null;
         }
 
         public void LoadAd(string adUnitID, AdRequest request) {
@@ -149,6 +149,10 @@ namespace GoogleMobileAds.iOS
         public void Dispose()
         {
             this.DestroyInterstitial();
+            if (this.interstitialClientPtr == IntPtr.Zero)
+            {
+                return;
+            }
             ((GCHandle)this.interstitialClientPtr).Free();
         }
 

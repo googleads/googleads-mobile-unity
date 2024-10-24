@@ -19,26 +19,26 @@ using GoogleMobileAds.Api;
 
 namespace GoogleMobileAds.Android {
   public class PreloadListener : AndroidJavaProxy {
-    private Action<PreloadConfiguration> onAdsAvailableAction;
+    private Action<PreloadConfiguration> onAdAvailableAction;
 
     private Action<PreloadConfiguration> onAdsExhaustedAction;
 
-    public PreloadListener(Action<PreloadConfiguration> onAdsAvailable,
-        Action<PreloadConfiguration> onAdsExhausted): base(Utils.PreloadListenerClassname)
+    public PreloadListener(Action<PreloadConfiguration> onAdAvailable,
+            Action<PreloadConfiguration> onAdsExhausted): base(Utils.PreloadListenerClassname)
     {
-      this.onAdsAvailableAction = onAdsAvailable;
+      this.onAdAvailableAction = onAdAvailable;
       this.onAdsExhaustedAction = onAdsExhausted;
     }
 
-    #region Callbacks from UnityPreloadListener
+    #region Callbacks from PreloadListener
 
     void onAdsAvailable(AndroidJavaObject preloadConfiguration)
     {
-        if (onAdsAvailableAction == null)
+        if (onAdAvailableAction == null)
         {
             return;
         }
-        onAdsAvailableAction(Utils.GetPreloadConfiguration(preloadConfiguration));
+        onAdAvailableAction(Utils.GetPreloadConfiguration(preloadConfiguration));
     }
 
     void onAdsExhausted(AndroidJavaObject preloadConfiguration)

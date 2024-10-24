@@ -13,7 +13,8 @@
 // limitations under the License.
 
 using System;
-using GoogleMobileAds;
+using UnityEngine;
+
 using GoogleMobileAds.Common;
 
 namespace GoogleMobileAds.Api
@@ -67,6 +68,44 @@ namespace GoogleMobileAds.Api
             _client = client;
             _canShowAd = true;
             RegisterAdEvents();
+        }
+
+        /// <summary>
+        /// Verify if an ad is preloaded and available to show.
+        /// </summary>
+        /// <param name="adUnitId">The ad Unit Id of the ad to verify. </param>
+        public static bool IsAdAvailable(string adUnitId)
+        {
+            if (string.IsNullOrEmpty(adUnitId))
+            {
+                Debug.LogError("adUnitId cannot be null or empty.");
+                return false;
+            }
+            var client = MobileAds.GetClientFactory().BuildInterstitialClient();
+            if (client == null)
+            {
+                return false;
+            }
+            return client.IsAdAvailable(adUnitId);
+        }
+
+        /// <summary>
+        /// Returns the next pre-loaded interstitial ad and null if no ad is available.
+        /// </summary>
+        /// <param name="adUnitId">The ad Unit ID of the ad to poll.</param>
+        public static InterstitialAd PollAd(string adUnitId)
+        {
+            if (string.IsNullOrEmpty(adUnitId))
+            {
+                Debug.LogError("adUnitId cannot be null or empty.");
+                return null;
+            }
+            var client = MobileAds.GetClientFactory().BuildInterstitialClient();
+            if (client == null)
+            {
+                return null;
+            }
+            return new InterstitialAd(client.PollAd(adUnitId));
         }
 
         /// <summary>
