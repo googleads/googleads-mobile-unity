@@ -200,7 +200,10 @@ public class UnityAdManagerInterstitialAd {
       return;
     }
     activity.runOnUiThread(
-        () -> adManagerInterstitialAd.setOnPaidEventListener(onPaidEventListener));
+        () -> {
+          adManagerInterstitialAd.setOnPaidEventListener(onPaidEventListener);
+          adManagerInterstitialAd.setAppEventListener(appEventListener);
+        });
     adManagerInterstitialAd.setFullScreenContentCallback(fullScreenContentCallback);
   }
 
