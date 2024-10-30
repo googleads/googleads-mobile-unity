@@ -61,14 +61,13 @@ namespace GoogleMobileAds.Editor
         return;
       }
 
-      EditorLocalization localization = new();
+      EditorLocalization localization = new EditorLocalization();
       EditorGUI.BeginChangeCheck();
       selectedIndex = EditorGUILayout.Popup("Language", selectedIndex, availableLanguages);
       if (EditorGUI.EndChangeCheck())
       {
         _userLanguage.stringValue = languageCodes[selectedIndex];
       }
-
 
       EditorGUIUtility.labelWidth = 60.0f;
       EditorGUILayout.LabelField(localization.ForKey("GMA_APP_ID_LABEL"),
