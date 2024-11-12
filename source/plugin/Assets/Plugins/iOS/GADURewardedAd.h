@@ -4,6 +4,7 @@
 
 #import <GoogleMobileAds/GoogleMobileAds.h>
 
+#import "GADRewardedAd_Preview.h"
 #import "GADUTypes.h"
 
 @interface GADURewardedAd : NSObject
@@ -52,6 +53,10 @@
 // Returns the rewarded ad response info.
 @property(nonatomic, readonly, copy) GADResponseInfo *responseInfo;
 
++ (BOOL)isPreloadedAdAvailable:(nonnull NSString *)adUnitID;
+
+- (void)preloadedAdWithAdUnitID:(nonnull NSString *)adUnitID;
+
 /// Makes an ad request. Additional targeting options can be supplied with a request object.
 - (void)loadWithAdUnitID:(NSString *)adUnitID request:(GADRequest *)request;
 
@@ -59,6 +64,6 @@
 - (void)show;
 
 /// Options specified for server-to-server user reward verification.
-- (void)setServerSideVerificationOptions:(GADServerSideVerificationOptions *)options;
+- (void)setServerSideVerificationOptions:(nullable GADServerSideVerificationOptions *)options;
 
 @end
