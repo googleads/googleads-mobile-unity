@@ -1,6 +1,13 @@
 Google Mobile Ads Unity Plugin Change Log
 
 **************
+Version Next
+**************
+
+- Added debug geography for US states (`DebugGeography.RegulatedUSState`) and other regions (`DebugGeography.Other`).
+- Deprecated `DebugGeography.NotEEA`. Use `DebugGeography.Other`.
+
+**************
 Version 9.3.0
 **************
 - Updated the iOS GMA SDK dependency version to 11.11.0.
