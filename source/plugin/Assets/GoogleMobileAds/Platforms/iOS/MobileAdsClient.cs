@@ -15,10 +15,8 @@
 
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Reflection;
 using System.Runtime.InteropServices;
-using UnityEngine;
 
 using GoogleMobileAds.Api;
 using GoogleMobileAds.Common;
@@ -32,6 +30,8 @@ namespace GoogleMobileAds.iOS
         private Action<PreloadConfiguration> adsExhaustedAction;
         private Action<AdInspectorErrorClientEventArgs> adInspectorClosedAction;
         private Action<IInitializationStatusClient> initCompleteAction;
+        private Action<PreloadConfiguration> adAvailableAction;
+        private Action<PreloadConfiguration> adsExhaustedAction;
         private IntPtr mobileAdsClientPtr;
         internal delegate void GADUAdInspectorClosedCallback(IntPtr mobileAdsClient,
                                                              IntPtr errorRef);
@@ -129,8 +129,7 @@ namespace GoogleMobileAds.iOS
                 {
                     preloadConfigurationClient.Request = preloadConfig.Request;
                 }
-                configurationsArray[configIndex] =
-                        preloadConfigurationClient.preloadConfigurationPtr;
+                configurationsArray[configIndex] = preloadConfigurationClient.preloadConfigurationPtr;
             }
             Externs.GADUPreloadWithCallback(this.mobileAdsClientPtr, configurationsArray,
                     configurations.Count, AdAvailableCallback, AdsExhaustedCallback);
@@ -140,6 +139,40 @@ namespace GoogleMobileAds.iOS
         {
             adInspectorClosedAction = onAdInspectorClosed;
             Externs.GADUPresentAdInspector(this.mobileAdsClientPtr, AdInspectorClosedCallback);
+        }
+
+        [MonoPInvokeCallback(typeof(GADUAdAvailableCallback))]
+        private static void AdAvailableCallback(IntPtr mobileAdsClient, IntPtr config)
+        {
+            MobileAdsClient client = IntPtrToMobileAdsClient(mobileAdsClient);
+            if (client.adAvailableAction != null)
+            {
+                PreloadConfigurationClient preloadConfigClient =
+                        new PreloadConfigurationClient(config);
+                client.adAvailableAction(new PreloadConfiguration()
+                {
+                    AdUnitId = preloadConfigClient.AdUnitId,
+                    Format = preloadConfigClient.Format,
+                    BufferSize = preloadConfigClient.BufferSize
+                });
+            }
+        }
+
+        [MonoPInvokeCallback(typeof(GADUAdsExhaustedCallback))]
+        private static void AdsExhaustedCallback(IntPtr mobileAdsClient, IntPtr config)
+        {
+            MobileAdsClient client = IntPtrToMobileAdsClient(mobileAdsClient);
+            if (client.adsExhaustedAction != null)
+            {
+                PreloadConfigurationClient preloadConfigClient =
+                        new PreloadConfigurationClient(config);
+                client.adsExhaustedAction(new PreloadConfiguration()
+                {
+                    AdUnitId = preloadConfigClient.AdUnitId,
+                    Format = preloadConfigClient.Format,
+                    BufferSize = preloadConfigClient.BufferSize
+                });
+            }
         }
 
         [MonoPInvokeCallback(typeof(GADUAdInspectorClosedCallback))]
