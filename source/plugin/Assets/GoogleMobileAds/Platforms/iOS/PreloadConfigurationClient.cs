@@ -67,7 +67,7 @@ namespace GoogleMobileAds.iOS
             }
         }
 
-        internal int BufferSize
+        internal uint BufferSize
         {
             get
             {

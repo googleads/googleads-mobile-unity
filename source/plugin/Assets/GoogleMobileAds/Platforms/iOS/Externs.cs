@@ -148,10 +148,10 @@ namespace GoogleMobileAds.iOS
         internal static extern void GADUSetPreloadConfigurationAdRequest(IntPtr preloadConfiguration, IntPtr adRequest);
 
         [DllImport("__Internal")]
-        internal static extern int GADUGetPreloadConfigurationBufferSize(IntPtr preloadConfiguration);
+        internal static extern uint GADUGetPreloadConfigurationBufferSize(IntPtr preloadConfiguration);
 
         [DllImport("__Internal")]
-        internal static extern int GADUSetPreloadConfigurationBufferSize(IntPtr preloadConfiguration, int bufferSize);
+        internal static extern void GADUSetPreloadConfigurationBufferSize(IntPtr preloadConfiguration, uint bufferSize);
 
         [DllImport("__Internal")]
         internal static extern IntPtr GADUCreateRequestConfiguration();

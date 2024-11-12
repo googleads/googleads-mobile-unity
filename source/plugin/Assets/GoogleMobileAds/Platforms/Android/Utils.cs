@@ -445,7 +445,7 @@ namespace GoogleMobileAds.Android
                     configurationJavaObject.Call<AndroidJavaObject>("getAdFormat");
             string enumValue = format.Call<string>("name");
             AdFormat adFormat = (AdFormat)Enum.Parse(typeof(AdFormat), enumValue);
-            int bufferSize = configurationJavaObject.Call<int>("getBufferSize");
+            uint bufferSize = configurationJavaObject.Call<uint>("getBufferSize");
             return new PreloadConfiguration() {
                 AdUnitId = adUnitId,
                 Format = adFormat,
