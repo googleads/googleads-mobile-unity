@@ -81,10 +81,6 @@ namespace GoogleMobileAds.Api
                 return false;
             }
             var client = MobileAds.GetClientFactory().BuildAppOpenAdClient();
-            if (client == null)
-            {
-                return false;
-            }
             return client.IsAdAvailable(adUnitId);
         }
 
@@ -100,10 +96,7 @@ namespace GoogleMobileAds.Api
                 return null;
             }
             var client = MobileAds.GetClientFactory().BuildAppOpenAdClient();
-            if (client == null)
-            {
-                return null;
-            }
+            client.CreateAppOpenAd();
             return new AppOpenAd(client.PollAd(adUnitId));
         }
 

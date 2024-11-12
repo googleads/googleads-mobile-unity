@@ -82,10 +82,6 @@ namespace GoogleMobileAds.Api
                 return false;
             }
             var client = MobileAds.GetClientFactory().BuildInterstitialClient();
-            if (client == null)
-            {
-                return false;
-            }
             return client.IsAdAvailable(adUnitId);
         }
 
@@ -101,10 +97,7 @@ namespace GoogleMobileAds.Api
                 return null;
             }
             var client = MobileAds.GetClientFactory().BuildInterstitialClient();
-            if (client == null)
-            {
-                return null;
-            }
+            client.CreateInterstitialAd();
             return new InterstitialAd(client.PollAd(adUnitId));
         }
 
