@@ -702,6 +702,17 @@ void GADUSetNativeTemplateAdCallbacks(
   nativeTemplateAd.adDidDismissScreenCallback = adDidDismissScreenCallback;
 }
 
+/// Returns whether an app open ad is preloaded for the given ad unit ID
+BOOL GADUAppOpenIsPreloadedAdAvailable(const char *adUnitID) {
+  return [GADUAppOpenAd isPreloadedAdAvailable:GADUStringFromUTF8String(adUnitID)];
+}
+
+/// Assigns a preloaded app open ad corresponding to the given ad unit ID.
+void GADUAppOpenPreloadedAdWithAdUnitID(GADUTypeAppOpenAdRef appOpenAd, const char *adUnitID) {
+  GADUAppOpenAd *internalAppOpenAd = (__bridge GADUAppOpenAd *)appOpenAd;
+  [internalAppOpenAd preloadedAdWithAdUnitID:GADUStringFromUTF8String(adUnitID)];
+}
+
 /// Shows the GADAppOpenAd.
 void GADUShowAppOpenAd(GADUTypeAppOpenAdRef appOpenAd) {
   GADUAppOpenAd *internalAppOpenAd = (__bridge GADUAppOpenAd *)appOpenAd;
