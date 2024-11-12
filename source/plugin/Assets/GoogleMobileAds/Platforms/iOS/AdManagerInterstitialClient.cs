@@ -172,6 +172,10 @@ namespace GoogleMobileAds.iOS
         public void Dispose()
         {
             this.DestroyInterstitial();
+            if(this._interstitialClientPtr == IntPtr.Zero)
+            {
+                return;
+            }
             ((GCHandle)this._interstitialClientPtr).Free();
         }
 

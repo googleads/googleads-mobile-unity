@@ -70,6 +70,7 @@ namespace GoogleMobileAds.Api.AdManager
             {
                 return null;
             }
+            client.CreateInterstitialAd();
             return new AdManagerInterstitialAd(client.PollAdManagerAd(adUnitId));
         }
 

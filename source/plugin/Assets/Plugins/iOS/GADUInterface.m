@@ -1337,6 +1337,18 @@ void GADULoadInterstitialAd(GADUTypeInterstitialRef interstitial, const char *ad
                                  request:[internalRequest request]];
 }
 
+/// Returns whether an interstitial ad is preloaded for the given ad unit ID
+BOOL GAMUInterstitialIsPreloadedAdAvailable(const char *adUnitID) {
+  return [GAMUInterstitial isPreloadedAdAvailable:GADUStringFromUTF8String(adUnitID)];
+}
+
+/// Assigns a preloaded interstitial ad corresponding to the given ad unit ID.
+void GAMUInterstitialPreloadedAdWithAdUnitID(GADUTypeInterstitialRef interstitial,
+                                             const char *adUnitID) {
+  GAMUInterstitial *internalInterstitial = (__bridge GAMUInterstitial *)interstitial;
+  [internalInterstitial preloadedAdWithAdUnitID:GADUStringFromUTF8String(adUnitID)];
+}
+
 /// Makes an Ad Manager interstitial ad request.
 void GAMULoadInterstitialAd(GAMUTypeInterstitialRef interstitial, const char *adUnitID,
                             GAMUTypeRequestRef request) {
