@@ -28,6 +28,14 @@ namespace GoogleMobileAds.iOS
             IntPtr mobileAdsClient, MobileAdsClient.GADUInitializationCompleteCallback callback);
 
         [DllImport("__Internal")]
+        internal static extern void GADUPreloadWithCallback(
+            IntPtr mobileAdsClient,
+            IntPtr[] configurations,
+            int configurationsCount,
+            MobileAdsClient.GADUAdAvailableCallback adAvailable,
+            MobileAdsClient.GADUAdsExhaustedCallback adsExhausted);
+
+        [DllImport("__Internal")]
         internal static extern void GADUDisableMediationInitialization();
 
         [DllImport("__Internal")]
@@ -120,6 +128,30 @@ namespace GoogleMobileAds.iOS
 
         [DllImport("__Internal")]
         internal static extern void GADURelease(IntPtr obj);
+
+        [DllImport("__Internal")]
+        internal static extern IntPtr GADUCreatePreloadConfiguration();
+
+        [DllImport("__Internal")]
+        internal static extern string GADUGetPreloadConfigurationAdUnitID(IntPtr preloadConfiguration);
+
+        [DllImport("__Internal")]
+        internal static extern void GADUSetPreloadConfigurationAdUnitID(IntPtr preloadConfiguration, string adUnitId);
+
+        [DllImport("__Internal")]
+        internal static extern int GADUGetPreloadConfigurationAdFormat(IntPtr preloadConfiguration);
+
+        [DllImport("__Internal")]
+        internal static extern void GADUSetPreloadConfigurationAdFormat(IntPtr preloadConfiguration, int adFormat);
+
+        [DllImport("__Internal")]
+        internal static extern void GADUSetPreloadConfigurationAdRequest(IntPtr preloadConfiguration, IntPtr adRequest);
+
+        [DllImport("__Internal")]
+        internal static extern int GADUGetPreloadConfigurationBufferSize(IntPtr preloadConfiguration);
+
+        [DllImport("__Internal")]
+        internal static extern int GADUSetPreloadConfigurationBufferSize(IntPtr preloadConfiguration, int bufferSize);
 
         [DllImport("__Internal")]
         internal static extern IntPtr GADUCreateRequestConfiguration();

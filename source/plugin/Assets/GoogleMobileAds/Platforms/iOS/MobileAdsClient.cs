@@ -28,6 +28,8 @@ namespace GoogleMobileAds.iOS
     public class MobileAdsClient : IMobileAdsClient
     {
         private static MobileAdsClient instance = new MobileAdsClient();
+        private Action<PreloadConfiguration> adAvailableAction;
+        private Action<PreloadConfiguration> adsExhaustedAction;
         private Action<AdInspectorErrorClientEventArgs> adInspectorClosedAction;
         private Action<IInitializationStatusClient> initCompleteAction;
         private IntPtr mobileAdsClientPtr;
@@ -35,6 +37,10 @@ namespace GoogleMobileAds.iOS
                                                              IntPtr errorRef);
         internal delegate void GADUInitializationCompleteCallback(IntPtr mobileAdsClient,
                                                                   IntPtr initStatusClient);
+        internal delegate void GADUAdAvailableCallback(IntPtr mobileAdsClient,
+                                                       IntPtr preloadConfigClient);
+        internal delegate void GADUAdsExhaustedCallback(IntPtr mobileAdsClient,
+                                                        IntPtr preloadConfigClient);
 
         private MobileAdsClient()
         {
@@ -102,10 +108,32 @@ namespace GoogleMobileAds.iOS
         }
 
         public void Preload(List<PreloadConfiguration> configurations,
-                            Action<PreloadConfiguration> onAdsAvailable,
+                            Action<PreloadConfiguration> onAdAvailable,
                             Action<PreloadConfiguration> onAdsExhausted)
         {
-            Debug.Log("Preload API is not implemented for iOS in this version.");
+            this.adAvailableAction = onAdAvailable;
+            this.adsExhaustedAction = onAdsExhausted;
+            IntPtr[] configurationsArray = new IntPtr[configurations.Count];
+            for (int configIndex = 0; configIndex < configurations.Count; configIndex++)
+            {
+                PreloadConfiguration preloadConfig = configurations[configIndex];
+                IntPtr preloadConfigRef = Externs.GADUCreatePreloadConfiguration();
+                PreloadConfigurationClient preloadConfigurationClient =
+                        new PreloadConfigurationClient(preloadConfigRef)
+                        {
+                            AdUnitId = preloadConfig.AdUnitId,
+                            Format = preloadConfig.Format,
+                            BufferSize = preloadConfig.BufferSize
+                        };
+                if (preloadConfig.Request != null)
+                {
+                    preloadConfigurationClient.Request = preloadConfig.Request;
+                }
+                configurationsArray[configIndex] =
+                        preloadConfigurationClient.preloadConfigurationPtr;
+            }
+            Externs.GADUPreloadWithCallback(this.mobileAdsClientPtr, configurationsArray,
+                    configurations.Count, AdAvailableCallback, AdsExhaustedCallback);
         }
 
         public void OpenAdInspector(Action<AdInspectorErrorClientEventArgs> onAdInspectorClosed)

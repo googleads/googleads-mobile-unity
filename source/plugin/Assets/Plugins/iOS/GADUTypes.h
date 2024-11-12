@@ -33,6 +33,16 @@ typedef NS_ENUM(NSUInteger, GADUBannerOrientation) {
 
 typedef NS_ENUM(NSInteger, GADUAdSize) { kGADUAdSizeUseFullWidth = -1 };
 
+/// Ad format enum representing values on the Unity platform.
+typedef NS_ENUM(NSInteger, GADUAdFormat) {
+  kGADUAdFormatBanner = 0,                ///< Banner.
+  kGADUAdFormatInterstitial = 1,          ///< Interstitial.
+  kGADUAdFormatRewarded = 2,              ///< Rewarded.
+  kGADUAdFormatRewardedInterstitial = 3,  ///< Rewarded interstitial.
+  kGADUAdFormatNative = 4,                ///< Native.
+  kGADUAdFormatAppOpen = 5,               ///< App open.
+};
+
 /// Base type representing a GADU* pointer.
 typedef const void *GADUTypeRef;
 
@@ -103,16 +113,19 @@ typedef const void *GADUTypeRequestRef;
 /// Type representing a GAMURequest.
 typedef const void *GAMUTypeRequestRef;
 
-/// Type representing a GADUTypeRequestConfigurationRef
+/// Type representing a GADUPreloadConfiguration
+typedef const void *GADUTypePreloadConfigurationRef;
+
+/// Type representing a GADURequestConfiguration
 typedef const void *GADUTypeRequestConfigurationRef;
 
-/// Type representing a GADUTypeResponseInfoRef
+/// Type representing a GADUResponseInfoRef
 typedef const void *GADUTypeResponseInfoRef;
 
-/// Type representing a GADUTypeAdapterResponseInfoRef type
+/// Type representing a GADUAdapterResponseInfo
 typedef const void *GADUTypeAdapterResponseInfoRef;
 
-/// Type representing a AdError type
+/// Type representing an AdError type
 typedef const void *GADUTypeErrorRef;
 
 /// Type representing a NSMutableDictionary of extras.
@@ -129,6 +142,14 @@ typedef const void *GADUTypeUIColorRef;
 
 /// Type representing a GADVideoOptions.
 typedef const void *GADUTypeVideoOptionsRef;
+
+// MARK: - GADUMobileAds
+
+typedef void (*GADUAdAvailableForPreloadConfigurationCallback)(
+    GADUTypeMobileAdsClientRef *clientRef, GADUTypePreloadConfigurationRef configRef);
+
+typedef void (*GADUAdsExhaustedForPreloadConfigurationCallback)(
+    GADUTypeMobileAdsClientRef *clientRef, GADUTypePreloadConfigurationRef configRef);
 
 // MARK: - GADUAppOpenAd
 
