@@ -109,17 +109,16 @@ namespace GoogleMobileAds.iOS
                 RewardedAdPaidEventCallback);
         }
 
-        // Verify if an ad is preloaded and available to show.
+        // Verify if a rewarded ad is preloaded and available to show.
         public bool IsAdAvailable(string adUnitId)
         {
-            Debug.LogError("IsAdAvailable API is not implemented for iOS in this version.");
-            return false;
+            return Externs.GADURewardedIsPreloadedAdAvailable(adUnitId);
         }
 
         // Returns the next pre-loaded rewarded ad and null if no ad is available.
         public IRewardedAdClient PollAd(string adUnitId)
         {
-            Debug.LogError("PollAd API is not implemented for iOS in this version.");
+            Externs.GADURewardedPreloadedAdWithAdUnitID(this.RewardedAdPtr, adUnitId);
             return this;
         }
 
@@ -175,6 +174,10 @@ namespace GoogleMobileAds.iOS
         public void Dispose()
         {
             this.DestroyRewardedAd();
+            if (this.rewardedAdClientPtr == IntPtr.Zero)
+            {
+                return;
+            }
             ((GCHandle)this.rewardedAdClientPtr).Free();
         }
 
