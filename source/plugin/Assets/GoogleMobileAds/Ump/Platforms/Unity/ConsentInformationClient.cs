@@ -13,6 +13,7 @@
 // limitations under the License.
 
 using System;
+using System.Linq;
 using UnityEngine;
 
 using GoogleMobileAds.Ump.Api;
@@ -61,17 +62,24 @@ namespace GoogleMobileAds.Ump.Unity
                     return;
                 }
 
-                // Consent is only required when the user is not a child and is in EEA region.
-                if (!request.TagForUnderAgeOfConsent &&
-                    request.ConsentDebugSettings.DebugGeography == DebugGeography.EEA)
-                {
-                    // ConsentStatus.Required
-                    PlayerPrefs.SetInt(PlayerPrefsKeyConsentStatus, 2);
-                }
-                else
+                // Consent is only required when the user is not a child and is in regulated region.
+                DebugGeography[] unregulatedGeographies = {
+                            DebugGeography.Disabled,
+#pragma warning disable 618
+                            DebugGeography.NotEEA,
+#pragma warning restore 618
+                            DebugGeography.Other
+                        };
+                if (request.TagForUnderAgeOfConsent ||
+                    unregulatedGeographies.Contains(request.ConsentDebugSettings.DebugGeography))
                 {
                     // ConsentStatus.NotRequired
                     PlayerPrefs.SetInt(PlayerPrefsKeyConsentStatus, 1);
+                }
+                else
+                {
+                    // ConsentStatus.Required
+                    PlayerPrefs.SetInt(PlayerPrefsKeyConsentStatus, 2);
                 }
                 Debug.Log("Consent Info updated.");
                 onConsentInfoUpdateSuccessCallback();
