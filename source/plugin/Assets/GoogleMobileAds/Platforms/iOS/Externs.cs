@@ -449,6 +449,13 @@ namespace GoogleMobileAds.iOS
         internal static extern IntPtr GADUCreateInterstitial(IntPtr interstitialClient);
 
         [DllImport("__Internal")]
+        internal static extern bool GADUInterstitialIsPreloadedAdAvailable(string adUnitId);
+
+        [DllImport("__Internal")]
+        internal static extern void GADUInterstitialPreloadedAdWithAdUnitID(IntPtr interstitialAd,
+                                                                            string adUnitId);
+
+        [DllImport("__Internal")]
         internal static extern IntPtr GADULoadInterstitialAd(IntPtr interstitialAd, string adUnitID,
             IntPtr request);
 

@@ -764,6 +764,18 @@ float GADUIsBannerViewCollapsible(GADUTypeBannerRef banner) {
   return internalBanner.isCollapsible;
 }
 
+/// Returns whether an interstitial ad is preloaded for the given ad unit ID
+BOOL GADUInterstitialIsPreloadedAdAvailable(const char *adUnitID) {
+  return [GADUInterstitial isPreloadedAdAvailable:GADUStringFromUTF8String(adUnitID)];
+}
+
+/// Assigns a preloaded interstitial ad corresponding to the given ad unit ID.
+void GADUInterstitialPreloadedAdWithAdUnitID(GADUTypeInterstitialRef interstitial,
+                                             const char *adUnitID) {
+  GADUInterstitial *internalInterstitial = (__bridge GADUInterstitial *)interstitial;
+  [internalInterstitial preloadedAdWithAdUnitID:GADUStringFromUTF8String(adUnitID)];
+}
+
 /// Shows the GADInterstitial.
 void GADUShowInterstitial(GADUTypeInterstitialRef interstitial) {
   GADUInterstitial *internalInterstitial = (__bridge GADUInterstitial *)interstitial;
