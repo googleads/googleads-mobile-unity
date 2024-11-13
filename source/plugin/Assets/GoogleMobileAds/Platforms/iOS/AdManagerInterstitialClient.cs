@@ -123,7 +123,7 @@ namespace GoogleMobileAds.iOS
         // Verify if an ad is preloaded and available to show.
         public bool IsAdAvailable(string adUnitId)
         {
-            Debug.LogError("IsAdAvailable API is not implemented for iOS in this version.");
+            return Externs.GAMUInterstitialIsPreloadedAdAvailable(adUnitId);
             return false;
         }
 
@@ -136,7 +136,7 @@ namespace GoogleMobileAds.iOS
         // Returns the next pre-loaded ad manager interstitial ad and null if no ad is available.
         public IAdManagerInterstitialClient PollAdManagerAd(string adUnitId)
         {
-            Debug.LogError("PollAd API is not implemented for iOS in this version.");
+            Externs.GAMUInterstitialPreloadedAdWithAdUnitID(this.InterstitialPtr, adUnitId);
             return this;
         }
 

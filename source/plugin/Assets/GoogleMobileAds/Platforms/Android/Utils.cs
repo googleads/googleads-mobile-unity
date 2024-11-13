@@ -428,7 +428,7 @@ namespace GoogleMobileAds.Android
             {
                 preloadConfigurationBuilder =
                         preloadConfigurationBuilder.Call<AndroidJavaObject>("setBufferSize",
-                                preloadConfiguration.BufferSize);
+                                Convert.ToInt32(preloadConfiguration.BufferSize));
             }
             return preloadConfigurationBuilder.Call<AndroidJavaObject>("build");
         }
@@ -445,7 +445,7 @@ namespace GoogleMobileAds.Android
                     configurationJavaObject.Call<AndroidJavaObject>("getAdFormat");
             string enumValue = format.Call<string>("name");
             AdFormat adFormat = (AdFormat)Enum.Parse(typeof(AdFormat), enumValue);
-            uint bufferSize = configurationJavaObject.Call<uint>("getBufferSize");
+            uint bufferSize = Convert.ToUInt32(configurationJavaObject.Call<int>("getBufferSize"));
             return new PreloadConfiguration() {
                 AdUnitId = adUnitId,
                 Format = adFormat,
