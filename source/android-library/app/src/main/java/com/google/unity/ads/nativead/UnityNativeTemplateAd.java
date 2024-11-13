@@ -386,6 +386,9 @@ public class UnityNativeTemplateAd {
         new Runnable() {
           @Override
           public void run() {
+            if (templateView == null) {
+              return;
+            }
             hidden = false;
             templateView.setVisibility(View.VISIBLE);
             updatePosition();
@@ -399,6 +402,9 @@ public class UnityNativeTemplateAd {
         new Runnable() {
           @Override
           public void run() {
+            if (templateView == null) {
+              return;
+            }
             hidden = true;
             templateView.setVisibility(View.GONE);
           }
