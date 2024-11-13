@@ -30,8 +30,6 @@ namespace GoogleMobileAds.iOS
         private Action<PreloadConfiguration> adsExhaustedAction;
         private Action<AdInspectorErrorClientEventArgs> adInspectorClosedAction;
         private Action<IInitializationStatusClient> initCompleteAction;
-        private Action<PreloadConfiguration> adAvailableAction;
-        private Action<PreloadConfiguration> adsExhaustedAction;
         private IntPtr mobileAdsClientPtr;
         internal delegate void GADUAdInspectorClosedCallback(IntPtr mobileAdsClient,
                                                              IntPtr errorRef);

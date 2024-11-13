@@ -4,8 +4,11 @@ Google Mobile Ads Unity Plugin Change Log
 Version Next
 **************
 
-- Added debug geography for US states (`DebugGeography.RegulatedUSState`) and other regions (`DebugGeography.Other`).
-- Deprecated `DebugGeography.NotEEA`. Use `DebugGeography.Other`.
+- To support testing with regulated US states, added the following options to UMPDebugGeography:
+  - RegulatedUSState
+  - Other
+- Deprecated `DebugGeography.NotEEA`. Use `DebugGeography.Other` instead.
+- Updated UMP SDK dependency on Android to 3.1.0 and on iOS to 2.7.0.
 
 **************
 Version 9.3.0
