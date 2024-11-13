@@ -19,15 +19,16 @@
 /// Configuration for preloading ads.
 @implementation GADUPreloadConfiguration
 
-@synthesize format;
+// Internal ivar that represents the GADAdFormat value.
+@synthesize format = _format;
 
 - (nonnull GADUPreloadConfiguration *)initWithConfig:(nonnull GADPreloadConfiguration *)config {
   self = [super init];
   if (self) {
-    self.adUnitID = config.adUnitID;
-    self.request = config.request;
-    self.bufferSize = config.bufferSize;
-    self.format = config.format;
+    _adUnitID = [config.adUnitID copy];
+    _request = [config.request copy];
+    _bufferSize = config.bufferSize;
+    _format = (int)config.format;
   }
   return self;
 }
@@ -40,7 +41,7 @@
 // Native                4 -> 3
 // AppOpen               6 -> 5
 - (int)format {
-  switch (format) {
+  switch (_format) {
     case GADAdFormatBanner:
       return kGADUAdFormatBanner;
     case GADAdFormatInterstitial:
@@ -53,8 +54,6 @@
       return kGADUAdFormatNative;
     case GADAdFormatAppOpen:
       return kGADUAdFormatAppOpen;
-    default:
-      NSLog(@"Unknown format: %d", format);
   }
   return -1;
 }
@@ -69,25 +68,22 @@
 - (void)setFormat:(int)adFormat {
   switch (adFormat) {
     case kGADUAdFormatBanner:
-      format = GADAdFormatBanner;
+      _format = GADAdFormatBanner;
       break;
     case kGADUAdFormatInterstitial:
-      format = GADAdFormatInterstitial;
+      _format = GADAdFormatInterstitial;
       break;
     case kGADUAdFormatRewarded:
-      format = GADAdFormatRewarded;
+      _format = GADAdFormatRewarded;
       break;
     case kGADUAdFormatRewardedInterstitial:
-      format = GADAdFormatRewardedInterstitial;
+      _format = GADAdFormatRewardedInterstitial;
       break;
     case kGADUAdFormatNative:
-      format = GADAdFormatNative;
+      _format = GADAdFormatNative;
       break;
     case kGADUAdFormatAppOpen:
-      format = GADAdFormatAppOpen;
-      break;
-    default:
-      NSLog(@"Unknown format: %d", adFormat);
+      _format = GADAdFormatAppOpen;
       break;
   }
 }
@@ -95,12 +91,12 @@
 - (nonnull GADPreloadConfiguration *)preloadConfiguration {
   GADPreloadConfiguration *config = nil;
   if (!self.request) {
-    config = [[GADPreloadConfiguration alloc] initWithAdUnitID:self.adUnitID
-                                                      adFormat:(GADAdFormat)self.format];
+    config = [[GADPreloadConfiguration alloc] initWithAdUnitID:_adUnitID
+                                                      adFormat:(GADAdFormat)_format];
   } else {
-    config = [[GADPreloadConfiguration alloc] initWithAdUnitID:self.adUnitID
-                                                      adFormat:(GADAdFormat)self.format
-                                                       request:self.request];
+    config = [[GADPreloadConfiguration alloc] initWithAdUnitID:_adUnitID
+                                                      adFormat:(GADAdFormat)_format
+                                                       request:_request];
   }
   config.bufferSize = self.bufferSize;
   return config;
