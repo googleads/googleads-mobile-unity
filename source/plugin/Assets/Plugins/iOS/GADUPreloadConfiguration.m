@@ -98,7 +98,9 @@
                                                       adFormat:(GADAdFormat)_format
                                                        request:_request];
   }
-  config.bufferSize = self.bufferSize;
+  if (self.bufferSize > 0) {
+    config.bufferSize = self.bufferSize;
+  }
   return config;
 }
 
