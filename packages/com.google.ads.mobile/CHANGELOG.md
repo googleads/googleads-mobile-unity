@@ -1,6 +1,25 @@
 Google Mobile Ads Unity Plugin Change Log
 
 **************
+Version 9.4.0
+**************
+
+- To support testing with regulated US states, added the following options to UMPDebugGeography:
+  - RegulatedUSState
+  - Other
+- Deprecated `DebugGeography.NotEEA`. Use `DebugGeography.Other` instead.
+- Updated the GMA iOS SDK dependency version to 11.12.0.
+- Updated the GMA Android SDK dependency version to 23.5.0.
+- Updated UMP SDK dependency on Android to 3.1.0 and on iOS to 2.7.0.
+
+Built and tested with:
+- Google Mobile Ads Android SDK 23.5.0
+- Google Mobile Ads iOS SDK 11.12.0
+- Google User Messaging Platform Android SDK 3.1.0
+- Google User Messaging Platform iOS SDK 2.7.0
+- External Dependency Manager for Unity 1.2.183
+
+**************
 Version 9.3.0
 **************
 - Updated the iOS GMA SDK dependency version to 11.11.0.
