@@ -48,6 +48,7 @@ task copyExtrasInterface(type: Copy) {
     from("../../source/plugin/Assets/GoogleMobileAds/Api/Mediation/")
     into("${pluginBuildDir}/Assets/GoogleMobileAdsApi/Mediation/")
     include('MediationExtras.cs')
+    include('GoogleMobileAds.Api.Mediation.asmdef')
 }
 
 copyAndroidLibraryAar.dependsOn(buildAndroidPluginAar)
