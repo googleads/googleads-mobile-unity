@@ -14,7 +14,6 @@
 
 using System;
 using System.Text;
-using System.Collections.Generic;
 using UnityEngine;
 
 using GoogleMobileAds.Api.Mediation;
