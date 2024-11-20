@@ -1,0 +1,21 @@
+{
+  "name": "com.google.ads.mobile.mediation.line",
+  "version": "1.3.2",
+  "displayName": "Google Mobile Ads Line Mediation",
+  "keywords": [
+    "Google",
+    "Mobile",
+    "Ads",
+    "vh-name:GoogleMobileAdsMediationLine",
+    "vh-name:Google Mobile Ads Line Mediation"
+  ],
+  "author": {
+    "name": "Google LLC",
+    "url": "https://github.com/googleads/googleads-mobile-unity-mediation"
+  },
+  "description": "The Google Mobile Ads mediation plugin for Line package allows you to load and display ads from Line using mediation, covering waterfall integrations.",
+  "unity": "2019.4",
+  "dependencies": {
+    "com.google.ads.mobile": "9.0.0"
+  }
+}
