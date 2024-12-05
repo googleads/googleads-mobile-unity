@@ -33,11 +33,6 @@ namespace GoogleMobileAds.Api.AdManager
         public string PublisherProvidedId;
 
         /// <summary>
-        /// The custom targeting parameters.
-        /// </summary>
-        public Dictionary<string, string> CustomTargeting = new Dictionary<string, string>();
-
-        /// <summary>
         /// Hashset of strings used to exclude specified categories in ad results.
         /// </summary>
         public HashSet<String> CategoryExclusions = new HashSet<string>();
@@ -53,7 +48,9 @@ namespace GoogleMobileAds.Api.AdManager
         public AdManagerAdRequest(AdManagerAdRequest request) : base(request)
         {
             PublisherProvidedId = request.PublisherProvidedId;
+#pragma warning disable 618
             CustomTargeting = request.CustomTargeting;
+#pragma warning restore 618
             CategoryExclusions = request.CategoryExclusions;
         }
     }

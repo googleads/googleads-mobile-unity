@@ -266,6 +266,12 @@ namespace GoogleMobileAds.Android
                 adRequestBuilder.Call<AndroidJavaObject>("addKeyword", keyword);
             }
 
+            foreach (KeyValuePair<string, string> entry in request.CustomTargeting)
+            {
+                adRequestBuilder.Call<AndroidJavaObject>("addCustomTargeting",
+                                                         entry.Key, entry.Value);
+            }
+
             // Denote that the request is coming from this Unity plugin.
             adRequestBuilder.Call<AndroidJavaObject>(
                     "setRequestAgent",
@@ -395,11 +401,13 @@ namespace GoogleMobileAds.Android
             {
                 adManagerAdRequestBuilder.Call<AndroidJavaObject>("addCategoryExclusion", category);
             }
+
             foreach (KeyValuePair<string, string> entry in adManagerAdRequest.CustomTargeting)
             {
                 adManagerAdRequestBuilder.Call<AndroidJavaObject>("addCustomTargeting",
                                                                    entry.Key, entry.Value);
             }
+
             return adManagerAdRequestBuilder.Call<AndroidJavaObject>("build");
         }
 
