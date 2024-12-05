@@ -71,6 +71,12 @@ namespace GoogleMobileAds.iOS
 
             Externs.GADUSetRequestAgent(requestPtr,
                     AdRequest.BuildVersionString(nativePluginVersion));
+
+            foreach (KeyValuePair<string, string> entry in request.CustomTargeting)
+            {
+                Externs.GADUSetCustomTargeting(requestPtr, entry.Key, entry.Value);
+            }
+
             return requestPtr;
         }
 

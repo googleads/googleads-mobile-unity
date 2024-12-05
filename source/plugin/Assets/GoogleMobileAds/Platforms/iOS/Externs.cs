@@ -121,6 +121,9 @@ namespace GoogleMobileAds.iOS
         internal static extern void GAMUAddCategoryExclusion(IntPtr request, string category);
 
         [DllImport("__Internal")]
+        internal static extern void GADUSetCustomTargeting(IntPtr request, string key, string value);
+
+        [DllImport("__Internal")]
         internal static extern void GAMUSetCustomTargeting(IntPtr request, string key, string value);
 
         [DllImport("__Internal")]

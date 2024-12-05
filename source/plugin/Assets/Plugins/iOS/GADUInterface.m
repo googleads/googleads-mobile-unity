@@ -1305,6 +1305,13 @@ void GAMUAddCategoryExclusion(GADUTypeRequestRef request, const char *category) 
 }
 
 /// Sets a custom targeting parameter to be included in the Ad Manager ad request.
+void GADUSetCustomTargeting(GADUTypeRequestRef request, const char *key, const char *value) {
+  GADURequest *internalRequest = (__bridge GADURequest *)request;
+  [internalRequest setCustomTargetingWithKey:GADUStringFromUTF8String(key)
+                                       value:GADUStringFromUTF8String(value)];
+}
+
+/// Sets a custom targeting parameter to be included in the Ad Manager ad request.
 void GAMUSetCustomTargeting(GADUTypeRequestRef request, const char *key, const char *value) {
   GAMURequest *internalRequest = (__bridge GAMURequest *)request;
   [internalRequest setCustomTargetingWithKey:GADUStringFromUTF8String(key)

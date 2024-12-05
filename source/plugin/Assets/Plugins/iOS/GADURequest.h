@@ -28,7 +28,10 @@
 /// Convenience method for setting an extra parameters.
 - (void)setExtraWithKey:(NSString *)key value:(NSString *)value;
 
+/// Convenience method for setting custom targeting parameters.
+- (void)setCustomTargetingWithKey:(nonnull NSString *)key value:(nullable NSString *)value;
+
 /// Constructs a GADRequest with the defined targeting values.
-- (GADRequest *)request;
+- (nonnull GADRequest *)request;
 
 @end
