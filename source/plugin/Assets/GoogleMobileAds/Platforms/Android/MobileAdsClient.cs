@@ -137,6 +137,15 @@ namespace GoogleMobileAds.Android
             return Utils.GetScreenWidth();
         }
 
+        public Version GetSDKVersion()
+        {
+            AndroidJavaClass mobileAdsClass = new AndroidJavaClass(Utils.MobileAdsClassName);
+            AndroidJavaObject androidSDKVersion =
+                mobileAdsClass.CallStatic<AndroidJavaObject>("getVersion");
+            string versionString = androidSDKVersion.Call<string>("toString");
+            return new Version(versionString);
+        }
+
         #region Callbacks from OnInitializationCompleteListener.
 
         public void onInitializationComplete(AndroidJavaObject initStatus)
