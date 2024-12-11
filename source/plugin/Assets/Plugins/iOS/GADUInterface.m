@@ -218,6 +218,12 @@ void GADUDisableSDKCrashReporting() {
   [GADMobileAds.sharedInstance disableSDKCrashReporting];
 }
 
+// Returns the version number of the GMA iOS SDK.
+const char* GADUMobileAdsVersion() {
+  GADVersionNumber version = [GADMobileAds.sharedInstance versionNumber];
+  return cStringCopy(GADGetStringFromVersionNumber(version).UTF8String);
+}
+
 float GADUDeviceScale() { return UIScreen.mainScreen.scale; }
 
 void GADUSetIntegerPreference(const char *key, NSInteger value) {

@@ -207,6 +207,20 @@ namespace GoogleMobileAds.Api
         }
 
         /// <summary>
+        /// Gets the underlying GMA Android or iOS SDK version for the active platform.
+        /// </summary>
+        /// <remarks>
+        /// When running on the Unity editor, this method returns the GMA Unity SDK version.
+        /// </remarks>
+        /// <returns>
+        /// The GMA Android or iOS SDK version for the platform the app is running on.
+        /// </returns>
+        public static Version GetPlatformSDKVersion()
+        {
+            return Instance.client.GetSDKVersion();
+        }
+
+        /// <summary>
         /// Preloads ads for the given configurations.
         /// </summary>
         /// <param name="configurations">The configurations to preload ads.</param>

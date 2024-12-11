@@ -105,6 +105,12 @@ namespace GoogleMobileAds.iOS
             return Externs.GADUDeviceSafeWidth();
         }
 
+        public Version GetSDKVersion()
+        {
+            string iOSVersion = Externs.GADUMobileAdsVersion();
+            return new Version(iOSVersion);
+        }
+
         public void Preload(List<PreloadConfiguration> configurations,
                             Action<PreloadConfiguration> onAdAvailable,
                             Action<PreloadConfiguration> onAdsExhausted)
