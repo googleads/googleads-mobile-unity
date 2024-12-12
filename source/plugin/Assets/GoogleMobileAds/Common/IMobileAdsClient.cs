@@ -66,6 +66,9 @@ namespace GoogleMobileAds.Common
         // Set Global Request Configuration to Mobile Ads SDK
         void SetRequestConfiguration(RequestConfiguration requestConfiguration);
 
+        // Returns the Mobile Ads SDK version.
+        Version GetSDKVersion();
+
         // Get Mobile Ads SDK's Global Request Configuration
         RequestConfiguration GetRequestConfiguration();
 

@@ -128,6 +128,11 @@ namespace GoogleMobileAds.Unity
             return 0;
         }
 
+        public Version GetSDKVersion()
+        {
+            return new Version(AdRequest.Version);
+        }
+
         public void CreateBannerView(string adUnitId, AdSize adSize, AdPosition position) {}
 
         public void CreateBannerView(string adUnitId, AdSize adSize, int positionX, int positionY) {}

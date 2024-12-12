@@ -1,6 +1,11 @@
 Google Mobile Ads Unity Plugin Change Log
 
 **************
+Version Next
+**************
+- Added GetPlatformVersion API to MobileAds class to be able to fetch the version info of the underlying GMA Android or iOS SDK.
+
+**************
 Version 9.4.0
 **************
 
