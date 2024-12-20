@@ -223,6 +223,18 @@ namespace GoogleMobileAds.Api
         }
 
         /// <summary>
+        /// Gets the Google Mobile Ads Unity SDK version.
+        /// </summary>
+        /// <returns>
+        /// The Google Mobile Ads Unity SDK version.
+        /// </returns>
+        public static Version GetVersion()
+        {
+            Version assemblyVersion = typeof(MobileAds).Assembly.GetName().Version;
+            return new Version(assemblyVersion.Major, assemblyVersion.Minor, assemblyVersion.Build);
+        }
+
+        /// <summary>
         /// Preloads ads for the given configurations.
         /// </summary>
         /// <param name="configurations">The configurations to preload ads.</param>
