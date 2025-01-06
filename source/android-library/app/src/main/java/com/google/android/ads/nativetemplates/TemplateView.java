@@ -229,6 +229,7 @@ public final class TemplateView extends FrameLayout {
     if (icon != null) {
       iconView.setVisibility(VISIBLE);
       iconView.setImageDrawable(icon.getDrawable());
+      nativeAdView.setIconView(iconView);
     } else {
       iconView.setVisibility(GONE);
     }
