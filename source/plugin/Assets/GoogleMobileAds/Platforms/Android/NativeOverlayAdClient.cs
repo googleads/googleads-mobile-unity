@@ -130,15 +130,13 @@ namespace GoogleMobileAds.Android
         // Returns the height of the NativeTemplateView in pixels.
         public float GetHeightInPixels()
         {
-            //TODO(@vkini):Add implementation to get Height.
-            return -1.0f;
+            return this.nativeOverlayAd.Call<float>("getHeightInPixels");
         }
 
         // Returns the width of the NativeTemplateView in pixels.
         public float GetWidthInPixels()
         {
-            //TODO(@vkini):Add implementation to get Width.
-            return -1.0f;
+            return this.nativeOverlayAd.Call<float>("getWidthInPixels");
         }
 
 #endregion

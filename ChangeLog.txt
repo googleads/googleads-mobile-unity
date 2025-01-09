@@ -1,6 +1,11 @@
 Google Mobile Ads Unity Plugin Change Log
 
 **************
+Version Next
+**************
+- Added ability to return correct native template view size on Android.
+
+**************
 Version 9.5.0
 **************
 - Added `CustomTargeting` field to AdRequest.

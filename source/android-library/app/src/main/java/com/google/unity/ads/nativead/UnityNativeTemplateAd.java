@@ -411,6 +411,30 @@ public class UnityNativeTemplateAd {
         });
   }
 
+  /**
+   * Get Native Template View height.
+   *
+   * @return the height of the Native Template View.
+   */
+  public float getHeightInPixels() {
+    if (templateView == null) {
+      return 0;
+    }
+    return templateView.getHeight();
+  }
+
+  /**
+   * Get Native Template View width.
+   *
+   * @return the width of the Native Template View.
+   */
+  public float getWidthInPixels() {
+    if (templateView == null) {
+      return 0;
+    }
+    return templateView.getWidth();
+  }
+
   /** Destroys the Native Template View. */
   public void destroy() {
     activity.runOnUiThread(
