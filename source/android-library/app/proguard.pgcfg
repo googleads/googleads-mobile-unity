@@ -21,7 +21,8 @@
    *;
 }
 
-# Keep User Messaging Platform Unity plugin classes.
--keep class com.google.unity.ump.** {
+-keep class googleads.mobile.unity.** {
    *;
 }
+
+

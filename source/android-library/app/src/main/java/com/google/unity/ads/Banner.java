@@ -505,6 +505,14 @@ public class Banner {
         });
   }
 
+  /** Returns whether the {@link AdView} loaded a collapsible banner. */
+  public boolean isCollapsible() {
+    if (adView == null) {
+      return false;
+    }
+    return adView.isCollapsible();
+  }
+
   /**
    * Create layout params for the ad view with relevant positioning details.
    *
