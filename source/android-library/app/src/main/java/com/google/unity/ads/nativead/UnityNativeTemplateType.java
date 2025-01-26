@@ -18,7 +18,6 @@ package com.google.unity.ads.nativead;
 
 import android.util.Log;
 import com.google.unity.ads.PluginUtils;
-
 import googleads.mobile.unity.R;
 
 /** Enums to specify Type of Native Template to be used and its associated layout file */

@@ -106,125 +106,125 @@ public class UnityRewardedInterstitialAd {
                 //************************************************************************//
                 internalCallback
                 //************************************************************************//
-                );
+            );
           }
         });
   }
 
-  private final RewardedInterstitialAdLoadCallback rewardedInterstitialAdLoadCallback = new RewardedInterstitialAdLoadCallback() {
-      @Override
-      public void onAdLoaded(@NonNull RewardedInterstitialAd ad) {
-          rewardedInterstitialAd = ad;
-          rewardedInterstitialAd.setOnPaidEventListener(
-                  new OnPaidEventListener() {
-                      @Override
-                      public void onPaidEvent(final AdValue adValue) {
-                          new Thread(
-                                  new Runnable() {
-                                      @Override
-                                      public void run() {
-                                          if (callback != null) {
-                                              callback.onPaidEvent(
-                                                      adValue.getPrecisionType(),
-                                                      adValue.getValueMicros(),
-                                                      adValue.getCurrencyCode());
-                                          }
-                                      }
+    private final RewardedInterstitialAdLoadCallback rewardedInterstitialAdLoadCallback = new RewardedInterstitialAdLoadCallback() {
+                  @Override
+                  public void onAdLoaded(@NonNull RewardedInterstitialAd ad) {
+                    rewardedInterstitialAd = ad;
+                    rewardedInterstitialAd.setOnPaidEventListener(
+                        new OnPaidEventListener() {
+                          @Override
+                          public void onPaidEvent(final AdValue adValue) {
+                            new Thread(
+                                new Runnable() {
+                                  @Override
+                                  public void run() {
+                                    if (callback != null) {
+                                      callback.onPaidEvent(
+                                          adValue.getPrecisionType(),
+                                          adValue.getValueMicros(),
+                                          adValue.getCurrencyCode());
+                                    }
                                   }
-                          ).start();
-                      }
-                  });
-          rewardedInterstitialAd.setFullScreenContentCallback(
-                  new FullScreenContentCallback() {
-                      @Override
-                      public void onAdFailedToShowFullScreenContent(final AdError error) {
-                          new Thread(
-                                  new Runnable() {
-                                      @Override
-                                      public void run() {
-                                          if (callback != null) {
-                                              callback.onAdFailedToShowFullScreenContent(error);
-                                          }
-                                      }
-                                  })
-                                  .start();
-                      }
-                      @Override
-                      public void onAdShowedFullScreenContent() {
-                          new Thread(
-                                  new Runnable() {
-                                      @Override
-                                      public void run() {
-                                          if (callback != null) {
-                                              callback.onAdShowedFullScreenContent();
-                                          }
-                                      }
-                                  })
-                                  .start();
-                      }
-                      @Override
-                      public void onAdDismissedFullScreenContent() {
-                          new Thread(
-                                  new Runnable() {
-                                      @Override
-                                      public void run() {
-                                          if (callback != null) {
-                                              callback.onAdDismissedFullScreenContent();
-                                          }
-                                      }
-                                  })
-                                  .start();
-                      }
-                      @Override
-                      public void onAdImpression() {
-                          new Thread(
-                                  new Runnable() {
-                                      @Override
-                                      public void run() {
-                                          if (callback != null) {
-                                              callback.onAdImpression();
-                                          }
-                                      }
-                                  })
-                                  .start();
-                      }
-                      @Override
-                      public void onAdClicked() {
-                          new Thread(
-                                  new Runnable() {
-                                      @Override
-                                      public void run() {
-                                          if (callback != null) {
-                                              callback.onAdClicked();
-                                          }
-                                      }
-                                  }).start();
-                      }
-                  });
-          new Thread(
-                  new Runnable() {
-                      @Override
-                      public void run() {
-                          if (callback != null) {
+                                }
+                            ).start();
+                          }
+                        });
+                    rewardedInterstitialAd.setFullScreenContentCallback(
+                        new FullScreenContentCallback() {
+                          @Override
+                          public void onAdFailedToShowFullScreenContent(final AdError error) {
+                            new Thread(
+                                new Runnable() {
+                                  @Override
+                                  public void run() {
+                                    if (callback != null) {
+                                      callback.onAdFailedToShowFullScreenContent(error);
+                                    }
+                                  }
+                                })
+                                .start();
+                          }
+                          @Override
+                          public void onAdShowedFullScreenContent() {
+                            new Thread(
+                                new Runnable() {
+                                  @Override
+                                  public void run() {
+                                    if (callback != null) {
+                                      callback.onAdShowedFullScreenContent();
+                                    }
+                                  }
+                                })
+                                .start();
+                          }
+                          @Override
+                          public void onAdDismissedFullScreenContent() {
+                            new Thread(
+                                new Runnable() {
+                                  @Override
+                                  public void run() {
+                                    if (callback != null) {
+                                      callback.onAdDismissedFullScreenContent();
+                                    }
+                                  }
+                                })
+                                .start();
+                          }
+                          @Override
+                          public void onAdImpression() {
+                            new Thread(
+                                new Runnable() {
+                                  @Override
+                                  public void run() {
+                                    if (callback != null) {
+                                      callback.onAdImpression();
+                                    }
+                                  }
+                                })
+                                .start();
+                          }
+                          @Override
+                          public void onAdClicked() {
+                            new Thread(
+                                new Runnable() {
+                                  @Override
+                                  public void run() {
+                                    if (callback != null) {
+                                      callback.onAdClicked();
+                                    }
+                                  }
+                                }).start();
+                          }
+                        });
+                    new Thread(
+                        new Runnable() {
+                          @Override
+                          public void run() {
+                            if (callback != null) {
                               callback.onRewardedInterstitialAdLoaded();
+                            }
                           }
-                      }
-                  })
-                  .start();
-      }
-      @Override
-      public void onAdFailedToLoad(final LoadAdError error) {
-          new Thread(
-                  new Runnable() {
-                      @Override
-                      public void run() {
-                          if (callback != null) {
+                        })
+                        .start();
+                  }
+                  @Override
+                  public void onAdFailedToLoad(final LoadAdError error) {
+                    new Thread(
+                        new Runnable() {
+                          @Override
+                          public void run() {
+                            if (callback != null) {
                               callback.onRewardedInterstitialAdFailedToLoad(error);
+                            }
                           }
-                      }
-                  }).start();
-      }
-  };
+                        }).start();
+                  }
+    };
 
   /**
    * Shows the rewarded interstitial ad if it has loaded.
@@ -236,7 +236,7 @@ public class UnityRewardedInterstitialAd {
           + "This should in theory never happen. If it does, please contact the plugin owners.");
       return;
     }
-      if (AHUnityMediators.isWatchingAdUnitId(AdFormat.REWARDED_INTERSTITIAL, adUnitId)) {
+      if (AHUnityMediators.isWatchingAdUnitId(AdFormat.REWARDED_INTERSTITIAL, getAdUnitId())) {
           if (ahRewardedInterstitialAd.getStatus() == AdStateResult.BLOCKED) {
               return;
           }
@@ -285,6 +285,15 @@ public class UnityRewardedInterstitialAd {
             rewardedInterstitialAd.setServerSideVerificationOptions(serverSideVerificationOptions);
           }
         });
+  }
+
+  /** Returns the {@link RewardedInterstitialAd} ad unit ID. */
+  @Nullable
+  public String getAdUnitId() {
+    if (rewardedInterstitialAd == null) {
+      return null;
+    }
+    return rewardedInterstitialAd.getAdUnitId();
   }
 
   /** Returns the request response info. */

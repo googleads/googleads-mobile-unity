@@ -28,11 +28,9 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
-
 import com.google.android.gms.ads.nativead.MediaView;
 import com.google.android.gms.ads.nativead.NativeAd;
 import com.google.android.gms.ads.nativead.NativeAdView;
-
 import googleads.mobile.unity.R;
 
 /** Base class for a template view. */
