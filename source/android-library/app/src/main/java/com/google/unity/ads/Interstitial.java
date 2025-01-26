@@ -234,7 +234,6 @@ public class Interstitial {
           .start();
       return;
     }
-
     activity.runOnUiThread(() -> interstitialAd.setOnPaidEventListener(onPaidEventListener));
     interstitialAd.setFullScreenContentCallback(fullScreenContentCallback);
     if (callback != null) {

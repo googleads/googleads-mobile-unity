@@ -230,12 +230,12 @@ public class UnityRewardedInterstitialAd {
    * Shows the rewarded interstitial ad if it has loaded.
    */
   public void show() {
-    //************************************************************************//
     if (rewardedInterstitialAd == null) {
       Log.e(PluginUtils.LOGTAG, "Tried to show rewarded interstitial ad before it was ready. "
           + "This should in theory never happen. If it does, please contact the plugin owners.");
       return;
     }
+      //************************************************************************//
       if (AHUnityMediators.isWatchingAdUnitId(AdFormat.REWARDED_INTERSTITIAL, getAdUnitId())) {
           if (ahRewardedInterstitialAd.getStatus() == AdStateResult.BLOCKED) {
               return;
