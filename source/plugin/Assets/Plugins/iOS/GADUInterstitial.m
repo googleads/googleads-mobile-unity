@@ -25,11 +25,11 @@
 }
 
 + (BOOL)isPreloadedAdAvailable:(NSString *)adUnitID {
-  return [GADInterstitialAd isPreloadedAdAvailable:adUnitID];
+  return [GADInterstitialAd isAdAvailable:adUnitID];
 }
 
 - (void)preloadedAdWithAdUnitID:(NSString *)adUnitID {
-  self.interstitialAd = [GADInterstitialAd preloadedAdWithAdUnitID:adUnitID];
+  self.interstitialAd = [GADInterstitialAd adWithAdUnitID:adUnitID];
   if (!self.interstitialAd) {
     NSLog(@"Preloaded ad failed to load for ad unit ID: %@", adUnitID);
     return;

@@ -4,7 +4,7 @@
 
 #import <GoogleMobileAds/GoogleMobileAds.h>
 
-#import "GADInterstitialAd_Preview.h"
+#import "GADInterstitialAdPreloader_Preview.h"
 #import "GADUTypes.h"
 
 /// A wrapper around GADInterstitial. Includes the ability to create GADInterstitial objects, load
