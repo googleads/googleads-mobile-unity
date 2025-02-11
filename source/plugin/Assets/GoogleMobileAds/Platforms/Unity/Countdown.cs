@@ -1,4 +1,4 @@
-﻿// Copyright (C) 2020 Google LLC.
+// Copyright (C) 2020 Google LLC.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,6 +16,7 @@
     After 5 seconds has elapsed, the close ad button will be set active and the user can then
     close the ad. **/
 
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -28,6 +29,8 @@ public class Countdown : MonoBehaviour
     private float startingTime = 5f;
     private Button closeButton;
     private Text countdownText;
+
+    public event Action OnCountdownFinished;
 
     public void Start()
     {
@@ -68,6 +71,10 @@ public class Countdown : MonoBehaviour
         {
             countdownText.enabled = false;
             closeButton.gameObject.SetActive(true);
+            if (OnCountdownFinished != null)
+            {
+                OnCountdownFinished();
+            }
         }
     }
 }

@@ -6,6 +6,7 @@ Version 9.6.0
 - Added ability to return correct native template view size on Android.
 - Fixed issue with Native Overlay Icon not being clickable.
 - Added `GetVersion` API to MobileAds class to be able to fetch the GMA Unity SDK Version.
+- Fire `OnUserEarnedReward` once the ad counter expires when showing Rewarded ads in Unity Editor.
 
 Built and tested with:
 - Google Mobile Ads Android SDK 23.6.0

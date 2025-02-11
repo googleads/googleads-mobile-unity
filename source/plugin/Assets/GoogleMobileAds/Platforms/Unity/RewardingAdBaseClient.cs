@@ -85,10 +85,6 @@ namespace GoogleMobileAds.Unity
                     OnAdDidDismissFullScreenContent.Invoke(this, EventArgs.Empty);
                 }
                 AdBehaviour.ResumeGame();
-                if (OnUserEarnedReward != null)
-                {
-                    OnUserEarnedReward.Invoke(this, GetRewardItem());
-                }
             });
         }
 
@@ -161,6 +157,15 @@ namespace GoogleMobileAds.Unity
                 CreateButtonBehavior();
                 AddClickBehavior(dummyAd);
                 dummyAd.AddComponent<Countdown>();
+                Countdown counter = dummyAd.GetComponent<Countdown>();
+                counter.OnCountdownFinished += () =>
+                {
+                    if (OnUserEarnedReward != null)
+                    {
+                        OnUserEarnedReward.Invoke(this, GetRewardItem());
+                    }
+                };
+
                 if (OnAdDidPresentFullScreenContent != null)
                 {
                     OnAdDidPresentFullScreenContent.Invoke(this, EventArgs.Empty);
