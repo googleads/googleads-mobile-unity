@@ -1,6 +1,21 @@
 Google Mobile Ads Unity Plugin Change Log
 
 **************
+Version 9.6.0
+**************
+- Added ability to return correct native template view size on Android.
+- Fixed issue with Native Overlay Icon not being clickable.
+- Added `GetVersion` API to MobileAds class to be able to fetch the GMA Unity SDK Version.
+- Fire `OnUserEarnedReward` once the ad counter expires when showing Rewarded ads in Unity Editor.
+
+Built and tested with:
+- Google Mobile Ads Android SDK 23.6.0
+- Google Mobile Ads iOS SDK 11.13.0
+- Google User Messaging Platform Android SDK 3.1.0
+- Google User Messaging Platform iOS SDK 2.7.0
+- External Dependency Manager for Unity 1.2.185
+
+**************
 Version 9.5.0
 **************
 - Added `CustomTargeting` field to AdRequest.
