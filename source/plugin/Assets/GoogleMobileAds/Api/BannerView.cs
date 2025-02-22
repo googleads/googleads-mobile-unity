@@ -200,6 +200,14 @@ namespace GoogleMobileAds.Api
             return _client == null ? false : _client.IsCollapsible();
         }
 
+        /// <summary>
+        /// Indicates whether the ad is currently hidden.
+        /// </summary>
+        public bool IsHidden()
+        {
+            return _client == null ? false : _client.IsHidden();
+        }
+
         protected internal virtual void ConfigureBannerEvents()
         {
 

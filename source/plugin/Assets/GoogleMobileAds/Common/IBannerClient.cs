@@ -71,6 +71,9 @@ namespace GoogleMobileAds.Common
         // Indicates whether the last loaded ad is a collapsible banner.
         bool IsCollapsible();
 
+        // Indicates whether the ad is currently hidden.
+        bool IsHidden();
+
         // Returns ad request Response info client.
         IResponseInfoClient GetResponseInfoClient();
 

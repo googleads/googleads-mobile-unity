@@ -125,6 +125,12 @@ namespace GoogleMobileAds.Android
             return this.bannerView.Call<bool>("isCollapsible");
         }
 
+        // Indicates whether the ad is currently hidden.
+        public bool IsHidden()
+        {
+            return this.bannerView.Call<bool>("isHidden");
+        }
+
         public IResponseInfoClient GetResponseInfoClient()
         {
             return new ResponseInfoClient(ResponseInfoClientType.AdLoaded, this.bannerView);

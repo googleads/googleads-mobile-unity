@@ -229,6 +229,12 @@ namespace GoogleMobileAds.iOS
             return Externs.GADUIsBannerViewCollapsible(this.BannerViewPtr);
         }
 
+        // Indicates whether the ad is hidden.
+        public bool IsHidden()
+        {
+            return Externs.GADUIsBannerViewHidden(this.BannerViewPtr);
+        }
+
         public IResponseInfoClient GetResponseInfoClient()
         {
             return new ResponseInfoClient(ResponseInfoClientType.AdLoaded, this.BannerViewPtr);

@@ -111,6 +111,9 @@
 /// Returns whether the last loaded ad is a collapsible banner.
 @property(nonatomic, readonly) BOOL isCollapsible;
 
+/// Returns whether the ad is currently on screen.
+@property(nonatomic, readonly) BOOL isHidden;
+
 /// Makes an ad request. Additional targeting options can be supplied with a request object.
 - (void)loadRequest:(nonnull GADRequest *)request;
 

@@ -210,9 +210,8 @@
   return self.bannerView.isCollapsible;
 }
 
-- (void)setAdPosition:(GADAdPosition)adPosition {
-  _adPosition = adPosition;
-  [self positionBannerView];
+- (BOOL)isHidden {
+  return self.bannerView == nil || self.bannerView.hidden;
 }
 
 - (void)setCustomAdPosition:(CGPoint)customPosition {

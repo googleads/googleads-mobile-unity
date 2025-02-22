@@ -243,6 +243,16 @@ namespace GoogleMobileAds.Unity
             return false;
         }
 
+        // Indicates whether the ad is currently hidden.
+        public bool IsHidden()
+        {
+            if (dummyAd != null)
+            {
+                return false;
+            }
+            return true;
+        }
+
         protected internal void SetAndStretchAd(GameObject dummyAd, AdPosition pos, AdSize adSize)
         {
             if (dummyAd != null) {
