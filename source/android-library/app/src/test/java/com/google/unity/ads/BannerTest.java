@@ -97,6 +97,33 @@ public class BannerTest {
   }
 
   @Test
+  public void isVisible_returnsTrue_whenAdViewIsVisible() {
+    fakeAdView.setVisibility(View.VISIBLE);
+    banner.adView = fakeAdView;
+    assertThat(banner.isVisible()).isTrue();
+  }
+
+  @Test
+  public void isVisible_returnsFalse_whenAdViewIsNull() {
+    banner.adView = null;
+    assertThat(banner.isVisible()).isFalse();
+  }
+
+  @Test
+  public void isVisible_returnsFalse_whenAdViewIsGone() {
+    fakeAdView.setVisibility(View.GONE);
+    banner.adView = fakeAdView;
+    assertThat(banner.isVisible()).isFalse();
+  }
+
+  @Test
+  public void isVisible_returnsFalse_whenAdViewIsInvisible() {
+    fakeAdView.setVisibility(View.INVISIBLE);
+    banner.adView = fakeAdView;
+    assertThat(banner.isVisible()).isFalse();
+  }
+
+  @Test
   public void show_setsAdViewVisibilityToVisible() {
     banner.show();
     assertThat(banner.adView.getVisibility()).isEqualTo(View.VISIBLE);

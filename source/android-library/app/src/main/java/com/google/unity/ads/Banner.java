@@ -498,6 +498,11 @@ public class Banner {
     return adView.isCollapsible();
   }
 
+  /** Returns whether the {@link AdView} is visible. */
+  public boolean isVisible() {
+    return adView != null && adView.getVisibility() == View.VISIBLE;
+  }
+
   /**
    * Create layout params for the ad view with relevant positioning details.
    *
