@@ -765,9 +765,14 @@ float GADUGetBannerViewWidthInPixels(GADUTypeBannerRef banner) {
   return internalBanner.widthInPixels;
 }
 
-float GADUIsBannerViewCollapsible(GADUTypeBannerRef banner) {
+BOOL GADUIsBannerViewCollapsible(GADUTypeBannerRef banner) {
   GADUBanner *internalBanner = (__bridge GADUBanner *)banner;
   return internalBanner.isCollapsible;
+}
+
+BOOL GADUIsBannerViewHidden(GADUTypeBannerRef banner) {
+  GADUBanner *internalBanner = (__bridge GADUBanner *)banner;
+  return internalBanner.isHidden;
 }
 
 /// Returns whether an interstitial ad is preloaded for the given ad unit ID
