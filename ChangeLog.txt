@@ -1,6 +1,21 @@
 Google Mobile Ads Unity Plugin Change Log
 
 **************
+Version Next
+**************
+- Updated the GMA Android SDK dependency version to 24.0.0.
+- Updated the GMA iOS SDK dependency version to 12.1.0.
+- Removed deprecated `AdFailedToLoadEventArgs` class. Use `LoadAdError` directly.
+- Removed deprecated `AdValueEventArgs` class. Use `AdValue` directly.
+
+Built and tested with:
+- Google Mobile Ads Android SDK 24.0.0.
+- Google Mobile Ads iOS SDK 12.1.0.
+- Google User Messaging Platform Android SDK 3.1.0
+- Google User Messaging Platform iOS SDK 2.7.0
+- External Dependency Manager for Unity 1.2.185
+
+**************
 Version 9.6.0
 **************
 - Added ability to return correct native template view size on Android.
