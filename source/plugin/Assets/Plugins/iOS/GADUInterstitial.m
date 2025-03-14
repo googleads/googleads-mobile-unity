@@ -24,33 +24,6 @@
   return self;
 }
 
-+ (BOOL)isPreloadedAdAvailable:(NSString *)adUnitID {
-  return [GADInterstitialAd isPreloadedAdAvailable:adUnitID];
-}
-
-- (void)preloadedAdWithAdUnitID:(NSString *)adUnitID {
-  self.interstitialAd = [GADInterstitialAd preloadedAdWithAdUnitID:adUnitID];
-  if (!self.interstitialAd) {
-    NSLog(@"Preloaded ad failed to load for ad unit ID: %@", adUnitID);
-    return;
-  }
-  self.interstitialAd.fullScreenContentDelegate = self;
-
-  __weak GADUInterstitial *weakSelf = self;
-  self.interstitialAd.paidEventHandler = ^void(GADAdValue *_Nonnull adValue) {
-    GADUInterstitial *strongSelf = weakSelf;
-    if (!strongSelf) {
-      return;
-    }
-    if (strongSelf.paidEventCallback) {
-      int64_t valueInMicros = [adValue.value decimalNumberByMultiplyingByPowerOf10:6].longLongValue;
-      strongSelf.paidEventCallback(
-          strongSelf.interstitialClient, (int)adValue.precision, valueInMicros,
-          [adValue.currencyCode cStringUsingEncoding:NSUTF8StringEncoding]);
-    }
-  };
-}
-
 - (void)loadWithAdUnitID:(NSString *)adUnitID request:(GADRequest *)request {
   __weak GADUInterstitial *weakSelf = self;
 

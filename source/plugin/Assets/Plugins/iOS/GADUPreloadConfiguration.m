@@ -19,83 +19,22 @@
 /// Configuration for preloading ads.
 @implementation GADUPreloadConfiguration
 
-// Internal ivar that represents the GADAdFormat value.
-@synthesize format = _format;
-
 - (nonnull GADUPreloadConfiguration *)initWithConfig:(nonnull GADPreloadConfiguration *)config {
   self = [super init];
   if (self) {
     _adUnitID = [config.adUnitID copy];
     _request = [config.request copy];
     _bufferSize = config.bufferSize;
-    _format = (int)config.format;
   }
   return self;
-}
-
-// Format is read only when returned to Unity, not in the GMA iOS SDK.
-// Banner                0 -> 0
-// Interstitial          1 -> 1
-// Rewarded              2 -> 2
-// Rewarded Interstitial 3 -> 4
-// Native                4 -> 3
-// AppOpen               6 -> 5
-- (int)format {
-  switch (_format) {
-    case GADAdFormatBanner:
-      return kGADUAdFormatBanner;
-    case GADAdFormatInterstitial:
-      return kGADUAdFormatInterstitial;
-    case GADAdFormatRewarded:
-      return kGADUAdFormatRewarded;
-    case GADAdFormatRewardedInterstitial:
-      return kGADUAdFormatRewardedInterstitial;
-    case GADAdFormatNative:
-      return kGADUAdFormatNative;
-    case GADAdFormatAppOpen:
-      return kGADUAdFormatAppOpen;
-  }
-  return -1;
-}
-
-// Format needs to be set only to pass to the GMA iOS SDK.
-// Banner                0 -> 0
-// Interstitial          1 -> 1
-// Rewarded              2 -> 2
-// Rewarded Interstitial 3 -> 4
-// Native                4 -> 3
-// AppOpen               5 -> 6
-- (void)setFormat:(int)adFormat {
-  switch (adFormat) {
-    case kGADUAdFormatBanner:
-      _format = GADAdFormatBanner;
-      break;
-    case kGADUAdFormatInterstitial:
-      _format = GADAdFormatInterstitial;
-      break;
-    case kGADUAdFormatRewarded:
-      _format = GADAdFormatRewarded;
-      break;
-    case kGADUAdFormatRewardedInterstitial:
-      _format = GADAdFormatRewardedInterstitial;
-      break;
-    case kGADUAdFormatNative:
-      _format = GADAdFormatNative;
-      break;
-    case kGADUAdFormatAppOpen:
-      _format = GADAdFormatAppOpen;
-      break;
-  }
 }
 
 - (nonnull GADPreloadConfiguration *)preloadConfiguration {
   GADPreloadConfiguration *config = nil;
   if (!self.request) {
-    config = [[GADPreloadConfiguration alloc] initWithAdUnitID:_adUnitID
-                                                      adFormat:(GADAdFormat)_format];
+    config = [[GADPreloadConfiguration alloc] initWithAdUnitID:_adUnitID];
   } else {
     config = [[GADPreloadConfiguration alloc] initWithAdUnitID:_adUnitID
-                                                      adFormat:(GADAdFormat)_format
                                                        request:_request];
   }
   if (self.bufferSize > 0) {
