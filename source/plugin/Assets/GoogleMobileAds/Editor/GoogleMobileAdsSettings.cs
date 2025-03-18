@@ -42,10 +42,10 @@ namespace GoogleMobileAds.Editor
     private bool enableKotlinXCoroutinesPackagingOption = true;
 
     [SerializeField]
-    private bool optimizeInitialization;
+    private bool disableOptimizeInitialization;
 
     [SerializeField]
-    private bool optimizeAdLoading;
+    private bool disableOptimizeAdLoading;
 
     [SerializeField]
     private string userTrackingUsageDescription;
@@ -74,18 +74,18 @@ namespace GoogleMobileAds.Editor
       set { adMobIOSAppId = value; }
     }
 
-    public bool OptimizeInitialization
+    public bool DisableOptimizeInitialization
     {
-      get { return optimizeInitialization; }
+      get { return disableOptimizeInitialization; }
 
-      set { optimizeInitialization = value; }
+      set { disableOptimizeInitialization = value; }
     }
 
-    public bool OptimizeAdLoading
+    public bool DisableOptimizeAdLoading
     {
-      get { return optimizeAdLoading; }
+      get { return disableOptimizeAdLoading; }
 
-      set { optimizeAdLoading = value; }
+      set { disableOptimizeAdLoading = value; }
     }
 
     public string UserTrackingUsageDescription

@@ -11,8 +11,8 @@ namespace GoogleMobileAds.Editor
     SerializedProperty _appIdAndroid;
     SerializedProperty _appIdiOS;
     SerializedProperty _enableKotlinXCoroutinesPackagingOption;
-    SerializedProperty _optimizeInitialization;
-    SerializedProperty _optimizeAdLoading;
+    SerializedProperty _disableOptimizeInitialization;
+    SerializedProperty _disableOptimizeAdLoading;
     SerializedProperty _userLanguage;
     SerializedProperty _userTrackingUsageDescription;
 
@@ -35,8 +35,8 @@ namespace GoogleMobileAds.Editor
       _appIdiOS = serializedObject.FindProperty("adMobIOSAppId");
       _enableKotlinXCoroutinesPackagingOption =
           serializedObject.FindProperty("enableKotlinXCoroutinesPackagingOption");
-      _optimizeInitialization = serializedObject.FindProperty("optimizeInitialization");
-      _optimizeAdLoading = serializedObject.FindProperty("optimizeAdLoading");
+      _disableOptimizeInitialization = serializedObject.FindProperty("disableOptimizeInitialization");
+      _disableOptimizeAdLoading = serializedObject.FindProperty("disableOptimizeAdLoading");
       _userLanguage = serializedObject.FindProperty("userLanguage");
       _userTrackingUsageDescription =
           serializedObject.FindProperty("userTrackingUsageDescription");
@@ -101,21 +101,21 @@ namespace GoogleMobileAds.Editor
 
 
       EditorGUILayout.PropertyField(
-          _optimizeInitialization,
-          new GUIContent(localization.ForKey("OPTIMIZE_INITIALIZATION_SETTING")));
-      if (settings.OptimizeInitialization)
+          _disableOptimizeInitialization,
+          new GUIContent(localization.ForKey("DISABLE_OPTIMIZE_INITIALIZATION_SETTING")));
+      if (settings.DisableOptimizeInitialization)
       {
-        EditorGUILayout.HelpBox(localization.ForKey("OPTIMIZE_INITIALIZATION_HELPBOX"),
+        EditorGUILayout.HelpBox(localization.ForKey("DISABLE_OPTIMIZE_INITIALIZATION_HELPBOX"),
                                 MessageType.Info);
       }
 
       EditorGUILayout.PropertyField(
-          _optimizeAdLoading,
-          new GUIContent(localization.ForKey("OPTIMIZE_AD_LOADING_SETTING")));
+          _disableOptimizeAdLoading,
+          new GUIContent(localization.ForKey("DISABLE_OPTIMIZE_AD_LOADING_SETTING")));
 
-      if (settings.OptimizeAdLoading)
+      if (settings.DisableOptimizeAdLoading)
       {
-        EditorGUILayout.HelpBox(localization.ForKey("OPTIMIZE_AD_LOADING_HELPBOX"),
+        EditorGUILayout.HelpBox(localization.ForKey("DISABLE_OPTIMIZE_AD_LOADING_HELPBOX"),
                                 MessageType.Info);
       }
 

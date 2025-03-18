@@ -32,21 +32,21 @@
       "en": "Misc",
       "fr": "Divers"
     },
-    "KEY_OPTIMIZE_AD_LOADING_HELPBOX": {
-      "en": "Ad loading tasks will be offloaded to a background thread.",
-      "fr": "Les tâches de chargement des annonces seront transférées à une thread d'arrière-plan."
+    "KEY_DISABLE_OPTIMIZE_AD_LOADING_HELPBOX": {
+      "en": "This disables using a background thread to offload Ad loading tasks",
+      "fr": "Cela désactive l'utilisation d'un thread d'arrière-plan pour décharger les tâches de chargement des publicités."
     },
-    "KEY_OPTIMIZE_AD_LOADING_SETTING": {
-      "en": "Optimize ad loading",
-      "fr": "Optimiser le chargement des annonces"
+    "KEY_DISABLE_OPTIMIZE_AD_LOADING_SETTING": {
+      "en": "Disable ad loading optimization",
+      "fr": "Désactiver Optimiser le chargement des annonces"
     },
-    "KEY_OPTIMIZE_INITIALIZATION_HELPBOX": {
-      "en": "Initialization will be offloaded to a background thread.",
-      "fr": "L'initialisation sera transférée à une thread d'arrière-plan."
+    "KEY_DISABLE_OPTIMIZE_INITIALIZATION_HELPBOX": {
+      "en": "Disable offloading initialization to a background thread.",
+      "fr": "L'initialisation ne sera pas transférée vers un thread d'arrière-plan."
     },
-    "KEY_OPTIMIZE_INITIALIZATION_SETTING": {
-      "en": "Optimize initialization",
-      "fr": "Optimiser l'initialisation"
+    "KEY_DISABLE_OPTIMIZE_INITIALIZATION_SETTING": {
+      "en": "Disable initialization Optimization",
+      "fr": "Désactiver Optimiser l'initialisation"
     },
     "KEY_UMP_SPECIFIC_SETTINGS_LABEL": {
       "en": "UMP-specific settings",
