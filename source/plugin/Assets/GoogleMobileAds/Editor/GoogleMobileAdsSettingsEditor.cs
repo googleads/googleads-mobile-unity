@@ -15,7 +15,6 @@ namespace GoogleMobileAds.Editor
     SerializedProperty _optimizeAdLoading;
     SerializedProperty _userLanguage;
     SerializedProperty _userTrackingUsageDescription;
-    SerializedProperty _validateGradleDependencies;
 
     // Using an ordered list of languages is computationally expensive when trying to create an
     // array out of them for purposes of showing a dropdown menu. Care should be taken to ensure
@@ -41,8 +40,6 @@ namespace GoogleMobileAds.Editor
       _userLanguage = serializedObject.FindProperty("userLanguage");
       _userTrackingUsageDescription =
           serializedObject.FindProperty("userTrackingUsageDescription");
-      _validateGradleDependencies =
-          serializedObject.FindProperty("validateGradleDependencies");
 
       selectedIndex = Array.IndexOf(languageCodes, _userLanguage.stringValue);
       selectedIndex = selectedIndex >= 0 ? selectedIndex : 0;
@@ -102,15 +99,6 @@ namespace GoogleMobileAds.Editor
             MessageType.Info);
       }
 
-      EditorGUILayout.PropertyField(
-          _validateGradleDependencies,
-          new GUIContent(localization.ForKey("VALIDATE_GRADLE_DEPENDENCIES_SETTING")));
-
-      if (settings.ValidateGradleDependencies)
-      {
-        EditorGUILayout.HelpBox(localization.ForKey("VALIDATE_GRADLE_DEPENDENCIES_HELPBOX"),
-                                MessageType.Info);
-      }
 
       EditorGUILayout.PropertyField(
           _optimizeInitialization,

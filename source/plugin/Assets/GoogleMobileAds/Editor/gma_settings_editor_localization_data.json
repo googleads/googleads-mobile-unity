@@ -59,14 +59,6 @@
     "KEY_USER_TRACKING_USAGE_DESCRIPTION_SETTING": {
       "en": "User Tracking Usage Description",
       "fr": "Description de l'utilisation du suivi des utilisateurs"
-    },
-    "KEY_VALIDATE_GRADLE_DEPENDENCIES_HELPBOX": {
-      "en": "This option ensures the GMA Android SDK is compatible with the version of Android Gradle Plugin being used. Enabling this option is required for Unity Projects that use Android Gradle Plugin under version 4.2.2.",
-      "fr": "Cette option garantit que le SDK Android GMA est compatible avec la version utilisée du plugin Android Gradle. L'activation de cette option est requise pour les projets Unity utilisant le plugin Android Gradle avant la version 4.2.2."
-    },
-    "KEY_VALIDATE_GRADLE_DEPENDENCIES_SETTING": {
-      "en": "Remove property tag from GMA Android SDK",
-      "fr": "Supprimer la balise de propriété du SDK GMA Android"
     }
   }
 }
