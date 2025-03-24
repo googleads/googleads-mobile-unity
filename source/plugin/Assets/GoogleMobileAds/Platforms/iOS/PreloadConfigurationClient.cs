@@ -32,11 +32,10 @@ namespace GoogleMobileAds.iOS
         {
             get
             {
-                return Externs.GADUGetPreloadConfigurationAdUnitID(preloadConfigurationPtr);
+                return "";
             }
             set
             {
-                Externs.GADUSetPreloadConfigurationAdUnitID(preloadConfigurationPtr, value);
             }
         }
 
@@ -44,12 +43,11 @@ namespace GoogleMobileAds.iOS
         {
             get
             {
-                return (AdFormat)Externs.GADUGetPreloadConfigurationAdFormat(
-                        preloadConfigurationPtr);
+                return 0;
             }
             set
             {
-                Externs.GADUSetPreloadConfigurationAdFormat(preloadConfigurationPtr, (int)value);
+                // TODO(b/398243349):Will be removed as part of Zenith V2.
             }
         }
 
@@ -61,8 +59,6 @@ namespace GoogleMobileAds.iOS
             }
             set
             {
-                Externs.GADUSetPreloadConfigurationAdRequest(preloadConfigurationPtr,
-                                                             Utils.BuildAdRequest(value));
                 _adRequest = value;
             }
         }
@@ -71,11 +67,10 @@ namespace GoogleMobileAds.iOS
         {
             get
             {
-                return Externs.GADUGetPreloadConfigurationBufferSize(preloadConfigurationPtr);
+                return 0;
             }
             set
             {
-                Externs.GADUSetPreloadConfigurationBufferSize(preloadConfigurationPtr, value);
             }
         }
     }
