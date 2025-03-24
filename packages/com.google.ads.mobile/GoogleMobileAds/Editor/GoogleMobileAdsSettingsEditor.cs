@@ -11,11 +11,10 @@ namespace GoogleMobileAds.Editor
     SerializedProperty _appIdAndroid;
     SerializedProperty _appIdiOS;
     SerializedProperty _enableKotlinXCoroutinesPackagingOption;
-    SerializedProperty _optimizeInitialization;
-    SerializedProperty _optimizeAdLoading;
+    SerializedProperty _disableOptimizeInitialization;
+    SerializedProperty _disableOptimizeAdLoading;
     SerializedProperty _userLanguage;
     SerializedProperty _userTrackingUsageDescription;
-    SerializedProperty _validateGradleDependencies;
 
     // Using an ordered list of languages is computationally expensive when trying to create an
     // array out of them for purposes of showing a dropdown menu. Care should be taken to ensure
@@ -36,13 +35,11 @@ namespace GoogleMobileAds.Editor
       _appIdiOS = serializedObject.FindProperty("adMobIOSAppId");
       _enableKotlinXCoroutinesPackagingOption =
           serializedObject.FindProperty("enableKotlinXCoroutinesPackagingOption");
-      _optimizeInitialization = serializedObject.FindProperty("optimizeInitialization");
-      _optimizeAdLoading = serializedObject.FindProperty("optimizeAdLoading");
+      _disableOptimizeInitialization = serializedObject.FindProperty("disableOptimizeInitialization");
+      _disableOptimizeAdLoading = serializedObject.FindProperty("disableOptimizeAdLoading");
       _userLanguage = serializedObject.FindProperty("userLanguage");
       _userTrackingUsageDescription =
           serializedObject.FindProperty("userTrackingUsageDescription");
-      _validateGradleDependencies =
-          serializedObject.FindProperty("validateGradleDependencies");
 
       selectedIndex = Array.IndexOf(languageCodes, _userLanguage.stringValue);
       selectedIndex = selectedIndex >= 0 ? selectedIndex : 0;
@@ -102,32 +99,23 @@ namespace GoogleMobileAds.Editor
             MessageType.Info);
       }
 
-      EditorGUILayout.PropertyField(
-          _validateGradleDependencies,
-          new GUIContent(localization.ForKey("VALIDATE_GRADLE_DEPENDENCIES_SETTING")));
 
-      if (settings.ValidateGradleDependencies)
+      EditorGUILayout.PropertyField(
+          _disableOptimizeInitialization,
+          new GUIContent(localization.ForKey("DISABLE_OPTIMIZE_INITIALIZATION_SETTING")));
+      if (settings.DisableOptimizeInitialization)
       {
-        EditorGUILayout.HelpBox(localization.ForKey("VALIDATE_GRADLE_DEPENDENCIES_HELPBOX"),
+        EditorGUILayout.HelpBox(localization.ForKey("DISABLE_OPTIMIZE_INITIALIZATION_HELPBOX"),
                                 MessageType.Info);
       }
 
       EditorGUILayout.PropertyField(
-          _optimizeInitialization,
-          new GUIContent(localization.ForKey("OPTIMIZE_INITIALIZATION_SETTING")));
-      if (settings.OptimizeInitialization)
-      {
-        EditorGUILayout.HelpBox(localization.ForKey("OPTIMIZE_INITIALIZATION_HELPBOX"),
-                                MessageType.Info);
-      }
+          _disableOptimizeAdLoading,
+          new GUIContent(localization.ForKey("DISABLE_OPTIMIZE_AD_LOADING_SETTING")));
 
-      EditorGUILayout.PropertyField(
-          _optimizeAdLoading,
-          new GUIContent(localization.ForKey("OPTIMIZE_AD_LOADING_SETTING")));
-
-      if (settings.OptimizeAdLoading)
+      if (settings.DisableOptimizeAdLoading)
       {
-        EditorGUILayout.HelpBox(localization.ForKey("OPTIMIZE_AD_LOADING_HELPBOX"),
+        EditorGUILayout.HelpBox(localization.ForKey("DISABLE_OPTIMIZE_AD_LOADING_HELPBOX"),
                                 MessageType.Info);
       }
 

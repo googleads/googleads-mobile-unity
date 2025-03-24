@@ -27,13 +27,6 @@ namespace GoogleMobileAds.Editor
                                         MobileAdsSettingsFile + MobileAdsSettingsFileExtension);
         AssetDatabase.CreateAsset(instance, assetPath);
         AssetDatabase.SaveAssets();
-        Version agp = Version.Parse(Utils.AndroidGradlePluginVersion);
-        instance.validateGradleDependencies = true;
-        // Turn on Gradle Dependency Validation if AGP < 4.2.2
-        if (agp.Major > 4 || (agp.Major == 4 && agp.Minor >= 2 && agp.Build >= 2))
-        {
-          instance.validateGradleDependencies = false;
-        }
       }
 
       return instance;
@@ -49,16 +42,13 @@ namespace GoogleMobileAds.Editor
     private bool enableKotlinXCoroutinesPackagingOption = true;
 
     [SerializeField]
-    private bool optimizeInitialization;
+    private bool disableOptimizeInitialization;
 
     [SerializeField]
-    private bool optimizeAdLoading;
+    private bool disableOptimizeAdLoading;
 
     [SerializeField]
     private string userTrackingUsageDescription;
-
-    [SerializeField]
-    private bool validateGradleDependencies;
 
     [SerializeField]
     private string userLanguage = "en";
@@ -84,18 +74,18 @@ namespace GoogleMobileAds.Editor
       set { adMobIOSAppId = value; }
     }
 
-    public bool OptimizeInitialization
+    public bool DisableOptimizeInitialization
     {
-      get { return optimizeInitialization; }
+      get { return disableOptimizeInitialization; }
 
-      set { optimizeInitialization = value; }
+      set { disableOptimizeInitialization = value; }
     }
 
-    public bool OptimizeAdLoading
+    public bool DisableOptimizeAdLoading
     {
-      get { return optimizeAdLoading; }
+      get { return disableOptimizeAdLoading; }
 
-      set { optimizeAdLoading = value; }
+      set { disableOptimizeAdLoading = value; }
     }
 
     public string UserTrackingUsageDescription
@@ -103,13 +93,6 @@ namespace GoogleMobileAds.Editor
       get { return userTrackingUsageDescription; }
 
       set { userTrackingUsageDescription = value; }
-    }
-
-    public bool ValidateGradleDependencies
-    {
-      get { return validateGradleDependencies; }
-
-      set { validateGradleDependencies = value; }
     }
 
     public string UserLanguage

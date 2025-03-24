@@ -56,7 +56,6 @@ Assets/GoogleMobileAds/link.xml
 Assets/Plugins/Android/GoogleMobileAdsPlugin.androidlib/AndroidManifest.xml
 Assets/Plugins/Android/GoogleMobileAdsPlugin.androidlib/packaging_options.gradle
 Assets/Plugins/Android/GoogleMobileAdsPlugin.androidlib/project.properties
-Assets/Plugins/Android/GoogleMobileAdsPlugin.androidlib/validate_dependencies.gradle
 Assets/Plugins/Android/googlemobileads-unity.aar
 Assets/Plugins/iOS/GADUAdNetworkExtras.h
 Assets/Plugins/iOS/NativeTemplates/GADTMediumTemplateView.xib

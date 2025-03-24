@@ -132,12 +132,14 @@ public class ManifestProcessor : IPreprocessBuild
         SetMetadataElement(elemApplication,
                            metas,
                            METADATA_OPTIMIZE_INITIALIZATION,
-                           instance.OptimizeInitialization);
+                           !instance.DisableOptimizeInitialization,
+                           true);
 
         SetMetadataElement(elemApplication,
                            metas,
                            METADATA_OPTIMIZE_AD_LOADING,
-                           instance.OptimizeAdLoading);
+                           !instance.DisableOptimizeAdLoading,
+                           true);
 
         SetMetadataElement(elemApplication,
                            metas,
