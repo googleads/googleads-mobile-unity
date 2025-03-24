@@ -11,6 +11,8 @@ namespace GoogleMobileAds.Samples.Utility
     public class StatusText : Text
     {
         private SynchronizationContext _synchronizationContext;
+        private const int MAX_LINES = 25; // Adjust this value as needed
+        private List<string> _lines = new List<string>();
 
         protected override void Awake()
         {
@@ -57,8 +59,54 @@ namespace GoogleMobileAds.Samples.Utility
                 }
 
                 string message = $"<color={color}>{logString}</color>\n\r";
-                text += message;
+                _lines.Add(message);
+                if (_lines.Count > MAX_LINES)
+                {
+                    RemoveOldestLines();
+                }
+                text = string.Join("", _lines);
             }, this);
+        }
+
+        /// <summary>
+        /// Removes the oldest lines from the list of lines to ensure that the list does not exceed
+        /// the maximum number of lines. It also ensures that the formatting of the lines is
+        /// preserved.
+        /// </summary>
+        private void RemoveOldestLines()
+        {
+            while (_lines.Count > MAX_LINES)
+            {
+                if (_colorTagRegex.IsMatch(_lines[0]) &&
+                    !_colorTagRegex.IsMatch(_lines[_lines.Count - 1]))
+                {
+                    // If the first line has a color tag, but the last line does not, we need to
+                    // remove more lines.
+                    int index = 0;
+                    bool foundClosingTag = false;
+                    for (int i = 0; i < _lines.Count; i++)
+                    {
+                        if (_lines[i].Contains("</color>"))
+                        {
+                            index = i;
+                            foundClosingTag = true;
+                            break;
+                        }
+                    }
+                    if (foundClosingTag)
+                    {
+                        _lines.RemoveRange(0, index + 1);
+                    }
+                    else
+                    {
+                        _lines.Clear();
+                    }
+                }
+                else
+                {
+                    _lines.RemoveAt(0);
+                }
+            }
         }
     }
 }
