@@ -40,6 +40,8 @@ namespace GoogleMobileAds.Unity
 
         public event Action OnAdImpressionRecorded;
 
+        private bool isHidden = false;
+
         protected internal Dictionary<AdSize, string> prefabAds = new Dictionary<AdSize, string>()
         {
             {AdSize.Banner, "PlaceholderAds/Banners/BANNER"},
@@ -147,14 +149,22 @@ namespace GoogleMobileAds.Unity
         // Requests a new ad for the banner view.
         public virtual void LoadAd(AdRequest request)
         {
-
-            if (prefabAd != null) {
-                ShowBannerView();
+            if (prefabAd != null && request != null)
+            {
+                dummyAd = AdBehaviour.ShowAd(prefabAd, getRectTransform(prefabAd).anchoredPosition);
+                CreateButtonBehavior();
+                AddClickBehavior(dummyAd);
+                if (isHidden)
+                {
+                    dummyAd.SetActive(false);
+                }
                 if (OnAdLoaded != null)
                 {
                   OnAdLoaded.Invoke(this, EventArgs.Empty);
                 }
-            } else {
+            }
+            else
+            {
                 if (OnAdFailedToLoad != null)
                 {
                   OnAdFailedToLoad.Invoke(this, new LoadAdErrorClientEventArgs()
@@ -168,15 +178,21 @@ namespace GoogleMobileAds.Unity
         // Shows the banner view on the screen.
         public void ShowBannerView()
         {
-            dummyAd = AdBehaviour.ShowAd(prefabAd, getRectTransform(prefabAd).anchoredPosition);
-            CreateButtonBehavior();
-            AddClickBehavior(dummyAd);
+            isHidden = false;
+            if (dummyAd != null)
+            {
+                dummyAd.SetActive(true);
+            }
         }
 
         // Hides the banner view from the screen.
         public void HideBannerView()
         {
-            AdBehaviour.DestroyAd(dummyAd);
+            isHidden = true;
+            if (dummyAd != null)
+            {
+                dummyAd.SetActive(false);
+            }
         }
 
         // Destroys a banner view.

@@ -36,6 +36,10 @@ public class AdBehaviour : MonoBehaviour
 
     public void DestroyAd(GameObject dummyAd)
     {
+        if (dummyAd == null)
+        {
+            return;
+        }
         if (Application.isPlaying)
         {
             Destroy(dummyAd);
