@@ -33,6 +33,9 @@
 /// The maximum amount of ads buffered for this configuration.
 @property(nonatomic, readwrite) NSUInteger bufferSize;
 
+/// The format. Interstitial, rewarded, and app open ads are supported.
+@property(nonatomic) int format;
+
 /// The preload configuration object compatible with the GMA iOS SDK.
 @property(nonatomic, readonly, nonnull) GADPreloadConfiguration *preloadConfiguration;
 

@@ -24,6 +24,33 @@
   return self;
 }
 
++ (BOOL)isPreloadedAdAvailable:(NSString *)adUnitID {
+  return [GADAppOpenAd isPreloadedAdAvailable:adUnitID];
+}
+
+- (void)preloadedAdWithAdUnitID:(nonnull NSString *)adUnitID {
+  self.appOpenAd = [GADAppOpenAd preloadedAdWithAdUnitID:adUnitID];
+  if (!self.appOpenAd) {
+    NSLog(@"Preloaded ad failed to load for ad unit ID: %@", adUnitID);
+    return;
+  }
+  self.appOpenAd.fullScreenContentDelegate = self;
+
+  __weak GADUAppOpenAd *weakSelf = self;
+  self.appOpenAd.paidEventHandler = ^void(GADAdValue *_Nonnull adValue) {
+    GADUAppOpenAd *strongSelf = weakSelf;
+    if (!strongSelf) {
+      return;
+    }
+    if (strongSelf.paidEventCallback) {
+      int64_t valueInMicros = [adValue.value decimalNumberByMultiplyingByPowerOf10:6].longLongValue;
+      strongSelf.paidEventCallback(
+          strongSelf.appOpenAdClient, (int)adValue.precision, valueInMicros,
+          [adValue.currencyCode cStringUsingEncoding:NSUTF8StringEncoding]);
+    }
+  };
+}
+
 - (void)loadWithAdUnitID:(nonnull NSString *)adUnit request:(nonnull GADRequest *)request {
   __weak GADUAppOpenAd *weakSelf = self;
 
