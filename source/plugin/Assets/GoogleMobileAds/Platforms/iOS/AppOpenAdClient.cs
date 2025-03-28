@@ -108,15 +108,14 @@ namespace GoogleMobileAds.iOS
         // Verify if an ad is preloaded and available to show.
         public bool IsAdAvailable(string adUnitId)
         {
-            // TODO(b/398243349):Will be implemented as part of Zenith V2.
-            return false;
+            return Externs.GADUAppOpenIsPreloadedAdAvailable(adUnitId);
         }
 
         // Returns the next pre-loaded app open ad and null if no ad is available.
         public IAppOpenAdClient PollAd(string adUnitId)
         {
-            // TODO(b/398243349):Will be implemented as part of Zenith V2.
-            return null;
+            Externs.GADUAppOpenPreloadedAdWithAdUnitID(this.AppOpenAdPtr, adUnitId);
+            return this;
         }
 
         // Load an ad.
