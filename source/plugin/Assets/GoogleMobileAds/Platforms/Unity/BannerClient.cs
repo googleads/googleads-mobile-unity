@@ -160,7 +160,7 @@ namespace GoogleMobileAds.Unity
                 return;
             }
 
-            if (request == null)
+            if (request == null || string.IsNullOrEmpty(_adUnitId))
             {
                 if(OnAdFailedToLoad != null)
                 {
