@@ -123,22 +123,21 @@ namespace GoogleMobileAds.iOS
         // Verify if an ad is preloaded and available to show.
         public bool IsAdAvailable(string adUnitId)
         {
-            // TODO(b/398243349):Will be implemented as part of Zenith V2.
+            return Externs.GAMUInterstitialIsPreloadedAdAvailable(adUnitId);
             return false;
         }
 
         // Returns the next pre-loaded interstitial ad and null if no ad is available.
         public IInterstitialClient PollAd(string adUnitId)
         {
-            // TODO(b/398243349):Will be implemented as part of Zenith V2.
-            return null;
+            return PollAdManagerAd(adUnitId);
         }
 
         // Returns the next pre-loaded ad manager interstitial ad and null if no ad is available.
         public IAdManagerInterstitialClient PollAdManagerAd(string adUnitId)
         {
-            // TODO(b/398243349):Will be implemented as part of Zenith V2.
-            return null;
+            Externs.GAMUInterstitialPreloadedAdWithAdUnitID(this.InterstitialPtr, adUnitId);
+            return this;
         }
 
         public void LoadAd(string adUnitID, AdRequest request) {

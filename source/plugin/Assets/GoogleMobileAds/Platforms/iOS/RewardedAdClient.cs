@@ -112,15 +112,14 @@ namespace GoogleMobileAds.iOS
         // Verify if a rewarded ad is preloaded and available to show.
         public bool IsAdAvailable(string adUnitId)
         {
-            // TODO(b/398243349):Will be removed as part of Zenith V2.
-            return false;
+            return Externs.GADURewardedIsPreloadedAdAvailable(adUnitId);
         }
 
         // Returns the next pre-loaded rewarded ad and null if no ad is available.
         public IRewardedAdClient PollAd(string adUnitId)
         {
-            // TODO(b/398243349):Will be removed as part of Zenith V2.
-            return null;
+            Externs.GADURewardedPreloadedAdWithAdUnitID(this.RewardedAdPtr, adUnitId);
+            return this;
         }
 
         public void LoadAd(string adUnitID, AdRequest request) {
