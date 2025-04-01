@@ -13,7 +13,6 @@
 // limitations under the License.
 
 using System;
-using System.Reflection;
 using System.Collections.Generic;
 using GoogleMobileAds.Api;
 using GoogleMobileAds.Common;
@@ -23,26 +22,24 @@ using UnityEngine.UI;
 
 namespace GoogleMobileAds.Unity
 {
-    public class BannerClient : BaseAdClient, IBannerClient
+    public class BannerClient : IBannerClient
     {
-        // Ad event fired when the banner ad has been received.
-        public event EventHandler<EventArgs> OnAdLoaded;
-        // Ad event fired when the banner ad has failed to load.
-        public event EventHandler<LoadAdErrorClientEventArgs> OnAdFailedToLoad;
-        // Ad event fired when the banner ad is opened.
-        public event EventHandler<EventArgs> OnAdOpening;
-        // Ad event fired when the banner ad is closed.
-        public event EventHandler<EventArgs> OnAdClosed;
-        // Ad event fired when the banner ad is estimated to have earned money.
         public event Action<AdValue> OnPaidEvent;
-
         public event Action OnAdClicked;
-
         public event Action OnAdImpressionRecorded;
+        public event EventHandler<EventArgs> OnAdLoaded;
+        public event EventHandler<LoadAdErrorClientEventArgs> OnAdFailedToLoad;
+        public event EventHandler<EventArgs> OnAdOpening;
+        public event EventHandler<EventArgs> OnAdClosed;
 
-        private bool isHidden = false;
+        private bool _isHidden = false;
+        private bool _didImpress = false;
+        private bool _loaded = false;
+        private GameObject _gameObject;
+        private GameObject _prefab;
+        private string _adUnitId;
 
-        protected internal Dictionary<AdSize, string> prefabAds = new Dictionary<AdSize, string>()
+        protected internal Dictionary<AdSize, string> _prefabAds = new Dictionary<AdSize, string>()
         {
             {AdSize.Banner, "PlaceholderAds/Banners/BANNER"},
             {AdSize.SmartBanner, "PlaceholderAds/Banners/SMART_BANNER" },
@@ -52,197 +49,294 @@ namespace GoogleMobileAds.Unity
             {new AdSize (320,100), "PlaceholderAds/Banners/LARGE_BANNER" }
         };
 
-        private ButtonBehaviour buttonBehaviour;
-
-        private void AddClickBehavior(GameObject dummyAd)
+        public void CreateBannerView(string adUnitId, AdSize adSize, AdPosition position)
         {
-            Image myImage = dummyAd.GetComponentInChildren<Image>();
-            Button button = myImage.GetComponentInChildren<Button>();
-            button.onClick.AddListener(() => {
+            if(CreateBannerView(adSize, position))
+            {
+                _adUnitId = adUnitId;
+
+                if (adSize == AdSize.SmartBanner || adSize.AdType == AdSize.Type.AnchoredAdaptive)
+                {
+                    SetAndStretchAd(position, adSize);
+                }
+                else
+                {
+                    AnchorAd(position);
+                }
+
+                _gameObject.SetActive(false);
+            }
+        }
+
+        public void CreateBannerView(string adUnitId, AdSize adSize, int x, int y)
+        {
+            if(CreateBannerView(adSize, null))
+            {
+                _adUnitId = adUnitId;
+                RectTransform rect = GetRectTransform();
+                if (adSize == AdSize.SmartBanner || adSize.AdType == AdSize.Type.AnchoredAdaptive)
+                {
+                    SetAndStretchAd(0, adSize);
+                    rect.anchoredPosition = new Vector3(0, y, 1);
+                }
+                else
+                {
+                    AnchorAd(x, y);
+                }
+
+                _gameObject.SetActive(false);
+            }
+        }
+
+        bool CreateBannerView(AdSize adSize, AdPosition? position)
+        {
+            string prefabName;
+
+            if (adSize == AdSize.SmartBanner || adSize.AdType == AdSize.Type.AnchoredAdaptive)
+            {
+                if (position.HasValue && position.Value == AdPosition.Center)
+                {
+                     prefabName = "PlaceholderAds/Banners/CENTER";
+                }
+                else
+                {
+                    prefabName = "PlaceholderAds/Banners/ADAPTIVE";
+                }
+            }
+            else if(!_prefabAds.TryGetValue(adSize, out prefabName))
+            {
+                Debug.LogError("No Prefab found");
+                return false;
+            }
+            _prefab = Resources.Load(prefabName) as GameObject;
+            if (_prefab == null)
+            {
+                Debug.LogError("No Prefab found");
+                return false;
+            }
+            _gameObject = GameObject.Instantiate(_prefab);
+
+            // Setting the maximum sortingOrder ensures highest priority for rendering the ad.
+            Canvas canvas = _prefab.GetComponent<Canvas>();
+            if (canvas != null)
+            {
+                // sortingOrder is a 16 bit int so the maximum value is 32767.
+                canvas.sortingOrder = 32767;
+            }
+
+            // Wire button.
+            var button = _gameObject.GetComponentInChildren<Button>();
+            button.onClick.AddListener(() =>
+            {
                 if (OnAdClicked != null)
                 {
                     OnAdClicked();
                 }
-                buttonBehaviour.OpenURL();
-            });
-        }
-
-        private void CreateButtonBehavior()
-        {
-            buttonBehaviour = base.dummyAd.AddComponent<ButtonBehaviour>();
-            buttonBehaviour.OnAdOpening += (s, e) =>
-            {
                 if (OnAdOpening != null)
                 {
                     OnAdOpening(this, EventArgs.Empty);
                 }
-                if (OnAdImpressionRecorded != null)
+                Application.OpenURL("https://google.com");
+                if (OnPaidEvent != null)
                 {
-                    OnAdImpressionRecorded();
+                    OnPaidEvent(new AdValue{
+                        Value = 0,
+                        CurrencyCode = "Google",
+                        Precision = AdValue.PrecisionType.Unknown});
                 }
-            };
+                if (OnAdClosed != null)
+                {
+                    OnAdClosed(this, EventArgs.Empty);
+                }
+            });
+
+            return true;
         }
 
-        // Creates a banner view and adds it to the view hierarchy.
-        public virtual void CreateBannerView(string adUnitId, AdSize adSize, AdPosition position)
+        public void LoadAd(AdRequest request)
         {
-            base._adUnitId = adUnitId;
-            if (adSize.AdType == AdSize.Type.AnchoredAdaptive)
-            {
-                LoadAndSetPrefabAd("PlaceholderAds/Banners/ADAPTIVE");
-            }
-            else if (prefabAds.ContainsKey(adSize))
-            {
-                LoadAndSetPrefabAd(prefabAds[adSize]);
-            }
-            if (prefabAd == null)
-            {
-                return;
-            }
-            if (adSize == AdSize.SmartBanner || adSize.AdType == AdSize.Type.AnchoredAdaptive)
-            {
-                SetAndStretchAd(prefabAd, position, adSize);
-            }
-            else
-            {
-                AnchorAd(prefabAd, position);
-            }
-        }
-
-        // Creates a banner view and adds it to the view hierarchy with a custom position.
-        public virtual void CreateBannerView(string adUnitId, AdSize adSize, int x, int y)
-        {
-            base._adUnitId = adUnitId;
-            if (adSize.AdType == AdSize.Type.AnchoredAdaptive)
-            {
-                LoadAndSetPrefabAd("PlaceholderAds/Banners/ADAPTIVE");
-            }
-            else if (prefabAds.ContainsKey(adSize))
-            {
-                LoadAndSetPrefabAd(prefabAds[adSize]);
-            }
-            if (prefabAd == null)
+            if (_gameObject == null)
             {
                 return;
             }
 
-            RectTransform rect = getRectTransform(prefabAd);
-            if (adSize == AdSize.SmartBanner || adSize.AdType == AdSize.Type.AnchoredAdaptive)
+            if (request == null)
             {
-                SetAndStretchAd(prefabAd, 0, adSize);
-                rect.anchoredPosition = new Vector3(0, y, 1);
-            }
-            else
-            {
-                // Account for banner size and refactor coordinates
-                float xWithOffset = (float)rect.sizeDelta.x/2 + x;
-                float yWithOffset = (float)rect.sizeDelta.y/2 + y;
-
-                // Anchor the banner relative to the top left
-                rect.pivot = new Vector2(0.5f, 0.5f);
-                rect.anchorMin = new Vector2(0, 1);
-                rect.anchorMax = new Vector2(0, 1);
-                rect.anchoredPosition = new Vector2(xWithOffset, -yWithOffset);
-            }
-        }
-
-        // Requests a new ad for the banner view.
-        public virtual void LoadAd(AdRequest request)
-        {
-            if (prefabAd != null && request != null)
-            {
-                dummyAd = AdBehaviour.ShowAd(prefabAd, getRectTransform(prefabAd).anchoredPosition);
-                CreateButtonBehavior();
-                AddClickBehavior(dummyAd);
-                if (isHidden)
+                if(OnAdFailedToLoad != null)
                 {
-                    dummyAd.SetActive(false);
-                }
-                if (OnAdLoaded != null)
-                {
-                  OnAdLoaded.Invoke(this, EventArgs.Empty);
+                    OnAdFailedToLoad.Invoke(this, new LoadAdErrorClientEventArgs {
+                            LoadAdErrorClient = new LoadAdErrorClient()
+                        });
                 }
             }
             else
             {
-                if (OnAdFailedToLoad != null)
+                _loaded = true;
+                _didImpress = false;
+
+                if(OnAdLoaded != null)
                 {
-                  OnAdFailedToLoad.Invoke(this, new LoadAdErrorClientEventArgs()
-                  {
-                      LoadAdErrorClient = new LoadAdErrorClient()
-                  });
+                    OnAdLoaded.Invoke(this, EventArgs.Empty);
+                }
+
+                if (!_isHidden)
+                {
+                    _gameObject.SetActive(true);
+
+                    if(OnAdImpressionRecorded != null)
+                    {
+                        OnAdImpressionRecorded();
+                    }
+                    _didImpress = true;
                 }
             }
         }
 
-        // Shows the banner view on the screen.
         public void ShowBannerView()
         {
-            isHidden = false;
-            if (dummyAd != null)
+            if(_gameObject != null)
             {
-                dummyAd.SetActive(true);
+                _gameObject.SetActive(_loaded);
+
+                if (!_didImpress)
+                {
+                    if(OnAdImpressionRecorded != null)
+                    {
+                        OnAdImpressionRecorded();
+                    }
+                }
             }
+            _isHidden = false;
         }
 
-        // Hides the banner view from the screen.
         public void HideBannerView()
         {
-            isHidden = true;
-            if (dummyAd != null)
+            if(_gameObject != null)
             {
-                dummyAd.SetActive(false);
+                _gameObject.SetActive(false);
             }
+            _isHidden = true;
         }
 
-        // Destroys a banner view.
         public void DestroyBannerView()
         {
-            AdBehaviour.DestroyAd(dummyAd);
-            prefabAd = null;
+            if (_gameObject != null)
+            {
+                if (Application.isPlaying)
+                {
+                    GameObject.Destroy(_gameObject);
+                }
+                else
+                {
+                    GameObject.DestroyImmediate(_gameObject);
+                }
+                _gameObject = null;
+            }
         }
 
-        // Returns the height of the BannerView in pixels.
+        public string GetAdUnitID()
+        {
+            return _adUnitId;
+        }
+
         public float GetHeightInPixels()
         {
-            if (prefabAd != null) {
-                return getRectTransform(prefabAd).sizeDelta.y;
-            }
-            return 0;
+            var rect = GetRectTransform();
+            return rect.sizeDelta.y;
         }
 
-        // Returns the width of the BannerView in pixels.
         public float GetWidthInPixels()
         {
-            if (prefabAd != null) {
-                return getRectTransform(prefabAd).sizeDelta.x;
-            }
-            return 0;
+            var rect = GetRectTransform();
+            return rect.sizeDelta.x;
         }
 
-        // Set the position of the banner view using standard position.
         public void SetPosition(AdPosition adPosition)
         {
-            if (dummyAd != null)
+            if (_gameObject != null)
             {
-                AnchorAd(dummyAd, adPosition);
-            } else
-            {
-                Debug.Log("No existing banner in game");
+                AnchorAd(adPosition);
             }
         }
 
-        // Set the position of the banner view using custom position.
         public void SetPosition(int x, int y)
         {
-            if (dummyAd == null)
+            if (_gameObject != null)
             {
-                Debug.Log("No existing banner in game");
-                return;
+                AnchorAd(x, y);
             }
+        }
 
+        public bool IsCollapsible()
+        {
+            return false;
+        }
+
+        public IResponseInfoClient GetResponseInfoClient()
+        {
+            return new ResponseInfoClient();
+        }
+
+        private RectTransform GetRectTransform()
+        {
+            Image myImage = _gameObject.GetComponentInChildren<Image>();
+            if (myImage != null)
+            {
+                return myImage.GetComponent<RectTransform>();
+            }
+            return null;
+        }
+
+        private void SetAndStretchAd(AdPosition pos, AdSize adSize)
+        {
+            if (_gameObject != null)
+            {
+                RectTransform rect = GetRectTransform();
+
+                rect.pivot = new Vector2(0.5f, 0.5f);
+
+                if (pos == AdPosition.Bottom || pos == AdPosition.BottomLeft || pos == AdPosition.BottomRight)
+                {
+                    rect.SetInsetAndSizeFromParentEdge(RectTransform.Edge.Bottom, 0, rect.sizeDelta.y);
+                    rect.anchoredPosition = new Vector2(0, (float)rect.sizeDelta.y/2);
+                }
+                else if (pos == AdPosition.Top || pos == AdPosition.TopLeft || pos == AdPosition.TopRight)
+                {
+                    rect.SetInsetAndSizeFromParentEdge(RectTransform.Edge.Top, 0, rect.sizeDelta.y);
+                    rect.anchoredPosition = new Vector2(0, -(float)rect.sizeDelta.y/2);
+                }
+                else if (pos == AdPosition.Center)
+                {
+                    if (adSize.AdType == AdSize.Type.AnchoredAdaptive)
+                    {
+                        Text adText = _gameObject.GetComponentInChildren<Text>();
+                        adText.text = "This is a Test Adaptive Banner";
+                    }
+                    else if (adSize == AdSize.SmartBanner)
+                    {
+                        Text adText = _gameObject.GetComponentInChildren<Text>();
+                        adText.text = "This is a Test Smart Banner";
+                    }
+                    else
+                    {
+                        rect.anchoredPosition = new Vector2(0, 0);
+                    }
+                } 
+                else
+                {
+                    rect.anchoredPosition = rect.position;
+                }
+            }
+            else
+            {
+                Debug.Log("Invalid Placeholder Ad");
+            }
+        }
+
+        private void AnchorAd(int x, int y)
+        {
+            var rect = GetRectTransform();
             // Account for banner size and refactor coordinates
-            RectTransform rect = getRectTransform(dummyAd);
             float xWithOffset = (float)rect.sizeDelta.x/2 + x;
             float yWithOffset = (float)rect.sizeDelta.y/2 + y;
 
@@ -253,60 +347,11 @@ namespace GoogleMobileAds.Unity
             rect.anchoredPosition = new Vector2(xWithOffset, -yWithOffset);
         }
 
-        // Indicates whether the last loaded ad is a collapsible banner.
-        public bool IsCollapsible()
+        private void AnchorAd(AdPosition position)
         {
-            return false;
-        }
-
-        protected internal void SetAndStretchAd(GameObject dummyAd, AdPosition pos, AdSize adSize)
-        {
-            if (dummyAd != null) {
-                Image myImage = dummyAd.GetComponentInChildren<Image>();
-                RectTransform rect = myImage.GetComponentInChildren<RectTransform>();
-
-                rect.pivot = new Vector2(0.5f, 0.5f);
-
-                if (pos == AdPosition.Bottom || pos == AdPosition.BottomLeft || pos == AdPosition.BottomRight)
-                {
-                    rect.SetInsetAndSizeFromParentEdge(RectTransform.Edge.Bottom, 0, rect.sizeDelta.y);
-                    rect.anchoredPosition = new Vector2(0, (float)rect.sizeDelta.y/2);
-                } else if (pos == AdPosition.Top || pos == AdPosition.TopLeft || pos == AdPosition.TopRight)
-                {
-                    rect.SetInsetAndSizeFromParentEdge(RectTransform.Edge.Top, 0, rect.sizeDelta.y);
-                    rect.anchoredPosition = new Vector2(0, -(float)rect.sizeDelta.y/2);
-                } else if (pos == AdPosition.Center)
-                {
-                    LoadAndSetPrefabAd("PlaceholderAds/Banners/CENTER");
-                    if (adSize.AdType == AdSize.Type.AnchoredAdaptive)
-                    {
-                        LoadAndSetPrefabAd("PlaceholderAds/Banners/CENTER");
-                        Text adText = prefabAd.GetComponentInChildren<Image>().GetComponentInChildren<Text>();
-                        adText.text = "This is a Test Adaptive Banner";
-                    }
-                    else if (adSize == AdSize.SmartBanner)
-                    {
-                        LoadAndSetPrefabAd("PlaceholderAds/Banners/CENTER");
-                        Text adText = prefabAd.GetComponentInChildren<Image>().GetComponentInChildren<Text>();
-                        adText.text = "This is a Test Smart Banner";
-                    }
-                    else
-                    {
-                        rect.anchoredPosition = new Vector2(0, 0);
-                    }
-                } else
-                {
-                    rect.anchoredPosition = rect.position;
-                }
-            } else {
-                Debug.Log("Invalid Placeholder Ad");
-            }
-        }
-
-        protected internal void AnchorAd(GameObject dummyAd, AdPosition position)
-        {
-            if (dummyAd != null) {
-                Image myImage = dummyAd.GetComponentInChildren<Image>();
+            if (_gameObject != null) 
+            {
+                Image myImage = _gameObject.GetComponentInChildren<Image>();
                 RectTransform rect = myImage.GetComponentInChildren<RectTransform>();
 
                 float x = (float)rect.sizeDelta.x/2;
@@ -357,7 +402,9 @@ namespace GoogleMobileAds.Unity
                         rect.anchoredPosition = new Vector2(0, 0);
                         break;
                 }
-            } else {
+            }
+            else
+            {
                 Debug.Log("Invalid Placeholder Ad");
             }
         }
