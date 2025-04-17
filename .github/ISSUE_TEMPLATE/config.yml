@@ -1,8 +1,8 @@
 blank_issues_enabled: false
 contact_links:
-  - name: Google Mobile Ads Unity Plugin Support
+  - name: Google Mobile Ads SDK Support Team
     url: https://developers.google.com/admob/support
-    about: Please file feature requests, bugs, and other issues to the official Google Mobile Ads SDK developer support channels.
-  - name: Google Mobile Ads Unity Documentation
+    about: Official Google SDK support team responsible for solving bugs.
+  - name: Google Mobile Ads SDK Documentation
     url: https://developers.google.com/admob/unity/start
-    about: The place to get started with Google Mobile Ads Unity plugin.
+    about: Official documentation for the Google Mobile Ads Unity plugin.
