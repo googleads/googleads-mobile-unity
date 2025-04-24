@@ -12,6 +12,14 @@
       "en": "Android settings",
       "fr": "Paramètres Android"
     },
+    "KEY_ENABLE_GRADLE_BUILD_POST_PROCESSOR_HELPBOX": {
+      "en": "Modifies the /Plugin/Android/ Gradle files to fix common build errors seen on older Unity versions, see https://developers.google.com/admob/unity/android",
+      "fr": "Modifie les fichiers Gradle de /Plugin/Android/ pour corriger les erreurs de compilation les plus courantes sur des versions antérieures d'Unity, voir https://developers.google.com/admob/unity/android?hl=fr"
+    },
+    "KEY_ENABLE_GRADLE_BUILD_POST_PROCESSOR_SETTING": {
+      "en": "Enable Gradle build post processor",
+      "fr": "Activer le post-processeur de compilation Gradle"
+    },
     "KEY_ENABLE_KOTLINX_COROUTINES_PACKAGING_OPTION_HELPBOX": {
       "en": "Adds an instruction to fix the build.gradle build error with message '2 files found with path 'META-INF/kotlinx_coroutines_core.version''. For more details, see https://developers.google.com/admob/unity/gradle",
       "fr": "Ajoute une instruction pour corriger l'erreur de compilation de build.gradle '2 files found with path 'META-INF/kotlinx_coroutines_core.version''. Pour plus d'informations, visitez https://developers.google.com/admob/unity/gradle?hl=fr"
