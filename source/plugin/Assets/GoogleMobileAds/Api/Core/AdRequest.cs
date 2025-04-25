@@ -57,6 +57,7 @@ namespace GoogleMobileAds.Api
             Keywords = request.Keywords;
             Extras = request.Extras;
             MediationExtras = request.MediationExtras;
+            CustomTargeting = request.CustomTargeting;
         }
 
         /// <summary>
