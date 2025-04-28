@@ -203,22 +203,24 @@ public class UnityRewardedAd {
       return;
     }
     activity.runOnUiThread(
-        () ->
-            rewardedAd.show(
-                activity,
-                new OnUserEarnedRewardListener() {
-                  @Override
-                  public void onUserEarnedReward(@NonNull final RewardItem rewardItem) {
-                    new Thread(
-                            () -> {
-                              if (callback != null) {
-                                callback.onUserEarnedReward(
-                                    rewardItem.getType(), rewardItem.getAmount());
-                              }
-                            })
-                        .start();
-                  }
-                }));
+        () -> {
+          rewardedAd.setImmersiveMode(true);
+          rewardedAd.show(
+              activity,
+              new OnUserEarnedRewardListener() {
+                @Override
+                public void onUserEarnedReward(@NonNull final RewardItem rewardItem) {
+                  new Thread(
+                          () -> {
+                            if (callback != null) {
+                              callback.onUserEarnedReward(
+                                  rewardItem.getType(), rewardItem.getAmount());
+                            }
+                          })
+                      .start();
+                }
+              });
+        });
   }
 
   /**

@@ -251,7 +251,11 @@ public class Interstitial {
           + "This should in theory never happen. If it does, please contact the plugin owners.");
       return;
     }
-    activity.runOnUiThread(() -> interstitialAd.show(activity));
+    activity.runOnUiThread(
+        () -> {
+          interstitialAd.setImmersiveMode(true);
+          interstitialAd.show(activity);
+        });
   }
 
   /**

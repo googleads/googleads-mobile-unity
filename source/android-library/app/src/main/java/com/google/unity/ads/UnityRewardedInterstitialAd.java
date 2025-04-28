@@ -195,34 +195,32 @@ public class UnityRewardedInterstitialAd {
         });
   }
 
-  /**
-   * Shows the rewarded interstitial ad if it has loaded.
-   */
+  /** Shows the rewarded interstitial ad if it has loaded. */
   public void show() {
     if (rewardedInterstitialAd == null) {
-      Log.e(PluginUtils.LOGTAG, "Tried to show rewarded interstitial ad before it was ready. "
-          + "This should in theory never happen. If it does, please contact the plugin owners.");
+      Log.e(
+          PluginUtils.LOGTAG,
+          "Tried to show rewarded interstitial ad before it was ready. This should in theory never"
+              + " happen. If it does, please contact the plugin owners.");
       return;
     }
     activity.runOnUiThread(
         new Runnable() {
           @Override
           public void run() {
+            rewardedInterstitialAd.setImmersiveMode(true);
             rewardedInterstitialAd.show(
                 activity,
                 new OnUserEarnedRewardListener() {
                   @Override
                   public void onUserEarnedReward(@NonNull final RewardItem rewardItem) {
                     new Thread(
-                        new Runnable() {
-                          @Override
-                          public void run() {
-                            if (callback != null) {
-                              callback.onUserEarnedReward(
-                                  rewardItem.getType(), rewardItem.getAmount());
-                            }
-                          }
-                        })
+                            () -> {
+                              if (callback != null) {
+                                callback.onUserEarnedReward(
+                                    rewardItem.getType(), rewardItem.getAmount());
+                              }
+                            })
                         .start();
                   }
                 });

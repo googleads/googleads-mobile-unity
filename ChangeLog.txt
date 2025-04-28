@@ -10,6 +10,7 @@ Version 10.1.0
 - Supports Preloading APIs on iOS and Android.
 - Refactored Unity Editor Banner experience to be inline with Android and iOS behavior.
 - Fixed a bug on AdRequest where setting the CustomTargeting parameter was not being propagated.
+- Run fullscreen ads in Immersive mode for Android. This will prevent the 3 button navigation from showing up when ads are shown.
 
 Built and tested with:
 - Google Mobile Ads Android SDK 24.2.0.
