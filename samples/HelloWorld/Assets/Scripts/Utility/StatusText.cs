@@ -1,6 +1,8 @@
 using UnityEngine;
 using UnityEngine.UI;
 using System.Threading;
+using System.Collections.Generic;
+using System.Text.RegularExpressions;
 
 namespace GoogleMobileAds.Samples.Utility
 {
@@ -13,6 +15,7 @@ namespace GoogleMobileAds.Samples.Utility
         private SynchronizationContext _synchronizationContext;
         private const int MAX_LINES = 25; // Adjust this value as needed
         private List<string> _lines = new List<string>();
+        private Regex _colorTagRegex = new Regex(@"<color=[^>]+>|</color>");
 
         protected override void Awake()
         {
