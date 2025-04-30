@@ -28,10 +28,10 @@
           app:layout_constraintTop_toTopOf="parent"
           app:layout_constraintBottom_toBottomOf="parent"
           android:orientation="horizontal"
-          android:id="@+id/background"
+          android:id="@+id/ad_background"
           >
         <ImageView
-            android:id="@+id/icon"
+            android:id="@+id/ad_icon"
             android:layout_width="0dp"
             android:layout_weight="0"
             android:layout_height="match_parent"
@@ -55,7 +55,7 @@
             android:orientation="vertical"
             android:id="@+id/content"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@id/icon"
+            app:layout_constraintStart_toEndOf="@id/ad_icon"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             >

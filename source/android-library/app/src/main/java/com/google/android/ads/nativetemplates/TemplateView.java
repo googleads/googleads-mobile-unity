@@ -288,8 +288,8 @@ public final class TemplateView extends FrameLayout {
     ratingBar.setEnabled(false);
 
     callToActionView = (Button) findViewById(R.id.cta);
-    iconView = (ImageView) findViewById(R.id.icon);
+    iconView = (ImageView) findViewById(R.id.ad_icon);
     mediaView = (MediaView) findViewById(R.id.media_view);
-    background = (ConstraintLayout) findViewById(R.id.background);
+    background = (ConstraintLayout) findViewById(R.id.ad_background);
   }
 }
