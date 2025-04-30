@@ -1,6 +1,26 @@
 Google Mobile Ads Unity Plugin Change Log
 
 **************
+Version 10.1.0
+**************
+- Updated UMP SDK dependency on Android to 3.2.0 and on iOS to 3.0.0.
+- Updated the GMA Android SDK dependency version to 24.2.0.
+- Updated the GMA iOS SDK dependency version to 12.3.0.
+- Updated SKAdNetworkIdentifiers List on iOS to reflect latest additions.
+- Supports Preloading APIs on iOS and Android.
+- Refactored Unity Editor Banner experience to be inline with Android and iOS behavior.
+- Fixed a bug on AdRequest where setting the CustomTargeting parameter was not being propagated.
+- Run fullscreen ads in Immersive mode for Android. This will prevent the 3 button navigation from showing up when ads are shown.
+- Fixed crash on rendering Native Overlay ads due to conflict of icon and background IDs with other similarly named Resource ID's.
+
+Built and tested with:
+- Google Mobile Ads Android SDK 24.2.0.
+- Google Mobile Ads iOS SDK 12.3.0.
+- Google User Messaging Platform Android SDK 3.2.0
+- Google User Messaging Platform iOS SDK 3.0.0
+- External Dependency Manager for Unity 1.2.185
+
+**************
 Version 10.0.0
 **************
 - Updated the GMA Android SDK dependency version to 24.1.0.

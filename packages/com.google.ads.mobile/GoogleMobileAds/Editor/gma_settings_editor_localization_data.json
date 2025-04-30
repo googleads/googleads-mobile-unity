@@ -38,15 +38,15 @@
     },
     "KEY_DISABLE_OPTIMIZE_AD_LOADING_SETTING": {
       "en": "Disable ad loading optimization",
-      "fr": "Désactiver Optimiser le chargement des annonces"
+      "fr": "Désactiver l'optimisation du chargement des annonces"
     },
     "KEY_DISABLE_OPTIMIZE_INITIALIZATION_HELPBOX": {
       "en": "Disable offloading initialization to a background thread.",
       "fr": "L'initialisation ne sera pas transférée vers un thread d'arrière-plan."
     },
     "KEY_DISABLE_OPTIMIZE_INITIALIZATION_SETTING": {
-      "en": "Disable initialization Optimization",
-      "fr": "Désactiver Optimiser l'initialisation"
+      "en": "Disable initialization optimization",
+      "fr": "Désactiver l'optimisation de l'initialisation"
     },
     "KEY_UMP_SPECIFIC_SETTINGS_LABEL": {
       "en": "UMP-specific settings",
