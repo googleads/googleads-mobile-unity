@@ -202,7 +202,11 @@ public class UnityAppOpenAd {
       return;
     }
 
-    activity.runOnUiThread(() -> appOpenAd.show(activity));
+    activity.runOnUiThread(
+        () -> {
+          appOpenAd.setImmersiveMode(true);
+          appOpenAd.show(activity);
+        });
   }
 
   /** Returns the {@link AppOpenAd} ad unit ID (null if the ad is not loaded). */
