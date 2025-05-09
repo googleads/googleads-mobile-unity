@@ -188,7 +188,7 @@ public class UnityRewardedAd {
     rewardedAd.setFullScreenContentCallback(fullScreenContentCallback);
   }
 
-  /** Returns {@code true} if there is an interstitial ad available in the pre-load queue. */
+  /** Returns {@code true} if there is a rewarded ad available in the pre-load queue. */
   public boolean isAdAvailable(@NonNull String adUnitId) {
     return RewardedAd.isAdAvailable(activity, adUnitId);
   }
