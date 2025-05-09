@@ -202,6 +202,7 @@ public class Interstitial {
     }
     activity.runOnUiThread(() -> interstitialAd.setOnPaidEventListener(onPaidEventListener));
     interstitialAd.setFullScreenContentCallback(fullScreenContentCallback);
+    // TODO(vkini): Check if this callback is needed as other ad formats don't have it.
     if (callback != null) {
       callback.onInterstitialAdLoaded();
     }

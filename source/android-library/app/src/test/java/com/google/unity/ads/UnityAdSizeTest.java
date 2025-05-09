@@ -16,11 +16,12 @@ import org.robolectric.annotation.Config;
 
 /** Tests for {@link UnityAdSize} */
 @RunWith(RobolectricTestRunner.class)
-public class UnityAdSizeTest {
+public final class UnityAdSizeTest {
+
+  private static final int WIDTH = 320;
+  private static final AdSize AD_SIZE = new AdSize(WIDTH, 50);
 
   private final Activity activity = Robolectric.buildActivity(Activity.class).setup().get();
-  private static final int WIDTH = 320;
-  private final AdSize adSize = new AdSize(WIDTH, 50);
 
   @Test
   public void
@@ -43,7 +44,7 @@ public class UnityAdSizeTest {
   public void
       testGetCurrentOrientationAnchoredAdaptiveBannerAdSize_withValidActivity_returnsValidAdSize() {
     assertThat(UnityAdSize.getCurrentOrientationAnchoredAdaptiveBannerAdSize(activity, WIDTH))
-        .isEqualTo(adSize);
+        .isEqualTo(AD_SIZE);
   }
 
   @Test
@@ -51,7 +52,7 @@ public class UnityAdSizeTest {
     assertThat(
             UnityAdSize.getCurrentOrientationAnchoredAdaptiveBannerAdSize(
                 activity, AdSize.FULL_WIDTH))
-        .isEqualTo(adSize);
+        .isEqualTo(AD_SIZE);
   }
 
   @Test
@@ -72,13 +73,13 @@ public class UnityAdSizeTest {
   @Test
   public void testGetLandscapeAnchoredAdaptiveBannerAdSize_withValidActivity_returnsValidAdSize() {
     assertThat(UnityAdSize.getLandscapeAnchoredAdaptiveBannerAdSize(activity, WIDTH))
-        .isEqualTo(adSize);
+        .isEqualTo(AD_SIZE);
   }
 
   @Test
   public void testGetLandscapeAnchoredAdaptiveBannerAdSize_withFullWidth() {
     assertThat(UnityAdSize.getLandscapeAnchoredAdaptiveBannerAdSize(activity, AdSize.FULL_WIDTH))
-        .isEqualTo(adSize);
+        .isEqualTo(AD_SIZE);
   }
 
   @Test
@@ -102,13 +103,13 @@ public class UnityAdSizeTest {
   @Test
   public void testGetPortraitAnchoredAdaptiveBannerAdSize_withValidActivity_returnsValidAdSize() {
     assertThat(UnityAdSize.getPortraitAnchoredAdaptiveBannerAdSize(activity, WIDTH))
-        .isEqualTo(adSize);
+        .isEqualTo(AD_SIZE);
   }
 
   @Test
   public void testGetPortraitAnchoredAdaptiveBannerAdSize_withFullWidth() {
     assertThat(UnityAdSize.getPortraitAnchoredAdaptiveBannerAdSize(activity, AdSize.FULL_WIDTH))
-        .isEqualTo(adSize);
+        .isEqualTo(AD_SIZE);
   }
 
   @Test

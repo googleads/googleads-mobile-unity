@@ -22,13 +22,13 @@ import org.robolectric.RobolectricTestRunner;
 
 /** Tests for {@link Banner} */
 @RunWith(RobolectricTestRunner.class)
-public class BannerTest {
+public final class BannerTest {
 
   @Rule public final MockitoRule mockito = MockitoJUnit.rule();
-
-  private Banner banner;
-  private Activity activity;
   @Mock private UnityAdListener mockListener;
+
+  private Activity activity;
+  private Banner banner;
   private FakeAdView fakeAdView;
 
   @Before
@@ -37,6 +37,11 @@ public class BannerTest {
     banner = new Banner(activity, mockListener);
     fakeAdView = new FakeAdView(activity, /* adViewType= */ 0);
     banner.create("test-ad-unit-id", AdSize.BANNER, PluginUtils.POSITION_TOP);
+  }
+
+  @After
+  public void tearDown() {
+    banner.destroy();
   }
 
   @Test
@@ -133,10 +138,5 @@ public class BannerTest {
   public void hide_setsAdViewVisibilityToGone() {
     banner.hide();
     assertThat(banner.adView.getVisibility()).isEqualTo(View.GONE);
-  }
-
-  @After
-  public void tearDown() {
-    banner.destroy();
   }
 }
