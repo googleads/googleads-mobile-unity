@@ -66,7 +66,7 @@ public class PluginUtils {
       case AdRequest.ERROR_CODE_INVALID_REQUEST:
         return "Invalid request";
       case AdRequest.ERROR_CODE_NETWORK_ERROR:
-        return "Network Error";
+        return "Network error";
       case AdRequest.ERROR_CODE_NO_FILL:
         return "No fill";
       default:
@@ -115,6 +115,10 @@ public class PluginUtils {
 
   public static float convertPixelsToDp(float px) {
     DisplayMetrics metrics = Resources.getSystem().getDisplayMetrics();
+    if (metrics.density == 0) {
+      throw new IllegalStateException(
+          "Pixels to DP conversion failed. Display metrics density is zero.");
+    }
     return px / metrics.density;
   }
 
