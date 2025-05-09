@@ -234,8 +234,10 @@ public class UnityRewardedInterstitialAd {
   public void setServerSideVerificationOptions(
       final ServerSideVerificationOptions serverSideVerificationOptions) {
     if (rewardedInterstitialAd == null) {
-      Log.e(PluginUtils.LOGTAG, "Tried set server side verification before it was ready. "
-          + "This should in theory never happen. If it does, please contact the plugin owners.");
+      Log.e(
+          PluginUtils.LOGTAG,
+          "Tried to set server side verification before it was ready. This should in theory never"
+              + " happen. If it does, please contact the plugin owners.");
       return;
     }
     activity.runOnUiThread(
