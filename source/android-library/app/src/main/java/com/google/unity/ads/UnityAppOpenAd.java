@@ -238,7 +238,7 @@ public class UnityAppOpenAd {
       Log.e(
           PluginUtils.LOGTAG,
           String.format(
-              "Unable to check unity app open ad response info: %s",
+              "Unable to check Unity app open ad response info: %s",
               exception.getLocalizedMessage()));
     }
     return result;
