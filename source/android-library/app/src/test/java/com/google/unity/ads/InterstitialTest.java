@@ -52,7 +52,7 @@ public final class InterstitialTest {
   private Interstitial interstitial;
 
   @Before
-  public void setUp() throws Exception {
+  public void setUp() {
     activity = Robolectric.buildActivity(Activity.class).create().get();
     interstitial = new Interstitial(activity, mockCallback);
     AdPreloaderSingleton.setAdPreloader(mockAdPreloader);
@@ -86,6 +86,7 @@ public final class InterstitialTest {
     assertThat(interstitial.isAdAvailable(AD_UNIT_ID)).isFalse();
     assertThat(interstitial.getAdUnitId()).isEqualTo(AD_UNIT_ID);
     assertThat(interstitial.getResponseInfo()).isNotNull();
+
     verify(mockCallback).onInterstitialAdLoaded();
     verify(mockCallback, never()).onAdShowedFullScreenContent();
     verify(mockCallback, never()).onPaidEvent(anyInt(), anyLong(), anyString());
@@ -120,7 +121,9 @@ public final class InterstitialTest {
   @Test
   public void pollAd_succeeds_whenNotNullAdManager() throws Exception {
     when(mockAdPreloader.pollInterstitialAdManager(AD_UNIT_ID)).thenReturn(mockAdManager);
+
     interstitial.pollAd(AD_UNIT_ID);
+
     verify(mockCallback).onInterstitialAdLoaded();
     verify(mockAdManager).setOnPaidEventListener(any());
     verify(mockAdManager).setFullScreenContentCallback(any());
@@ -129,9 +132,11 @@ public final class InterstitialTest {
   @Test
   public void pollAd_fails_whenNullAdManager() throws Exception {
     when(mockAdPreloader.pollInterstitialAdManager(AD_UNIT_ID)).thenReturn(null);
+
     interstitial.pollAd(AD_UNIT_ID);
     // Sleep to wait for background thread execution.
     Sleeper.defaultSleeper().sleep(SLEEP_DURATION);
+
     verify(mockCallback).onInterstitialAdFailedToLoad(any());
   }
 
@@ -145,6 +150,7 @@ public final class InterstitialTest {
   public void showAd_shouldEnableImmersiveMode_whenLoaded() throws Exception {
     loadInterstitialAd();
     interstitial.show();
+
     verify(mockCallback, never()).onAdShowedFullScreenContent();
     verify(mockAdManager).setImmersiveMode(eq(true));
   }

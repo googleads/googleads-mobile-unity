@@ -52,7 +52,7 @@ public final class UnityRewardedAdTest {
   private UnityRewardedAd unityRewardedAd;
 
   @Before
-  public void setUp() throws Exception {
+  public void setUp() {
     activity = Robolectric.buildActivity(Activity.class).create().get();
     unityRewardedAd = new UnityRewardedAd(activity, mockCallback);
     AdPreloaderSingleton.setAdPreloader(mockAdPreloader);
@@ -89,6 +89,7 @@ public final class UnityRewardedAdTest {
     assertThat(unityRewardedAd.getAdUnitId()).isEqualTo(AD_UNIT_ID);
     assertThat(unityRewardedAd.getResponseInfo()).isNotNull();
     assertThat(unityRewardedAd.getRewardItem()).isNotNull();
+
     verify(mockCallback).onRewardedAdLoaded();
     verify(mockCallback, never()).onUserEarnedReward(anyString(), anyFloat());
     verify(mockCallback, never()).onAdShowedFullScreenContent();
@@ -125,9 +126,11 @@ public final class UnityRewardedAdTest {
   @Test
   public void pollAd_succeeds_whenNotNullRewardedAd() throws Exception {
     when(mockAdPreloader.pollRewardedAd(AD_UNIT_ID)).thenReturn(mockRewardedAd);
+
     unityRewardedAd.pollAd(AD_UNIT_ID);
     // Sleep to wait for background thread execution.
     Sleeper.defaultSleeper().sleep(SLEEP_DURATION);
+
     verify(mockCallback, never()).onRewardedAdLoaded();
     verify(mockRewardedAd).setOnPaidEventListener(any());
   }
@@ -135,9 +138,11 @@ public final class UnityRewardedAdTest {
   @Test
   public void pollAd_fails_whenNullRewardedAd() throws Exception {
     when(mockAdPreloader.pollRewardedAd(AD_UNIT_ID)).thenReturn(null);
+
     unityRewardedAd.pollAd(AD_UNIT_ID);
     // Sleep to wait for background thread execution.
     Sleeper.defaultSleeper().sleep(SLEEP_DURATION);
+
     verify(mockCallback).onRewardedAdFailedToLoad(any());
   }
 
@@ -151,6 +156,7 @@ public final class UnityRewardedAdTest {
   public void showAd_shouldEnableImmersiveMode_whenLoaded() throws Exception {
     loadRewardedAd();
     unityRewardedAd.show();
+
     verify(mockCallback, never()).onAdShowedFullScreenContent();
     verify(mockRewardedAd).setImmersiveMode(eq(true));
   }

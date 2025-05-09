@@ -38,8 +38,6 @@ import org.mockito.junit.MockitoRule;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 
-// TODO(jochac): Delete Javadocs across the test files:
-// go/java-style#s7.3.3-javadoc-exception-javatests.
 /** Tests for {@link UnityAppOpenAd} */
 @RunWith(RobolectricTestRunner.class)
 public final class UnityAppOpenAdTest {
@@ -57,7 +55,7 @@ public final class UnityAppOpenAdTest {
   private UnityAppOpenAd unityAppOpenAd;
 
   @Before
-  public void setUp() throws Exception {
+  public void setUp() {
     activity = Robolectric.buildActivity(Activity.class).create().get();
     unityAppOpenAd = new UnityAppOpenAd(activity, mockCallback);
     AdPreloaderSingleton.setAdPreloader(mockAdPreloader);
@@ -90,6 +88,7 @@ public final class UnityAppOpenAdTest {
 
     assertThat(unityAppOpenAd.isAdAvailable(AD_UNIT_ID)).isFalse();
     assertThat(unityAppOpenAd.getAdUnitId()).isEqualTo(AD_UNIT_ID);
+
     verify(mockCallback).onAppOpenAdLoaded();
     verify(mockCallback, never()).onAdShowedFullScreenContent();
     verify(mockCallback, never()).onPaidEvent(anyInt(), anyLong(), anyString());
@@ -122,7 +121,9 @@ public final class UnityAppOpenAdTest {
   @Test
   public void pollAd_succeeds_whenNotNullAppOpenAd() throws Exception {
     when(mockAdPreloader.pollAppOpenAd(eq(AD_UNIT_ID))).thenReturn(mockAppOpenAd);
+
     unityAppOpenAd.pollAd(AD_UNIT_ID);
+
     verify(mockCallback, never()).onAppOpenAdLoaded();
     verify(mockAdManager, never()).setOnPaidEventListener(any());
     verify(mockAdManager, never()).setFullScreenContentCallback(any());
@@ -131,9 +132,11 @@ public final class UnityAppOpenAdTest {
   @Test
   public void pollAd_fails_whenNullAppOpenAd() throws Exception {
     when(mockAdPreloader.pollAppOpenAd(eq(AD_UNIT_ID))).thenReturn(null);
+
     unityAppOpenAd.pollAd(AD_UNIT_ID);
     // Sleep to wait for background thread execution.
     Sleeper.defaultSleeper().sleep(SLEEP_DURATION);
+
     verify(mockCallback).onAppOpenAdFailedToLoad(any());
   }
 
@@ -146,7 +149,9 @@ public final class UnityAppOpenAdTest {
   @Test
   public void showAd_shouldNotSetImmersiveMode_whenLoaded() throws Exception {
     loadAppOpenAd();
+
     unityAppOpenAd.show();
+
     verify(mockCallback, never()).onAdShowedFullScreenContent();
     verify(mockAdManager, never()).setImmersiveMode(anyBoolean());
   }

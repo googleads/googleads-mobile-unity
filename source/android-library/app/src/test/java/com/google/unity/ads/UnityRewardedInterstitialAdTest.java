@@ -49,7 +49,7 @@ public final class UnityRewardedInterstitialAdTest {
   private UnityRewardedInterstitialAd unityRewardedInterstitialAd;
 
   @Before
-  public void setUp() throws Exception {
+  public void setUp() {
     activity = Robolectric.buildActivity(Activity.class).create().get();
     unityRewardedInterstitialAd = new UnityRewardedInterstitialAd(activity, mockCallback);
     new MockClientSingletons.Installer().mockFlags().mockClientApiBroker(mockRewardedAd).install();
@@ -81,6 +81,7 @@ public final class UnityRewardedInterstitialAdTest {
     assertThat(unityRewardedInterstitialAd.getAdUnitId()).isEqualTo(AD_UNIT_ID);
     assertThat(unityRewardedInterstitialAd.getResponseInfo()).isNotNull();
     assertThat(unityRewardedInterstitialAd.getRewardItem()).isNotNull();
+
     verify(mockCallback).onRewardedInterstitialAdLoaded();
     verify(mockCallback, never()).onUserEarnedReward(anyString(), anyFloat());
     verify(mockCallback, never()).onAdShowedFullScreenContent();
@@ -118,6 +119,7 @@ public final class UnityRewardedInterstitialAdTest {
   public void showAd_shouldEnableImmersiveMode_whenLoaded() throws Exception {
     loadRewardedInterstitialAd();
     unityRewardedInterstitialAd.show();
+
     verify(mockCallback, never()).onAdShowedFullScreenContent();
     verify(mockRewardedAd).setImmersiveMode(eq(true));
   }
