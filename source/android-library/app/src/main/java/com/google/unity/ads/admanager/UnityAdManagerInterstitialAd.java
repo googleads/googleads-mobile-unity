@@ -37,7 +37,7 @@ import java.util.concurrent.FutureTask;
 
 /** Android AdManager interstitial implementation for the Google Mobile Ads Unity plugin. */
 public class UnityAdManagerInterstitialAd {
-  // TODO (b/284206705): Improve Unit Test coverage around platform bridges and missing components
+  // TODO: b/284206705 - Review and fix unit tests for this class.
 
   /** The {@link AdManagerInterstitialAd}. */
   private AdManagerInterstitialAd adManagerInterstitialAd;

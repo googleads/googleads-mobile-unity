@@ -8,7 +8,6 @@ import com.google.android.ump.UserMessagingPlatform;
 
 /** Native consent form implementation for the Unity UMP plugin. */
 public class UnityConsentForm {
-  // TODO (b/284206705): Set up unit and integration tests for platform code.
 
   /** The {@code Activity} on which the consent form will display. */
   private final Activity activity;

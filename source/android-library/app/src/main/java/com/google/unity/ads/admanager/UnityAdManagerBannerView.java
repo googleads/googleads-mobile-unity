@@ -43,7 +43,7 @@ import java.util.concurrent.FutureTask;
  * in Google Play services. The Google Play services library is a dependency for this plugin.
  */
 public class UnityAdManagerBannerView extends Banner {
-  // TODO (b/284206705): Improve Unit Test coverage around platform bridges and missing components
+  // TODO: b/284206705 - Review and fix unit tests for this class.
 
   // An executor used to run the callbacks.
   private final ExecutorService service;

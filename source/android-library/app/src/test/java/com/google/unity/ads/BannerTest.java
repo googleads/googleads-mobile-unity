@@ -49,6 +49,10 @@ public final class BannerTest {
     assertThat(banner.adView).isNotNull();
   }
 
+  // TODO(srichakradhar): This test - and probably the other ones below - are not testing the right
+  // things. They trivially set some fields on the listener and then verify them. For example, the
+  // banner ad load test below is passing even if the banner ad is not loaded. As such, I would
+  // recommend to rewrite those tests.
   @Test
   public void loadAd_callsOnAdLoaded_whenAdLoadSucceeds() {
     banner.loadAd(new AdRequest.Builder().build());
