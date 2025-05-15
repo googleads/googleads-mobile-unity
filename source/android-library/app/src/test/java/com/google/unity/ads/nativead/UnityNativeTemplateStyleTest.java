@@ -1,19 +1,35 @@
 package com.google.unity.ads.nativead;
 
 import static com.google.common.truth.Truth.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.Mockito.when;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.view.LayoutInflater;
+import androidx.test.core.app.ApplicationProvider;
+import com.google.android.ads.nativetemplates.NativeTemplateStyle;
+import com.google.android.ads.nativetemplates.TemplateView;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnit;
+import org.mockito.junit.MockitoRule;
 import org.robolectric.RobolectricTestRunner;
 
 /** Tests for {@link UnityNativeTemplateStyle} */
 @RunWith(RobolectricTestRunner.class)
 public final class UnityNativeTemplateStyleTest {
 
+  @Rule public final MockitoRule mockito = MockitoJUnit.rule();
+  @Mock private LayoutInflater mockLayoutInflater;
+
   private UnityNativeTemplateStyle unityNativeTemplateStyle;
+  private Context context;
 
   @Before
   public void setUp() {
@@ -41,6 +57,7 @@ public final class UnityNativeTemplateStyleTest {
                 /* backgroundColor= */ new ColorDrawable(Color.BLUE),
                 /* fontStyle= */ UnityNativeTemplateFontStyle.ITALIC,
                 /* size= */ 10.0));
+    context = ApplicationProvider.getApplicationContext();
   }
 
   @Test
@@ -106,5 +123,38 @@ public final class UnityNativeTemplateStyleTest {
     assertThat(unityNativeTemplateStyle).isNotEqualTo(anotherUnityNativeTemplateStyle);
     assertThat(unityNativeTemplateStyle.hashCode())
         .isNotEqualTo(anotherUnityNativeTemplateStyle.hashCode());
+  }
+
+  @Test
+  public void unityNativeTemplateStyle_asTemplateView_canBeInflated() throws Exception {
+    // Arrange.
+    TemplateView fakeTemplateView = new TemplateView(context);
+    assertThat(fakeTemplateView.getStyles()).isNull();
+    when(mockLayoutInflater.inflate(anyInt(), any())).thenReturn(fakeTemplateView);
+
+    // Act.
+    unityNativeTemplateStyle.setLayoutInflater(mockLayoutInflater);
+    fakeTemplateView = unityNativeTemplateStyle.asTemplateView(context);
+    NativeTemplateStyle styles = fakeTemplateView.getStyles();
+
+    // Assert (styles should have been applied).
+    assertThat(styles).isNotNull();
+    assertThat(styles.getMainBackgroundColor().getColor()).isEqualTo(Color.RED);
+    assertThat(styles.getCallToActionBackgroundColor().getColor()).isEqualTo(Color.BLUE);
+    assertThat(styles.getCallToActionTypefaceColor()).isEqualTo(Color.GREEN);
+    assertThat(styles.getCallToActionTextTypeface()).isNotNull();
+    assertThat(styles.getCallToActionTextSize()).isEqualTo(1.0f);
+    assertThat(styles.getPrimaryTextBackgroundColor().getColor()).isEqualTo(Color.BLUE);
+    assertThat(styles.getPrimaryTextTypefaceColor()).isEqualTo(Color.RED);
+    assertThat(styles.getPrimaryTextTypeface()).isNotNull();
+    assertThat(styles.getPrimaryTextSize()).isEqualTo(5.0f);
+    assertThat(styles.getSecondaryTextBackgroundColor().getColor()).isEqualTo(Color.BLUE);
+    assertThat(styles.getSecondaryTextTypefaceColor()).isEqualTo(Color.RED);
+    assertThat(styles.getSecondaryTextTypeface()).isNotNull();
+    assertThat(styles.getSecondaryTextSize()).isEqualTo(20.0f);
+    assertThat(styles.getTertiaryTextBackgroundColor().getColor()).isEqualTo(Color.BLUE);
+    assertThat(styles.getTertiaryTextTypefaceColor()).isEqualTo(Color.RED);
+    assertThat(styles.getTertiaryTextTypeface()).isNotNull();
+    assertThat(styles.getTertiaryTextSize()).isEqualTo(10.0f);
   }
 }

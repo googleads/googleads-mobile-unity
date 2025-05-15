@@ -72,6 +72,10 @@ public final class TemplateView extends FrameLayout {
     initView(context, attrs);
   }
 
+  public NativeTemplateStyle getStyles() {
+    return styles;
+  }
+
   public void setStyles(NativeTemplateStyle styles) {
     this.styles = styles;
     this.applyStyles();
@@ -82,10 +86,11 @@ public final class TemplateView extends FrameLayout {
   }
 
   private void applyStyles() {
-
     Drawable mainBackground = styles.getMainBackgroundColor();
     if (mainBackground != null) {
-      background.setBackground(mainBackground);
+      if (background != null) {
+        background.setBackground(mainBackground);
+      }
       if (primaryView != null) {
         primaryView.setBackground(mainBackground);
       }

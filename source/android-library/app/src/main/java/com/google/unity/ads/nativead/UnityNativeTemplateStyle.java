@@ -21,6 +21,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.view.LayoutInflater;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.VisibleForTesting;
 import com.google.android.ads.nativetemplates.NativeTemplateStyle;
 import com.google.android.ads.nativetemplates.TemplateView;
 import java.util.Objects;
@@ -34,6 +35,8 @@ public final class UnityNativeTemplateStyle {
   @Nullable final UnityNativeTemplateTextStyle primaryTextStyle;
   @Nullable final UnityNativeTemplateTextStyle secondaryTextStyle;
   @Nullable final UnityNativeTemplateTextStyle tertiaryTextStyle;
+
+  private LayoutInflater layoutInflater;
 
   public UnityNativeTemplateStyle(
       @NonNull UnityNativeTemplateType templateType,
@@ -50,10 +53,21 @@ public final class UnityNativeTemplateStyle {
     this.tertiaryTextStyle = tertiaryTextStyle;
   }
 
+  private void setLayoutInflater(Context context) {
+    this.layoutInflater =
+        (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+  }
+
+  @VisibleForTesting(otherwise = VisibleForTesting.NONE)
+  public void setLayoutInflater(LayoutInflater layoutInflater) {
+    this.layoutInflater = layoutInflater;
+  }
+
   @Nullable
   public TemplateView asTemplateView(Context context) {
-    LayoutInflater layoutInflater =
-        (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+    if (layoutInflater == null) {
+      setLayoutInflater(context);
+    }
     TemplateView templateView =
         (TemplateView) layoutInflater.inflate(templateType.resourceId(), null);
     if (templateView == null) {
