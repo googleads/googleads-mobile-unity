@@ -35,10 +35,6 @@ public class UnityAdSize {
     return AdSize.getPortraitAnchoredAdaptiveBannerAdSize(activity, width);
   }
 
-  public static AdSize getSmartBannerAdSize() {
-    return AdSize.SMART_BANNER;
-  }
-
   private static int getScreenWidth(Activity activity) {
     DisplayMetrics displayMetrics = new DisplayMetrics();
     WindowManager windowManager = activity.getWindowManager();
