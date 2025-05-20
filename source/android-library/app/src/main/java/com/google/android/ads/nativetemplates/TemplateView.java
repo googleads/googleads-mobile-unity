@@ -20,6 +20,7 @@ import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.text.TextUtils;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.widget.Button;
 import android.widget.FrameLayout;
@@ -27,14 +28,26 @@ import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import androidx.annotation.Nullable;
+import androidx.annotation.VisibleForTesting;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import com.google.android.gms.ads.nativead.MediaView;
 import com.google.android.gms.ads.nativead.NativeAd;
 import com.google.android.gms.ads.nativead.NativeAdView;
 import com.google.unity.ads.R;
 
-/** Base class for a template view. */
+/**
+ * Base class for a template view. Inspired from:
+ * http://google3/java/com/google/android/libraries/admob/demo/native_templates/NativeTemplatesAndroid/nativetemplates/src/main/java/com/google/android/ads/nativetemplates/TemplateView.java
+ * (resource ids may differ).
+ */
 public final class TemplateView extends FrameLayout {
+
+  private static final String TAG = TemplateView.class.getSimpleName();
+
+  @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+  static final String MEDIUM_TEMPLATE = "medium_template";
+
+  private static final String SMALL_TEMPLATE = "small_template";
 
   private int templateType;
   private NativeTemplateStyle styles;
@@ -49,9 +62,7 @@ public final class TemplateView extends FrameLayout {
   private MediaView mediaView;
   private Button callToActionView;
   private ConstraintLayout background;
-
-  private static final String MEDIUM_TEMPLATE = "medium_template";
-  private static final String SMALL_TEMPLATE = "small_template";
+  private LayoutInflater layoutInflater;
 
   public TemplateView(Context context) {
     super(context);
@@ -67,9 +78,66 @@ public final class TemplateView extends FrameLayout {
     initView(context, attrs);
   }
 
-  public TemplateView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+  public TemplateView(
+      Context context, @Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes) {
     super(context, attrs, defStyleAttr, defStyleRes);
     initView(context, attrs);
+  }
+
+  @VisibleForTesting(otherwise = VisibleForTesting.NONE)
+  public TemplateView(
+      Context context,
+      @Nullable AttributeSet attrs,
+      int defStyleAttr,
+      int defStyleRes,
+      LayoutInflater layoutInflater) {
+    super(context, attrs, defStyleAttr, defStyleRes);
+    this.layoutInflater = layoutInflater;
+    initView(context, attrs);
+  }
+
+  private void initView(Context context, @Nullable AttributeSet attributeSet) {
+    if (attributeSet == null) {
+      return;
+    }
+    // See http://shortn/_b5UYcrWluD for more details.
+    TypedArray typedArray =
+        context
+            .getTheme()
+            .obtainStyledAttributes(
+                /* set= */ attributeSet,
+                /* attrs= */ R.styleable.TemplateView,
+                /* defStyleAttr= */ 0,
+                /* defStyleRes= */ 0);
+    if (typedArray == null) {
+      return;
+    }
+    int templateTypeResource = R.styleable.TemplateView_gnt_template_type;
+    int templateViewResource = R.layout.gnt_medium_template_view;
+    try {
+      templateType = typedArray.getResourceId(templateTypeResource, templateViewResource);
+    } catch (RuntimeException e) {
+      Log.e(
+          TAG,
+          String.format(
+              "Failed to get template type from attribute resources (templateTypeResource: %d, "
+                  + "templateViewResource: %d).",
+              templateTypeResource, templateViewResource),
+          e);
+      // Rethrow to let the exception propagate up the stack.
+      throw e;
+    } finally {
+      typedArray.recycle();
+    }
+
+    if (layoutInflater == null) {
+      setLayoutInflater(context);
+    }
+    layoutInflater.inflate(templateType, this);
+  }
+
+  private void setLayoutInflater(Context context) {
+    layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
   }
 
   public NativeTemplateStyle getStyles() {
@@ -182,6 +250,17 @@ public final class TemplateView extends FrameLayout {
     requestLayout();
   }
 
+  private boolean areAllViewsInitialized() {
+    return nativeAdView != null
+        && callToActionView != null
+        && primaryView != null
+        && secondaryView != null
+        && tertiaryView != null
+        && mediaView != null
+        && iconView != null
+        && ratingBar != null;
+  }
+
   private boolean adHasOnlyStore(NativeAd nativeAd) {
     String store = nativeAd.getStore();
     String advertiser = nativeAd.getAdvertiser();
@@ -191,6 +270,12 @@ public final class TemplateView extends FrameLayout {
   public void setNativeAd(NativeAd nativeAd) {
     this.nativeAd = nativeAd;
 
+    if (!areAllViewsInitialized()) {
+      // Defensive check against potential NPEs if a view has not been initialized (which is
+      // expected if the template view was solely constructed from context).
+      return;
+    }
+
     String store = nativeAd.getStore();
     String advertiser = nativeAd.getAdvertiser();
     String headline = nativeAd.getHeadline();
@@ -199,24 +284,22 @@ public final class TemplateView extends FrameLayout {
     Double starRating = nativeAd.getStarRating();
     NativeAd.Image icon = nativeAd.getIcon();
 
-    String secondaryText;
-    callToActionView.setText(cta);
-
     nativeAdView.setCallToActionView(callToActionView);
     nativeAdView.setHeadlineView(primaryView);
     nativeAdView.setMediaView(mediaView);
     secondaryView.setVisibility(VISIBLE);
+
+    String secondaryText = "";
     if (adHasOnlyStore(nativeAd)) {
       nativeAdView.setStoreView(secondaryView);
       secondaryText = store;
     } else if (!TextUtils.isEmpty(advertiser)) {
       nativeAdView.setAdvertiserView(secondaryView);
       secondaryText = advertiser;
-    } else {
-      secondaryText = "";
     }
 
     primaryView.setText(headline);
+    callToActionView.setText(cta);
 
     //  Set the secondary view to be the star rating if available.
     if (starRating != null && starRating > 0) {
@@ -253,7 +336,9 @@ public final class TemplateView extends FrameLayout {
    * https://developers.google.com/admob/android/native-unified#destroy_ad
    */
   public void destroyNativeAd() {
-    nativeAd.destroy();
+    if (nativeAd != null) {
+      nativeAd.destroy();
+    }
   }
 
   public String getTemplateTypeName() {
@@ -263,22 +348,6 @@ public final class TemplateView extends FrameLayout {
       return SMALL_TEMPLATE;
     }
     return "";
-  }
-
-  private void initView(Context context, AttributeSet attributeSet) {
-    TypedArray attributes =
-        context.getTheme().obtainStyledAttributes(attributeSet, R.styleable.TemplateView, 0, 0);
-
-    try {
-      templateType =
-          attributes.getResourceId(
-              R.styleable.TemplateView_gnt_template_type, R.layout.gnt_medium_template_view);
-    } finally {
-      attributes.recycle();
-    }
-    LayoutInflater inflater =
-        (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-    inflater.inflate(templateType, this);
   }
 
   @Override
