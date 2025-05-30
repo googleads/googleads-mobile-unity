@@ -105,6 +105,8 @@ namespace GoogleMobileAds.Samples
 
             // Initialize the Google Mobile Ads Unity plugin.
             Debug.Log("Google Mobile Ads Initializing.");
+
+            // [START initialize_sdk]
             MobileAds.Initialize((InitializationStatus initstatus) =>
             {
                 if (initstatus == null)
@@ -113,7 +115,7 @@ namespace GoogleMobileAds.Samples
                     _isInitialized = null;
                     return;
                 }
-
+                // [START_EXCLUDE silent]
                 // If you use mediation, you can check the status of each adapter.
                 var adapterStatusMap = initstatus.getAdapterStatusMap();
                 if (adapterStatusMap != null)
@@ -125,10 +127,12 @@ namespace GoogleMobileAds.Samples
                             item.Value.InitializationState));
                     }
                 }
+                // [END_EXCLUDE]
 
                 Debug.Log("Google Mobile Ads initialization complete.");
                 _isInitialized = true;
             });
+            // [END initialize_sdk]
         }
 
         /// <summary>
