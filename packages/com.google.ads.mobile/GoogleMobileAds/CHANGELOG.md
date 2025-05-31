@@ -1,6 +1,20 @@
 Google Mobile Ads Unity Plugin Change Log
 
 **************
+Version 10.2.0
+**************
+- Updated the GMA Android SDK dependency version to 24.3.0.
+- Updated the GMA iOS SDK dependency version to 12.5.0.
+- Run AppOpen ads in Immersive mode for Android. This will prevent the 3 button navigation from showing up when ads are shown.
+
+Built and tested with:
+- Google Mobile Ads Android SDK 24.3.0.
+- Google Mobile Ads iOS SDK 12.5.0.
+- Google User Messaging Platform Android SDK 3.2.0
+- Google User Messaging Platform iOS SDK 3.0.0
+- External Dependency Manager for Unity 1.2.186
+
+**************
 Version 10.1.0
 **************
 - Updated UMP SDK dependency on Android to 3.2.0 and on iOS to 3.0.0.
