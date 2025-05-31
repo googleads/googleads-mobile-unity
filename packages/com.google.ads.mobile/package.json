@@ -18,5 +18,12 @@
   "dependencies": {
     "com.google.external-dependency-manager": "1.2.185",
     "com.unity.modules.androidjni": "1.0.0"
-  }
+  },
+  "samples": [
+    {
+      "displayName": "GMA Unity Sample App",
+      "description": "Sample app to test different ad formats offered as part of the GMA Unity plugin",
+      "path": "Samples~/HelloWorld"
+    }
+  ]
 }
