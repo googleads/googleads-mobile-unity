@@ -114,7 +114,7 @@ public final class UnityNativeTemplateStyle {
       return true;
     }
 
-    if (o == null || !(o instanceof UnityNativeTemplateStyle)) {
+    if (!(o instanceof UnityNativeTemplateStyle)) {
       return false;
     }
 
