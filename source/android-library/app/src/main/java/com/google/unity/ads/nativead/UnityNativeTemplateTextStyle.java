@@ -65,7 +65,7 @@ public final class UnityNativeTemplateTextStyle {
       return true;
     }
 
-    if (o == null || !(o instanceof UnityNativeTemplateTextStyle)) {
+    if (!(o instanceof UnityNativeTemplateTextStyle)) {
       return false;
     }
 
