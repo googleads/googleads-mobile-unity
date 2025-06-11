@@ -30,9 +30,6 @@ import com.google.android.gms.ads.OnPaidEventListener;
 import com.google.android.gms.ads.ResponseInfo;
 import com.google.android.gms.ads.appopen.AppOpenAd;
 import com.google.android.gms.ads.appopen.AppOpenAd.AppOpenAdLoadCallback;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.FutureTask;
 
 /**
  * Native app open ad implementation for the Google Mobile Ads Unity plugin.
@@ -222,30 +219,10 @@ public class UnityAppOpenAd {
   @Nullable
   public ResponseInfo getResponseInfo() {
     if (appOpenAd == null) {
+      Log.e(PluginUtils.LOGTAG, "Tried to get response info before it was ready. Returning null.");
       return null;
     }
-
-    FutureTask<ResponseInfo> task =
-        new FutureTask<>(
-            new Callable<ResponseInfo>() {
-              @Override
-              public ResponseInfo call() {
-                return appOpenAd.getResponseInfo();
-              }
-            });
-    activity.runOnUiThread(task);
-
-    ResponseInfo result = null;
-    try {
-      result = task.get();
-    } catch (ExecutionException | InterruptedException exception) {
-      Log.e(
-          PluginUtils.LOGTAG,
-          String.format(
-              "Unable to check Unity app open ad response info: %s",
-              exception.getLocalizedMessage()));
-    }
-    return result;
+    return appOpenAd.getResponseInfo();
   }
 
   /**

@@ -249,27 +249,11 @@ public class UnityRewardedAd {
   /** Returns the request response info. */
   @Nullable
   public ResponseInfo getResponseInfo() {
-    FutureTask<ResponseInfo> task = new FutureTask<>(new Callable<ResponseInfo>() {
-      @Override
-      public ResponseInfo call() {
-        return rewardedAd.getResponseInfo();
-      }
-    });
-    activity.runOnUiThread(task);
-
-    ResponseInfo result = null;
-    try {
-      result = task.get();
-    } catch (InterruptedException exception) {
-      Log.e(PluginUtils.LOGTAG,
-          String.format("Unable to check unity rewarded ad response info: %s",
-              exception.getLocalizedMessage()));
-    } catch (ExecutionException exception) {
-      Log.e(PluginUtils.LOGTAG,
-          String.format("Unable to check unity rewarded ad response info: %s",
-              exception.getLocalizedMessage()));
+    if (rewardedAd == null) {
+      Log.e(PluginUtils.LOGTAG, "Tried to get response info before it was ready. Returning null.");
+      return null;
     }
-    return result;
+    return rewardedAd.getResponseInfo();
   }
 
   @Nullable

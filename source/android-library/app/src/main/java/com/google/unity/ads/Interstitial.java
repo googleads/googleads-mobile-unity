@@ -29,9 +29,6 @@ import com.google.android.gms.ads.OnPaidEventListener;
 import com.google.android.gms.ads.ResponseInfo;
 import com.google.android.gms.ads.interstitial.InterstitialAd;
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.FutureTask;
 
 /**
  * Native interstitial implementation for the Google Mobile Ads Unity plugin.
@@ -220,27 +217,11 @@ public class Interstitial {
   /** Returns the request response info. */
   @Nullable
   public ResponseInfo getResponseInfo() {
-    FutureTask<ResponseInfo> task = new FutureTask<>(new Callable<ResponseInfo>() {
-      @Override
-      public ResponseInfo call() {
-        return interstitialAd.getResponseInfo();
-      }
-    });
-    activity.runOnUiThread(task);
-
-    ResponseInfo result = null;
-    try {
-      result = task.get();
-    } catch (InterruptedException exception) {
-      Log.e(PluginUtils.LOGTAG,
-          String.format("Unable to check interstitial response info: %s",
-              exception.getLocalizedMessage()));
-    } catch (ExecutionException exception) {
-      Log.e(PluginUtils.LOGTAG,
-          String.format("Unable to check interstitial response info: %s",
-              exception.getLocalizedMessage()));
+    if (interstitialAd == null) {
+      Log.e(PluginUtils.LOGTAG, "Tried to get response info before it was ready. Returning null.");
+      return null;
     }
-    return result;
+    return interstitialAd.getResponseInfo();
   }
 
   /**

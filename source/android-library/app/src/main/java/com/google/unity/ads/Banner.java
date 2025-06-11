@@ -585,17 +585,10 @@ public class Banner {
   /** Returns the request response info. */
   @Nullable
   public ResponseInfo getResponseInfo() {
-    FutureTask<ResponseInfo> task = new FutureTask<>(() -> adView.getResponseInfo());
-    unityPlayerActivity.runOnUiThread(task);
-
-    ResponseInfo result = null;
-    try {
-      result = task.get();
-    } catch (InterruptedException | ExecutionException exception) {
-      Log.e(PluginUtils.LOGTAG,
-              String.format("Unable to check banner response info: %s",
-                      exception.getLocalizedMessage()));
+    if (adView == null) {
+      Log.e(PluginUtils.LOGTAG, "Tried to get response info before it was ready. Returning null.");
+      return null;
     }
-    return result;
+    return adView.getResponseInfo();
   }
 }

@@ -262,35 +262,10 @@ public class UnityRewardedInterstitialAd {
   @Nullable
   public ResponseInfo getResponseInfo() {
     if (rewardedInterstitialAd == null) {
+      Log.e(PluginUtils.LOGTAG, "Tried to get response info before it was ready. Returning null.");
       return null;
     }
-    FutureTask<ResponseInfo> task =
-        new FutureTask<>(
-            new Callable<ResponseInfo>() {
-              @Override
-              public ResponseInfo call() {
-                return rewardedInterstitialAd.getResponseInfo();
-              }
-            });
-    activity.runOnUiThread(task);
-
-    ResponseInfo result = null;
-    try {
-      result = task.get();
-    } catch (InterruptedException exception) {
-      Log.e(
-          PluginUtils.LOGTAG,
-          String.format(
-              "Unable to check unity rewarded interstitial ad response info: %s",
-              exception.getLocalizedMessage()));
-    } catch (ExecutionException exception) {
-      Log.e(
-          PluginUtils.LOGTAG,
-          String.format(
-              "Unable to check unity rewarded interstitial ad response info: %s",
-              exception.getLocalizedMessage()));
-    }
-    return result;
+    return rewardedInterstitialAd.getResponseInfo();
   }
 
   @Nullable
