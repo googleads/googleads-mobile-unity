@@ -48,6 +48,11 @@ namespace GoogleMobileAds
                                           " on non-iOS runtime");
     }
 
+    public IAppOpenAdPreloaderClient BuildAppOpenAdPreloaderClient()
+    {
+        return null;
+    }
+
     public IBannerClient BuildBannerClient()
     {
       if (Application.platform == RuntimePlatform.IPhonePlayer)

@@ -46,6 +46,16 @@ namespace GoogleMobileAds
             " on non-Android runtime");
         }
 
+        public IAppOpenAdPreloaderClient BuildAppOpenAdPreloaderClient()
+        {
+            if (Application.platform == RuntimePlatform.Android)
+            {
+                return new GoogleMobileAds.Android.AppOpenAdPreloaderClient();
+            }
+            throw new InvalidOperationException(@"Called " + MethodBase.GetCurrentMethod().Name +
+            " on non-Android runtime");
+        }
+
         public IBannerClient BuildBannerClient()
         {
             if (Application.platform == RuntimePlatform.Android)
