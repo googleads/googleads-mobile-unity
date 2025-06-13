@@ -15,6 +15,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -27,6 +28,9 @@ namespace GoogleMobileAds.Common
         private static List<Action> adEventsQueue = new List<Action>();
 
         private volatile static bool adEventsQueueEmpty = true;
+
+        // The managed thread id of the Unity main thread.
+        private static int UnityMainThreadId = -1;
 
         public static void Initialize()
         {
@@ -42,6 +46,14 @@ namespace GoogleMobileAds.Common
             instance = obj.AddComponent<MobileAdsEventExecutor>();
         }
 
+        /// <summary>
+        /// Returns true if the current thread is the Unity main thread.
+        /// </summary>
+        public static bool IsOnMainThread()
+        {
+            return Thread.CurrentThread.ManagedThreadId == UnityMainThreadId;
+        }
+
         public static bool IsActive()
         {
             return instance != null;
@@ -49,6 +61,10 @@ namespace GoogleMobileAds.Common
 
         public void Awake()
         {
+            if (UnityMainThreadId == -1)
+            {
+                UnityMainThreadId = Thread.CurrentThread.ManagedThreadId;
+            }
             DontDestroyOnLoad(gameObject);
         }
 

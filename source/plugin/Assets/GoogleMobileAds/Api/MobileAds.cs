@@ -49,19 +49,9 @@ namespace GoogleMobileAds.Api
             }
         }
 
-        static MobileAds()
-        {
-            SetUnityMainThreadSynchronizationContext();
-        }
-
         private readonly IMobileAdsClient client = GetMobileAdsClient();
 
         private static IClientFactory clientFactory;
-
-        // Cached reference to the current Unity main thread.
-        private static SynchronizationContext _synchronizationContext;
-
-        private static int _unityMainThreadId;
 
         private static MobileAds instance;
 
@@ -75,6 +65,7 @@ namespace GoogleMobileAds.Api
                 if (instance == null)
                 {
                     instance = new MobileAds();
+                    MobileAdsEventExecutor.Initialize();
                 }
                 return instance;
             }
@@ -109,7 +100,6 @@ namespace GoogleMobileAds.Api
                     }
                 });
             });
-            MobileAdsEventExecutor.Initialize();
         }
 
         /// <summary>
@@ -332,30 +322,14 @@ namespace GoogleMobileAds.Api
             {
                 return;
             }
-
-            if (!RaiseAdEventsOnUnityMainThread ||
-                _synchronizationContext == null ||
-                Thread.CurrentThread.ManagedThreadId == _unityMainThreadId)
+            // If we are already on the main thread or RaiseAdEventsOnUnityMainThread is false,
+            // execute the action immediately.
+            if (!RaiseAdEventsOnUnityMainThread || MobileAdsEventExecutor.IsOnMainThread())
             {
                 action();
                 return;
             }
-
-            _synchronizationContext.Post((state) =>
-            {
-                action();
-            }, action);
-        }
-
-        /// <summary>
-        /// Sets the SynchronizationContext used for RaiseAdEventsOnUnityMainThread.
-        /// </summary>
-        internal static void SetUnityMainThreadSynchronizationContext()
-        {
-            // Cache the Threading variables for RaiseAdEventsOnUnityMainThread.
-            // SynchronizationContext.Current is null if initialized from a background thread.
-            _synchronizationContext = SynchronizationContext.Current;
-            _unityMainThreadId = Thread.CurrentThread.ManagedThreadId;
+            MobileAdsEventExecutor.ExecuteInUpdate(action);
         }
 
         private static IMobileAdsClient GetMobileAdsClient()
