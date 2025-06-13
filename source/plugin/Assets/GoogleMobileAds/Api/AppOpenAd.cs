@@ -61,7 +61,7 @@ namespace GoogleMobileAds.Api
         private IAppOpenAdClient _client;
         private bool _canShowAd;
 
-        private AppOpenAd(IAppOpenAdClient client)
+        internal AppOpenAd(IAppOpenAdClient client)
         {
             _canShowAd = true;
             _client = client;
