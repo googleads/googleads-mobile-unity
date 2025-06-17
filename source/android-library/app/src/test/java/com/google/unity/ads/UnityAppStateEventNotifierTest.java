@@ -6,6 +6,7 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 
 import android.app.Activity;
+import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.ProcessLifecycleOwner;
 import org.junit.Before;
 import org.junit.Rule;
@@ -23,10 +24,10 @@ public final class UnityAppStateEventNotifierTest {
 
   @Rule public final MockitoRule mockito = MockitoJUnit.rule();
   @Mock private UnityAppStateEventCallback mockCallback;
-  @Mock private ProcessLifecycleOwner mockOwner;
 
   private Activity activity;
   private UnityAppStateEventNotifier unityAppStateEventNotifier;
+  private final LifecycleOwner lifecycleOwner = ProcessLifecycleOwner.get();
 
   @Before
   public void setUp() {
@@ -48,37 +49,37 @@ public final class UnityAppStateEventNotifierTest {
 
   @Test
   public void onStart_succeeds() {
-    unityAppStateEventNotifier.onStart(mockOwner);
+    unityAppStateEventNotifier.onStart(lifecycleOwner);
     verify(mockCallback).onAppStateChanged(eq(false));
   }
 
   @Test
   public void onStop_succeeds() {
-    unityAppStateEventNotifier.onStop(mockOwner);
+    unityAppStateEventNotifier.onStop(lifecycleOwner);
     verify(mockCallback).onAppStateChanged(eq(true));
   }
 
   @Test
   public void onCreate_succeeds() {
-    unityAppStateEventNotifier.onCreate(mockOwner);
+    unityAppStateEventNotifier.onCreate(lifecycleOwner);
     verify(mockCallback, never()).onAppStateChanged(anyBoolean());
   }
 
   @Test
   public void onDestroy_succeeds() {
-    unityAppStateEventNotifier.onDestroy(mockOwner);
+    unityAppStateEventNotifier.onDestroy(lifecycleOwner);
     verify(mockCallback, never()).onAppStateChanged(anyBoolean());
   }
 
   @Test
   public void onResume_succeeds() {
-    unityAppStateEventNotifier.onResume(mockOwner);
+    unityAppStateEventNotifier.onResume(lifecycleOwner);
     verify(mockCallback, never()).onAppStateChanged(anyBoolean());
   }
 
   @Test
   public void onPause_succeeds() {
-    unityAppStateEventNotifier.onPause(mockOwner);
+    unityAppStateEventNotifier.onPause(lifecycleOwner);
     verify(mockCallback, never()).onAppStateChanged(anyBoolean());
   }
 }
