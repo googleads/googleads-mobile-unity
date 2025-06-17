@@ -232,6 +232,7 @@ namespace GoogleMobileAds.Api
         /// </param>
         /// <param name="onAdsExhausted">Called when the last available ad is exhausted for the
         /// configuration.</param>
+        [Obsolete("Use the Preloader class for respective ad format instead.")]
         public static void Preload(List<PreloadConfiguration> configurations,
                                    Action<PreloadConfiguration> onAdAvailable,
                                    Action<PreloadConfiguration> onAdsExhausted)
