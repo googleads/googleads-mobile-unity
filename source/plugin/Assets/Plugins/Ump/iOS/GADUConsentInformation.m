@@ -67,10 +67,10 @@
 - (BOOL)isConsentFormAvailable {
   __block BOOL status;
   if (NSThread.isMainThread) {
-    status = UMPConsentInformation.sharedInstance.formStatus == kGADUFormStatusAvailable;
+    status = UMPConsentInformation.sharedInstance.formStatus == UMPFormStatusAvailable;
   } else {
     dispatch_sync(dispatch_get_main_queue(), ^{
-      status = UMPConsentInformation.sharedInstance.formStatus == kGADUFormStatusAvailable;
+      status = UMPConsentInformation.sharedInstance.formStatus == UMPFormStatusAvailable;
     });
   }
   return status;
