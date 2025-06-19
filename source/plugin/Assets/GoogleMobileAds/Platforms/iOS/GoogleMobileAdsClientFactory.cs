@@ -48,6 +48,11 @@ namespace GoogleMobileAds
                                           " on non-iOS runtime");
     }
 
+    public IAppOpenAdPreloaderClient BuildAppOpenAdPreloaderClient()
+    {
+        return null; // TODO(b/398243349) Implement AppOpenAdPreloaderClient for iOS.
+    }
+
     public IBannerClient BuildBannerClient()
     {
       if (Application.platform == RuntimePlatform.IPhonePlayer)

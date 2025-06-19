@@ -23,7 +23,7 @@ namespace GoogleMobileAds.Android
 {
     public class AppOpenAdClient : AndroidJavaProxy, IAppOpenAdClient
     {
-        private AndroidJavaObject androidAppOpenAd;
+        internal AndroidJavaObject androidAppOpenAd;
 
         public AppOpenAdClient() : base(Utils.UnityAppOpenAdCallbackClassName)
         {

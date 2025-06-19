@@ -62,6 +62,8 @@ namespace GoogleMobileAds.Android
 
         public const string PreloadListenerClassname = "com.google.android.gms.ads.preload.PreloadCallback";
 
+        public const string PreloadCallbackClassname = "com.google.unity.ads.UnityPreloadCallback";
+
         public const string AdFormatEnumName = "com.google.android.gms.ads.AdFormat";
 
         public const string RequestConfigurationClassName = "com.google.android.gms.ads.RequestConfiguration";
@@ -128,6 +130,8 @@ namespace GoogleMobileAds.Android
 
         public const string UnityAppOpenAdCallbackClassName =
                 "com.google.unity.ads.UnityAppOpenAdCallback";
+
+        public const string UnityAppOpenAdPreloaderClassName = "com.google.unity.ads.UnityAppOpenAdPreloader";
 
         public const string OnInitializationCompleteListenerClassName =
                 "com.google.android.gms.ads.initialization.OnInitializationCompleteListener";

@@ -58,10 +58,10 @@ namespace GoogleMobileAds.Api
         /// </summary>
         public event Action<AdError> OnAdFullScreenContentFailed;
 
-        private IAppOpenAdClient _client;
+        private readonly IAppOpenAdClient _client;
         private bool _canShowAd;
 
-        private AppOpenAd(IAppOpenAdClient client)
+        internal AppOpenAd(IAppOpenAdClient client)
         {
             _canShowAd = true;
             _client = client;
@@ -73,6 +73,7 @@ namespace GoogleMobileAds.Api
         /// Verify if an ad is preloaded and available to show.
         /// </summary>
         /// <param name="adUnitId">The ad Unit Id of the ad to verify. </param>
+        [Obsolete("Use AppOpenAdPreloader.IsAdAvailable instead.")]
         public static bool IsAdAvailable(string adUnitId)
         {
             if (string.IsNullOrEmpty(adUnitId))
@@ -88,6 +89,7 @@ namespace GoogleMobileAds.Api
         /// Returns the next pre-loaded app open ad and null if no ad is available.
         /// </summary>
         /// <param name="adUnitId">The ad Unit ID of the ad to poll.</param>
+        [Obsolete("Use AppOpenAdPreloader.GetPreloadedAd instead.")]
         public static AppOpenAd PollAd(string adUnitId)
         {
             if (string.IsNullOrEmpty(adUnitId))
