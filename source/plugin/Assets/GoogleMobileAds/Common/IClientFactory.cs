@@ -36,6 +36,8 @@ namespace GoogleMobileAds
 
         IRewardedAdClient BuildRewardedAdClient();
 
+        IRewardedAdPreloaderClient BuildRewardedAdPreloaderClient();
+
         IRewardedInterstitialAdClient BuildRewardedInterstitialAdClient();
 
         INativeOverlayAdClient BuildNativeOverlayAdClient();

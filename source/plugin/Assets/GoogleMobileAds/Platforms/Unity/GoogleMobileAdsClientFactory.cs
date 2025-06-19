@@ -63,6 +63,11 @@ namespace GoogleMobileAds
             return new GoogleMobileAds.Unity.RewardedAdClient();
         }
 
+        public IRewardedAdPreloaderClient BuildRewardedAdPreloaderClient()
+        {
+            return null; // TODO(b/398243349) Implement RewardedAdPreloaderClient for Unity Editor.
+        }
+
         public IRewardedInterstitialAdClient BuildRewardedInterstitialAdClient()
         {
             return new GoogleMobileAds.Unity.RewardedInterstitialAdClient();
