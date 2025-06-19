@@ -32,6 +32,8 @@ namespace GoogleMobileAds
 
         IInterstitialClient BuildInterstitialClient();
 
+        IInterstitialAdPreloaderClient BuildInterstitialAdPreloaderClient();
+
         IAdManagerInterstitialClient BuildAdManagerInterstitialClient();
 
         IRewardedAdClient BuildRewardedAdClient();
