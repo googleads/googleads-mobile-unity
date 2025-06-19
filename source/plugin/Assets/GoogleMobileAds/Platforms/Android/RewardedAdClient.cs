@@ -109,8 +109,9 @@ namespace GoogleMobileAds.Android
         // Returns ad request response info
         public IResponseInfoClient GetResponseInfoClient()
         {
-
-            return new ResponseInfoClient(ResponseInfoClientType.AdLoaded, this.androidRewardedAd);
+            var responseInfoJavaObject = androidRewardedAd.Call<AndroidJavaObject>(
+                    "getResponseInfo");
+            return new ResponseInfoClient(ResponseInfoClientType.AdLoaded, responseInfoJavaObject);
         }
 
         // Destroy the rewarded ad.

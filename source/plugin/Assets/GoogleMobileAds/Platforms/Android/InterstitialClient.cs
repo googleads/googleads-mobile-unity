@@ -95,8 +95,9 @@ namespace GoogleMobileAds.Android
         // Returns ad request response info
         public IResponseInfoClient GetResponseInfoClient()
         {
-
-            return new ResponseInfoClient(ResponseInfoClientType.AdLoaded, this.androidInterstitialAd);
+            var responseInfoJavaObject = androidInterstitialAd.Call<AndroidJavaObject>(
+                "getResponseInfo");
+            return new ResponseInfoClient(ResponseInfoClientType.AdLoaded, responseInfoJavaObject);
         }
 
         #endregion

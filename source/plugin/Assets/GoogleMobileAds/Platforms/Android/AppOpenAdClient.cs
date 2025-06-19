@@ -85,7 +85,9 @@ namespace GoogleMobileAds.Android
 
         public IResponseInfoClient GetResponseInfoClient()
         {
-            return new ResponseInfoClient(ResponseInfoClientType.AdLoaded, this.androidAppOpenAd);
+            var responseInfoJavaObject = androidAppOpenAd.Call<AndroidJavaObject>(
+                    "getResponseInfo");
+            return new ResponseInfoClient(ResponseInfoClientType.AdLoaded, responseInfoJavaObject);
         }
 
         public void DestroyAppOpenAd()

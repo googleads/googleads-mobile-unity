@@ -27,7 +27,7 @@ namespace GoogleMobileAds.Android
 
         public ResponseInfoClient(ResponseInfoClientType type, AndroidJavaObject androidJavaObject)
         {
-            _androidResponseInfo = androidJavaObject.Call<AndroidJavaObject>("getResponseInfo");
+            _androidResponseInfo = androidJavaObject;
         }
 
         public List<IAdapterResponseInfoClient> GetAdapterResponses()

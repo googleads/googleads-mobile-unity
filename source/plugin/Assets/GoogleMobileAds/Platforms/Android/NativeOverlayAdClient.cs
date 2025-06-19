@@ -124,7 +124,8 @@ namespace GoogleMobileAds.Android
         // Returns ad request Response info client.
         public IResponseInfoClient GetResponseInfoClient()
         {
-            return new ResponseInfoClient(ResponseInfoClientType.AdLoaded, this.nativeOverlayAd);
+            var responseInfoJavaObject = nativeOverlayAd.Call<AndroidJavaObject>("getResponseInfo");
+            return new ResponseInfoClient(ResponseInfoClientType.AdLoaded, responseInfoJavaObject);
         }
 
         // Returns the height of the NativeTemplateView in pixels.
