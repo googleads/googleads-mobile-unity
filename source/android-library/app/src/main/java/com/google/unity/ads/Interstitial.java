@@ -51,6 +51,15 @@ public class Interstitial {
     this.callback = callback;
   }
 
+  public void setInterstitialAd(InterstitialAd interstitialAd) {
+    this.interstitialAd = interstitialAd;
+    activity.runOnUiThread(
+        () -> {
+          this.interstitialAd.setOnPaidEventListener(onPaidEventListener);
+          this.interstitialAd.setFullScreenContentCallback(fullScreenContentCallback);
+        });
+  }
+
   private final FullScreenContentCallback fullScreenContentCallback =
       new FullScreenContentCallback() {
         @Override
