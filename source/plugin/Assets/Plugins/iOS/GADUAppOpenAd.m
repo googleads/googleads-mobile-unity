@@ -24,36 +24,30 @@
   return self;
 }
 
+- (void)setAppOpenAdAndConfigure:(GADAppOpenAd *)appOpenAd {
+  if (self.appOpenAd == appOpenAd) {
+    return;
+  }
+  self.appOpenAd = appOpenAd;
+  self.appOpenAd.fullScreenContentDelegate = self;
+  [self configurePaidEventHandler];
+}
+
 + (BOOL)isPreloadedAdAvailable:(NSString *)adUnitID {
   return [GADAppOpenAd isPreloadedAdAvailable:adUnitID];
 }
 
 - (void)preloadedAdWithAdUnitID:(nonnull NSString *)adUnitID {
-  self.appOpenAd = [GADAppOpenAd preloadedAdWithAdUnitID:adUnitID];
-  if (!self.appOpenAd) {
+  GADAppOpenAd *appOpenAd = [GADAppOpenAd preloadedAdWithAdUnitID:adUnitID];
+  if (!appOpenAd) {
     NSLog(@"Preloaded ad failed to load for ad unit ID: %@", adUnitID);
     return;
   }
-  self.appOpenAd.fullScreenContentDelegate = self;
-
-  __weak GADUAppOpenAd *weakSelf = self;
-  self.appOpenAd.paidEventHandler = ^void(GADAdValue *_Nonnull adValue) {
-    GADUAppOpenAd *strongSelf = weakSelf;
-    if (!strongSelf) {
-      return;
-    }
-    if (strongSelf.paidEventCallback) {
-      int64_t valueInMicros = [adValue.value decimalNumberByMultiplyingByPowerOf10:6].longLongValue;
-      strongSelf.paidEventCallback(
-          strongSelf.appOpenAdClient, (int)adValue.precision, valueInMicros,
-          [adValue.currencyCode cStringUsingEncoding:NSUTF8StringEncoding]);
-    }
-  };
+  [self setAppOpenAdAndConfigure:appOpenAd];
 }
 
 - (void)loadWithAdUnitID:(nonnull NSString *)adUnit request:(nonnull GADRequest *)request {
   __weak GADUAppOpenAd *weakSelf = self;
-
   [GADAppOpenAd loadWithAdUnitID:adUnit
                          request:request
                completionHandler:^(GADAppOpenAd *_Nullable appOpenAd, NSError *_Nullable error) {
@@ -63,29 +57,15 @@
                  }
                  if (error) {
                    if (strongSelf.adFailedToLoadCallback) {
-                     self->_lastLoadError = error;
+                     strongSelf->_lastLoadError = error;
                      strongSelf.adFailedToLoadCallback(strongSelf.appOpenAdClient,
                                                        (__bridge GADUTypeErrorRef)error);
                    }
                    return;
                  }
-                 strongSelf.appOpenAd = appOpenAd;
-                 strongSelf.appOpenAd.fullScreenContentDelegate = strongSelf;
-                 strongSelf.appOpenAd.paidEventHandler = ^void(GADAdValue *_Nonnull adValue) {
-                   GADUAppOpenAd *strongSecondSelf = weakSelf;
-                   if (!strongSecondSelf) {
-                     return;
-                   }
-                   if (strongSecondSelf.paidEventCallback) {
-                     int64_t valueInMicros =
-                         [adValue.value decimalNumberByMultiplyingByPowerOf10:6].longLongValue;
-                     strongSecondSelf.paidEventCallback(
-                         strongSecondSelf.appOpenAdClient, (int)adValue.precision, valueInMicros,
-                         [adValue.currencyCode cStringUsingEncoding:NSUTF8StringEncoding]);
-                   }
-                 };
+                 [strongSelf setAppOpenAdAndConfigure:appOpenAd];
                  if (strongSelf.adLoadedCallback) {
-                   strongSelf.adLoadedCallback(self.appOpenAdClient);
+                   strongSelf.adLoadedCallback(strongSelf.appOpenAdClient);
                  }
                }];
 }
@@ -148,6 +128,23 @@
   if (self.adDidDismissFullScreenContentCallback) {
     self.adDidDismissFullScreenContentCallback(self.appOpenAdClient);
   }
+}
+
+// Helper method to configure the paid event handler for the app open ad.
+- (void)configurePaidEventHandler {
+  __weak GADUAppOpenAd *weakSelf = self;
+  self.appOpenAd.paidEventHandler = ^void(GADAdValue *_Nonnull adValue) {
+    GADUAppOpenAd *strongSelf = weakSelf;
+    if (!strongSelf) {
+      return;
+    }
+    if (strongSelf.paidEventCallback) {
+      int64_t valueInMicros = [adValue.value decimalNumberByMultiplyingByPowerOf10:6].longLongValue;
+      strongSelf.paidEventCallback(
+          strongSelf.appOpenAdClient, (int)adValue.precision, valueInMicros,
+          [adValue.currencyCode cStringUsingEncoding:NSUTF8StringEncoding]);
+    }
+  };
 }
 
 @end
