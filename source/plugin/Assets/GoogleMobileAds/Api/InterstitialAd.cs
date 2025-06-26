@@ -63,7 +63,7 @@ namespace GoogleMobileAds.Api
 
         protected internal InterstitialAd() {}
 
-        private InterstitialAd(IInterstitialClient client)
+        internal InterstitialAd(IInterstitialClient client)
         {
             _client = client;
             _canShowAd = true;
@@ -74,6 +74,7 @@ namespace GoogleMobileAds.Api
         /// Verify if an ad is preloaded and available to show.
         /// </summary>
         /// <param name="adUnitId">The ad Unit Id of the ad to verify. </param>
+        [Obsolete("Use InterstitialAdPreloader.IsAdAvailable instead.")]
         public static bool IsAdAvailable(string adUnitId)
         {
             if (string.IsNullOrEmpty(adUnitId))
@@ -89,6 +90,7 @@ namespace GoogleMobileAds.Api
         /// Returns the next pre-loaded interstitial ad and null if no ad is available.
         /// </summary>
         /// <param name="adUnitId">The ad Unit ID of the ad to poll.</param>
+        [Obsolete("Use InterstitialAdPreloader.GetPreloadedAd instead.")]
         public static InterstitialAd PollAd(string adUnitId)
         {
             if (string.IsNullOrEmpty(adUnitId))
