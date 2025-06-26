@@ -22,7 +22,7 @@ namespace GoogleMobileAds.Android
 {
     public class InterstitialClient : AndroidJavaProxy, IInterstitialClient
     {
-        private AndroidJavaObject androidInterstitialAd;
+        internal AndroidJavaObject androidInterstitialAd;
 
         public InterstitialClient() : base(Utils.UnityInterstitialAdCallbackClassName)
         {
