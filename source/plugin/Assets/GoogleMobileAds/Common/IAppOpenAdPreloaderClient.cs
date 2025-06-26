@@ -21,23 +21,6 @@ namespace GoogleMobileAds.Common
     public interface IAppOpenAdPreloaderClient
     {
         /// <summary>
-        /// Raised when an ad fails to preload with preload ID string and error parameters.
-        /// </summary>
-        event Action<string, IAdErrorClient> OnAdFailedToPreload;
-
-        /// <summary>
-        /// Raised when a new ad is available for the given preload ID with preload ID string and
-        /// response info parameters.
-        /// </summary>
-        event Action<string, IResponseInfoClient> OnAdPreloaded;
-
-        /// <summary>
-        /// Raised when the last available ad is exhausted for the given preload ID with preload ID
-        /// string parameter.
-        /// </summary>
-        event Action<string> OnAdsExhausted;
-
-        /// <summary>
         /// Starts preloading interstitial ads from the configuration for the given preload ID.
         /// </summary>
         /// <param name="preloadId">
@@ -48,11 +31,11 @@ namespace GoogleMobileAds.Common
         /// <param name="preloadConfiguration">
         /// The configuration that dictates how ads are preloaded.
         /// </param>
-        /// <param name="adFailedToPreload">
-        /// Called when an ad failed to load for a given preload ID.
-        /// </param>
-        /// <param name="onAdAvailable">
+        /// <param name="onAdPreloaded">
         /// Called when a new ad is available for the given preload ID.
+        /// </param>
+        /// <param name="onAdFailedToPreload">
+        /// Called when an ad failed to load for a given preload ID.
         /// </param>
         /// <param name="onAdsExhausted">
         /// Called when the last available ad is exhausted for the given preload ID.
@@ -60,7 +43,10 @@ namespace GoogleMobileAds.Common
         /// <returns>
         /// False if preloading fails to start.
         /// </returns>
-        bool Preload(string preloadId, PreloadConfiguration preloadConfiguration);
+        bool Preload(string preloadId, PreloadConfiguration preloadConfiguration,
+            Action<string, IResponseInfoClient> onAdPreloaded = null,
+            Action<string, IAdErrorClient> onAdFailedToPreload = null,
+            Action<string> onAdsExhausted = null);
 
         /// <summary>
         /// Determines whether at least one ad is available for the given <c>preloadId</c>.
@@ -86,7 +72,7 @@ namespace GoogleMobileAds.Common
         /// The ad returned may be any of the ads preloaded for <c>preloadId</c>.
         /// The order returned is not guaranteed to match the order of <c>OnAdAvailable</c> events.
         /// </remarks>
-        IAppOpenAdClient GetPreloadedAd(string preloadId);
+        IAppOpenAdClient DequeueAd(string preloadId);
 
         /// <summary>
         /// Get the number of ads available for the given preload ID.

@@ -20,38 +20,15 @@ using GoogleMobileAds.Common;
 namespace GoogleMobileAds.Api
 {
     /// <summary>
-    /// The preloader for AppOpen ads.
+    /// The preloader for app open ads.
     /// </summary>
     public static class AppOpenAdPreloader
     {
-
-        static AppOpenAdPreloader()
-        {
-            RegisterAdEvents();
-        }
-
         private static readonly IAppOpenAdPreloaderClient _client =
-            MobileAds.GetClientFactory().BuildAppOpenAdPreloaderClient();
+                MobileAds.GetClientFactory().BuildAppOpenAdPreloaderClient();
 
         /// <summary>
-        /// Raised with preload ID and error parameters when an ad fails to preload.
-        /// </summary>
-        public static event Action<string, AdError> OnAdFailedToPreload;
-
-        /// <summary>
-        /// Raised with preload ID and response info parameters when a new ad is available for the
-        /// given preload ID.
-        /// </summary>
-        public static event Action<string, ResponseInfo> OnAdPreloaded;
-
-        /// <summary>
-        /// Raised with preload ID parameter when the last available ad is exhausted for the given
-        /// preload ID.
-        /// </summary>
-        public static event Action<string> OnAdsExhausted;
-
-        /// <summary>
-        /// Starts preloading interstitial ads from the configuration for the given preload ID.
+        /// Starts preloading app open ads from the configuration for the given preload ID.
         /// </summary>
         /// <param name="preloadId">
         /// A string that uniquely identifies the <c>PreloadConfiguration</c>. Use this
@@ -61,11 +38,11 @@ namespace GoogleMobileAds.Api
         /// <param name="preloadConfiguration">
         /// The configuration that dictates how ads are preloaded.
         /// </param>
-        /// <param name="onAdFailedToPreload">
-        /// Called when an ad failed to load for a given preload ID.
-        /// </param>
         /// <param name="onAdPreloaded">
         /// Called when a new ad is available for the given preload ID.
+        /// </param>
+        /// <param name="onAdFailedToPreload">
+        /// Called when an ad failed to load for a given preload ID.
         /// </param>
         /// <param name="onAdsExhausted">
         /// Called when the last available ad is exhausted for the given preload ID.
@@ -73,9 +50,48 @@ namespace GoogleMobileAds.Api
         /// <returns>
         /// False if preloading fails to start.
         /// </returns>
-        public static bool Preload(string preloadId, PreloadConfiguration preloadConfiguration)
+        public static bool Preload(string preloadId, PreloadConfiguration preloadConfiguration,
+            Action<string, ResponseInfo> onAdPreloaded = null,
+            Action<string, AdError> onAdFailedToPreload = null,
+            Action<string> onAdsExhausted = null)
         {
-            return _client.Preload(preloadId, preloadConfiguration);
+            Action<string, IResponseInfoClient> onAdPreloadedAction =
+                    (preloadIdOnAdPreloaded, responseInfo) =>
+            {
+                MobileAds.RaiseAction(() =>
+                {
+                    if (onAdPreloaded != null)
+                    {
+                        onAdPreloaded(preloadIdOnAdPreloaded, new ResponseInfo(responseInfo));
+                    }
+                });
+            };
+
+            Action<string, IAdErrorClient> onAdFailedToPreloadAction =
+                    (preloadIdOnAdFailedToPreload, error) =>
+            {
+                MobileAds.RaiseAction(() =>
+                {
+                    if (onAdFailedToPreload != null)
+                    {
+                        onAdFailedToPreload(preloadIdOnAdFailedToPreload, new AdError(error));
+                    }
+                });
+            };
+
+            Action<string> onAdsExhaustedAction = (preloadIdOnAdsExhausted) =>
+            {
+                MobileAds.RaiseAction(() =>
+                {
+                    if (onAdsExhausted != null)
+                    {
+                        onAdsExhausted(preloadIdOnAdsExhausted);
+                    }
+                });
+            };
+
+            return _client.Preload(preloadId, preloadConfiguration, onAdPreloadedAction,
+                        onAdFailedToPreloadAction, onAdsExhaustedAction);
         }
 
         /// <summary>
@@ -109,9 +125,9 @@ namespace GoogleMobileAds.Api
         /// The ad returned may be any of the ads preloaded for <c>preloadId</c>.
         /// The order returned is not guaranteed to match the order of <c>OnAdAvailable</c> events.
         /// </remarks>
-        public static AppOpenAd GetPreloadedAd(string preloadId)
+        public static AppOpenAd DequeueAd(string preloadId)
         {
-            var client = _client.GetPreloadedAd(preloadId);
+            var client = _client.DequeueAd(preloadId);
             if (client == null)
             {
                 return null;
@@ -169,43 +185,6 @@ namespace GoogleMobileAds.Api
         public static void DestroyAll()
         {
             _client.DestroyAll();
-        }
-
-        private static void RegisterAdEvents()
-        {
-            _client.OnAdPreloaded += (preloadId, responseInfo) =>
-            {
-                MobileAds.RaiseAction(() =>
-                {
-                    if (OnAdPreloaded != null)
-                    {
-                        OnAdPreloaded(preloadId, new ResponseInfo(responseInfo));
-                    }
-                });
-            };
-
-            _client.OnAdFailedToPreload += (preloadId, error) =>
-            {
-                MobileAds.RaiseAction(() =>
-                {
-                    if (OnAdFailedToPreload != null)
-                    {
-                        OnAdFailedToPreload(preloadId, new AdError(error));
-                    }
-                });
-            };
-
-            _client.OnAdsExhausted += (preloadId) =>
-            {
-                MobileAds.RaiseAction(() =>
-                {
-                    if (OnAdsExhausted != null)
-                    {
-                        OnAdsExhausted(preloadId);
-                    }
-                });
-            };
-
         }
     }
 }

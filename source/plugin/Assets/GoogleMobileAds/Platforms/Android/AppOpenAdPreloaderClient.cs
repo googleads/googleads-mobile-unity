@@ -25,9 +25,9 @@ namespace GoogleMobileAds.Android
     {
         private readonly AndroidJavaObject _unityAppOpenAdPreloader;
 
-        public event Action<string, IAdErrorClient> OnAdFailedToPreload;
-        public event Action<string, IResponseInfoClient> OnAdPreloaded;
-        public event Action<string> OnAdsExhausted;
+        private Action<string, IResponseInfoClient> _onAdPreloaded;
+        private Action<string, IAdErrorClient> _onAdFailedToPreload;
+        private Action<string> _onAdsExhausted;
 
         public AppOpenAdPreloaderClient() : base(Utils.PreloadCallbackClassname)
         {
@@ -38,8 +38,14 @@ namespace GoogleMobileAds.Android
                     Utils.UnityAppOpenAdPreloaderClassName, activity, this);
         }
 
-        public bool Preload(string preloadId, PreloadConfiguration preloadConfiguration)
+        public bool Preload(string preloadId, PreloadConfiguration preloadConfiguration,
+            Action<string, IResponseInfoClient> onAdPreloaded,
+            Action<string, IAdErrorClient> onAdFailedToPreload,
+            Action<string> onAdsExhausted)
         {
+            _onAdFailedToPreload = onAdFailedToPreload;
+            _onAdPreloaded = onAdPreloaded;
+            _onAdsExhausted = onAdsExhausted;
             return _unityAppOpenAdPreloader.Call<bool>("start", preloadId,
                 Utils.GetPreloadConfigurationJavaObject(preloadConfiguration));
         }
@@ -49,11 +55,11 @@ namespace GoogleMobileAds.Android
             return _unityAppOpenAdPreloader.Call<bool>("isAdAvailable", preloadId);
         }
 
-        public IAppOpenAdClient GetPreloadedAd(string preloadId)
+        public IAppOpenAdClient DequeueAd(string preloadId)
         {
             var appOpenAdClient = new AppOpenAdClient();
-            var unityAppOpenAd = _unityAppOpenAdPreloader.Call<AndroidJavaObject>("pollAd", preloadId,
-                    appOpenAdClient);
+            var unityAppOpenAd = _unityAppOpenAdPreloader.Call<AndroidJavaObject>("pollAd",
+                    preloadId, appOpenAdClient);
             if (unityAppOpenAd == null)
             {
                 return null;
@@ -106,26 +112,25 @@ namespace GoogleMobileAds.Android
 
         void onAdPreloaded(string preloadId, AndroidJavaObject responseInfo)
         {
-            if (OnAdPreloaded != null)
+            if (_onAdPreloaded != null)
             {
-                OnAdPreloaded(preloadId, new ResponseInfoClient(ResponseInfoClientType.AdLoaded,
-                        responseInfo));
+                _onAdPreloaded(preloadId, new ResponseInfoClient(ResponseInfoClientType.AdLoaded, responseInfo));
             }
         }
 
         void onAdFailedToPreload(string preloadId, AndroidJavaObject error)
         {
-            if (OnAdFailedToPreload != null)
+            if (_onAdFailedToPreload != null)
             {
-                OnAdFailedToPreload(preloadId, new AdErrorClient(error));
+                _onAdFailedToPreload(preloadId, new AdErrorClient(error));
             }
         }
 
         void onAdsExhausted(string preloadId)
         {
-            if (OnAdsExhausted != null)
+            if (_onAdsExhausted != null)
             {
-                OnAdsExhausted(preloadId);
+                _onAdsExhausted(preloadId);
             }
         }
 
