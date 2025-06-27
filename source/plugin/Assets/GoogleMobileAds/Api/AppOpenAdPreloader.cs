@@ -174,9 +174,9 @@ namespace GoogleMobileAds.Api
         /// True if an active preload configuration was destroyed; <c>false</c> if there is no
         /// active preload configuration for the given <c>preloadId</c>.
         /// </returns>
-        public static bool Destroy(string preloadId)
+        public static void Destroy(string preloadId)
         {
-            return _client.Destroy(preloadId);
+            _client.Destroy(preloadId);
         }
 
         /// <summary>

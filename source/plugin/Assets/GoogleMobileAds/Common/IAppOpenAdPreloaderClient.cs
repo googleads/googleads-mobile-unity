@@ -108,7 +108,7 @@ namespace GoogleMobileAds.Common
         /// True if an active preload configuration was destroyed; <c>false</c> if there is no
         /// active preload configuration for the given <c>preloadId</c>.
         /// </returns>
-        bool Destroy(string preloadId);
+        void Destroy(string preloadId);
 
         /// <summary>
         /// Stops preloading and destroys preloaded ads for all preload configurations.
