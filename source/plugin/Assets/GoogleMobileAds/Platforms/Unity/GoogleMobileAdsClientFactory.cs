@@ -53,6 +53,12 @@ namespace GoogleMobileAds
             return new GoogleMobileAds.Unity.InterstitialClient();
         }
 
+        public IInterstitialAdPreloaderClient BuildInterstitialAdPreloaderClient()
+        {
+            return null; // TODO(b/398243349) Implement InterstitialAdPreloaderClient for Unity
+            // Editor.
+        }
+
         public IAdManagerInterstitialClient BuildAdManagerInterstitialClient()
         {
             return new GoogleMobileAds.Unity.AdManagerInterstitialClient();
