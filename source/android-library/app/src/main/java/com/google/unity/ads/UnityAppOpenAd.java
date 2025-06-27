@@ -36,10 +36,8 @@ import com.google.android.gms.ads.appopen.AppOpenAd.AppOpenAdLoadCallback;
  */
 public class UnityAppOpenAd {
 
-  /**
-   * The {@link AppOpenAd}.
-   */
-  private AppOpenAd appOpenAd;
+  /** The {@link AppOpenAd}. */
+  AppOpenAd appOpenAd;
 
   /**
    * The {@code Activity} on which the app open ad will display.
@@ -157,6 +155,15 @@ public class UnityAppOpenAd {
                         });
                   }
                 }));
+  }
+
+  void setAppOpenAd(AppOpenAd appOpenAd) {
+    this.appOpenAd = appOpenAd;
+    activity.runOnUiThread(
+        () -> {
+          this.appOpenAd.setOnPaidEventListener(onPaidEventListener);
+          this.appOpenAd.setFullScreenContentCallback(fullScreenContentCallback);
+        });
   }
 
   /**
