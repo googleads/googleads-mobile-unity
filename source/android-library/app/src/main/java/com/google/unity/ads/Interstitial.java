@@ -46,11 +46,6 @@ public class Interstitial {
   /** A listener implemented in Unity via {@code AndroidJavaProxy} to receive ad events. */
   private final UnityInterstitialAdCallback callback;
 
-  public Interstitial(Activity activity, UnityInterstitialAdCallback callback) {
-    this.activity = activity;
-    this.callback = callback;
-  }
-
   private final FullScreenContentCallback fullScreenContentCallback =
       new FullScreenContentCallback() {
         @Override
@@ -108,6 +103,20 @@ public class Interstitial {
               .start();
         }
       };
+
+  public Interstitial(Activity activity, UnityInterstitialAdCallback callback) {
+    this.activity = activity;
+    this.callback = callback;
+  }
+
+  public void setInterstitialAd(InterstitialAd interstitialAd) {
+    this.interstitialAd = interstitialAd;
+    activity.runOnUiThread(
+        () -> {
+          this.interstitialAd.setOnPaidEventListener(onPaidEventListener);
+          this.interstitialAd.setFullScreenContentCallback(fullScreenContentCallback);
+        });
+  }
 
   private final OnPaidEventListener onPaidEventListener =
       new OnPaidEventListener() {
