@@ -38,7 +38,7 @@ namespace GoogleMobileAds.iOS
             }
         }
 
-        public ResponseInfoClient(IntPtr adFormat, IntPtr iOSClient)
+        public ResponseInfoClient(IntPtr iOSClient)
         {
             _iosResponseInfo = iOSClient;
         }

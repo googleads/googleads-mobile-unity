@@ -169,6 +169,23 @@ namespace GoogleMobileAds.iOS
             Marshal.FreeHGlobal(arrayPtr);
             return new List<string>(managedAssetArray);
         }
+
+        public static Dictionary<string, IntPtr> PtrNsDictionaryToDictionary(IntPtr dictPtr)
+        {
+            if (dictPtr == IntPtr.Zero)
+            {
+                return new Dictionary<string, IntPtr>();
+            }
+
+            var dictionary = new Dictionary<string, IntPtr>();
+            var count = Externs.GADUNSDictionaryCount(dictPtr);
+            for (var i = 0; i < count; i++)
+            {
+                var key = Externs.GADUNSDictionaryKeyAtIndex(dictPtr, i);
+                dictionary[key] = Externs.GADUNSDictionaryValueForKey(dictPtr, key);
+            }
+            return dictionary;
+        }
     }
 }
 #endif

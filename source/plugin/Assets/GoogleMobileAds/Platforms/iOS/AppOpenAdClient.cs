@@ -86,6 +86,23 @@ namespace GoogleMobileAds.iOS
             }
         }
 
+        internal void CreateAppOpenAdWithReference(IntPtr appOpenAdClientRef, IntPtr appOpenAdRef)
+        {
+            appOpenAdClientPtr = appOpenAdClientRef;
+            AppOpenAdPtr = appOpenAdRef;
+
+            Externs.GADUSetAppOpenAdCallbacks(
+                AppOpenAdPtr,
+                AppOpenAdLoadedCallback,
+                AppOpenAdFailedToLoadCallback,
+                AppOpenAdPaidEventCallback,
+                AdFailedToPresentFullScreenContentCallback,
+                AdWillPresentFullScreenContentCallback,
+                AdDidDismissFullScreenContentCallback,
+                AdDidRecordImpressionCallback,
+                AdDidRecordClickCallback);
+        }
+
         #region IAppOpenAdClient implementation
 
         public void CreateAppOpenAd()
