@@ -61,7 +61,7 @@ namespace GoogleMobileAds.Api
         private bool _canShowAd;
         private Action<Reward> _userRewardEarnedCallback;
 
-        private RewardedAd(IRewardedAdClient client)
+        internal RewardedAd(IRewardedAdClient client)
         {
             _canShowAd = true;
             _client = client;
@@ -72,6 +72,7 @@ namespace GoogleMobileAds.Api
         /// Verify if an ad is preloaded and available to show.
         /// </summary>
         /// <param name="adUnitId">The ad Unit Id of the ad to verify. </param>
+        [Obsolete("Use RewardedAdPreloader.IsAdAvailable instead.")]
         public static bool IsAdAvailable(string adUnitId)
         {
             if (string.IsNullOrEmpty(adUnitId))
@@ -87,6 +88,7 @@ namespace GoogleMobileAds.Api
         /// Returns the next pre-loaded rewarded ad and null if no ad is available.
         /// </summary>
         /// <param name="adUnitId">The ad Unit ID of the ad to poll.</param>
+        [Obsolete("Use RewardedAdPreloader.GetPreloadedAd instead.")]
         public static RewardedAd PollAd(string adUnitId)
         {
             if (string.IsNullOrEmpty(adUnitId))

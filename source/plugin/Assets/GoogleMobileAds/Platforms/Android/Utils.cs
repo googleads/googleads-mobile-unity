@@ -96,6 +96,9 @@ namespace GoogleMobileAds.Android
 
         public const string UnityRewardedAdClassName = "com.google.unity.ads.UnityRewardedAd";
 
+        public const string UnityRewardedAdPreloaderClassName =
+                "com.google.unity.ads.UnityRewardedAdPreloader";
+
         public const string UnityAdListenerClassName = "com.google.unity.ads.UnityAdListener";
 
         public const string UnityAdManagerAdListenerClassName =
@@ -424,9 +427,9 @@ namespace GoogleMobileAds.Android
             }
             AndroidJavaClass adFormat = new AndroidJavaClass(Utils.AdFormatEnumName);
             AndroidJavaObject adFormatEnum = adFormat.GetStatic<AndroidJavaObject>(
-#pragma warning disable CS0612
+#pragma warning disable CS0618
                     preloadConfiguration.Format.ToString());
-#pragma warning restore CS0612
+#pragma warning restore CS0618
             AndroidJavaObject preloadConfigurationBuilder =
                     new AndroidJavaObject(Utils.PreloadConfigurationBuilderClassName,
                                           preloadConfiguration.AdUnitId,
@@ -462,9 +465,9 @@ namespace GoogleMobileAds.Android
             uint bufferSize = Convert.ToUInt32(configurationJavaObject.Call<int>("getBufferSize"));
             return new PreloadConfiguration() {
                 AdUnitId = adUnitId,
-#pragma warning disable CS0612
+#pragma warning disable CS0618
                 Format = adFormat,
-#pragma warning restore CS0612
+#pragma warning restore CS0618
                 BufferSize = bufferSize
             };
         }

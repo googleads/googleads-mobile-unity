@@ -22,7 +22,7 @@ namespace GoogleMobileAds.Android
 {
     public class RewardedAdClient : AndroidJavaProxy, IRewardedAdClient
     {
-        private AndroidJavaObject androidRewardedAd;
+        internal AndroidJavaObject androidRewardedAd;
 
         public RewardedAdClient() : base(Utils.UnityRewardedAdCallbackClassName)
         {
