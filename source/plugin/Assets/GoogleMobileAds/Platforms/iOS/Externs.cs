@@ -341,6 +341,54 @@ namespace GoogleMobileAds.iOS
 
         #endregion
 
+        #region RewardedAdPreloader externs
+
+        [DllImport("__Internal")]
+        internal static extern IntPtr GADUCreateRewardedAdPreloader(
+            IntPtr appOpenAdPreloaderClient);
+
+        [DllImport("__Internal")]
+        internal static extern bool GADURewardedAdPreloaderPreload(IntPtr appOpenAdPreloaderClient,
+            string preloadId, IntPtr preloadConfiguration);
+
+        [DllImport("__Internal")]
+        internal static extern bool GADURewardedAdPreloaderIsAdAvailable(
+            IntPtr appOpenAdPreloaderClient, string preloadId);
+
+        [DllImport("__Internal")]
+        internal static extern IntPtr GADURewardedAdPreloaderGetPreloadedAd(
+            IntPtr appOpenAdPreloaderClient, string preloadId, IntPtr appOpenAdClientPtr);
+
+        [DllImport("__Internal")]
+        internal static extern int GADURewardedAdPreloaderGetNumAdsAvailable(
+            IntPtr appOpenAdPreloaderClient, string preloadId);
+
+        [DllImport("__Internal")]
+        internal static extern IntPtr GADURewardedAdPreloaderGetConfiguration(
+            IntPtr appOpenAdPreloaderClient, string preloadId);
+
+        [DllImport("__Internal")]
+        internal static extern IntPtr GADURewardedAdPreloaderGetConfigurations(
+            IntPtr appOpenAdPreloaderClient);
+
+        [DllImport("__Internal")]
+        internal static extern bool GADURewardedAdPreloaderDestroy(IntPtr appOpenAdPreloaderClient,
+                                                                  string preloadId);
+
+        [DllImport("__Internal")]
+        internal static extern void GADURewardedAdPreloaderDestroyAll(
+            IntPtr appOpenAdPreloaderClient);
+
+        [DllImport("__Internal")]
+        internal static extern void GADUSetRewardedAdPreloaderCallbacks(
+            IntPtr appOpenAdPreloader,
+            RewardedAdPreloaderClient.GADUAdAvailableForPreloadIdCallback adPreloadedCallback,
+            RewardedAdPreloaderClient.GADUAdFailedToPreloadForPreloadIdCallback
+                adFailedToPreloadCallback,
+            RewardedAdPreloaderClient.GADUAdsExhaustedForPreloadIdCallback adsExhaustedCallback);
+
+        #endregion
+
         #region Banner externs
 
         [DllImport("__Internal")]

@@ -110,7 +110,12 @@ namespace GoogleMobileAds
 
     public IRewardedAdPreloaderClient BuildRewardedAdPreloaderClient()
     {
-        return null; // TODO(b/398243349) Implement RewardedAdPreloaderClient for iOS.
+      if (Application.platform == RuntimePlatform.IPhonePlayer)
+      {
+        return new GoogleMobileAds.iOS.RewardedAdPreloaderClient();
+      }
+      throw new InvalidOperationException(@"Called " + MethodBase.GetCurrentMethod().Name +
+                                          " on non-iOS runtime");
     }
 
     public IRewardedInterstitialAdClient BuildRewardedInterstitialAdClient()

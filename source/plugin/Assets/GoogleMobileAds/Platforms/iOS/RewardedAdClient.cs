@@ -89,6 +89,25 @@ namespace GoogleMobileAds.iOS
             }
         }
 
+        internal void CreateRewardedAdWithReference(IntPtr rewardedAdClientRef,
+                                                    IntPtr rewardedAdRef)
+        {
+            rewardedAdClientPtr = rewardedAdClientRef;
+            RewardedAdPtr = rewardedAdRef;
+
+            Externs.GADUSetRewardedAdCallbacks(
+                RewardedAdPtr,
+                RewardedAdLoadedCallback,
+                RewardedAdFailedToLoadCallback,
+                AdWillPresentFullScreenContentCallback,
+                AdFailedToPresentFullScreenContentCallback,
+                AdDidDismissFullScreenContentCallback,
+                AdDidRecordImpressionCallback,
+                AdDidRecordClickCallback,
+                RewardedAdUserDidEarnRewardCallback,
+                RewardedAdPaidEventCallback);
+        }
+
 #region IRewardedAdClient implementation
 
         public void CreateRewardedAd()
