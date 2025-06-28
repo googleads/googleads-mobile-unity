@@ -4,6 +4,7 @@
 #import "GADUAdNetworkExtras.h"
 #import "GADUAppOpenAd.h"
 #import "GADUAppOpenAdPreloader.h"
+#import "GADURewardedAdPreloader.h"
 #import "GADUBanner.h"
 #import "GADUInterstitial.h"
 #import "GADUMobileAds.h"
@@ -364,6 +365,7 @@ GADUTypeAppOpenAdRef GADUCreateAppOpenAd(GADUTypeAppOpenAdClientRef *appOpenAdCl
   return (__bridge GADUTypeAppOpenAdRef)appOpenAd;
 }
 
+/// Creates a GADUAppOpenAdPreloader and returns its reference.
 GADUTypeAppOpenAdPreloaderRef GADUCreateAppOpenAdPreloader(
     GADUTypeAppOpenAdPreloaderClientRef *appOpenAdPreloaderClient) {
   GADUAppOpenAdPreloader *appOpenAdPreloader = [[GADUAppOpenAdPreloader alloc]
@@ -371,6 +373,16 @@ GADUTypeAppOpenAdPreloaderRef GADUCreateAppOpenAdPreloader(
   GADUObjectCache *cache = GADUObjectCache.sharedInstance;
   cache[appOpenAdPreloader.gadu_referenceKey] = appOpenAdPreloader;
   return (__bridge GADUTypeAppOpenAdPreloaderRef)appOpenAdPreloader;
+}
+
+/// Creates a GADURewardedAdPreloader and returns its reference.
+GADUTypeRewardedAdPreloaderRef GADUCreateRewardedAdPreloader(
+    GADUTypeRewardedAdPreloaderClientRef *rewardedAdPreloaderClient) {
+  GADURewardedAdPreloader *rewardedAdPreloader = [[GADURewardedAdPreloader alloc]
+      initWithRewardedAdPreloaderClientReference:rewardedAdPreloaderClient];
+  GADUObjectCache *cache = GADUObjectCache.sharedInstance;
+  cache[rewardedAdPreloader.gadu_referenceKey] = rewardedAdPreloader;
+  return (__bridge GADUTypeRewardedAdPreloaderRef)rewardedAdPreloader;
 }
 
 /// Creates a GADBannerView with the specified width, height, and position. Returns a reference to
@@ -877,6 +889,80 @@ void GADUAppOpenAdPreloaderDestroyAll(
   GADUAppOpenAdPreloader *internalAppOpenAdPreloader =
       (__bridge GADUAppOpenAdPreloader *)appOpenAdPreloaderClient;
   [internalAppOpenAdPreloader stopPreloadingAndRemoveAllAds];
+}
+
+BOOL GADURewardedAdPreloaderPreload(GADUTypeRewardedAdPreloaderClientRef rewardedAdPreloaderClient,
+                                   const char *preloadId,
+                                   GADUTypePreloadConfigurationV2Ref preloadConfiguration) {
+  GADURewardedAdPreloader *internalRewardedAdPreloader =
+      (__bridge GADURewardedAdPreloader *)rewardedAdPreloaderClient;
+  GADUPreloadConfigurationV2 *internalPreloadConfiguration =
+      (__bridge GADUPreloadConfigurationV2 *_Nonnull)(preloadConfiguration);
+  return [internalRewardedAdPreloader
+      preloadForPreloadID:GADUStringFromUTF8String(preloadId)
+            configuration:internalPreloadConfiguration.preloadConfiguration];
+}
+
+BOOL GADURewardedAdPreloaderIsAdAvailable(
+    GADUTypeRewardedAdPreloaderClientRef rewardedAdPreloaderClient, const char *preloadId) {
+  GADURewardedAdPreloader *internalRewardedAdPreloader =
+      (__bridge GADURewardedAdPreloader *)rewardedAdPreloaderClient;
+  return
+      [internalRewardedAdPreloader isAdAvailableWithPreloadID:GADUStringFromUTF8String(preloadId)];
+}
+
+GADUTypeRewardedAdRef GADURewardedAdPreloaderGetPreloadedAd(
+    GADUTypeRewardedAdPreloaderClientRef rewardedAdPreloaderClient, const char *preloadId,
+    GADUTypeRewardedAdClientRef *rewardedAdClient) {
+  GADURewardedAdPreloader *internalRewardedAdPreloader =
+      (__bridge GADURewardedAdPreloader *)rewardedAdPreloaderClient;
+  GADRewardedAd *rewardedAd =
+      [internalRewardedAdPreloader adWithPreloadID:GADUStringFromUTF8String(preloadId)
+                                  rewardedAdClient:rewardedAdClient];
+  if (rewardedAd) {
+    GADUObjectCache *cache = GADUObjectCache.sharedInstance;
+    cache[rewardedAd.gadu_referenceKey] = rewardedAd;
+    return (__bridge GADUTypeRewardedAdRef)rewardedAd;
+  }
+  return nil;
+}
+
+unsigned long GADURewardedAdPreloaderGetNumAdsAvailable(
+    GADUTypeRewardedAdPreloaderClientRef rewardedAdPreloaderClient, const char *preloadId) {
+  GADURewardedAdPreloader *internalRewardedAdPreloader =
+      (__bridge GADURewardedAdPreloader *)rewardedAdPreloaderClient;
+  return [internalRewardedAdPreloader
+      numberOfAdsAvailableWithPreloadID:GADUStringFromUTF8String(preloadId)];
+}
+
+GADUTypePreloadConfigurationV2Ref GADURewardedAdPreloaderGetConfiguration(
+    GADUTypeRewardedAdPreloaderClientRef rewardedAdPreloaderClient, const char *preloadId) {
+  GADURewardedAdPreloader *internalRewardedAdPreloader =
+      (__bridge GADURewardedAdPreloader *)rewardedAdPreloaderClient;
+  return (__bridge GADUTypePreloadConfigurationV2Ref)(
+      [internalRewardedAdPreloader configurationWithPreloadID:GADUStringFromUTF8String(preloadId)]);
+}
+
+GADUTypeRef GADURewardedAdPreloaderGetConfigurations(
+    GADUTypeRewardedAdPreloaderClientRef rewardedAdPreloaderClient) {
+  GADURewardedAdPreloader *internalRewardedAdPreloader =
+      (__bridge GADURewardedAdPreloader *)rewardedAdPreloaderClient;
+  return (__bridge GADUTypeRef)([internalRewardedAdPreloader configurations]);
+}
+
+void GADURewardedAdPreloaderDestroy(GADUTypeRewardedAdPreloaderClientRef rewardedAdPreloaderClient,
+                                   const char *preloadId) {
+  GADURewardedAdPreloader *internalRewardedAdPreloader =
+      (__bridge GADURewardedAdPreloader *)rewardedAdPreloaderClient;
+  [internalRewardedAdPreloader
+      stopPreloadingAndRemoveAdsForPreloadID:GADUStringFromUTF8String(preloadId)];
+}
+
+void GADURewardedAdPreloaderDestroyAll(
+    GADUTypeRewardedAdPreloaderClientRef rewardedAdPreloaderClient) {
+  GADURewardedAdPreloader *internalRewardedAdPreloader =
+      (__bridge GADURewardedAdPreloader *)rewardedAdPreloaderClient;
+  [internalRewardedAdPreloader stopPreloadingAndRemoveAllAds];
 }
 
 /// Returns whether an app open ad is preloaded for the given ad unit ID

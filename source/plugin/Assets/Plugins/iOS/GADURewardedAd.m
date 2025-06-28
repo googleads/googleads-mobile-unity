@@ -24,36 +24,30 @@
   return self;
 }
 
+- (void)setRewardedAdAndConfigure:(GADRewardedAd *)rewardedAd {
+  if (self.rewardedAd == rewardedAd) {
+    return;
+  }
+  self.rewardedAd = rewardedAd;
+  self.rewardedAd.fullScreenContentDelegate = self;
+  [self configurePaidEventHandler];
+}
+
 + (BOOL)isPreloadedAdAvailable:(NSString *)adUnitID {
   return [GADRewardedAd isPreloadedAdAvailable:adUnitID];
 }
 
 - (void)preloadedAdWithAdUnitID:(nonnull NSString *)adUnitID {
-  self.rewardedAd = [GADRewardedAd preloadedAdWithAdUnitID:adUnitID];
-  if (!self.rewardedAd) {
+  GADRewardedAd *rewardedAd = [GADRewardedAd preloadedAdWithAdUnitID:adUnitID];
+  if (!rewardedAd) {
     NSLog(@"Preloaded ad failed to load for ad unit ID: %@", adUnitID);
     return;
   }
-  self.rewardedAd.fullScreenContentDelegate = self;
-
-  __weak GADURewardedAd *weakSelf = self;
-  self.rewardedAd.paidEventHandler = ^void(GADAdValue *_Nonnull adValue) {
-    GADURewardedAd *strongSelf = weakSelf;
-    if (!strongSelf) {
-      return;
-    }
-    if (strongSelf.paidEventCallback) {
-      int64_t valueInMicros = [adValue.value decimalNumberByMultiplyingByPowerOf10:6].longLongValue;
-      strongSelf.paidEventCallback(
-          strongSelf.rewardedAdClient, (int)adValue.precision, valueInMicros,
-          [adValue.currencyCode cStringUsingEncoding:NSUTF8StringEncoding]);
-    }
-  };
+  [self setRewardedAdAndConfigure:rewardedAd];
 }
 
-- (void)loadWithAdUnitID:(NSString *)adUnitID request:(GADRequest *)request {
+- (void)loadWithAdUnitID:(nonnull NSString *)adUnitID request:(nonnull GADRequest *)request {
   __weak GADURewardedAd *weakSelf = self;
-
   [GADRewardedAd loadWithAdUnitID:adUnitID
                           request:request
                 completionHandler:^(GADRewardedAd *_Nullable rewardedAd, NSError *_Nullable error) {
@@ -63,29 +57,15 @@
                   }
                   if (error || !rewardedAd) {
                     if (strongSelf.adFailedToLoadCallback) {
-                      _lastLoadError = error;
+                      strongSelf->_lastLoadError = error;
                       strongSelf.adFailedToLoadCallback(strongSelf.rewardedAdClient,
                                                         (__bridge GADUTypeErrorRef)error);
                     }
                     return;
                   }
-                  strongSelf.rewardedAd = rewardedAd;
-                  rewardedAd.fullScreenContentDelegate = strongSelf;
-                  rewardedAd.paidEventHandler = ^void(GADAdValue *_Nonnull adValue) {
-                    GADURewardedAd *strongSecondSelf = weakSelf;
-                    if (!strongSecondSelf) {
-                      return;
-                    }
-                    if (strongSecondSelf.paidEventCallback) {
-                      int64_t valueInMicros =
-                          [adValue.value decimalNumberByMultiplyingByPowerOf10:6].longLongValue;
-                      strongSecondSelf.paidEventCallback(
-                          strongSecondSelf.rewardedAdClient, (int)adValue.precision, valueInMicros,
-                          [adValue.currencyCode cStringUsingEncoding:NSUTF8StringEncoding]);
-                    }
-                  };
+                  [strongSelf setRewardedAdAndConfigure:rewardedAd];
                   if (strongSelf.adLoadedCallback) {
-                    strongSelf.adLoadedCallback(self.rewardedAdClient);
+                    strongSelf.adLoadedCallback(strongSelf.rewardedAdClient);
                   }
                 }];
 }
@@ -177,4 +157,22 @@
     self.adDidRecordClickCallback(self.rewardedAdClient);
   }
 }
+
+/// Helper method to configure the paid event handler for the rewarded ad.
+- (void)configurePaidEventHandler {
+  __weak GADURewardedAd *weakSelf = self;
+  self.rewardedAd.paidEventHandler = ^void(GADAdValue *_Nonnull adValue) {
+    GADURewardedAd *strongSelf = weakSelf;
+    if (!strongSelf) {
+      return;
+    }
+    if (strongSelf.paidEventCallback) {
+      int64_t valueInMicros = [adValue.value decimalNumberByMultiplyingByPowerOf10:6].longLongValue;
+      strongSelf.paidEventCallback(
+          strongSelf.rewardedAdClient, (int)adValue.precision, valueInMicros,
+          [adValue.currencyCode cStringUsingEncoding:NSUTF8StringEncoding]);
+    }
+  };
+}
+
 @end
