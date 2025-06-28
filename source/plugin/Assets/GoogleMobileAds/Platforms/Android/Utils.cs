@@ -154,6 +154,9 @@ namespace GoogleMobileAds.Android
         public const string UnityRewardedInterstitialAdClassName =
                 "com.google.unity.ads.UnityRewardedInterstitialAd";
 
+        public const string UnityInterstitialAdPreloaderClassName =
+                "com.google.unity.ads.UnityInterstitialAdPreloader";
+
         public const string UnityRewardedInterstitialAdCallbackClassName =
                 "com.google.unity.ads.UnityRewardedInterstitialAdCallback";
 

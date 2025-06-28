@@ -88,6 +88,11 @@ namespace GoogleMobileAds
                                           " on non-iOS runtime");
     }
 
+    public IInterstitialAdPreloaderClient BuildInterstitialAdPreloaderClient()
+    {
+      return null; // TODO(b/398243349) Implement InterstitialAdPreloaderClient for iOS.
+    }
+
     public IAdManagerInterstitialClient BuildAdManagerInterstitialClient()
     {
       if (Application.platform == RuntimePlatform.IPhonePlayer)
