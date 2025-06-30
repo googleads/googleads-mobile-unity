@@ -24,36 +24,30 @@
   return self;
 }
 
+- (void)setInterstitialAdAndConfigure:(GADInterstitialAd *)interstitialAd {
+  if (self.interstitialAd == interstitialAd) {
+    return;
+  }
+  self.interstitialAd = interstitialAd;
+  self.interstitialAd.fullScreenContentDelegate = self;
+  [self configurePaidEventHandler];
+}
+
 + (BOOL)isPreloadedAdAvailable:(NSString *)adUnitID {
   return [GADInterstitialAd isPreloadedAdAvailable:adUnitID];
 }
 
-- (void)preloadedAdWithAdUnitID:(NSString *)adUnitID {
-  self.interstitialAd = [GADInterstitialAd preloadedAdWithAdUnitID:adUnitID];
-  if (!self.interstitialAd) {
+- (void)preloadedAdWithAdUnitID:(nonnull NSString *)adUnitID {
+  GADInterstitialAd *interstitialAd = [GADInterstitialAd preloadedAdWithAdUnitID:adUnitID];
+  if (!interstitialAd) {
     NSLog(@"Preloaded ad failed to load for ad unit ID: %@", adUnitID);
     return;
   }
-  self.interstitialAd.fullScreenContentDelegate = self;
-
-  __weak GADUInterstitial *weakSelf = self;
-  self.interstitialAd.paidEventHandler = ^void(GADAdValue *_Nonnull adValue) {
-    GADUInterstitial *strongSelf = weakSelf;
-    if (!strongSelf) {
-      return;
-    }
-    if (strongSelf.paidEventCallback) {
-      int64_t valueInMicros = [adValue.value decimalNumberByMultiplyingByPowerOf10:6].longLongValue;
-      strongSelf.paidEventCallback(
-          strongSelf.interstitialClient, (int)adValue.precision, valueInMicros,
-          [adValue.currencyCode cStringUsingEncoding:NSUTF8StringEncoding]);
-    }
-  };
+  [self setInterstitialAdAndConfigure:interstitialAd];
 }
 
-- (void)loadWithAdUnitID:(NSString *)adUnitID request:(GADRequest *)request {
+- (void)loadWithAdUnitID:(nonnull NSString *)adUnitID request:(nonnull GADRequest *)request {
   __weak GADUInterstitial *weakSelf = self;
-
   [GADInterstitialAd
        loadWithAdUnitID:adUnitID
                 request:request
@@ -64,29 +58,15 @@
         }
         if (error || !interstitialAd) {
           if (strongSelf.adFailedToLoadCallback) {
-            _lastLoadError = error;
+            strongSelf->_lastLoadError = error;
             strongSelf.adFailedToLoadCallback(strongSelf.interstitialClient,
                                               (__bridge GADUTypeErrorRef)error);
           }
           return;
         }
-        strongSelf.interstitialAd = interstitialAd;
-        strongSelf.interstitialAd.fullScreenContentDelegate = strongSelf;
-        strongSelf.interstitialAd.paidEventHandler = ^void(GADAdValue *_Nonnull adValue) {
-          GADUInterstitial *strongSecondSelf = weakSelf;
-          if (!strongSecondSelf) {
-            return;
-          }
-          if (strongSecondSelf.paidEventCallback) {
-            int64_t valueInMicros =
-                [adValue.value decimalNumberByMultiplyingByPowerOf10:6].longLongValue;
-            strongSecondSelf.paidEventCallback(
-                strongSecondSelf.interstitialClient, (int)adValue.precision, valueInMicros,
-                [adValue.currencyCode cStringUsingEncoding:NSUTF8StringEncoding]);
-          }
-        };
+        [strongSelf setInterstitialAdAndConfigure:interstitialAd];
         if (strongSelf.adLoadedCallback) {
-          strongSelf.adLoadedCallback(self.interstitialClient);
+          strongSelf.adLoadedCallback(strongSelf.interstitialClient);
         }
       }];
 }
@@ -147,6 +127,23 @@
   if (self.adDidRecordClickCallback) {
     self.adDidRecordClickCallback(self.interstitialClient);
   }
+}
+
+/// Helper method to configure the paid event handler for the interstitial ad.
+- (void)configurePaidEventHandler {
+  __weak GADUInterstitial *weakSelf = self;
+  self.interstitialAd.paidEventHandler = ^void(GADAdValue *_Nonnull adValue) {
+    GADUInterstitial *strongSelf = weakSelf;
+    if (!strongSelf) {
+      return;
+    }
+    if (strongSelf.paidEventCallback) {
+      int64_t valueInMicros = [adValue.value decimalNumberByMultiplyingByPowerOf10:6].longLongValue;
+      strongSelf.paidEventCallback(
+          strongSelf.interstitialClient, (int)adValue.precision, valueInMicros,
+          [adValue.currencyCode cStringUsingEncoding:NSUTF8StringEncoding]);
+    }
+  };
 }
 
 @end
