@@ -84,6 +84,24 @@ namespace GoogleMobileAds.iOS
             }
         }
 
+        internal void CreateInterstitialAdWithReference(IntPtr interstitialAdClientRef,
+                                                        IntPtr interstitialAdRef)
+        {
+            interstitialClientPtr = interstitialAdClientRef;
+            InterstitialPtr = interstitialAdRef;
+
+            Externs.GADUSetInterstitialCallbacks(
+                InterstitialPtr,
+                InterstitialLoadedCallback,
+                InterstitialFailedToLoadCallback,
+                AdWillPresentFullScreenContentCallback,
+                AdFailedToPresentFullScreenContentCallback,
+                AdDidDismissFullScreenContentCallback,
+                AdDidRecordImpressionCallback,
+                AdDidRecordClickCallback,
+                InterstitialPaidEventCallback);
+        }
+
 #region IInterstitialClient implementation
 
         public void CreateInterstitialAd()

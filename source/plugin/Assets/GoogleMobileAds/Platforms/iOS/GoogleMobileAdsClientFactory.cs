@@ -90,7 +90,12 @@ namespace GoogleMobileAds
 
     public IInterstitialAdPreloaderClient BuildInterstitialAdPreloaderClient()
     {
-      return null; // TODO(b/398243349) Implement InterstitialAdPreloaderClient for iOS.
+      if (Application.platform == RuntimePlatform.IPhonePlayer)
+      {
+        return new GoogleMobileAds.iOS.InterstitialAdPreloaderClient();
+      }
+      throw new InvalidOperationException(@"Called " + MethodBase.GetCurrentMethod().Name +
+                                          " on non-iOS runtime");
     }
 
     public IAdManagerInterstitialClient BuildAdManagerInterstitialClient()
