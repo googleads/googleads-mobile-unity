@@ -30,7 +30,7 @@ namespace GoogleMobileAds.Api
         /// <summary>
         /// The ad format of the ad to preload.
         /// </summary>
-        [Obsolete("Defaults to AdFormat.INTERSTITIAL")]
+        [Obsolete]
         public AdFormat Format;
 
         /// <summary>
@@ -48,9 +48,9 @@ namespace GoogleMobileAds.Api
         public PreloadConfiguration(PreloadConfiguration configuration)
         {
             AdUnitId = configuration.AdUnitId;
-#pragma warning disable CS0618
+#pragma warning disable CS0612
             Format = configuration.Format;
-#pragma warning restore CS0618
+#pragma warning restore CS0612
             Request = configuration.Request;
             BufferSize = configuration.BufferSize;
         }

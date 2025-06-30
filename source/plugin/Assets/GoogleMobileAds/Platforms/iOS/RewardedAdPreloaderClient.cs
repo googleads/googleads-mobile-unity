@@ -122,12 +122,12 @@ namespace GoogleMobileAds.iOS
         {
             var config = Externs.GADURewardedAdPreloaderGetConfiguration(RewardedAdPreloaderPtr,
                                                                          preloadId);
-            var preloadConfigClient = new PreloadConfigurationClient(config);
+            var preloadConfigClient = new PreloadConfigurationV2Client(config);
             return new PreloadConfiguration
             {
                 AdUnitId = preloadConfigClient.AdUnitId,
 #pragma warning disable CS0612
-                Format = AdFormat.APP_OPEN_AD,
+                Format = AdFormat.REWARDED,
 #pragma warning restore CS0612
                 BufferSize = preloadConfigClient.BufferSize
             };
@@ -143,10 +143,13 @@ namespace GoogleMobileAds.iOS
                     Utils.PtrNsDictionaryToDictionary(configurationsPtr);
             foreach(var entry in marshalledConfigurations)
             {
-                var preloadConfigClient = new PreloadConfigurationClient(entry.Value);
+                var preloadConfigClient = new PreloadConfigurationV2Client(entry.Value);
                 configurations[entry.Key] = new PreloadConfiguration
                 {
                     AdUnitId = preloadConfigClient.AdUnitId,
+#pragma warning disable CS0612
+                    Format = AdFormat.REWARDED,
+#pragma warning restore CS0612
                     BufferSize = preloadConfigClient.BufferSize
                 };
             }

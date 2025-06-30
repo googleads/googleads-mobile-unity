@@ -645,6 +645,34 @@ void GADUSetAppOpenAdPreloaderCallbacks(
   internalAppOpenAdPreloader.adsExhaustedForPreloadIDCallback = adsExhaustedForPreloadIDCallback;
 }
 
+/// Sets the rewarded ad preloader callback methods to be invoked during preload events.
+void GADUSetRewardedAdPreloaderCallbacks(
+    GADUTypeRewardedAdPreloaderRef rewardedAdPreloader,
+    GADUAdAvailableForPreloadIDCallback adAvailableForPreloadIDCallback,
+    GADUAdFailedToPreloadForPreloadIDCallback adFailedToPreloadForPreloadIDCallback,
+    GADUAdsExhaustedForPreloadIDCallback adsExhaustedForPreloadIDCallback) {
+  GADURewardedAdPreloader *internalRewardedAdPreloader =
+      (__bridge GADURewardedAdPreloader *)rewardedAdPreloader;
+  internalRewardedAdPreloader.adAvailableForPreloadIDCallback = adAvailableForPreloadIDCallback;
+  internalRewardedAdPreloader.adFailedToPreloadForPreloadIDCallback =
+      adFailedToPreloadForPreloadIDCallback;
+  internalRewardedAdPreloader.adsExhaustedForPreloadIDCallback = adsExhaustedForPreloadIDCallback;
+}
+
+/// Sets the interstitial ad preloader callback methods to be invoked during preload events.
+void GADUSetInterstitialAdPreloaderCallbacks(
+    GADUTypeInterstitialAdPreloaderRef interstitialAdPreloader,
+    GADUAdAvailableForPreloadIDCallback adAvailableForPreloadIDCallback,
+    GADUAdFailedToPreloadForPreloadIDCallback adFailedToPreloadForPreloadIDCallback,
+    GADUAdsExhaustedForPreloadIDCallback adsExhaustedForPreloadIDCallback) {
+  GADUInterstitialAdPreloader *internalInterstitialAdPreloader =
+      (__bridge GADUInterstitialAdPreloader *)interstitialAdPreloader;
+  internalInterstitialAdPreloader.adAvailableForPreloadIDCallback = adAvailableForPreloadIDCallback;
+  internalInterstitialAdPreloader.adFailedToPreloadForPreloadIDCallback =
+      adFailedToPreloadForPreloadIDCallback;
+  internalInterstitialAdPreloader.adsExhaustedForPreloadIDCallback = adsExhaustedForPreloadIDCallback;
+}
+
 /// Sets the app open ad callback methods to be invoked during app open ad events.
 void GADUSetAppOpenAdCallbacks(
     GADUTypeAppOpenAdRef appOpenAd, GADUAppOpenAdLoadedCallback adLoadedCallback,

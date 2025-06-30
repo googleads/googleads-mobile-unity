@@ -23,7 +23,7 @@
 #import "UnityInterface.h"
 
 @interface GADUAppOpenAd ()
-- (void)injectAppOpenAd:(GADAppOpenAd *)appOpenAd;
+- (void)setAppOpenAdAndConfigure:(GADAppOpenAd *)appOpenAd;
 @end
 
 @interface GADUAppOpenAdPreloader () <GADPreloadDelegate>
@@ -63,7 +63,7 @@
   if (nativeAppOpenAd) {
     GADUAppOpenAd *appOpenAd =
         [[GADUAppOpenAd alloc] initWithAppOpenAdClientReference:appOpenAdClient];
-    [appOpenAd injectAppOpenAd:nativeAppOpenAd];
+    [appOpenAd setAppOpenAdAndConfigure:nativeAppOpenAd];
     return appOpenAd;
   }
   return nil;
