@@ -122,9 +122,9 @@ namespace GoogleMobileAds.iOS
             return new PreloadConfiguration
             {
                 AdUnitId = preloadConfigClient.AdUnitId,
-#pragma warning disable CS0612
+#pragma warning disable 0612
                 Format = AdFormat.APP_OPEN_AD,
-#pragma warning restore CS0612
+#pragma warning restore 0612
                 BufferSize = preloadConfigClient.BufferSize
             };
         }
@@ -143,9 +143,9 @@ namespace GoogleMobileAds.iOS
                 configurations[entry.Key] = new PreloadConfiguration
                 {
                     AdUnitId = preloadConfigClient.AdUnitId,
-#pragma warning disable CS0612
+#pragma warning disable 0612
                     Format = AdFormat.APP_OPEN_AD,
-#pragma warning restore CS0612
+#pragma warning restore 0612
                     BufferSize = preloadConfigClient.BufferSize
                 };
             }
