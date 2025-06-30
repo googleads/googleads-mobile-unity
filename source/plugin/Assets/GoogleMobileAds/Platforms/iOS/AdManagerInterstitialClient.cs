@@ -124,7 +124,6 @@ namespace GoogleMobileAds.iOS
         public bool IsAdAvailable(string adUnitId)
         {
             return Externs.GAMUInterstitialIsPreloadedAdAvailable(adUnitId);
-            return false;
         }
 
         // Returns the next pre-loaded interstitial ad and null if no ad is available.
