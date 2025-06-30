@@ -35,7 +35,7 @@ namespace GoogleMobileAds
 
         public IAppOpenAdPreloaderClient BuildAppOpenAdPreloaderClient()
         {
-            return null; // TODO(b/398243349) Implement AppOpenAdPreloaderClient for Unity Editor.
+            return new GoogleMobileAds.Unity.AppOpenAdPreloaderClient();
         }
 
         public IBannerClient BuildBannerClient()
