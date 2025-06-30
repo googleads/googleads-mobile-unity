@@ -100,7 +100,7 @@ namespace GoogleMobileAds.Android
 
         public void Destroy(string preloadId)
         {
-            var unused = _unityAppOpenAdPreloader.Call<bool>("destroy", preloadId);
+            _unityAppOpenAdPreloader.Call("destroy", preloadId);
         }
 
         public void DestroyAll()
