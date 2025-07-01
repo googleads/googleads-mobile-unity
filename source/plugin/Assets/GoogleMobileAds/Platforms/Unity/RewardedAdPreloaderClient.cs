@@ -40,16 +40,21 @@ namespace GoogleMobileAds.Unity
             _onAdFailedToPreload = onAdFailedToPreload;
             _onAdPreloaded = onAdPreloaded;
             _onAdsExhausted = onAdsExhausted;
-            if (string.IsNullOrEmpty(preloadId) || preloadConfiguration == null ||
-                preloadConfiguration.BufferSize <= 0)
+
+            if (preloadId == null)
             {
-                if (_onAdFailedToPreload != null)
-                {
-                    _onAdFailedToPreload(preloadId, new AdErrorClient());
-                }
-                return false;
+                throw new ArgumentException("preloadId cannot be null.");
             }
+            if (preloadConfiguration == null)
+            {
+                throw new ArgumentException("preloadConfiguration cannot be null.");
+            }
+
             preloadConfiguration.Format = AdFormat.REWARDED;
+            if (preloadConfiguration.BufferSize <= 0)
+            {
+                preloadConfiguration.BufferSize = 2;
+            }
             // Store a copy of the configuration keyed by the preload ID.
             _preloadConfigurations[preloadId] = new PreloadConfiguration(preloadConfiguration);
             _bufferedAds[preloadId] = new Queue<RewardedAdClient>();

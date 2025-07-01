@@ -61,7 +61,8 @@ namespace GoogleMobileAds.iOS
         public AppOpenAdPreloaderClient()
         {
             _appOpenAdPreloaderClientPtr = (IntPtr)GCHandle.Alloc(this);
-            AppOpenAdPreloaderPtr = Externs.GADUCreateAppOpenAdPreloader(_appOpenAdPreloaderClientPtr);
+            AppOpenAdPreloaderPtr = Externs.GADUCreateAppOpenAdPreloader(
+                    _appOpenAdPreloaderClientPtr);
 
             Externs.GADUSetAppOpenAdPreloaderCallbacks(
                 AppOpenAdPreloaderPtr,
@@ -103,8 +104,8 @@ namespace GoogleMobileAds.iOS
         {
             var appOpenAdClient = new AppOpenAdClient();
             var appOpenAdClientPtr = (IntPtr)GCHandle.Alloc(appOpenAdClient);
-            var appOpenAd = Externs.GADUAppOpenAdPreloaderGetPreloadedAd(AppOpenAdPreloaderPtr, preloadId,
-                    appOpenAdClientPtr);
+            var appOpenAd = Externs.GADUAppOpenAdPreloaderGetPreloadedAd(AppOpenAdPreloaderPtr,
+                    preloadId, appOpenAdClientPtr);
             if (appOpenAd == IntPtr.Zero) return null;
             appOpenAdClient.CreateAppOpenAdWithReference(appOpenAdClientPtr, appOpenAd);
             return appOpenAdClient;
@@ -112,12 +113,18 @@ namespace GoogleMobileAds.iOS
 
         public int GetNumAdsAvailable(string preloadId)
         {
-            return Externs.GADUAppOpenAdPreloaderGetNumAdsAvailable(AppOpenAdPreloaderPtr, preloadId);
+            return Externs.GADUAppOpenAdPreloaderGetNumAdsAvailable(AppOpenAdPreloaderPtr,
+                                                                    preloadId);
         }
 
         public PreloadConfiguration GetConfiguration(string preloadId)
         {
-            var config = Externs.GADUAppOpenAdPreloaderGetConfiguration(AppOpenAdPreloaderPtr, preloadId);
+            var config = Externs.GADUAppOpenAdPreloaderGetConfiguration(AppOpenAdPreloaderPtr,
+                                                                        preloadId);
+            if (config == IntPtr.Zero)
+            {
+                return null;
+            }
             var preloadConfigClient = new PreloadConfigurationV2Client(config);
             return new PreloadConfiguration
             {

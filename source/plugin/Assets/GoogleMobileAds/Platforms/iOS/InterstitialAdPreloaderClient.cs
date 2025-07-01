@@ -122,6 +122,10 @@ namespace GoogleMobileAds.iOS
         {
             var config = Externs.GADUInterstitialAdPreloaderGetConfiguration(
                     InterstitialAdPreloaderPtr, preloadId);
+            if (config == IntPtr.Zero)
+            {
+                return null;
+            }
             var preloadConfigClient = new PreloadConfigurationV2Client(config);
             return new PreloadConfiguration
             {
