@@ -1,6 +1,22 @@
 Google Mobile Ads Unity Plugin Change Log
 
 **************
+Version 10.3.0
+**************
+
+- Updated the GMA Android SDK dependency version to 24.4.0.
+- Updated the GMA iOS SDK dependency version to 12.6.0.
+- Fixed `RaiseAdEventsOnUnityMainThread ` by ensuring the events are always called back on Main thread even if the SDK is called on background thread.
+
+Built and tested with:
+
+- Google Mobile Ads Android SDK 24.4.0.
+- Google Mobile Ads iOS SDK 12.6.0.
+- Google User Messaging Platform Android SDK 3.2.0
+- Google User Messaging Platform iOS SDK 3.0.0
+- External Dependency Manager for Unity 1.2.186
+
+**************
 Version 10.2.0
 **************
 - Updated the GMA Android SDK dependency version to 24.3.0.
