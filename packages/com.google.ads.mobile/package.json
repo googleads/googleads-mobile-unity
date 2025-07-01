@@ -16,7 +16,14 @@
   "description": "The Google Mobile Ads package allows you to easily monetize your Unity apps for iOS and Android using Google's native iOS and Android Mobile SDKs via a unified C# API in Unity.",
   "unity": "2019.4",
   "dependencies": {
-    "com.google.external-dependency-manager": "1.2.185",
+    "com.google.external-dependency-manager": "1.2.186",
     "com.unity.modules.androidjni": "1.0.0"
-  }
+  },
+  "samples": [
+    {
+      "displayName": "GMA Unity Sample App",
+      "description": "Sample app to test different ad formats offered as part of the GMA Unity plugin",
+      "path": "Samples~/HelloWorld"
+    }
+  ]
 }
