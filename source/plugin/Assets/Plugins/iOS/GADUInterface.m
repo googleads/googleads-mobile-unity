@@ -368,11 +368,20 @@ GADUTypeAppOpenAdRef GADUCreateAppOpenAd(GADUTypeAppOpenAdClientRef *appOpenAdCl
 
 /// Creates a GADUAppOpenAdPreloader and returns its reference.
 GADUTypeAppOpenAdPreloaderRef GADUCreateAppOpenAdPreloader(
-    GADUTypeAppOpenAdPreloaderClientRef *appOpenAdPreloaderClient) {
+    GADUTypeAppOpenAdPreloaderClientRef *appOpenAdPreloaderClient,
+    GADUAdAvailableForPreloadIDCallback adAvailableForPreloadIDCallback,
+    GADUAdFailedToPreloadForPreloadIDCallback adFailedToPreloadForPreloadIDCallback,
+    GADUAdsExhaustedForPreloadIDCallback adsExhaustedForPreloadIDCallback) {
   GADUAppOpenAdPreloader *appOpenAdPreloader = [[GADUAppOpenAdPreloader alloc]
       initWithAppOpenAdPreloaderClientReference:appOpenAdPreloaderClient];
+  if (!appOpenAdPreloader) {
+    return nil;
+  }
   GADUObjectCache *cache = GADUObjectCache.sharedInstance;
   cache[appOpenAdPreloader.gadu_referenceKey] = appOpenAdPreloader;
+    appOpenAdPreloader.adAvailableForPreloadIDCallback = adAvailableForPreloadIDCallback;
+    appOpenAdPreloader.adFailedToPreloadForPreloadIDCallback = adFailedToPreloadForPreloadIDCallback;
+    appOpenAdPreloader.adsExhaustedForPreloadIDCallback = adsExhaustedForPreloadIDCallback;
   return (__bridge GADUTypeAppOpenAdPreloaderRef)appOpenAdPreloader;
 }
 
@@ -631,20 +640,6 @@ GADUTypeNativeTemplateAdRef GADUCreateNativeTemplateAd(
   return (__bridge GADUTypeNativeTemplateAdRef)nativeAd;
 }
 
-/// Sets the app open ad preloader callback methods to be invoked during preload events.
-void GADUSetAppOpenAdPreloaderCallbacks(
-    GADUTypeAppOpenAdPreloaderRef appOpenAdPreloader,
-    GADUAdAvailableForPreloadIDCallback adAvailableForPreloadIDCallback,
-    GADUAdFailedToPreloadForPreloadIDCallback adFailedToPreloadForPreloadIDCallback,
-    GADUAdsExhaustedForPreloadIDCallback adsExhaustedForPreloadIDCallback) {
-  GADUAppOpenAdPreloader *internalAppOpenAdPreloader =
-      (__bridge GADUAppOpenAdPreloader *)appOpenAdPreloader;
-  internalAppOpenAdPreloader.adAvailableForPreloadIDCallback = adAvailableForPreloadIDCallback;
-  internalAppOpenAdPreloader.adFailedToPreloadForPreloadIDCallback =
-      adFailedToPreloadForPreloadIDCallback;
-  internalAppOpenAdPreloader.adsExhaustedForPreloadIDCallback = adsExhaustedForPreloadIDCallback;
-}
-
 /// Sets the rewarded ad preloader callback methods to be invoked during preload events.
 void GADUSetRewardedAdPreloaderCallbacks(
     GADUTypeRewardedAdPreloaderRef rewardedAdPreloader,
@@ -855,11 +850,14 @@ void GADUSetNativeTemplateAdCallbacks(
   nativeTemplateAd.adDidDismissScreenCallback = adDidDismissScreenCallback;
 }
 
-BOOL GADUAppOpenAdPreloaderPreload(GADUTypeAppOpenAdPreloaderClientRef appOpenAdPreloaderClient,
+BOOL GADUAppOpenAdPreloaderPreload(GADUTypeAppOpenAdPreloaderRef appOpenAdPreloader,
                                    const char *preloadId,
                                    GADUTypePreloadConfigurationV2Ref preloadConfiguration) {
   GADUAppOpenAdPreloader *internalAppOpenAdPreloader =
-      (__bridge GADUAppOpenAdPreloader *)appOpenAdPreloaderClient;
+      (__bridge GADUAppOpenAdPreloader *)appOpenAdPreloader;
+  if (!internalAppOpenAdPreloader) {
+    return NO;
+  }
   GADUPreloadConfigurationV2 *internalPreloadConfiguration =
       (__bridge GADUPreloadConfigurationV2 *_Nonnull)(preloadConfiguration);
   return [internalAppOpenAdPreloader
@@ -868,18 +866,24 @@ BOOL GADUAppOpenAdPreloaderPreload(GADUTypeAppOpenAdPreloaderClientRef appOpenAd
 }
 
 BOOL GADUAppOpenAdPreloaderIsAdAvailable(
-    GADUTypeAppOpenAdPreloaderClientRef appOpenAdPreloaderClient, const char *preloadId) {
+    GADUTypeAppOpenAdPreloaderRef appOpenAdPreloader, const char *preloadId) {
   GADUAppOpenAdPreloader *internalAppOpenAdPreloader =
-      (__bridge GADUAppOpenAdPreloader *)appOpenAdPreloaderClient;
+      (__bridge GADUAppOpenAdPreloader *)appOpenAdPreloader;
+  if (!internalAppOpenAdPreloader) {
+    return NO;
+  }
   return
       [internalAppOpenAdPreloader isAdAvailableWithPreloadID:GADUStringFromUTF8String(preloadId)];
 }
 
 GADUTypeAppOpenAdRef GADUAppOpenAdPreloaderGetPreloadedAd(
-    GADUTypeAppOpenAdPreloaderClientRef appOpenAdPreloaderClient, const char *preloadId,
+    GADUTypeAppOpenAdPreloaderRef appOpenAdPreloader, const char *preloadId,
     GADUTypeAppOpenAdClientRef *appOpenAdClient) {
   GADUAppOpenAdPreloader *internalAppOpenAdPreloader =
-      (__bridge GADUAppOpenAdPreloader *)appOpenAdPreloaderClient;
+      (__bridge GADUAppOpenAdPreloader *)appOpenAdPreloader;
+  if (!internalAppOpenAdPreloader) {
+    return nil;
+  }
   GADAppOpenAd *appOpenAd =
       [internalAppOpenAdPreloader adWithPreloadID:GADUStringFromUTF8String(preloadId)
                                   appOpenAdClient:appOpenAdClient];
@@ -892,40 +896,55 @@ GADUTypeAppOpenAdRef GADUAppOpenAdPreloaderGetPreloadedAd(
 }
 
 unsigned long GADUAppOpenAdPreloaderGetNumAdsAvailable(
-    GADUTypeAppOpenAdPreloaderClientRef appOpenAdPreloaderClient, const char *preloadId) {
+    GADUTypeAppOpenAdPreloaderRef appOpenAdPreloader, const char *preloadId) {
   GADUAppOpenAdPreloader *internalAppOpenAdPreloader =
-      (__bridge GADUAppOpenAdPreloader *)appOpenAdPreloaderClient;
+      (__bridge GADUAppOpenAdPreloader *)appOpenAdPreloader;
+  if (!internalAppOpenAdPreloader) {
+    return 0;
+  }
   return [internalAppOpenAdPreloader
       numberOfAdsAvailableWithPreloadID:GADUStringFromUTF8String(preloadId)];
 }
 
 GADUTypePreloadConfigurationV2Ref GADUAppOpenAdPreloaderGetConfiguration(
-    GADUTypeAppOpenAdPreloaderClientRef appOpenAdPreloaderClient, const char *preloadId) {
+    GADUTypeAppOpenAdPreloaderRef appOpenAdPreloader, const char *preloadId) {
   GADUAppOpenAdPreloader *internalAppOpenAdPreloader =
-      (__bridge GADUAppOpenAdPreloader *)appOpenAdPreloaderClient;
+      (__bridge GADUAppOpenAdPreloader *)appOpenAdPreloader;
+  if (!internalAppOpenAdPreloader) {
+    return nil;
+  }
   return (__bridge GADUTypePreloadConfigurationV2Ref)(
       [internalAppOpenAdPreloader configurationWithPreloadID:GADUStringFromUTF8String(preloadId)]);
 }
 
 GADUTypeRef GADUAppOpenAdPreloaderGetConfigurations(
-    GADUTypeAppOpenAdPreloaderClientRef appOpenAdPreloaderClient) {
+    GADUTypeAppOpenAdPreloaderRef appOpenAdPreloader) {
   GADUAppOpenAdPreloader *internalAppOpenAdPreloader =
-      (__bridge GADUAppOpenAdPreloader *)appOpenAdPreloaderClient;
+      (__bridge GADUAppOpenAdPreloader *)appOpenAdPreloader;
+  if (!internalAppOpenAdPreloader) {
+    return nil;
+  }
   return (__bridge GADUTypeRef)([internalAppOpenAdPreloader configurations]);
 }
 
-void GADUAppOpenAdPreloaderDestroy(GADUTypeAppOpenAdPreloaderClientRef appOpenAdPreloaderClient,
+void GADUAppOpenAdPreloaderDestroy(GADUTypeAppOpenAdPreloaderRef appOpenAdPreloader,
                                    const char *preloadId) {
   GADUAppOpenAdPreloader *internalAppOpenAdPreloader =
-      (__bridge GADUAppOpenAdPreloader *)appOpenAdPreloaderClient;
+      (__bridge GADUAppOpenAdPreloader *)appOpenAdPreloader;
+  if (!internalAppOpenAdPreloader) {
+    return;
+  }
   [internalAppOpenAdPreloader
       stopPreloadingAndRemoveAdsForPreloadID:GADUStringFromUTF8String(preloadId)];
 }
 
 void GADUAppOpenAdPreloaderDestroyAll(
-    GADUTypeAppOpenAdPreloaderClientRef appOpenAdPreloaderClient) {
+    GADUTypeAppOpenAdPreloaderRef appOpenAdPreloader) {
   GADUAppOpenAdPreloader *internalAppOpenAdPreloader =
-      (__bridge GADUAppOpenAdPreloader *)appOpenAdPreloaderClient;
+      (__bridge GADUAppOpenAdPreloader *)appOpenAdPreloader;
+  if (!internalAppOpenAdPreloader) {
+    return;
+  }
   [internalAppOpenAdPreloader stopPreloadingAndRemoveAllAds];
 }
 
