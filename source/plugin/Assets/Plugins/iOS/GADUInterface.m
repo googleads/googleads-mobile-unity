@@ -396,11 +396,21 @@ GADUTypeRewardedAdPreloaderRef GADUCreateRewardedAdPreloader(
 }
 
 GADUTypeInterstitialAdPreloaderRef GADUCreateInterstitialAdPreloader(
-    GADUTypeInterstitialAdPreloaderClientRef *interstitialAdPreloaderClient) {
+    GADUTypeInterstitialAdPreloaderClientRef *interstitialAdPreloaderClient,
+    GADUAdAvailableForPreloadIDCallback adAvailableForPreloadIDCallback,
+    GADUAdFailedToPreloadForPreloadIDCallback adFailedToPreloadForPreloadIDCallback,
+    GADUAdsExhaustedForPreloadIDCallback adsExhaustedForPreloadIDCallback) {
   GADUInterstitialAdPreloader *interstitialAdPreloader = [[GADUInterstitialAdPreloader alloc]
       initWithInterstitialAdPreloaderClientReference:interstitialAdPreloaderClient];
+  if (!interstitialAdPreloader) {
+    return nil;
+  }
   GADUObjectCache *cache = GADUObjectCache.sharedInstance;
   cache[interstitialAdPreloader.gadu_referenceKey] = interstitialAdPreloader;
+  interstitialAdPreloader.adAvailableForPreloadIDCallback = adAvailableForPreloadIDCallback;
+  interstitialAdPreloader.adFailedToPreloadForPreloadIDCallback =
+      adFailedToPreloadForPreloadIDCallback;
+  interstitialAdPreloader.adsExhaustedForPreloadIDCallback = adsExhaustedForPreloadIDCallback;
   return (__bridge GADUTypeInterstitialAdPreloaderRef)interstitialAdPreloader;
 }
 
@@ -652,20 +662,6 @@ void GADUSetRewardedAdPreloaderCallbacks(
   internalRewardedAdPreloader.adFailedToPreloadForPreloadIDCallback =
       adFailedToPreloadForPreloadIDCallback;
   internalRewardedAdPreloader.adsExhaustedForPreloadIDCallback = adsExhaustedForPreloadIDCallback;
-}
-
-/// Sets the interstitial ad preloader callback methods to be invoked during preload events.
-void GADUSetInterstitialAdPreloaderCallbacks(
-    GADUTypeInterstitialAdPreloaderRef interstitialAdPreloader,
-    GADUAdAvailableForPreloadIDCallback adAvailableForPreloadIDCallback,
-    GADUAdFailedToPreloadForPreloadIDCallback adFailedToPreloadForPreloadIDCallback,
-    GADUAdsExhaustedForPreloadIDCallback adsExhaustedForPreloadIDCallback) {
-  GADUInterstitialAdPreloader *internalInterstitialAdPreloader =
-      (__bridge GADUInterstitialAdPreloader *)interstitialAdPreloader;
-  internalInterstitialAdPreloader.adAvailableForPreloadIDCallback = adAvailableForPreloadIDCallback;
-  internalInterstitialAdPreloader.adFailedToPreloadForPreloadIDCallback =
-      adFailedToPreloadForPreloadIDCallback;
-  internalInterstitialAdPreloader.adsExhaustedForPreloadIDCallback = adsExhaustedForPreloadIDCallback;
 }
 
 /// Sets the app open ad callback methods to be invoked during app open ad events.
@@ -1023,10 +1019,13 @@ void GADURewardedAdPreloaderDestroyAll(
 }
 
 BOOL GADUInterstitialAdPreloaderPreload(
-    GADUTypeInterstitialAdPreloaderClientRef interstitialAdPreloaderClient, const char *preloadId,
+    GADUTypeInterstitialAdPreloaderClientRef interstitialAdPreloader, const char *preloadId,
     GADUTypePreloadConfigurationV2Ref preloadConfiguration) {
   GADUInterstitialAdPreloader *internalInterstitialAdPreloader =
-      (__bridge GADUInterstitialAdPreloader *)interstitialAdPreloaderClient;
+      (__bridge GADUInterstitialAdPreloader *)interstitialAdPreloader;
+  if (!internalInterstitialAdPreloader) {
+    return NO;
+  }
   GADUPreloadConfigurationV2 *internalPreloadConfiguration =
       (__bridge GADUPreloadConfigurationV2 *_Nonnull)(preloadConfiguration);
   return [internalInterstitialAdPreloader
@@ -1035,18 +1034,24 @@ BOOL GADUInterstitialAdPreloaderPreload(
 }
 
 BOOL GADUInterstitialAdPreloaderIsAdAvailable(
-    GADUTypeInterstitialAdPreloaderClientRef interstitialAdPreloaderClient, const char *preloadId) {
+    GADUTypeInterstitialAdPreloaderClientRef interstitialAdPreloader, const char *preloadId) {
   GADUInterstitialAdPreloader *internalInterstitialAdPreloader =
-      (__bridge GADUInterstitialAdPreloader *)interstitialAdPreloaderClient;
+      (__bridge GADUInterstitialAdPreloader *)interstitialAdPreloader;
+  if (!internalInterstitialAdPreloader) {
+    return NO;
+  }
   return [internalInterstitialAdPreloader
       isAdAvailableWithPreloadID:GADUStringFromUTF8String(preloadId)];
 }
 
 GADUTypeInterstitialRef GADUInterstitialAdPreloaderGetPreloadedAd(
-    GADUTypeInterstitialAdPreloaderClientRef interstitialAdPreloaderClient, const char *preloadId,
+    GADUTypeInterstitialAdPreloaderClientRef interstitialAdPreloader, const char *preloadId,
     GADUTypeInterstitialClientRef *interstitialAdClient) {
   GADUInterstitialAdPreloader *internalInterstitialAdPreloader =
-      (__bridge GADUInterstitialAdPreloader *)interstitialAdPreloaderClient;
+      (__bridge GADUInterstitialAdPreloader *)interstitialAdPreloader;
+  if (!internalInterstitialAdPreloader) {
+    return nil;
+  }
   GADInterstitialAd *interstitialAd =
       [internalInterstitialAdPreloader adWithPreloadID:GADUStringFromUTF8String(preloadId)
                                   interstitialAdClient:interstitialAdClient];
@@ -1059,40 +1064,55 @@ GADUTypeInterstitialRef GADUInterstitialAdPreloaderGetPreloadedAd(
 }
 
 unsigned long GADUInterstitialAdPreloaderGetNumAdsAvailable(
-    GADUTypeInterstitialAdPreloaderClientRef interstitialAdPreloaderClient, const char *preloadId) {
+    GADUTypeInterstitialAdPreloaderClientRef interstitialAdPreloader, const char *preloadId) {
   GADUInterstitialAdPreloader *internalInterstitialAdPreloader =
-      (__bridge GADUInterstitialAdPreloader *)interstitialAdPreloaderClient;
+      (__bridge GADUInterstitialAdPreloader *)interstitialAdPreloader;
+  if (!internalInterstitialAdPreloader) {
+    return 0;
+  }
   return [internalInterstitialAdPreloader
       numberOfAdsAvailableWithPreloadID:GADUStringFromUTF8String(preloadId)];
 }
 
 GADUTypePreloadConfigurationV2Ref GADUInterstitialAdPreloaderGetConfiguration(
-    GADUTypeInterstitialAdPreloaderClientRef interstitialAdPreloaderClient, const char *preloadId) {
+    GADUTypeInterstitialAdPreloaderClientRef interstitialAdPreloader, const char *preloadId) {
   GADUInterstitialAdPreloader *internalInterstitialAdPreloader =
-      (__bridge GADUInterstitialAdPreloader *)interstitialAdPreloaderClient;
+      (__bridge GADUInterstitialAdPreloader *)interstitialAdPreloader;
+  if (!internalInterstitialAdPreloader) {
+    return nil;
+  }
   return (__bridge GADUTypePreloadConfigurationV2Ref)([internalInterstitialAdPreloader
       configurationWithPreloadID:GADUStringFromUTF8String(preloadId)]);
 }
 
 GADUTypeRef GADUInterstitialAdPreloaderGetConfigurations(
-    GADUTypeInterstitialAdPreloaderClientRef interstitialAdPreloaderClient) {
+    GADUTypeInterstitialAdPreloaderClientRef interstitialAdPreloader) {
   GADUInterstitialAdPreloader *internalInterstitialAdPreloader =
-      (__bridge GADUInterstitialAdPreloader *)interstitialAdPreloaderClient;
+      (__bridge GADUInterstitialAdPreloader *)interstitialAdPreloader;
+  if (!internalInterstitialAdPreloader) {
+    return nil;
+  }
   return (__bridge GADUTypeRef)([internalInterstitialAdPreloader configurations]);
 }
 
 void GADUInterstitialAdPreloaderDestroy(
-    GADUTypeInterstitialAdPreloaderClientRef interstitialAdPreloaderClient, const char *preloadId) {
+    GADUTypeInterstitialAdPreloaderClientRef interstitialAdPreloader, const char *preloadId) {
   GADUInterstitialAdPreloader *internalInterstitialAdPreloader =
-      (__bridge GADUInterstitialAdPreloader *)interstitialAdPreloaderClient;
+      (__bridge GADUInterstitialAdPreloader *)interstitialAdPreloader;
+  if (!internalInterstitialAdPreloader) {
+    return;
+  }
   [internalInterstitialAdPreloader
       stopPreloadingAndRemoveAdsForPreloadID:GADUStringFromUTF8String(preloadId)];
 }
 
 void GADUInterstitialAdPreloaderDestroyAll(
-    GADUTypeInterstitialAdPreloaderClientRef interstitialAdPreloaderClient) {
+    GADUTypeInterstitialAdPreloaderClientRef interstitialAdPreloader) {
   GADUInterstitialAdPreloader *internalInterstitialAdPreloader =
-      (__bridge GADUInterstitialAdPreloader *)interstitialAdPreloaderClient;
+      (__bridge GADUInterstitialAdPreloader *)interstitialAdPreloader;
+  if (!internalInterstitialAdPreloader) {
+    return;
+  }
   [internalInterstitialAdPreloader stopPreloadingAndRemoveAllAds];
 }
 
