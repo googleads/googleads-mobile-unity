@@ -389,50 +389,45 @@ namespace GoogleMobileAds.iOS
 
         [DllImport("__Internal")]
         internal static extern IntPtr GADUCreateInterstitialAdPreloader(
-            IntPtr interstitialAdPreloaderClient);
-
-        [DllImport("__Internal")]
-        internal static extern bool GADUInterstitialAdPreloaderPreload(
             IntPtr interstitialAdPreloaderClient,
-            string preloadId, IntPtr preloadConfiguration);
-
-        [DllImport("__Internal")]
-        internal static extern bool GADUInterstitialAdPreloaderIsAdAvailable(
-            IntPtr interstitialAdPreloaderClient, string preloadId);
-
-        [DllImport("__Internal")]
-        internal static extern IntPtr GADUInterstitialAdPreloaderGetPreloadedAd(
-            IntPtr interstitialAdPreloaderClient, string preloadId, IntPtr appOpenAdClientPtr);
-
-        [DllImport("__Internal")]
-        internal static extern int GADUInterstitialAdPreloaderGetNumAdsAvailable(
-            IntPtr interstitialAdPreloaderClient, string preloadId);
-
-        [DllImport("__Internal")]
-        internal static extern IntPtr GADUInterstitialAdPreloaderGetConfiguration(
-            IntPtr interstitialAdPreloaderClient, string preloadId);
-
-        [DllImport("__Internal")]
-        internal static extern IntPtr GADUInterstitialAdPreloaderGetConfigurations(
-            IntPtr interstitialAdPreloaderClient);
-
-        [DllImport("__Internal")]
-        internal static extern bool GADUInterstitialAdPreloaderDestroy(
-            IntPtr interstitialAdPreloaderClient,
-            string preloadId);
-
-        [DllImport("__Internal")]
-        internal static extern void GADUInterstitialAdPreloaderDestroyAll(
-            IntPtr interstitialAdPreloaderClient);
-
-        [DllImport("__Internal")]
-        internal static extern void GADUSetInterstitialAdPreloaderCallbacks(
-            IntPtr interstitialAdPreloader,
             InterstitialAdPreloaderClient.GADUAdAvailableForPreloadIdCallback adPreloadedCallback,
             InterstitialAdPreloaderClient.GADUAdFailedToPreloadForPreloadIdCallback
                 adFailedToPreloadCallback,
             InterstitialAdPreloaderClient.GADUAdsExhaustedForPreloadIdCallback
                 adsExhaustedCallback);
+
+        [DllImport("__Internal")]
+        internal static extern bool GADUInterstitialAdPreloaderPreload(
+            IntPtr interstitialAdPreloader, string preloadId, IntPtr preloadConfiguration);
+
+        [DllImport("__Internal")]
+        internal static extern bool GADUInterstitialAdPreloaderIsAdAvailable(
+            IntPtr interstitialAdPreloader, string preloadId);
+
+        [DllImport("__Internal")]
+        internal static extern IntPtr GADUInterstitialAdPreloaderGetPreloadedAd(
+            IntPtr interstitialAdPreloader, string preloadId, IntPtr appOpenAdClientPtr);
+
+        [DllImport("__Internal")]
+        internal static extern int GADUInterstitialAdPreloaderGetNumAdsAvailable(
+            IntPtr interstitialAdPreloader, string preloadId);
+
+        [DllImport("__Internal")]
+        internal static extern IntPtr GADUInterstitialAdPreloaderGetConfiguration(
+            IntPtr interstitialAdPreloader, string preloadId);
+
+        [DllImport("__Internal")]
+        internal static extern IntPtr GADUInterstitialAdPreloaderGetConfigurations(
+            IntPtr interstitialAdPreloader);
+
+        [DllImport("__Internal")]
+        internal static extern bool GADUInterstitialAdPreloaderDestroy(
+            IntPtr interstitialAdPreloader,
+            string preloadId);
+
+        [DllImport("__Internal")]
+        internal static extern void GADUInterstitialAdPreloaderDestroyAll(
+            IntPtr interstitialAdPreloader);
 
         #endregion
 

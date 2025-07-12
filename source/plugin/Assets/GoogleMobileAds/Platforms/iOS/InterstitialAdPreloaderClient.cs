@@ -61,13 +61,11 @@ namespace GoogleMobileAds.iOS
         public InterstitialAdPreloaderClient()
         {
             _interstitialAdPreloaderClientPtr = (IntPtr)GCHandle.Alloc(this);
-            InterstitialAdPreloaderPtr = Externs.GADUCreateInterstitialAdPreloader(_interstitialAdPreloaderClientPtr);
-
-            Externs.GADUSetInterstitialAdPreloaderCallbacks(
-                InterstitialAdPreloaderPtr,
-                AdAvailableForPreloadIdCallback,
-                AdFailedToPreloadForPreloadIdCallback,
-                AdsExhaustedForPreloadIdCallback);
+            InterstitialAdPreloaderPtr = Externs.GADUCreateInterstitialAdPreloader(
+                    _interstitialAdPreloaderClientPtr,
+                    AdAvailableForPreloadIdCallback,
+                    AdFailedToPreloadForPreloadIdCallback,
+                    AdsExhaustedForPreloadIdCallback);
         }
 
         public bool Preload(string preloadId, PreloadConfiguration preloadConfiguration,
@@ -90,18 +88,30 @@ namespace GoogleMobileAds.iOS
             {
                 preloadConfigurationClient.Request = preloadConfiguration.Request;
             }
+            if (InterstitialAdPreloaderPtr == IntPtr.Zero)
+            {
+                return false;
+            }
             return Externs.GADUInterstitialAdPreloaderPreload(InterstitialAdPreloaderPtr, preloadId,
                                                               preloadConfigRef);
         }
 
         public bool IsAdAvailable(string preloadId)
         {
+            if (InterstitialAdPreloaderPtr == IntPtr.Zero)
+            {
+                return false;
+            }
             return Externs.GADUInterstitialAdPreloaderIsAdAvailable(InterstitialAdPreloaderPtr,
                                                                     preloadId);
         }
 
         public IInterstitialClient DequeueAd(string preloadId)
         {
+            if (InterstitialAdPreloaderPtr == IntPtr.Zero)
+            {
+                return null;
+            }
             var interstitialAdClient = new InterstitialClient();
             var interstitialAdClientPtr = (IntPtr)GCHandle.Alloc(interstitialAdClient);
             var interstitialAd = Externs.GADUInterstitialAdPreloaderGetPreloadedAd(
@@ -114,12 +124,20 @@ namespace GoogleMobileAds.iOS
 
         public int GetNumAdsAvailable(string preloadId)
         {
+            if (InterstitialAdPreloaderPtr == IntPtr.Zero)
+            {
+                return 0;
+            }
             return Externs.GADUInterstitialAdPreloaderGetNumAdsAvailable(InterstitialAdPreloaderPtr,
                                                                          preloadId);
         }
 
         public PreloadConfiguration GetConfiguration(string preloadId)
         {
+            if (InterstitialAdPreloaderPtr == IntPtr.Zero)
+            {
+                return null;
+            }
             var config = Externs.GADUInterstitialAdPreloaderGetConfiguration(
                     InterstitialAdPreloaderPtr, preloadId);
             if (config == IntPtr.Zero)
@@ -140,6 +158,10 @@ namespace GoogleMobileAds.iOS
         public Dictionary<string, PreloadConfiguration> GetConfigurations()
         {
             var configurations = new Dictionary<string, PreloadConfiguration>();
+            if (InterstitialAdPreloaderPtr == IntPtr.Zero)
+            {
+                return configurations;
+            }
             var configurationsPtr = Externs.GADUInterstitialAdPreloaderGetConfigurations(InterstitialAdPreloaderPtr);
             // Marshall the Dictionary from configurationsPtr
             var marshalledConfigurations =
@@ -161,11 +183,19 @@ namespace GoogleMobileAds.iOS
 
         public void Destroy(string preloadId)
         {
+            if (InterstitialAdPreloaderPtr == IntPtr.Zero)
+            {
+                return;
+            }
             Externs.GADUInterstitialAdPreloaderDestroy(InterstitialAdPreloaderPtr, preloadId);
         }
 
         public void DestroyAll()
         {
+            if (InterstitialAdPreloaderPtr == IntPtr.Zero)
+            {
+                return;
+            }
             Externs.GADUInterstitialAdPreloaderDestroyAll(InterstitialAdPreloaderPtr);
         }
 
