@@ -154,32 +154,37 @@ namespace GoogleMobileAds.Samples
         {
             if (_privacyButton != null)
             {
-                _privacyButton.interactable =
-                    ConsentInformation.PrivacyOptionsRequirementStatus ==
-                        PrivacyOptionsRequirementStatus.Required;
+                 MobileAdsEventExecutor.ExecuteInUpdate(() =>
+                {
+                    _privacyButton.interactable =
+                        ConsentInformation.PrivacyOptionsRequirementStatus ==
+                            PrivacyOptionsRequirementStatus.Required;
+
+                });
             }
         }
 
         void UpdateErrorPopup(string message)
         {
-            if (string.IsNullOrEmpty(message))
+            MobileAdsEventExecutor.ExecuteInUpdate(() =>
             {
-                return;
-            }
-
-            if (_errorText != null)
-            {
-                _errorText.text = message;
-            }
-
-            if (_errorPopup != null)
-            {
-                _errorPopup.SetActive(true);
-            }
-            if (_privacyButton != null)
-            {
-                _privacyButton.interactable = true;
-            }
+                if (string.IsNullOrEmpty(message))
+                {
+                    return;
+                }
+                if (_errorText != null)
+                {
+                    _errorText.text = message;
+                }
+                if (_errorPopup != null)
+                {
+                    _errorPopup.SetActive(true);
+                }
+                if (_privacyButton != null)
+                {
+                    _privacyButton.interactable = true;
+                }
+            });
         }
     }
 }
