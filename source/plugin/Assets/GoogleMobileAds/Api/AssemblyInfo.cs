@@ -20,3 +20,4 @@ using System.Runtime.CompilerServices;
 [assembly:InternalsVisibleTo("UnitTests")]
 [assembly:InternalsVisibleTo("GoogleMobileAds.Ump.Api")]
 [assembly:InternalsVisibleTo("GoogleMobileAds.Ump")] // For GoogleMobileAds.Ump.dll
+[assembly:InternalsVisibleTo("GoogleMobileAdsNative.Api")]
