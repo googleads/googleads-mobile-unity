@@ -35,6 +35,17 @@ public static class PListProcessor
 
     private const string SKADNETWORKS_FILE_NAME = "GoogleMobileAdsSKAdNetworkItems.xml";
 
+    private const string KEY_DEFAULT_ALLOW_AD_STORAGE = "GOOGLE_ANALYTICS_DEFAULT_ALLOW_AD_STORAGE";
+
+    private const string KEY_DEFAULT_ALLOW_AD_PERSONALIZATION =
+            "GOOGLE_ANALYTICS_DEFAULT_ALLOW_AD_PERSONALIZATION_SIGNALS";
+
+    private const string KEY_DEFAULT_ALLOW_AD_USER_DATA =
+            "GOOGLE_ANALYTICS_DEFAULT_ALLOW_AD_USER_DATA";
+
+    private const string KEY_DEFAULT_ALLOW_ANALYTICS_STORAGE =
+            "GOOGLE_ANALYTICS_DEFAULT_ALLOW_ANALYTICS_STORAGE";
+
     [PostProcessBuild]
     public static void OnPostProcessBuild(BuildTarget buildTarget, string path)
     {
@@ -71,6 +82,14 @@ public static class PListProcessor
         {
             plist.root.SetString("GADUUnityVersion", unityVersion);
         }
+
+        // Set default consent values
+        plist.root.SetBoolean(KEY_DEFAULT_ALLOW_AD_STORAGE, instance.DefaultAllowAdStorage);
+        plist.root.SetBoolean(KEY_DEFAULT_ALLOW_AD_PERSONALIZATION,
+                instance.DefaultAllowAdPersonalization);
+        plist.root.SetBoolean(KEY_DEFAULT_ALLOW_AD_USER_DATA, instance.DefaultAllowAdUserData);
+        plist.root.SetBoolean(KEY_DEFAULT_ALLOW_ANALYTICS_STORAGE,
+                instance.DefaultAllowAnalyticsStorage);
 
         File.WriteAllText(plistPath, plist.WriteToString());
     }
