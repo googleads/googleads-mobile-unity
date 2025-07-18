@@ -88,7 +88,7 @@ namespace GoogleMobileAds.Api
         /// Returns the next pre-loaded rewarded ad and null if no ad is available.
         /// </summary>
         /// <param name="adUnitId">The ad Unit ID of the ad to poll.</param>
-        [Obsolete("Use RewardedAdPreloader.GetPreloadedAd instead.")]
+        [Obsolete("Use RewardedAdPreloader.DequeueAd instead.")]
         public static RewardedAd PollAd(string adUnitId)
         {
             if (string.IsNullOrEmpty(adUnitId))

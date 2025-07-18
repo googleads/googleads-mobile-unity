@@ -89,7 +89,7 @@ namespace GoogleMobileAds.Api
         /// Returns the next pre-loaded app open ad and null if no ad is available.
         /// </summary>
         /// <param name="adUnitId">The ad Unit ID of the ad to poll.</param>
-        [Obsolete("Use AppOpenAdPreloader.GetPreloadedAd instead.")]
+        [Obsolete("Use AppOpenAdPreloader.DequeueAd instead.")]
         public static AppOpenAd PollAd(string adUnitId)
         {
             if (string.IsNullOrEmpty(adUnitId))

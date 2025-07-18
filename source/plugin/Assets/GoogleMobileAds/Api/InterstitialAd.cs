@@ -90,7 +90,7 @@ namespace GoogleMobileAds.Api
         /// Returns the next pre-loaded interstitial ad and null if no ad is available.
         /// </summary>
         /// <param name="adUnitId">The ad Unit ID of the ad to poll.</param>
-        [Obsolete("Use InterstitialAdPreloader.GetPreloadedAd instead.")]
+        [Obsolete("Use InterstitialAdPreloader.DequeueAd instead.")]
         public static InterstitialAd PollAd(string adUnitId)
         {
             if (string.IsNullOrEmpty(adUnitId))
