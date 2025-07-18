@@ -33,10 +33,10 @@ namespace GoogleMobileAds.Editor
     }
 
     [SerializeField]
-    private string adMobAndroidAppId = string.Empty;
+    private string adMobAndroidAppId = "ca-app-pub-3940256099942544~3347511713";
 
     [SerializeField]
-    private string adMobIOSAppId = string.Empty;
+    private string adMobIOSAppId = "ca-app-pub-3940256099942544~1458002511";
 
     [SerializeField]
     private bool enableKotlinXCoroutinesPackagingOption = true;
