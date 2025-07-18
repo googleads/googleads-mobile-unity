@@ -62,13 +62,10 @@ namespace GoogleMobileAds.iOS
         {
             _rewardedAdPreloaderClientPtr = (IntPtr)GCHandle.Alloc(this);
             RewardedAdPreloaderPtr = Externs.GADUCreateRewardedAdPreloader(
-                    _rewardedAdPreloaderClientPtr);
-
-            Externs.GADUSetRewardedAdPreloaderCallbacks(
-                RewardedAdPreloaderPtr,
-                AdAvailableForPreloadIdCallback,
-                AdFailedToPreloadForPreloadIdCallback,
-                AdsExhaustedForPreloadIdCallback);
+                    _rewardedAdPreloaderClientPtr,
+                    AdAvailableForPreloadIdCallback,
+                    AdFailedToPreloadForPreloadIdCallback,
+                    AdsExhaustedForPreloadIdCallback);
         }
 
         public bool Preload(string preloadId, PreloadConfiguration preloadConfiguration,
@@ -91,17 +88,29 @@ namespace GoogleMobileAds.iOS
             {
                 preloadConfigurationClient.Request = preloadConfiguration.Request;
             }
+            if (RewardedAdPreloaderPtr == IntPtr.Zero)
+            {
+                return false;
+            }
             return Externs.GADURewardedAdPreloaderPreload(RewardedAdPreloaderPtr, preloadId,
                                                           preloadConfigRef);
         }
 
         public bool IsAdAvailable(string preloadId)
         {
+            if (RewardedAdPreloaderPtr == IntPtr.Zero)
+            {
+                return false;
+            }
             return Externs.GADURewardedAdPreloaderIsAdAvailable(RewardedAdPreloaderPtr, preloadId);
         }
 
         public IRewardedAdClient DequeueAd(string preloadId)
         {
+            if (RewardedAdPreloaderPtr == IntPtr.Zero)
+            {
+                return null;
+            }
             var rewardedAdClient = new RewardedAdClient();
             var rewardedAdClientPtr = (IntPtr)GCHandle.Alloc(rewardedAdClient);
             var rewardedAd = Externs.GADURewardedAdPreloaderGetPreloadedAd(RewardedAdPreloaderPtr,
@@ -114,12 +123,20 @@ namespace GoogleMobileAds.iOS
 
         public int GetNumAdsAvailable(string preloadId)
         {
+            if (RewardedAdPreloaderPtr == IntPtr.Zero)
+            {
+                return 0;
+            }
             return Externs.GADURewardedAdPreloaderGetNumAdsAvailable(RewardedAdPreloaderPtr,
                                                                      preloadId);
         }
 
         public PreloadConfiguration GetConfiguration(string preloadId)
         {
+            if (RewardedAdPreloaderPtr == IntPtr.Zero)
+            {
+                return null;
+            }
             var config = Externs.GADURewardedAdPreloaderGetConfiguration(RewardedAdPreloaderPtr,
                                                                          preloadId);
             if (config == IntPtr.Zero)
@@ -140,6 +157,10 @@ namespace GoogleMobileAds.iOS
         public Dictionary<string, PreloadConfiguration> GetConfigurations()
         {
             var configurations = new Dictionary<string, PreloadConfiguration>();
+            if (RewardedAdPreloaderPtr == IntPtr.Zero)
+            {
+                return configurations;
+            }
             var configurationsPtr = Externs.GADURewardedAdPreloaderGetConfigurations(
                     RewardedAdPreloaderPtr);
             // Marshall the Dictionary from configurationsPtr
@@ -162,11 +183,19 @@ namespace GoogleMobileAds.iOS
 
         public void Destroy(string preloadId)
         {
+            if (RewardedAdPreloaderPtr == IntPtr.Zero)
+            {
+                return;
+            }
             Externs.GADURewardedAdPreloaderDestroy(RewardedAdPreloaderPtr, preloadId);
         }
 
         public void DestroyAll()
         {
+            if (RewardedAdPreloaderPtr == IntPtr.Zero)
+            {
+                return;
+            }
             Externs.GADURewardedAdPreloaderDestroyAll(RewardedAdPreloaderPtr);
         }
 
