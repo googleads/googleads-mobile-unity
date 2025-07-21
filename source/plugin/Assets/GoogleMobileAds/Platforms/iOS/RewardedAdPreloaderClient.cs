@@ -113,7 +113,7 @@ namespace GoogleMobileAds.iOS
             }
             var rewardedAdClient = new RewardedAdClient();
             var rewardedAdClientPtr = (IntPtr)GCHandle.Alloc(rewardedAdClient);
-            var rewardedAd = Externs.GADURewardedAdPreloaderGetPreloadedAd(RewardedAdPreloaderPtr,
+            var rewardedAd = Externs.GADURewardedAdPreloaderDequeueAd(RewardedAdPreloaderPtr,
                                                                            preloadId,
                                                                            rewardedAdClientPtr);
             if (rewardedAd == IntPtr.Zero) return null;

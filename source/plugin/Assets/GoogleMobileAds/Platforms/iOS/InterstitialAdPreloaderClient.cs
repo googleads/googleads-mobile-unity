@@ -114,7 +114,7 @@ namespace GoogleMobileAds.iOS
             }
             var interstitialAdClient = new InterstitialClient();
             var interstitialAdClientPtr = (IntPtr)GCHandle.Alloc(interstitialAdClient);
-            var interstitialAd = Externs.GADUInterstitialAdPreloaderGetPreloadedAd(
+            var interstitialAd = Externs.GADUInterstitialAdPreloaderDequeueAd(
                     InterstitialAdPreloaderPtr, preloadId, interstitialAdClientPtr);
             if (interstitialAd == IntPtr.Zero) return null;
             interstitialAdClient.CreateInterstitialAdWithReference(interstitialAdClientPtr,

@@ -32,7 +32,7 @@ namespace GoogleMobileAds.Api
         /// </summary>
         /// <param name="preloadId">
         /// A string that uniquely identifies the <c>PreloadConfiguration</c>. Use this
-        /// identifier when calling <c>GetPreloadedAd</c> to retrieve a preloaded ad for this
+        /// identifier when calling <c>DequeueAd</c> to retrieve a preloaded ad for this
         /// configuration.
         /// </param>
         /// <param name="preloadConfiguration">

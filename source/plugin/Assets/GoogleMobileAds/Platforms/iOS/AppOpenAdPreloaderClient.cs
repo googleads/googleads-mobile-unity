@@ -113,7 +113,7 @@ namespace GoogleMobileAds.iOS
             }
             var appOpenAdClient = new AppOpenAdClient();
             var appOpenAdClientPtr = (IntPtr)GCHandle.Alloc(appOpenAdClient);
-            var appOpenAd = Externs.GADUAppOpenAdPreloaderGetPreloadedAd(AppOpenAdPreloaderPtr,
+            var appOpenAd = Externs.GADUAppOpenAdPreloaderDequeueAd(AppOpenAdPreloaderPtr,
                     preloadId, appOpenAdClientPtr);
             if (appOpenAd == IntPtr.Zero) return null;
             appOpenAdClient.CreateAppOpenAdWithReference(appOpenAdClientPtr, appOpenAd);

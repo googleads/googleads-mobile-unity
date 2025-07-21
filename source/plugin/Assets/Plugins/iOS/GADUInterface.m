@@ -868,7 +868,7 @@ BOOL GADUAppOpenAdPreloaderIsAdAvailable(
       [internalAppOpenAdPreloader isAdAvailableWithPreloadID:GADUStringFromUTF8String(preloadId)];
 }
 
-GADUTypeAppOpenAdRef GADUAppOpenAdPreloaderGetPreloadedAd(
+GADUTypeAppOpenAdRef GADUAppOpenAdPreloaderDequeueAd(
     GADUTypeAppOpenAdPreloaderRef appOpenAdPreloader, const char *preloadId,
     GADUTypeAppOpenAdClientRef *appOpenAdClient) {
   GADUAppOpenAdPreloader *internalAppOpenAdPreloader =
@@ -966,7 +966,7 @@ BOOL GADURewardedAdPreloaderIsAdAvailable(
       [internalRewardedAdPreloader isAdAvailableWithPreloadID:GADUStringFromUTF8String(preloadId)];
 }
 
-GADUTypeRewardedAdRef GADURewardedAdPreloaderGetPreloadedAd(
+GADUTypeRewardedAdRef GADURewardedAdPreloaderDequeueAd(
     GADUTypeRewardedAdPreloaderClientRef rewardedAdPreloader, const char *preloadId,
     GADUTypeRewardedAdClientRef *rewardedAdClient) {
   GADURewardedAdPreloader *internalRewardedAdPreloader =
@@ -1064,7 +1064,7 @@ BOOL GADUInterstitialAdPreloaderIsAdAvailable(
       isAdAvailableWithPreloadID:GADUStringFromUTF8String(preloadId)];
 }
 
-GADUTypeInterstitialRef GADUInterstitialAdPreloaderGetPreloadedAd(
+GADUTypeInterstitialRef GADUInterstitialAdPreloaderDequeueAd(
     GADUTypeInterstitialAdPreloaderClientRef interstitialAdPreloader, const char *preloadId,
     GADUTypeInterstitialClientRef *interstitialAdClient) {
   GADUInterstitialAdPreloader *internalInterstitialAdPreloader =
