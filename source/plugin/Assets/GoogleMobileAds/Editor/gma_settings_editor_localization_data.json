@@ -12,6 +12,14 @@
       "en": "Android settings",
       "fr": "Paramètres Android"
     },
+    "ENABLE_ANDROID_LIFECYCLE_DEPENDENCY_OPTION_HELPBOX": {
+      "en": "Adds the android lifecycle dependency which is required for AppOpen ads. This dependency may conflict with other dependencies you may have in your project.",
+      "fr": "Ajoute la dépendance du cycle de vie Android, nécessaire pour les annonces en ouverture d'application. Cette dépendance peut entrer en conflit avec d'autres dépendances présentes dans votre projet."
+    },
+    "ENABLE_ANDROID_LIFECYCLE_DEPENDENCY_OPTION_SETTING": {
+      "en": "Adds Android lifecycle dependency for AppOpen ads.",
+      "fr": "Ajoute la dépendance du cycle de vie Android pour les annonces en ouverture d'application."
+    },
     "KEY_ENABLE_KOTLINX_COROUTINES_PACKAGING_OPTION_HELPBOX": {
       "en": "Adds an instruction to fix the build.gradle build error with message '2 files found with path 'META-INF/kotlinx_coroutines_core.version''. For more details, see https://developers.google.com/admob/unity/gradle",
       "fr": "Ajoute une instruction pour corriger l'erreur de compilation de build.gradle '2 files found with path 'META-INF/kotlinx_coroutines_core.version''. Pour plus d'informations, visitez https://developers.google.com/admob/unity/gradle?hl=fr"
