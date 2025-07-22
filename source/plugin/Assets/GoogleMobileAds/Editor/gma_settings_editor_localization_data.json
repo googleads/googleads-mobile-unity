@@ -59,6 +59,42 @@
     "KEY_USER_TRACKING_USAGE_DESCRIPTION_SETTING": {
       "en": "User Tracking Usage Description",
       "fr": "Description de l'utilisation du suivi des utilisateurs"
+    },
+    "KEY_DEFAULT_CONSENT_STATE_LABEL": {
+      "en": "Default consent state",
+      "fr": "État de consentement par défaut"
+    },
+    "KEY_DEFAULT_CONSENT_AD_STORAGE_SETTING": {
+      "en": "Default allow ad storage",
+      "fr": "Défaut autoriser le stockage d'annonces"
+    },
+    "KEY_DEFAULT_CONSENT_AD_STORAGE_HELPBOX": {
+      "en": "Enables storage, such as cookies (web) or device identifiers (apps), related to advertising.",
+      "fr": "Permet le stockage lié à la publicité, comme les cookies (web) ou les identifiants d'appareil (applications)."
+    },
+     "KEY_DEFAULT_CONSENT_AD_PERSONALIZATION_SETTING": {
+      "en": "Default allow ad personalization",
+      "fr": "Défaut autoriser la personnalisation des annonces"
+    },
+    "KEY_DEFAULT_CONSENT_AD_PERSONALIZATION_HELPBOX": {
+      "en": "Sets consent for personalized advertising.",
+      "fr": "Définit le consentement pour la publicité personnalisée."
+    },
+    "KEY_DEFAULT_CONSENT_AD_USER_DATA_SETTING": {
+      "en": "Default allow ad user data",
+      "fr": "Défaut autoriser les données publicitaires de l'utilisateur"
+    },
+    "KEY_DEFAULT_CONSENT_AD_USER_DATA_HELPBOX": {
+      "en": "Sets consent for sending user data to Google for online advertising purposes.",
+      "fr": "Définit le consentement pour l'envoi de données utilisateur à Google à des fins de publicité en ligne."
+    },
+    "KEY_DEFAULT_CONSENT_ANALYTICS_STORAGE_SETTING": {
+      "en": "Default allow analytics storage",
+      "fr": "Défaut autoriser le stockage des données analytiques"
+    },
+    "KEY_DEFAULT_CONSENT_ANALYTICS_STORAGE_HELPBOX": {
+      "en": "Enables storage, such as cookies (web) or device identifiers (apps), related to analytics, for example, visit duration.",
+      "fr": "Permet le stockage lié aux données analytiques, comme la durée des visites, les cookies (Web) ou les identifiants d'appareil (applications)."
     }
   }
 }
