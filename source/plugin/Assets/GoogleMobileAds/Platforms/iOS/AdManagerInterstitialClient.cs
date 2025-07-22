@@ -126,14 +126,8 @@ namespace GoogleMobileAds.iOS
             return Externs.GAMUInterstitialIsPreloadedAdAvailable(adUnitId);
         }
 
-        // Returns the next pre-loaded interstitial ad and null if no ad is available.
-        public IInterstitialClient PollAd(string adUnitId)
-        {
-            return PollAdManagerAd(adUnitId);
-        }
-
         // Returns the next pre-loaded ad manager interstitial ad and null if no ad is available.
-        public IAdManagerInterstitialClient PollAdManagerAd(string adUnitId)
+        public IAdManagerInterstitialClient PollAd(string adUnitId)
         {
             Externs.GAMUInterstitialPreloadedAdWithAdUnitID(this.InterstitialPtr, adUnitId);
             return this;
