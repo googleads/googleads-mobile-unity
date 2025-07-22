@@ -39,6 +39,9 @@ namespace GoogleMobileAds.Editor
     private string adMobIOSAppId = string.Empty;
 
     [SerializeField]
+    private bool enableAndroidLifecycleDependency;
+
+    [SerializeField]
     private bool enableKotlinXCoroutinesPackagingOption = true;
 
     [SerializeField]
@@ -58,6 +61,13 @@ namespace GoogleMobileAds.Editor
       get { return adMobAndroidAppId; }
 
       set { adMobAndroidAppId = value; }
+    }
+
+    public bool EnableAndroidLifecycleDependency
+    {
+      get { return enableAndroidLifecycleDependency; }
+
+      set { enableAndroidLifecycleDependency = value; }
     }
 
     public bool EnableKotlinXCoroutinesPackagingOption

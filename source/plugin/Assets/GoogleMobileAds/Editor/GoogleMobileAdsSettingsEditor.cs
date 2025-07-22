@@ -10,6 +10,7 @@ namespace GoogleMobileAds.Editor
   {
     SerializedProperty _appIdAndroid;
     SerializedProperty _appIdiOS;
+    SerializedProperty _enableAndroidLifecycleDependencyOption;
     SerializedProperty _enableKotlinXCoroutinesPackagingOption;
     SerializedProperty _disableOptimizeInitialization;
     SerializedProperty _disableOptimizeAdLoading;
@@ -33,6 +34,8 @@ namespace GoogleMobileAds.Editor
     {
       _appIdAndroid = serializedObject.FindProperty("adMobAndroidAppId");
       _appIdiOS = serializedObject.FindProperty("adMobIOSAppId");
+      _enableAndroidLifecycleDependencyOption =
+          serializedObject.FindProperty("enableAndroidLifecycleDependency");
       _enableKotlinXCoroutinesPackagingOption =
           serializedObject.FindProperty("enableKotlinXCoroutinesPackagingOption");
       _disableOptimizeInitialization = serializedObject.FindProperty("disableOptimizeInitialization");
@@ -86,6 +89,18 @@ namespace GoogleMobileAds.Editor
       EditorGUI.indentLevel++;
 
       EditorGUI.BeginChangeCheck();
+
+      EditorGUILayout.PropertyField(
+          _enableAndroidLifecycleDependencyOption,
+          new GUIContent(
+              localization.ForKey("ENABLE_ANDROID_LIFECYCLE_DEPENDENCY_OPTION_SETTING")));
+
+      if (settings.EnableAndroidLifecycleDependency)
+      {
+        EditorGUILayout.HelpBox(
+            localization.ForKey("ENABLE_ANDROID_LIFECYCLE_DEPENDENCY_OPTION_HELPBOX"),
+            MessageType.Info);
+      }
 
       EditorGUILayout.PropertyField(
           _enableKotlinXCoroutinesPackagingOption,
