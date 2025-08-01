@@ -162,6 +162,7 @@ namespace GoogleMobileAds.Samples
         /// </remarks>
         public void OpenPrivacyOptions()
         {
+            // [START open_privacy_options]
             _consentController.ShowPrivacyOptionsForm((string error) =>
             {
                 if (error != null)
@@ -174,6 +175,7 @@ namespace GoogleMobileAds.Samples
                     Debug.Log("Privacy form opened successfully.");
                 }
             });
+            // [END open_privacy_options]
         }
     }
 }
