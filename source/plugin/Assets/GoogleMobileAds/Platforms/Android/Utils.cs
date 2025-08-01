@@ -54,7 +54,7 @@ namespace GoogleMobileAds.Android
         public const string PublisherPrivacyPersonalizationStateEnumName =
             "com.google.android.gms.ads.RequestConfiguration$PublisherPrivacyPersonalizationState";
 
-        public const string MobileAdsClassName = "com.google.android.gms.ads.MobileAds";
+        public const string UnityMobileAdsClassName = "com.google.unity.ads.UnityMobileAds";
 
         public const string PreloadConfigurationClassName = "com.google.android.gms.ads.preload.PreloadConfiguration";
 
