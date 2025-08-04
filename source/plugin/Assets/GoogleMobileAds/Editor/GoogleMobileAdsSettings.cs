@@ -42,6 +42,9 @@ namespace GoogleMobileAds.Editor
     private bool enableKotlinXCoroutinesPackagingOption = true;
 
     [SerializeField]
+    private bool enableGradleBuildPostProcessor = true;
+
+    [SerializeField]
     private bool disableOptimizeInitialization;
 
     [SerializeField]
@@ -58,6 +61,13 @@ namespace GoogleMobileAds.Editor
       get { return adMobAndroidAppId; }
 
       set { adMobAndroidAppId = value; }
+    }
+
+    public bool EnableGradleBuildPostProcessor
+    {
+      get { return enableGradleBuildPostProcessor; }
+
+      set { enableGradleBuildPostProcessor = value; }
     }
 
     public bool EnableKotlinXCoroutinesPackagingOption
