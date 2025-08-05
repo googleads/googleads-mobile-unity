@@ -77,5 +77,11 @@ namespace GoogleMobileAds.Common
         /// </summary>
         /// <param name="onAdInspectorClosed">Called when ad inspector UI closes.</param>
         void OpenAdInspector(Action<AdInspectorErrorClientEventArgs> adInspectorClosedAction);
+
+        void HelloWorld();
+
+#if GMA_PREVIEW_FEATURES
+        void HelloWorldPreview();
+#endif
     }
 }

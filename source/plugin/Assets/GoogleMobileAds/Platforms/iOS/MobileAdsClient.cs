@@ -145,6 +145,18 @@ namespace GoogleMobileAds.iOS
             Externs.GADUPresentAdInspector(this.mobileAdsClientPtr, AdInspectorClosedCallback);
         }
 
+        public void HelloWorld()
+        {
+            Externs.HelloWorld();
+        }
+
+#if GMA_PREVIEW_FEATURES
+        public void HelloWorldPreview()
+        {
+            Externs.HelloWorldPreview();
+        }
+#endif
+
         [MonoPInvokeCallback(typeof(GADUAdAvailableCallback))]
         private static void AdAvailableCallback(IntPtr mobileAdsClient, IntPtr config)
         {

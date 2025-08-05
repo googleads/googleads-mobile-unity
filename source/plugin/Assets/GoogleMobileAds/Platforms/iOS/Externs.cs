@@ -966,6 +966,15 @@ namespace GoogleMobileAds.iOS
         internal static extern string GADUAdapterResponseInfoDescription(IntPtr error);
 
         #endregion
+
+        [DllImport("__Internal")]
+        internal static extern void HelloWorld();
+
+#if GMA_PREVIEW_FEATURES
+        [DllImport("__Internal")]
+        internal static extern void HelloWorldPreview();
+#endif
+
     }
 }
 #endif
