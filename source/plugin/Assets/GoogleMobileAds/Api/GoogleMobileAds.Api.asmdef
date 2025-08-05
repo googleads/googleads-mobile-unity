@@ -4,7 +4,10 @@
         "GoogleMobileAds.Core",
         "GoogleMobileAds.Common",
         "GoogleMobileAds.Android",
-        "GoogleMobileAds.iOS"
+        "GoogleMobileAds.iOS",
+        "GoogleMobileAds.Placement",
+        "GoogleMobileAds.Prerelease.Api",
+        "GoogleMobileAds.Prerelease.Common"
     ],
     "includePlatforms": [],
     "excludePlatforms": []
