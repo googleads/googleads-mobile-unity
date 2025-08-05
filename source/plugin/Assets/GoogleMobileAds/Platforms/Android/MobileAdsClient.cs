@@ -146,6 +146,18 @@ namespace GoogleMobileAds.Android
             return new Version(versionString);
         }
 
+        public void HelloWorld()
+        {
+            Debug.Log("Hello from MobileAdsClient!");
+        }
+
+#if GMA_PREVIEW_FEATURES
+        public void HelloWorldPreview()
+        {
+            Debug.Log("Hello from MobileAdsClient Preview!");
+        }
+#endif
+
         #region Callbacks from OnInitializationCompleteListener.
 
         public void onInitializationComplete(AndroidJavaObject initStatus)
