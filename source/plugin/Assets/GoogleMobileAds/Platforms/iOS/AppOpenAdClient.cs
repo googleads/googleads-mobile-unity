@@ -25,6 +25,27 @@ namespace GoogleMobileAds.iOS
 {
     public class AppOpenAdClient : IAppOpenAdClient, IDisposable
     {
+        public long PlacementId {
+            get
+            {
+                if (this.AppOpenAdPtr == IntPtr.Zero)
+                {
+                    return 0;
+                }
+                return Externs.GADUGetAppOpenAdPlacementID(this.AppOpenAdPtr);
+            }
+
+            set
+            {
+                if (this.AppOpenAdPtr == IntPtr.Zero)
+                {
+                    Debug.LogError("Call CreateAppOpenAd before setting PlacementId.");
+                    return;
+                }
+                Externs.GADUSetAppOpenAdPlacementID(this.AppOpenAdPtr, value);
+            }
+        }
+
         private IntPtr appOpenAdPtr;
         private IntPtr appOpenAdClientPtr;
 
