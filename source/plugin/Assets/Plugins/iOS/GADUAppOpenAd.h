@@ -49,6 +49,9 @@
 // The app open ad response info.
 @property(nonatomic, readonly, copy, nullable) GADResponseInfo *responseInfo;
 
+// A long integer provided by the AdMob UI for the configured placement.
+@property(atomic, readwrite) int64_t placementID;
+
 /// Returns whether an app open ad is preloaded for the given ad unit ID.
 + (BOOL)isPreloadedAdAvailable:(nonnull NSString *)adUnitID;
 

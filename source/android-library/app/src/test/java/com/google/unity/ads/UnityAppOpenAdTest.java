@@ -156,6 +156,29 @@ public final class UnityAppOpenAdTest {
     verify(mockAdManager, never()).setImmersiveMode(anyBoolean());
   }
 
+  @Test
+  public void getPlacementId_returnsPlacementIdFromTheAd() throws Exception {
+    loadAppOpenAd();
+    long placementId = 12345L;
+    when(mockAppOpenAd.getPlacementId()).thenReturn(placementId);
+
+    long result = unityAppOpenAd.getPlacementId();
+
+    assertThat(result).isEqualTo(placementId);
+  }
+
+  @Test
+  public void setPlacementId_setsPlacementIdOnTheAd() throws Exception {
+    loadAppOpenAd();
+    long placementId = 12345L;
+
+    unityAppOpenAd.setPlacementId(placementId);
+    long result = unityAppOpenAd.getPlacementId();
+
+    verify(mockAppOpenAd).setPlacementId(placementId);
+    assertThat(result).isEqualTo(placementId);
+  }
+
   private void loadAppOpenAd() throws Exception {
     doAnswer(
             invocation -> {

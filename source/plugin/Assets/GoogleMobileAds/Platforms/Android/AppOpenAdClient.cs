@@ -51,6 +51,17 @@ namespace GoogleMobileAds.Android
 
         public event Action OnAdClicked;
 
+        public long PlacementId {
+            get
+            {
+                return androidAppOpenAd.Call<long>("getPlacementId");
+            }
+            set
+            {
+                androidAppOpenAd.Call("setPlacementId", value);
+            }
+        }
+
         public void CreateAppOpenAd()
         {
             // Do nothing.
