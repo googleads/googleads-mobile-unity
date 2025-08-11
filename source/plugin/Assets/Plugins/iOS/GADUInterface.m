@@ -1159,6 +1159,16 @@ const char *GADUGetAppOpenAdUnitID(GADUTypeAppOpenAdRef appOpenAd) {
   return cStringCopy(internalAppOpenAd.appOpenAd.adUnitID.UTF8String);
 }
 
+int64_t GADUGetAppOpenAdPlacementID(GADUTypeAppOpenAdRef appOpenAd) {
+  GADUAppOpenAd *internalAppOpenAd = (__bridge GADUAppOpenAd *)appOpenAd;
+  return internalAppOpenAd.appOpenAd.placementID;
+}
+
+void GADUSetAppOpenAdPlacementID(GADUTypeAppOpenAdRef appOpenAd, int64_t placementID) {
+  GADUAppOpenAd *internalAppOpenAd = (__bridge GADUAppOpenAd *)appOpenAd;
+  [internalAppOpenAd setPlacementID:placementID];
+}
+
 /// Sets the GADBannerView's hidden property to YES.
 void GADUHideBannerView(GADUTypeBannerRef banner) {
   GADUBanner *internalBanner = (__bridge GADUBanner *)banner;
@@ -1225,6 +1235,18 @@ void GADUShowInterstitial(GADUTypeInterstitialRef interstitial) {
 const char *GADUGetInterstitialAdUnitID(GADUTypeInterstitialRef interstitial) {
   GADUInterstitial *internalInterstitial = (__bridge GADUInterstitial *)interstitial;
   return cStringCopy(internalInterstitial.interstitialAd.adUnitID.UTF8String);
+}
+
+// Get the Interstitial ad placement ID.
+int64_t GADUGetInterstitialAdPlacementID(GADUTypeInterstitialRef interstitial) {
+  GADUInterstitial *internalInterstitial = (__bridge GADUInterstitial *)interstitial;
+  return internalInterstitial.interstitialAd.placementID;
+}
+
+// Set the Interstitial ad placement ID.
+void GADUSetInterstitialAdPlacementID(GADUTypeInterstitialRef interstitial, int64_t placementID) {
+  GADUInterstitial *internalInterstitial = (__bridge GADUInterstitial *)interstitial;
+  [internalInterstitial setPlacementID:placementID];
 }
 
 /// Shows the GAMInterstitial.

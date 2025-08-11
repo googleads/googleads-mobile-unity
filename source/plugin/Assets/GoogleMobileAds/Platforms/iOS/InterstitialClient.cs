@@ -69,6 +69,19 @@ namespace GoogleMobileAds.iOS
 
         public event Action OnAdClicked;
 
+        // A long integer provided by the AdMob UI for the configured placement.
+        public long PlacementId
+        {
+            get
+            {
+                return Externs.GADUGetInterstitialAdPlacementID(InterstitialPtr);
+            }
+            set
+            {
+                Externs.GADUSetInterstitialAdPlacementID(InterstitialPtr, value);
+            }
+        }
+
         // This property should be used when setting the interstitialPtr.
         private IntPtr InterstitialPtr
         {

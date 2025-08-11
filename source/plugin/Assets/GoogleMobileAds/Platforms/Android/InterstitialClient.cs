@@ -49,6 +49,19 @@ namespace GoogleMobileAds.Android
 
         public event Action OnAdClicked;
 
+        // A long integer provided by the AdMob UI for the configured placement.
+        public long PlacementId
+        {
+            get
+            {
+                return this.androidInterstitialAd.Call<long>("getPlacementId");
+            }
+            set
+            {
+                this.androidInterstitialAd.Call("setPlacementId", value);
+            }
+        }
+
         #region IGoogleMobileAdsInterstitialClient implementation
 
         // Creates an interstitial ad.
