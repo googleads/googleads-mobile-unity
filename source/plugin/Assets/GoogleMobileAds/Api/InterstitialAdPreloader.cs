@@ -19,6 +19,9 @@ using GoogleMobileAds.Common;
 
 namespace GoogleMobileAds.Api
 {
+    /// <summary>
+    /// The preloader for interstitial ads.
+    /// </summary>
     public static class InterstitialAdPreloader
     {
         private static readonly IInterstitialAdPreloaderClient _client =

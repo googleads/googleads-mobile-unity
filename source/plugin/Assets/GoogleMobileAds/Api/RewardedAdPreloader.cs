@@ -18,6 +18,9 @@ using GoogleMobileAds.Common;
 
 namespace GoogleMobileAds.Api
 {
+    /// <summary>
+    /// The preloader for rewarded ads.
+    /// </summary>
     public static class RewardedAdPreloader
     {
         private static readonly IRewardedAdPreloaderClient _client =
