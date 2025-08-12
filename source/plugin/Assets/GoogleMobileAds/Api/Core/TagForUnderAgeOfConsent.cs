@@ -1,3 +1,4 @@
+// <copyright file="TagForUnderAgeOfConsent.cs" company="Google LLC">
 // Copyright (C) 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -11,6 +12,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+// </copyright>
 
 namespace GoogleMobileAds.Api
 {
@@ -20,11 +22,19 @@ namespace GoogleMobileAds.Api
     /// </summary>
     public enum TagForUnderAgeOfConsent
     {
-        /// Unspecified
+        /// <summary>
+        /// Does not specify whenther the user is under the age of consent or not.
+        /// </summary>
         Unspecified = -1,
-        /// False
+
+        /// <summary>
+        /// Indicates that the user is not under the age of consent.
+        /// </summary>
         False = 0,
-        /// True
+
+        /// <summary>
+        /// Indicates that the user is under the age of consent.
+        /// </summary>
         True = 1,
     }
 }

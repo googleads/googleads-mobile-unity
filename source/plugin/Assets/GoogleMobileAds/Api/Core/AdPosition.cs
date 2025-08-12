@@ -1,3 +1,4 @@
+// <copyright file="AdPosition.cs" company="Google LLC">
 // Copyright (C) 2015 Google, Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -11,6 +12,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+// </copyright>
 
 namespace GoogleMobileAds.Api
 {
@@ -19,19 +21,40 @@ namespace GoogleMobileAds.Api
     /// </summary>
     public enum AdPosition
     {
-        /// Top
+
+        /// <summary>
+        /// Top of the screen, center aligned.
+        /// </summary>
         Top = 0,
-        /// Bottom
+
+        /// <summary>
+        /// Bottom of the screen, center aligned.
+        /// </summary>
         Bottom = 1,
-        /// Top left
+
+        /// <summary>
+        /// Top left corner of the screen.
+        /// </summary>
         TopLeft = 2,
-        /// Top right
+
+        /// <summary>
+        /// Top right corner of the screen.
+        /// </summary>
         TopRight = 3,
-        /// Bottom left
+
+        /// <summary>
+        /// Bottom left corner of the screen.
+        /// </summary>
         BottomLeft = 4,
-        /// Bottom right
+
+        /// <summary>
+        /// Bottom right corner of the screen.
+        /// </summary>
         BottomRight = 5,
-        /// Center
+
+        /// <summary>
+        /// Centered on the screen both horizontally and vertically.
+        /// </summary>
         Center = 6
     }
 }

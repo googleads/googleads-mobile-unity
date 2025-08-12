@@ -1,3 +1,4 @@
+// <copyright file="MaxAdContentRating.cs" company="Google LLC">
 // Copyright (C) 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -11,6 +12,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+// </copyright>
 
 namespace GoogleMobileAds.Api
 {
@@ -19,30 +21,55 @@ namespace GoogleMobileAds.Api
     /// </summary>
     public class MaxAdContentRating
     {
-        /// <summary>
-        /// Content suitable for general audiences, including families.
-        /// </summary>
-        public static MaxAdContentRating G { get { return new MaxAdContentRating("G"); } }
+        private MaxAdContentRating(string value)
+        {
+            Value = value;
+        }
 
         /// <summary>
-        /// Content suitable for most audiences with parental guidance.
+        /// Gets G rating - content suitable for general audiences, including families.
         /// </summary>
-        public static MaxAdContentRating PG { get { return new MaxAdContentRating("PG"); } }
+        public static MaxAdContentRating G
+        {
+            get { return new MaxAdContentRating("G"); }
+        }
 
         /// <summary>
-        /// Content suitable for teen and older audiences.
+        /// Gets PG rating - content suitable for most audiences with parental guidance.
         /// </summary>
-        public static MaxAdContentRating T { get { return new MaxAdContentRating("T"); } }
+        public static MaxAdContentRating PG
+        {
+            get { return new MaxAdContentRating("PG"); }
+        }
 
         /// <summary>
-        /// Content suitable only for mature audiences.
+        /// Gets T rating - content suitable for teen and older audiences.
         /// </summary>
-        public static MaxAdContentRating MA { get { return new MaxAdContentRating("MA"); } }
+        public static MaxAdContentRating T
+        {
+            get { return new MaxAdContentRating("T"); }
+        }
 
         /// <summary>
-        /// Content suitability is unspecified.
+        /// Gets MA rating - content suitable only for mature audiences.
         /// </summary>
-        public static MaxAdContentRating Unspecified { get { return new MaxAdContentRating(""); } }
+        public static MaxAdContentRating MA
+        {
+            get { return new MaxAdContentRating("MA"); }
+        }
+
+        /// <summary>
+        /// Gets Unspecified rating - content suitability is unspecified.
+        /// </summary>
+        public static MaxAdContentRating Unspecified
+        {
+            get { return new MaxAdContentRating(string.Empty); }
+        }
+
+        /// <summary>
+        /// Gets or sets the string representation of <see cref="MaxAdContentRating"/>.
+        /// </summary>
+        public string Value { get; set; }
 
         /// <summary>
         /// Parses <see cref="MaxAdContentRating"/> from a string constant.
@@ -52,16 +79,6 @@ namespace GoogleMobileAds.Api
         public static MaxAdContentRating ToMaxAdContentRating(string value)
         {
             return new MaxAdContentRating(value);
-        }
-
-        /// <summary>
-        /// String representation of <see cref="MaxAdContentRating"/>.
-        /// </summary>
-        public string Value { get; set; }
-
-        private MaxAdContentRating(string value)
-        {
-            Value = value;
         }
     }
 }
