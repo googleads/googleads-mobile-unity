@@ -1,3 +1,4 @@
+// <copyright file="Gender.cs" company="Google LLC">
 // Copyright (C) 2015 Google, Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -11,6 +12,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+// </copyright>
 
 namespace GoogleMobileAds.Api
 {
@@ -19,11 +21,19 @@ namespace GoogleMobileAds.Api
     /// </summary>
     public enum Gender
     {
-        /// Unknown
+        /// <summary>
+        /// The gender is unknown.
+        /// </summary>
         Unknown = 0,
-        /// Male
+
+        /// <summary>
+        /// The gender is male.
+        /// </summary>
         Male = 1,
-        /// Female
+
+        /// <summary>
+        /// The gender is female.
+        /// </summary>
         Female = 2
     }
 }

@@ -1,4 +1,4 @@
-
+// <copyright file="AdManagerAdRequest.cs" company="Google LLC">
 // Copyright (C) 2023 Google, Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,12 +12,13 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-
-using System;
-using System.Collections.Generic;
+// </copyright>
 
 namespace GoogleMobileAds.Api.AdManager
 {
+    using System;
+    using System.Collections.Generic;
+
     /// <summary>
     /// An <see cref="AdManagerAdRequest"/> contains targeting information used to fetch an ad from
     /// Google Ad Manager.
@@ -40,11 +41,14 @@ namespace GoogleMobileAds.Api.AdManager
         /// <summary>
         /// Create a new AdManagerAdRequest object.
         /// </summary>
-        public AdManagerAdRequest() : base() {}
+        public AdManagerAdRequest() : base()
+        {
+        }
 
         /// <summary>
         /// Create a copy of AdManagerAdRequest object.
         /// </summary>
+        /// <param name="request">The AdManagerAdRequest to copy.</param>
         public AdManagerAdRequest(AdManagerAdRequest request) : base(request)
         {
             PublisherProvidedId = request.PublisherProvidedId;

@@ -1,3 +1,4 @@
+// <copyright file="AdapterStatus.cs" company="Google LLC">
 // Copyright (C) 2018 Google, Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -11,10 +12,10 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+// </copyright>
 
 namespace GoogleMobileAds.Api
 {
-
     /// <summary>
     /// The initialization state of the mediation adapter.
     /// </summary>
@@ -25,6 +26,7 @@ namespace GoogleMobileAds.Api
         /// Adapters in this state are more likely than usual to no-fill.
         /// </summary>
         NotReady = 0,
+
         /// <summary>
         /// The mediation adapter is ready to service ad requests.
         /// </summary>
@@ -36,13 +38,20 @@ namespace GoogleMobileAds.Api
     /// </summary>
     public class AdapterStatus
     {
+        internal AdapterStatus(AdapterState state, string description, int latency)
+        {
+            this.InitializationState = state;
+            this.Description = description;
+            this.Latency = latency;
+        }
+
         /// <summary>
         /// Gets the adapter's initialization state.
         /// </summary>
         public AdapterState InitializationState { get; private set; }
 
         /// <summary>
-        /// Detailed description of the status.
+        /// Gets the detailed description of the status.
         /// </summary>
         /// <remarks>
         /// This method should only be used for informational purposes, such as logging.
@@ -51,16 +60,9 @@ namespace GoogleMobileAds.Api
         public string Description { get; private set; }
 
         /// <summary>
-        /// The adapter's initialization latency in milliseconds. <c>0</c> if initialization
+        /// Gets the adapter's initialization latency in milliseconds. <c>0</c> if initialization
         /// has not yet ended.
         /// </summary>
         public int Latency { get; private set; }
-
-        internal AdapterStatus(AdapterState state, string description, int latency)
-        {
-            this.InitializationState = state;
-            this.Description = description;
-            this.Latency = latency;
-        }
     }
 }

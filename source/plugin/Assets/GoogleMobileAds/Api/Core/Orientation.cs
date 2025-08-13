@@ -1,5 +1,5 @@
-// <copyright file="MediaAspectRatio.cs" company="Google LLC">
-// Copyright (C) 2024 Google LLC
+// <copyright file="Orientation.cs" company="Google LLC">
+// Copyright (C) 2015 Google, Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,33 +17,23 @@
 namespace GoogleMobileAds.Api
 {
     /// <summary>
-    /// Media aspect ratio.
+    /// Defines the different orientations that a layout or device can have.
     /// </summary>
-    public enum MediaAspectRatio
+    public enum Orientation
     {
         /// <summary>
-        /// Unknown media aspect ratio.
+        /// Current orientation.
         /// </summary>
-        Unknown = 0,
+        Current = 0,
 
         /// <summary>
-        /// Any media aspect ratio.
+        /// Oriented landscape.
         /// </summary>
-        Any = 1,
+        Landscape = 1,
 
         /// <summary>
-        /// Landscape media aspect ratio.
+        /// Oriented portrait.
         /// </summary>
-        Landscape = 2,
-
-        /// <summary>
-        /// Portrait media aspect ratio.
-        /// </summary>
-        Portrait = 3,
-
-        /// <summary>
-        /// Square media aspect ratio. This is not a strict 1:1 aspect ratio.
-        /// </summary>
-        Square = 4,
+        Portrait = 2
     }
 }

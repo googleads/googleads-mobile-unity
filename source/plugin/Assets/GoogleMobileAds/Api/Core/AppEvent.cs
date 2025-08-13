@@ -1,4 +1,4 @@
-
+// <copyright file="AppEvent.cs" company="Google LLC">
 // Copyright (C) 2023 Google, Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,8 +12,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-
-using System;
+// </copyright>
 
 namespace GoogleMobileAds.Api.AdManager
 {
@@ -23,12 +22,12 @@ namespace GoogleMobileAds.Api.AdManager
     public class AppEvent
     {
         /// <summary>
-        // Name of the app event.
+        /// Gets or sets the name of the app event.
         /// </summary>
         public string Name { get; set; }
 
         /// <summary>
-        // Data passed from the app event.
+        /// Gets or sets the data passed from the app event.
         /// </summary>
         public string Data { get; set; }
     }

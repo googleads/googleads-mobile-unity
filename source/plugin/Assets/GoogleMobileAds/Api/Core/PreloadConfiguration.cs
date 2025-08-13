@@ -1,3 +1,4 @@
+// <copyright file="PreloadConfiguration.cs" company="Google LLC">
 // Copyright (C) 2024 Google, Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -11,11 +12,12 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-
-using System;
+// </copyright>
 
 namespace GoogleMobileAds.Api
 {
+    using System;
+
     /// <summary>
     /// Configuration for preloading ads.
     /// </summary>
@@ -43,8 +45,17 @@ namespace GoogleMobileAds.Api
         /// </summary>
         public uint BufferSize;
 
-        public PreloadConfiguration() { }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PreloadConfiguration"/> class.
+        /// </summary>
+        public PreloadConfiguration()
+        {
+        }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PreloadConfiguration"/> class.
+        /// </summary>
+        /// <param name="configuration">The configuration to copy.</param>
         public PreloadConfiguration(PreloadConfiguration configuration)
         {
             AdUnitId = configuration.AdUnitId;

@@ -1,3 +1,4 @@
+// <copyright file="TagForChildDirectedTreatment.cs" company="Google LLC">
 // Copyright (C) 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -11,6 +12,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+// </copyright>
 
 namespace GoogleMobileAds.Api
 {
@@ -35,11 +37,19 @@ namespace GoogleMobileAds.Api
     /// </summary>
     public enum TagForChildDirectedTreatment
     {
-        /// Unspecified
+        /// <summary>
+        /// Indicates that the child-directed status is unspecified.
+        /// </summary>
         Unspecified = -1,
-        /// False
+
+        /// <summary>
+        /// Indicates that the app should not be treated as child-directed.
+        /// </summary>
         False = 0,
-        /// True
+
+        /// <summary>
+        /// Indicates that the app should be treated as child-directed.
+        /// </summary>
         True = 1,
     }
 }
