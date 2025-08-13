@@ -13,12 +13,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-
 using System;
 using System.Collections.Generic;
-using UnityEngine;
 
-using GoogleMobileAds.Api;
 using GoogleMobileAds.Common;
 
 namespace GoogleMobileAds.iOS
@@ -36,7 +33,10 @@ namespace GoogleMobileAds.iOS
         {
             get
             {
-                return Externs.GADUAdapterResponseInfoAdNetworkClassName(_adapterResponseInfoPtr);
+                return _adapterResponseInfoPtr == IntPtr.Zero
+                        ? string.Empty
+                        : Externs.GADUAdapterResponseInfoAdNetworkClassName(
+                            _adapterResponseInfoPtr);
             }
         }
 
@@ -44,7 +44,9 @@ namespace GoogleMobileAds.iOS
         {
             get
             {
-                return Externs.GADUAdapterResponseInfoAdSourceID(_adapterResponseInfoPtr);
+                return _adapterResponseInfoPtr == IntPtr.Zero
+                        ? string.Empty
+                        : Externs.GADUAdapterResponseInfoAdSourceID(_adapterResponseInfoPtr);
             }
         }
 
@@ -52,7 +54,9 @@ namespace GoogleMobileAds.iOS
         {
             get
             {
-                return Externs.GADUAdapterResponseInfoAdSourceName(_adapterResponseInfoPtr);
+                return _adapterResponseInfoPtr == IntPtr.Zero
+                        ? string.Empty
+                        : Externs.GADUAdapterResponseInfoAdSourceName(_adapterResponseInfoPtr);
             }
         }
 
@@ -60,7 +64,10 @@ namespace GoogleMobileAds.iOS
         {
             get
             {
-                return Externs.GADUAdapterResponseInfoAdSourceInstanceID(_adapterResponseInfoPtr);
+                return _adapterResponseInfoPtr == IntPtr.Zero
+                        ? string.Empty
+                        : Externs.GADUAdapterResponseInfoAdSourceInstanceID(
+                            _adapterResponseInfoPtr);
             }
         }
 
@@ -68,7 +75,10 @@ namespace GoogleMobileAds.iOS
         {
             get
             {
-                return Externs.GADUAdapterResponseInfoAdSourceInstanceName(_adapterResponseInfoPtr);
+                return _adapterResponseInfoPtr == IntPtr.Zero
+                        ? string.Empty
+                        : Externs.GADUAdapterResponseInfoAdSourceInstanceName(
+                            _adapterResponseInfoPtr);
             }
         }
 
@@ -76,7 +86,9 @@ namespace GoogleMobileAds.iOS
         {
             get
             {
-                return Externs.GADUAdapterResponseInfoLatency(_adapterResponseInfoPtr);
+                return _adapterResponseInfoPtr == IntPtr.Zero
+                        ? 0
+                        : Externs.GADUAdapterResponseInfoLatency(_adapterResponseInfoPtr);
             }
         }
 
@@ -84,16 +96,20 @@ namespace GoogleMobileAds.iOS
         {
             get
             {
+                if (_adapterResponseInfoPtr == IntPtr.Zero)
+                {
+                    return new Dictionary<string, string>();
+                }
                 int count = Externs.GADUAdapterResponseInfoAdUnitMappingCount(
-                                        _adapterResponseInfoPtr);
+                        _adapterResponseInfoPtr);
 
                 Dictionary<string, string> dict = new Dictionary<string, string>();
                 for (int i = 0; i < count; i++)
                 {
                     string key = Externs.GADUAdapterResponseInfoAdUnitMappingKey(
-                                             _adapterResponseInfoPtr, i);
+                            _adapterResponseInfoPtr, i);
                     string val = Externs.GADUAdapterResponseInfoAdUnitMappingValue(
-                                             _adapterResponseInfoPtr, key);
+                            _adapterResponseInfoPtr, key);
                     dict.Add(key, val);
                 }
                 return dict;
@@ -104,6 +120,10 @@ namespace GoogleMobileAds.iOS
         {
             get
             {
+                if (_adapterResponseInfoPtr == IntPtr.Zero)
+                {
+                    return null;
+                }
                 IntPtr adError = Externs.GADUAdapterResponseInfoAdError(_adapterResponseInfoPtr);
                 return adError == IntPtr.Zero ? null : new AdErrorClient(adError);
             }
@@ -111,7 +131,9 @@ namespace GoogleMobileAds.iOS
 
         public override string ToString()
         {
-            return Externs.GADUAdapterResponseInfoDescription(_adapterResponseInfoPtr);
+            return _adapterResponseInfoPtr == IntPtr.Zero
+                    ? string.Empty
+                    : Externs.GADUAdapterResponseInfoDescription(_adapterResponseInfoPtr);
         }
     }
 }

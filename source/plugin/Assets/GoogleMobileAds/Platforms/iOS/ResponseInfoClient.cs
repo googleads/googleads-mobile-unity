@@ -15,9 +15,7 @@
 
 using System;
 using System.Collections.Generic;
-using UnityEngine;
 
-using GoogleMobileAds.Api;
 using GoogleMobileAds.Common;
 
 namespace GoogleMobileAds.iOS
@@ -28,11 +26,11 @@ namespace GoogleMobileAds.iOS
 
         public ResponseInfoClient(ResponseInfoClientType type, IntPtr ptr)
         {
-            if(type == ResponseInfoClientType.AdLoaded)
+            if (type == ResponseInfoClientType.AdLoaded)
             {
                 _iosResponseInfo = Externs.GADUGetResponseInfo(ptr);
             }
-            else if(type == ResponseInfoClientType.AdError)
+            else if (type == ResponseInfoClientType.AdError)
             {
                 _iosResponseInfo = Externs.GADUGetAdErrorResponseInfo(ptr);
             }
@@ -55,6 +53,8 @@ namespace GoogleMobileAds.iOS
             for (int i = 0; i < count; i++)
             {
                 var adNetworkRef = Externs.GADUResponseInfoAdNetworkAtIndex(_iosResponseInfo, i);
+                if (adNetworkRef == IntPtr.Zero)
+                  continue;
                 list.Add(new AdapterResponseInfoClient(adNetworkRef));
             }
             return list;

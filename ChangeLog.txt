@@ -9,6 +9,7 @@ Version Next
   -   **New location:** [source/plugin/Assets/Plugins/Android/GoogleMobileAdsPlugin.androidlib](https://github.com/googleads/googleads-mobile-unity/tree/main/source/plugin/Assets/Plugins/Android/GoogleMobileAdsPlugin.androidlib)
   -   This change makes it more streamlined to build from source.
 - Merged the Android Manifest files into a single one located under `src/main`.
+- Fixed issue [#3810](https://github.com/googleads/googleads-mobile-unity/issues/3810) - crash on `AdapterResponseInfo.AdSourceName`.
 
 **************
 Version 10.3.0
