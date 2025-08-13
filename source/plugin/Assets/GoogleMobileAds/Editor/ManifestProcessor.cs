@@ -54,6 +54,15 @@ public class ManifestProcessor : IPreprocessBuild
     private const string METADATA_UNITY_VERSION  = "com.google.unity.ads.UNITY_VERSION";
     // LINT.ThenChange(//depot/google3/javatests/com/google/android/gmscore/integ/modules/admob/tests/robolectric/src/com/google/android/gms/ads/nonagon/signals/StaticDeviceSignalSourceTest.java)
 
+    private const string METADATA_DEFAULT_ALLOW_AD_STORAGE =
+            "google_analytics_default_allow_ad_storage";
+    private const string METADATA_DEFAULT_ALLOW_AD_PERSONALIZATION = 
+            "google_analytics_default_allow_ad_personalization_signals";
+    private const string METADATA_DEFAULT_ALLOW_AD_USER_DATA =
+            "google_analytics_default_allow_ad_user_data";
+    private const string METADATA_DEFAULT_ALLOW_ANALYTICS_STORAGE =
+            "google_analytics_default_allow_analytics_storage";
+
     private XNamespace ns = "http://schemas.android.com/apk/res/android";
 
     public int callbackOrder { get { return 0; } }
@@ -145,6 +154,30 @@ public class ManifestProcessor : IPreprocessBuild
                            metas,
                            METADATA_UNITY_VERSION,
                            Application.unityVersion);
+
+        SetMetadataElement(elemApplication,
+                            metas,
+                            METADATA_DEFAULT_ALLOW_AD_STORAGE,
+                            instance.DefaultAllowAdStorage,
+                            true);
+
+        SetMetadataElement(elemApplication,
+                            metas,
+                            METADATA_DEFAULT_ALLOW_AD_PERSONALIZATION,
+                            instance.DefaultAllowAdPersonalization,
+                            true);
+
+        SetMetadataElement(elemApplication,
+                            metas,
+                            METADATA_DEFAULT_ALLOW_AD_USER_DATA,
+                            instance.DefaultAllowAdUserData,
+                            true);
+
+        SetMetadataElement(elemApplication,
+                            metas,
+                            METADATA_DEFAULT_ALLOW_ANALYTICS_STORAGE,
+                            instance.DefaultAllowAnalyticsStorage,
+                            true);
 
         elemManifest.Save(manifestPath);
     }

@@ -53,6 +53,18 @@ namespace GoogleMobileAds.Editor
     [SerializeField]
     private string userLanguage = "en";
 
+    [SerializeField]
+    private bool defaultAllowAdStorage;
+
+    [SerializeField]
+    private bool defaultAllowAdPersonalization;
+
+    [SerializeField]
+    private bool defaultAllowAdUserData;
+
+    [SerializeField]
+    private bool defaultAllowAnalyticsStorage;
+
     public string GoogleMobileAdsAndroidAppId
     {
       get { return adMobAndroidAppId; }
@@ -100,6 +112,30 @@ namespace GoogleMobileAds.Editor
       get { return userLanguage; }
 
       set { userLanguage = value; }
+    }
+
+    public bool DefaultAllowAdStorage
+    {
+        get { return defaultAllowAdStorage; }
+        set { defaultAllowAdStorage = value; }
+    }
+
+    public bool DefaultAllowAdPersonalization
+    {
+        get { return defaultAllowAdPersonalization; }
+        set { defaultAllowAdPersonalization = value; }
+    }
+
+    public bool DefaultAllowAdUserData
+    {
+        get { return defaultAllowAdUserData; }
+        set { defaultAllowAdUserData = value; }
+    }
+
+    public bool DefaultAllowAnalyticsStorage
+    {
+        get { return defaultAllowAnalyticsStorage; }
+        set { defaultAllowAnalyticsStorage = value; }
     }
   }
 }

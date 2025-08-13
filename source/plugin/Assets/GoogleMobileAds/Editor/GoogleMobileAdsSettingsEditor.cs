@@ -15,6 +15,10 @@ namespace GoogleMobileAds.Editor
     SerializedProperty _disableOptimizeAdLoading;
     SerializedProperty _userLanguage;
     SerializedProperty _userTrackingUsageDescription;
+    SerializedProperty _defaultAllowAdStorage;
+    SerializedProperty _defaultAllowAdPersonalization;
+    SerializedProperty _defaultAllowAdUserData;
+    SerializedProperty _defaultAllowAnalyticsStorage;
 
     // Using an ordered list of languages is computationally expensive when trying to create an
     // array out of them for purposes of showing a dropdown menu. Care should be taken to ensure
@@ -40,6 +44,10 @@ namespace GoogleMobileAds.Editor
       _userLanguage = serializedObject.FindProperty("userLanguage");
       _userTrackingUsageDescription =
           serializedObject.FindProperty("userTrackingUsageDescription");
+      _defaultAllowAdStorage = serializedObject.FindProperty("defaultAllowAdStorage");
+      _defaultAllowAdPersonalization = serializedObject.FindProperty("defaultAllowAdPersonalization");
+      _defaultAllowAdUserData = serializedObject.FindProperty("defaultAllowAdUserData");
+      _defaultAllowAnalyticsStorage = serializedObject.FindProperty("defaultAllowAnalyticsStorage");
 
       selectedIndex = Array.IndexOf(languageCodes, _userLanguage.stringValue);
       selectedIndex = selectedIndex >= 0 ? selectedIndex : 0;
@@ -99,7 +107,6 @@ namespace GoogleMobileAds.Editor
             MessageType.Info);
       }
 
-
       EditorGUILayout.PropertyField(
           _disableOptimizeInitialization,
           new GUIContent(localization.ForKey("DISABLE_OPTIMIZE_INITIALIZATION_SETTING")));
@@ -132,6 +139,38 @@ namespace GoogleMobileAds.Editor
           new GUIContent(localization.ForKey("USER_TRACKING_USAGE_DESCRIPTION_SETTING")));
 
       EditorGUILayout.HelpBox(localization.ForKey("USER_TRACKING_USAGE_DESCRIPTION_HELPBOX"),
+                              MessageType.Info);
+
+      EditorGUILayout.Separator();
+
+      // Default Consent State
+      EditorGUIUtility.labelWidth = 345.0f;
+      EditorGUILayout.LabelField(localization.ForKey("DEFAULT_CONSENT_STATE_LABEL"),
+                                 EditorStyles.boldLabel);
+      EditorGUI.indentLevel++;
+
+      EditorGUILayout.PropertyField(
+          _defaultAllowAdStorage,
+          new GUIContent(localization.ForKey("DEFAULT_CONSENT_AD_STORAGE_SETTING")));
+      EditorGUILayout.HelpBox(localization.ForKey("DEFAULT_CONSENT_AD_STORAGE_HELPBOX"),
+                              MessageType.Info);
+
+      EditorGUILayout.PropertyField(
+          _defaultAllowAdPersonalization,
+          new GUIContent(localization.ForKey("DEFAULT_CONSENT_AD_PERSONALIZATION_SETTING")));
+      EditorGUILayout.HelpBox(localization.ForKey("DEFAULT_CONSENT_AD_PERSONALIZATION_HELPBOX"),
+                              MessageType.Info);
+
+      EditorGUILayout.PropertyField(
+          _defaultAllowAdUserData,
+          new GUIContent(localization.ForKey("DEFAULT_CONSENT_AD_USER_DATA_SETTING")));
+      EditorGUILayout.HelpBox(localization.ForKey("DEFAULT_CONSENT_AD_USER_DATA_HELPBOX"),
+                              MessageType.Info);
+
+      EditorGUILayout.PropertyField(
+          _defaultAllowAnalyticsStorage,
+          new GUIContent(localization.ForKey("DEFAULT_CONSENT_ANALYTICS_STORAGE_SETTING")));
+      EditorGUILayout.HelpBox(localization.ForKey("DEFAULT_CONSENT_ANALYTICS_STORAGE_HELPBOX"),
                               MessageType.Info);
 
       EditorGUI.indentLevel--;
