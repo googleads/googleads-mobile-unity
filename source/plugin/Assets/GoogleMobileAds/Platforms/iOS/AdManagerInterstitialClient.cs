@@ -81,6 +81,9 @@ namespace GoogleMobileAds.iOS
 
         public event Action OnAdClicked;
 
+        // Placement ID is not supported for AdManagerInterstitialAd.
+        public long PlacementId { get; set; }
+
         private IntPtr _interstitialClientPtr;
 
         private IntPtr _interstitialPtr;

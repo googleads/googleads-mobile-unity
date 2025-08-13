@@ -32,6 +32,11 @@ namespace GoogleMobileAds.Api.AdManager
         /// </summary>
         public event Action<AppEvent> OnAppEventReceived;
 
+        /// <summary>
+        /// Placement ID is not supported for AdManagerInterstitialAd.
+        /// </summary>
+        public new long PlacementId { get; set; }
+
         private AdManagerInterstitialAd(IAdManagerInterstitialClient client)
         {
             _client = client;
