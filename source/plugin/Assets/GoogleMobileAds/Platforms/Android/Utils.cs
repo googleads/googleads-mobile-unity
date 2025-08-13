@@ -54,8 +54,6 @@ namespace GoogleMobileAds.Android
         public const string PublisherPrivacyPersonalizationStateEnumName =
             "com.google.android.gms.ads.RequestConfiguration$PublisherPrivacyPersonalizationState";
 
-        public const string MobileAdsClassName = "com.google.android.gms.ads.MobileAds";
-
         public const string PreloadConfigurationClassName = "com.google.android.gms.ads.preload.PreloadConfiguration";
 
         public const string PreloadConfigurationBuilderClassName = "com.google.android.gms.ads.preload.PreloadConfiguration$Builder";
@@ -87,6 +85,8 @@ namespace GoogleMobileAds.Android
         #region Google Mobile Ads Unity Plugin class names
 
         public const string UnityAdSizeClassName = "com.google.unity.ads.UnityAdSize";
+
+        public const string UnityMobileAdsClassName = "com.google.unity.ads.UnityMobileAds";
 
         public const string BannerViewClassName = "com.google.unity.ads.Banner";
 

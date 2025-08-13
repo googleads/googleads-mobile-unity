@@ -15,6 +15,7 @@
  */
 package com.google.unity.ads;
 
+import android.app.Activity;
 import android.content.res.Resources;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -125,5 +126,12 @@ public class PluginUtils {
   public static float convertDpToPixel(float dp) {
     DisplayMetrics metrics = Resources.getSystem().getDisplayMetrics();
     return dp * metrics.density;
+  }
+
+  public static float getDeviceDensity(Activity activity) {
+    if (activity == null) {
+      throw new IllegalStateException("Activity is null.");
+    }
+    return activity.getResources().getDisplayMetrics().density;
   }
 }
