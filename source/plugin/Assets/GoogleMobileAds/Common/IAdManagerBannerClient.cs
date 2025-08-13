@@ -20,7 +20,7 @@ using GoogleMobileAds.Api.AdManager;
 
 namespace GoogleMobileAds.Common
 {
-    public interface IAdManagerBannerClient : IBannerClient
+    public interface IAdManagerBannerClient : IBannerBaseClient
     {
         // Ad event fired when the ad sends a message to the application.
         event Action<AppEvent> OnAppEvent;

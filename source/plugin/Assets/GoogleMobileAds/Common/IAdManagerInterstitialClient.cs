@@ -18,12 +18,12 @@ using GoogleMobileAds.Api.AdManager;
 
 namespace GoogleMobileAds.Common
 {
-    public interface IAdManagerInterstitialClient : IInterstitialClient
+    public interface IAdManagerInterstitialClient : IInterstitialBaseClient
     {
         // Ad event fired when the ad sends a message to the application.
         event Action<AppEvent> OnAppEvent;
 
         // Returns the next pre-loaded ad manager interstitial ad and null if no ad is available.
-        IAdManagerInterstitialClient PollAdManagerAd(string adUnitId);
+        IAdManagerInterstitialClient PollAd(string adUnitId);
     }
 }
