@@ -41,6 +41,8 @@ namespace GoogleMobileAds.Unity
 
         public event Action OnAdClicked;
 
+        public long PlacementId { get; set; }
+
         private Dictionary<AdSize, string> prefabAds = new Dictionary<AdSize, string>() {
             { new AdSize(768, 1024), "PlaceholderAds/AppOpen/768x1024" },
             { new AdSize(1024, 768), "PlaceholderAds/AppOpen/1024x768" }

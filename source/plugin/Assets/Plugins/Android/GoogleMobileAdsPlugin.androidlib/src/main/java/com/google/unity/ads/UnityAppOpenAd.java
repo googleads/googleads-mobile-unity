@@ -222,6 +222,23 @@ public class UnityAppOpenAd {
     return appOpenAd.getAdUnitId();
   }
 
+  /** Gets the placement ID for the {@link AppOpenAd}. */
+  public long getPlacementId() {
+    return appOpenAd.getPlacementId();
+  }
+
+  /**
+   * Sets a placement ID for the {@link AppOpenAd}.
+   *
+   * <p>To ensure this placement ID is included in reporting, call this method before showing the
+   * ad.
+   *
+   * @param placementId A long integer provided by the AdMob UI for the configured placement.
+   */
+  public void setPlacementId(long placementId) {
+    appOpenAd.setPlacementId(placementId);
+  }
+
   /** Returns the request response info. */
   @Nullable
   public ResponseInfo getResponseInfo() {

@@ -1159,6 +1159,16 @@ const char *GADUGetAppOpenAdUnitID(GADUTypeAppOpenAdRef appOpenAd) {
   return cStringCopy(internalAppOpenAd.appOpenAd.adUnitID.UTF8String);
 }
 
+int64_t GADUGetAppOpenAdPlacementID(GADUTypeAppOpenAdRef appOpenAd) {
+  GADUAppOpenAd *internalAppOpenAd = (__bridge GADUAppOpenAd *)appOpenAd;
+  return internalAppOpenAd.appOpenAd.placementID;
+}
+
+void GADUSetAppOpenAdPlacementID(GADUTypeAppOpenAdRef appOpenAd, int64_t placementID) {
+  GADUAppOpenAd *internalAppOpenAd = (__bridge GADUAppOpenAd *)appOpenAd;
+  [internalAppOpenAd setPlacementID:placementID];
+}
+
 /// Sets the GADBannerView's hidden property to YES.
 void GADUHideBannerView(GADUTypeBannerRef banner) {
   GADUBanner *internalBanner = (__bridge GADUBanner *)banner;

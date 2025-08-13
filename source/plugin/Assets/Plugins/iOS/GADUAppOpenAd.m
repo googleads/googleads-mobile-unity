@@ -75,6 +75,14 @@
   [self.appOpenAd presentFromRootViewController:unityController];
 }
 
+- (int64_t)placementID {
+  return _appOpenAd.placementID;
+}
+
+- (void)setPlacementID:(int64_t)placementID {
+  _appOpenAd.placementID = placementID;
+}
+
 - (GADResponseInfo *)responseInfo {
   return self.appOpenAd.responseInfo;
 }
