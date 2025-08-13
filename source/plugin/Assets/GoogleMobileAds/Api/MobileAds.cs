@@ -283,6 +283,18 @@ namespace GoogleMobileAds.Api
             });
         }
 
+        public static void HelloWorld()
+        {
+            Instance.client.HelloWorld();
+        }
+
+#if GMA_PREVIEW_FEATURES
+        public static void HelloWorldPreview()
+        {
+            Instance.client.HelloWorldPreview();
+        }
+#endif
+
         internal static IClientFactory GetClientFactory() {
           if (clientFactory == null) {
             String typeName = null;

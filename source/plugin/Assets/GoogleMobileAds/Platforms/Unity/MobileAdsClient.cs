@@ -219,5 +219,17 @@ namespace GoogleMobileAds.Unity
             AdBehaviour.DestroyAd(dummyAd);
             prefabAd = null;
         }
+
+        public void HelloWorld()
+        {
+            Debug.Log("Hello from MobileAdsClient!");
+        }
+
+#if GMA_PREVIEW_FEATURES
+        public void HelloWorldPreview()
+        {
+            Debug.Log("Hello from MobileAdsClient Preview!");
+        }
+#endif
     }
 }
