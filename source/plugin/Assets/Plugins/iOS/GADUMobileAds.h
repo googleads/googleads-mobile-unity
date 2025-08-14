@@ -1,5 +1,7 @@
 // Copyright 2024 Google Inc. All Rights Reserved.
 
+#if GMA_PREVIEW_FEATURES
+
 #import <Foundation/Foundation.h>
 
 #import <GoogleMobileAds/GoogleMobileAds.h>
@@ -24,3 +26,5 @@
     GADUAdsExhaustedForPreloadConfigurationCallback adsExhaustedForPreloadConfigurationCallback;
 
 @end
+
+#endif  // GMA_PREVIEW_FEATURES

@@ -24,10 +24,14 @@ namespace GoogleMobileAds.Unity
     {
         public event Action<AppEvent> OnAppEvent;
 
+#if GMA_PREVIEW_FEATURES
+
         public IAdManagerInterstitialClient PollAdManagerAd(string adUnitId)
         {
             Debug.Log("Preloaded ads are not supported on the Unity editor platform.");
             return new AdManagerInterstitialClient();
         }
+
+#endif
     }
 }

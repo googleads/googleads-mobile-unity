@@ -93,6 +93,8 @@ namespace GoogleMobileAds.Unity
             buttonBehaviour = base.dummyAd.AddComponent<ButtonBehaviour>();
         }
 
+#if GMA_PREVIEW_FEATURES
+
         public bool IsAdAvailable(string adUnitId)
         {
             Debug.Log("Preloaded ads are not supported on the Unity editor platform.");
@@ -104,6 +106,8 @@ namespace GoogleMobileAds.Unity
             Debug.Log("Preloaded ads are not supported on the Unity editor platform.");
             return new RewardedAdClient();
         }
+
+#endif
 
         // Load a rewarding ad.
         public void LoadAd(string adUnitId, AdRequest request)

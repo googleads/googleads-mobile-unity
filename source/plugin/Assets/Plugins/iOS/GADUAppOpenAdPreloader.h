@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+#if GMA_PREVIEW_FEATURES
+
 #import <Foundation/Foundation.h>
 
 #import <GoogleMobileAds/GoogleMobileAds.h>
@@ -82,3 +84,5 @@
 - (void)stopPreloadingAndRemoveAllAds;
 
 @end
+
+#endif  // GMA_PREVIEW_FEATURES

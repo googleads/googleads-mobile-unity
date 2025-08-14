@@ -143,6 +143,8 @@ namespace GoogleMobileAds.iOS
                     AdDidRecordClickCallback);
         }
 
+#if GMA_PREVIEW_FEATURES
+
         // Verify if an ad is preloaded and available to show.
         public bool IsAdAvailable(string adUnitId)
         {
@@ -155,6 +157,8 @@ namespace GoogleMobileAds.iOS
             Externs.GADUAppOpenPreloadedAdWithAdUnitID(this.AppOpenAdPtr, adUnitId);
             return this;
         }
+
+#endif
 
         // Load an ad.
         public void LoadAd(string adUnitID, AdRequest request)

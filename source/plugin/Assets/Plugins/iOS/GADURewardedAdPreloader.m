@@ -1,5 +1,7 @@
 // Copyright 2025 Google LLC. All Rights Reserved.
 
+#if GMA_PREVIEW_FEATURES
+
 #import "GADURewardedAd.h"
 
 #import <CoreGraphics/CoreGraphics.h>
@@ -103,3 +105,5 @@
 }
 
 @end
+
+#endif  // GMA_PREVIEW_FEATURES

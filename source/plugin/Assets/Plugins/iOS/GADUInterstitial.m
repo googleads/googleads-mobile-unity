@@ -32,6 +32,7 @@
   self.interstitialAd.fullScreenContentDelegate = self;
   [self configurePaidEventHandler];
 }
+#if GMA_PREVIEW_FEATURES
 
 + (BOOL)isPreloadedAdAvailable:(NSString *)adUnitID {
   return [GADInterstitialAd isPreloadedAdAvailable:adUnitID];
@@ -45,6 +46,8 @@
   }
   [self setInterstitialAdAndConfigure:interstitialAd];
 }
+
+#endif  // GMA_PREVIEW_FEATURES
 
 - (void)loadWithAdUnitID:(nonnull NSString *)adUnitID request:(nonnull GADRequest *)request {
   __weak GADUInterstitial *weakSelf = self;

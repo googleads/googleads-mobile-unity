@@ -33,6 +33,8 @@
   [self configurePaidEventHandler];
 }
 
+#if GMA_PREVIEW_FEATURES
+
 + (BOOL)isPreloadedAdAvailable:(NSString *)adUnitID {
   return [GADRewardedAd isPreloadedAdAvailable:adUnitID];
 }
@@ -45,6 +47,8 @@
   }
   [self setRewardedAdAndConfigure:rewardedAd];
 }
+
+#endif  // GMA_PREVIEW_FEATURES
 
 - (void)loadWithAdUnitID:(nonnull NSString *)adUnitID request:(nonnull GADRequest *)request {
   __weak GADURewardedAd *weakSelf = self;

@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+#if GMA_PREVIEW_FEATURES
+
 #import "GADUPreloadConfiguration.h"
 
 /// Configuration for preloading ads.
@@ -105,3 +107,5 @@
 }
 
 @end
+
+#endif  // GMA_PREVIEW_FEATURES

@@ -52,11 +52,15 @@ namespace GoogleMobileAds.Common
     // Creates an app open ad.
     void CreateAppOpenAd();
 
+#if GMA_PREVIEW_FEATURES
+
     // Verify if an app open ad is preloaded and is available to show.
     bool IsAdAvailable(string adUnitId);
 
     // Returns the next pre-loaded app open ad and null if no ad is available.
     IAppOpenAdClient PollAd(string adUnitId);
+
+#endif
 
     // Loads an app open ad.
     void LoadAd(string adUnitID, AdRequest request);

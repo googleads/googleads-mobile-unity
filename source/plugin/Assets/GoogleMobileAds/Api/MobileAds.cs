@@ -224,6 +224,8 @@ namespace GoogleMobileAds.Api
             return new Version(assemblyVersion.Major, assemblyVersion.Minor, assemblyVersion.Build);
         }
 
+#if GMA_PREVIEW_FEATURES
+
         /// <summary>
         /// Preloads ads for the given configurations.
         /// </summary>
@@ -259,6 +261,8 @@ namespace GoogleMobileAds.Api
                     };
             Instance.client.Preload(configurations, onAdAvailableAction, onAdsExhaustedAction);
         }
+
+#endif
 
         /// <summary>
         /// Opens ad inspector UI.

@@ -116,6 +116,8 @@ namespace GoogleMobileAds.Android
                                      listener);
         }
 
+#if GMA_PREVIEW_FEATURES
+
         public void Preload(List<PreloadConfiguration> configurations,
                             Action<PreloadConfiguration> onAdAvailable,
                             Action<PreloadConfiguration> onAdsExhausted)
@@ -130,6 +132,8 @@ namespace GoogleMobileAds.Android
           _mobileAdsClass.CallStatic("startPreload", Utils.GetCurrentActivityAndroidJavaObject(),
                                      configurationsArrayList, listener);
         }
+
+#endif
 
         public float GetDeviceScale()
         {

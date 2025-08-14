@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+#if GMA_PREVIEW_FEATURES
+
 #import "GADUAppOpenAd.h"
 
 #import <CoreGraphics/CoreGraphics.h>
@@ -128,3 +130,5 @@
 }
 
 @end
+
+#endif  // GMA_PREVIEW_FEATURES

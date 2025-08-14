@@ -1,5 +1,7 @@
 // Copyright 2024 Google Inc. All Rights Reserved.
 
+#if GMA_PREVIEW_FEATURES
+
 #import "GADUMobileAds.h"
 
 @implementation GADUMobileAds
@@ -38,3 +40,5 @@
 }
 
 @end
+
+#endif  // GMA_PREVIEW_FEATURES

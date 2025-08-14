@@ -95,6 +95,8 @@ namespace GoogleMobileAds.Android
             return this.androidRewardedAd.Call<string>("getAdUnitId");
         }
 
+#if GMA_PREVIEW_FEATURES
+
         public bool IsAdAvailable(string adUnitId)
         {
             return this.androidRewardedAd.Call<bool>("isAdAvailable", adUnitId);
@@ -105,6 +107,8 @@ namespace GoogleMobileAds.Android
             this.androidRewardedAd.Call("pollAd", adUnitId);
             return this;
         }
+
+#endif
 
         // Returns ad request response info
         public IResponseInfoClient GetResponseInfoClient()

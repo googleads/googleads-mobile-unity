@@ -61,6 +61,8 @@ namespace GoogleMobileAds.Android
             // No op.
         }
 
+#if GMA_PREVIEW_FEATURES
+
         public bool IsAdAvailable(string adUnitId)
         {
             return this._androidAdmanagerInterstitialAd.Call<bool>("isAdAvailable", adUnitId);
@@ -70,6 +72,8 @@ namespace GoogleMobileAds.Android
         {
             return PollAdManagerAd(adUnitId);
         }
+
+#endif
 
         public IAdManagerInterstitialClient PollAdManagerAd(string adUnitId)
         {

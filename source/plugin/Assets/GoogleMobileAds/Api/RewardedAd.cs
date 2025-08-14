@@ -68,6 +68,8 @@ namespace GoogleMobileAds.Api
             RegisterAdEvents();
         }
 
+#if GMA_PREVIEW_FEATURES
+
         /// <summary>
         /// Verify if an ad is preloaded and available to show.
         /// </summary>
@@ -100,6 +102,8 @@ namespace GoogleMobileAds.Api
             client.CreateRewardedAd();
             return new RewardedAd(client.PollAd(adUnitId));
         }
+
+#endif  // GMA_PREVIEW_FEATURES
 
         /// <summary>
         /// Loads a rewarded ad.

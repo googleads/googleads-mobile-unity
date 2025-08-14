@@ -111,6 +111,8 @@ namespace GoogleMobileAds.iOS
             return new Version(iOSVersion);
         }
 
+#if GMA_PREVIEW_FEATURES
+
         public void Preload(List<PreloadConfiguration> configurations,
                             Action<PreloadConfiguration> onAdAvailable,
                             Action<PreloadConfiguration> onAdsExhausted)
@@ -138,6 +140,8 @@ namespace GoogleMobileAds.iOS
             Externs.GADUPreloadWithCallback(this.mobileAdsClientPtr, configurationsArray,
                     configurations.Count, AdAvailableCallback, AdsExhaustedCallback);
         }
+
+#endif
 
         public void OpenAdInspector(Action<AdInspectorErrorClientEventArgs> onAdInspectorClosed)
         {

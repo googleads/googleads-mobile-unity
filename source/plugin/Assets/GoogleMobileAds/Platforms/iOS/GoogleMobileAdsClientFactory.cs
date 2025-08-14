@@ -48,18 +48,7 @@ namespace GoogleMobileAds
                                           " on non-iOS runtime");
     }
 
-    public IAppOpenAdPreloaderClient BuildAppOpenAdPreloaderClient()
-    {
-      if (Application.platform == RuntimePlatform.IPhonePlayer)
-      {
-        return new GoogleMobileAds.iOS.AppOpenAdPreloaderClient();
-      }
-      throw new InvalidOperationException(@"Called " + MethodBase.GetCurrentMethod().Name +
-                                          " on non-iOS runtime");
-    }
-
-    public IBannerClient BuildBannerClient()
-    {
+    public IBannerClient BuildBannerClient() {
       if (Application.platform == RuntimePlatform.IPhonePlayer)
       {
         return new GoogleMobileAds.iOS.BannerClient();
@@ -68,8 +57,7 @@ namespace GoogleMobileAds
                                           " on non-iOS runtime");
     }
 
-    public IAdManagerBannerClient BuildAdManagerBannerClient()
-    {
+    public IAdManagerBannerClient BuildAdManagerBannerClient() {
       if (Application.platform == RuntimePlatform.IPhonePlayer)
       {
         return new GoogleMobileAds.iOS.AdManagerBannerClient();
@@ -78,8 +66,7 @@ namespace GoogleMobileAds
                                           " on non-iOS runtime");
     }
 
-    public IInterstitialClient BuildInterstitialClient()
-    {
+    public IInterstitialClient BuildInterstitialClient() {
       if (Application.platform == RuntimePlatform.IPhonePlayer)
       {
         return new GoogleMobileAds.iOS.InterstitialClient();
@@ -88,18 +75,7 @@ namespace GoogleMobileAds
                                           " on non-iOS runtime");
     }
 
-    public IInterstitialAdPreloaderClient BuildInterstitialAdPreloaderClient()
-    {
-      if (Application.platform == RuntimePlatform.IPhonePlayer)
-      {
-        return new GoogleMobileAds.iOS.InterstitialAdPreloaderClient();
-      }
-      throw new InvalidOperationException(@"Called " + MethodBase.GetCurrentMethod().Name +
-                                          " on non-iOS runtime");
-    }
-
-    public IAdManagerInterstitialClient BuildAdManagerInterstitialClient()
-    {
+    public IAdManagerInterstitialClient BuildAdManagerInterstitialClient() {
       if (Application.platform == RuntimePlatform.IPhonePlayer)
       {
         return new GoogleMobileAds.iOS.AdManagerInterstitialClient();
@@ -108,8 +84,7 @@ namespace GoogleMobileAds
                                           " on non-iOS runtime");
     }
 
-    public IRewardedAdClient BuildRewardedAdClient()
-    {
+    public IRewardedAdClient BuildRewardedAdClient() {
       if (Application.platform == RuntimePlatform.IPhonePlayer)
       {
         return new GoogleMobileAds.iOS.RewardedAdClient();
@@ -118,18 +93,7 @@ namespace GoogleMobileAds
                                           " on non-iOS runtime");
     }
 
-    public IRewardedAdPreloaderClient BuildRewardedAdPreloaderClient()
-    {
-      if (Application.platform == RuntimePlatform.IPhonePlayer)
-      {
-        return new GoogleMobileAds.iOS.RewardedAdPreloaderClient();
-      }
-      throw new InvalidOperationException(@"Called " + MethodBase.GetCurrentMethod().Name +
-                                          " on non-iOS runtime");
-    }
-
-    public IRewardedInterstitialAdClient BuildRewardedInterstitialAdClient()
-    {
+    public IRewardedInterstitialAdClient BuildRewardedInterstitialAdClient() {
       if (Application.platform == RuntimePlatform.IPhonePlayer)
       {
         return new GoogleMobileAds.iOS.RewardedInterstitialAdClient();
@@ -138,8 +102,7 @@ namespace GoogleMobileAds
                                           " on non-iOS runtime");
     }
 
-    public INativeOverlayAdClient BuildNativeOverlayAdClient()
-    {
+    public INativeOverlayAdClient BuildNativeOverlayAdClient() {
       if (Application.platform == RuntimePlatform.IPhonePlayer)
       {
         return new GoogleMobileAds.iOS.NativeOverlayAdClient();
@@ -148,8 +111,7 @@ namespace GoogleMobileAds
                                           " on non-iOS runtime");
     }
 
-    public IApplicationPreferencesClient ApplicationPreferencesInstance()
-    {
+    public IApplicationPreferencesClient ApplicationPreferencesInstance() {
       if (Application.platform == RuntimePlatform.IPhonePlayer)
       {
         return new GoogleMobileAds.iOS.ApplicationPreferencesClient();
@@ -158,8 +120,7 @@ namespace GoogleMobileAds
                                           " on non-iOS runtime");
     }
 
-    public IMobileAdsClient MobileAdsInstance()
-    {
+    public IMobileAdsClient MobileAdsInstance() {
       if (Application.platform == RuntimePlatform.IPhonePlayer)
       {
         return GoogleMobileAds.iOS.MobileAdsClient.Instance;
@@ -167,6 +128,37 @@ namespace GoogleMobileAds
       throw new InvalidOperationException(@"Called " + MethodBase.GetCurrentMethod().Name +
                                           " on non-iOS runtime");
     }
+
+#if GMA_PREVIEW_FEATURES
+
+    public IAppOpenAdPreloaderClient BuildAppOpenAdPreloaderClient() {
+      if (Application.platform == RuntimePlatform.IPhonePlayer)
+      {
+        return new GoogleMobileAds.iOS.AppOpenAdPreloaderClient();
+      }
+      throw new InvalidOperationException(@"Called " + MethodBase.GetCurrentMethod().Name +
+                                          " on non-iOS runtime");
+    }
+
+    public IInterstitialAdPreloaderClient BuildInterstitialAdPreloaderClient() {
+      if (Application.platform == RuntimePlatform.IPhonePlayer)
+      {
+        return new GoogleMobileAds.iOS.InterstitialAdPreloaderClient();
+      }
+      throw new InvalidOperationException(@"Called " + MethodBase.GetCurrentMethod().Name +
+                                          " on non-iOS runtime");
+    }
+
+    public IRewardedAdPreloaderClient BuildRewardedAdPreloaderClient() {
+      if (Application.platform == RuntimePlatform.IPhonePlayer)
+      {
+        return new GoogleMobileAds.iOS.RewardedAdPreloaderClient();
+      }
+      throw new InvalidOperationException(@"Called " + MethodBase.GetCurrentMethod().Name +
+                                          " on non-iOS runtime");
+    }
+
+#endif  // GMA_PREVIEW_FEATURES
   }
 }
 #endif

@@ -4,6 +4,7 @@ Google Mobile Ads Unity Plugin Change Log
 Version Next
 **************
 
+- Added [custom scripting symbols](https://docs.unity3d.com/6000.1/Documentation/Manual/custom-scripting-symbols.html) (`GMA_PREVIEW_FEATURES`) to manage preview features and avoid breaking the plugin when building from source.
 - Updated the Android library source code location according to Unity's [Android Library](https://docs.unity3d.com/Manual/android-library-plugin-create.html) [(aka bundled) plug-in](https://docs.unity3d.com/2019.4/Documentation/Manual/PluginInspector.html) format.
   -   **Old location:** [source/android-library](https://github.com/googleads/googleads-mobile-unity/tree/main/source/android-library)
   -   **New location:** [source/plugin/Assets/Plugins/Android/GoogleMobileAdsPlugin.androidlib](https://github.com/googleads/googleads-mobile-unity/tree/main/source/plugin/Assets/Plugins/Android/GoogleMobileAdsPlugin.androidlib)

@@ -25,11 +25,15 @@
 /// The app event callback into Unity.
 @property(nonatomic, assign, nullable) GAMUInterstitialAppEventCallback appEventCallback;
 
+#if GMA_PREVIEW_FEATURES
+
 /// Returns whether a GAM interstitial ad is preloaded for the given ad unit ID.
 + (BOOL)isPreloadedAdAvailable:(nonnull NSString *)adUnitID;
 
 /// Loads a preloaded GAM interstitial ad corresponding to the given ad unit ID if available.
 - (void)preloadedAdWithAdUnitID:(nonnull NSString *)adUnitID;
+
+#endif  // GMA_PREVIEW_FEATURES
 
 /// Makes an ad request. Additional targeting options can be supplied with a request object.
 - (void)loadWithAdManagerAdUnitID:(nonnull NSString *)adUnitID

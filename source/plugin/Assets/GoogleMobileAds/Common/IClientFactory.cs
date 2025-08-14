@@ -24,21 +24,15 @@ namespace GoogleMobileAds
 
         IAppOpenAdClient BuildAppOpenAdClient();
 
-        IAppOpenAdPreloaderClient BuildAppOpenAdPreloaderClient();
-
         IBannerClient BuildBannerClient();
 
         IAdManagerBannerClient BuildAdManagerBannerClient();
 
         IInterstitialClient BuildInterstitialClient();
 
-        IInterstitialAdPreloaderClient BuildInterstitialAdPreloaderClient();
-
         IAdManagerInterstitialClient BuildAdManagerInterstitialClient();
 
         IRewardedAdClient BuildRewardedAdClient();
-
-        IRewardedAdPreloaderClient BuildRewardedAdPreloaderClient();
 
         IRewardedInterstitialAdClient BuildRewardedInterstitialAdClient();
 
@@ -47,5 +41,15 @@ namespace GoogleMobileAds
         IApplicationPreferencesClient ApplicationPreferencesInstance();
 
         IMobileAdsClient MobileAdsInstance();
+
+#if GMA_PREVIEW_FEATURES
+
+        IAppOpenAdPreloaderClient BuildAppOpenAdPreloaderClient();
+
+        IInterstitialAdPreloaderClient BuildInterstitialAdPreloaderClient();
+
+        IRewardedAdPreloaderClient BuildRewardedAdPreloaderClient();
+
+#endif
     }
 }

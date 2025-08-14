@@ -25,6 +25,8 @@ namespace GoogleMobileAds.Common
         // Initialize the Mobile Ads SDK and mediation adapters.
         void Initialize(Action<IInitializationStatusClient> initCompleteAction);
 
+#if GMA_PREVIEW_FEATURES
+
         /// <summary>
         /// Preload ads for the given configurations.
         /// </summary>
@@ -36,6 +38,8 @@ namespace GoogleMobileAds.Common
         void Preload(List<PreloadConfiguration> configurations,
                 Action<PreloadConfiguration> onAdAvailable,
                 Action<PreloadConfiguration> onAdsExhausted);
+
+#endif
 
         // Disable initialization of mediation adapters by the Mobile Ads SDK.
         void DisableMediationInitialization();

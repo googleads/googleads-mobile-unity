@@ -46,125 +46,105 @@ namespace GoogleMobileAds
             " on non-Android runtime");
         }
 
-        public IAppOpenAdPreloaderClient BuildAppOpenAdPreloaderClient()
-        {
-            if (Application.platform == RuntimePlatform.Android)
-            {
-                return new GoogleMobileAds.Android.AppOpenAdPreloaderClient();
-            }
-            throw new InvalidOperationException(@"Called " + MethodBase.GetCurrentMethod().Name +
-            " on non-Android runtime");
+        public IBannerClient BuildBannerClient() {
+          if (Application.platform == RuntimePlatform.Android) {
+            return new GoogleMobileAds.Android.BannerClient();
+          }
+          throw new InvalidOperationException(@"Called " + MethodBase.GetCurrentMethod().Name +
+                                              " on non-Android runtime");
         }
 
-        public IBannerClient BuildBannerClient()
-        {
-            if (Application.platform == RuntimePlatform.Android)
-            {
-                return new GoogleMobileAds.Android.BannerClient();
-            }
-            throw new InvalidOperationException(@"Called " + MethodBase.GetCurrentMethod().Name +
-            " on non-Android runtime");
+        public IAdManagerBannerClient BuildAdManagerBannerClient() {
+          if (Application.platform == RuntimePlatform.Android) {
+            return new GoogleMobileAds.Android.AdManagerBannerClient();
+          }
+          throw new InvalidOperationException(@"Called " + MethodBase.GetCurrentMethod().Name +
+                                              " on non-Android runtime");
         }
 
-        public IAdManagerBannerClient BuildAdManagerBannerClient()
-        {
-            if (Application.platform == RuntimePlatform.Android)
-            {
-                return new GoogleMobileAds.Android.AdManagerBannerClient();
-            }
-            throw new InvalidOperationException(@"Called " + MethodBase.GetCurrentMethod().Name +
-            " on non-Android runtime");
+        public IInterstitialClient BuildInterstitialClient() {
+          if (Application.platform == RuntimePlatform.Android) {
+            return new GoogleMobileAds.Android.InterstitialClient();
+          }
+          throw new InvalidOperationException(@"Called " + MethodBase.GetCurrentMethod().Name +
+                                              " on non-Android runtime");
         }
 
-        public IInterstitialClient BuildInterstitialClient()
-        {
-            if (Application.platform == RuntimePlatform.Android)
-            {
-                return new GoogleMobileAds.Android.InterstitialClient();
-            }
-            throw new InvalidOperationException(@"Called " + MethodBase.GetCurrentMethod().Name +
-            " on non-Android runtime");
+        public IAdManagerInterstitialClient BuildAdManagerInterstitialClient() {
+          if (Application.platform == RuntimePlatform.Android) {
+            return new GoogleMobileAds.Android.AdManagerInterstitialClient();
+          }
+          throw new InvalidOperationException(@"Called " + MethodBase.GetCurrentMethod().Name +
+                                              " on non-Android runtime");
         }
 
-        public IInterstitialAdPreloaderClient BuildInterstitialAdPreloaderClient()
-        {
-            if (Application.platform == RuntimePlatform.Android)
-            {
-                return new GoogleMobileAds.Android.InterstitialAdPreloaderClient();
-            }
-            throw new InvalidOperationException(@"Called " + MethodBase.GetCurrentMethod().Name +
-                                                " on non-Android runtime");
+        public IRewardedAdClient BuildRewardedAdClient() {
+          if (Application.platform == RuntimePlatform.Android) {
+            return new GoogleMobileAds.Android.RewardedAdClient();
+          }
+          throw new InvalidOperationException(@"Called " + MethodBase.GetCurrentMethod().Name +
+                                              " on non-Android runtime");
         }
 
-        public IAdManagerInterstitialClient BuildAdManagerInterstitialClient()
-        {
-            if (Application.platform == RuntimePlatform.Android)
-            {
-                return new GoogleMobileAds.Android.AdManagerInterstitialClient();
-            }
-            throw new InvalidOperationException(@"Called " + MethodBase.GetCurrentMethod().Name +
-            " on non-Android runtime");
+        public IRewardedInterstitialAdClient BuildRewardedInterstitialAdClient() {
+          if (Application.platform == RuntimePlatform.Android) {
+            return new GoogleMobileAds.Android.RewardedInterstitialAdClient();
+          }
+          throw new InvalidOperationException(@"Called " + MethodBase.GetCurrentMethod().Name +
+                                              " on non-Android runtime");
         }
 
-        public IRewardedAdClient BuildRewardedAdClient()
-        {
-            if (Application.platform == RuntimePlatform.Android)
-            {
-                return new GoogleMobileAds.Android.RewardedAdClient();
-            }
-            throw new InvalidOperationException(@"Called " + MethodBase.GetCurrentMethod().Name +
-            " on non-Android runtime");
+        public INativeOverlayAdClient BuildNativeOverlayAdClient() {
+          if (Application.platform == RuntimePlatform.Android) {
+            return new GoogleMobileAds.Android.NativeOverlayAdClient();
+          }
+          throw new InvalidOperationException(@"Called " + MethodBase.GetCurrentMethod().Name +
+                                              " on non-Android runtime");
         }
 
-        public IRewardedAdPreloaderClient BuildRewardedAdPreloaderClient()
-        {
-            if (Application.platform == RuntimePlatform.Android)
-            {
-                return new GoogleMobileAds.Android.RewardedAdPreloaderClient();
-            }
-            throw new InvalidOperationException(@"Called " + MethodBase.GetCurrentMethod().Name +
-                                                " on non-Android runtime");
+        public IApplicationPreferencesClient ApplicationPreferencesInstance() {
+          if (Application.platform == RuntimePlatform.Android) {
+            return new GoogleMobileAds.Android.ApplicationPreferencesClient();
+          }
+          throw new InvalidOperationException(@"Called " + MethodBase.GetCurrentMethod().Name +
+                                              " on non-Android runtime");
         }
 
-        public IRewardedInterstitialAdClient BuildRewardedInterstitialAdClient()
-        {
-            if (Application.platform == RuntimePlatform.Android)
-            {
-                return new GoogleMobileAds.Android.RewardedInterstitialAdClient();
-            }
-            throw new InvalidOperationException(@"Called " + MethodBase.GetCurrentMethod().Name +
-            " on non-Android runtime");
+        public IMobileAdsClient MobileAdsInstance() {
+          if (Application.platform == RuntimePlatform.Android) {
+            return GoogleMobileAds.Android.MobileAdsClient.Instance;
+          }
+          throw new InvalidOperationException(@"Called " + MethodBase.GetCurrentMethod().Name +
+                                              " on non-Android runtime");
         }
 
-        public INativeOverlayAdClient BuildNativeOverlayAdClient()
-        {
-            if (Application.platform == RuntimePlatform.Android)
-            {
-                return new GoogleMobileAds.Android.NativeOverlayAdClient();
-            }
-            throw new InvalidOperationException(@"Called " + MethodBase.GetCurrentMethod().Name +
-            " on non-Android runtime");
+#if GMA_PREVIEW_FEATURES
+
+        public IAppOpenAdPreloaderClient BuildAppOpenAdPreloaderClient() {
+          if (Application.platform == RuntimePlatform.Android) {
+            return new GoogleMobileAds.Android.AppOpenAdPreloaderClient();
+          }
+          throw new InvalidOperationException(@"Called " + MethodBase.GetCurrentMethod().Name +
+                                              " on non-Android runtime");
         }
 
-        public IApplicationPreferencesClient ApplicationPreferencesInstance()
-        {
-            if (Application.platform == RuntimePlatform.Android)
-            {
-                return new GoogleMobileAds.Android.ApplicationPreferencesClient();
-            }
-            throw new InvalidOperationException(@"Called " + MethodBase.GetCurrentMethod().Name +
-            " on non-Android runtime");
+        public IInterstitialAdPreloaderClient BuildInterstitialAdPreloaderClient() {
+          if (Application.platform == RuntimePlatform.Android) {
+            return new GoogleMobileAds.Android.InterstitialAdPreloaderClient();
+          }
+          throw new InvalidOperationException(@"Called " + MethodBase.GetCurrentMethod().Name +
+                                              " on non-Android runtime");
         }
 
-        public IMobileAdsClient MobileAdsInstance()
-        {
-            if (Application.platform == RuntimePlatform.Android)
-            {
-                return GoogleMobileAds.Android.MobileAdsClient.Instance;
-            }
-            throw new InvalidOperationException(@"Called " + MethodBase.GetCurrentMethod().Name +
-            " on non-Android runtime");
+        public IRewardedAdPreloaderClient BuildRewardedAdPreloaderClient() {
+          if (Application.platform == RuntimePlatform.Android) {
+            return new GoogleMobileAds.Android.RewardedAdPreloaderClient();
+          }
+          throw new InvalidOperationException(@"Called " + MethodBase.GetCurrentMethod().Name +
+                                              " on non-Android runtime");
         }
+
+#endif
     }
 }
 #endif

@@ -33,6 +33,8 @@
   [self configurePaidEventHandler];
 }
 
+#if GMA_PREVIEW_FEATURES
+
 + (BOOL)isPreloadedAdAvailable:(NSString *)adUnitID {
   return [GADAppOpenAd isPreloadedAdAvailable:adUnitID];
 }
@@ -45,6 +47,8 @@
   }
   [self setAppOpenAdAndConfigure:appOpenAd];
 }
+
+#endif  // GMA_PREVIEW_FEATURES
 
 - (void)loadWithAdUnitID:(nonnull NSString *)adUnit request:(nonnull GADRequest *)request {
   __weak GADUAppOpenAd *weakSelf = self;

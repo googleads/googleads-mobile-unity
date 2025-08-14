@@ -27,6 +27,8 @@
   return self;
 }
 
+#if GMA_PREVIEW_FEATURES
+
 + (BOOL)isPreloadedAdAvailable:(NSString *)adUnitID {
   return [GAMInterstitialAd isPreloadedAdAvailable:adUnitID];
 }
@@ -55,6 +57,8 @@
     }
   };
 }
+
+#endif  // GMA_PREVIEW_FEATURES
 
 - (void)loadWithAdManagerAdUnitID:(nonnull NSString *)adUnitID
                           request:(nonnull GAMRequest *)request {

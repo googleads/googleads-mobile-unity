@@ -89,6 +89,8 @@ namespace GoogleMobileAds.Api
             RegisterAdEvents();
         }
 
+#if GMA_PREVIEW_FEATURES
+
         /// <summary>
         /// Verify if an ad is preloaded and available to show.
         /// </summary>
@@ -121,6 +123,8 @@ namespace GoogleMobileAds.Api
             client.CreateAppOpenAd();
             return new AppOpenAd(client.PollAd(adUnitId));
         }
+
+#endif  // GMA_PREVIEW_FEATURES
 
         /// <summary>
         /// Loads an app open ad.

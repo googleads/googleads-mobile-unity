@@ -14,10 +14,12 @@
  * limitations under the License.
  */
 
+#if GMA_PREVIEW_FEATURES
+
 #import <Foundation/Foundation.h>
 #import <GoogleMobileAds/GADAdFormat.h>
-#import <GoogleMobileAds/GADPreloadConfiguration_Preview.h>
 #import <GoogleMobileAds/GoogleMobileAds.h>
+#import "GADPreloadConfiguration_Preview.h"
 
 #import "GADUTypes.h"
 
@@ -43,3 +45,5 @@
 - (nonnull id)initWithConfig:(nonnull GADPreloadConfiguration *)config;
 
 @end
+
+#endif  // GMA_PREVIEW_FEATURES

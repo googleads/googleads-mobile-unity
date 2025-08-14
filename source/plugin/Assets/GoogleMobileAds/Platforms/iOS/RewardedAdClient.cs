@@ -128,6 +128,8 @@ namespace GoogleMobileAds.iOS
                 RewardedAdPaidEventCallback);
         }
 
+#if GMA_PREVIEW_FEATURES
+
         // Verify if a rewarded ad is preloaded and available to show.
         public bool IsAdAvailable(string adUnitId)
         {
@@ -140,6 +142,8 @@ namespace GoogleMobileAds.iOS
             Externs.GADURewardedPreloadedAdWithAdUnitID(this.RewardedAdPtr, adUnitId);
             return this;
         }
+
+#endif
 
         public void LoadAd(string adUnitID, AdRequest request) {
             IntPtr requestPtr = Utils.BuildAdManagerAdRequest(request);

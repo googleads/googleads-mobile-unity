@@ -120,6 +120,8 @@ namespace GoogleMobileAds.iOS
                 InterstitialAppEventCallback);
         }
 
+#if GMA_PREVIEW_FEATURES
+
         // Verify if an ad is preloaded and available to show.
         public bool IsAdAvailable(string adUnitId)
         {
@@ -131,6 +133,8 @@ namespace GoogleMobileAds.iOS
         {
             return PollAdManagerAd(adUnitId);
         }
+
+#endif
 
         // Returns the next pre-loaded ad manager interstitial ad and null if no ad is available.
         public IAdManagerInterstitialClient PollAdManagerAd(string adUnitId)

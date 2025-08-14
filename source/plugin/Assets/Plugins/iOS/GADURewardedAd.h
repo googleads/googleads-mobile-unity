@@ -4,7 +4,9 @@
 
 #import <GoogleMobileAds/GoogleMobileAds.h>
 
+#if GMA_PREVIEW_FEATURES
 #import "GADRewardedAd_Preview.h"
+#endif
 #import "GADUTypes.h"
 
 @interface GADURewardedAd : NSObject
@@ -53,9 +55,13 @@
 // Returns the rewarded ad response info.
 @property(nonatomic, readonly, copy) GADResponseInfo *responseInfo;
 
+#if GMA_PREVIEW_FEATURES
+
 + (BOOL)isPreloadedAdAvailable:(nonnull NSString *)adUnitID;
 
 - (void)preloadedAdWithAdUnitID:(nonnull NSString *)adUnitID;
+
+#endif  // GMA_PREVIEW_FEATURES
 
 /// Makes an ad request. Additional targeting options can be supplied with a request object.
 - (void)loadWithAdUnitID:(NSString *)adUnitID request:(GADRequest *)request;
