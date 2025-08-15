@@ -46,6 +46,7 @@ namespace GoogleMobileAds.Android
         public AdManagerInterstitialClient() :
                 base(Utils.UnityAdManagerInterstitialAdCallbackClassName)
         {
+            Debug.Log("TEST // AdManagerInterstitialClient");
             AndroidJavaClass playerClass = new AndroidJavaClass(Utils.UnityActivityClassName);
             AndroidJavaObject activity =
                     playerClass.GetStatic<AndroidJavaObject>("currentActivity");

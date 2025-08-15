@@ -28,6 +28,7 @@ namespace GoogleMobileAds.Android
 
         public BannerClient() : base(Utils.UnityAdListenerClassName)
         {
+            Debug.Log("TEST // BannerClient");
             AndroidJavaClass playerClass = new AndroidJavaClass(Utils.UnityActivityClassName);
             AndroidJavaObject activity =
                     playerClass.GetStatic<AndroidJavaObject>("currentActivity");

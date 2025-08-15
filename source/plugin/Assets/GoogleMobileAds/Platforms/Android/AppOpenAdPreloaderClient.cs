@@ -33,6 +33,7 @@ namespace GoogleMobileAds.Android
 
         public AppOpenAdPreloaderClient() : base(Utils.PreloadCallbackClassname)
         {
+            Debug.Log("TEST // AppOpenAdPreloaderClient");
             var playerClass = new AndroidJavaClass(Utils.UnityActivityClassName);
             var activity =
                     playerClass.GetStatic<AndroidJavaObject>("currentActivity");

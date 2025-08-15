@@ -27,6 +27,7 @@ namespace GoogleMobileAds.Android
 
         public AppOpenAdClient() : base(Utils.UnityAppOpenAdCallbackClassName)
         {
+            Debug.Log("TEST // AppOpenAdClient");
             AndroidJavaClass playerClass = new AndroidJavaClass(Utils.UnityActivityClassName);
             AndroidJavaObject activity =
                     playerClass.GetStatic<AndroidJavaObject>("currentActivity");

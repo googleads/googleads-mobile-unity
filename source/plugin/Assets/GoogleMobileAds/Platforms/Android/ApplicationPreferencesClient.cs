@@ -26,6 +26,7 @@ namespace GoogleMobileAds.Android
 
         public ApplicationPreferencesClient()
         {
+            Debug.Log("TEST // ApplicationPreferencesClient");
             if (_androidApplicationPreferences == null)
             {
                 AndroidJavaClass playerClass = new AndroidJavaClass(Utils.UnityActivityClassName);

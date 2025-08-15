@@ -49,6 +49,7 @@ namespace GoogleMobileAds.Android
 
         public AppStateEventClient() : base(Utils.UnityAppStateEventCallbackClassName)
         {
+            Debug.Log("TEST // AppStateEventClient");
             var playerClass = new AndroidJavaClass(Utils.UnityActivityClassName);
             var activity = playerClass.GetStatic<AndroidJavaObject>("currentActivity");
             appStateEventNotifer =

@@ -27,6 +27,7 @@ namespace GoogleMobileAds.Android
 
         public InitializationStatusClient(AndroidJavaObject status)
         {
+            Debug.Log("TEST // InitializationStatusClient");
             this.status = status;
             this.statusMap = status.Call<AndroidJavaObject>("getAdapterStatusMap");
         }

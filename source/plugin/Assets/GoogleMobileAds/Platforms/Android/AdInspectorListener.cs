@@ -24,6 +24,7 @@ namespace GoogleMobileAds.Android {
 
     public AdInspectorListener(Action<AdInspectorErrorClientEventArgs> adInspectorClosedAction)
         : base(Utils.UnityAdInspectorListenerClassname) {
+      Debug.Log("TEST // AdInspectorListener");
       this.adInspectorClosedAction = adInspectorClosedAction;
     }
 

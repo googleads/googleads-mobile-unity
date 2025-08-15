@@ -28,6 +28,7 @@ namespace GoogleMobileAds
     {
         public IAppStateEventClient BuildAppStateEventClient()
         {
+            Debug.Log("TEST // BuildAppStateEventClient");
             if (Application.platform == RuntimePlatform.Android)
             {
                 return new GoogleMobileAds.Android.AppStateEventClient();
@@ -38,6 +39,7 @@ namespace GoogleMobileAds
 
         public IAppOpenAdClient BuildAppOpenAdClient()
         {
+            Debug.Log("TEST // BuildAppOpenAdClient");
             if (Application.platform == RuntimePlatform.Android)
             {
                 return new GoogleMobileAds.Android.AppOpenAdClient();
@@ -47,6 +49,7 @@ namespace GoogleMobileAds
         }
 
         public IBannerClient BuildBannerClient() {
+          Debug.Log("TEST // BuildBannerClient");
           if (Application.platform == RuntimePlatform.Android) {
             return new GoogleMobileAds.Android.BannerClient();
           }
@@ -55,6 +58,7 @@ namespace GoogleMobileAds
         }
 
         public IAdManagerBannerClient BuildAdManagerBannerClient() {
+          Debug.Log("TEST // BuildAdManagerBannerClient");
           if (Application.platform == RuntimePlatform.Android) {
             return new GoogleMobileAds.Android.AdManagerBannerClient();
           }
@@ -63,6 +67,7 @@ namespace GoogleMobileAds
         }
 
         public IInterstitialClient BuildInterstitialClient() {
+          Debug.Log("TEST // BuildInterstitialClient");
           if (Application.platform == RuntimePlatform.Android) {
             return new GoogleMobileAds.Android.InterstitialClient();
           }
@@ -71,6 +76,7 @@ namespace GoogleMobileAds
         }
 
         public IAdManagerInterstitialClient BuildAdManagerInterstitialClient() {
+          Debug.Log("TEST // BuildAdManagerInterstitialClient");
           if (Application.platform == RuntimePlatform.Android) {
             return new GoogleMobileAds.Android.AdManagerInterstitialClient();
           }
@@ -79,6 +85,7 @@ namespace GoogleMobileAds
         }
 
         public IRewardedAdClient BuildRewardedAdClient() {
+          Debug.Log("TEST // BuildRewardedAdClient");
           if (Application.platform == RuntimePlatform.Android) {
             return new GoogleMobileAds.Android.RewardedAdClient();
           }
@@ -87,6 +94,7 @@ namespace GoogleMobileAds
         }
 
         public IRewardedInterstitialAdClient BuildRewardedInterstitialAdClient() {
+          Debug.Log("TEST // BuildRewardedInterstitialAdClient");
           if (Application.platform == RuntimePlatform.Android) {
             return new GoogleMobileAds.Android.RewardedInterstitialAdClient();
           }
@@ -95,6 +103,7 @@ namespace GoogleMobileAds
         }
 
         public INativeOverlayAdClient BuildNativeOverlayAdClient() {
+          Debug.Log("TEST // BuildNativeOverlayAdClient");
           if (Application.platform == RuntimePlatform.Android) {
             return new GoogleMobileAds.Android.NativeOverlayAdClient();
           }
@@ -103,6 +112,7 @@ namespace GoogleMobileAds
         }
 
         public IApplicationPreferencesClient ApplicationPreferencesInstance() {
+          Debug.Log("TEST // ApplicationPreferencesInstance");
           if (Application.platform == RuntimePlatform.Android) {
             return new GoogleMobileAds.Android.ApplicationPreferencesClient();
           }
@@ -111,6 +121,7 @@ namespace GoogleMobileAds
         }
 
         public IMobileAdsClient MobileAdsInstance() {
+          Debug.Log("TEST // MobileAdsInstance");
           if (Application.platform == RuntimePlatform.Android) {
             return GoogleMobileAds.Android.MobileAdsClient.Instance;
           }
@@ -121,6 +132,7 @@ namespace GoogleMobileAds
 #if GMA_PREVIEW_FEATURES
 
         public IAppOpenAdPreloaderClient BuildAppOpenAdPreloaderClient() {
+          Debug.Log("TEST // BuildAppOpenAdPreloaderClient");
           if (Application.platform == RuntimePlatform.Android) {
             return new GoogleMobileAds.Android.AppOpenAdPreloaderClient();
           }
@@ -129,6 +141,7 @@ namespace GoogleMobileAds
         }
 
         public IInterstitialAdPreloaderClient BuildInterstitialAdPreloaderClient() {
+          Debug.Log("TEST // BuildInterstitialAdPreloaderClient");
           if (Application.platform == RuntimePlatform.Android) {
             return new GoogleMobileAds.Android.InterstitialAdPreloaderClient();
           }
@@ -137,6 +150,7 @@ namespace GoogleMobileAds
         }
 
         public IRewardedAdPreloaderClient BuildRewardedAdPreloaderClient() {
+          Debug.Log("TEST // BuildRewardedAdPreloaderClient");
           if (Application.platform == RuntimePlatform.Android) {
             return new GoogleMobileAds.Android.RewardedAdPreloaderClient();
           }

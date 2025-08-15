@@ -25,6 +25,7 @@ namespace GoogleMobileAds.Android
 
         public AdapterResponseInfoClient(AndroidJavaObject adapterResponseInfo)
         {
+            Debug.Log("TEST // AdapterResponseInfoClient");
             _adapterResponseInfo = adapterResponseInfo;
         }
 
