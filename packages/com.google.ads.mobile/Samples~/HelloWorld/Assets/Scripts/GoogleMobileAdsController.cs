@@ -41,11 +41,6 @@ namespace GoogleMobileAds.Samples
             // This setting makes iOS behave consistently with Android.
             MobileAds.SetiOSAppPauseOnBackground(true);
 
-            // When true all events raised by GoogleMobileAds will be raised
-            // on the Unity main thread. The default value is false.
-            // https://developers.google.com/admob/unity/quick-start#raise_ad_events_on_the_unity_main_thread
-            MobileAds.RaiseAdEventsOnUnityMainThread = true;
-
             // Configure your RequestConfiguration with Child Directed Treatment
             // and the Test Device Ids.
             MobileAds.SetRequestConfiguration(new RequestConfiguration
@@ -131,6 +126,11 @@ namespace GoogleMobileAds.Samples
 
                 Debug.Log("Google Mobile Ads initialization complete.");
                 _isInitialized = true;
+
+                // Google Mobile Ads events are raised off the Unity Main thread. If you need to
+                // access UnityEngine objects after initialization,
+                // use MobileAdsEventExecutor.ExecuteInUpdate(). For more information, see:
+                // https://developers.google.com/admob/unity/global-settings#raise_ad_events_on_the_unity_main_thread
             });
             // [END initialize_sdk]
         }

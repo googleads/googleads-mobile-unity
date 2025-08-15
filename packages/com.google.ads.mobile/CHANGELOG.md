@@ -1,6 +1,29 @@
 Google Mobile Ads Unity Plugin Change Log
 
 **************
+Version 10.4.0
+**************
+
+- Updated the GMA Android SDK dependency version to 24.5.0.
+- Updated the GMA iOS SDK dependency version to 12.9.0.
+- Added Android build post processor to solve common build issues. For more information see, [Enable Gradle build post processor](https://developers.google.com/admob/unity/android).
+- Fixed [#3718](https://github.com/googleads/googleads-mobile-unity/issues/3718).
+- Updated the Android library source code location according to Unity's [Android Library](https://docs.unity3d.com/Manual/android-library-plugin-create.html) [(aka bundled) plug-in](https://docs.unity3d.com/2019.4/Documentation/Manual/PluginInspector.html) format.
+  -   **Old location:** [source/android-library](https://github.com/googleads/googleads-mobile-unity/tree/main/source/android-library)
+  -   **New location:** [source/plugin/Assets/Plugins/Android/GoogleMobileAdsPlugin.androidlib](https://github.com/googleads/googleads-mobile-unity/tree/main/source/plugin/Assets/Plugins/Android/GoogleMobileAdsPlugin.androidlib)
+  -   This change makes the SDK more streamlined to build from source.
+- Merged the Android Manifest files into a single one located under `src/main`.
+- Fixed [#3810](https://github.com/googleads/googleads-mobile-unity/issues/3810) - crash on `AdapterResponseInfo.AdSourceName`.
+
+Built and tested with:
+
+- Google Mobile Ads Android SDK 24.5.0.
+- Google Mobile Ads iOS SDK 12.9.0.
+- Google User Messaging Platform Android SDK 3.2.0
+- Google User Messaging Platform iOS SDK 3.0.0
+- External Dependency Manager for Unity 1.2.186
+
+**************
 Version 10.3.0
 **************
 
