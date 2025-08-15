@@ -33,7 +33,7 @@ public class ManifestProcessor : IPreprocessBuild
 #endif
 {
     private const string MANIFEST_RELATIVE_PATH =
-            "Plugins/Android/GoogleMobileAdsPlugin.androidlib/src/main/AndroidManifest.xml";
+            "Plugins/Android/GoogleMobileAdsPlugin.androidlib/AndroidManifest.xml";
 
     private const string PROPERTIES_RELATIVE_PATH =
             "Plugins/Android/GoogleMobileAdsPlugin.androidlib/project.properties";
@@ -86,6 +86,12 @@ public class ManifestProcessor : IPreprocessBuild
         if (AssetDatabase.IsValidFolder("Packages/com.google.ads.mobile"))
         {
             manifestPath = Path.Combine("Packages/com.google.ads.mobile", MANIFEST_RELATIVE_PATH);
+        }
+
+        if (!File.Exists(manifestPath))
+        {
+            manifestPath = Path.Combine(Path.GetDirectoryName(manifestPath), "src", "main",
+                                        "AndroidManifest.xml");
         }
 
         XDocument manifest = null;
