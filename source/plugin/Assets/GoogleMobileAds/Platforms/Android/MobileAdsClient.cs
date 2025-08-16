@@ -40,6 +40,7 @@ namespace GoogleMobileAds.Android
 
         public void Initialize(Action<IInitializationStatusClient> initCompleteAction)
         {
+          Debug.Log("TEST // MobileAdsClient.Initialize");
           _initCompleteAction = initCompleteAction;
 
           Task.Run(() => {
