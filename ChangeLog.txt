@@ -1,6 +1,21 @@
 Google Mobile Ads Unity Plugin Change Log
 
 **************
+Version 10.4.1
+**************
+
+- **Version 10.4.0 has been deprecated. Please update to 10.4.1 instead.**
+- Add `package` and `minSdkVersion` attribute to AndroidManifest.xml.
+
+Built and tested with:
+
+- Google Mobile Ads Android SDK 24.5.0.
+- Google Mobile Ads iOS SDK 12.9.0.
+- Google User Messaging Platform Android SDK 3.2.0
+- Google User Messaging Platform iOS SDK 3.0.0
+- External Dependency Manager for Unity 1.2.186
+
+**************
 Version 10.4.0
 **************
 
