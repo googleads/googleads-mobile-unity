@@ -1,3 +1,4 @@
+// <copyright file="RequestConfiguration.cs" company="Google LLC">
 // Copyright (C) 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -11,12 +12,13 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-
-using System.Collections.Generic;
-using System;
+// </copyright>
 
 namespace GoogleMobileAds.Api
 {
+    using System;
+    using System.Collections.Generic;
+
     /// <summary>
     /// Global configuration used for every <see cref="AdRequest"/>.
     /// </summary>
@@ -81,8 +83,17 @@ namespace GoogleMobileAds.Api
         /// </summary>
         public bool? PublisherFirstPartyIdEnabled;
 
-        public RequestConfiguration() {}
+        /// <summary>
+        /// Initializes a new instance of the <see cref="RequestConfiguration"/> class.
+        /// </summary>
+        public RequestConfiguration()
+        {
+        }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="RequestConfiguration"/> class.
+        /// </summary>
+        /// <param name="requestConfiguration">The configuration to copy.</param>
         public RequestConfiguration(RequestConfiguration requestConfiguration)
         {
             MaxAdContentRating = requestConfiguration.MaxAdContentRating;

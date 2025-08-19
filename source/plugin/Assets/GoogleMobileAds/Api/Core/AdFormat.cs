@@ -1,3 +1,4 @@
+// <copyright file="AdFormat.cs" company="Google LLC">
 // Copyright (C) 2024 Google, Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -11,6 +12,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+// </copyright>
 
 namespace GoogleMobileAds.Api
 {
@@ -19,17 +21,34 @@ namespace GoogleMobileAds.Api
     /// </summary>
     public enum AdFormat
     {
+        /// <summary>
         /// Banner ad format.
+        /// </summary>
         BANNER = 0,
+
+        /// <summary>
         /// Interstitial ad format.
+        /// </summary>
         INTERSTITIAL = 1,
+
+        /// <summary>
         /// Rewarded ad format.
+        /// </summary>
         REWARDED = 2,
+
+        /// <summary>
         /// Rewarded interstitial ad format.
+        /// </summary>
         REWARDED_INTERSTITIAL = 3,
+
+        /// <summary>
         /// Native ad format.
+        /// </summary>
         NATIVE = 4,
+
+        /// <summary>
         /// App open ad format.
+        /// </summary>
         APP_OPEN_AD = 5
     }
 }

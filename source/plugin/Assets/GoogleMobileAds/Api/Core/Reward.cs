@@ -1,3 +1,4 @@
+// <copyright file="Reward.cs" company="Google LLC">
 // Copyright (C) 2015 Google, Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -11,12 +12,13 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-
-using System;
-using UnityEngine;
+// </copyright>
 
 namespace GoogleMobileAds.Api
 {
+    using System;
+    using UnityEngine;
+
     /// <summary>
     /// Describes a reward credited to a user for interacting with rewarded ads.
     /// </summary>
@@ -33,8 +35,17 @@ namespace GoogleMobileAds.Api
         /// </summary>
         public double Amount;
 
-        public Reward() {}
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Reward"/> class.
+        /// </summary>
+        public Reward()
+        {
+        }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Reward"/> class.
+        /// </summary>
+        /// <param name="reward">The reward to copy.</param>
         public Reward(Reward reward)
         {
             Type = reward.Type;
