@@ -6,7 +6,7 @@
 #endif
 
 #if UNITY_6000_0_OR_NEWER || UNITY_2023 || ANDROID_GRADLE_BUILD_JETIFIER_ENTRY_ENABLED
-#define ANDROID_GRADLE_BUILD_POST_PROCESSOR_ENABLED
+#define ANDROID_GRADLE_BUILD_PRE_PROCESSOR_ENABLED
 #endif
 
 using System;
@@ -45,24 +45,14 @@ namespace GoogleMobileAds.Editor
 
         public void OnPreprocessBuild(BuildReport report)
         {
-            if (GoogleMobileAdsSettings.LoadInstance().GoogleMobileAdsAndroidAppId.Length == 0)
-            {
-                throw new BuildFailedException(
-                    "The Android Google Mobile Ads app ID is empty. "+
-                    "Add a valid app ID to your GoogleMobileAdsSettings to run ads properly.");
-            }
             if(!GoogleMobileAdsSettings.LoadInstance().EnableGradleBuildPostProcessor)
             {
                 return;
             }
-            #if ANDROID_GRADLE_BUILD_POST_PROCESSOR_ENABLED
+            // For more details see, https://developers.google.com/admob/unity/android
+#if ANDROID_GRADLE_BUILD_PRE_PROCESSOR_ENABLED
             ApplyBuildSettings(report);
-            #else
-            throw new BuildFailedException(
-                "Unity Editor 2021.3.41f1 or higher is required to enable the gradle build " +
-                "post-processor. Update your build settings manually or disable the gradle build "+
-                "post-processor. For more details see, https://developers.google.com/admob/unity/android");
-            #endif
+#endif
         }
 
         private void ApplyBuildSettings(BuildReport report)
