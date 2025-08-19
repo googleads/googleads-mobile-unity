@@ -24,8 +24,8 @@ namespace GoogleMobileAds.Editor
     /// with the Google Mobile Ads SDK. This includes:
     ///  - Verify the Android Google Mobile Ads app ID is set.
     ///  - Throw an exception if the Android Google Mobile Ads app ID is not set.
-    ///  - Set minimum API level to 23.
-    ///  - Set target API level to 34.
+    ///  - Set minimum API level to 23 (the target API level may be automatically set, we should not
+    ///    hardcode it).
     ///  - Enable Custom Main Gradle Template.
     ///  - Update Custom Main Gradle Template with dependencies using the Play Services Resolver.
     ///  - Enable Custom Gradle Properties Template.
@@ -34,7 +34,6 @@ namespace GoogleMobileAds.Editor
     public class BuildPreProcessor : IPreprocessBuildWithReport
     {
         const int MinimumAPILevel = 23;
-        const int TargetAPILevel = 34;
         const string CustomGradlePropertiesTemplatesFileName = "gradleTemplate.properties";
         const string CustomMainGradleTemplateFileName = "mainTemplate.gradle";
         const string JetifierEntry =
@@ -79,17 +78,6 @@ namespace GoogleMobileAds.Editor
             else
             {
                 Debug.Log($"Verified Minimum API Level is >= {MinimumAPILevel}.");
-            }
-
-            // Set Target Api Level.
-            if (PlayerSettings.Android.targetSdkVersion < (AndroidSdkVersions)TargetAPILevel)
-            {
-                PlayerSettings.Android.targetSdkVersion = (AndroidSdkVersions)TargetAPILevel;
-                Debug.Log($"Set target API Level to: {TargetAPILevel}");
-            }
-            else
-            {
-                Debug.Log($"Verified Target API Level is >= {TargetAPILevel}.");
             }
 
             // Create Assets/Plugins folder.
