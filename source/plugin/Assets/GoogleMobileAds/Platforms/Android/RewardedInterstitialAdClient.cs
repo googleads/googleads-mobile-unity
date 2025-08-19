@@ -49,6 +49,18 @@ namespace GoogleMobileAds.Android
 
         public event Action OnAdClicked;
 
+        public long PlacementId
+        {
+            get
+            {
+                return androidRewardedInterstitialAd.Call<long>("getPlacementId");
+            }
+            set
+            {
+                androidRewardedInterstitialAd.Call("setPlacementId", value);
+            }
+        }
+
         public void CreateRewardedInterstitialAd()
         {
             // Do nothing.

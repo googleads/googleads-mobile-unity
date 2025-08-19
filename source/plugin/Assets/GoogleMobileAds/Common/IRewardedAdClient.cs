@@ -22,22 +22,33 @@ namespace GoogleMobileAds.Common
     {
         // Ad event fired when the rewarded ad has been received.
         event EventHandler<EventArgs> OnAdLoaded;
+
         // Ad event fired when the rewarded ad has failed to load.
         event EventHandler<LoadAdErrorClientEventArgs> OnAdFailedToLoad;
+
         // Ad event fired when the rewarded ad is estimated to have earned money.
         event Action<AdValue> OnPaidEvent;
+
         // Ad event fired when the rewarded ad has rewarded the user.
         event EventHandler<Reward> OnUserEarnedReward;
+
         // Ad event fired when the full screen content has failed to be presented.
         event EventHandler<AdErrorClientEventArgs> OnAdFailedToPresentFullScreenContent;
+
         // Ad event fired when the full screen content has been presented.
         event EventHandler<EventArgs> OnAdDidPresentFullScreenContent;
+
         // Ad event fired when the full screen content has been dismissed.
         event EventHandler<EventArgs> OnAdDidDismissFullScreenContent;
+
         // Ad event fired when an ad impression has been recorded.
         event EventHandler<EventArgs> OnAdDidRecordImpression;
+
         // Ad event fired when an ad has been clicked.
         event Action OnAdClicked;
+
+        // A long integer provided by the AdMob UI for the configured placement.
+        long PlacementId { get; set; }
 
         // Creates a rewarded ad.
         void CreateRewardedAd();
