@@ -621,8 +621,14 @@ namespace GoogleMobileAds.iOS
       internal static extern IntPtr GADULoadInterstitialAd(IntPtr interstitialAd, string adUnitID,
                                                            IntPtr request);
 
-      [DllImport("__Internal")]
-      internal static extern string GADUGetInterstitialAdUnitID(IntPtr interstitialAd);
+        [DllImport("__Internal")]
+        internal static extern string GADUGetInterstitialAdUnitID(IntPtr interstitialAd);
+
+        [DllImport("__Internal")]
+        internal static extern long GADUGetInterstitialAdPlacementID(IntPtr interstitialAd);
+
+        [DllImport("__Internal")]
+        internal static extern void GADUSetInterstitialAdPlacementID(IntPtr interstitialAd, long placementId);
 
       [DllImport("__Internal")]
       internal static extern void GADUSetInterstitialCallbacks(
@@ -710,6 +716,12 @@ namespace GoogleMobileAds.iOS
       internal static extern string GADUGetRewardedAdUnitID(IntPtr rewardedAd);
 
       [DllImport("__Internal")]
+      internal static extern long GADUGetRewardedAdPlacementID(IntPtr rewardedAd);
+
+      [DllImport("__Internal")]
+      internal static extern void GADUSetRewardedAdPlacementID(IntPtr rewardedAd, long placementId);
+
+      [DllImport("__Internal")]
       internal static extern void GADUSetRewardedAdCallbacks(
           IntPtr rewardedAd, RewardedAdClient.GADURewardedAdLoadedCallback adLoadedCallback,
           RewardedAdClient.GADURewardedAdFailedToLoadCallback adFailedToLoadCallback,
@@ -762,6 +774,14 @@ namespace GoogleMobileAds.iOS
       [DllImport("__Internal")]
       internal static extern string GADUGetRewardedInterstitialAdUnitID(
           IntPtr rewardedInterstitialAd);
+
+      [DllImport("__Internal")]
+      internal static extern long GADUGetRewardedInterstitialAdPlacementId(
+          IntPtr rewardedInterstitialAd);
+
+      [DllImport("__Internal")]
+      internal static extern void GADUSetRewardedInterstitialAdPlacementId(
+          IntPtr rewardedInterstitialAd, long placementId);
 
       [DllImport("__Internal")]
       internal static extern void GADUSetRewardedInterstitialAdCallbacks(

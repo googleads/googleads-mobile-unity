@@ -87,6 +87,14 @@
            }];
 }
 
+- (long)placementID {
+  return _rewardedInterstitialAd.placementID;
+}
+
+- (void)setPlacementID:(long)placementID {
+  _rewardedInterstitialAd.placementID = placementID;
+}
+
 - (GADResponseInfo *)responseInfo {
   return self.rewardedInterstitialAd.responseInfo;
 }

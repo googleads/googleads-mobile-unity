@@ -45,6 +45,9 @@ namespace GoogleMobileAds.Unity
         // Ad event fired when an ad impression has been clicked.
         public event Action OnAdClicked;
 
+        // The placement ID for the ad.
+        public long PlacementId { get; set; }
+
         internal static readonly Dictionary<AdSize, string> prefabAds = new Dictionary<AdSize, string>()
         {
             {new AdSize (768,1024), "PlaceholderAds/Rewarded/768x1024" },
