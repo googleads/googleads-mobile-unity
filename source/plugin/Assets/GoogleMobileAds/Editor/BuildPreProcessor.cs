@@ -45,7 +45,7 @@ namespace GoogleMobileAds.Editor
 
         public void OnPreprocessBuild(BuildReport report)
         {
-            if(!GoogleMobileAdsSettings.LoadInstance().EnableGradleBuildPostProcessor)
+            if(!GoogleMobileAdsSettings.LoadInstance().EnableGradleBuildPreProcessor)
             {
                 return;
             }
@@ -57,7 +57,7 @@ namespace GoogleMobileAds.Editor
 
         private void ApplyBuildSettings(BuildReport report)
         {
-            Debug.Log("Running Android Gradle Build Post-Processor.");
+            Debug.Log("Running Android Gradle Build Pre-Processor.");
 
             // Set Minimum Api Level.
             if (PlayerSettings.Android.minSdkVersion < (AndroidSdkVersions)MinimumAPILevel)
@@ -71,16 +71,16 @@ namespace GoogleMobileAds.Editor
             }
 
             // Create Assets/Plugins folder.
-            if (!AssetDatabase.IsValidFolder("Assets/Plugins"))
+            if (!AssetDatabase.IsValidFolder(Path.Combine("Assets", "Plugins")))
             {
                 AssetDatabase.CreateFolder("Assets", "Plugins");
                 AssetDatabase.Refresh();
             }
 
             // Create Assets/Plugins/Android folder.
-            if (!AssetDatabase.IsValidFolder("Assets/Plugins/Android"))
+            if (!AssetDatabase.IsValidFolder(Path.Combine("Assets", "Plugins", "Android")))
             {
-                AssetDatabase.CreateFolder("Assets/Plugins", "Android");
+                AssetDatabase.CreateFolder(Path.Combine("Assets", "Plugins"), "Android");
                 AssetDatabase.Refresh();
             }
 
@@ -93,7 +93,7 @@ namespace GoogleMobileAds.Editor
             #if ANDROID_GRADLE_BUILD_JETIFIER_ENTRY_ENABLED
             string customGradlePropertiesTemplatesFilePath = Path.Combine(
                 Application.dataPath,
-                "Plugins/Android",
+                "Plugins", "Android",
                 CustomGradlePropertiesTemplatesFileName);
             if (File.Exists(customGradlePropertiesTemplatesFilePath))
             {
@@ -119,7 +119,7 @@ namespace GoogleMobileAds.Editor
 
             Debug.Log("Resolving Android Gradle dependencies.");
             PlayServicesResolver.ResolveSync(true);
-            Debug.Log("Android Build Post-Processor finished.");
+            Debug.Log("Android Build Pre-Processor finished.");
         }
 
         /// <summary>
@@ -132,16 +132,15 @@ namespace GoogleMobileAds.Editor
             bool foundDisabledFile = false;
 
             // Check for target file.
-            string targetPath = Path.Combine(Application.dataPath,
-                $"Plugins/Android/{fileName}");
+            string targetPath = Path.Combine(Application.dataPath, "Plugins", "Android", fileName);
             if (File.Exists(targetPath))
             {
                 foundTargetFile = true;
             }
 
             // Check for the ".DISABLED" file.
-            string disabledPath = Path.Combine(Application.dataPath,
-                $"Plugins/Android/{fileName}.DISABLED");
+            string disabledPath = Path.Combine(Application.dataPath, "Plugins", "Android",
+                    $"{fileName}.DISABLED");
             if (File.Exists(disabledPath))
             {
                 foundDisabledFile = true;
@@ -178,7 +177,7 @@ namespace GoogleMobileAds.Editor
             if (!File.Exists(sourceFileName))
             {
                 throw new BuildFailedException(
-                    "Android Build Post-Processor failed. "+
+                    "Android Build Pre-Processor failed. "+
                     $"Unable to find source {sourceFileName}. Is your file system read-only?" +
                     "If this issue persists, contact Google Mobile Ads Support "+
                     "at https://developers.google.com/admob/support");

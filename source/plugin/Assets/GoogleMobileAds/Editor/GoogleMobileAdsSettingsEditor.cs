@@ -14,7 +14,7 @@ namespace GoogleMobileAds.Editor
   {
     SerializedProperty _appIdAndroid;
     SerializedProperty _appIdiOS;
-    SerializedProperty _enableGradleBuildPostProcessor;
+    SerializedProperty _enableGradleBuildPreProcessor;
     SerializedProperty _enableKotlinXCoroutinesPackagingOption;
     SerializedProperty _disableOptimizeInitialization;
     SerializedProperty _disableOptimizeAdLoading;
@@ -38,8 +38,8 @@ namespace GoogleMobileAds.Editor
     {
       _appIdAndroid = serializedObject.FindProperty("adMobAndroidAppId");
       _appIdiOS = serializedObject.FindProperty("adMobIOSAppId");
-      _enableGradleBuildPostProcessor =
-          serializedObject.FindProperty("enableGradleBuildPostProcessor");
+      _enableGradleBuildPreProcessor =
+          serializedObject.FindProperty("enableGradleBuildPreProcessor");
       _enableKotlinXCoroutinesPackagingOption =
           serializedObject.FindProperty("enableKotlinXCoroutinesPackagingOption");
       _disableOptimizeInitialization = serializedObject.FindProperty("disableOptimizeInitialization");
@@ -96,14 +96,14 @@ namespace GoogleMobileAds.Editor
 
 #if ANDROID_GRADLE_BUILD_PRE_PROCESSOR_ENABLED
       EditorGUILayout.PropertyField(
-          _enableGradleBuildPostProcessor,
+          _enableGradleBuildPreProcessor,
           new GUIContent(
-              localization.ForKey("ENABLE_GRADLE_BUILD_POST_PROCESSOR_SETTING")));
+              localization.ForKey("ENABLE_GRADLE_BUILD_PRE_PROCESSOR_SETTING")));
 
-      if (settings.EnableGradleBuildPostProcessor)
+      if (settings.EnableGradleBuildPreProcessor)
       {
         EditorGUILayout.HelpBox(
-            localization.ForKey("ENABLE_GRADLE_BUILD_POST_PROCESSOR_HELPBOX"),
+            localization.ForKey("ENABLE_GRADLE_BUILD_PRE_PROCESSOR_HELPBOX"),
             MessageType.Info);
       }
 #endif
