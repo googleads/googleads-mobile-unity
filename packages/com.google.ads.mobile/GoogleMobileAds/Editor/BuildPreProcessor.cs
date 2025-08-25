@@ -1,12 +1,12 @@
 #if UNITY_ANDROID
-#if UNITY_2022 ||  UNITY_2021_3_5 ||UNITY_2021_3_49  || UNITY_2021_3_48 || UNITY_2021_3_47 || UNITY_2021_3_46 || UNITY_2021_3_45  || UNITY_2021_3_44 || UNITY_2021_3_43 || UNITY_2021_3_42 || UNITY_2021_3_41
+#if UNITY_2022 || UNITY_2021_3_55 || UNITY_2021_3_54 || UNITY_2021_3_53 || UNITY_2021_3_52 || UNITY_2021_3_51 || UNITY_2021_3_50 || UNITY_2021_3_49 || UNITY_2021_3_48 || UNITY_2021_3_47 || UNITY_2021_3_46 || UNITY_2021_3_45 || UNITY_2021_3_44 || UNITY_2021_3_43 || UNITY_2021_3_42 || UNITY_2021_3_41
 // 2021.3.41f1+	Gradle version 7.5.1+
 // https://docs.unity3d.com/2021.3/Documentation/Manual/android-gradle-overview.html
 #define ANDROID_GRADLE_BUILD_JETIFIER_ENTRY_ENABLED
 #endif
 
 #if UNITY_6000_0_OR_NEWER || UNITY_2023 || ANDROID_GRADLE_BUILD_JETIFIER_ENTRY_ENABLED
-#define ANDROID_GRADLE_BUILD_POST_PROCESSOR_ENABLED
+#define ANDROID_GRADLE_BUILD_PRE_PROCESSOR_ENABLED
 #endif
 
 using System;
@@ -24,8 +24,8 @@ namespace GoogleMobileAds.Editor
     /// with the Google Mobile Ads SDK. This includes:
     ///  - Verify the Android Google Mobile Ads app ID is set.
     ///  - Throw an exception if the Android Google Mobile Ads app ID is not set.
-    ///  - Set minimum API level to 23.
-    ///  - Set target API level to 34.
+    ///  - Set minimum API level to 23 (the target API level may be automatically set, we should not
+    ///    hardcode it).
     ///  - Enable Custom Main Gradle Template.
     ///  - Update Custom Main Gradle Template with dependencies using the Play Services Resolver.
     ///  - Enable Custom Gradle Properties Template.
@@ -34,7 +34,6 @@ namespace GoogleMobileAds.Editor
     public class BuildPreProcessor : IPreprocessBuildWithReport
     {
         const int MinimumAPILevel = 23;
-        const int TargetAPILevel = 34;
         const string CustomGradlePropertiesTemplatesFileName = "gradleTemplate.properties";
         const string CustomMainGradleTemplateFileName = "mainTemplate.gradle";
         const string JetifierEntry =
@@ -46,29 +45,19 @@ namespace GoogleMobileAds.Editor
 
         public void OnPreprocessBuild(BuildReport report)
         {
-            if (GoogleMobileAdsSettings.LoadInstance().GoogleMobileAdsAndroidAppId.Length == 0)
-            {
-                throw new BuildFailedException(
-                    "The Android Google Mobile Ads app ID is empty. "+
-                    "Add a valid app ID to your GoogleMobileAdsSettings to run ads properly.");
-            }
-            if(!GoogleMobileAdsSettings.LoadInstance().EnableGradleBuildPostProcessor)
+            if(!GoogleMobileAdsSettings.LoadInstance().EnableGradleBuildPreProcessor)
             {
                 return;
             }
-            #if ANDROID_GRADLE_BUILD_POST_PROCESSOR_ENABLED
+            // For more details see, https://developers.google.com/admob/unity/android
+#if ANDROID_GRADLE_BUILD_PRE_PROCESSOR_ENABLED
             ApplyBuildSettings(report);
-            #else
-            throw new BuildFailedException(
-                "Unity Editor 2021.3.41f1 or higher is required to enable the gradle build " +
-                "post-processor. Update your build settings manually or disable the gradle build "+
-                "post-processor. For more details see, https://developers.google.com/admob/unity/android");
-            #endif
+#endif
         }
 
         private void ApplyBuildSettings(BuildReport report)
         {
-            Debug.Log("Running Android Gradle Build Post-Processor.");
+            Debug.Log("Running Android Gradle Build Pre-Processor.");
 
             // Set Minimum Api Level.
             if (PlayerSettings.Android.minSdkVersion < (AndroidSdkVersions)MinimumAPILevel)
@@ -81,28 +70,17 @@ namespace GoogleMobileAds.Editor
                 Debug.Log($"Verified Minimum API Level is >= {MinimumAPILevel}.");
             }
 
-            // Set Target Api Level.
-            if (PlayerSettings.Android.targetSdkVersion < (AndroidSdkVersions)TargetAPILevel)
-            {
-                PlayerSettings.Android.targetSdkVersion = (AndroidSdkVersions)TargetAPILevel;
-                Debug.Log($"Set target API Level to: {TargetAPILevel}");
-            }
-            else
-            {
-                Debug.Log($"Verified Target API Level is >= {TargetAPILevel}.");
-            }
-
             // Create Assets/Plugins folder.
-            if (!AssetDatabase.IsValidFolder("Assets/Plugins"))
+            if (!AssetDatabase.IsValidFolder(Path.Combine("Assets", "Plugins")))
             {
                 AssetDatabase.CreateFolder("Assets", "Plugins");
                 AssetDatabase.Refresh();
             }
 
             // Create Assets/Plugins/Android folder.
-            if (!AssetDatabase.IsValidFolder("Assets/Plugins/Android"))
+            if (!AssetDatabase.IsValidFolder(Path.Combine("Assets", "Plugins", "Android")))
             {
-                AssetDatabase.CreateFolder("Assets/Plugins", "Android");
+                AssetDatabase.CreateFolder(Path.Combine("Assets", "Plugins"), "Android");
                 AssetDatabase.Refresh();
             }
 
@@ -115,7 +93,7 @@ namespace GoogleMobileAds.Editor
             #if ANDROID_GRADLE_BUILD_JETIFIER_ENTRY_ENABLED
             string customGradlePropertiesTemplatesFilePath = Path.Combine(
                 Application.dataPath,
-                "Plugins/Android",
+                "Plugins", "Android",
                 CustomGradlePropertiesTemplatesFileName);
             if (File.Exists(customGradlePropertiesTemplatesFilePath))
             {
@@ -141,7 +119,7 @@ namespace GoogleMobileAds.Editor
 
             Debug.Log("Resolving Android Gradle dependencies.");
             PlayServicesResolver.ResolveSync(true);
-            Debug.Log("Android Build Post-Processor finished.");
+            Debug.Log("Android Build Pre-Processor finished.");
         }
 
         /// <summary>
@@ -154,16 +132,15 @@ namespace GoogleMobileAds.Editor
             bool foundDisabledFile = false;
 
             // Check for target file.
-            string targetPath = Path.Combine(Application.dataPath,
-                $"Plugins/Android/{fileName}");
+            string targetPath = Path.Combine(Application.dataPath, "Plugins", "Android", fileName);
             if (File.Exists(targetPath))
             {
                 foundTargetFile = true;
             }
 
             // Check for the ".DISABLED" file.
-            string disabledPath = Path.Combine(Application.dataPath,
-                $"Plugins/Android/{fileName}.DISABLED");
+            string disabledPath = Path.Combine(Application.dataPath, "Plugins", "Android",
+                    $"{fileName}.DISABLED");
             if (File.Exists(disabledPath))
             {
                 foundDisabledFile = true;
@@ -200,7 +177,7 @@ namespace GoogleMobileAds.Editor
             if (!File.Exists(sourceFileName))
             {
                 throw new BuildFailedException(
-                    "Android Build Post-Processor failed. "+
+                    "Android Build Pre-Processor failed. "+
                     $"Unable to find source {sourceFileName}. Is your file system read-only?" +
                     "If this issue persists, contact Google Mobile Ads Support "+
                     "at https://developers.google.com/admob/support");

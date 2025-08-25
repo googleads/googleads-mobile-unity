@@ -1,5 +1,5 @@
-#if UNITY_6000_0_OR_NEWER || UNITY_2023 || UNITY_2022 ||  UNITY_2021_3_5 ||UNITY_2021_3_49  || UNITY_2021_3_48 || UNITY_2021_3_47 || UNITY_2021_3_46 || UNITY_2021_3_45  || UNITY_2021_3_44 || UNITY_2021_3_43 || UNITY_2021_3_42 || UNITY_2021_3_41
-#define ANDROID_GRADLE_BUILD_POST_PROCESSOR_ENABLED
+#if UNITY_6000_0_OR_NEWER || UNITY_2023 || UNITY_2022 || UNITY_2021_3_55 || UNITY_2021_3_54 || UNITY_2021_3_53 || UNITY_2021_3_52 || UNITY_2021_3_51 || UNITY_2021_3_50 || UNITY_2021_3_49 || UNITY_2021_3_48 || UNITY_2021_3_47 || UNITY_2021_3_46 || UNITY_2021_3_45 || UNITY_2021_3_44 || UNITY_2021_3_43 || UNITY_2021_3_42 || UNITY_2021_3_41
+#define ANDROID_GRADLE_BUILD_PRE_PROCESSOR_ENABLED
 #endif
 
 using System;
@@ -14,7 +14,7 @@ namespace GoogleMobileAds.Editor
   {
     SerializedProperty _appIdAndroid;
     SerializedProperty _appIdiOS;
-    SerializedProperty _enableGradleBuildPostProcessor;
+    SerializedProperty _enableGradleBuildPreProcessor;
     SerializedProperty _enableKotlinXCoroutinesPackagingOption;
     SerializedProperty _disableOptimizeInitialization;
     SerializedProperty _disableOptimizeAdLoading;
@@ -38,8 +38,8 @@ namespace GoogleMobileAds.Editor
     {
       _appIdAndroid = serializedObject.FindProperty("adMobAndroidAppId");
       _appIdiOS = serializedObject.FindProperty("adMobIOSAppId");
-      _enableGradleBuildPostProcessor =
-          serializedObject.FindProperty("enableGradleBuildPostProcessor");
+      _enableGradleBuildPreProcessor =
+          serializedObject.FindProperty("enableGradleBuildPreProcessor");
       _enableKotlinXCoroutinesPackagingOption =
           serializedObject.FindProperty("enableKotlinXCoroutinesPackagingOption");
       _disableOptimizeInitialization = serializedObject.FindProperty("disableOptimizeInitialization");
@@ -94,19 +94,19 @@ namespace GoogleMobileAds.Editor
 
       EditorGUI.BeginChangeCheck();
 
-      #if ANDROID_GRADLE_BUILD_POST_PROCESSOR_ENABLED
+#if ANDROID_GRADLE_BUILD_PRE_PROCESSOR_ENABLED
       EditorGUILayout.PropertyField(
-          _enableGradleBuildPostProcessor,
+          _enableGradleBuildPreProcessor,
           new GUIContent(
-              localization.ForKey("ENABLE_GRADLE_BUILD_POST_PROCESSOR_SETTING")));
+              localization.ForKey("ENABLE_GRADLE_BUILD_PRE_PROCESSOR_SETTING")));
 
-      if (settings.EnableGradleBuildPostProcessor)
+      if (settings.EnableGradleBuildPreProcessor)
       {
         EditorGUILayout.HelpBox(
-            localization.ForKey("ENABLE_GRADLE_BUILD_POST_PROCESSOR_HELPBOX"),
+            localization.ForKey("ENABLE_GRADLE_BUILD_PRE_PROCESSOR_HELPBOX"),
             MessageType.Info);
       }
-      #endif
+#endif
 
       EditorGUILayout.PropertyField(
           _enableKotlinXCoroutinesPackagingOption,

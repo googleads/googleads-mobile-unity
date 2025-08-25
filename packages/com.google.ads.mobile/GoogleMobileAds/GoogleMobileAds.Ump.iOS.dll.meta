@@ -2,7 +2,7 @@ fileFormatVersion: 2
 guid: d18ea87e83804d1eadf467931aabe099
 labels:
 - gvh
-- gvh_version-10.4.1
+- gvh_version-10.4.2
 - gvhp_exportpath-GoogleMobileAds/GoogleMobileAds.Ump.iOS.dll
 timeCreated: 1480838400
 PluginImporter:

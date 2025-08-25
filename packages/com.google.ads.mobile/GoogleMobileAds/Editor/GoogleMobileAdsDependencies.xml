@@ -10,6 +10,11 @@
         <repository>https://maven.google.com/</repository>
       </repositories>
     </androidPackage>
+    <androidPackage spec="androidx.lifecycle:lifecycle-process:2.6.2">
+        <repositories>
+            <repository>https://maven.google.com/</repository>
+        </repositories>
+    </androidPackage>
   </androidPackages>
 
   <iosPods>

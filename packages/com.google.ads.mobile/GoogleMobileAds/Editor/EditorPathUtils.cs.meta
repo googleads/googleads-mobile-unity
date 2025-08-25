@@ -2,7 +2,7 @@ fileFormatVersion: 2
 guid: e1f0097ebfa3e416197e298c9135b6de
 labels:
 - gvh
-- gvh_version-10.4.1
+- gvh_version-10.4.2
 - gvhp_exportpath-GoogleMobileAds/Editor/EditorPathUtils.cs
 timeCreated: 1480838400
 MonoImporter:
