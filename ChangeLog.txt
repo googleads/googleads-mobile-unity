@@ -5,6 +5,7 @@ Version 10.4.2
 **************
 
 - Fix issue with macros in `BuildPreProcessor` for Unity Editor 2021.
+- Added `androidx.lifecycle` dependency required for AppOpenAd.
 
 Built and tested with:
 
