@@ -149,7 +149,7 @@ namespace GoogleMobileAds.Android
 
         public Version GetSDKVersion()
         {
-          return new Version(_mobileAdsClass.CallStatic<string>("getSDKVersionString"));
+          return new Version(_mobileAdsClass.CallStatic<string>("getSdkVersionString"));
         }
 
         #region Callbacks from OnInitializationCompleteListener.
