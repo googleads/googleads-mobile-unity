@@ -117,7 +117,7 @@ int GADUGetInitLatency(GADUTypeInitializationStatusRef statusRef, const char *cl
   GADInitializationStatus *status = (__bridge GADInitializationStatus *)statusRef;
   GADAdapterStatus *adapterStatus =
       status.adapterStatusesByClassName[GADUStringFromUTF8String(className)];
-  return adapterStatus.latency;
+  return adapterStatus.latency * 1000;
 }
 
 int GADUGetInitState(GADUTypeInitializationStatusRef statusRef, const char *className) {
