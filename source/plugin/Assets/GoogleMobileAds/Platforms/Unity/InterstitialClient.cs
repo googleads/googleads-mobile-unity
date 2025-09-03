@@ -41,6 +41,9 @@ namespace GoogleMobileAds.Unity
 
         public event Action OnAdClicked;
 
+        // A long integer provided by the AdMob UI for the configured placement.
+        public long PlacementId { get; set; }
+
         private Dictionary<AdSize, string> prefabAds = new Dictionary<AdSize, string>() {
             {new AdSize (768,1024), "PlaceholderAds/Interstitials/768x1024" },
             {new AdSize (1024,768), "PlaceholderAds/Interstitials/1024x768"}

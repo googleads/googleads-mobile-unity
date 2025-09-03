@@ -1267,6 +1267,18 @@ const char *GADUGetInterstitialAdUnitID(GADUTypeInterstitialRef interstitial) {
   return cStringCopy(internalInterstitial.interstitialAd.adUnitID.UTF8String);
 }
 
+// Get the Interstitial ad placement ID.
+int64_t GADUGetInterstitialAdPlacementID(GADUTypeInterstitialRef interstitial) {
+  GADUInterstitial *internalInterstitial = (__bridge GADUInterstitial *)interstitial;
+  return internalInterstitial.interstitialAd.placementID;
+}
+
+// Set the Interstitial ad placement ID.
+void GADUSetInterstitialAdPlacementID(GADUTypeInterstitialRef interstitial, int64_t placementID) {
+  GADUInterstitial *internalInterstitial = (__bridge GADUInterstitial *)interstitial;
+  [internalInterstitial setPlacementID:placementID];
+}
+
 /// Shows the GAMInterstitial.
 void GAMUShowInterstitial(GAMUTypeInterstitialRef interstitial) {
   GAMUInterstitial *internalInterstitial = (__bridge GAMUInterstitial *)interstitial;

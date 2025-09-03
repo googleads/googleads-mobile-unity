@@ -214,6 +214,29 @@ public class Interstitial {
     }
   }
 
+  /** Gets the placement ID for the {@link InterstitialAd}. */
+  public long getPlacementId() {
+    if (interstitialAd == null) {
+      return 0;
+    }
+    return interstitialAd.getPlacementId();
+  }
+
+  /**
+   * Sets a placement ID for the {@link InterstitialAd}.
+   *
+   * <p>To ensure this placement ID is included in reporting, call this method before showing the
+   * ad.
+   *
+   * @param placementId A long integer provided by the AdMob UI for the configured placement.
+   */
+  public void setPlacementId(long placementId) {
+    if (interstitialAd == null) {
+      return;
+    }
+    interstitialAd.setPlacementId(placementId);
+  }
+
   /** Returns the {@link InterstitialAd} ad unit ID. */
   @Nullable
   public String getAdUnitId() {

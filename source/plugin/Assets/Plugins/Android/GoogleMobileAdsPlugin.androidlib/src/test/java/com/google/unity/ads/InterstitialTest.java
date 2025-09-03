@@ -155,6 +155,39 @@ public final class InterstitialTest {
     verify(mockAdManager).setImmersiveMode(eq(true));
   }
 
+  @Test
+  public void getPlacementId_returnsPlacementIdFromTheAd() throws Exception {
+    loadInterstitialAd();
+    long placementId = 12345L;
+    when(mockAdManager.getPlacementId()).thenReturn(placementId);
+
+    long result = interstitial.getPlacementId();
+
+    assertThat(result).isEqualTo(placementId);
+  }
+
+  @Test
+  public void setPlacementId_setsPlacementIdOnTheAd() throws Exception {
+    loadInterstitialAd();
+    long placementId = 54321L;
+
+    interstitial.setPlacementId(placementId);
+
+    verify(mockAdManager).setPlacementId(placementId);
+  }
+
+  @Test
+  public void getPlacementId_returnsPreviouslySetPlacementId() throws Exception {
+    loadInterstitialAd();
+    long placementId = 23456L;
+
+    interstitial.setPlacementId(placementId);
+    long result = interstitial.getPlacementId();
+
+    verify(mockAdManager).setPlacementId(placementId);
+    assertThat(result).isEqualTo(placementId);
+  }
+
   private void loadInterstitialAd() throws Exception {
     doAnswer(
             invocation -> {

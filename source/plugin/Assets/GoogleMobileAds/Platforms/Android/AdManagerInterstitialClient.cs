@@ -41,6 +41,9 @@ namespace GoogleMobileAds.Android
 
         public event Action OnAdClicked;
 
+        // Placement ID is not supported for AdManagerInterstitialAd.
+        public long PlacementId { get; set; }
+
         private AndroidJavaObject _androidAdmanagerInterstitialAd;
 
         public AdManagerInterstitialClient() :

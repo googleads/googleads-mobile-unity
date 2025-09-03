@@ -83,6 +83,14 @@
   return self.interstitialAd.responseInfo;
 }
 
+- (int64_t)placementID {
+  return _interstitialAd.placementID;
+}
+
+- (void)setPlacementID:(int64_t)placementID {
+  _interstitialAd.placementID = placementID;
+}
+
 #pragma mark GADFullScreenContentDelegate implementation
 
 - (void)ad:(nonnull id<GADFullScreenPresentingAd>)ad

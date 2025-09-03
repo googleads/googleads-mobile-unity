@@ -26,6 +26,9 @@ namespace GoogleMobileAds.Unity
 
 #if GMA_PREVIEW_FEATURES
 
+        // Placement ID is not supported for AdManagerInterstitialAd.
+        public new long PlacementId { get; set; }
+
         public IAdManagerInterstitialClient PollAdManagerAd(string adUnitId)
         {
             Debug.Log("Preloaded ads are not supported on the Unity editor platform.");
