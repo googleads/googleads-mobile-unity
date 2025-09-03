@@ -776,6 +776,14 @@ namespace GoogleMobileAds.iOS
           IntPtr rewardedInterstitialAd);
 
       [DllImport("__Internal")]
+      internal static extern long GADUGetRewardedInterstitialAdPlacementId(
+          IntPtr rewardedInterstitialAd);
+
+      [DllImport("__Internal")]
+      internal static extern void GADUSetRewardedInterstitialAdPlacementId(
+          IntPtr rewardedInterstitialAd, long placementId);
+
+      [DllImport("__Internal")]
       internal static extern void GADUSetRewardedInterstitialAdCallbacks(
           IntPtr rewardedInterstitialAd,
           RewardedInterstitialAdClient.GADURewardedInterstitialAdLoadedCallback adLoadedCallback,

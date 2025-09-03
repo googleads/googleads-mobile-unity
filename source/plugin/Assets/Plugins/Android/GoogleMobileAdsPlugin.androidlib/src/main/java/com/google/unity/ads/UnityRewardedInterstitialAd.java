@@ -228,6 +228,29 @@ public class UnityRewardedInterstitialAd {
         });
   }
 
+  /** Returns the placement ID for the {@link RewardedInterstitialAd}. */
+  public long getPlacementId() {
+    if (rewardedInterstitialAd == null) {
+      return 0;
+    }
+    return rewardedInterstitialAd.getPlacementId();
+  }
+
+  /**
+   * Sets a placement ID for the {@link RewardedInterstitialAd}.
+   *
+   * <p>To ensure this placement ID is included in reporting, call this method before showing the
+   * ad.
+   *
+   * @param placementId A long integer provided by the AdMob UI for the configured placement.
+   */
+  public void setPlacementId(long placementId) {
+    if (rewardedInterstitialAd == null) {
+      return;
+    }
+    rewardedInterstitialAd.setPlacementId(placementId);
+  }
+
   /**
    * Sets server side verification options.
    */

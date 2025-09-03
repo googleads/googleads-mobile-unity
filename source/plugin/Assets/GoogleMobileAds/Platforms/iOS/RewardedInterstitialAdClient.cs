@@ -91,6 +91,30 @@ namespace GoogleMobileAds.iOS
 
 #region IRewardedInterstitialAdClient implementation
 
+        public long PlacementId
+        {
+            get
+            {
+                if (this.RewardedInterstitialAdPtr == IntPtr.Zero)
+                {
+                    return 0;
+                }
+                return Externs.GADUGetRewardedInterstitialAdPlacementId(
+                        this.RewardedInterstitialAdPtr);
+            }
+
+            set
+            {
+                if (this.RewardedInterstitialAdPtr == IntPtr.Zero)
+                {
+                    Debug.LogError("Call CreateRewardedInterstitialAd before setting PlacementId.");
+                    return;
+                }
+                Externs.GADUSetRewardedInterstitialAdPlacementId(this.RewardedInterstitialAdPtr,
+                                                                 value);
+            }
+        }
+
         public void CreateRewardedInterstitialAd()
         {
             this.rewardedInterstitialAdClientPtr = (IntPtr)GCHandle.Alloc(this);

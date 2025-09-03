@@ -39,6 +39,9 @@ namespace GoogleMobileAds.Common
         // Ad event fired when an ad is clicked.
         event Action OnAdClicked;
 
+        // A long integer provided by the AdMob UI for the configured placement.
+        long PlacementId { get; set; }
+
         // Creates a rewarded interstitial ad.
         void CreateRewardedInterstitialAd();
 

@@ -124,6 +124,54 @@ public final class UnityRewardedInterstitialAdTest {
     verify(mockRewardedAd).setImmersiveMode(eq(true));
   }
 
+  @Test
+  public void getPlacementId_returnsZero_whenAdIsNull() throws Exception {
+    assertThat(unityRewardedInterstitialAd.getPlacementId()).isEqualTo(0);
+  }
+
+  @Test
+  public void getPlacementId_returnsPlacementIdFromTheAd() throws Exception {
+    loadRewardedInterstitialAd();
+    long placementId = 12345L;
+    when(mockRewardedAd.getPlacementId()).thenReturn(placementId);
+
+    long result = unityRewardedInterstitialAd.getPlacementId();
+
+    assertThat(result).isEqualTo(placementId);
+  }
+
+  @Test
+  public void getPlacementId_returnsPreviouslySetPlacementId() throws Exception {
+    loadRewardedInterstitialAd();
+    long placementId = 23456L;
+    when(mockRewardedAd.getPlacementId()).thenReturn(placementId);
+
+    unityRewardedInterstitialAd.setPlacementId(placementId);
+    long result = unityRewardedInterstitialAd.getPlacementId();
+
+    verify(mockRewardedAd).setPlacementId(placementId);
+    assertThat(result).isEqualTo(placementId);
+  }
+
+  @Test
+  public void setPlacementId_doesNothing_whenAdIsNull() throws Exception {
+    long placementId = 54321L;
+
+    unityRewardedInterstitialAd.setPlacementId(placementId);
+
+    assertThat(unityRewardedInterstitialAd.getPlacementId()).isEqualTo(0);
+  }
+
+  @Test
+  public void setPlacementId_setsPlacementIdOnTheAd() throws Exception {
+    loadRewardedInterstitialAd();
+    long placementId = 54321L;
+
+    unityRewardedInterstitialAd.setPlacementId(placementId);
+
+    verify(mockRewardedAd).setPlacementId(placementId);
+  }
+
   private void loadRewardedInterstitialAd() throws Exception {
     doAnswer(
             invocation -> {
