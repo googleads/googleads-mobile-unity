@@ -48,10 +48,10 @@
 /// The ad click callback into Unity.
 @property(nonatomic, assign, nullable) GADUAppOpenAdDidRecordClickCallback adDidRecordClickCallback;
 
-// The app open ad response info.
+/// The app open ad response info.
 @property(nonatomic, readonly, copy, nullable) GADResponseInfo *responseInfo;
 
-// A long integer provided by the AdMob UI for the configured placement.
+/// A long integer provided by the AdMob UI for the configured placement.
 @property(atomic, readwrite) int64_t placementID;
 
 #if GMA_PREVIEW_FEATURES

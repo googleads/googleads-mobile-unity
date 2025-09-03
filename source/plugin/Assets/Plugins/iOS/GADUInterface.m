@@ -1303,6 +1303,18 @@ const char *GADUGetRewardedAdUnitID(GADUTypeRewardedAdRef rewardedAd) {
   return cStringCopy(internalRewardedAd.rewardedAd.adUnitID.UTF8String);
 }
 
+/// Get the Rewarded ad placement ID.
+int64_t GADUGetRewardedAdPlacementID(GADUTypeRewardedAdRef rewardedAd) {
+  GADURewardedAd *internalRewardedAd = (__bridge GADURewardedAd *)rewardedAd;
+  return internalRewardedAd.rewardedAd.placementID;
+}
+
+/// Set the Rewarded ad placement ID.
+void GADUSetRewardedAdPlacementID(GADUTypeRewardedAdRef rewardedAd, int64_t placementID) {
+  GADURewardedAd *internalRewardedAd = (__bridge GADURewardedAd *)rewardedAd;
+  [internalRewardedAd setPlacementID:placementID];
+}
+
 /// Returns the type of the reward.
 const char *GADURewardedAdGetRewardType(GADUTypeRewardedAdRef rewardedAd) {
   GADURewardedAd *internalRewardedAd = (__bridge GADURewardedAd *)rewardedAd;

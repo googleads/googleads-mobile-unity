@@ -271,6 +271,29 @@ public class UnityRewardedAd {
     return rewardedAd.getAdUnitId();
   }
 
+  /** Gets the placement ID for the {@link RewardedAd}. */
+  public long getPlacementId() {
+    if (rewardedAd == null) {
+      return 0;
+    }
+    return rewardedAd.getPlacementId();
+  }
+
+  /**
+   * Sets a placement ID for the {@link RewardedAd}.
+   *
+   * <p>To ensure this placement ID is included in reporting, call this method before showing the
+   * ad.
+   *
+   * @param placementId A long integer provided by the AdMob UI for the configured placement.
+   */
+  public void setPlacementId(long placementId) {
+    if (rewardedAd == null) {
+      return;
+    }
+    rewardedAd.setPlacementId(placementId);
+  }
+
   /** Returns the request response info. */
   @Nullable
   public ResponseInfo getResponseInfo() {

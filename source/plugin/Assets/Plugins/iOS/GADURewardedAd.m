@@ -98,6 +98,14 @@
   return self.rewardedAd.responseInfo;
 }
 
+- (int64_t)placementID {
+  return _rewardedAd.placementID;
+}
+
+- (void)setPlacementID:(int64_t)placementID {
+  _rewardedAd.placementID = placementID;
+}
+
 - (void)rewardedAd:(nonnull GADRewardedAd *)rewardedAd
     userDidEarnReward:(nonnull GADAdReward *)reward {
   if (self.didEarnRewardCallback) {

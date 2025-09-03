@@ -74,6 +74,27 @@ namespace GoogleMobileAds.iOS
 
         public event Action OnAdClicked;
 
+        public long PlacementId {
+            get
+            {
+                if (this.RewardedAdPtr == IntPtr.Zero)
+                {
+                    return 0;
+                }
+                return Externs.GADUGetRewardedAdPlacementID(this.RewardedAdPtr);
+            }
+
+            set
+            {
+                if (this.RewardedAdPtr == IntPtr.Zero)
+                {
+                    Debug.LogError("PlacementId can be set once the Rewarded ad is loaded.");
+                    return;
+                }
+                Externs.GADUSetRewardedAdPlacementID(this.RewardedAdPtr, value);
+            }
+        }
+
         // This property should be used when setting the rewardedAdPtr.
         private IntPtr RewardedAdPtr
         {
