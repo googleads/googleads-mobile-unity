@@ -27,7 +27,7 @@ namespace GoogleMobileAds.Android
     {
         private readonly static MobileAdsClient _instance = new MobileAdsClient();
         private readonly AndroidJavaClass _mobileAdsClass;
-        private readonly IInsightsEmitter _insightsEmitter = new TestInsightsEmitter();
+        private readonly IInsightsEmitter _insightsEmitter = new InsightsEmitter();
         private Action<IInitializationStatusClient> _initCompleteAction;
 
         private MobileAdsClient() : base(Utils.OnInitializationCompleteListenerClassName) {
