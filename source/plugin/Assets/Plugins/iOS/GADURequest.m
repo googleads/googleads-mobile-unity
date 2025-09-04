@@ -37,6 +37,7 @@
   GADRequest *request = [GADRequest request];
   request.keywords = self.keywords;
   request.requestAgent = self.requestAgent;
+  request.placementID = self.placementID;
   GADExtras *extras = [[GADExtras alloc] init];
   extras.additionalParameters = self.extras;
   [request registerAdNetworkExtras:extras];

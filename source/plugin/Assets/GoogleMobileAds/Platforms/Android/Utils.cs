@@ -333,6 +333,7 @@ namespace GoogleMobileAds.Android
                 }
             }
 
+            adRequestBuilder.Call<AndroidJavaObject>("setPlacementId", request.PlacementID);
             return adRequestBuilder.Call<AndroidJavaObject>("build");
         }
 
