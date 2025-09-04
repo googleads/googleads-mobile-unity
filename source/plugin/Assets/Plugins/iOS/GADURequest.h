@@ -22,6 +22,9 @@
 /// Extra parameters to be sent up in the ad request.
 @property(nonatomic, strong) NSMutableDictionary *extras;
 
+/// A long integer provided by the AdMob UI for the configured placement.
+@property(nonatomic) int64_t placementID;
+
 /// Convenience method for adding a single keyword.
 - (void)addKeyword:(NSString *)keyword;
 

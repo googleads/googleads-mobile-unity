@@ -35,6 +35,9 @@ namespace GoogleMobileAds.Common
         // Ad event fired when an ad has been clicked.
         event Action OnAdClicked;
 
+        // A long integer provided by the AdMob UI for the configured placement.
+        long PlacementId { get; set; }
+
         // Loads a native ad using the provided adUnitId
         void Load(string adUnitId, AdRequest request, NativeAdOptions nativeOptions);
 

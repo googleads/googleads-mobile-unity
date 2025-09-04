@@ -175,6 +175,29 @@ public class UnityNativeTemplateAd {
         });
   }
 
+  /** Gets the placement ID of the {@link NativeAd}. */
+  public long getPlacementId() {
+    if (nativeAd == null) {
+      return 0;
+    }
+    return nativeAd.getPlacementId();
+  }
+
+  /**
+   * Sets the placement ID of the {@link NativeAd}.
+   *
+   * <p>To ensure this placement ID is included in reporting, call this method before showing the
+   * ad.
+   *
+   * @param placementId A long integer provided by the AdMob UI for the configured placement.
+   */
+  public void setPlacementId(long placementId) {
+    if (nativeAd == null) {
+      return;
+    }
+    nativeAd.setPlacementId(placementId);
+  }
+
   /**
    * Updates the Native Template position.
    *

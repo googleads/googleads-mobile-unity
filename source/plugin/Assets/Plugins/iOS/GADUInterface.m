@@ -1438,6 +1438,18 @@ float GADUGetNativeTemplateAdWidthInPixels(GADUTypeNativeTemplateAdRef nativeAd)
   return internalNativeTemplateAd.widthInPixels;
 }
 
+/// Get the Native Template ad placement ID.
+int64_t GADUGetNativeTemplateAdPlacementID(GADUTypeNativeTemplateAdRef nativeAd) {
+  GADUNativeTemplateAd *internalNativeTemplateAd = (__bridge GADUNativeTemplateAd *)nativeAd;
+  return internalNativeTemplateAd.placementID;
+}
+
+/// Set the Native Template ad placement ID.
+void GADUSetNativeTemplateAdPlacementID(GADUTypeNativeTemplateAdRef nativeAd, int64_t placementID) {
+  GADUNativeTemplateAd *internalNativeTemplateAd = (__bridge GADUNativeTemplateAd *)nativeAd;
+  internalNativeTemplateAd.placementID = placementID;
+}
+
 /// Creates a UIColor object and returns it.
 GADUTypeUIColorRef GADUCreateUIColor(float alpha, float red, float green, float blue)
 {
@@ -1723,6 +1735,12 @@ GAMUTypeRequestRef GAMUCreateRequest() {
 void GADUAddKeyword(GADUTypeRequestRef request, const char *keyword) {
   GADURequest *internalRequest = (__bridge GADURequest *)request;
   [internalRequest addKeyword:GADUStringFromUTF8String(keyword)];
+}
+
+/// Sets the placement ID for the GADRequest.
+void GADUSetPlacementID(GADUTypeRequestRef request, int64_t placementID) {
+  GADURequest *internalRequest = (__bridge GADURequest *)request;
+  internalRequest.placementID = placementID;
 }
 
 /// Sets the request agent for the GADRequest.
