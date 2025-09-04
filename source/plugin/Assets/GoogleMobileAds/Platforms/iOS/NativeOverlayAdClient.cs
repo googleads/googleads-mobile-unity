@@ -59,6 +59,19 @@ namespace GoogleMobileAds.iOS
 
         public event Action<AdValue> OnPaidEvent;
 
+        // A long integer provided by the AdMob UI for the configured placement.
+        public long PlacementId
+        {
+            get
+            {
+                return Externs.GADUGetNativeTemplateAdPlacementID(this.NativePtr);
+            }
+            set
+            {
+                Externs.GADUSetNativeTemplateAdPlacementID(this.NativePtr, value);
+            }
+        }
+
         private static NativeOverlayAdClient IntPtrToNativeClient(IntPtr nativeClient)
         {
             GCHandle handle = (GCHandle)nativeClient;

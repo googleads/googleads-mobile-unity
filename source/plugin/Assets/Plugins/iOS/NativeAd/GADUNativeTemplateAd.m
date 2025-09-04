@@ -151,6 +151,14 @@
   return CGRectGetWidth(CGRectStandardize(_templateWrapper.frame)) * [UIScreen mainScreen].scale;
 }
 
+- (int64_t)placementID {
+  return _nativeAd.placementID;
+}
+
+- (void)setPlacementID:(int64_t)placementID {
+  _nativeAd.placementID = placementID;
+}
+
 # pragma mark - GADAdLoaderDelegate
 - (void)adLoader:(GADAdLoader *)adLoader didFailToReceiveAdWithError:(NSError *)error {
   if (self.adFailedToLoadCallback) {
