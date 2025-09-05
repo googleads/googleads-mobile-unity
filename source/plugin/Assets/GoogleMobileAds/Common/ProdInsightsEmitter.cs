@@ -4,7 +4,7 @@ namespace GoogleMobileAds.Common
 {
   public class InsightsEmitter : IInsightsEmitter
   {
-      public void Emit(string insight) {
+      public void Emit(Insight insight) {
         // Intentionally left blank.
       }
   }

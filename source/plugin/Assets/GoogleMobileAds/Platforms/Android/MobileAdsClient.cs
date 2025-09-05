@@ -41,7 +41,6 @@ namespace GoogleMobileAds.Android
 
         public void Initialize(Action<IInitializationStatusClient> initCompleteAction)
         {
-          _insightsEmitter.Emit("TEST // MobileAdsClient.Initialize");
           _initCompleteAction = initCompleteAction;
 
           Task.Run(() => {
@@ -54,6 +53,12 @@ namespace GoogleMobileAds.Android
             try {
               _mobileAdsClass.CallStatic("initialize", Utils.GetCurrentActivityAndroidJavaObject(),
                                          this);
+              _insightsEmitter.Emit(new Insight()
+              {
+                  Name = Insight.CuiName.SdkInitialized,
+                  Platform = Insight.AdPlatform.Android,
+                  Success = true
+              });
             } finally {
               AndroidJNI.DetachCurrentThread();
             }
