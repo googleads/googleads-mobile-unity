@@ -26,12 +26,15 @@ namespace GoogleMobileAds.Android
     public class MobileAdsClient : AndroidJavaProxy, IMobileAdsClient
     {
         private readonly static MobileAdsClient _instance = new MobileAdsClient();
+
         private readonly AndroidJavaClass _mobileAdsClass;
         private readonly IInsightsEmitter _insightsEmitter = new InsightsEmitter();
+        private readonly ITracer _tracer;
         private Action<IInitializationStatusClient> _initCompleteAction;
 
         private MobileAdsClient() : base(Utils.OnInitializationCompleteListenerClassName) {
             _mobileAdsClass = new AndroidJavaClass(Utils.UnityMobileAdsClassName);
+            _tracer = new Tracer(_insightsEmitter);
         }
 
         public static MobileAdsClient Instance
@@ -41,27 +44,34 @@ namespace GoogleMobileAds.Android
 
         public void Initialize(Action<IInitializationStatusClient> initCompleteAction)
         {
-          _initCompleteAction = initCompleteAction;
+          using (_tracer.StartTrace("MobileAdsClient.Initialize"))
+          {
+            _initCompleteAction = initCompleteAction;
 
-          Task.Run(() => {
-            int env = AndroidJNI.AttachCurrentThread();
-            if (env < 0) {
-              Debug.LogError("Failed to attach current thread to JVM.");
-              return;
-            }
-
-            try {
-              _mobileAdsClass.CallStatic("initialize", Utils.GetCurrentActivityAndroidJavaObject(),
-                                         this);
-              _insightsEmitter.Emit(new Insight()
+            Task.Run(() => {
+              using (_tracer.StartTrace("AttachCurrentThread"))
               {
-                  Name = Insight.CuiName.SdkInitialized,
-                  Platform = Insight.AdPlatform.Android,
-                  Success = true
-              });
-            } finally {
-              AndroidJNI.DetachCurrentThread();
-            }
+                int env = AndroidJNI.AttachCurrentThread();
+                if (env < 0) {
+                  UnityEngine.Debug.LogError("Failed to attach current thread to JVM.");
+                  return;
+                }
+              }
+
+              try {
+                _mobileAdsClass.CallStatic("initialize",
+                                           Utils.GetCurrentActivityAndroidJavaObject(),
+                                           this);
+              } finally {
+                AndroidJNI.DetachCurrentThread();
+              }
+            });
+          }
+          _insightsEmitter.Emit(new Insight()
+          {
+              Name = Insight.CuiName.SdkInitialized,
+              Platform = Insight.AdPlatform.Android,
+              Success = true
           });
         }
 

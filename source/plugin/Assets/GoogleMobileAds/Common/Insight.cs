@@ -10,9 +10,25 @@ namespace GoogleMobileAds.Common
     {
         public Insight()
         {
-            StartTimeMillis = (long)DateTime.UtcNow
+            StartTimeEpochMillis = (long)DateTime.UtcNow
                 .Subtract(new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc))
                 .TotalMilliseconds;
+        }
+
+        [Serializable]
+        public class TracingActivity
+        {
+            // The provided activity name.
+            public string OperationName;
+
+            // The UUID of this trace.
+            public string Id;
+
+            // The duration of this trace in milliseconds.
+            public long DurationMillis;
+
+            // False if the trace started and is running, true if it stopped (i.e. ended).
+            public bool HasEnded;
         }
 
         public enum CuiName
@@ -52,11 +68,8 @@ namespace GoogleMobileAds.Common
         // If the event associated with the insight succeeded or failed.
         public bool Success;
 
-        // The Epoch time in milliseconds when the CUI started.
-        public long StartTimeMillis;
-
-        // How long the operation took to complete in milliseconds.
-        public long LatencyMillis;
+        // The Epoch time in milliseconds when the insight started.
+        public long StartTimeEpochMillis;
 
         // The GMA SDK version.
         public string SdkVersion;
@@ -77,6 +90,9 @@ namespace GoogleMobileAds.Common
         // analysis.
         public List<string> Tags;
 
+        // The tracing activity associated with the insight.
+        public TracingActivity Tracing;
+
         // Any additional details about the insight.
         public string Details;
 
@@ -84,19 +100,23 @@ namespace GoogleMobileAds.Common
         public override string ToString()
         {
             return string.Format(
-                "Insight[Name={0}, Success={1}, StartTimeMillis={2}, LatencyMillis={3}, " +
-                "SdkVersion='{4}', AppId='{5}', AdUnitId='{6}', Format={7}, Platform={8}, " +
-                "Tags='{9}', Details='{10}']",
+                "Insight[Name={0}, Success={1}, StartTimeEpochMillis={2}, SdkVersion='{3}', " +
+                "AppId='{4}', AdUnitId='{5}', Format={6}, Platform={7}, Tags='{8}', " +
+                "Tracing[OperationName='{9}', Id='{10}', DurationMillis={11}, HasEnded={12}], " +
+                "Details='{13}']",
                 Name,
                 Success,
-                StartTimeMillis,
-                LatencyMillis,
+                StartTimeEpochMillis,
                 SdkVersion,
                 AppId,
                 AdUnitId,
                 Format,
                 Platform,
                 Tags != null ? string.Join(",", Tags) : "",
+                Tracing != null ? Tracing.OperationName : "",
+                Tracing != null ? Tracing.Id : "",
+                Tracing != null ? Tracing.DurationMillis : 0,
+                Tracing != null ? Tracing.HasEnded : false,
                 Details);
         }
 
