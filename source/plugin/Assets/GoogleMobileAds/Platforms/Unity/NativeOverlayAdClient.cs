@@ -35,6 +35,9 @@ namespace GoogleMobileAds.Unity
         public event Action OnAdClicked;
         public event Action<AdValue> OnPaidEvent;
 
+        // A long integer provided by the AdMob UI for the configured placement.
+        public long PlacementId { get; set; }
+
         public void Load(string adUnitId, AdRequest request, NativeAdOptions nativeOptions)
         {
             // No op.

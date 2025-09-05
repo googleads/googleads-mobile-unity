@@ -48,6 +48,19 @@ namespace GoogleMobileAds.Android
 
         public event Action<AdValue> OnPaidEvent;
 
+        // A long integer provided by the AdMob UI for the configured placement.
+        public long PlacementId
+        {
+            get
+            {
+                return this.nativeOverlayAd.Call<long>("getPlacementId");
+            }
+            set
+            {
+                this.nativeOverlayAd.Call("setPlacementId", value);
+            }
+        }
+
         // Loads a native ad
         public void Load(string adUnitID, AdRequest request, NativeAdOptions options)
         {

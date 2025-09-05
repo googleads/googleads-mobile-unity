@@ -101,6 +101,40 @@ public final class UnityNativeTemplateAdTest {
     unityNativeTemplateAd.show(); // just a sanity check for now to make sure it does not crash
   }
 
+  @Test
+  public void getPlacementId_returnsPlacementIdFromTheAd() throws Exception {
+    loadNativeTemplateAd();
+    long placementId = 12345L;
+    when(mockUnifiedNativeAd.getPlacementId()).thenReturn(placementId);
+
+    long result = unityNativeTemplateAd.getPlacementId();
+
+    assertThat(result).isEqualTo(placementId);
+  }
+
+  @Test
+  public void getPlacementId_returnsPreviouslySetPlacementId() throws Exception {
+    loadNativeTemplateAd();
+    long placementId = 23456L;
+    when(mockUnifiedNativeAd.getPlacementId()).thenReturn(placementId);
+
+    unityNativeTemplateAd.setPlacementId(placementId);
+    long result = unityNativeTemplateAd.getPlacementId();
+
+    verify(mockUnifiedNativeAd).setPlacementId(placementId);
+    assertThat(result).isEqualTo(placementId);
+  }
+
+  @Test
+  public void setPlacementId_setsPlacementIdOnTheAd() throws Exception {
+    loadNativeTemplateAd();
+    long placementId = 54321L;
+
+    unityNativeTemplateAd.setPlacementId(placementId);
+
+    verify(mockUnifiedNativeAd).setPlacementId(placementId);
+  }
+
   private void loadNativeTemplateAd() throws Exception {
     doAnswer(
             invocation -> {

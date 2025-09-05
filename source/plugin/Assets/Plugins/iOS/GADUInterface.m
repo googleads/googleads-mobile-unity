@@ -1438,6 +1438,18 @@ float GADUGetNativeTemplateAdWidthInPixels(GADUTypeNativeTemplateAdRef nativeAd)
   return internalNativeTemplateAd.widthInPixels;
 }
 
+/// Get the Native Template ad placement ID.
+int64_t GADUGetNativeTemplateAdPlacementID(GADUTypeNativeTemplateAdRef nativeAd) {
+  GADUNativeTemplateAd *internalNativeTemplateAd = (__bridge GADUNativeTemplateAd *)nativeAd;
+  return internalNativeTemplateAd.placementID;
+}
+
+/// Set the Native Template ad placement ID.
+void GADUSetNativeTemplateAdPlacementID(GADUTypeNativeTemplateAdRef nativeAd, int64_t placementID) {
+  GADUNativeTemplateAd *internalNativeTemplateAd = (__bridge GADUNativeTemplateAd *)nativeAd;
+  internalNativeTemplateAd.placementID = placementID;
+}
+
 /// Creates a UIColor object and returns it.
 GADUTypeUIColorRef GADUCreateUIColor(float alpha, float red, float green, float blue)
 {

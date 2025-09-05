@@ -910,6 +910,13 @@ namespace GoogleMobileAds.iOS
 
         [DllImport("__Internal")]
         internal static extern float GADUGetNativeTemplateAdWidthInPixels(IntPtr nativeTemplateAd);
+
+        [DllImport("__Internal")]
+        internal static extern long GADUGetNativeTemplateAdPlacementID(IntPtr nativeTemplateAd);
+
+        [DllImport("__Internal")]
+        internal static extern void GADUSetNativeTemplateAdPlacementID(IntPtr nativeTemplateAd,
+                                                                       long placementId);
 #endregion
 
 #region AdInspector externs
