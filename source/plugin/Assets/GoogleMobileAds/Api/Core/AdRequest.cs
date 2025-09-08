@@ -71,6 +71,11 @@ namespace GoogleMobileAds.Api
         public Dictionary<string, string> Extras = new Dictionary<string, string>();
 
         /// <summary>
+        /// A long integer provided by the AdMob UI for the configured placement.
+        /// </summary>
+        public long PlacementID;
+
+        /// <summary>
         /// Returns extra parameters to be sent to a specific ad partner in the ad request.
         /// </summary>
         public List<MediationExtras> MediationExtras = new List<MediationExtras>();

@@ -34,6 +34,7 @@ namespace GoogleMobileAds.iOS
         public static IntPtr BuildAdRequest(AdRequest request, string nativePluginVersion = null)
         {
             IntPtr requestPtr = Externs.GADUCreateRequest();
+            Externs.GADUSetPlacementID(requestPtr, request.PlacementID);
             foreach (string keyword in request.Keywords)
             {
                 Externs.GADUAddKeyword(requestPtr, keyword);

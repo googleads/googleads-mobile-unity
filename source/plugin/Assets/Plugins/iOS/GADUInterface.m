@@ -1737,6 +1737,12 @@ void GADUAddKeyword(GADUTypeRequestRef request, const char *keyword) {
   [internalRequest addKeyword:GADUStringFromUTF8String(keyword)];
 }
 
+/// Sets the placement ID for the GADRequest.
+void GADUSetPlacementID(GADUTypeRequestRef request, int64_t placementID) {
+  GADURequest *internalRequest = (__bridge GADURequest *)request;
+  internalRequest.placementID = placementID;
+}
+
 /// Sets the request agent for the GADRequest.
 void GADUSetRequestAgent(GADUTypeRequestRef request, const char *requestAgent) {
   GADURequest *internalRequest = (__bridge GADURequest *)request;
