@@ -31,7 +31,7 @@ namespace GoogleMobileAds.Editor
     ///  - Enable Custom Gradle Properties Template.
     ///  - Update Custom Gradle Properties Template with the Jetifier Ignorelist.
     /// </summary>
-    public class BuildPreProcessor : IPreprocessBuildWithReport
+    public class AndroidBuildPreProcessor : IPreprocessBuildWithReport
     {
         const int MinimumAPILevel = 23;
         const string CustomGradlePropertiesTemplatesFileName = "gradleTemplate.properties";
