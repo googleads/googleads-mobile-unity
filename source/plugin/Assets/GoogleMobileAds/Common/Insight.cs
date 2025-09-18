@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-// LINT.IfChange
 namespace GoogleMobileAds.Common
 {
     [Serializable]
@@ -127,4 +126,3 @@ namespace GoogleMobileAds.Common
         }
     }
 }
-// LINT.ThenChange(//depot/google3/javatests/com/google/android/apps/internal/admobsdk/mediumtest/unityplugin/Insight.java)
