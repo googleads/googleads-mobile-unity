@@ -8,81 +8,85 @@ import com.google.android.libraries.ads.mobile.sdk.common.AdLoadCallback;
 import com.google.android.libraries.ads.mobile.sdk.common.AdRequest;
 import com.google.android.libraries.ads.mobile.sdk.common.FullScreenContentError;
 import com.google.android.libraries.ads.mobile.sdk.common.LoadAdError;
-import com.google.android.libraries.ads.mobile.sdk.interstitial.InterstitialAd;
-import com.google.android.libraries.ads.mobile.sdk.interstitial.InterstitialAdEventCallback;
+import com.google.android.libraries.ads.mobile.sdk.rewarded.OnUserEarnedRewardListener;
+import com.google.android.libraries.ads.mobile.sdk.rewarded.RewardItem;
+import com.google.android.libraries.ads.mobile.sdk.rewarded.RewardedAd;
+import com.google.android.libraries.ads.mobile.sdk.rewarded.RewardedAdEventCallback;
 import com.google.unity.ads.PluginUtils;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
-/** Interstitial ad implementation for the Google Mobile Ads Unity plugin. */
-public class UnityInterstitialAd extends UnityAdBase<InterstitialAd, UnityInterstitialAdCallback> {
+/** Rewarded ad implementation for the Google Mobile Ads Unity plugin. */
+public class UnityRewardedAd extends UnityAdBase<RewardedAd, UnityRewardedAdCallback> {
 
-  private final AdWrapper<InterstitialAd> adWrapper;
+  private final AdWrapper<RewardedAd> adWrapper;
 
-  public UnityInterstitialAd(Activity activity, UnityInterstitialAdCallback callback) {
-    this(activity, callback, AdWrapper.forInterstitial(), Executors.newSingleThreadExecutor());
+  public UnityRewardedAd(Activity activity, UnityRewardedAdCallback callback) {
+    this(activity, callback, AdWrapper.forRewarded(), Executors.newSingleThreadExecutor());
   }
 
   @VisibleForTesting
-  UnityInterstitialAd(
+  UnityRewardedAd(
       Activity activity,
-      UnityInterstitialAdCallback callback,
-      AdWrapper<InterstitialAd> adWrapper,
+      UnityRewardedAdCallback callback,
+      AdWrapper<RewardedAd> adWrapper,
       Executor executor) {
     super(activity, callback, executor);
     this.adWrapper = adWrapper;
   }
 
   /**
-   * Loads an interstitial ad.
+   * Loads a rewarded ad.
    *
    * @param request The {@link AdRequest} object with targeting parameters.
    */
   public void load(final AdRequest request) {
     activity.runOnUiThread(
         () ->
-            adWrapper.load(
+            this.adWrapper.load(
                 request,
-                new AdLoadCallback<InterstitialAd>() {
+                new AdLoadCallback<RewardedAd>() {
                   @Override
-                  public void onAdLoaded(@NonNull InterstitialAd ad) {
-                    UnityInterstitialAd.this.ad = ad;
+                  public void onAdLoaded(@NonNull RewardedAd rewardedAd) {
+                    // Rewarded ad loaded.
+                    UnityRewardedAd.this.ad = rewardedAd;
                     executor.execute(
                         () -> {
                           if (callback != null) {
-                            callback.onInterstitialAdLoaded();
+                            callback.onRewardedAdLoaded();
                           }
                         });
                   }
 
                   @Override
                   public void onAdFailedToLoad(@NonNull LoadAdError adError) {
+                    // Rewarded ad failed to load.
                     executor.execute(
                         () -> {
                           if (callback != null) {
-                            callback.onInterstitialAdFailedToLoad(adError);
+                            callback.onRewardedAdFailedToLoad(adError);
                           }
                         });
+                    ad = null;
                   }
                 }));
   }
 
-  /** Shows the interstitial ad if it has loaded. */
+  /** Shows the rewarded ad if it has loaded. */
   public void show() {
     if (ad == null) {
       Log.e(
           PluginUtils.LOGTAG,
-          "Tried to show intertitial ad before it was ready. Please call loadAd first and wait for"
+          "Tried to show rewarded ad before it was ready. Please call load first and wait for"
               + " a successful onAdLoaded callback.");
       return;
     }
 
     // Listen for ad events.
     ad.setAdEventCallback(
-        new InterstitialAdEventCallback() {
+        new RewardedAdEventCallback() {
           @Override
           public void onAdShowedFullScreenContent() {
-            // Interstitial ad did show.
             executor.execute(
                 () -> {
                   if (callback != null) {
@@ -93,7 +97,6 @@ public class UnityInterstitialAd extends UnityAdBase<InterstitialAd, UnityInters
 
           @Override
           public void onAdDismissedFullScreenContent() {
-            // Interstitial ad did dismiss.
             executor.execute(
                 () -> {
                   if (callback != null) {
@@ -106,18 +109,17 @@ public class UnityInterstitialAd extends UnityAdBase<InterstitialAd, UnityInters
           @Override
           public void onAdFailedToShowFullScreenContent(
               @NonNull FullScreenContentError fullScreenContentError) {
-            // Interstitial ad failed to show.
             executor.execute(
                 () -> {
                   if (callback != null) {
                     callback.onAdFailedToShowFullScreenContent(fullScreenContentError);
                   }
                 });
+            ad = null;
           }
 
           @Override
           public void onAdImpression() {
-            // Interstitial ad did record an impression.
             executor.execute(
                 () -> {
                   if (callback != null) {
@@ -128,7 +130,6 @@ public class UnityInterstitialAd extends UnityAdBase<InterstitialAd, UnityInters
 
           @Override
           public void onAdClicked() {
-            // Interstitial ad did record a click.
             executor.execute(
                 () -> {
                   if (callback != null) {
@@ -141,7 +142,19 @@ public class UnityInterstitialAd extends UnityAdBase<InterstitialAd, UnityInters
     activity.runOnUiThread(
         () -> {
           ad.setImmersiveMode(true);
-          ad.show(this.activity);
+          ad.show(
+              this.activity,
+              new OnUserEarnedRewardListener() {
+                @Override
+                public void onUserEarnedReward(@NonNull RewardItem rewardItem) {
+                  executor.execute(
+                      () -> {
+                        if (callback != null) {
+                          callback.onUserEarnedReward(rewardItem.getType(), rewardItem.getAmount());
+                        }
+                      });
+                }
+              });
         });
   }
 }

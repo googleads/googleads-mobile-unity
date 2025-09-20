@@ -33,7 +33,7 @@ public class UnityInterstitialAdTest {
   @Mock private UnityInterstitialAdCallback mockCallback;
   @Mock private AdRequest mockAdRequest;
   @Mock private InterstitialAd mockInterstitialAd;
-  @Mock private InterstitialAdWrapper mockInterstitialAdWrapper;
+  @Mock private AdWrapper<InterstitialAd> mockAdWrapper;
 
   @Captor private ArgumentCaptor<AdLoadCallback<InterstitialAd>> adLoadCallbackCaptor;
   @Captor private ArgumentCaptor<InterstitialAdEventCallback> adEventCallbackCaptor;
@@ -44,8 +44,7 @@ public class UnityInterstitialAdTest {
   public void setUp() {
     activity = Robolectric.buildActivity(Activity.class).create().get();
     unityInterstitialAd =
-        new UnityInterstitialAd(
-            activity, mockCallback, mockInterstitialAdWrapper, directExecutor());
+        new UnityInterstitialAd(activity, mockCallback, mockAdWrapper, directExecutor());
   }
 
   @Test
@@ -53,8 +52,7 @@ public class UnityInterstitialAdTest {
     unityInterstitialAd.load(mockAdRequest);
 
     // Capture the callback and simulate successful ad load.
-    verify(mockInterstitialAdWrapper)
-        .load(Mockito.eq(mockAdRequest), adLoadCallbackCaptor.capture());
+    verify(mockAdWrapper).load(Mockito.eq(mockAdRequest), adLoadCallbackCaptor.capture());
     adLoadCallbackCaptor.getValue().onAdLoaded(mockInterstitialAd);
 
     // Verify the callback was invoked. Using timeout because it runs on a separate thread.
@@ -66,8 +64,7 @@ public class UnityInterstitialAdTest {
     unityInterstitialAd.load(mockAdRequest);
 
     // Capture the callback and simulate failed ad load.
-    verify(mockInterstitialAdWrapper)
-        .load(Mockito.eq(mockAdRequest), adLoadCallbackCaptor.capture());
+    verify(mockAdWrapper).load(Mockito.eq(mockAdRequest), adLoadCallbackCaptor.capture());
     LoadAdError loadAdError = new LoadAdError(LoadAdError.ErrorCode.INTERNAL_ERROR, "domain", null);
     adLoadCallbackCaptor.getValue().onAdFailedToLoad(loadAdError);
 
@@ -78,8 +75,7 @@ public class UnityInterstitialAdTest {
   public void testShow_showsAdAndTriggersCallbacks() {
     // First, simulate a successful ad load.
     unityInterstitialAd.load(mockAdRequest);
-    verify(mockInterstitialAdWrapper)
-        .load(Mockito.eq(mockAdRequest), adLoadCallbackCaptor.capture());
+    verify(mockAdWrapper).load(Mockito.eq(mockAdRequest), adLoadCallbackCaptor.capture());
     adLoadCallbackCaptor.getValue().onAdLoaded(mockInterstitialAd);
 
     // Now, call show().
@@ -88,6 +84,7 @@ public class UnityInterstitialAdTest {
     // Verify the ad is shown and the event callback is set.
     verify(mockInterstitialAd).setAdEventCallback(adEventCallbackCaptor.capture());
     verify(mockInterstitialAd).show(activity);
+    verify(mockInterstitialAd).setImmersiveMode(true);
 
     // Trigger and verify all event callbacks.
     InterstitialAdEventCallback eventCallback = adEventCallbackCaptor.getValue();
