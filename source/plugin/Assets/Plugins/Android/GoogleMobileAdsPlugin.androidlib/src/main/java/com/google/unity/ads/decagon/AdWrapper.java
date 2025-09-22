@@ -1,5 +1,6 @@
 package com.google.unity.ads.decagon;
 
+import com.google.android.libraries.ads.mobile.sdk.appopen.AppOpenAd;
 import com.google.android.libraries.ads.mobile.sdk.common.AdLoadCallback;
 import com.google.android.libraries.ads.mobile.sdk.common.AdRequest;
 import com.google.android.libraries.ads.mobile.sdk.interstitial.InterstitialAd;
@@ -27,6 +28,11 @@ class AdWrapper<T> {
 
   public void load(AdRequest adRequest, AdLoadCallback<T> callback) {
     adLoader.load(adRequest, callback);
+  }
+
+  /** Creates a new AdWrapper for loading AppOpenAds. */
+  public static AdWrapper<AppOpenAd> forAppOpen() {
+    return new AdWrapper<>(AppOpenAd::load);
   }
 
   /** Creates a new AdWrapper for loading InterstitialAds. */
