@@ -26,6 +26,8 @@ namespace GoogleMobileAds
     [Preserve]
     public class GoogleMobileAdsClientFactory : IClientFactory
     {
+        private static bool? _decagonEnabled;
+
         public IAppStateEventClient BuildAppStateEventClient()
         {
             if (Application.platform == RuntimePlatform.Android)
@@ -40,6 +42,10 @@ namespace GoogleMobileAds
         {
             if (Application.platform == RuntimePlatform.Android)
             {
+                if (IsDecagonEnabled())
+                {
+                    return new GoogleMobileAds.Android.DecagonAppOpenAdClient();
+                }
                 return new GoogleMobileAds.Android.AppOpenAdClient();
             }
             throw new InvalidOperationException(@"Called " + MethodBase.GetCurrentMethod().Name +
@@ -62,10 +68,16 @@ namespace GoogleMobileAds
                                               " on non-Android runtime");
         }
 
-        public IInterstitialClient BuildInterstitialClient() {
-          if (Application.platform == RuntimePlatform.Android) {
-            return new GoogleMobileAds.Android.InterstitialClient();
-          }
+        public IInterstitialClient BuildInterstitialClient()
+        {
+            if (Application.platform == RuntimePlatform.Android)
+            {
+                if (IsDecagonEnabled())
+                {
+                    return new GoogleMobileAds.Android.DecagonInterstitialAdClient();
+                }
+                return new GoogleMobileAds.Android.InterstitialClient();
+            }
           throw new InvalidOperationException(@"Called " + MethodBase.GetCurrentMethod().Name +
                                               " on non-Android runtime");
         }
@@ -78,20 +90,32 @@ namespace GoogleMobileAds
                                               " on non-Android runtime");
         }
 
-        public IRewardedAdClient BuildRewardedAdClient() {
-          if (Application.platform == RuntimePlatform.Android) {
-            return new GoogleMobileAds.Android.RewardedAdClient();
-          }
-          throw new InvalidOperationException(@"Called " + MethodBase.GetCurrentMethod().Name +
+        public IRewardedAdClient BuildRewardedAdClient()
+        {
+            if (Application.platform == RuntimePlatform.Android)
+            {
+                if (IsDecagonEnabled())
+                {
+                    return new GoogleMobileAds.Android.DecagonRewardedAdClient();
+                }
+                return new GoogleMobileAds.Android.RewardedAdClient();
+            }
+            throw new InvalidOperationException(@"Called " + MethodBase.GetCurrentMethod().Name +
                                               " on non-Android runtime");
         }
 
-        public IRewardedInterstitialAdClient BuildRewardedInterstitialAdClient() {
-          if (Application.platform == RuntimePlatform.Android) {
-            return new GoogleMobileAds.Android.RewardedInterstitialAdClient();
-          }
-          throw new InvalidOperationException(@"Called " + MethodBase.GetCurrentMethod().Name +
-                                              " on non-Android runtime");
+        public IRewardedInterstitialAdClient BuildRewardedInterstitialAdClient()
+        {
+            if (Application.platform == RuntimePlatform.Android)
+            {
+                if (IsDecagonEnabled())
+                {
+                    return new GoogleMobileAds.Android.DecagonRewardedInterstitialAdClient();
+                }
+                return new GoogleMobileAds.Android.RewardedInterstitialAdClient();
+            }
+            throw new InvalidOperationException(@"Called " + MethodBase.GetCurrentMethod().Name +
+                                                " on non-Android runtime");
         }
 
         public INativeOverlayAdClient BuildNativeOverlayAdClient() {
@@ -110,12 +134,37 @@ namespace GoogleMobileAds
                                               " on non-Android runtime");
         }
 
-        public IMobileAdsClient MobileAdsInstance() {
-          if (Application.platform == RuntimePlatform.Android) {
-            return GoogleMobileAds.Android.MobileAdsClient.Instance;
+        public IMobileAdsClient MobileAdsInstance()
+        {
+            if (Application.platform == RuntimePlatform.Android)
+            {
+                if (IsDecagonEnabled())
+                {
+                    return GoogleMobileAds.Android.DecagonMobileAdsClient.Instance;
+                }
+                return GoogleMobileAds.Android.MobileAdsClient.Instance;
           }
           throw new InvalidOperationException(@"Called " + MethodBase.GetCurrentMethod().Name +
                                               " on non-Android runtime");
+        }
+
+        private bool IsDecagonEnabled()
+        {
+            if (_decagonEnabled.HasValue)
+            {
+                return _decagonEnabled.Value;
+            }
+            try
+            {
+                var unused =
+                    new AndroidJavaClass(GoogleMobileAds.Android.DecagonUtils.MobileAdsClassName);
+                _decagonEnabled = true;
+            }
+            catch (AndroidJavaException)
+            {
+                _decagonEnabled = false;
+            }
+            return _decagonEnabled.Value;
         }
 
 #if GMA_PREVIEW_FEATURES
