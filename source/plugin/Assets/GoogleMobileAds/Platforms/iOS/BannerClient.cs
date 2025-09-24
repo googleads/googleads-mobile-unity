@@ -79,6 +79,19 @@ namespace GoogleMobileAds.iOS
 
 #region IBannerClient implementation
 
+        // A long integer provided by the AdMob UI for the configured placement.
+        public long PlacementId
+        {
+            get
+            {
+                return Externs.GADUGetBannerViewPlacementID(this.BannerViewPtr);
+            }
+            set
+            {
+                Externs.GADUSetBannerViewPlacementID(this.BannerViewPtr, value);
+            }
+        }
+
         // Creates a banner view.
         public void CreateBannerView(string adUnitId, AdSize adSize, AdPosition position)
         {

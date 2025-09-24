@@ -143,4 +143,44 @@ public final class BannerTest {
     banner.hide();
     assertThat(banner.adView.getVisibility()).isEqualTo(View.GONE);
   }
+
+  @Test
+  public void getPlacementId_returnsZero_whenAdIsNull() {
+    banner.adView = null;
+    assertThat(banner.getPlacementId()).isEqualTo(0);
+  }
+
+  @Test
+  public void getPlacementId_returnsPlacementIdFromTheAd() {
+    long placementId = 12345L;
+    banner.adView = fakeAdView;
+    fakeAdView.setPlacementId(placementId);
+    long result = banner.getPlacementId();
+    assertThat(result).isEqualTo(placementId);
+  }
+
+  @Test
+  public void getPlacementId_returnsPreviouslySetPlacementId() {
+    long placementId = 23456L;
+    banner.adView = fakeAdView;
+    banner.setPlacementId(placementId);
+    long result = banner.getPlacementId();
+    assertThat(result).isEqualTo(placementId);
+  }
+
+  @Test
+  public void setPlacementId_doesNothing_whenAdIsNull() {
+    long placementId = 54321L;
+    banner.adView = null;
+    banner.setPlacementId(placementId);
+    assertThat(banner.getPlacementId()).isEqualTo(0);
+  }
+
+  @Test
+  public void setPlacementId_setsPlacementIdOnTheAd() {
+    long placementId = 54321L;
+    banner.adView = fakeAdView;
+    banner.setPlacementId(placementId);
+    assertThat(fakeAdView.getPlacementId()).isEqualTo(placementId);
+  }
 }

@@ -111,6 +111,9 @@
 /// Returns whether the last loaded ad is a collapsible banner.
 @property(nonatomic, readonly) BOOL isCollapsible;
 
+/// A long integer provided by the AdMob UI for the configured placement.
+@property(atomic, readwrite) int64_t placementID;
+
 /// Returns whether the ad is currently on screen.
 @property(nonatomic, readonly) BOOL isHidden;
 

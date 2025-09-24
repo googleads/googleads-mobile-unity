@@ -514,6 +514,12 @@ namespace GoogleMobileAds.iOS
       internal static extern bool GADUIsBannerViewHidden(IntPtr bannerView);
 
       [DllImport("__Internal")]
+      internal static extern long GADUGetBannerViewPlacementID(IntPtr bannerView);
+
+      [DllImport("__Internal")]
+      internal static extern void GADUSetBannerViewPlacementID(IntPtr bannerView, long placementId);
+
+      [DllImport("__Internal")]
       internal static extern IntPtr GADUGetResponseInfo(IntPtr adFormat);
 
       [DllImport("__Internal")]

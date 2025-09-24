@@ -498,6 +498,29 @@ public class Banner {
     return adView.isCollapsible();
   }
 
+  /** Gets the placement ID for the {@link AdView}. */
+  public long getPlacementId() {
+    if (adView == null) {
+      return 0;
+    }
+    return adView.getPlacementId();
+  }
+
+  /**
+   * Sets the placement ID for the {@link AdView}.
+   *
+   * <p>To ensure this placement ID is included in reporting, call this method before showing the
+   * ad.
+   *
+   * @param placementId A long integer provided by the AdMob UI for the configured placement.
+   */
+  public void setPlacementId(long placementId) {
+    if (adView == null) {
+      return;
+    }
+    adView.setPlacementId(placementId);
+  }
+
   /** Returns whether the {@link AdView} is visible. */
   public boolean isVisible() {
     return adView != null && adView.getVisibility() == View.VISIBLE;

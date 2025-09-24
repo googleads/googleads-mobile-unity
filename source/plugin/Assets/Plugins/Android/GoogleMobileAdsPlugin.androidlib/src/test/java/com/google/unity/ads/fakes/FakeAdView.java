@@ -10,6 +10,7 @@ import com.google.unity.ads.UnityAdListener;
 public class FakeAdView extends BaseAdView {
   private UnityAdListener adListener;
   private boolean isCollapsible;
+  private long placementId;
 
   /* Creates a new {@link FakeAdView}. */
   public FakeAdView(@NonNull Context context, int adViewType) {
@@ -52,5 +53,24 @@ public class FakeAdView extends BaseAdView {
    */
   public void setCollapsible(boolean collapsible) {
     this.isCollapsible = collapsible;
+  }
+
+  /** Gets the placement ID of the ad view. */
+  @Override
+  public long getPlacementId() {
+    return placementId;
+  }
+
+  /**
+   * Sets the placement ID for the ad view.
+   *
+   * <p>To ensure this placement ID is included in reporting, call this method before showing the
+   * ad.
+   *
+   * @param placementId A long integer provided by the AdMob UI for the configured placement.
+   */
+  @Override
+  public void setPlacementId(long placementId) {
+    this.placementId = placementId;
   }
 }

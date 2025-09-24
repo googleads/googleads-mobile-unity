@@ -31,6 +31,7 @@ namespace GoogleMobileAds.Unity
         public event EventHandler<LoadAdErrorClientEventArgs> OnAdFailedToLoad;
         public event EventHandler<EventArgs> OnAdOpening;
         public event EventHandler<EventArgs> OnAdClosed;
+        public long PlacementId { get; set; }
 
         private bool _isHidden = false;
         private bool _didImpress = false;

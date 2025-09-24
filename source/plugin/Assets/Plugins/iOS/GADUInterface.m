@@ -1255,6 +1255,16 @@ BOOL GADUIsBannerViewHidden(GADUTypeBannerRef banner) {
   return internalBanner.isHidden;
 }
 
+int64_t GADUGetBannerViewPlacementID(GADUTypeBannerRef banner) {
+  GADUBanner *internalBanner = (__bridge GADUBanner *)banner;
+  return internalBanner.placementID;
+}
+
+void GADUSetBannerViewPlacementID(GADUTypeBannerRef banner, int64_t placementID) {
+  GADUBanner *internalBanner = (__bridge GADUBanner *)banner;
+  internalBanner.placementID = placementID;
+}
+
 /// Shows the GADInterstitial.
 void GADUShowInterstitial(GADUTypeInterstitialRef interstitial) {
   GADUInterstitial *internalInterstitial = (__bridge GADUInterstitial *)interstitial;

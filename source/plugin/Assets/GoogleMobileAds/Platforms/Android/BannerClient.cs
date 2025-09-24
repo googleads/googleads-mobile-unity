@@ -125,6 +125,19 @@ namespace GoogleMobileAds.Android
             return this.bannerView.Call<bool>("isCollapsible");
         }
 
+        // A long integer provided by the AdMob UI for the configured placement.
+        public long PlacementId
+        {
+            get
+            {
+                return this.bannerView.Call<long>("getPlacementId");
+            }
+            set
+            {
+                this.bannerView.Call("setPlacementId", value);
+            }
+        }
+
         public IResponseInfoClient GetResponseInfoClient()
         {
             var responseInfoJavaObject = bannerView.Call<AndroidJavaObject>("getResponseInfo");

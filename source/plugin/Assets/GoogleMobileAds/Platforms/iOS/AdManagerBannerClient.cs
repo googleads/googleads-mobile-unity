@@ -99,6 +99,9 @@ namespace GoogleMobileAds.iOS
             }
         }
 
+        // Placement ID is not supported for AdManagerBannerView.
+        public long PlacementId { get; set; }
+
         private List<AdSize> _validAdSizes;
 
         private IntPtr _bannerViewPtr;

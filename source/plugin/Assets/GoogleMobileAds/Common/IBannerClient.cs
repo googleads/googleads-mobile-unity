@@ -74,6 +74,7 @@ namespace GoogleMobileAds.Common
         // Returns ad request Response info client.
         IResponseInfoClient GetResponseInfoClient();
 
-
+        // A long integer provided by the AdMob UI for the configured placement.
+        long PlacementId { get; set; }
     }
 }
