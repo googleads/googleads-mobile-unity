@@ -1,6 +1,24 @@
 Google Mobile Ads Unity Plugin Change Log
 
 **************
+Version 10.5.0
+**************
+
+- Add `PlacementID` field to all formats.
+- Enable loading EDM4U for Editor platform while importing.
+- Fix a crash when `MobileAds.GetPlatformVersion` is called.
+- Fix missing `link.xml` when using the UPM package ([#3951](https://github.com/googleads/googleads-mobile-unity/issues/3951)).
+- Add the latest Unity Editor LTS version flag `2021_3_56` to `AndroidBuildPreProcessor`.
+
+Built and tested with:
+
+- Google Mobile Ads Android SDK 24.6.0.
+- Google Mobile Ads iOS SDK 12.11.0.
+- Google User Messaging Platform Android SDK 3.2.0
+- Google User Messaging Platform iOS SDK 3.0.0
+- External Dependency Manager for Unity 1.2.186
+
+**************
 Version 10.4.2
 **************
 
