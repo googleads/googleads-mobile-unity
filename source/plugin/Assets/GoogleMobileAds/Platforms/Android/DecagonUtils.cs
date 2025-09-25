@@ -19,6 +19,7 @@ namespace GoogleMobileAds.Android {
 
 #region Fully - qualified Decagon Mobile Ads SDK class names
 
+#region RequestConfiguration
     public const string MaxAdContentRatingClassName =
         "com.google.android.libraries.ads.mobile.sdk.common.RequestConfiguration$MaxAdContentRating";
     public const string PublisherPrivacyPersonalizationStateEnumName =
@@ -29,9 +30,26 @@ namespace GoogleMobileAds.Android {
         "com.google.android.libraries.ads.mobile.sdk.common.RequestConfiguration$TagForChildDirectedTreatment";
     public const string TagForUnderAgeOfConsentClassName =
         "com.google.android.libraries.ads.mobile.sdk.common.RequestConfiguration$TagForUnderAgeOfConsent";
+#endregion
+
+#region MobileAds 
+    public const string InitializationConfigBuilderClassName =
+        "com.google.android.libraries.ads.mobile.sdk.initialization.InitializationConfig$Builder";
+    public const string AdapterStatusInitializationStateName =
+        "com.google.android.libraries.ads.mobile.sdk.initialization.AdapterStatus$InitializationState";
+    public const string MobileAdsClassName =
+        "com.google.android.libraries.ads.mobile.sdk.MobileAds";
+    public const string OnInitializationCompleteListenerClassName =
+        "com.google.android.libraries.ads.mobile.sdk.initialization.OnAdapterInitializationCompleteListener";
+#endregion
 
 #endregion
 
+#region Fully - qualified Unity Decagon Bridge class names
+
+    public const string UnityMobileAdsClassName = "com.google.unity.ads.decagon.UnityMobileAds";
+
+#endregion
 
   }
 }
