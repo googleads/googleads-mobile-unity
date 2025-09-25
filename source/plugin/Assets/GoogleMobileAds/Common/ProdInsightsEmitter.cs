@@ -1,3 +1,5 @@
+#if PROD_TRACING_ENABLED
+
 using System;
 
 namespace GoogleMobileAds.Common
@@ -10,3 +12,5 @@ namespace GoogleMobileAds.Common
       }
   }
 }
+
+#endif

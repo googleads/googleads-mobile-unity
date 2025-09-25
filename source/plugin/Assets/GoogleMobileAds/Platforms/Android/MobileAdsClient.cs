@@ -12,6 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+#if DEV_TRACING_ENABLED || PROD_TRACING_ENABLED
+#define TRACING_ENABLED
+#endif
+
 using System;
 using System.Collections.Generic;
 using System.Reflection;
@@ -28,13 +32,17 @@ namespace GoogleMobileAds.Android
         private readonly static MobileAdsClient _instance = new MobileAdsClient();
 
         private readonly AndroidJavaClass _mobileAdsClass;
+#if TRACING_ENABLED
         private readonly IInsightsEmitter _insightsEmitter = new InsightsEmitter();
         private readonly ITracer _tracer;
+#endif
         private Action<IInitializationStatusClient> _initCompleteAction;
 
         private MobileAdsClient() : base(Utils.OnInitializationCompleteListenerClassName) {
             _mobileAdsClass = new AndroidJavaClass(Utils.UnityMobileAdsClassName);
+#if TRACING_ENABLED
             _tracer = new Tracer(_insightsEmitter);
+#endif
         }
 
         public static MobileAdsClient Instance
@@ -44,19 +52,25 @@ namespace GoogleMobileAds.Android
 
         public void Initialize(Action<IInitializationStatusClient> initCompleteAction)
         {
+#if TRACING_ENABLED
           using (_tracer.StartTrace("MobileAdsClient.Initialize"))
           {
+#endif
             _initCompleteAction = initCompleteAction;
 
             Task.Run(() => {
+#if TRACING_ENABLED
               using (_tracer.StartTrace("AttachCurrentThread"))
               {
+#endif
                 int env = AndroidJNI.AttachCurrentThread();
                 if (env < 0) {
                   UnityEngine.Debug.LogError("Failed to attach current thread to JVM.");
                   return;
                 }
+#if TRACING_ENABLED
               }
+#endif
 
               try {
                 _mobileAdsClass.CallStatic("initialize",
@@ -66,13 +80,15 @@ namespace GoogleMobileAds.Android
                 AndroidJNI.DetachCurrentThread();
               }
             });
+#if TRACING_ENABLED
           }
           _insightsEmitter.Emit(new Insight()
           {
               Name = Insight.CuiName.SdkInitialized,
               Platform = Insight.AdPlatform.Android,
-              Success = true
+              Success = true,
           });
+#endif
         }
 
         public void SetApplicationVolume(float volume)
