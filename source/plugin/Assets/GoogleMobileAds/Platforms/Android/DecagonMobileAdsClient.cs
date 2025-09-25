@@ -114,7 +114,11 @@ namespace GoogleMobileAds.Android
 
         public void OpenAdInspector(Action<AdInspectorErrorClientEventArgs> onAdInspectorClosed)
         {
-            // TODO(vkini): Add Ad Inspector implementation to Decagon Unity plugin.
+            AndroidJavaObject activity = Utils.GetCurrentActivityAndroidJavaObject();
+            AndroidJavaClass adInspectorClass =
+                new AndroidJavaClass(DecagonUtils.UnityAdInspectorClassName);
+            DecagonAdInspectorCallback callback = new DecagonAdInspectorCallback(onAdInspectorClosed);
+            adInspectorClass.CallStatic("openAdInspector", activity, callback);
         }
 
         public void Preload(List<PreloadConfiguration> configurations,

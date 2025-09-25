@@ -48,7 +48,9 @@ namespace GoogleMobileAds.Android {
 #region Fully - qualified Unity Decagon Bridge class names
 
     public const string UnityMobileAdsClassName = "com.google.unity.ads.decagon.UnityMobileAds";
-
+    public const string UnityAdInspectorClassName = "com.google.unity.ads.decagon.UnityAdInspector";
+    public const string UnityAdInspectorListenerClassName =
+        "com.google.unity.ads.decagon.UnityAdInspectorListener";
 #endregion
 
   }
