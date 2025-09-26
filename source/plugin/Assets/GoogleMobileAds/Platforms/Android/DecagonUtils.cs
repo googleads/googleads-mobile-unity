@@ -64,6 +64,11 @@ namespace GoogleMobileAds.Android {
     public const string UnityAppOpenAdClassName = "com.google.unity.ads.decagon.UnityAppOpenAd";
     public const string UnityAppOpenAdCallbackClassName =
         "com.google.unity.ads.decagon.UnityAppOpenAdCallback";
+
+    public const string UnityInterstitialAdClassName =
+        "com.google.unity.ads.decagon.UnityInterstitialAd";
+    public const string UnityInterstitialAdCallbackClassName =
+        "com.google.unity.ads.decagon.UnityInterstitialAdCallback";
 #endregion
 
     /// <summary>
