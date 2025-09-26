@@ -13,6 +13,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 using System;
+using System.Collections.Generic;
+using UnityEngine;
+
+using GoogleMobileAds.Api;
 
 namespace GoogleMobileAds.Android {
   internal class DecagonUtils {
@@ -43,6 +47,11 @@ namespace GoogleMobileAds.Android {
         "com.google.android.libraries.ads.mobile.sdk.initialization.OnAdapterInitializationCompleteListener";
 #endregion
 
+#region AdRequest
+    public const string AdRequestBuilderClassName =
+        "com.google.android.libraries.ads.mobile.sdk.common.AdRequest$Builder";
+#endregion
+
 #endregion
 
 #region Fully - qualified Unity Decagon Bridge class names
@@ -51,7 +60,29 @@ namespace GoogleMobileAds.Android {
     public const string UnityAdInspectorClassName = "com.google.unity.ads.decagon.UnityAdInspector";
     public const string UnityAdInspectorListenerClassName =
         "com.google.unity.ads.decagon.UnityAdInspectorListener";
+
+    public const string UnityAppOpenAdClassName = "com.google.unity.ads.decagon.UnityAppOpenAd";
+    public const string UnityAppOpenAdCallbackClassName =
+        "com.google.unity.ads.decagon.UnityAppOpenAdCallback";
 #endregion
 
+    /// <summary>
+    /// Converts the plugin AdRequest object to a native java proxy object for use by the sdk.
+    /// </summary>
+    /// <param name="AdRequest">the AdRequest from the unity plugin.</param>
+    public static AndroidJavaObject GetAdRequestJavaObject(AdRequest request, string adUnitId) {
+      AndroidJavaObject adRequestBuilder =
+          new AndroidJavaObject(AdRequestBuilderClassName, adUnitId);
+      foreach (string keyword in request.Keywords) {
+        adRequestBuilder.Call<AndroidJavaObject>("addKeyword", keyword);
+      }
+
+      foreach (KeyValuePair<string, string> entry in request.CustomTargeting) {
+        adRequestBuilder.Call<AndroidJavaObject>("putCustomTargeting", entry.Key, entry.Value);
+      }
+      adRequestBuilder.Call<AndroidJavaObject>("setRequestAgent", AdRequest.BuildVersionString());
+
+      return adRequestBuilder.Call<AndroidJavaObject>("build");
+    }
   }
 }
