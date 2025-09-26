@@ -73,6 +73,11 @@ namespace GoogleMobileAds.Android {
     public const string UnityRewardedAdClassName = "com.google.unity.ads.decagon.UnityRewardedAd";
     public const string UnityRewardedAdCallbackClassName =
         "com.google.unity.ads.decagon.UnityRewardedAdCallback";
+
+    public const string UnityRewardedInterstitialAdClassName =
+        "com.google.unity.ads.decagon.UnityRewardedInterstitialAd";
+    public const string UnityRewardedInterstitialAdCallbackClassName =
+        "com.google.unity.ads.decagon.UnityRewardedInterstitialAdCallback";
 #endregion
 
     /// <summary>
