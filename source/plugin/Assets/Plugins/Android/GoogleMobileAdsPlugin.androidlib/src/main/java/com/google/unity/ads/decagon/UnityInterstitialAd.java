@@ -3,11 +3,13 @@ package com.google.unity.ads.decagon;
 import android.app.Activity;
 import android.util.Log;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
 import com.google.android.libraries.ads.mobile.sdk.common.AdLoadCallback;
 import com.google.android.libraries.ads.mobile.sdk.common.AdRequest;
 import com.google.android.libraries.ads.mobile.sdk.common.FullScreenContentError;
 import com.google.android.libraries.ads.mobile.sdk.common.LoadAdError;
+import com.google.android.libraries.ads.mobile.sdk.common.ResponseInfo;
 import com.google.android.libraries.ads.mobile.sdk.interstitial.InterstitialAd;
 import com.google.android.libraries.ads.mobile.sdk.interstitial.InterstitialAdEventCallback;
 import com.google.unity.ads.PluginUtils;
@@ -143,5 +145,15 @@ public class UnityInterstitialAd extends UnityAdBase<InterstitialAd, UnityInters
           ad.setImmersiveMode(true);
           ad.show(this.activity);
         });
+  }
+
+  /** Returns the request response info. */
+  @Nullable
+  public ResponseInfo getResponseInfo() {
+    if (ad == null) {
+      Log.e(PluginUtils.LOGTAG, "Tried to get response info before it was ready. Returning null.");
+      return null;
+    }
+    return ad.getResponseInfo();
   }
 }

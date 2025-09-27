@@ -1,15 +1,20 @@
 package com.google.unity.ads.decagon;
 
+import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.util.concurrent.MoreExecutors.directExecutor;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import android.app.Activity;
+import android.os.Bundle;
 import com.google.android.libraries.ads.mobile.sdk.appopen.AppOpenAd;
 import com.google.android.libraries.ads.mobile.sdk.appopen.AppOpenAdEventCallback;
 import com.google.android.libraries.ads.mobile.sdk.common.AdLoadCallback;
 import com.google.android.libraries.ads.mobile.sdk.common.AdRequest;
 import com.google.android.libraries.ads.mobile.sdk.common.FullScreenContentError;
 import com.google.android.libraries.ads.mobile.sdk.common.LoadAdError;
+import com.google.android.libraries.ads.mobile.sdk.common.ResponseInfo;
+import java.util.ArrayList;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -105,5 +110,27 @@ public class UnityAppOpenAdTest {
 
     eventCallback.onAdDismissedFullScreenContent();
     verify(mockCallback).onAdDismissedFullScreenContent();
+  }
+
+  @Test
+  public void testGetResponseInfo_whenAdNotLoaded_returnsNull() {
+    assertThat(unityAppOpenAd.getResponseInfo()).isNull();
+  }
+
+  @Test
+  public void testGetResponseInfo_whenAdLoaded_returnsResponseInfo() {
+    ResponseInfo responseInfo =
+        new ResponseInfo("AdapterName", "responseId", new Bundle(), null, new ArrayList<>());
+    when(mockAppOpenAd.getResponseInfo()).thenReturn(responseInfo);
+
+    // Simulate a successful ad load.
+    unityAppOpenAd.load(mockAdRequest);
+    verify(mockAdWrapper).load(Mockito.eq(mockAdRequest), adLoadCallbackCaptor.capture());
+    adLoadCallbackCaptor.getValue().onAdLoaded(mockAppOpenAd);
+
+    // Verify that getResponseInfo() was called on the underlying ad and its result is returned.
+    ResponseInfo actualResponseInfo = unityAppOpenAd.getResponseInfo();
+    verify(mockAppOpenAd).getResponseInfo();
+    assertThat(actualResponseInfo).isEqualTo(responseInfo);
   }
 }

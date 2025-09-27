@@ -1,15 +1,20 @@
 package com.google.unity.ads.decagon;
 
+import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.util.concurrent.MoreExecutors.directExecutor;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import android.app.Activity;
+import android.os.Bundle;
 import com.google.android.libraries.ads.mobile.sdk.common.AdLoadCallback;
 import com.google.android.libraries.ads.mobile.sdk.common.AdRequest;
 import com.google.android.libraries.ads.mobile.sdk.common.FullScreenContentError;
 import com.google.android.libraries.ads.mobile.sdk.common.LoadAdError;
+import com.google.android.libraries.ads.mobile.sdk.common.ResponseInfo;
 import com.google.android.libraries.ads.mobile.sdk.interstitial.InterstitialAd;
 import com.google.android.libraries.ads.mobile.sdk.interstitial.InterstitialAdEventCallback;
+import java.util.ArrayList;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -106,5 +111,27 @@ public class UnityInterstitialAdTest {
 
     eventCallback.onAdDismissedFullScreenContent();
     verify(mockCallback).onAdDismissedFullScreenContent();
+  }
+
+  @Test
+  public void testGetResponseInfo_whenAdNotLoaded_returnsNull() {
+    assertThat(unityInterstitialAd.getResponseInfo()).isNull();
+  }
+
+  @Test
+  public void testGetResponseInfo_whenAdLoaded_returnsResponseInfo() {
+    ResponseInfo responseInfo =
+        new ResponseInfo("AdapterName", "responseId", new Bundle(), null, new ArrayList<>());
+    when(mockInterstitialAd.getResponseInfo()).thenReturn(responseInfo);
+
+    // Simulate a successful ad load.
+    unityInterstitialAd.load(mockAdRequest);
+    verify(mockAdWrapper).load(Mockito.eq(mockAdRequest), adLoadCallbackCaptor.capture());
+    adLoadCallbackCaptor.getValue().onAdLoaded(mockInterstitialAd);
+
+    // Verify that getResponseInfo() was called on the underlying ad and its result is returned.
+    ResponseInfo actualResponseInfo = unityInterstitialAd.getResponseInfo();
+    verify(mockInterstitialAd).getResponseInfo();
+    assertThat(actualResponseInfo).isEqualTo(responseInfo);
   }
 }

@@ -1,15 +1,20 @@
 package com.google.unity.ads.decagon;
 
+import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.util.concurrent.MoreExecutors.directExecutor;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import android.app.Activity;
+import android.os.Bundle;
 import com.google.android.libraries.ads.mobile.sdk.common.AdLoadCallback;
 import com.google.android.libraries.ads.mobile.sdk.common.AdRequest;
 import com.google.android.libraries.ads.mobile.sdk.common.FullScreenContentError;
 import com.google.android.libraries.ads.mobile.sdk.common.LoadAdError;
+import com.google.android.libraries.ads.mobile.sdk.common.ResponseInfo;
 import com.google.android.libraries.ads.mobile.sdk.rewardedinterstitial.RewardedInterstitialAd;
 import com.google.android.libraries.ads.mobile.sdk.rewardedinterstitial.RewardedInterstitialAdEventCallback;
+import java.util.ArrayList;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -31,7 +36,7 @@ public final class UnityRewardedInterstitialAdTest {
 
   private Activity activity;
   @Mock private UnityRewardedInterstitialAdCallback mockCallback;
-  @Mock private RewardedInterstitialAd mockRewardedAd;
+  @Mock private RewardedInterstitialAd mockRewardedInterstitialAd;
   @Mock private AdWrapper<RewardedInterstitialAd> mockAdWrapper;
   @Mock private AdRequest mockAdRequest;
 
@@ -53,7 +58,7 @@ public final class UnityRewardedInterstitialAdTest {
     unityRewardedInterstitialAd.load(mockAdRequest);
 
     verify(mockAdWrapper).load(adRequestCaptor.capture(), adLoadCallbackCaptor.capture());
-    adLoadCallbackCaptor.getValue().onAdLoaded(mockRewardedAd);
+    adLoadCallbackCaptor.getValue().onAdLoaded(mockRewardedInterstitialAd);
 
     verify(mockCallback).onRewardedInterstitialAdLoaded();
   }
@@ -79,16 +84,16 @@ public final class UnityRewardedInterstitialAdTest {
     // Simulate a successful ad load.
     unityRewardedInterstitialAd.load(mockAdRequest);
     verify(mockAdWrapper).load(adRequestCaptor.capture(), adLoadCallbackCaptor.capture());
-    adLoadCallbackCaptor.getValue().onAdLoaded(mockRewardedAd);
+    adLoadCallbackCaptor.getValue().onAdLoaded(mockRewardedInterstitialAd);
 
     // Call show().
     unityRewardedInterstitialAd.show();
 
     // Verify the ad is shown and the event callback is set.
-    verify(mockRewardedAd).setAdEventCallback(adEventCallbackCaptor.capture());
-    verify(mockRewardedAd).show(Mockito.eq(activity), Mockito.any());
+    verify(mockRewardedInterstitialAd).setAdEventCallback(adEventCallbackCaptor.capture());
+    verify(mockRewardedInterstitialAd).show(Mockito.eq(activity), Mockito.any());
     // Verify immersive mode was set on the ad.
-    verify(mockRewardedAd).setImmersiveMode(true);
+    verify(mockRewardedInterstitialAd).setImmersiveMode(true);
 
     // Trigger and verify all event callbacks.
     RewardedInterstitialAdEventCallback eventCallback = adEventCallbackCaptor.getValue();
@@ -104,5 +109,27 @@ public final class UnityRewardedInterstitialAdTest {
 
     eventCallback.onAdDismissedFullScreenContent();
     verify(mockCallback).onAdDismissedFullScreenContent();
+  }
+
+  @Test
+  public void testGetResponseInfo_whenAdNotLoaded_returnsNull() {
+    assertThat(unityRewardedInterstitialAd.getResponseInfo()).isNull();
+  }
+
+  @Test
+  public void testGetResponseInfo_whenAdLoaded_returnsResponseInfo() {
+    ResponseInfo responseInfo =
+        new ResponseInfo("AdapterName", "responseId", new Bundle(), null, new ArrayList<>());
+    when(mockRewardedInterstitialAd.getResponseInfo()).thenReturn(responseInfo);
+
+    // Simulate a successful ad load.
+    unityRewardedInterstitialAd.load(mockAdRequest);
+    verify(mockAdWrapper).load(Mockito.eq(mockAdRequest), adLoadCallbackCaptor.capture());
+    adLoadCallbackCaptor.getValue().onAdLoaded(mockRewardedInterstitialAd);
+
+    // Verify that getResponseInfo() was called on the underlying ad and its result is returned.
+    ResponseInfo actualResponseInfo = unityRewardedInterstitialAd.getResponseInfo();
+    verify(mockRewardedInterstitialAd).getResponseInfo();
+    assertThat(actualResponseInfo).isEqualTo(responseInfo);
   }
 }

@@ -3,6 +3,7 @@ package com.google.unity.ads.decagon;
 import android.app.Activity;
 import android.util.Log;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
 import com.google.android.libraries.ads.mobile.sdk.appopen.AppOpenAd;
 import com.google.android.libraries.ads.mobile.sdk.appopen.AppOpenAdEventCallback;
@@ -10,6 +11,7 @@ import com.google.android.libraries.ads.mobile.sdk.common.AdLoadCallback;
 import com.google.android.libraries.ads.mobile.sdk.common.AdRequest;
 import com.google.android.libraries.ads.mobile.sdk.common.FullScreenContentError;
 import com.google.android.libraries.ads.mobile.sdk.common.LoadAdError;
+import com.google.android.libraries.ads.mobile.sdk.common.ResponseInfo;
 import com.google.unity.ads.PluginUtils;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
@@ -139,5 +141,15 @@ public class UnityAppOpenAd extends UnityAdBase<AppOpenAd, UnityAppOpenAdCallbac
           ad.setImmersiveMode(true);
           ad.show(this.activity);
         });
+  }
+
+  /** Returns the request response info. */
+  @Nullable
+  public ResponseInfo getResponseInfo() {
+    if (ad == null) {
+      Log.e(PluginUtils.LOGTAG, "Tried to get response info before it was ready. Returning null.");
+      return null;
+    }
+    return ad.getResponseInfo();
   }
 }
