@@ -133,7 +133,7 @@ namespace GoogleMobileAds.Android
         // Destroy the rewarded ad.
         public void DestroyRewardedAd()
         {
-            _androidRewardedAd.Call("destroy");
+            // Currently we don't have to do anything on destroy.
         }
 
         #endregion

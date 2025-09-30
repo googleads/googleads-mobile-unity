@@ -74,7 +74,7 @@ namespace GoogleMobileAds.Android
         // Destroys the interstitial ad.
         public void DestroyInterstitial()
         {
-            _androidInterstitialAd.Call("destroy");
+            // Currently we don't have to do anything on destroy.
         }
 
         // Returns the ad unit ID.

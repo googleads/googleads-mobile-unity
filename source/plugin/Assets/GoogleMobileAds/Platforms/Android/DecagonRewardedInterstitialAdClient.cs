@@ -136,7 +136,7 @@ namespace GoogleMobileAds.Android
         // Destroy the rewarded interstitial ad.
         public void DestroyRewardedInterstitialAd()
         {
-            _androidRewardedInterstitialAd.Call("destroy");
+            // Currently we don't have to do anything on destroy.
         }
 
         #endregion
