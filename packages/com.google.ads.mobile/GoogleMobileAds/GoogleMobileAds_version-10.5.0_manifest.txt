@@ -1,4 +1,5 @@
 Assets/GoogleMobileAds/CHANGELOG.md
+Assets/GoogleMobileAds/Editor/AndroidBuildPreProcessor.cs
 Assets/GoogleMobileAds/Editor/BuildPreProcessor.cs
 Assets/GoogleMobileAds/Editor/EditorLocalization.cs
 Assets/GoogleMobileAds/Editor/EditorLocalizationData.cs
