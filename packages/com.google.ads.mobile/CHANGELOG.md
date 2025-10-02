@@ -12,7 +12,7 @@ Version 10.5.0
 
 Built and tested with:
 
-- Google Mobile Ads Android SDK 24.6.0.
+- Google Mobile Ads Android SDK 24.5.0.
 - Google Mobile Ads iOS SDK 12.11.0.
 - Google User Messaging Platform Android SDK 3.2.0
 - Google User Messaging Platform iOS SDK 3.0.0
