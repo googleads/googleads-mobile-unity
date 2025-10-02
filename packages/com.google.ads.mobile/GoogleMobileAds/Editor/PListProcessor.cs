@@ -43,7 +43,7 @@ public static class PListProcessor
         plist.ReadFromFile(plistPath);
 
         GoogleMobileAdsSettings instance = GoogleMobileAdsSettings.LoadInstance();
-        string appId = instance.GoogleMobileAdsIOSAppId;
+        string appId = instance.GoogleMobileAdsIOSAppId.Trim();
         if (appId.Length == 0)
         {
             NotifyBuildFailure(

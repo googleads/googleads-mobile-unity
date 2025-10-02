@@ -119,7 +119,7 @@ public class ManifestProcessor : IPreprocessBuild
         }
 
         GoogleMobileAdsSettings instance = GoogleMobileAdsSettings.LoadInstance();
-        string appId = instance.GoogleMobileAdsAndroidAppId;
+        string appId = instance.GoogleMobileAdsAndroidAppId.Trim();
 
         if (appId.Length == 0)
         {
