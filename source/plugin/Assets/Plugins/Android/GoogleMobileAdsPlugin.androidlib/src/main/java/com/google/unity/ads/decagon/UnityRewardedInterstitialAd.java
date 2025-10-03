@@ -23,6 +23,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
 import com.google.android.libraries.ads.mobile.sdk.common.AdLoadCallback;
 import com.google.android.libraries.ads.mobile.sdk.common.AdRequest;
+import com.google.android.libraries.ads.mobile.sdk.common.AdValue;
 import com.google.android.libraries.ads.mobile.sdk.common.FullScreenContentError;
 import com.google.android.libraries.ads.mobile.sdk.common.LoadAdError;
 import com.google.android.libraries.ads.mobile.sdk.common.ResponseInfo;
@@ -97,6 +98,7 @@ public class UnityRewardedInterstitialAd
   }
 
   /** Shows the rewarded interstitial ad if it has loaded. */
+  @SuppressWarnings("EnumOrdinal")
   public void show() {
     if (ad == null) {
       Log.e(
@@ -158,6 +160,21 @@ public class UnityRewardedInterstitialAd
                 () -> {
                   if (callback != null) {
                     callback.onAdClicked();
+                  }
+                });
+          }
+
+          @Override
+          public void onAdPaid(@NonNull AdValue adValue) {
+            executor.execute(
+                () -> {
+                  if (callback != null) {
+                    callback.onPaidEvent(
+                        // TODO(vkini): Remove this cast to int and use Utility method to convert to
+                        // int.
+                        adValue.getPrecisionType().ordinal(),
+                        adValue.getValueMicros(),
+                        adValue.getCurrencyCode());
                   }
                 });
           }

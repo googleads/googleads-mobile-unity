@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Google, Inc.
+ * Copyright (C) 2025 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,18 +15,10 @@
  */
 package com.google.unity.ads.decagon;
 
-import com.google.android.libraries.ads.mobile.sdk.common.LoadAdError;
-
 /**
- * An interface form of {@link UnityRewardedAdCallback} that can be implemented via {@code
- * AndroidJavaProxy} in Unity to receive ad events synchronously.
+ * An interface form of {@link UnityPaidEventListener} that can be implemented via {@code
+ * AndroidJavaProxy} in Unity to receive paid events synchronously.
  */
-public interface UnityRewardedAdCallback
-    extends UnityFullScreenContentCallback, UnityPaidEventListener {
-
-  void onRewardedAdLoaded();
-
-  void onRewardedAdFailedToLoad(LoadAdError error);
-
-  void onUserEarnedReward(String type, float amount);
+public interface UnityPaidEventListener {
+  void onPaidEvent(int precision, long value, String currencyCode);
 }

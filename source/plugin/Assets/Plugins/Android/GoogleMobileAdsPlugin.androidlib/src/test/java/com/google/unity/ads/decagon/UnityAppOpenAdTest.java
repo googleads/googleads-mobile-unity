@@ -11,8 +11,10 @@ import com.google.android.libraries.ads.mobile.sdk.appopen.AppOpenAd;
 import com.google.android.libraries.ads.mobile.sdk.appopen.AppOpenAdEventCallback;
 import com.google.android.libraries.ads.mobile.sdk.common.AdLoadCallback;
 import com.google.android.libraries.ads.mobile.sdk.common.AdRequest;
+import com.google.android.libraries.ads.mobile.sdk.common.AdValue;
 import com.google.android.libraries.ads.mobile.sdk.common.FullScreenContentError;
 import com.google.android.libraries.ads.mobile.sdk.common.LoadAdError;
+import com.google.android.libraries.ads.mobile.sdk.common.PrecisionType;
 import com.google.android.libraries.ads.mobile.sdk.common.ResponseInfo;
 import java.util.ArrayList;
 import org.junit.Before;
@@ -76,6 +78,7 @@ public class UnityAppOpenAdTest {
   }
 
   @Test
+  @SuppressWarnings("EnumOrdinal")
   public void testShow_showsAdAndTriggersCallbacks() {
     // First, simulate a successful ad load.
     unityAppOpenAd.load(mockAdRequest);
@@ -110,6 +113,12 @@ public class UnityAppOpenAdTest {
 
     eventCallback.onAdDismissedFullScreenContent();
     verify(mockCallback).onAdDismissedFullScreenContent();
+
+    PrecisionType precisionType = PrecisionType.PRECISE;
+    long valueMicros = 1000000L;
+    String currencyCode = "USD";
+    eventCallback.onAdPaid(new AdValue(precisionType, valueMicros, currencyCode));
+    verify(mockCallback).onPaidEvent(precisionType.ordinal(), valueMicros, currencyCode);
   }
 
   @Test
