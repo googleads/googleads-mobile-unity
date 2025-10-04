@@ -188,6 +188,20 @@ namespace GoogleMobileAds.Android
             }
         }
 
+        void onPaidEvent(int precision, long valueInMicros, string currencyCode)
+        {
+            if (this.OnPaidEvent != null)
+            {
+                AdValue adValue = new AdValue()
+                {
+                    Precision = (AdValue.PrecisionType) precision,
+                    Value = valueInMicros,
+                    CurrencyCode = currencyCode
+                };
+                this.OnPaidEvent(adValue);
+            }
+        }
+
         #endregion
     }
 }
