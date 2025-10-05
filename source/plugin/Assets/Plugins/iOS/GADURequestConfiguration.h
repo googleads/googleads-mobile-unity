@@ -12,6 +12,12 @@ typedef NS_ENUM(NSInteger, GADURequestConfigurationTagForUnderAgeOfConsent) {
   kGADURequestConfigurationTagForUnderAgeOfConsentUnspecified = -1,  // Unspecified
 };
 
+typedef NS_ENUM(NSInteger, GADURequestConfigurationPublisherPrivacyPersonalizationState) {
+  kGADURequestConfigurationPublisherPrivacyPersonalizationStateDefault = 0,   /// Default.
+  kGADURequestConfigurationPublisherPrivacyPersonalizationStateEnabled = 1,   /// Enabled
+  kGADURequestConfigurationPublisherPrivacyPersonalizationStateDisabled = 2,  /// Disabled
+};
+
 @interface GADURequestConfiguration : NSObject
 
 @property(nonatomic, copy, nullable) GADMaxAdContentRating maxAdContentRating;
@@ -23,7 +29,5 @@ typedef NS_ENUM(NSInteger, GADURequestConfigurationTagForUnderAgeOfConsent) {
 
 @property(nonatomic, assign)
     GADURequestConfigurationTagForUnderAgeOfConsent tagForUnderAgeOfConsent;
-
-@property(nonatomic, assign) BOOL sameAppKeyEnabled;
 
 @end

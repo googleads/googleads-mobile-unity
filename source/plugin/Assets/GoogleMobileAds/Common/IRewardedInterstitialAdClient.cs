@@ -25,7 +25,7 @@ namespace GoogleMobileAds.Common
         // Ad event fired when the rewarded interstitial ad has failed to load.
         event EventHandler<LoadAdErrorClientEventArgs> OnAdFailedToLoad;
         // Ad event fired when the rewarded interstitial ad is estimated to have earned money.
-        event EventHandler<AdValueEventArgs> OnPaidEvent;
+        event Action<AdValue> OnPaidEvent;
         // Ad event fired when the rewarded interstitial ad has rewarded the user.
         event EventHandler<Reward> OnUserEarnedReward;
         // Ad event fired when the rewarded interstitial ad has failed to present the full screen content.
@@ -39,6 +39,9 @@ namespace GoogleMobileAds.Common
         // Ad event fired when an ad is clicked.
         event Action OnAdClicked;
 
+        // A long integer provided by the AdMob UI for the configured placement.
+        long PlacementId { get; set; }
+
         // Creates a rewarded interstitial ad.
         void CreateRewardedInterstitialAd();
 
@@ -50,6 +53,9 @@ namespace GoogleMobileAds.Common
 
         // Shows the rewarded interstitial ad on the screen.
         void Show();
+
+        // Returns the ad unit ID.
+        string GetAdUnitID();
 
         // Sets the server side verification options
         void SetServerSideVerificationOptions(ServerSideVerificationOptions serverSideVerificationOptions);

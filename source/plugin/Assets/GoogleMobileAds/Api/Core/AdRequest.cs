@@ -39,6 +39,11 @@ namespace GoogleMobileAds.Api
         /// </summary>
         public const string TestDeviceSimulator = "SIMULATOR";
 
+        /// <summary>
+        /// The custom targeting parameters.
+        /// </summary>
+        public Dictionary<string, string> CustomTargeting = new Dictionary<string, string>();
+
         static AdRequest()
         {
             Version version = typeof(AdRequest).Assembly.GetName().Version;
@@ -52,6 +57,7 @@ namespace GoogleMobileAds.Api
             Keywords = request.Keywords;
             Extras = request.Extras;
             MediationExtras = request.MediationExtras;
+            CustomTargeting = request.CustomTargeting;
         }
 
         /// <summary>
@@ -63,6 +69,11 @@ namespace GoogleMobileAds.Api
         /// Returns extra parameters to be sent in the ad request.
         /// </summary>
         public Dictionary<string, string> Extras = new Dictionary<string, string>();
+
+        /// <summary>
+        /// A long integer provided by the AdMob UI for the configured placement.
+        /// </summary>
+        public long PlacementID;
 
         /// <summary>
         /// Returns extra parameters to be sent to a specific ad partner in the ad request.
@@ -78,73 +89,6 @@ namespace GoogleMobileAds.Api
                 versionBuilder.Append(nativePluginVersion);
             }
             return versionBuilder.ToString();
-        }
-
-        /// <summary>
-        /// Constructs a <see cref="Builder"/>.
-        /// </summary>
-        [Obsolete("Use AdRequest directly instead.")]
-        public class Builder
-        {
-            public Builder()
-            {
-                this.Keywords = new HashSet<string>();
-                this.Extras = new Dictionary<string, string>();
-                this.MediationExtras = new List<MediationExtras>();
-            }
-
-            internal HashSet<string> Keywords { get; private set; }
-
-            internal Dictionary<string, string> Extras { get; private set; }
-
-            internal List<MediationExtras> MediationExtras { get; private set; }
-
-            /// <summary>
-            /// Words or phrase describing the current activity of the user for targeting purposes.
-            /// </summary>
-            /// <param name="keyword">
-            /// Word or phrase describing the current activity of the user for targeting purposes.
-            /// </param>
-            public Builder AddKeyword(string keyword)
-            {
-                this.Keywords.Add(keyword);
-                return this;
-            }
-
-            /// <summary>
-            /// Constructs an <see cref="AdRequest"/> with the specified attributes.
-            /// </summary>
-            public AdRequest Build()
-            {
-                AdRequest adRequest = new AdRequest();
-                adRequest.Keywords = this.Keywords;
-                adRequest.Extras = this.Extras;
-                adRequest.MediationExtras = this.MediationExtras;
-                return adRequest;
-            }
-
-            /// <summary>
-            /// Extra parameters to be sent to a specific ad partner in the ad request.
-            /// </summary>
-            /// <param name="extras">
-            /// Extra parameters for mediation custom events.
-            /// </param>
-            public Builder AddMediationExtras(MediationExtras extras)
-            {
-                this.MediationExtras.Add(extras);
-                return this;
-            }
-
-            /// <summary>
-            /// Extra parameters to be sent in the ad request.
-            /// </summary>
-            /// <param name="key">The extra key to add.</param>
-            /// <param name="value">The extra value to add.</param>
-            public Builder AddExtra(string key, string value)
-            {
-                this.Extras.Add(key, value);
-                return this;
-            }
         }
     }
 }

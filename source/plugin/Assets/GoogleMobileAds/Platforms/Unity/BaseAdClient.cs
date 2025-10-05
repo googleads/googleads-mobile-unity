@@ -24,13 +24,15 @@ namespace GoogleMobileAds.Unity
     public class BaseAdClient
     {
         protected static AdBehaviour AdBehaviour = new GameObject().AddComponent<AdBehaviour>();
+        protected string _adUnitId;
         protected GameObject prefabAd, dummyAd = null;
+
         public void LoadAndSetPrefabAd(string prefabName)
         {
             prefabAd = Resources.Load(prefabName) as GameObject;
             if (prefabAd == null)
             {
-                Debug.Log ("No Prefab found");
+                Debug.Log("No Prefab found");
                 return;
             }
             // Setting the maximum sortingOrder ensures highest priority for rendering the ad.
@@ -51,6 +53,12 @@ namespace GoogleMobileAds.Unity
         public string MediationAdapterClassName()
         {
             return new ResponseInfoClient().GetMediationAdapterClassName();
+        }
+
+        // Returns the ad unit ID.
+        public string GetAdUnitID()
+        {
+            return _adUnitId;
         }
 
         // Returns ad request Response info client.

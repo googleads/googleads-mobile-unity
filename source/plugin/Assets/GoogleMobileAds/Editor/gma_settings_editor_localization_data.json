@@ -1,0 +1,72 @@
+{
+  "LocalizationsByKey": {
+    "KEY_ANALYTICS_ENABLED_HELPBOX": {
+      "en": "Sends the usage statistics to Google to gather reports on the failures and to inform future improvements of the Google Mobile Ads Unity plugin.",
+      "fr": "Envoie les données d'utilisation à Google pour collecter des rapports d'erreurs et participer aux futures améliorations du plugin Google Mobile Ads Unity."
+    },
+    "KEY_ANALYTICS_ENABLED_SETTING": {
+      "en": "Send plugin usage statistics",
+      "fr": "Envoyer les données d'utilisation et de diagnostic du plugin"
+    },
+    "KEY_ANDROID_SETTINGS_LABEL": {
+      "en": "Android settings",
+      "fr": "Paramètres Android"
+    },
+    "KEY_ENABLE_GRADLE_BUILD_PRE_PROCESSOR_HELPBOX": {
+      "en": "Modifies the /Plugin/Android/ Gradle files to fix common build errors seen on older Unity versions, see https://developers.google.com/admob/unity/android",
+      "fr": "Modifie les fichiers Gradle de /Plugin/Android/ pour corriger les erreurs de compilation les plus courantes sur des versions antérieures d'Unity, voir https://developers.google.com/admob/unity/android?hl=fr"
+    },
+    "KEY_ENABLE_GRADLE_BUILD_PRE_PROCESSOR_SETTING": {
+      "en": "Enable Gradle build pre-processor",
+      "fr": "Activer le pre-processeur de compilation Gradle"
+    },
+    "KEY_ENABLE_KOTLINX_COROUTINES_PACKAGING_OPTION_HELPBOX": {
+      "en": "Adds an instruction to fix the build.gradle build error with message '2 files found with path 'META-INF/kotlinx_coroutines_core.version''. For more details, see https://developers.google.com/admob/unity/gradle",
+      "fr": "Ajoute une instruction pour corriger l'erreur de compilation de build.gradle '2 files found with path 'META-INF/kotlinx_coroutines_core.version''. Pour plus d'informations, visitez https://developers.google.com/admob/unity/gradle?hl=fr"
+    },
+    "KEY_ENABLE_KOTLINX_COROUTINES_PACKAGING_OPTION_SETTING": {
+      "en": "Enable kotlinx.coroutines packaging option",
+      "fr": "Activer l'option de packaging kotlinx.coroutines"
+    },
+    "KEY_GMA_APP_ID_HELPBOX": {
+      "en": "Google Mobile Ads App ID will look similar to this sample ID: ca-app-pub-3940256099942544~3347511713",
+      "fr": "L'ID de votre application Google Mobile Ads sera similaire à cet exemple: ca-app-pub-3940256099942544~3347511713"
+    },
+    "KEY_GMA_APP_ID_LABEL": {
+      "en": "Google Mobile Ads App ID",
+      "fr": "ID d'application Google Mobile Ads"
+    },
+    "KEY_MISC_LABEL": {
+      "en": "Misc",
+      "fr": "Divers"
+    },
+    "KEY_DISABLE_OPTIMIZE_AD_LOADING_HELPBOX": {
+      "en": "This disables using a background thread to offload Ad loading tasks",
+      "fr": "Cela désactive l'utilisation d'un thread d'arrière-plan pour décharger les tâches de chargement des publicités."
+    },
+    "KEY_DISABLE_OPTIMIZE_AD_LOADING_SETTING": {
+      "en": "Disable ad loading optimization",
+      "fr": "Désactiver l'optimisation du chargement des annonces"
+    },
+    "KEY_DISABLE_OPTIMIZE_INITIALIZATION_HELPBOX": {
+      "en": "Disable offloading initialization to a background thread.",
+      "fr": "L'initialisation ne sera pas transférée vers un thread d'arrière-plan."
+    },
+    "KEY_DISABLE_OPTIMIZE_INITIALIZATION_SETTING": {
+      "en": "Disable initialization optimization",
+      "fr": "Désactiver l'optimisation de l'initialisation"
+    },
+    "KEY_UMP_SPECIFIC_SETTINGS_LABEL": {
+      "en": "UMP-specific settings",
+      "fr": "Paramètres spécifiques UMP"
+    },
+    "KEY_USER_TRACKING_USAGE_DESCRIPTION_HELPBOX": {
+      "en": "A message that informs the user why an iOS app is requesting permission to use data for tracking the user or the device.",
+      "fr": "Un message qui informe l'utilisateur pourquoi une application iOS demande l'autorisation d'utiliser des données pour suivre l'utilisateur ou l'appareil."
+    },
+    "KEY_USER_TRACKING_USAGE_DESCRIPTION_SETTING": {
+      "en": "User Tracking Usage Description",
+      "fr": "Description de l'utilisation du suivi des utilisateurs"
+    }
+  }
+}

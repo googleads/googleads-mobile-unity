@@ -13,9 +13,11 @@
 // limitations under the License.
 
 using System;
-using UnityEngine;
-using GoogleMobileAds.Common;
+using System.Collections.Generic;
 using System.Threading;
+using UnityEngine;
+
+using GoogleMobileAds.Common;
 
 namespace GoogleMobileAds.Api
 {
@@ -47,19 +49,9 @@ namespace GoogleMobileAds.Api
             }
         }
 
-        static MobileAds()
-        {
-            SetUnityMainThreadSynchronizationContext();
-        }
-
         private readonly IMobileAdsClient client = GetMobileAdsClient();
 
         private static IClientFactory clientFactory;
-
-        // Cached reference to the current Unity main thread.
-        private static SynchronizationContext _synchronizationContext;
-
-        private static int _unityMainThreadId;
 
         private static MobileAds instance;
 
@@ -73,6 +65,7 @@ namespace GoogleMobileAds.Api
                 if (instance == null)
                 {
                     instance = new MobileAds();
+                    MobileAdsEventExecutor.Initialize();
                 }
                 return instance;
             }
@@ -107,7 +100,6 @@ namespace GoogleMobileAds.Api
                     }
                 });
             });
-            MobileAdsEventExecutor.Initialize();
         }
 
         /// <summary>
@@ -197,6 +189,82 @@ namespace GoogleMobileAds.Api
         }
 
         /// <summary>
+        /// Disables automated SDK crash reporting on iOS. Call this method closer to the app start.
+        /// </summary>
+        public static void DisableSDKCrashReporting()
+        {
+            Instance.client.DisableSDKCrashReporting();
+        }
+
+        /// <summary>
+        /// Gets the underlying Google Mobile Ads Android or iOS SDK version for the active
+        /// platform.
+        /// </summary>
+        /// <remarks>
+        /// When running on the Unity editor, this method returns the Google Mobile Ads Unity SDK
+        /// version.
+        /// </remarks>
+        /// <returns>
+        /// The Google Mobile Ads Android or iOS SDK version for the platform the app is running on.
+        /// </returns>
+        public static Version GetPlatformVersion()
+        {
+            return Instance.client.GetSDKVersion();
+        }
+
+        /// <summary>
+        /// Gets the Google Mobile Ads Unity SDK version.
+        /// </summary>
+        /// <returns>
+        /// The Google Mobile Ads Unity SDK version.
+        /// </returns>
+        public static Version GetVersion()
+        {
+            Version assemblyVersion = typeof(MobileAds).Assembly.GetName().Version;
+            return new Version(assemblyVersion.Major, assemblyVersion.Minor, assemblyVersion.Build);
+        }
+
+#if GMA_PREVIEW_FEATURES
+
+        /// <summary>
+        /// Preloads ads for the given configurations.
+        /// </summary>
+        /// <param name="configurations">The configurations to preload ads.</param>
+        /// <param name="onAdAvailable">Called when an ad becomes available for the configuration.
+        /// </param>
+        /// <param name="onAdsExhausted">Called when the last available ad is exhausted for the
+        /// configuration.</param>
+        [Obsolete("Use the Preloader class for respective ad format instead.")]
+        public static void Preload(List<PreloadConfiguration> configurations,
+                                   Action<PreloadConfiguration> onAdAvailable,
+                                   Action<PreloadConfiguration> onAdsExhausted)
+        {
+            Action<PreloadConfiguration> onAdAvailableAction = (preloadConfiguration) =>
+                    {
+                        MobileAds.RaiseAction(() =>
+                                {
+                                    if (onAdAvailable != null)
+                                    {
+                                        onAdAvailable(preloadConfiguration);
+                                    }
+                                });
+                    };
+            Action<PreloadConfiguration> onAdsExhaustedAction = (preloadConfiguration) =>
+                    {
+                        MobileAds.RaiseAction(() =>
+                                {
+                                    if (onAdsExhausted != null)
+                                    {
+                                        onAdsExhausted(preloadConfiguration);
+                                    }
+                                });
+                    };
+            Instance.client.Preload(configurations, onAdAvailableAction, onAdsExhaustedAction);
+        }
+
+#endif
+
+        /// <summary>
         /// Opens ad inspector UI.
         /// </summary>
         /// <param name="adInspectorClosedAction">Called when ad inspector UI closes.</param>
@@ -259,30 +327,14 @@ namespace GoogleMobileAds.Api
             {
                 return;
             }
-
-            if (!RaiseAdEventsOnUnityMainThread ||
-                _synchronizationContext == null ||
-                Thread.CurrentThread.ManagedThreadId == _unityMainThreadId)
+            // If we are already on the main thread or RaiseAdEventsOnUnityMainThread is false,
+            // execute the action immediately.
+            if (!RaiseAdEventsOnUnityMainThread || MobileAdsEventExecutor.IsOnMainThread())
             {
                 action();
                 return;
             }
-
-            _synchronizationContext.Post((state) =>
-            {
-                action();
-            }, action);
-        }
-
-        /// <summary>
-        /// Sets the SynchronizationContext used for RaiseAdEventsOnUnityMainThread.
-        /// </summary>
-        internal static void SetUnityMainThreadSynchronizationContext()
-        {
-            // Cache the Threading variables for RaiseAdEventsOnUnityMainThread.
-            // SynchronizationContext.Current is null if initialized from a background thread.
-            _synchronizationContext = SynchronizationContext.Current;
-            _unityMainThreadId = Thread.CurrentThread.ManagedThreadId;
+            MobileAdsEventExecutor.ExecuteInUpdate(action);
         }
 
         private static IMobileAdsClient GetMobileAdsClient()

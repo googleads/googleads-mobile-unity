@@ -55,6 +55,9 @@
 /// Returns the width of the template view in pixels.
 @property(nonatomic, readonly) CGFloat widthInPixels;
 
+/// A long integer provided by the AdMob UI for the configured placement.
+@property(nonatomic) int64_t placementID;
+
 /// Makes an ad request. Additional targeting options can be supplied with a request object.
 - (void)loadWithAdUnitID:(nonnull NSString *)adUnitID
                  request:(nonnull GADRequest *)request
@@ -64,6 +67,9 @@
 - (void)show:(nonnull GADUNativeTemplateStyle *)templateStyle
        width:(CGFloat)width
       height:(CGFloat)height;
+
+/// Shows the native ad using default height and width.
+- (void)show:(nonnull GADUNativeTemplateStyle *)templateStyle;
 
 /// Hides the native ad.
 - (void)hide;

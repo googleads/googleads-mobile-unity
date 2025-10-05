@@ -15,24 +15,36 @@
 namespace GoogleMobileAds.Common
 {
     /// <summary>
-    /// Interface for accessing and modifying platform preference data (SharedPreferences on
-    /// Android and NSUserDefaults on iOS). Values saved by this interface are saved on an
+    /// Interface for accessing and modifying application preference data (SharedPreferences on
+    /// Android and NSUserDefaults on iOS). Values saved by this interface are saved in an
     /// application scope, and are shared by SDKs included in this application.
     /// </summary>
     public interface IApplicationPreferencesClient
     {
         /// <summary>
-        /// Set an int value in the platform preferences.
+        /// Set an int value in the application preferences.
         /// <param name="key">The key with which to associate the value.</param>
         /// <param name="value">The value that needs to be associated to the key.</param>
         /// </summary>
         void SetInt(string key, int value);
 
         /// <summary>
-        /// Set a string value in the platform preferences.
+        /// Set a string value in the application preferences.
         /// <param name="key">The key with which to associate the value.</param>
         /// <param name="value">The value that needs to be associated to the key.</param>
         /// </summary>
         void SetString(string key, string value);
+
+        /// <summary>
+        /// Read an int value from the application preferences.
+        /// <param name="key">The key with which to retrieve the value.</param>
+        /// </summary>
+        int GetInt(string key);
+
+        /// <summary>
+        /// Read a string value from the application preferences.
+        /// <param name="key">The key with which to retrieve the value.</param>
+        /// </summary>
+        string GetString(string key);
     }
 }

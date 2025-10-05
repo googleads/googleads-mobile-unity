@@ -29,7 +29,7 @@ namespace GoogleMobileAds.Unity
 
         public event EventHandler<LoadAdErrorClientEventArgs> OnAdFailedToLoad;
 
-        public event EventHandler<AdValueEventArgs> OnPaidEvent;
+        public event Action<AdValue> OnPaidEvent;
 
         public event EventHandler<AdErrorClientEventArgs> OnAdFailedToPresentFullScreenContent;
 
@@ -40,6 +40,8 @@ namespace GoogleMobileAds.Unity
         public event EventHandler<EventArgs> OnAdDidRecordImpression;
 
         public event Action OnAdClicked;
+
+        public long PlacementId { get; set; }
 
         private Dictionary<AdSize, string> prefabAds = new Dictionary<AdSize, string>() {
             { new AdSize(768, 1024), "PlaceholderAds/AppOpen/768x1024" },
@@ -84,39 +86,26 @@ namespace GoogleMobileAds.Unity
             // Do nothing.
         }
 
-        public void LoadAd(string adUnitID, AdRequest request)
+#if GMA_PREVIEW_FEATURES
+
+        public bool IsAdAvailable(string adUnitId)
         {
-            LoadAndSetPrefabAd(prefabAds[new AdSize(768, 1024)]);
-            if (prefabAd != null)
-            {
-                if(OnAdLoaded != null)
-                {
-                    OnAdLoaded.Invoke(this, EventArgs.Empty);
-                }
-            }
-            else
-            {
-                if(OnAdFailedToLoad != null)
-                {
-                    OnAdFailedToLoad.Invoke(this, new LoadAdErrorClientEventArgs()
-                    {
-                        LoadAdErrorClient = new LoadAdErrorClient()
-                    });
-                }
-            }
+            Debug.Log("Preloaded ads are not supported on the Unity editor platform.");
+            return false;
         }
 
-        public void LoadAd(string adUnitID, AdRequest request, ScreenOrientation orientation)
+        public IAppOpenAdClient PollAd(string adUnitId)
         {
-            if (Screen.width > Screen.height) // Landscape
-            {
-                LoadAndSetPrefabAd(prefabAds[new AdSize(1024, 768)]);
-            }
-            else
-            {
-                LoadAndSetPrefabAd(prefabAds[new AdSize(768, 1024)]);
-            }
+            Debug.Log("Preloaded ads are not supported on the Unity editor platform.");
+            return new AppOpenAdClient();
+        }
 
+#endif
+
+        public void LoadAd(string adUnitId, AdRequest request)
+        {
+            base._adUnitId = adUnitId;
+            LoadAndSetPrefabAd(prefabAds[new AdSize(768, 1024)]);
             if (prefabAd != null)
             {
                 if(OnAdLoaded != null)
@@ -163,8 +152,9 @@ namespace GoogleMobileAds.Unity
 
         public void DestroyAppOpenAd()
         {
-          AdBehaviour.DestroyAd(dummyAd);
-          prefabAd = null;
+            AdBehaviour.DestroyAd(dummyAd);
+            prefabAd = null;
+            base._adUnitId = null;
         }
     }
 }

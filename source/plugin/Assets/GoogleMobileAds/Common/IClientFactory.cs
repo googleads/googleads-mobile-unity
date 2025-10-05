@@ -36,8 +36,20 @@ namespace GoogleMobileAds
 
         IRewardedInterstitialAdClient BuildRewardedInterstitialAdClient();
 
+        INativeOverlayAdClient BuildNativeOverlayAdClient();
+
         IApplicationPreferencesClient ApplicationPreferencesInstance();
 
         IMobileAdsClient MobileAdsInstance();
+
+#if GMA_PREVIEW_FEATURES
+
+        IAppOpenAdPreloaderClient BuildAppOpenAdPreloaderClient();
+
+        IInterstitialAdPreloaderClient BuildInterstitialAdPreloaderClient();
+
+        IRewardedAdPreloaderClient BuildRewardedAdPreloaderClient();
+
+#endif
     }
 }

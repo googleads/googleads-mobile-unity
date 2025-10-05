@@ -14,9 +14,8 @@
 // limitations under the License.
 
 using System;
-using System.Collections.Generic;
+using UnityEngine;
 
-using GoogleMobileAds;
 using GoogleMobileAds.Common;
 
 namespace GoogleMobileAds.Api.AdManager
@@ -39,6 +38,47 @@ namespace GoogleMobileAds.Api.AdManager
             _canShowAd = true;
             RegisterAdEvents();
         }
+
+#if GMA_PREVIEW_FEATURES
+
+        /// <summary>
+        /// Verify if an ad is preloaded and available to show.
+        /// </summary>
+        /// <param name="adUnitId">The ad Unit Id of the ad to verify. </param>
+        [Obsolete]
+        public static new bool IsAdAvailable(string adUnitId)
+        {
+            if (string.IsNullOrEmpty(adUnitId))
+            {
+                Debug.LogError("adUnitId cannot be null or empty.");
+                return false;
+            }
+            var client = MobileAds.GetClientFactory().BuildAdManagerInterstitialClient();
+            return client.IsAdAvailable(adUnitId);
+        }
+
+        /// <summary>
+        /// Returns the next pre-loaded interstitial ad and null if no ad is available.
+        /// </summary>
+        /// <param name="adUnitId">The ad Unit ID of the ad to poll.</param>
+        [Obsolete]
+        public static new InterstitialAd PollAd(string adUnitId)
+        {
+            if (string.IsNullOrEmpty(adUnitId))
+            {
+                Debug.LogError("adUnitId cannot be null or empty.");
+                return null;
+            }
+            var client = MobileAds.GetClientFactory().BuildAdManagerInterstitialClient();
+            if (client == null)
+            {
+                return null;
+            }
+            client.CreateInterstitialAd();
+            return new AdManagerInterstitialAd(client.PollAdManagerAd(adUnitId));
+        }
+
+#endif  // GMA_PREVIEW_FEATURES
 
         /// <summary>
         /// Loads an AdManager interstitial ad.

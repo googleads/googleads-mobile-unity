@@ -58,6 +58,26 @@ namespace GoogleMobileAds.Api
         /// </summary>
         public event Action<AdError> OnAdFullScreenContentFailed;
 
+        /// <summary>
+        /// A long integer provided by the AdMob UI for the configured placement.
+        /// To ensure this placement ID is included in reporting, set a value before showing the ad.
+        /// </summary>
+        public long PlacementId
+        {
+            get
+            {
+                return _client != null ? _client.PlacementId : 0;
+            }
+
+            set
+            {
+                if (_client != null)
+                {
+                    _client.PlacementId = value;
+                }
+            }
+        }
+
         private IRewardedInterstitialAdClient _client;
         private bool _canShowAd;
         private Action<Reward> _userRewardEarnedCallback;
@@ -160,6 +180,14 @@ namespace GoogleMobileAds.Api
         }
 
         /// <summary>
+        /// Returns the ad unit ID.
+        /// </summary>
+        public string GetAdUnitID()
+        {
+            return _client != null ? _client.GetAdUnitID() : null;
+        }
+
+        /// <summary>
         /// Returns the ad request response info.
         /// </summary>
         public ResponseInfo GetResponseInfo()
@@ -225,13 +253,13 @@ namespace GoogleMobileAds.Api
                 });
             };
 
-            _client.OnPaidEvent += (sender, args) =>
+            _client.OnPaidEvent += (adValue) =>
             {
                 MobileAds.RaiseAction(() =>
                 {
                     if (OnAdPaid != null)
                     {
-                        OnAdPaid(args.AdValue);
+                        OnAdPaid(adValue);
                     }
                 });
             };

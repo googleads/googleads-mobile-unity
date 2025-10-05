@@ -37,7 +37,7 @@ namespace GoogleMobileAds.Android
 
         public event EventHandler<Reward> OnUserEarnedReward;
 
-        public event EventHandler<AdValueEventArgs> OnPaidEvent;
+        public event Action<AdValue> OnPaidEvent;
 
         public event EventHandler<AdErrorClientEventArgs> OnAdFailedToPresentFullScreenContent;
 
@@ -49,6 +49,18 @@ namespace GoogleMobileAds.Android
 
         public event Action OnAdClicked;
 
+        public long PlacementId
+        {
+            get
+            {
+                return androidRewardedInterstitialAd.Call<long>("getPlacementId");
+            }
+            set
+            {
+                androidRewardedInterstitialAd.Call("setPlacementId", value);
+            }
+        }
+
         public void CreateRewardedInterstitialAd()
         {
             // Do nothing.
@@ -56,7 +68,7 @@ namespace GoogleMobileAds.Android
 
         public void LoadAd(string adUnitId, AdRequest request)
         {
-            androidRewardedInterstitialAd.Call("loadAd", adUnitId, Utils.GetAdRequestJavaObject(request));
+            androidRewardedInterstitialAd.Call("loadAd", adUnitId, Utils.GetAdManagerAdRequestJavaObject(request));
         }
 
         public void Show()
@@ -85,9 +97,17 @@ namespace GoogleMobileAds.Android
             androidRewardedInterstitialAd.Call("setServerSideVerificationOptions", Utils.GetServerSideVerificationOptionsJavaObject(serverSideVerificationOptions));
         }
 
+        // Returns the ad unit ID.
+        public string GetAdUnitID()
+        {
+            return this.androidRewardedInterstitialAd.Call<string>("getAdUnitId");
+        }
+
         public IResponseInfoClient GetResponseInfoClient()
         {
-            return new ResponseInfoClient(ResponseInfoClientType.AdLoaded, this.androidRewardedInterstitialAd);
+            var responseInfoJavaObject =
+                    androidRewardedInterstitialAd.Call<AndroidJavaObject>("getResponseInfo");
+            return new ResponseInfoClient(ResponseInfoClientType.AdLoaded, responseInfoJavaObject);
         }
 
         public void DestroyRewardedInterstitialAd()
@@ -185,16 +205,10 @@ namespace GoogleMobileAds.Android
                     Value = valueInMicros,
                     CurrencyCode = currencyCode
                 };
-                AdValueEventArgs args = new AdValueEventArgs()
-                {
-                    AdValue = adValue
-                };
-
-                this.OnPaidEvent(this, args);
+                this.OnPaidEvent(adValue);
             }
         }
 
         #endregion
-
     }
 }

@@ -20,13 +20,6 @@
 #import "GADUPluginUtil.h"
 
 @interface GAMUBanner () <GADBannerViewDelegate, GADAppEventDelegate>
-
-/// Defines where the ad should be positioned on the screen with a GADAdPosition.
-@property(nonatomic, assign) GADAdPosition adPosition;
-
-/// Defines where the ad should be positioned on the screen with a CGPoint.
-@property(nonatomic, assign) CGPoint customAdPosition;
-
 @end
 
 @implementation GAMUBanner {

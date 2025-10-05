@@ -1,0 +1,58 @@
+apply plugin: 'com.android.library'
+
+android {
+    namespace 'com.google.unity.ads'
+    compileSdkVersion 31
+
+    defaultConfig {
+        minSdkVersion 23
+        targetSdkVersion 31
+        versionCode 1
+        versionName "1.0"
+        consumerProguardFiles 'proguard.pgcfg'
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard.pgcfg'
+        }
+    }
+
+    lintOptions {
+        abortOnError false
+    }
+
+    sourceSets {
+        main {
+            java {
+                exclude '**/com/google/unity/ads/decagon/*.java'
+            }
+        }
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation 'androidx.annotation:annotation:1.7.1'
+    implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+    implementation 'com.google.android.gms:play-services-ads:24.5.0'
+    implementation 'com.google.android.ump:user-messaging-platform:3.2.0'
+    implementation 'androidx.lifecycle:lifecycle-common-java8:2.6.2'
+    implementation 'androidx.lifecycle:lifecycle-process:2.6.2'
+    implementation 'com.google.errorprone:error_prone_annotations:2.26.1'
+}
+
+task clearAar(type: Delete) {
+    delete 'build/libs/googlemobileads-unity.aar'
+}
+
+task makeAar(type: Copy) {
+    from('build/outputs/aar/')
+    into('build/libs/')
+    include('app.aar')
+    rename('app.aar', 'googlemobileads-unity.aar')
+}
+
+makeAar.dependsOn(clearAar, build)

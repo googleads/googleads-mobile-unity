@@ -51,6 +51,9 @@
 /// The paid event callback into Unity.
 @property(nonatomic, assign) GADURewardedInterstitialAdPaidEventCallback paidEventCallback;
 
+/// A long integer provided by the AdMob UI for the configured placement.
+@property(nonatomic, assign) long placementID;
+
 /// Returns the rewarded interstitial ad response info.
 @property(nonatomic, readonly, copy) GADResponseInfo *responseInfo;
 

@@ -4,6 +4,9 @@
 
 #import <GoogleMobileAds/GoogleMobileAds.h>
 
+#if GMA_PREVIEW_FEATURES
+#import "GADRewardedAd_Preview.h"
+#endif
 #import "GADUTypes.h"
 
 @interface GADURewardedAd : NSObject
@@ -49,8 +52,19 @@
 /// The paid event callback into Unity.
 @property(nonatomic, assign) GADURewardedAdPaidEventCallback paidEventCallback;
 
-// Returns the rewarded ad response info.
+/// Returns the rewarded ad response info.
 @property(nonatomic, readonly, copy) GADResponseInfo *responseInfo;
+
+/// A long integer provided by the AdMob UI for the configured placement.
+@property(nonatomic) int64_t placementID;
+
+#if GMA_PREVIEW_FEATURES
+
++ (BOOL)isPreloadedAdAvailable:(nonnull NSString *)adUnitID;
+
+- (void)preloadedAdWithAdUnitID:(nonnull NSString *)adUnitID;
+
+#endif  // GMA_PREVIEW_FEATURES
 
 /// Makes an ad request. Additional targeting options can be supplied with a request object.
 - (void)loadWithAdUnitID:(NSString *)adUnitID request:(GADRequest *)request;
@@ -59,6 +73,6 @@
 - (void)show;
 
 /// Options specified for server-to-server user reward verification.
-- (void)setServerSideVerificationOptions:(GADServerSideVerificationOptions *)options;
+- (void)setServerSideVerificationOptions:(nullable GADServerSideVerificationOptions *)options;
 
 @end

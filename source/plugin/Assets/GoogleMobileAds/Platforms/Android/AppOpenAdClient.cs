@@ -23,7 +23,7 @@ namespace GoogleMobileAds.Android
 {
     public class AppOpenAdClient : AndroidJavaProxy, IAppOpenAdClient
     {
-        private AndroidJavaObject androidAppOpenAd;
+        internal AndroidJavaObject androidAppOpenAd;
 
         public AppOpenAdClient() : base(Utils.UnityAppOpenAdCallbackClassName)
         {
@@ -39,7 +39,7 @@ namespace GoogleMobileAds.Android
 
         public event EventHandler<LoadAdErrorClientEventArgs> OnAdFailedToLoad;
 
-        public event EventHandler<AdValueEventArgs> OnPaidEvent;
+        public event Action<AdValue> OnPaidEvent;
 
         public event EventHandler<AdErrorClientEventArgs> OnAdFailedToPresentFullScreenContent;
 
@@ -51,6 +51,17 @@ namespace GoogleMobileAds.Android
 
         public event Action OnAdClicked;
 
+        public long PlacementId {
+            get
+            {
+                return androidAppOpenAd.Call<long>("getPlacementId");
+            }
+            set
+            {
+                androidAppOpenAd.Call("setPlacementId", value);
+            }
+        }
+
         public void CreateAppOpenAd()
         {
             // Do nothing.
@@ -58,14 +69,7 @@ namespace GoogleMobileAds.Android
 
         public void LoadAd(string adUnitID, AdRequest request)
         {
-            androidAppOpenAd.Call("loadAd", adUnitID, Utils.GetAdRequestJavaObject(request));
-        }
-
-        public void LoadAd(string adUnitID, AdRequest request, ScreenOrientation orientation)
-        {
-            androidAppOpenAd.Call("loadAd", adUnitID,
-                Utils.GetAdRequestJavaObject(request),
-                Utils.GetAppOpenAdOrientation(orientation));
+            androidAppOpenAd.Call("loadAd", adUnitID, Utils.GetAdManagerAdRequestJavaObject(request));
         }
 
         public void Show()
@@ -73,9 +77,32 @@ namespace GoogleMobileAds.Android
             androidAppOpenAd.Call("show");
         }
 
+        // Returns the ad unit ID.
+        public string GetAdUnitID()
+        {
+            return this.androidAppOpenAd.Call<string>("getAdUnitId");
+        }
+
+#if GMA_PREVIEW_FEATURES
+
+        public bool IsAdAvailable(string adUnitId)
+        {
+            return this.androidAppOpenAd.Call<bool>("isAdAvailable", adUnitId);
+        }
+
+        public IAppOpenAdClient PollAd(string adUnitId)
+        {
+            this.androidAppOpenAd.Call("pollAd", adUnitId);
+            return this;
+        }
+
+#endif
+
         public IResponseInfoClient GetResponseInfoClient()
         {
-            return new ResponseInfoClient(ResponseInfoClientType.AdLoaded, this.androidAppOpenAd);
+            var responseInfoJavaObject = androidAppOpenAd.Call<AndroidJavaObject>(
+                    "getResponseInfo");
+            return new ResponseInfoClient(ResponseInfoClientType.AdLoaded, responseInfoJavaObject);
         }
 
         public void DestroyAppOpenAd()
@@ -161,12 +188,7 @@ namespace GoogleMobileAds.Android
                     Value = valueInMicros,
                     CurrencyCode = currencyCode
                 };
-                AdValueEventArgs args = new AdValueEventArgs()
-                {
-                    AdValue = adValue
-                };
-
-                this.OnPaidEvent(this, args);
+                this.OnPaidEvent(adValue);
             }
         }
 

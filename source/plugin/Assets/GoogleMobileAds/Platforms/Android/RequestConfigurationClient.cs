@@ -99,32 +99,67 @@ namespace GoogleMobileAds.Android
                          tagForChildDirectedTreatmentCode);
                 }
             }
+            if (requestConfiguration.PublisherPrivacyPersonalizationState.HasValue)
+            {
+                AndroidJavaObject personalizationState = null;
+                switch (requestConfiguration.PublisherPrivacyPersonalizationState.GetValueOrDefault())
+                {
+                    case Api.PublisherPrivacyPersonalizationState.Default:
+                      personalizationState =
+                          new AndroidJavaClass(Utils.PublisherPrivacyPersonalizationStateEnumName)
+                              .GetStatic<AndroidJavaObject>("DEFAULT");
+                      break;
+                    case Api.PublisherPrivacyPersonalizationState.Disabled:
+                        personalizationState =
+                          new AndroidJavaClass(Utils.PublisherPrivacyPersonalizationStateEnumName)
+                              .GetStatic<AndroidJavaObject>("DISABLED");
+                        break;
+                    case Api.PublisherPrivacyPersonalizationState.Enabled:
+                        personalizationState =
+                          new AndroidJavaClass(Utils.PublisherPrivacyPersonalizationStateEnumName)
+                              .GetStatic<AndroidJavaObject>("ENABLED");
+                        break;
+                }
 
-            if (requestConfiguration.SameAppKeyEnabled.HasValue) {
-              // SameAppKey feature is for iOS only. Do nothing on Android.
+                if (personalizationState != null)
+                {
+                    requestConfigurationBuilder.Call<AndroidJavaObject>(
+                      "setPublisherPrivacyPersonalizationState", personalizationState);
+                }
             }
-
             return requestConfigurationBuilder.Call<AndroidJavaObject>("build");
-
         }
+
         public static RequestConfiguration GetRequestConfiguration(AndroidJavaObject androidRequestConfiguration)
         {
 
-            TagForChildDirectedTreatment TagForChildDirectedTreatment = (TagForChildDirectedTreatment)androidRequestConfiguration.Call<int>("getTagForChildDirectedTreatment");
+            TagForChildDirectedTreatment tagForChildDirectedTreatment = (TagForChildDirectedTreatment)androidRequestConfiguration.Call<int>("getTagForChildDirectedTreatment");
 
-            TagForUnderAgeOfConsent TagForUnderAgeOfConsent = (TagForUnderAgeOfConsent)androidRequestConfiguration.Call<int>("getTagForUnderAgeOfConsent");
+            TagForUnderAgeOfConsent tagForUnderAgeOfConsent = (TagForUnderAgeOfConsent)androidRequestConfiguration.Call<int>("getTagForUnderAgeOfConsent");
 
             MaxAdContentRating maxAdContentRating = MaxAdContentRating.ToMaxAdContentRating(androidRequestConfiguration.Call<string>("getMaxAdContentRating"));
-            List<string> TestDeviceIds = Utils.GetCsTypeList(androidRequestConfiguration.Call<AndroidJavaObject>("getTestDeviceIds"));
+            List<string> testDeviceIds = Utils.GetCsTypeList(androidRequestConfiguration.Call<AndroidJavaObject>("getTestDeviceIds"));
 
-            RequestConfiguration.Builder builder = new RequestConfiguration.Builder();
-            builder = builder.SetTagForChildDirectedTreatment(TagForChildDirectedTreatment);
-            builder = builder.SetTagForUnderAgeOfConsent(TagForUnderAgeOfConsent);
+            // TODO(@vkini): We should ideally read this value from Unity Java Bridge code.
+            // Currently we expect the integer values to stay the same but this might not always be
+            // the case. Other option is to compare enums with returned value to get correct value.
+            AndroidJavaObject publisherPrivacyPersonalizationStateEnum =
+                androidRequestConfiguration.Call<AndroidJavaObject>(
+                    "getPublisherPrivacyPersonalizationState");
+            PublisherPrivacyPersonalizationState publisherPrivacyPersonalizationState =
+                (PublisherPrivacyPersonalizationState)
+                    publisherPrivacyPersonalizationStateEnum.Call<int>("ordinal");
 
-            builder = builder.SetMaxAdContentRating(maxAdContentRating);
-            builder = builder.SetTestDeviceIds(TestDeviceIds);
+            RequestConfiguration requestConfiguration = new RequestConfiguration()
+            {
+                MaxAdContentRating = maxAdContentRating,
+                TagForChildDirectedTreatment = tagForChildDirectedTreatment,
+                TagForUnderAgeOfConsent = tagForUnderAgeOfConsent,
+                TestDeviceIds = testDeviceIds,
+                PublisherPrivacyPersonalizationState = publisherPrivacyPersonalizationState
+            };
 
-            return builder.build();
+            return requestConfiguration;
         }
 
     }

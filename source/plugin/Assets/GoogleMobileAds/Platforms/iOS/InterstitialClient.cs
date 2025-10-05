@@ -57,7 +57,7 @@ namespace GoogleMobileAds.iOS
 
         public event EventHandler<LoadAdErrorClientEventArgs> OnAdFailedToLoad;
 
-        public event EventHandler<AdValueEventArgs> OnPaidEvent;
+        public event Action<AdValue> OnPaidEvent;
 
         public event EventHandler<AdErrorClientEventArgs> OnAdFailedToPresentFullScreenContent;
 
@@ -68,6 +68,19 @@ namespace GoogleMobileAds.iOS
         public event EventHandler<EventArgs> OnAdDidRecordImpression;
 
         public event Action OnAdClicked;
+
+        // A long integer provided by the AdMob UI for the configured placement.
+        public long PlacementId
+        {
+            get
+            {
+                return Externs.GADUGetInterstitialAdPlacementID(InterstitialPtr);
+            }
+            set
+            {
+                Externs.GADUSetInterstitialAdPlacementID(InterstitialPtr, value);
+            }
+        }
 
         // This property should be used when setting the interstitialPtr.
         private IntPtr InterstitialPtr
@@ -82,6 +95,24 @@ namespace GoogleMobileAds.iOS
                 Externs.GADURelease(this.interstitialPtr);
                 this.interstitialPtr = value;
             }
+        }
+
+        internal void CreateInterstitialAdWithReference(IntPtr interstitialAdClientRef,
+                                                        IntPtr interstitialAdRef)
+        {
+            interstitialClientPtr = interstitialAdClientRef;
+            InterstitialPtr = interstitialAdRef;
+
+            Externs.GADUSetInterstitialCallbacks(
+                InterstitialPtr,
+                InterstitialLoadedCallback,
+                InterstitialFailedToLoadCallback,
+                AdWillPresentFullScreenContentCallback,
+                AdFailedToPresentFullScreenContentCallback,
+                AdDidDismissFullScreenContentCallback,
+                AdDidRecordImpressionCallback,
+                AdDidRecordClickCallback,
+                InterstitialPaidEventCallback);
         }
 
 #region IInterstitialClient implementation
@@ -103,6 +134,19 @@ namespace GoogleMobileAds.iOS
                 InterstitialPaidEventCallback);
         }
 
+        // Verify if an interstitial ad is preloaded and available to show.
+        public bool IsAdAvailable(string adUnitId)
+        {
+            return Externs.GADUInterstitialIsPreloadedAdAvailable(adUnitId);
+        }
+
+        // Returns the next pre-loaded interstitial ad and null if no ad is available.
+        public IInterstitialClient PollAd(string adUnitId)
+        {
+            Externs.GADUInterstitialPreloadedAdWithAdUnitID(this.InterstitialPtr, adUnitId);
+            return this;
+        }
+
         public void LoadAd(string adUnitID, AdRequest request) {
             IntPtr requestPtr = Utils.BuildAdRequest(request);
             Externs.GADULoadInterstitialAd(this.InterstitialPtr, adUnitID, requestPtr);
@@ -113,6 +157,12 @@ namespace GoogleMobileAds.iOS
         public void Show()
         {
             Externs.GADUShowInterstitial(this.InterstitialPtr);
+        }
+
+        // Returns the ad unit ID.
+        public string GetAdUnitID()
+        {
+            return Externs.GADUGetInterstitialAdUnitID(this.InterstitialPtr);
         }
 
         public IResponseInfoClient GetResponseInfoClient()
@@ -129,6 +179,10 @@ namespace GoogleMobileAds.iOS
         public void Dispose()
         {
             this.DestroyInterstitial();
+            if (this.interstitialClientPtr == IntPtr.Zero)
+            {
+                return;
+            }
             ((GCHandle)this.interstitialClientPtr).Free();
         }
 
@@ -179,12 +233,7 @@ namespace GoogleMobileAds.iOS
                     Value = value,
                     CurrencyCode = currencyCode
                 };
-                AdValueEventArgs args = new AdValueEventArgs()
-                {
-                    AdValue = adValue
-                };
-
-                client.OnPaidEvent(client, args);
+                client.OnPaidEvent(adValue);
             }
         }
 

@@ -13,6 +13,7 @@
 // limitations under the License.
 
 using System;
+using System.Collections.Generic;
 
 using GoogleMobileAds.Api;
 
@@ -23,6 +24,22 @@ namespace GoogleMobileAds.Common
 
         // Initialize the Mobile Ads SDK and mediation adapters.
         void Initialize(Action<IInitializationStatusClient> initCompleteAction);
+
+#if GMA_PREVIEW_FEATURES
+
+        /// <summary>
+        /// Preload ads for the given configurations.
+        /// </summary>
+        /// <param name="configurations">The configurations to preload ads.</param>
+        /// <param name="onAdAvailable">Called when an ad becomes available for the configuration.
+        /// </param>
+        /// <param name="onAdsExhausted">Called when the last available ad is exhausted for the
+        /// configuration.</param>
+        void Preload(List<PreloadConfiguration> configurations,
+                Action<PreloadConfiguration> onAdAvailable,
+                Action<PreloadConfiguration> onAdsExhausted);
+
+#endif
 
         // Disable initialization of mediation adapters by the Mobile Ads SDK.
         void DisableMediationInitialization();
@@ -41,6 +58,9 @@ namespace GoogleMobileAds.Common
         // Set whether an iOS app should pause when a full screen ad is displayed.
         void SetiOSAppPauseOnBackground(bool pause);
 
+        // Disables automated SDK crash reporting.
+        void DisableSDKCrashReporting();
+
         // Returns the scale for the current device.
         float GetDeviceScale();
 
@@ -49,6 +69,9 @@ namespace GoogleMobileAds.Common
 
         // Set Global Request Configuration to Mobile Ads SDK
         void SetRequestConfiguration(RequestConfiguration requestConfiguration);
+
+        // Returns the Mobile Ads SDK version.
+        Version GetSDKVersion();
 
         // Get Mobile Ads SDK's Global Request Configuration
         RequestConfiguration GetRequestConfiguration();

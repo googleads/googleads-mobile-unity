@@ -45,7 +45,6 @@ namespace GoogleMobileAds.iOS
             }
             if (requestConfiguration.TagForChildDirectedTreatment.HasValue)
             {
-
                 TagForChildDirectedTreatment? tagForChildDirectedTreatment = requestConfiguration.TagForChildDirectedTreatment;
                 Externs.GADUSetRequestConfigurationTagForChildDirectedTreatment(requestConfigurationPtr, (int)tagForChildDirectedTreatment.GetValueOrDefault());
             }
@@ -56,9 +55,16 @@ namespace GoogleMobileAds.iOS
                 Externs.GADUSetRequestConfigurationTagForUnderAgeOfConsent(requestConfigurationPtr, (int)TagForUnderAgeOfConsent.GetValueOrDefault());
             }
 
-            if (requestConfiguration.SameAppKeyEnabled.HasValue) {
-              Externs.GADUSetRequestConfigurationSameAppKeyEnabled(
-                  requestConfigurationPtr, requestConfiguration.SameAppKeyEnabled.Value);
+            if (requestConfiguration.PublisherFirstPartyIdEnabled.HasValue) {
+                Externs.GADUSetRequestConfigurationPublisherFirstPartyIDEnabled(
+                    requestConfiguration.PublisherFirstPartyIdEnabled.Value);
+            }
+
+            if (requestConfiguration.PublisherPrivacyPersonalizationState.HasValue)
+            {
+              Externs.GADUSetRequestConfigurationPublisherPrivacyPersonalizationState(
+                  (int)requestConfiguration.PublisherPrivacyPersonalizationState
+                      .GetValueOrDefault());
             }
 
             Externs.GADUSetRequestConfiguration(requestConfigurationPtr);
@@ -67,24 +73,24 @@ namespace GoogleMobileAds.iOS
 
         public static RequestConfiguration GetRequestConfiguration()
         {
-            RequestConfiguration.Builder requestConfigurationBuilder = new RequestConfiguration.Builder();
             MaxAdContentRating maxAdContentRating = MaxAdContentRating.ToMaxAdContentRating(Externs.GADUGetMaxAdContentRating(requestConfigurationPtr));
             IntPtr testDeviceIdsArray = Externs.GADUGetTestDeviceIdentifiers(requestConfigurationPtr);
             List<string> testDeviceIds = Utils.PtrArrayToManagedList(testDeviceIdsArray, Externs.GADUGetTestDeviceIdentifiersCount(requestConfigurationPtr));
 
-            TagForChildDirectedTreatment TagForChildDirectedTreatment = (TagForChildDirectedTreatment)Externs.GADUGetRequestConfigurationTagForChildDirectedTreatment(requestConfigurationPtr);
-            TagForUnderAgeOfConsent TagForUnderAgeOfConsent = (TagForUnderAgeOfConsent)Externs.GADUGetRequestConfigurationTagForUnderAgeOfConsent(requestConfigurationPtr);
+            TagForChildDirectedTreatment tagForChildDirectedTreatment = (TagForChildDirectedTreatment)Externs.GADUGetRequestConfigurationTagForChildDirectedTreatment(requestConfigurationPtr);
+            TagForUnderAgeOfConsent tagForUnderAgeOfConsent = (TagForUnderAgeOfConsent)Externs.GADUGetRequestConfigurationTagForUnderAgeOfConsent(requestConfigurationPtr);
+            PublisherPrivacyPersonalizationState publisherPrivacyPersonalizationState =
+                (PublisherPrivacyPersonalizationState)Externs.GADUGetRequestConfigurationPublisherPrivacyPersonalizationState();
 
-            bool sameAppKeyEnabled =
-                Externs.GADUGetRequestConfigurationSameAppKeyEnabled(requestConfigurationPtr);
-
-            requestConfigurationBuilder.SetMaxAdContentRating(maxAdContentRating);
-            requestConfigurationBuilder.SetTestDeviceIds(testDeviceIds);
-            requestConfigurationBuilder.SetTagForChildDirectedTreatment(TagForChildDirectedTreatment);
-            requestConfigurationBuilder.SetTagForUnderAgeOfConsent(TagForUnderAgeOfConsent);
-            requestConfigurationBuilder.SetSameAppKeyEnabled(sameAppKeyEnabled);
-
-            return requestConfigurationBuilder.build();
+            RequestConfiguration requestConfiguration = new RequestConfiguration()
+            {
+                MaxAdContentRating = maxAdContentRating,
+                TagForChildDirectedTreatment = tagForChildDirectedTreatment,
+                TagForUnderAgeOfConsent = tagForUnderAgeOfConsent,
+                TestDeviceIds = testDeviceIds,
+                PublisherPrivacyPersonalizationState = publisherPrivacyPersonalizationState
+            };
+            return requestConfiguration;
         }
 
     }

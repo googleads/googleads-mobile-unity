@@ -22,46 +22,56 @@ namespace GoogleMobileAds.Android
 {
     public class ApplicationPreferencesClient : IApplicationPreferencesClient
     {
-        public static ApplicationPreferencesClient Instance
+        private static AndroidJavaObject _androidApplicationPreferences;
+
+        public ApplicationPreferencesClient()
         {
-            get
+            if (_androidApplicationPreferences == null)
             {
-                return _instance;
+                AndroidJavaClass playerClass = new AndroidJavaClass(Utils.UnityActivityClassName);
+                AndroidJavaObject activity =
+                        playerClass.GetStatic<AndroidJavaObject>("currentActivity");
+                _androidApplicationPreferences = new AndroidJavaObject(
+                        Utils.UnityApplicationPreferencesClassName, activity);
             }
         }
 
-        private static ApplicationPreferencesClient _instance = new ApplicationPreferencesClient();
-
+        /// <summary>
+        /// Set an int value in the Android default shared preferences.
+        /// <param name="key">The key with which to associate the value.</param>
+        /// <param name="value">The value that needs to be associated to the key.</param>
+        /// </summary>
         public void SetInt(string key, int value)
         {
-            // TODO (b/290781398): Move the logic into android-library
-            AndroidJavaClass playerClass = new AndroidJavaClass(Utils.UnityActivityClassName);
-            AndroidJavaObject activity =
-                    playerClass.GetStatic<AndroidJavaObject>("currentActivity");
-            AndroidJavaClass preferenceManagerClass =
-                    new AndroidJavaClass(Utils.PreferenceManagerClassName);
-            AndroidJavaObject sharedPreferences =
-                    preferenceManagerClass.CallStatic<AndroidJavaObject>(
-                            "getDefaultSharedPreferences", activity);
-            AndroidJavaObject sharedPrefsEditor = sharedPreferences.Call<AndroidJavaObject>("edit");
-            sharedPrefsEditor.Call<AndroidJavaObject>("putInt", key, value);
-            sharedPrefsEditor.Call("apply");
+            _androidApplicationPreferences.Call("setInt", key, value);
         }
 
+        /// <summary>
+        /// Set a string value in the Android default shared preferences.
+        /// <param name="key">The key with which to associate the value.</param>
+        /// <param name="value">The value that needs to be associated to the key.</param>
+        /// </summary>
         public void SetString(string key, string value)
         {
-            // TODO (b/290781398): Move the logic into android-library
-            AndroidJavaClass playerClass = new AndroidJavaClass(Utils.UnityActivityClassName);
-            AndroidJavaObject activity =
-                    playerClass.GetStatic<AndroidJavaObject>("currentActivity");
-            AndroidJavaClass preferenceManagerClass =
-                    new AndroidJavaClass(Utils.PreferenceManagerClassName);
-            AndroidJavaObject sharedPreferences =
-                    preferenceManagerClass.CallStatic<AndroidJavaObject>(
-                            "getDefaultSharedPreferences", activity);
-            AndroidJavaObject sharedPrefsEditor = sharedPreferences.Call<AndroidJavaObject>("edit");
-            sharedPrefsEditor.Call<AndroidJavaObject>("putString", key, value);
-            sharedPrefsEditor.Call("apply");
+            _androidApplicationPreferences.Call("setString", key, value);
+        }
+
+        /// <summary>
+        /// Read an int value from the Android default shared preferences.
+        /// <param name="key">The key with which to retrieve the value.</param>
+        /// </summary>
+        public int GetInt(string key)
+        {
+            return _androidApplicationPreferences.Call<int>("getInt", key);
+        }
+
+        /// <summary>
+        /// Read a string value from the Android default shared preferences.
+        /// <param name="key">The key with which to retrieve the value.</param>
+        /// </summary>
+        public string GetString(string key)
+        {
+            return _androidApplicationPreferences.Call<string>("getString", key);
         }
     }
 }

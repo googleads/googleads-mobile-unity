@@ -62,7 +62,7 @@ namespace GoogleMobileAds.iOS
 
         public event EventHandler<Reward> OnUserEarnedReward;
 
-        public event EventHandler<AdValueEventArgs> OnPaidEvent;
+        public event Action<AdValue> OnPaidEvent;
 
         public event EventHandler<AdErrorClientEventArgs> OnAdFailedToPresentFullScreenContent;
 
@@ -73,6 +73,27 @@ namespace GoogleMobileAds.iOS
         public event EventHandler<EventArgs> OnAdDidRecordImpression;
 
         public event Action OnAdClicked;
+
+        public long PlacementId {
+            get
+            {
+                if (this.RewardedAdPtr == IntPtr.Zero)
+                {
+                    return 0;
+                }
+                return Externs.GADUGetRewardedAdPlacementID(this.RewardedAdPtr);
+            }
+
+            set
+            {
+                if (this.RewardedAdPtr == IntPtr.Zero)
+                {
+                    Debug.LogError("PlacementId can be set once the Rewarded ad is loaded.");
+                    return;
+                }
+                Externs.GADUSetRewardedAdPlacementID(this.RewardedAdPtr, value);
+            }
+        }
 
         // This property should be used when setting the rewardedAdPtr.
         private IntPtr RewardedAdPtr
@@ -87,6 +108,25 @@ namespace GoogleMobileAds.iOS
                 Externs.GADURelease(this.rewardedAdPtr);
                 this.rewardedAdPtr = value;
             }
+        }
+
+        internal void CreateRewardedAdWithReference(IntPtr rewardedAdClientRef,
+                                                    IntPtr rewardedAdRef)
+        {
+            rewardedAdClientPtr = rewardedAdClientRef;
+            RewardedAdPtr = rewardedAdRef;
+
+            Externs.GADUSetRewardedAdCallbacks(
+                RewardedAdPtr,
+                RewardedAdLoadedCallback,
+                RewardedAdFailedToLoadCallback,
+                AdWillPresentFullScreenContentCallback,
+                AdFailedToPresentFullScreenContentCallback,
+                AdDidDismissFullScreenContentCallback,
+                AdDidRecordImpressionCallback,
+                AdDidRecordClickCallback,
+                RewardedAdUserDidEarnRewardCallback,
+                RewardedAdPaidEventCallback);
         }
 
 #region IRewardedAdClient implementation
@@ -109,8 +149,25 @@ namespace GoogleMobileAds.iOS
                 RewardedAdPaidEventCallback);
         }
 
+#if GMA_PREVIEW_FEATURES
+
+        // Verify if a rewarded ad is preloaded and available to show.
+        public bool IsAdAvailable(string adUnitId)
+        {
+            return Externs.GADURewardedIsPreloadedAdAvailable(adUnitId);
+        }
+
+        // Returns the next pre-loaded rewarded ad and null if no ad is available.
+        public IRewardedAdClient PollAd(string adUnitId)
+        {
+            Externs.GADURewardedPreloadedAdWithAdUnitID(this.RewardedAdPtr, adUnitId);
+            return this;
+        }
+
+#endif
+
         public void LoadAd(string adUnitID, AdRequest request) {
-            IntPtr requestPtr = Utils.BuildAdRequest(request);
+            IntPtr requestPtr = Utils.BuildAdManagerAdRequest(request);
             Externs.GADULoadRewardedAd(this.RewardedAdPtr, adUnitID, requestPtr);
             Externs.GADURelease(requestPtr);
         }
@@ -119,6 +176,12 @@ namespace GoogleMobileAds.iOS
         public void Show()
         {
             Externs.GADUShowRewardedAd(this.RewardedAdPtr);
+        }
+
+        // Returns the ad unit ID.
+        public string GetAdUnitID()
+        {
+            return Externs.GADUGetRewardedAdUnitID(this.RewardedAdPtr);
         }
 
         // Sets the server side verification options
@@ -155,6 +218,10 @@ namespace GoogleMobileAds.iOS
         public void Dispose()
         {
             this.DestroyRewardedAd();
+            if (this.rewardedAdClientPtr == IntPtr.Zero)
+            {
+                return;
+            }
             ((GCHandle)this.rewardedAdClientPtr).Free();
         }
 
@@ -222,12 +289,7 @@ namespace GoogleMobileAds.iOS
                     Value = value,
                     CurrencyCode = currencyCode
                 };
-                AdValueEventArgs args = new AdValueEventArgs()
-                {
-                    AdValue = adValue
-                };
-
-                client.OnPaidEvent(client, args);
+                client.OnPaidEvent(adValue);
             }
         }
 

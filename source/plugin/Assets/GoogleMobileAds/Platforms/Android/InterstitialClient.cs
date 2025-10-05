@@ -22,7 +22,7 @@ namespace GoogleMobileAds.Android
 {
     public class InterstitialClient : AndroidJavaProxy, IInterstitialClient
     {
-        private AndroidJavaObject androidInterstitialAd;
+        internal AndroidJavaObject androidInterstitialAd;
 
         public InterstitialClient() : base(Utils.UnityInterstitialAdCallbackClassName)
         {
@@ -45,9 +45,22 @@ namespace GoogleMobileAds.Android
 
         public event EventHandler<EventArgs> OnAdDidRecordImpression;
 
-        public event EventHandler<AdValueEventArgs> OnPaidEvent;
+        public event Action<AdValue> OnPaidEvent;
 
         public event Action OnAdClicked;
+
+        // A long integer provided by the AdMob UI for the configured placement.
+        public long PlacementId
+        {
+            get
+            {
+                return this.androidInterstitialAd.Call<long>("getPlacementId");
+            }
+            set
+            {
+                this.androidInterstitialAd.Call("setPlacementId", value);
+            }
+        }
 
         #region IGoogleMobileAdsInterstitialClient implementation
 
@@ -75,11 +88,33 @@ namespace GoogleMobileAds.Android
             this.androidInterstitialAd.Call("destroy");
         }
 
+        // Returns the ad unit ID.
+        public string GetAdUnitID()
+        {
+            return this.androidInterstitialAd.Call<string>("getAdUnitId");
+        }
+
+#if GMA_PREVIEW_FEATURES
+
+        public bool IsAdAvailable(string adUnitId)
+        {
+            return this.androidInterstitialAd.Call<bool>("isAdAvailable", adUnitId);
+        }
+
+        public IInterstitialClient PollAd(string adUnitId)
+        {
+            this.androidInterstitialAd.Call("pollAd", adUnitId);
+            return this;
+        }
+
+#endif
+
         // Returns ad request response info
         public IResponseInfoClient GetResponseInfoClient()
         {
-
-            return new ResponseInfoClient(ResponseInfoClientType.AdLoaded, this.androidInterstitialAd);
+            var responseInfoJavaObject = androidInterstitialAd.Call<AndroidJavaObject>(
+                "getResponseInfo");
+            return new ResponseInfoClient(ResponseInfoClientType.AdLoaded, responseInfoJavaObject);
         }
 
         #endregion
@@ -161,12 +196,7 @@ namespace GoogleMobileAds.Android
                     Value = valueInMicros,
                     CurrencyCode = currencyCode
                 };
-                AdValueEventArgs args = new AdValueEventArgs()
-                {
-                    AdValue = adValue
-                };
-
-                this.OnPaidEvent(this, args);
+                this.OnPaidEvent(adValue);
             }
         }
 

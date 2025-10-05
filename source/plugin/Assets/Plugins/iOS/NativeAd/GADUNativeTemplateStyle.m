@@ -31,13 +31,18 @@
     xibName = @"GADTSmallTemplateView";
   }
 
-  @try {
-    NSBundle *bundle = [NSBundle bundleForClass:[self class]];
-    GADTTemplateView *templView = [bundle loadNibNamed:xibName owner:nil options:nil].firstObject;
-    return templView;
-  } @catch (NSException *exception) {
+  NSBundle *bundle = [NSBundle bundleForClass:[self class]];
+  if (![bundle pathForResource:xibName ofType:@"nib"]) {
     return nil;
   }
+
+  NSArray *loadedTemplateViews = [bundle loadNibNamed:xibName owner:nil options:nil];
+  GADTTemplateView *templView = nil;
+  if (loadedTemplateViews.count > 0 &&
+      [loadedTemplateViews.firstObject isKindOfClass:[GADTTemplateView class]]) {
+    templView = loadedTemplateViews.firstObject;
+  }
+  return templView;
 }
 
 - (nullable GADUNativeTemplateViewWrapper *)getDisplayedView:(nullable GADNativeAd *)gadNativeAd {
@@ -104,8 +109,9 @@
   }
   templateView.styles = styles;
 
+  CGRect frame = CGRectMake(0, 0, templateView.frame.size.width, templateView.frame.size.height);
   GADUNativeTemplateViewWrapper *wrapper =
-      [[GADUNativeTemplateViewWrapper alloc] initWithFrame:CGRectZero];
+      [[GADUNativeTemplateViewWrapper alloc] initWithFrame:frame];
   wrapper.templateView = templateView;
   return wrapper;
 }

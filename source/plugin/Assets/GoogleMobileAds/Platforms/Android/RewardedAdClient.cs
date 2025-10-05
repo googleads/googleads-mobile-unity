@@ -22,7 +22,7 @@ namespace GoogleMobileAds.Android
 {
     public class RewardedAdClient : AndroidJavaProxy, IRewardedAdClient
     {
-        private AndroidJavaObject androidRewardedAd;
+        internal AndroidJavaObject androidRewardedAd;
 
         public RewardedAdClient() : base(Utils.UnityRewardedAdCallbackClassName)
         {
@@ -40,7 +40,7 @@ namespace GoogleMobileAds.Android
 
         public event EventHandler<Reward> OnUserEarnedReward;
 
-        public event EventHandler<AdValueEventArgs> OnPaidEvent;
+        public event Action<AdValue> OnPaidEvent;
 
         public event EventHandler<AdErrorClientEventArgs> OnAdFailedToPresentFullScreenContent;
 
@@ -52,6 +52,17 @@ namespace GoogleMobileAds.Android
 
         public event Action OnAdClicked;
 
+        public long PlacementId {
+            get
+            {
+                return androidRewardedAd.Call<long>("getPlacementId");
+            }
+            set
+            {
+                androidRewardedAd.Call("setPlacementId", value);
+            }
+        }
+
         public void CreateRewardedAd()
         {
             // No op.
@@ -59,7 +70,7 @@ namespace GoogleMobileAds.Android
 
         public void LoadAd(string adUnitId, AdRequest request)
         {
-            androidRewardedAd.Call("loadAd", adUnitId, Utils.GetAdRequestJavaObject(request));
+            androidRewardedAd.Call("loadAd", adUnitId, Utils.GetAdManagerAdRequestJavaObject(request));
         }
 
         public void Show()
@@ -89,11 +100,33 @@ namespace GoogleMobileAds.Android
             };
         }
 
+        // Returns the ad unit ID.
+        public string GetAdUnitID()
+        {
+            return this.androidRewardedAd.Call<string>("getAdUnitId");
+        }
+
+#if GMA_PREVIEW_FEATURES
+
+        public bool IsAdAvailable(string adUnitId)
+        {
+            return this.androidRewardedAd.Call<bool>("isAdAvailable", adUnitId);
+        }
+
+        public IRewardedAdClient PollAd(string adUnitId)
+        {
+            this.androidRewardedAd.Call("pollAd", adUnitId);
+            return this;
+        }
+
+#endif
+
         // Returns ad request response info
         public IResponseInfoClient GetResponseInfoClient()
         {
-
-            return new ResponseInfoClient(ResponseInfoClientType.AdLoaded, this.androidRewardedAd);
+            var responseInfoJavaObject = androidRewardedAd.Call<AndroidJavaObject>(
+                    "getResponseInfo");
+            return new ResponseInfoClient(ResponseInfoClientType.AdLoaded, responseInfoJavaObject);
         }
 
         // Destroy the rewarded ad.
@@ -193,12 +226,7 @@ namespace GoogleMobileAds.Android
                     Value = valueInMicros,
                     CurrencyCode = currencyCode
                 };
-                AdValueEventArgs args = new AdValueEventArgs()
-                {
-                    AdValue = adValue
-                };
-
-                this.OnPaidEvent(this, args);
+                this.OnPaidEvent(adValue);
             }
         }
 

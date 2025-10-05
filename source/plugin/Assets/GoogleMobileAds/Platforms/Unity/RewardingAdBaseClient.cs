@@ -31,7 +31,7 @@ namespace GoogleMobileAds.Unity
         // Ad event fired when the rewarding ad has failed to load.
         public event EventHandler<LoadAdErrorClientEventArgs> OnAdFailedToLoad;
         // Ad event fired when the rewarding ad is estimated to have earned money.
-        public event EventHandler<AdValueEventArgs> OnPaidEvent;
+        public event Action<AdValue> OnPaidEvent;
         // Ad event fired when the rewarding ad has rewarded the user.
         public event EventHandler<Reward> OnUserEarnedReward;
         // Ad event fired when the full screen content has failed to be presented.
@@ -44,6 +44,9 @@ namespace GoogleMobileAds.Unity
         public event EventHandler<EventArgs> OnAdDidRecordImpression;
         // Ad event fired when an ad impression has been clicked.
         public event Action OnAdClicked;
+
+        // The placement ID for the ad.
+        public long PlacementId { get; set; }
 
         internal static readonly Dictionary<AdSize, string> prefabAds = new Dictionary<AdSize, string>()
         {
@@ -85,10 +88,6 @@ namespace GoogleMobileAds.Unity
                     OnAdDidDismissFullScreenContent.Invoke(this, EventArgs.Empty);
                 }
                 AdBehaviour.ResumeGame();
-                if (OnUserEarnedReward != null)
-                {
-                    OnUserEarnedReward.Invoke(this, GetRewardItem());
-                }
             });
         }
 
@@ -97,9 +96,26 @@ namespace GoogleMobileAds.Unity
             buttonBehaviour = base.dummyAd.AddComponent<ButtonBehaviour>();
         }
 
+#if GMA_PREVIEW_FEATURES
+
+        public bool IsAdAvailable(string adUnitId)
+        {
+            Debug.Log("Preloaded ads are not supported on the Unity editor platform.");
+            return false;
+        }
+
+        public IRewardedAdClient PollAd(string adUnitId)
+        {
+            Debug.Log("Preloaded ads are not supported on the Unity editor platform.");
+            return new RewardedAdClient();
+        }
+
+#endif
+
         // Load a rewarding ad.
         public void LoadAd(string adUnitId, AdRequest request)
         {
+            base._adUnitId = adUnitId;
             if (Screen.width > Screen.height) //Landscape
             {
                 LoadAndSetPrefabAd(prefabAds[new AdSize(1024, 768)]);
@@ -148,6 +164,15 @@ namespace GoogleMobileAds.Unity
                 CreateButtonBehavior();
                 AddClickBehavior(dummyAd);
                 dummyAd.AddComponent<Countdown>();
+                Countdown counter = dummyAd.GetComponent<Countdown>();
+                counter.OnCountdownFinished += () =>
+                {
+                    if (OnUserEarnedReward != null)
+                    {
+                        OnUserEarnedReward.Invoke(this, GetRewardItem());
+                    }
+                };
+
                 if (OnAdDidPresentFullScreenContent != null)
                 {
                     OnAdDidPresentFullScreenContent.Invoke(this, EventArgs.Empty);

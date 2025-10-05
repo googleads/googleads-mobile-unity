@@ -1,14 +1,24 @@
 <dependencies>
   <androidPackages>
-    <androidPackage spec="com.google.android.gms:play-services-ads:[22.3.0]">
+    <androidPackage spec="com.google.android.gms:play-services-ads:24.5.0">
       <repositories>
         <repository>https://maven.google.com/</repository>
       </repositories>
     </androidPackage>
+    <androidPackage spec="androidx.constraintlayout:constraintlayout:2.1.4">
+      <repositories>
+        <repository>https://maven.google.com/</repository>
+      </repositories>
+    </androidPackage>
+    <androidPackage spec="androidx.lifecycle:lifecycle-process:2.6.2">
+        <repositories>
+            <repository>https://maven.google.com/</repository>
+        </repositories>
+    </androidPackage>
   </androidPackages>
 
   <iosPods>
-    <iosPod name="Google-Mobile-Ads-SDK" version="~> 10.9">
+    <iosPod name="Google-Mobile-Ads-SDK" version="~> 12.11.0">
       <sources>
         <source>https://github.com/CocoaPods/Specs</source>
       </sources>

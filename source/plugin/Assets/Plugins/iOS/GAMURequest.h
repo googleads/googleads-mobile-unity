@@ -27,9 +27,6 @@
 /// Array of strings used to exclude specified categories in ad results.
 @property(nonatomic, copy, nullable) NSMutableArray *categoryExclusions;
 
-/// Key-value pairs used for custom targeting.
-@property(nonatomic, copy, nullable) NSMutableDictionary *customTargeting;
-
 /// Convenience method for adding a category exclusion label.
 - (void)addCategoryExclusion:(nonnull NSString *)category;
 

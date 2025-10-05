@@ -29,7 +29,7 @@ namespace GoogleMobileAds.Common
     event EventHandler<LoadAdErrorClientEventArgs> OnAdFailedToLoad;
 
     // Ad event fired when the app open ad is estimated to have earned money.
-    event EventHandler<AdValueEventArgs> OnPaidEvent;
+    event Action<AdValue> OnPaidEvent;
 
     // Ad event fired when the ad failed to present full screen content.
     event EventHandler<AdErrorClientEventArgs> OnAdFailedToPresentFullScreenContent;
@@ -46,17 +46,30 @@ namespace GoogleMobileAds.Common
     // Ad event fired when an ad is clicked.
     event Action OnAdClicked;
 
+    // A long integer provided by the AdMob UI for the configured placement.
+    long PlacementId { get; set; }
+
     // Creates an app open ad.
     void CreateAppOpenAd();
+
+#if GMA_PREVIEW_FEATURES
+
+    // Verify if an app open ad is preloaded and is available to show.
+    bool IsAdAvailable(string adUnitId);
+
+    // Returns the next pre-loaded app open ad and null if no ad is available.
+    IAppOpenAdClient PollAd(string adUnitId);
+
+#endif
 
     // Loads an app open ad.
     void LoadAd(string adUnitID, AdRequest request);
 
-    // Loads an app open ad.
-    void LoadAd(string adUnitID, AdRequest request, ScreenOrientation orientation);
-
     // Shows the app open ad on the screen.
     void Show();
+
+    // Returns the ad unit ID.
+    string GetAdUnitID();
 
     // Returns ad request Response info client.
     IResponseInfoClient GetResponseInfoClient();

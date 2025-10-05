@@ -13,8 +13,9 @@
 // limitations under the License.
 
 using System;
-using System.IO;
+using System.Collections.Generic;
 using System.Reflection;
+using System.Threading.Tasks;
 using UnityEngine;
 
 using GoogleMobileAds.Api;
@@ -24,65 +25,95 @@ namespace GoogleMobileAds.Android
 {
     public class MobileAdsClient : AndroidJavaProxy, IMobileAdsClient
     {
-        private static MobileAdsClient instance = new MobileAdsClient();
+        private readonly static MobileAdsClient _instance = new MobileAdsClient();
 
-        private Action<IInitializationStatusClient> initCompleteAction;
+        private readonly AndroidJavaClass _mobileAdsClass;
+        private readonly IInsightsEmitter _insightsEmitter = new InsightsEmitter();
+        private readonly ITracer _tracer;
+        private Action<IInitializationStatusClient> _initCompleteAction;
 
-        private MobileAdsClient() : base(Utils.OnInitializationCompleteListenerClassName) { }
+        private MobileAdsClient() : base(Utils.OnInitializationCompleteListenerClassName) {
+            _mobileAdsClass = new AndroidJavaClass(Utils.UnityMobileAdsClassName);
+            _tracer = new Tracer(_insightsEmitter);
+        }
 
         public static MobileAdsClient Instance
         {
-            get
-            {
-                return instance;
-            }
+          get { return _instance; }
         }
 
         public void Initialize(Action<IInitializationStatusClient> initCompleteAction)
         {
-            this.initCompleteAction = initCompleteAction;
+          using (_tracer.StartTrace("MobileAdsClient.Initialize"))
+          {
+            _initCompleteAction = initCompleteAction;
 
-            AndroidJavaClass playerClass = new AndroidJavaClass(Utils.UnityActivityClassName);
-            AndroidJavaObject activity =
-                    playerClass.GetStatic<AndroidJavaObject>("currentActivity");
-            AndroidJavaClass mobileAdsClass = new AndroidJavaClass(Utils.MobileAdsClassName);
-            mobileAdsClass.CallStatic("initialize", activity, this);
+            Task.Run(() => {
+              using (_tracer.StartTrace("AttachCurrentThread"))
+              {
+                int env = AndroidJNI.AttachCurrentThread();
+                if (env < 0) {
+                  UnityEngine.Debug.LogError("Failed to attach current thread to JVM.");
+                  return;
+                }
+              }
+
+              try {
+                _mobileAdsClass.CallStatic("initialize",
+                                           Utils.GetCurrentActivityAndroidJavaObject(),
+                                           this);
+              } finally {
+                AndroidJNI.DetachCurrentThread();
+              }
+            });
+          }
+          _insightsEmitter.Emit(new Insight()
+          {
+              Name = Insight.CuiName.SdkInitialized,
+              Platform = Insight.AdPlatform.Android,
+              Success = true
+          });
         }
 
         public void SetApplicationVolume(float volume)
         {
-            AndroidJavaClass mobileAdsClass = new AndroidJavaClass(Utils.MobileAdsClassName);
-            mobileAdsClass.CallStatic("setAppVolume", volume);
+          _mobileAdsClass.CallStatic("setAppVolume", volume);
         }
 
         public void DisableMediationInitialization()
         {
-            AndroidJavaClass playerClass = new AndroidJavaClass(Utils.UnityActivityClassName);
-            AndroidJavaObject activity =
-                    playerClass.GetStatic<AndroidJavaObject>("currentActivity");
-            AndroidJavaClass mobileAdsClass = new AndroidJavaClass(Utils.MobileAdsClassName);
-            mobileAdsClass.CallStatic("disableMediationAdapterInitialization", activity);
+          _mobileAdsClass.CallStatic("disableMediationAdapterInitialization",
+                                     Utils.GetCurrentActivityAndroidJavaObject());
         }
 
         public void SetApplicationMuted(bool muted)
         {
-            AndroidJavaClass mobileAdsClass = new AndroidJavaClass(Utils.MobileAdsClassName);
-            mobileAdsClass.CallStatic("setAppMuted", muted);
+          _mobileAdsClass.CallStatic("setAppMuted", muted);
         }
 
         public void SetRequestConfiguration(RequestConfiguration requestConfiguration)
         {
-            AndroidJavaClass mobileAdsClass = new AndroidJavaClass(Utils.MobileAdsClassName);
-            AndroidJavaObject requestConfigurationAndroidObject = RequestConfigurationClient.BuildRequestConfiguration(requestConfiguration);
-            mobileAdsClass.CallStatic("setRequestConfiguration", requestConfigurationAndroidObject);
+            // putPublisherFirstPartyIdEnabled resides in MobileAds class in Android.
+            if (requestConfiguration.PublisherFirstPartyIdEnabled.HasValue)
+            {
+              _mobileAdsClass.CallStatic<bool>(
+                  "putPublisherFirstPartyIdEnabled",
+                  requestConfiguration.PublisherFirstPartyIdEnabled.Value);
+            }
+
+            var requestConfigurationAndroidObject =
+                RequestConfigurationClient.BuildRequestConfiguration(requestConfiguration);
+            _mobileAdsClass.CallStatic("setRequestConfiguration",
+                                       requestConfigurationAndroidObject);
         }
 
         public RequestConfiguration GetRequestConfiguration()
         {
-            AndroidJavaClass mobileAdsClass = new AndroidJavaClass(Utils.MobileAdsClassName);
-            AndroidJavaObject androidRequestConfiguration = mobileAdsClass.CallStatic<AndroidJavaObject>("getRequestConfiguration");
-            RequestConfiguration requestConfiguration = RequestConfigurationClient.GetRequestConfiguration(androidRequestConfiguration);
-            return requestConfiguration;
+          var androidRequestConfiguration =
+              _mobileAdsClass.CallStatic<AndroidJavaObject>("getRequestConfiguration");
+          var requestConfiguration =
+              RequestConfigurationClient.GetRequestConfiguration(androidRequestConfiguration);
+          return requestConfiguration;
         }
 
         public void SetiOSAppPauseOnBackground(bool pause)
@@ -90,25 +121,42 @@ namespace GoogleMobileAds.Android
             // Do nothing on Android. Default behavior is to pause when app is backgrounded.
         }
 
+        public void DisableSDKCrashReporting()
+        {
+            // This feature is not available for the Android platform.
+        }
+
         public void OpenAdInspector(Action<AdInspectorErrorClientEventArgs> onAdInspectorClosed)
         {
-            AndroidJavaClass activityClass = new AndroidJavaClass(Utils.UnityActivityClassName);
-            AndroidJavaObject activity =
-                        activityClass.GetStatic<AndroidJavaObject>("currentActivity");
-            AndroidJavaClass adInspectorClass =
-                        new AndroidJavaClass(Utils.UnityAdInspectorClassName);
-            AdInspectorListener listener = new AdInspectorListener(onAdInspectorClosed);
-            adInspectorClass.CallStatic("openAdInspector", activity, listener);
+          var listener = new AdInspectorListener(onAdInspectorClosed);
+          _mobileAdsClass.CallStatic("openAdInspector", Utils.GetCurrentActivityAndroidJavaObject(),
+                                     listener);
         }
+
+#if GMA_PREVIEW_FEATURES
+
+        public void Preload(List<PreloadConfiguration> configurations,
+                            Action<PreloadConfiguration> onAdAvailable,
+                            Action<PreloadConfiguration> onAdsExhausted)
+        {
+          var listener = new PreloadListener(onAdAvailable, onAdsExhausted);
+          var configurationsArrayList = new AndroidJavaObject("java.util.ArrayList");
+          foreach (var configuration in configurations) {
+            var preloadConfigAndroidJavaObject =
+                Utils.GetPreloadConfigurationJavaObject(configuration);
+            configurationsArrayList.Call<bool>("add", preloadConfigAndroidJavaObject);
+          }
+          _mobileAdsClass.CallStatic("startPreload", Utils.GetCurrentActivityAndroidJavaObject(),
+                                     configurationsArrayList, listener);
+        }
+
+#endif
 
         public float GetDeviceScale()
         {
-            AndroidJavaClass playerClass = new AndroidJavaClass(Utils.UnityActivityClassName);
-            AndroidJavaObject activity =
-                    playerClass.GetStatic<AndroidJavaObject>("currentActivity");
-            AndroidJavaObject resources = activity.Call<AndroidJavaObject>("getResources");
-            AndroidJavaObject metrics = resources.Call<AndroidJavaObject>("getDisplayMetrics");
-            return metrics.Get<float>("density");
+          var pluginUtilsClass = new AndroidJavaClass(Utils.PluginUtilsClassName);
+          return pluginUtilsClass.CallStatic<float>("getDeviceDensity",
+                                                    Utils.GetCurrentActivityAndroidJavaObject());
         }
 
         public int GetDeviceSafeWidth()
@@ -116,33 +164,30 @@ namespace GoogleMobileAds.Android
             return Utils.GetScreenWidth();
         }
 
+        public Version GetSDKVersion()
+        {
+          return new Version(_mobileAdsClass.CallStatic<string>("getSdkVersionString"));
+        }
+
         #region Callbacks from OnInitializationCompleteListener.
 
         public void onInitializationComplete(AndroidJavaObject initStatus)
         {
-            if (initCompleteAction != null)
-            {
-                IInitializationStatusClient statusClient = new InitializationStatusClient(initStatus);
-                initCompleteAction(statusClient);
-            }
+          if (_initCompleteAction != null) {
+            IInitializationStatusClient statusClient = new InitializationStatusClient(initStatus);
+            _initCompleteAction(statusClient);
+          }
             string nativePluginVersion = "";
             try
             {
-                Assembly assembly = Assembly.Load("GoogleMobileAdsNative.Common");
-                Version assemblyVersion = assembly.GetName().Version;
-                nativePluginVersion = string.Format("{0}.{1}.{2}",
-                        assemblyVersion.Major,
-                        assemblyVersion.Minor,
-                        assemblyVersion.Revision);
+              var assembly = Assembly.Load("GoogleMobileAdsNative.Common");
+              var assemblyVersion = assembly.GetName().Version;
+              nativePluginVersion = string.Format("{0}.{1}.{2}", assemblyVersion.Major,
+                                                  assemblyVersion.Minor, assemblyVersion.Revision);
             }
             catch (Exception) {}
             string versionString = AdRequest.BuildVersionString(nativePluginVersion);
-            AndroidJavaClass mobileAdsClass = new AndroidJavaClass(Utils.MobileAdsClassName);
-            try
-            {
-                mobileAdsClass.CallStatic("setPlugin", versionString);
-            }
-            catch (AndroidJavaException) {}
+            _mobileAdsClass.CallStatic("setPlugin", versionString);
         }
 
         #endregion

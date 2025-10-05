@@ -88,6 +88,12 @@ public class ManifestProcessor : IPreprocessBuild
             manifestPath = Path.Combine("Packages/com.google.ads.mobile", MANIFEST_RELATIVE_PATH);
         }
 
+        if (!File.Exists(manifestPath))
+        {
+            manifestPath = Path.Combine(Path.GetDirectoryName(manifestPath), "src", "main",
+                                        "AndroidManifest.xml");
+        }
+
         XDocument manifest = null;
         try
         {
@@ -113,7 +119,7 @@ public class ManifestProcessor : IPreprocessBuild
         }
 
         GoogleMobileAdsSettings instance = GoogleMobileAdsSettings.LoadInstance();
-        string appId = instance.GoogleMobileAdsAndroidAppId;
+        string appId = instance.GoogleMobileAdsAndroidAppId.Trim();
 
         if (appId.Length == 0)
         {
@@ -131,18 +137,15 @@ public class ManifestProcessor : IPreprocessBuild
 
         SetMetadataElement(elemApplication,
                            metas,
-                           METADATA_DELAY_APP_MEASUREMENT_INIT,
-                           instance.DelayAppMeasurementInit);
-
-        SetMetadataElement(elemApplication,
-                           metas,
                            METADATA_OPTIMIZE_INITIALIZATION,
-                           instance.OptimizeInitialization);
+                           !instance.DisableOptimizeInitialization,
+                           true);
 
         SetMetadataElement(elemApplication,
                            metas,
                            METADATA_OPTIMIZE_AD_LOADING,
-                           instance.OptimizeAdLoading);
+                           !instance.DisableOptimizeAdLoading,
+                           true);
 
         SetMetadataElement(elemApplication,
                            metas,

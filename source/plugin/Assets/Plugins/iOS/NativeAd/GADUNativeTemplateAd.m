@@ -68,6 +68,24 @@
   [unityController.view addSubview:_templateWrapper];
 }
 
+- (void)show:(nonnull GADUNativeTemplateStyle *)templateStyle
+{
+  if (_templateWrapper) {
+    // If ad is shown before, destroy ad before showing with provided template style.
+    [_templateWrapper removeFromSuperview];
+    _templateWrapper = nil;
+  }
+
+  _templateWrapper = [templateStyle getDisplayedView:_nativeAd];
+  if(!_templateWrapper) {
+    NSLog(@"Requested Template View couldn't be loaded!");
+    return;
+  }
+
+  UIViewController *unityController = [GADUPluginUtil unityGLViewController];
+  [unityController.view addSubview:_templateWrapper];
+}
+
 - (void)hide
 {
   if (!_templateWrapper) {
@@ -131,6 +149,14 @@
 
 - (CGFloat)widthInPixels {
   return CGRectGetWidth(CGRectStandardize(_templateWrapper.frame)) * [UIScreen mainScreen].scale;
+}
+
+- (int64_t)placementID {
+  return _nativeAd.placementID;
+}
+
+- (void)setPlacementID:(int64_t)placementID {
+  _nativeAd.placementID = placementID;
 }
 
 # pragma mark - GADAdLoaderDelegate

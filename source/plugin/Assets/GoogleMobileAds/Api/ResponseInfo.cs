@@ -36,7 +36,14 @@ namespace GoogleMobileAds.Api
         /// </summary>
         public AdapterResponseInfo GetLoadedAdapterResponseInfo()
         {
-            return new AdapterResponseInfo(_client.GetLoadedAdapterResponseInfo());
+            if (_client == null)
+            {
+                return null;
+            }
+            var adapterResponseInfoClient = _client.GetLoadedAdapterResponseInfo();
+            return adapterResponseInfoClient == null
+                    ? null
+                    : new AdapterResponseInfo(adapterResponseInfoClient);
         }
 
         /// <summary>
@@ -46,12 +53,16 @@ namespace GoogleMobileAds.Api
         /// </summary>
         public List<AdapterResponseInfo> GetAdapterResponses()
         {
+            if (_client == null)
+            {
+                return new List<AdapterResponseInfo>();
+            }
             var responses = _client.GetAdapterResponses();
             if (responses == null)
             {
                 return new List<AdapterResponseInfo>();
             }
-            return responses.Select(o => new AdapterResponseInfo(o)).ToList();
+            return responses.Where(o => o != null).Select(o => new AdapterResponseInfo(o)).ToList();
         }
 
         /// <summary>
@@ -59,6 +70,10 @@ namespace GoogleMobileAds.Api
         /// </summary>
         public Dictionary<string, string> GetResponseExtras()
         {
+            if (_client == null)
+            {
+                return new Dictionary<string, string>();
+            }
             return _client.GetResponseExtras();
         }
 
@@ -74,6 +89,10 @@ namespace GoogleMobileAds.Api
         /// </summary>
         public string GetMediationAdapterClassName()
         {
+            if (_client == null)
+            {
+                return null;
+            }
             return _client.GetMediationAdapterClassName();
         }
 
@@ -84,6 +103,10 @@ namespace GoogleMobileAds.Api
         /// </summary>
         public string GetResponseId()
         {
+            if (_client == null)
+            {
+                return null;
+            }
             return _client.GetResponseId();
         }
 
@@ -92,6 +115,10 @@ namespace GoogleMobileAds.Api
         /// </summary>
         public override string ToString()
         {
+            if (_client == null)
+            {
+                return string.Empty;
+            }
             return _client.ToString();
         }
     }

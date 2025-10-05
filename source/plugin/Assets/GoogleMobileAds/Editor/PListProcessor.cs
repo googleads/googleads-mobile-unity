@@ -43,7 +43,7 @@ public static class PListProcessor
         plist.ReadFromFile(plistPath);
 
         GoogleMobileAdsSettings instance = GoogleMobileAdsSettings.LoadInstance();
-        string appId = instance.GoogleMobileAdsIOSAppId;
+        string appId = instance.GoogleMobileAdsIOSAppId.Trim();
         if (appId.Length == 0)
         {
             NotifyBuildFailure(
@@ -58,11 +58,6 @@ public static class PListProcessor
         if (!string.IsNullOrEmpty(userTrackingDescription))
         {
             plist.root.SetString("NSUserTrackingUsageDescription", userTrackingDescription);
-        }
-
-        if (instance.DelayAppMeasurementInit)
-        {
-            plist.root.SetBoolean("GADDelayAppMeasurementInit", true);
         }
 
         List<string> skNetworkIds = ReadSKAdNetworkIdentifiersFromXML();

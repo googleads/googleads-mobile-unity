@@ -13,7 +13,8 @@
 // limitations under the License.
 
 using System;
-using GoogleMobileAds;
+using UnityEngine;
+
 using GoogleMobileAds.Common;
 
 namespace GoogleMobileAds.Api
@@ -57,17 +58,74 @@ namespace GoogleMobileAds.Api
         /// </summary>
         public event Action<AdError> OnAdFullScreenContentFailed;
 
+        /// <summary>
+        /// A long integer provided by the AdMob UI for the configured placement.
+        /// To ensure this placement ID is included in reporting, set a value before showing the ad.
+        /// </summary>
+        public long PlacementId
+        {
+            get
+            {
+                return _client != null ? _client.PlacementId : 0;
+            }
+
+            set
+            {
+                if (_client != null)
+                {
+                    _client.PlacementId = value;
+                }
+            }
+        }
+
         protected internal IInterstitialClient _client;
         protected internal bool _canShowAd;
 
         protected internal InterstitialAd() {}
 
-        private InterstitialAd(IInterstitialClient client)
+        internal InterstitialAd(IInterstitialClient client)
         {
             _client = client;
             _canShowAd = true;
             RegisterAdEvents();
         }
+
+#if GMA_PREVIEW_FEATURES
+
+        /// <summary>
+        /// Verify if an ad is preloaded and available to show.
+        /// </summary>
+        /// <param name="adUnitId">The ad Unit Id of the ad to verify. </param>
+        [Obsolete("Use InterstitialAdPreloader.IsAdAvailable instead.")]
+        public static bool IsAdAvailable(string adUnitId)
+        {
+            if (string.IsNullOrEmpty(adUnitId))
+            {
+                Debug.LogError("adUnitId cannot be null or empty.");
+                return false;
+            }
+            var client = MobileAds.GetClientFactory().BuildInterstitialClient();
+            return client.IsAdAvailable(adUnitId);
+        }
+
+        /// <summary>
+        /// Returns the next pre-loaded interstitial ad and null if no ad is available.
+        /// </summary>
+        /// <param name="adUnitId">The ad Unit ID of the ad to poll.</param>
+        [Obsolete("Use InterstitialAdPreloader.DequeueAd instead.")]
+        public static InterstitialAd PollAd(string adUnitId)
+        {
+            if (string.IsNullOrEmpty(adUnitId))
+            {
+                Debug.LogError("adUnitId cannot be null or empty.");
+                return null;
+            }
+            var client = MobileAds.GetClientFactory().BuildInterstitialClient();
+            client.CreateInterstitialAd();
+            return new InterstitialAd(client.PollAd(adUnitId));
+        }
+
+#endif  // GMA_PREVIEW_FEATURES
 
         /// <summary>
         /// Loads an interstitial ad.
@@ -136,6 +194,14 @@ namespace GoogleMobileAds.Api
         }
 
         /// <summary>
+        /// Returns the ad unit ID.
+        /// </summary>
+        public string GetAdUnitID()
+        {
+            return _client != null ? _client.GetAdUnitID() : null;
+        }
+
+        /// <summary>
         /// Returns the ad request response info.
         /// </summary>
         public ResponseInfo GetResponseInfo()
@@ -199,13 +265,13 @@ namespace GoogleMobileAds.Api
                     }
                 });
             };
-            _client.OnPaidEvent += (sender, args) =>
+            _client.OnPaidEvent += (adValue) =>
             {
                 MobileAds.RaiseAction(() =>
                 {
                     if (OnAdPaid != null)
                     {
-                        OnAdPaid(args.AdValue);
+                        OnAdPaid(adValue);
                     }
                 });
             };

@@ -4,9 +4,11 @@
 
 /// Debug values for testing geography.
 typedef NS_ENUM(NSInteger, GADUDebugGeography) {
-  kGADUDebugGeographyDisabled = 0,  ///< Disable geography debugging.
-  kGADUDebugGeographyEEA = 1,       ///< Geography appears as in EEA for debug devices.
-  kGADUDebugGeographyNotEEA = 2,    ///< Geography appears as not in EEA for debug devices.
+  kGADUDebugGeographyDisabled = 0,  // Disable geography debugging.
+  kGADUDebugGeographyEEA = 1,       // Geography appears as in EEA for debug devices.
+  kGADUDebugGeographyNotEEA = 2,    // Geography appears as not in EEA for debug devices.
+  kGADUDebugGeographyRegulatedUSState = 3,  // Geography appears as in a regulated US State.
+  kGADUDebugGeographyOther = 4,     // Geography appears as in a region with no regulation in force.
 };
 
 /// Settings that publishers can use for debugging or testing.

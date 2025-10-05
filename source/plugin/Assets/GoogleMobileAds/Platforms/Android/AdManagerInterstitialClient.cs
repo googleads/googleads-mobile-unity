@@ -35,11 +35,14 @@ namespace GoogleMobileAds.Android
 
         public event EventHandler<EventArgs> OnAdDidRecordImpression;
 
-        public event EventHandler<AdValueEventArgs> OnPaidEvent;
+        public event Action<AdValue> OnPaidEvent;
 
         public event Action<AppEvent> OnAppEvent;
 
         public event Action OnAdClicked;
+
+        // Placement ID is not supported for AdManagerInterstitialAd.
+        public long PlacementId { get; set; }
 
         private AndroidJavaObject _androidAdmanagerInterstitialAd;
 
@@ -61,6 +64,26 @@ namespace GoogleMobileAds.Android
             // No op.
         }
 
+#if GMA_PREVIEW_FEATURES
+
+        public bool IsAdAvailable(string adUnitId)
+        {
+            return this._androidAdmanagerInterstitialAd.Call<bool>("isAdAvailable", adUnitId);
+        }
+
+        public IInterstitialClient PollAd(string adUnitId)
+        {
+            return PollAdManagerAd(adUnitId);
+        }
+
+#endif
+
+        public IAdManagerInterstitialClient PollAdManagerAd(string adUnitId)
+        {
+            this._androidAdmanagerInterstitialAd.Call("pollAd", adUnitId);
+            return this;
+        }
+
         // Loads an AdManager Interstitial ad.
         public void LoadAd(string adUnitId, AdRequest request)
         {
@@ -80,11 +103,17 @@ namespace GoogleMobileAds.Android
             this._androidAdmanagerInterstitialAd.Call("destroy");
         }
 
+        // Returns the ad unit ID.
+        public string GetAdUnitID()
+        {
+            return this._androidAdmanagerInterstitialAd.Call<string>("getAdUnitId");
+        }
+
         // Returns ad request response info
         public IResponseInfoClient GetResponseInfoClient()
         {
-            return new ResponseInfoClient(ResponseInfoClientType.AdLoaded,
-                                          this._androidAdmanagerInterstitialAd);
+            var responseInfoJavaObject = _androidAdmanagerInterstitialAd.Call<AndroidJavaObject>("getResponseInfo");
+            return new ResponseInfoClient(ResponseInfoClientType.AdLoaded, responseInfoJavaObject);
         }
 
         #endregion
@@ -166,12 +195,7 @@ namespace GoogleMobileAds.Android
                     Value = valueInMicros,
                     CurrencyCode = currencyCode
                 };
-                AdValueEventArgs args = new AdValueEventArgs()
-                {
-                    AdValue = adValue
-                };
-
-                this.OnPaidEvent(this, args);
+                this.OnPaidEvent(adValue);
             }
         }
 

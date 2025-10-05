@@ -32,36 +32,72 @@ namespace GoogleMobileAds.Api
         /// <summary>
         /// Returns a class name that identifies the ad network adapter.
         /// </summary>
-        public string AdapterClassName { get { return _client.AdapterClassName; } }
+        public string AdapterClassName
+        {
+            get
+            {
+                return _client == null ? string.Empty : _client.AdapterClassName;
+            }
+        }
 
         /// <summary>
         /// Returns the ad source ID associated with this adapter response.
         /// Returns an empty string if the ad server doesn't populate this field.
         /// </summary>
-        public string AdSourceId { get { return _client.AdSourceId; } }
+        public string AdSourceId
+        {
+            get
+            {
+                return _client == null ? string.Empty : _client.AdSourceId;
+            }
+        }
 
         /// <summary>
         /// Returns the ad source name associated with this adapter response.
         /// Returns an empty string if the ad server doesn't populate this field.
         /// </summary>
-        public string AdSourceName { get { return _client.AdSourceName; } }
+        public string AdSourceName
+        {
+            get
+            {
+                return _client == null ? string.Empty : _client.AdSourceName;
+            }
+        }
 
         /// <summary>
         /// Returns the ad source instance ID associated with this adapter response.
         /// Returns an empty string if the ad server doesn't populate this field.
         /// </summary>
-        public string AdSourceInstanceId { get { return _client.AdSourceInstanceId; } }
+        public string AdSourceInstanceId
+        {
+            get
+            {
+                return _client == null ? string.Empty : _client.AdSourceInstanceId;
+            }
+        }
 
         /// <summary>
         /// Returns the ad source instance name associated with this adapter response.
         /// Returns an empty string if the ad server doesn't populate this field.
         /// </summary>
-        public string AdSourceInstanceName { get { return _client.AdSourceInstanceName; } }
+        public string AdSourceInstanceName
+        {
+            get
+            {
+                return _client == null ? string.Empty : _client.AdSourceInstanceName;
+            }
+        }
 
         /// <summary>
         /// Returns a Dictionary containing the ad unit mapping.
         /// </summary>
-        public Dictionary<string, string> AdUnitMapping { get { return _client.AdUnitMapping; } }
+        public Dictionary<string, string> AdUnitMapping
+        {
+            get
+            {
+                return _client == null ? new Dictionary<string, string>() : _client.AdUnitMapping;
+            }
+        }
 
         /// <summary>
         /// Returns the error that occurred while rendering the ad.
@@ -71,22 +107,32 @@ namespace GoogleMobileAds.Api
         {
             get
             {
+                if (_client == null)
+                {
+                    return null;
+                }
                 return _client.AdError == null ? null : new AdError(_client.AdError);
             }
         }
 
         /// <summary>
         /// Returns the amount of time the ad network adapter spent loading an ad in ms.
-        /// Returns 0 if the adapter was not attempted.
+        /// Returns 0 if the adapter was not attempted or client is null.
         /// </summary>
-        public long LatencyMillis { get { return _client.LatencyMillis; } }
+        public long LatencyMillis
+        {
+            get
+            {
+                return _client == null ? 0 : _client.LatencyMillis;
+            }
+        }
 
         /// <summary>
         /// Returns a log friendly string version of this object.
         /// </summary>
         public override string ToString()
         {
-            return _client.ToString();
+            return _client == null ? string.Empty : _client.ToString();
         }
     }
 }

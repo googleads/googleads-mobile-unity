@@ -67,7 +67,7 @@ namespace GoogleMobileAds.iOS
 
         public event EventHandler<LoadAdErrorClientEventArgs> OnAdFailedToLoad;
 
-        public event EventHandler<AdValueEventArgs> OnPaidEvent;
+        public event Action<AdValue> OnPaidEvent;
 
         public event Action<AppEvent> OnAppEvent;
 
@@ -80,6 +80,9 @@ namespace GoogleMobileAds.iOS
         public event EventHandler<EventArgs> OnAdDidRecordImpression;
 
         public event Action OnAdClicked;
+
+        // Placement ID is not supported for AdManagerInterstitialAd.
+        public long PlacementId { get; set; }
 
         private IntPtr _interstitialClientPtr;
 
@@ -120,6 +123,29 @@ namespace GoogleMobileAds.iOS
                 InterstitialAppEventCallback);
         }
 
+#if GMA_PREVIEW_FEATURES
+
+        // Verify if an ad is preloaded and available to show.
+        public bool IsAdAvailable(string adUnitId)
+        {
+            return Externs.GAMUInterstitialIsPreloadedAdAvailable(adUnitId);
+        }
+
+        // Returns the next pre-loaded interstitial ad and null if no ad is available.
+        public IInterstitialClient PollAd(string adUnitId)
+        {
+            return PollAdManagerAd(adUnitId);
+        }
+
+#endif
+
+        // Returns the next pre-loaded ad manager interstitial ad and null if no ad is available.
+        public IAdManagerInterstitialClient PollAdManagerAd(string adUnitId)
+        {
+            Externs.GAMUInterstitialPreloadedAdWithAdUnitID(this.InterstitialPtr, adUnitId);
+            return this;
+        }
+
         public void LoadAd(string adUnitID, AdRequest request) {
             IntPtr requestPtr = Utils.BuildAdManagerAdRequest(request);
             Externs.GAMULoadInterstitialAd(this.InterstitialPtr, adUnitID, requestPtr);
@@ -130,6 +156,12 @@ namespace GoogleMobileAds.iOS
         public void Show()
         {
             Externs.GADUShowInterstitial(this.InterstitialPtr);
+        }
+
+        // Returns the ad unit ID.
+        public string GetAdUnitID()
+        {
+            return Externs.GAMUGetInterstitialAdUnitID(this.InterstitialPtr);
         }
 
         public IResponseInfoClient GetResponseInfoClient()
@@ -146,6 +178,10 @@ namespace GoogleMobileAds.iOS
         public void Dispose()
         {
             this.DestroyInterstitial();
+            if(this._interstitialClientPtr == IntPtr.Zero)
+            {
+                return;
+            }
             ((GCHandle)this._interstitialClientPtr).Free();
         }
 
@@ -196,12 +232,7 @@ namespace GoogleMobileAds.iOS
                     Value = value,
                     CurrencyCode = currencyCode
                 };
-                AdValueEventArgs args = new AdValueEventArgs()
-                {
-                    AdValue = adValue
-                };
-
-                client.OnPaidEvent(client, args);
+                client.OnPaidEvent(adValue);
             }
         }
 

@@ -63,6 +63,11 @@ namespace GoogleMobileAds
             return new GoogleMobileAds.Unity.RewardedInterstitialAdClient();
         }
 
+        public INativeOverlayAdClient BuildNativeOverlayAdClient()
+        {
+            return new GoogleMobileAds.Unity.NativeOverlayAdClient();
+        }
+
         public IApplicationPreferencesClient ApplicationPreferencesInstance()
         {
             return new GoogleMobileAds.Unity.ApplicationPreferencesClient();
@@ -72,5 +77,21 @@ namespace GoogleMobileAds
         {
             return new GoogleMobileAds.Unity.MobileAdsClient();
         }
+
+#if GMA_PREVIEW_FEATURES
+
+        public IAppOpenAdPreloaderClient BuildAppOpenAdPreloaderClient() {
+          return new GoogleMobileAds.Unity.AppOpenAdPreloaderClient();
+        }
+
+        public IInterstitialAdPreloaderClient BuildInterstitialAdPreloaderClient() {
+          return new GoogleMobileAds.Unity.InterstitialAdPreloaderClient();
+        }
+
+        public IRewardedAdPreloaderClient BuildRewardedAdPreloaderClient() {
+          return new GoogleMobileAds.Unity.RewardedAdPreloaderClient();
+        }
+
+#endif
     }
 }

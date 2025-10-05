@@ -15,6 +15,7 @@
 using System;
 using System.Reflection;
 using System.Collections.Generic;
+
 using GoogleMobileAds.Api;
 using GoogleMobileAds.Common;
 using UnityEngine;
@@ -28,7 +29,7 @@ namespace GoogleMobileAds.Unity
 
         public event EventHandler<LoadAdErrorClientEventArgs> OnAdFailedToLoad;
 
-        public event EventHandler<AdValueEventArgs> OnPaidEvent;
+        public event Action<AdValue> OnPaidEvent;
 
         public event EventHandler<AdErrorClientEventArgs> OnAdFailedToPresentFullScreenContent;
 
@@ -39,6 +40,9 @@ namespace GoogleMobileAds.Unity
         public event EventHandler<EventArgs> OnAdDidRecordImpression;
 
         public event Action OnAdClicked;
+
+        // A long integer provided by the AdMob UI for the configured placement.
+        public long PlacementId { get; set; }
 
         private Dictionary<AdSize, string> prefabAds = new Dictionary<AdSize, string>() {
             {new AdSize (768,1024), "PlaceholderAds/Interstitials/768x1024" },
@@ -84,9 +88,22 @@ namespace GoogleMobileAds.Unity
 
         }
 
+        public bool IsAdAvailable(string adUnitId)
+        {
+            Debug.Log("Preloaded ads are not supported on the Unity editor platform.");
+            return false;
+        }
+
+        public IInterstitialClient PollAd(string adUnitId)
+        {
+            Debug.Log("Preloaded ads are not supported on the Unity editor platform.");
+            return new InterstitialClient();
+        }
+
         // Loads a new interstitial request.
         public void LoadAd(string adUnitId, AdRequest request)
         {
+            base._adUnitId = adUnitId;
             if (Screen.width > Screen.height) //Landscape
             {
                 LoadAndSetPrefabAd(prefabAds[new AdSize(1024, 768)]);
@@ -143,7 +160,7 @@ namespace GoogleMobileAds.Unity
         {
             AdBehaviour.DestroyAd(dummyAd);
             prefabAd = null;
+            base._adUnitId = null;
         }
-
     }
 }
