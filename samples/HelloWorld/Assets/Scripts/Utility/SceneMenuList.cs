@@ -27,7 +27,7 @@ namespace GoogleMobileAds.Samples.Utility
             new SceneInfo("Banner View", "GoogleBannerViewScene"),
             new SceneInfo("Interstitial Ad", "GoogleInterstitialAdScene"),
             new SceneInfo("Rewarded Ad", "GoogleRewardedAdScene"),
-            new SceneInfo("Rewarded Interstital Ad", "GoogleRewardedInterstitialAdScene"),
+            new SceneInfo("Rewarded Interstitial Ad", "GoogleRewardedInterstitialAdScene"),
             new SceneInfo("App Open Ad", "GoogleAppOpenAdScene"),
             new SceneInfo("Native Overlay Ad", "GoogleNativeOverlayAdScene"),
         };

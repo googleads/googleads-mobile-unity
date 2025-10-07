@@ -158,7 +158,7 @@ namespace GoogleMobileAds.Api
         }
 
         /// <summary>
-        /// The reward item for the loaded rewarded interstital ad.
+        /// The reward item for the loaded rewarded interstitial ad.
         /// </summary>
         public Reward GetRewardItem()
         {
