@@ -20,11 +20,24 @@
 
 #import <GoogleMobileAds/GoogleMobileAds.h>
 
-#import "GADAppOpenAdPreloader_Preview.h"
-#import "GADPreloadDelegate_Preview.h"
+#import "GADAppOpenAdPreloader.h"
+#import "GADPreloadDelegate.h"
 #import "GADUObjectCache.h"
 #import "GADUPreloadConfigurationV2.h"
 #import "GADUTypes.h"
+
+@interface GADAppOpenAdPreloader ()
+
+/// Returns the corresponding configuration for the given preload ID.
+///
+/// @param preloadID A string that refers to a set of preloaded ads.
+- (nullable GADPreloadConfigurationV2 *)configurationWithPreloadID:(nonnull NSString *)preloadID
+    NS_SWIFT_NAME(configuration(with:));
+
+/// Returns a map of preload IDs to their corresponding configurations.
+- (nonnull NSDictionary<NSString *, GADPreloadConfigurationV2 *> *)configurations;
+
+@end
 
 @interface GADUAppOpenAdPreloader : NSObject
 

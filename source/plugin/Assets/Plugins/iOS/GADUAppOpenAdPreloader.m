@@ -22,6 +22,7 @@
 #import <UIKit/UIKit.h>
 
 #import "GADUAppOpenAdPreloader.h"
+#import "GADAppOpenAdPreloader.h"
 #import "UnityInterface.h"
 
 @interface GADUAppOpenAd ()

@@ -8,6 +8,7 @@
 #import <UIKit/UIKit.h>
 
 #import "GADUInterstitialAdPreloader.h"
+#import "GADInterstitialAdPreloader.h"
 #import "UnityInterface.h"
 
 @interface GADUInterstitial ()
