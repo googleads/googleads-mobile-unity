@@ -6,7 +6,7 @@
 
 #import <GoogleMobileAds/GoogleMobileAds.h>
 
-#import "GADInterstitialAdPreloader_Preview.h"
+#import "GADInterstitialAdPreloader.h"
 #import "GADPreloadDelegate_Preview.h"
 #import "GADUObjectCache.h"
 #import "GADUPreloadConfigurationV2.h"
