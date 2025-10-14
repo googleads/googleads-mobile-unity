@@ -145,8 +145,7 @@ namespace GoogleMobileAds.Android
 
         public Version GetSDKVersion()
         {
-            // TODO(vkini): Add SDK version to Decagon.
-            return new Version("0.0.0");
+            return new Version(_mobileAdsClass.CallStatic<string>("getSdkVersionString"));
         }
 
         #region Callbacks from OnInitializationCompleteListener.
