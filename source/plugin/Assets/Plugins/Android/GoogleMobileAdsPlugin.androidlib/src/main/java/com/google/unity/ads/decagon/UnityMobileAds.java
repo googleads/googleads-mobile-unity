@@ -22,6 +22,7 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
 import androidx.annotation.Nullable;
+import androidx.annotation.VisibleForTesting;
 import com.google.android.libraries.ads.mobile.sdk.MobileAds;
 import com.google.android.libraries.ads.mobile.sdk.common.RequestConfiguration;
 import com.google.android.libraries.ads.mobile.sdk.initialization.InitializationConfig;
@@ -32,6 +33,9 @@ import com.google.errorprone.annotations.concurrent.GuardedBy;
 public final class UnityMobileAds {
   private static final String TAG = "UnityMobileAds";
   private static final String APPLICATION_ID_KEY = "com.google.android.gms.ads.APPLICATION_ID";
+
+  @SuppressWarnings("NonFinalStaticField")
+  private static MobileAdsWrapper mobileAdsWrapper = new MobileAdsWrapper();
 
   private static final Object stateLock = new Object();
 
@@ -51,6 +55,11 @@ public final class UnityMobileAds {
   private static volatile boolean isPublisherFirstPartyIdEnabled = false;
 
   private UnityMobileAds() {}
+
+  @VisibleForTesting
+  static void setMobileAdsWrapper(MobileAdsWrapper wrapper) {
+    mobileAdsWrapper = wrapper;
+  }
 
   /**
    * Initializes the Google Mobile Ads SDK.
@@ -120,6 +129,15 @@ public final class UnityMobileAds {
   }
 
   /**
+   * Returns the global {@link RequestConfiguration} that was set.
+   *
+   * @return The {@link RequestConfiguration} that was set.
+   */
+  public static RequestConfiguration getRequestConfiguration() {
+    return mobileAdsWrapper.getRequestConfiguration();
+  }
+
+  /**
    * Sets whether the publisher first party ID is enabled.
    *
    * @param enabled Whether the publisher first party ID is enabled.
@@ -162,6 +180,15 @@ public final class UnityMobileAds {
       }
     }
     MobileAds.setUserMutedApp(muted);
+  }
+
+  /**
+   * Returns the version of the underlying Android Google Mobile Ads SDK.
+   *
+   * @return The version of the Google Mobile Ads SDK.
+   */
+  public static String getSdkVersionString() {
+    return mobileAdsWrapper.getVersionString();
   }
 
   /**
