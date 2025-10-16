@@ -81,11 +81,11 @@ namespace GoogleMobileAds.Android
         {
             get
             {
-                return 0;
+                return _androidRewardedInterstitialAd.Call<long>("getPlacementId");
             }
             set
             {
-                // TODO(b/446378376): Implement PlacementId for Decagon.
+                _androidRewardedInterstitialAd.Call("setPlacementId", value);
             }
         }
 

@@ -164,6 +164,29 @@ public class UnityInterstitialAd extends UnityAdBase<InterstitialAd, UnityInters
         });
   }
 
+  /** Gets the placement ID for the {@link InterstitialAd}. */
+  public long getPlacementId() {
+    if (ad == null) {
+      return 0;
+    }
+    return ad.getPlacementId();
+  }
+
+  /**
+   * Sets a placement ID for the {@link InterstitialAd}.
+   *
+   * <p>To ensure this placement ID is included in reporting, call this method before showing the
+   * ad.
+   *
+   * @param placementId A long integer provided by the AdMob UI for the configured placement.
+   */
+  public void setPlacementId(long placementId) {
+    if (ad == null) {
+      return;
+    }
+    ad.setPlacementId(placementId);
+  }
+
   /** Returns the request response info. */
   @Nullable
   public ResponseInfo getResponseInfo() {

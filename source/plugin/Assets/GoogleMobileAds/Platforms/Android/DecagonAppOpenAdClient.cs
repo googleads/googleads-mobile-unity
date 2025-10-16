@@ -54,11 +54,11 @@ namespace GoogleMobileAds.Android
         public long PlacementId {
             get
             {
-                return 0;
+                return _androidAppOpenAd.Call<long>("getPlacementId");
             }
             set
             {
-                // TODO(b/446378376): Implement PlacementId for Decagon.
+                _androidAppOpenAd.Call("setPlacementId", value);
             }
         }
 

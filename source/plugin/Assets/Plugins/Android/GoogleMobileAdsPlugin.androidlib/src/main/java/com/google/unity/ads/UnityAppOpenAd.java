@@ -224,6 +224,9 @@ public class UnityAppOpenAd {
 
   /** Gets the placement ID for the {@link AppOpenAd}. */
   public long getPlacementId() {
+    if (appOpenAd == null) {
+      return 0;
+    }
     return appOpenAd.getPlacementId();
   }
 
@@ -236,6 +239,9 @@ public class UnityAppOpenAd {
    * @param placementId A long integer provided by the AdMob UI for the configured placement.
    */
   public void setPlacementId(long placementId) {
+    if (appOpenAd == null) {
+      return;
+    }
     appOpenAd.setPlacementId(placementId);
   }
 

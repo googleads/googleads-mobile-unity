@@ -33,6 +33,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 import org.robolectric.Robolectric;
@@ -157,6 +158,12 @@ public final class UnityAppOpenAdTest {
   }
 
   @Test
+  public void testGetPlacementId_whenAdNotLoaded_returnsZero() throws Exception {
+    assertThat(unityAppOpenAd.getPlacementId()).isEqualTo(0);
+    verify(mockAppOpenAd, Mockito.never()).getPlacementId();
+  }
+
+  @Test
   public void getPlacementId_returnsPlacementIdFromTheAd() throws Exception {
     loadAppOpenAd();
     long placementId = 12345L;
@@ -165,16 +172,6 @@ public final class UnityAppOpenAdTest {
     long result = unityAppOpenAd.getPlacementId();
 
     assertThat(result).isEqualTo(placementId);
-  }
-
-  @Test
-  public void setPlacementId_setsPlacementIdOnTheAd() throws Exception {
-    loadAppOpenAd();
-    long placementId = 54321L;
-
-    unityAppOpenAd.setPlacementId(placementId);
-
-    verify(mockAppOpenAd).setPlacementId(placementId);
   }
 
   @Test
@@ -187,6 +184,22 @@ public final class UnityAppOpenAdTest {
 
     verify(mockAppOpenAd).setPlacementId(placementId);
     assertThat(result).isEqualTo(placementId);
+  }
+
+  @Test
+  public void testSetPlacementId_whenAdNotLoaded_doesNothing() throws Exception {
+    unityAppOpenAd.setPlacementId(12345L);
+    verify(mockAppOpenAd, Mockito.never()).setPlacementId(Mockito.anyLong());
+  }
+
+  @Test
+  public void setPlacementId_setsPlacementIdOnTheAd() throws Exception {
+    loadAppOpenAd();
+    long placementId = 54321L;
+
+    unityAppOpenAd.setPlacementId(placementId);
+
+    verify(mockAppOpenAd).setPlacementId(placementId);
   }
 
   private void loadAppOpenAd() throws Exception {

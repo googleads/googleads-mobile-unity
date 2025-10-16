@@ -142,4 +142,48 @@ public class UnityAppOpenAdTest {
     verify(mockAppOpenAd).getResponseInfo();
     assertThat(actualResponseInfo).isEqualTo(responseInfo);
   }
+
+  @Test
+  public void testGetPlacementId_whenAdNotLoaded_returnsZero() {
+    assertThat(unityAppOpenAd.getPlacementId()).isEqualTo(0);
+    verify(mockAppOpenAd, Mockito.never()).getPlacementId();
+  }
+
+  @Test
+  public void testGetPlacementId_returnsPlacementId() {
+    unityAppOpenAd.load(mockAdRequest);
+
+    // Capture the callback and simulate successful ad load.
+    verify(mockAdWrapper).load(Mockito.eq(mockAdRequest), adLoadCallbackCaptor.capture());
+    adLoadCallbackCaptor.getValue().onAdLoaded(mockAppOpenAd);
+
+    // Mock a placement ID to be returned by the underlying ad.
+    long placementId = 12345L;
+    when(mockAppOpenAd.getPlacementId()).thenReturn(placementId);
+
+    // Verify that the placement ID returned is same as the one returned by the underlying ad.
+    long result = unityAppOpenAd.getPlacementId();
+    assertThat(result).isEqualTo(placementId);
+  }
+
+  @Test
+  public void testSetPlacementId_whenAdNotLoaded_doesNothing() {
+    unityAppOpenAd.setPlacementId(12345L);
+    verify(mockAppOpenAd, Mockito.never()).setPlacementId(Mockito.anyLong());
+  }
+
+  @Test
+  public void testSetPlacementId_setsPlacementId() {
+    unityAppOpenAd.load(mockAdRequest);
+    // Capture the callback and simulate successful ad load.
+    verify(mockAdWrapper).load(Mockito.eq(mockAdRequest), adLoadCallbackCaptor.capture());
+    adLoadCallbackCaptor.getValue().onAdLoaded(mockAppOpenAd);
+
+    // Mock a placement ID to be set by the app open ad.
+    long placementId = 54321L;
+    unityAppOpenAd.setPlacementId(placementId);
+
+    // Verify that setPlacementId was called on the underlying ad.
+    verify(mockAppOpenAd).setPlacementId(placementId);
+  }
 }

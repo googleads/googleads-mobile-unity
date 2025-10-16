@@ -141,4 +141,47 @@ public final class UnityRewardedInterstitialAdTest {
     verify(mockRewardedInterstitialAd).getResponseInfo();
     assertThat(actualResponseInfo).isEqualTo(responseInfo);
   }
+
+  @Test
+  public void testGetPlacementId_whenAdNotLoaded_returnsZero() {
+    assertThat(unityRewardedInterstitialAd.getPlacementId()).isEqualTo(0);
+    verify(mockRewardedInterstitialAd, Mockito.never()).getPlacementId();
+  }
+
+  @Test
+  public void testGetPlacementId_returnsPlacementId() {
+    unityRewardedInterstitialAd.load(mockAdRequest);
+    // Capture the callback and simulate successful ad load.
+    verify(mockAdWrapper).load(Mockito.eq(mockAdRequest), adLoadCallbackCaptor.capture());
+    adLoadCallbackCaptor.getValue().onAdLoaded(mockRewardedInterstitialAd);
+
+    // Mock a placement ID to be returned by the underlying ad.
+    long placementId = 12345L;
+    when(mockRewardedInterstitialAd.getPlacementId()).thenReturn(placementId);
+
+    // Verify that the placement ID returned is same as the one returned by the underlying ad.
+    long result = unityRewardedInterstitialAd.getPlacementId();
+    assertThat(result).isEqualTo(placementId);
+  }
+
+  @Test
+  public void testSetPlacementId_whenAdNotLoaded_doesNothing() {
+    unityRewardedInterstitialAd.setPlacementId(12345L);
+    verify(mockRewardedInterstitialAd, Mockito.never()).setPlacementId(Mockito.anyLong());
+  }
+
+  @Test
+  public void testSetPlacementId_setsPlacementId() {
+    unityRewardedInterstitialAd.load(mockAdRequest);
+    // Capture the callback and simulate successful ad load.
+    verify(mockAdWrapper).load(Mockito.eq(mockAdRequest), adLoadCallbackCaptor.capture());
+    adLoadCallbackCaptor.getValue().onAdLoaded(mockRewardedInterstitialAd);
+
+    // Mock a placement ID to be set by the rewarded interstitial ad.
+    long placementId = 54321L;
+    unityRewardedInterstitialAd.setPlacementId(placementId);
+
+    // Verify that setPlacementId was called on the underlying ad.
+    verify(mockRewardedInterstitialAd).setPlacementId(placementId);
+  }
 }
