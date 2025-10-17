@@ -7,11 +7,48 @@ namespace GoogleMobileAds.Common
     [Serializable]
     public class Insight
     {
+        private static AdPlatform _platform;
+        private static string _appId;
+        private static string _appVersionName;
+        private static string _unityVersion;
+        private static string _osVersion;
+        private static string _device;
+
+        // Ensure it runs on the main thread before any scene is loaded.
+        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
+        private static void CacheBaseProperties()
+        {
+            switch (Application.platform)
+            {
+                case RuntimePlatform.Android:
+                    _platform = AdPlatform.Android;
+                    break;
+                case RuntimePlatform.IPhonePlayer:
+                case RuntimePlatform.OSXPlayer:
+                    _platform = AdPlatform.Ios;
+                    break;
+                default:
+                    _platform = AdPlatform.Unity;
+                    break;
+            }
+            _appId = Application.identifier;
+            _appVersionName = Application.version;
+            _unityVersion = Application.unityVersion;
+            _osVersion = SystemInfo.operatingSystem;
+            _device = SystemInfo.deviceModel;
+        }
+
         public Insight()
         {
             StartTimeEpochMillis = (long)DateTime.UtcNow
                 .Subtract(new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc))
                 .TotalMilliseconds;
+            Platform = _platform;
+            AppId = _appId;
+            AppVersionName = _appVersionName;
+            UnityVersion = _unityVersion;
+            OSVersion = _osVersion;
+            Device = _device;
         }
 
         [Serializable]
@@ -73,7 +110,8 @@ namespace GoogleMobileAds.Common
         // The GMA SDK version.
         public string SdkVersion;
 
-        // The AdMob / Google Ad Manager app id.
+        // The AdMob / Google Ad Manager app id, or by default the application identifier at
+        // runtime.
         public string AppId;
 
         // The ad unit ID.
@@ -84,6 +122,18 @@ namespace GoogleMobileAds.Common
 
         // The platform on which the CUI was performed.
         public AdPlatform Platform;
+
+        // The application version.
+        public string AppVersionName;
+
+        // The Unity version.
+        public string UnityVersion;
+
+        // The OS version.
+        public string OSVersion;
+
+        // The device model.
+        public string Device;
 
         // The keywords associated with the insight. They are used to group insights together for
         // analysis.
@@ -100,9 +150,10 @@ namespace GoogleMobileAds.Common
         {
             return string.Format(
                 "Insight[Name={0}, Success={1}, StartTimeEpochMillis={2}, SdkVersion='{3}', " +
-                "AppId='{4}', AdUnitId='{5}', Format={6}, Platform={7}, Tags='{8}', " +
-                "Tracing[OperationName='{9}', Id='{10}', DurationMillis={11}, HasEnded={12}], " +
-                "Details='{13}']",
+                "AppId='{4}', AdUnitId='{5}', Format={6}, Platform={7}, AppVersionName='{8}', " +
+                "UnityVersion='{9}', OSVersion='{10}', Device='{11}', Tags='{12}', " +
+                "Tracing[OperationName='{13}', Id='{14}', DurationMillis={15}, HasEnded={16}], " +
+                "Details='{17}']",
                 Name,
                 Success,
                 StartTimeEpochMillis,
@@ -111,6 +162,10 @@ namespace GoogleMobileAds.Common
                 AdUnitId,
                 Format,
                 Platform,
+                AppVersionName,
+                UnityVersion,
+                OSVersion,
+                Device,
                 Tags != null ? string.Join(",", Tags) : "",
                 Tracing != null ? Tracing.OperationName : "",
                 Tracing != null ? Tracing.Id : "",

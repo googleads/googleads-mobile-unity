@@ -70,7 +70,6 @@ namespace GoogleMobileAds.Android
           _insightsEmitter.Emit(new Insight()
           {
               Name = Insight.CuiName.SdkInitialized,
-              Platform = Insight.AdPlatform.Android,
               Success = true
           });
         }
