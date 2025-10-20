@@ -26,7 +26,7 @@ namespace GoogleMobileAds.Common
         {
             if (!MobileAdsEventExecutor.IsActive())
             {
-                Debug.Log("You intitialized an ad object but have not yet called " +
+                Debug.Log("You initialized an ad object but have not yet called " +
                           "MobileAds.Initialize(). We highly recommend you call " +
                           "MobileAds.Initialize() before interacting with the Google " +
                           "Mobile Ads SDK.");
