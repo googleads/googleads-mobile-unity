@@ -57,8 +57,11 @@ namespace GoogleMobileAds.Common
             // The provided activity name.
             public string OperationName;
 
-            // The UUID of this trace.
+            // The ID of this trace (following the W3C Trace Context format).
             public string Id;
+
+            // The ID of the parent trace (following the W3C Trace Context format).
+            public string ParentId;
 
             // The duration of this trace in milliseconds.
             public long DurationMillis;
@@ -152,8 +155,8 @@ namespace GoogleMobileAds.Common
                 "Insight[Name={0}, Success={1}, StartTimeEpochMillis={2}, SdkVersion='{3}', " +
                 "AppId='{4}', AdUnitId='{5}', Format={6}, Platform={7}, AppVersionName='{8}', " +
                 "UnityVersion='{9}', OSVersion='{10}', Device='{11}', Tags='{12}', " +
-                "Tracing[OperationName='{13}', Id='{14}', DurationMillis={15}, HasEnded={16}], " +
-                "Details='{17}']",
+                "Tracing[OperationName='{13}', Id='{14}', ParentId='{15}', DurationMillis={16}, " +
+                "HasEnded={17}], Details='{18}']",
                 Name,
                 Success,
                 StartTimeEpochMillis,
@@ -169,6 +172,7 @@ namespace GoogleMobileAds.Common
                 Tags != null ? string.Join(",", Tags) : "",
                 Tracing != null ? Tracing.OperationName : "",
                 Tracing != null ? Tracing.Id : "",
+                Tracing != null ? Tracing.ParentId : "",
                 Tracing != null ? Tracing.DurationMillis : 0,
                 Tracing != null ? Tracing.HasEnded : false,
                 Details);
