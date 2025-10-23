@@ -54,6 +54,10 @@ namespace GoogleMobileAds
 
         public IBannerClient BuildBannerClient() {
           if (Application.platform == RuntimePlatform.Android) {
+            if (IsDecagonEnabled())
+            {
+                    return new GoogleMobileAds.Android.DecagonBannerAdClient();
+            }
             return new GoogleMobileAds.Android.BannerClient();
           }
           throw new InvalidOperationException(@"Called " + MethodBase.GetCurrentMethod().Name +

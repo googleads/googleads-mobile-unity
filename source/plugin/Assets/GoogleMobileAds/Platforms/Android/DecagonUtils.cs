@@ -50,6 +50,13 @@ namespace GoogleMobileAds.Android {
 #region AdRequest
     public const string AdRequestBuilderClassName =
         "com.google.android.libraries.ads.mobile.sdk.common.AdRequest$Builder";
+    public const string BannerAdRequestBuilderClassName =
+        "com.google.android.libraries.ads.mobile.sdk.banner.BannerAdRequest$Builder";
+#endregion
+
+#region AdSize
+    public const string AdSizeClassName =
+        "com.google.android.libraries.ads.mobile.sdk.banner.AdSize";
 #endregion
 
 #endregion
@@ -64,6 +71,10 @@ namespace GoogleMobileAds.Android {
     public const string UnityAppOpenAdClassName = "com.google.unity.ads.decagon.UnityAppOpenAd";
     public const string UnityAppOpenAdCallbackClassName =
         "com.google.unity.ads.decagon.UnityAppOpenAdCallback";
+
+    public const string UnityBannerAdClassName = "com.google.unity.ads.decagon.UnityBannerAd";
+    public const string UnityBannerAdCallbackClassName =
+        "com.google.unity.ads.decagon.UnityBannerAdCallback";
 
     public const string UnityInterstitialAdClassName =
         "com.google.unity.ads.decagon.UnityInterstitialAd";
@@ -97,6 +108,51 @@ namespace GoogleMobileAds.Android {
       adRequestBuilder.Call<AndroidJavaObject>("setRequestAgent", AdRequest.BuildVersionString());
 
       return adRequestBuilder.Call<AndroidJavaObject>("build");
+    }
+
+    /// <summary>
+    /// Converts the plugin AdRequest object to a native java proxy object for use by the sdk.
+    /// </summary>
+    /// <param name="AdRequest">the AdRequest from the unity plugin.</param>
+    public static AndroidJavaObject GetBannerAdRequestJavaObject(string adUnitId, AdRequest request, AdSize adSize) {
+      AndroidJavaObject bannerAdRequestBuilder =
+          new AndroidJavaObject(BannerAdRequestBuilderClassName, adUnitId, GetAdSizeJavaObject(adSize));
+      foreach (string keyword in request.Keywords) {
+        bannerAdRequestBuilder.Call<AndroidJavaObject>("addKeyword", keyword);
+      }
+
+      foreach (KeyValuePair<string, string> entry in request.CustomTargeting) {
+        bannerAdRequestBuilder.Call<AndroidJavaObject>("putCustomTargeting", entry.Key, entry.Value);
+      }
+      bannerAdRequestBuilder.Call<AndroidJavaObject>("setRequestAgent", AdRequest.BuildVersionString());
+
+      return bannerAdRequestBuilder.Call<AndroidJavaObject>("build");
+    }
+
+    public static AndroidJavaObject GetAdSizeJavaObject(AdSize adSize) {
+      AndroidJavaClass adSizeClass = new AndroidJavaClass(AdSizeClassName);
+      switch (adSize.AdType) {
+        case AdSize.Type.AnchoredAdaptive:
+          AndroidJavaClass playerClass = new AndroidJavaClass(Utils.UnityActivityClassName);
+          AndroidJavaObject activity = playerClass.GetStatic<AndroidJavaObject>("currentActivity");
+          switch (adSize.Orientation) {
+            case Orientation.Landscape:
+              return adSizeClass.CallStatic<AndroidJavaObject>(
+                  "getLandscapeAnchoredAdaptiveBannerAdSize", activity, adSize.Width);
+            case Orientation.Portrait:
+              return adSizeClass.CallStatic<AndroidJavaObject>(
+                  "getPortraitAnchoredAdaptiveBannerAdSize", activity, adSize.Width);
+            case Orientation.Current:
+              return adSizeClass.CallStatic<AndroidJavaObject>(
+                  "getCurrentOrientationAnchoredAdaptiveBannerAdSize", activity, adSize.Width);
+            default:
+              throw new ArgumentException("Invalid Orientation provided for ad size.");
+          }
+        case AdSize.Type.Standard:
+          return new AndroidJavaObject(AdSizeClassName, adSize.Width, adSize.Height);
+        default:
+          throw new ArgumentException("Invalid AdSize.Type provided for ad size.");
+      }
     }
   }
 }

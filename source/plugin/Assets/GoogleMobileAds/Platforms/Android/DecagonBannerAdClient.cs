@@ -1,0 +1,222 @@
+// Copyright (C) 2015 Google, Inc.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+using System;
+
+using GoogleMobileAds.Api;
+using GoogleMobileAds.Common;
+using UnityEngine;
+
+namespace GoogleMobileAds.Android
+{
+    public class DecagonBannerAdClient : AndroidJavaProxy, IBannerClient
+    {
+        protected internal AndroidJavaObject bannerView;
+
+        String adUnitId;
+        AdSize adSize;
+
+        protected internal DecagonBannerAdClient(string className) : base(className) {}
+
+        public DecagonBannerAdClient() : base(DecagonUtils.UnityBannerAdCallbackClassName)
+        {
+            AndroidJavaClass playerClass = new AndroidJavaClass(Utils.UnityActivityClassName);
+            AndroidJavaObject activity =
+                    playerClass.GetStatic<AndroidJavaObject>("currentActivity");
+            this.bannerView = new AndroidJavaObject(
+                DecagonUtils.UnityBannerAdClassName, activity, this);
+        }
+
+        public event EventHandler<EventArgs> OnAdLoaded;
+
+        public event EventHandler<LoadAdErrorClientEventArgs> OnAdFailedToLoad;
+
+        public event EventHandler<EventArgs> OnAdOpening;
+
+        public event EventHandler<EventArgs> OnAdClosed;
+
+        public event Action<AdValue> OnPaidEvent;
+
+        public event Action OnAdClicked;
+
+        public event Action OnAdImpressionRecorded;
+
+        // Creates a banner view.
+        public void CreateBannerView(string adUnitId, AdSize adSize, AdPosition position)
+        {
+            this.adSize = adSize;
+            this.adUnitId = adUnitId;
+            this.bannerView.Call("create", (int)position);
+        }
+
+        // Creates a banner view with a custom position.
+        public void CreateBannerView(string adUnitId, AdSize adSize, int x, int y)
+        {
+            this.adSize = adSize;
+            this.adUnitId = adUnitId;
+            this.bannerView.Call("create",new object[2] { x, y });
+        }
+
+
+        // Loads an ad.
+        public virtual void LoadAd(AdRequest request)
+        {
+            this.bannerView.Call("load", DecagonUtils.GetBannerAdRequestJavaObject(
+                                            this.adUnitId, request, this.adSize));
+        }
+
+        // Displays the banner view on the screen.
+        public void ShowBannerView()
+        {
+            this.bannerView.Call("show");
+        }
+
+        // Hides the banner view from the screen.
+        public void HideBannerView()
+        {
+            this.bannerView.Call("hide");
+        }
+
+        // Destroys the banner view.
+        public void DestroyBannerView()
+        {
+            this.bannerView.Call("destroy");
+        }
+
+        /// Returns the ad unit ID.
+        public string GetAdUnitID()
+        {
+            // TODO(vkini): Implement GetAdUnitID for Decagon.
+            return "";
+        }
+
+        // Returns the height of the BannerView in pixels.
+        public float GetHeightInPixels()
+        {
+            return this.bannerView.Call<float>("getHeightInPixels");
+        }
+
+        // Returns the width of the BannerView in pixels.
+        public float GetWidthInPixels()
+        {
+            return this.bannerView.Call<float>("getWidthInPixels");
+        }
+
+        // Set the position of the banner view using standard position.
+        public void SetPosition(AdPosition adPosition)
+        {
+            this.bannerView.Call("setPosition", (int)adPosition);
+        }
+
+        // Set the position of the banner view using custom position.
+        public void SetPosition(int x, int y)
+        {
+            this.bannerView.Call("setPosition", x, y);
+        }
+
+        // Indicates whether the last loaded ad is a collapsible banner.
+        public bool IsCollapsible()
+        {
+            return this.bannerView.Call<bool>("isCollapsible");
+        }
+
+        public long PlacementId {
+            get
+            {
+                return 0;
+            }
+            set
+            {
+                // TODO(b/446378376): Implement PlacementId for Decagon.
+            }
+        }
+
+        public IResponseInfoClient GetResponseInfoClient()
+        {
+            var responseInfoJavaObject = bannerView.Call<AndroidJavaObject>("getResponseInfo");
+            return new ResponseInfoClient(ResponseInfoClientType.AdLoaded, responseInfoJavaObject);
+        }
+
+        #region Callbacks from UnityBannerAdListener.
+
+        public void onAdLoaded()
+        {
+            if (this.OnAdLoaded != null)
+            {
+                this.OnAdLoaded(this, EventArgs.Empty);
+            }
+        }
+
+        public void onAdFailedToLoad(AndroidJavaObject error)
+        {
+            if (this.OnAdFailedToLoad != null)
+            {
+                LoadAdErrorClientEventArgs args = new LoadAdErrorClientEventArgs()
+                {
+                    LoadAdErrorClient = new LoadAdErrorClient(error)
+                };
+                this.OnAdFailedToLoad(this, args);
+            }
+        }
+
+        public void onAdOpened()
+        {
+            if (this.OnAdOpening != null)
+            {
+                this.OnAdOpening(this, EventArgs.Empty);
+            }
+        }
+
+        public void onAdClosed()
+        {
+            if (this.OnAdClosed != null)
+            {
+                this.OnAdClosed(this, EventArgs.Empty);
+            }
+        }
+
+        public void onPaidEvent(int precision, long valueInMicros, string currencyCode)
+        {
+            if (this.OnPaidEvent != null)
+            {
+                AdValue adValue = new AdValue()
+                {
+                    Precision = (AdValue.PrecisionType)precision,
+                    Value = valueInMicros,
+                    CurrencyCode = currencyCode
+                };
+                this.OnPaidEvent(adValue);
+            }
+        }
+
+
+        internal void onAdClicked()
+        {
+            if (this.OnAdClicked != null)
+            {
+                this.OnAdClicked();
+            }
+        }
+
+        internal void onAdImpression()
+        {
+            if (this.OnAdImpressionRecorded != null)
+            {
+                this.OnAdImpressionRecorded();
+            }
+        }
+
+        #endregion
+    }
+}
