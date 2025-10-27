@@ -30,3 +30,18 @@
 -keep class com.google.unity.ads.nativead.** {
    *;
 }
+
+# Keep Google Mobile Ads classes.
+-keep public class com.google.android.gms.ads.** {
+   public *;
+}
+
+# Keep Google Mobile Ads Beta classes.
+-keep public class com.google.android.libraries.ads.mobile.sdk.** {
+   public *;
+}
+
+# Keep User Messaging Platform classes.
+-keep public class com.google.android.ump.** {
+   public *;
+}
