@@ -12,7 +12,7 @@ namespace GoogleMobileAds.Common
         private static string _appVersionName;
         private static string _unityVersion;
         private static string _osVersion;
-        private static string _device;
+        private static string _deviceModel;
 
         // Ensure it runs on the main thread before any scene is loaded.
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
@@ -35,7 +35,7 @@ namespace GoogleMobileAds.Common
             _appVersionName = Application.version;
             _unityVersion = Application.unityVersion;
             _osVersion = SystemInfo.operatingSystem;
-            _device = SystemInfo.deviceModel;
+            _deviceModel = SystemInfo.deviceModel;
         }
 
         public Insight()
@@ -48,7 +48,7 @@ namespace GoogleMobileAds.Common
             AppVersionName = _appVersionName;
             UnityVersion = _unityVersion;
             OSVersion = _osVersion;
-            Device = _device;
+            DeviceModel = _deviceModel;
         }
 
         [Serializable]
@@ -136,7 +136,7 @@ namespace GoogleMobileAds.Common
         public string OSVersion;
 
         // The device model.
-        public string Device;
+        public string DeviceModel;
 
         // The keywords associated with the insight. They are used to group insights together for
         // analysis.
@@ -154,7 +154,7 @@ namespace GoogleMobileAds.Common
             return string.Format(
                 "Insight[Name={0}, Success={1}, StartTimeEpochMillis={2}, SdkVersion='{3}', " +
                 "AppId='{4}', AdUnitId='{5}', Format={6}, Platform={7}, AppVersionName='{8}', " +
-                "UnityVersion='{9}', OSVersion='{10}', Device='{11}', Tags='{12}', " +
+                "UnityVersion='{9}', OSVersion='{10}', DeviceModel='{11}', Tags='{12}', " +
                 "Tracing[OperationName='{13}', Id='{14}', ParentId='{15}', DurationMillis={16}, " +
                 "HasEnded={17}], Details='{18}']",
                 Name,
@@ -168,7 +168,7 @@ namespace GoogleMobileAds.Common
                 AppVersionName,
                 UnityVersion,
                 OSVersion,
-                Device,
+                DeviceModel,
                 Tags != null ? string.Join(",", Tags) : "",
                 Tracing != null ? Tracing.OperationName : "",
                 Tracing != null ? Tracing.Id : "",
