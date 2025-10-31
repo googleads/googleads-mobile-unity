@@ -1,6 +1,6 @@
 <dependencies>
   <androidPackages>
-    <androidPackage spec="com.google.android.gms:play-services-ads:24.7.0">
+    <androidPackage spec="com.google.android.gms:play-services-ads:24.5.0">
       <repositories>
         <repository>https://maven.google.com/</repository>
       </repositories>
