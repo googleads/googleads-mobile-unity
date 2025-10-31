@@ -22,3 +22,4 @@ using System.Runtime.CompilerServices;
 [assembly: InternalsVisibleTo("GoogleMobileAds.iOS")]
 [assembly: InternalsVisibleTo("GoogleMobileAds.Unity")]
 [assembly: InternalsVisibleTo("GoogleMobileAdsNative.Api")]
+[assembly: InternalsVisibleTo("UnitTests")]
