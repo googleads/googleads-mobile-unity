@@ -15,6 +15,15 @@ namespace GoogleMobileAds.Snippets
 #else
         private const string AD_UNIT_ID = "unused";
 #endif
+
+#if UNITY_ANDROID
+        private const string ANCHORED_ADAPTIVE_AD_UNIT_ID = "ca-app-pub-3940256099942544/9214589741";
+#elif UNITY_IPHONE
+        private const string ANCHORED_ADAPTIVE_AD_UNIT_ID = "ca-app-pub-3940256099942544/2435281174";
+#else
+        private const string ANCHORED_ADAPTIVE_AD_UNIT_ID = "unused";
+#endif
+
         BannerView bannerView;
 
         private void CreateBannerView()
@@ -111,6 +120,21 @@ namespace GoogleMobileAds.Snippets
                 bannerView = null;
             }
             // [END destroy_banner_view]
+        }
+
+        private void CreateAnchoredAdaptiveBannerView()
+        {
+            // [START create_anchored_adaptive_banner_view]
+            // Get the device safe width in density-independent pixels.
+            int deviceWidth = MobileAds.Utils.GetDeviceSafeWidth();
+
+            // Define the anchored adaptive ad size.
+            AdSize adaptiveSize =
+                AdSize.GetCurrentOrientationAnchoredAdaptiveBannerAdSizeWithWidth(deviceWidth);
+
+            // Create an anchored adaptive banner view.
+            bannerView = new BannerView(ANCHORED_ADAPTIVE_AD_UNIT_ID, adaptiveSize, AdPosition.Bottom);
+            // [END create_anchored_adaptive_banner_view]
         }
     }
 }

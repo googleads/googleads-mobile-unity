@@ -2,7 +2,7 @@ fileFormatVersion: 2
 guid: 83a3846a658ae46219b050c8451aabfe
 labels:
 - gvh
-- gvh_version-10.5.0
+- gvh_version-10.6.0
 - gvhp_exportpath-GoogleMobileAds/Editor/gma_settings_editor_localization_data.json
 timeCreated: 1480838400
 TextScriptImporter:

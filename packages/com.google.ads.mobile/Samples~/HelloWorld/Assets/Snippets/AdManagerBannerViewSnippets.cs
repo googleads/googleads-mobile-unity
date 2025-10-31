@@ -133,5 +133,20 @@ namespace GoogleMobileAds.Snippets
             };
             // [END handle_app_event_example]
         }
+
+        private void CreateAnchoredAdaptiveBannerView()
+        {
+            // [START create_anchored_adaptive_banner_view]
+            // Get the device safe width in density-independent pixels.
+            int deviceWidth = MobileAds.Utils.GetDeviceSafeWidth();
+
+            // Define the anchored adaptive ad size.
+            AdSize adaptiveSize =
+                AdSize.GetCurrentOrientationAnchoredAdaptiveBannerAdSizeWithWidth(deviceWidth);
+
+            // Create an anchored adaptive banner view.
+            adManagerBannerView = new AdManagerBannerView(AD_UNIT_ID, adaptiveSize, AdPosition.Bottom);
+            // [END create_anchored_adaptive_banner_view]
+        }
     }
 }
