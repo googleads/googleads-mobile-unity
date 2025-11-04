@@ -35,6 +35,8 @@ namespace GoogleMobileAds.Android
         private MobileAdsClient() : base(Utils.OnInitializationCompleteListenerClassName) {
             _mobileAdsClass = new AndroidJavaClass(Utils.UnityMobileAdsClassName);
             _tracer = new Tracer(_insightsEmitter);
+            // Ensures GlobalExceptionHandler is initialized to handle Android untrapped exceptions.
+            var _ = GlobalExceptionHandler.Instance;
         }
 
         public static MobileAdsClient Instance
@@ -69,8 +71,7 @@ namespace GoogleMobileAds.Android
           }
           _insightsEmitter.Emit(new Insight()
           {
-              Name = Insight.CuiName.SdkInitialized,
-              Success = true
+              Name = Insight.CuiName.SdkInitialized
           });
         }
 
@@ -177,14 +178,17 @@ namespace GoogleMobileAds.Android
             _initCompleteAction(statusClient);
           }
             string nativePluginVersion = "";
-            try
-            {
+            try {
               var assembly = Assembly.Load("GoogleMobileAdsNative.Common");
               var assemblyVersion = assembly.GetName().Version;
               nativePluginVersion = string.Format("{0}.{1}.{2}", assemblyVersion.Major,
                                                   assemblyVersion.Minor, assemblyVersion.Revision);
+            } catch (Exception e) {
+              if (GlobalExceptionHandler.Instance != null)
+              {
+                GlobalExceptionHandler.Instance.ReportTrappedException(e);
+              }
             }
-            catch (Exception) {}
             string versionString = AdRequest.BuildVersionString(nativePluginVersion);
             _mobileAdsClass.CallStatic("setPlugin", versionString);
         }
