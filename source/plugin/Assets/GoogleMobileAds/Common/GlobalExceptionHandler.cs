@@ -47,7 +47,7 @@ namespace GoogleMobileAds.Common
         // changes to the service's response format.
         private const string ProdRcsUrl = "https://pagead2.googlesyndication.com/pagead/ping?e=1&f=1";
 
-        private static readonly Queue<ExceptionReport> _exceptionQueue =
+        internal static readonly Queue<ExceptionReport> _exceptionQueue =
             new Queue<ExceptionReport>();
         private static readonly object _queueLock = new object();
         private float _timeOfNextBatch;
@@ -194,7 +194,7 @@ namespace GoogleMobileAds.Common
         /// This callback handles UNTRAPPED exceptions from *any* thread.
         /// It must be thread-safe and very fast.
         /// </summary>
-        private void OnLogMessageReceivedThreaded(string logString, string stackTrace, LogType type)
+        internal void OnLogMessageReceivedThreaded(string logString, string stackTrace, LogType type)
         {
             if (type != LogType.Exception) return;
 
@@ -245,7 +245,7 @@ namespace GoogleMobileAds.Common
         /// <summary>
         /// Drains the queue and passes the resulting batch to be sent.
         /// </summary>
-        private void ProcessAndSendBatch()
+        internal void ProcessAndSendBatch()
         {
             Debug.Log("Processing and sending a batch of exceptions...");
 
@@ -297,7 +297,7 @@ namespace GoogleMobileAds.Common
         /// <summary>
         /// Builds the final JSON payload (conforming to JSPB rules) and sends it to RCS.
         /// </summary>
-        private void SendToRcs(List<ExceptionReport> batch)
+        protected virtual void SendToRcs(List<ExceptionReport> batch)
         {
             Debug.Log(string.Format("Sending a batch of {0} exception(s)...", batch.Count));
 
