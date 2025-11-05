@@ -121,6 +121,10 @@ namespace GoogleMobileAds.Common
                 stacktrace_hash = Sha256Hash(e.StackTrace ?? ""),
             };
             Enqueue(report);
+            if (Debug.isDebugBuild)
+            {
+                Debug.Log("Trapped exception queued for batch.");
+            }
         }
         #endregion
 
@@ -147,6 +151,10 @@ namespace GoogleMobileAds.Common
                 stacktrace_hash = Sha256Hash(stackTrace ?? ""),
             };
             Enqueue(report);
+            if (Debug.isDebugBuild)
+            {
+                Debug.Log("Untrapped exception queued for batch.");
+            }
         }
 
         private string Sha256Hash(string rawData)
@@ -177,6 +185,12 @@ namespace GoogleMobileAds.Common
         /// </summary>
         protected override void SendBatch(List<ExceptionReport> batch)
         {
+            if (Debug.isDebugBuild)
+            {
+                Debug.Log(string.Format("Processing and sending a batch of {0} exceptions...",
+                                        batch.Count));
+            }
+
             var staticMetadata = RcsPayload.GetStaticMetadata();
             var dynamicMetadata = RcsPayload.GetDynamicMetadata();
 
@@ -213,9 +227,11 @@ namespace GoogleMobileAds.Common
                     binary_name = 21, // UNITY_GMA_SDK
                 }
             };
-            // TODO(jochac): Use http://go/jspb-wireformat#message-layout instead.
-            string jsonPayload = JsonUtility.ToJson(request);
-            SendToRcs(jsonPayload);
+            string jspbPayload = JspbConverter.ToJspb(request);
+            if (jspbPayload != null)
+            {
+                SendToRcs(jspbPayload);
+            }
         }
         #endregion
     }

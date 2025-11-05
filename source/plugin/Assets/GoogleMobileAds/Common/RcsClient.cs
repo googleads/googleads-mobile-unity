@@ -98,9 +98,13 @@ namespace GoogleMobileAds.Common
         /// <summary>
         /// Sends the batch of items to RCS.
         /// </summary>
-        protected void SendToRcs(string jsonPayload)
+        protected void SendToRcs(string jspbPayload)
         {
-            StartCoroutine(PostRequest(ProdRcsUrl, jsonPayload));
+            if (Debug.isDebugBuild)
+            {
+                Debug.Log("RCS JSPB payload: " + jspbPayload);
+            }
+            StartCoroutine(PostRequest(ProdRcsUrl, jspbPayload));
         }
 
         /// <summary>
@@ -134,13 +138,13 @@ namespace GoogleMobileAds.Common
         }
 
         /// <summary>
-        /// Coroutine to send a JSON payload via HTTP POST.
+        /// Coroutine to send a JSPB payload via HTTP POST.
         /// </summary>
-        private IEnumerator PostRequest(string url, string jsonPayload)
+        private IEnumerator PostRequest(string url, string jspbPayload)
         {
             using (UnityWebRequest uwr = new UnityWebRequest(url, "POST"))
             {
-                byte[] bodyRaw = Encoding.UTF8.GetBytes(jsonPayload);
+                byte[] bodyRaw = Encoding.UTF8.GetBytes(jspbPayload);
                 uwr.uploadHandler = new UploadHandlerRaw(bodyRaw);
                 uwr.downloadHandler = new DownloadHandlerBuffer();
                 uwr.SetRequestHeader("Content-Type", "application/json");
@@ -156,6 +160,12 @@ namespace GoogleMobileAds.Common
                     Debug.LogError(string.Format(
                         "Error sending batch: {0} | Response code: {1}.",
                         uwr.error, uwr.responseCode));
+                }
+                else if (Debug.isDebugBuild)
+                {
+                    // This only guarantees transport, not that the request is fully processed as
+                    // RCS will just drop unknown fields if it can't otherwise parse them.
+                    Debug.Log("Batch sent successfully.");
                 }
             }
         }
