@@ -137,5 +137,63 @@ namespace GoogleMobileAds.Common
                 QuoteString(report.orientation));
         }
         #endregion
+
+        #region CUI handling
+        // VisibleForTesting
+        internal static string ToJspb(CuiLoggablePayload payload)
+        {
+            if (payload.unity_gma_sdk_cui_message == null) return "[]";
+
+            // unity_gma_sdk_cui_message has field index 36.
+            return string.Format("[{{\"36\":{0}}}]",
+                                 ToJspb(payload.unity_gma_sdk_cui_message));
+        }
+
+        // VisibleForTesting
+        internal static string ToJspb(Insight insight)
+        {
+            return string.Format(
+                "[{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13},{14}]",
+                (int)insight.Name,
+                insight.Success.ToString().ToLower(),
+                insight.StartTimeEpochMillis,
+                QuoteString(insight.SdkVersion),
+                QuoteString(insight.AppId),
+                QuoteString(insight.AdUnitId),
+                (int)insight.Format,
+                (int)insight.Platform,
+                QuoteString(insight.AppVersionName),
+                QuoteString(insight.UnityVersion),
+                QuoteString(insight.OSVersion),
+                QuoteString(insight.DeviceModel),
+                ToListJspb(insight.Tags),
+                ToJspb(insight.Tracing),
+                QuoteString(insight.Details));
+        }
+
+        // VisibleForTesting
+        internal static string ToJspb(Insight.TracingActivity tracing)
+        {
+            if (tracing == null) return "null";
+            return string.Format("[{0},{1},{2},{3},{4}]",
+                                 QuoteString(tracing.OperationName),
+                                 QuoteString(tracing.Id),
+                                 QuoteString(tracing.ParentId),
+                                 tracing.DurationMillis,
+                                 tracing.HasEnded.ToString().ToLower());
+        }
+
+        // VisibleForTesting
+        internal static string ToListJspb(List<string> list)
+        {
+            if (list == null) return "null";
+            var quotedElements = new List<string>();
+            foreach(string item in list)
+            {
+                quotedElements.Add(QuoteString(item));
+            }
+            return string.Format("[{0}]", string.Join(",", quotedElements.ToArray()));
+        }
+        #endregion
     }
 }
