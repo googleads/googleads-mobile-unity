@@ -1,0 +1,55 @@
+include "releasetools/rapid/ncl/rapid_config.ncl";
+
+namespace AdMobUnityWorkflowParameters {
+
+DEFAULT_TARGET_UNITY_VERSION = "6000.1";
+// TODO(jochac): Bump to API 36.
+DEFAULT_ANDROID_TARGET_SDK = "35";
+DEFAULT_PROJECT_NAME = "HelloWorld";
+DEFAULT_ADMOB_ANDROID_APP_ID = "ca-app-pub-3940256099942544~3347511713";
+
+ADMOB_ANDROID_APP_ID_WORKFLOW_PARAMETER = ::Rapid::WorkflowParameter::Simple(
+  name = "admob_android_app_id",
+  label = "AdMob Android App ID",
+  default_value = DEFAULT_ADMOB_ANDROID_APP_ID,
+  modifiable = true,
+  description = "The unique Android app identifier assigned to your app in the AdMob frontend.",
+);
+USE_UNITY_PACKAGE_WORKFLOW_PARAMETER = ::Rapid::WorkflowParameter::Bool(
+  name = "use_unity_package",
+  label = "Use Unity Package",
+  default_value = false,
+  modifiable = true,
+  description = "Whether the Unity plugin should be imported or tested using the Unity package or the UPM dependency.",
+);
+SHARED_BUILD_AND_TEST_WORKFLOW_PARAMETERS = [
+  ::Rapid::WorkflowParameter::SingleSelectEnum(
+    name = "target_unity_ver",
+    label = "Target Unity Version",
+    // LINT.IfChange
+    possible_values = ["6000.1", "2022.3", "2021.3"],
+    // LINT.ThenChange(//depot/google3/third_party/java_src/gma_sdk_mediation/release/rapid/workflows/unity/build_all_unity_apks.pp)
+    default_value = DEFAULT_TARGET_UNITY_VERSION,
+    modifiable = true,
+    description = "Unity version for which to build or test the APK.",
+  ),
+  ::Rapid::WorkflowParameter::Simple(
+    name = "android_target_sdk",
+    label = "Android Target SDK",
+    default_value = DEFAULT_ANDROID_TARGET_SDK,
+    modifiable = true,
+    description = "Android target SDK version for which to build or test the APK.",
+  ),
+  ::Rapid::WorkflowParameter::SingleSelectEnum(
+    name = "project_name",
+    label = "Project Name",
+    // LINT.IfChange
+    possible_values = ["HelloWorld"],
+    // LINT.ThenChange(//depot/google3/third_party/java_src/gma_sdk_mediation/release/rapid/workflows/unity/build_all_unity_apks.pp)
+    default_value = DEFAULT_PROJECT_NAME,
+    modifiable = true,
+    description = "Sample project name used to build or test the APK.",
+  ),
+] + [USE_UNITY_PACKAGE_WORKFLOW_PARAMETER];
+
+}  // namespace AdMobUnityWorkflowParameters
