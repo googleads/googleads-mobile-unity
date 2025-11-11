@@ -114,27 +114,30 @@ namespace GoogleMobileAds.Common
         // VisibleForTesting
         internal static string ToJspb(ExceptionReport report)
         {
-            return string.Format(
-                "[{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13},{14},{15},{16},{17},{18}]",
-                QuoteString(report.time_msec),
-                report.trapped.ToString().ToLower(),
-                QuoteString(report.name),
-                QuoteString(report.exception_class),
-                QuoteString(report.top_exception),
-                QuoteString(report.stacktrace),
-                QuoteString(report.stacktrace_hash),
-                QuoteString(report.session_id),
-                QuoteString(report.app_id),
-                QuoteString(report.app_version_name),
-                QuoteString(report.platform),
-                QuoteString(report.unity_version),
-                QuoteString(report.os_version),
-                QuoteString(report.device_model),
-                QuoteString(report.country),
-                report.total_cpu,
-                QuoteString(report.total_memory_bytes),
-                QuoteString(report.network_type),
-                QuoteString(report.orientation));
+            // The order must match the proto field numbers.
+            var fields = new List<string>
+            {
+                QuoteString(report.time_msec), // 1
+                report.trapped.ToString().ToLower(), // 2
+                QuoteString(report.name), // 3
+                QuoteString(report.exception_class), // 4
+                QuoteString(report.top_exception), // 5
+                QuoteString(report.stacktrace), // 6
+                QuoteString(report.platform), // 7
+                QuoteString(report.app_version_name), // 8
+                QuoteString(report.app_id), // 9
+                QuoteString(report.os_version), // 10
+                QuoteString(report.device_model), // 11
+                report.total_cpu.ToString(), // 12
+                QuoteString(report.total_memory_bytes), // 13
+                QuoteString(report.country), // 14
+                QuoteString(report.orientation), // 15
+                QuoteString(report.network_type), // 16
+                QuoteString(report.session_id), // 17
+                QuoteString(report.stacktrace_hash), // 18
+                QuoteString(report.unity_version) // 19
+            };
+            return string.Format("[{0}]", string.Join(",", fields.ToArray()));
         }
         #endregion
     }
