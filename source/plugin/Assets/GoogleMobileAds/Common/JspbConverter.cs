@@ -20,6 +20,10 @@ namespace GoogleMobileAds.Common
                     {
                         payloads.Add(ToJspb((ExceptionLoggablePayload)(object)payload));
                     }
+                    else if (payload is CuiLoggablePayload)
+                    {
+                        payloads.Add(ToJspb((CuiLoggablePayload)(object)payload));
+                    }
                     else
                     {
                         Debug.LogError("JspbConverter encountered an unknown payload type: " +
@@ -42,6 +46,18 @@ namespace GoogleMobileAds.Common
         {
             return string.Format("[{0}]", metadata.binary_name);
         }
+
+        // VisibleForTesting
+        // internal static string ToListJspb(List<string> list)
+        // {
+        //     if (list == null) return "null";
+        //     var quotedElements = new List<string>();
+        //     foreach(string item in list)
+        //     {
+        //         quotedElements.Add(QuoteString(item));
+        //     }
+        //     return string.Format("[{0}]", string.Join(",", quotedElements.ToArray()));
+        // }
 
         // VisibleForTesting
         internal static string QuoteString(string s)
@@ -132,13 +148,48 @@ namespace GoogleMobileAds.Common
                 QuoteString(report.total_memory_bytes), // 13
                 QuoteString(report.country), // 14
                 QuoteString(report.orientation), // 15
-                QuoteString(report.network_type), // 16
+                "0", // 16
                 QuoteString(report.session_id), // 17
                 QuoteString(report.stacktrace_hash), // 18
-                QuoteString(report.unity_version) // 19
+                // QuoteString(report.unity_version) // 19
             };
             return string.Format("[{0}]", string.Join(",", fields.ToArray()));
         }
+        #endregion
+
+        #region CUI handling
+        // VisibleForTesting
+        internal static string ToJspb(CuiLoggablePayload payload)
+        {
+            if (payload.unity_gma_sdk_cui_message == null) return "[]";
+
+            // unity_gma_sdk_cui_message has field index 36.
+            return string.Format("[{{\"36\":{0}}}]",
+                                 ToJspb(payload.unity_gma_sdk_cui_message));
+        }
+
+        // VisibleForTesting
+        internal static string ToJspb(Insight insight)
+        {
+            // The order must match the proto field numbers.
+            var fields = new List<string>
+            {
+                ((int) insight.Name).ToString(), // 1
+            };
+            return string.Format("[{0}]", string.Join(",", fields.ToArray()));
+        }
+
+        // VisibleForTesting
+        // internal static string ToJspb(Insight.TracingActivity tracing)
+        // {
+        //     if (tracing == null) return "null";
+        //     return string.Format("[{0},{1},{2},{3},{4}]",
+        //                          QuoteString(tracing.OperationName),
+        //                          QuoteString(tracing.Id),
+        //                          QuoteString(tracing.ParentId),
+        //                          tracing.DurationMillis.ToString(),
+        //                          tracing.HasEnded.ToString().ToLower());
+        // }
         #endregion
     }
 }

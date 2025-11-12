@@ -37,6 +37,8 @@ namespace GoogleMobileAds.Android
             _tracer = new Tracer(_insightsEmitter);
             // Ensures GlobalExceptionHandler is initialized to handle Android untrapped exceptions.
             var _ = GlobalExceptionHandler.Instance;
+            // Ensures CuiHandler is initialized to handle CUIs.
+            var __ = CuiHandler.Instance;
         }
 
         public static MobileAdsClient Instance
@@ -183,10 +185,11 @@ namespace GoogleMobileAds.Android
               var assemblyVersion = assembly.GetName().Version;
               nativePluginVersion = string.Format("{0}.{1}.{2}", assemblyVersion.Major,
                                                   assemblyVersion.Minor, assemblyVersion.Revision);
+             throw new Exception("TEST EXCEPTION // jochac");
             } catch (Exception e) {
               if (GlobalExceptionHandler.Instance != null)
               {
-                GlobalExceptionHandler.Instance.ReportTrappedException(e);
+                GlobalExceptionHandler.Instance.ReportTrappedException(e, "jochac");
               }
             }
             string versionString = AdRequest.BuildVersionString(nativePluginVersion);

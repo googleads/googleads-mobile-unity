@@ -6,7 +6,7 @@ namespace GoogleMobileAds.Common
   {
       public void Emit(Insight insight)
       {
-          // Intentionally left blank.
+          CuiHandler.Instance.ReportCui(insight);
       }
   }
 }

@@ -117,14 +117,10 @@ namespace GoogleMobileAds.Common
                 name = name,
                 exception_class = e.GetType().FullName,
                 top_exception = e.Message,
-                stacktrace = e.StackTrace ?? "",
+                // stacktrace = e.StackTrace ?? "",
                 stacktrace_hash = Sha256Hash(e.StackTrace ?? ""),
             };
             Enqueue(report);
-            if (Debug.isDebugBuild)
-            {
-                Debug.Log("Trapped exception queued for batch.");
-            }
         }
         #endregion
 
@@ -147,14 +143,10 @@ namespace GoogleMobileAds.Common
                 trapped = false,
                 exception_class = exceptionClass,
                 top_exception = topException,
-                stacktrace = stackTrace ?? "",
+                // stacktrace = stackTrace ?? "",
                 stacktrace_hash = Sha256Hash(stackTrace ?? ""),
             };
             Enqueue(report);
-            if (Debug.isDebugBuild)
-            {
-                Debug.Log("Untrapped exception queued for batch.");
-            }
         }
 
         private string Sha256Hash(string rawData)
@@ -200,13 +192,13 @@ namespace GoogleMobileAds.Common
                 report.app_id = staticMetadata.app_id;
                 report.app_version_name = staticMetadata.app_version_name;
                 report.platform = staticMetadata.platform;
-                report.unity_version = staticMetadata.unity_version;
+                // report.unity_version = staticMetadata.unity_version;
                 report.os_version = staticMetadata.os_version;
                 report.device_model = staticMetadata.device_model;
                 report.country = staticMetadata.country;
                 report.total_cpu = staticMetadata.total_cpu;
                 report.total_memory_bytes = staticMetadata.total_memory_bytes;
-                report.network_type = dynamicMetadata.network_type;
+                // report.network_type = dynamicMetadata.network_type;
                 report.orientation = dynamicMetadata.orientation;
             }
 

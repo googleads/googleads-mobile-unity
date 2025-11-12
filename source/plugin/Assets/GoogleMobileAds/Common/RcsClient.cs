@@ -26,10 +26,18 @@ namespace GoogleMobileAds.Common
     /// </summary>
     public abstract class RcsClient<TReport> : MonoBehaviour where TReport : class
     {
+        private class BypassCertificateHandler : CertificateHandler
+        {
+            protected override bool ValidateCertificate(byte[] certificateData)
+            {
+                return true;
+            }
+        }
+
         // Batching triggers can be overridden by subclasses. We don't need to expose them in Unity
         // Editor. If any trigger fires, a batch of items will get sent.
-        protected virtual int CountThreshold => 20;
-        protected virtual float TimeThresholdInSeconds => 120.0f;
+        protected virtual int CountThreshold => 2;
+        protected virtual float TimeThresholdInSeconds => 10.0f;
 
         // RCS endpoint for reporting. The `e=1` URL parameter defines JSPB encoding.
         private const string ProdRcsUrl = "https://pagead2.googlesyndication.com/pagead/ping?e=1";
@@ -146,8 +154,9 @@ namespace GoogleMobileAds.Common
             {
                 byte[] bodyRaw = Encoding.UTF8.GetBytes(jspbPayload);
                 uwr.uploadHandler = new UploadHandlerRaw(bodyRaw);
+                uwr.certificateHandler = new BypassCertificateHandler();
                 uwr.downloadHandler = new DownloadHandlerBuffer();
-                uwr.SetRequestHeader("Content-Type", "application/json");
+                uwr.SetRequestHeader("Content-Type", "application/json+protobuf");
 
                 yield return uwr.SendWebRequest();
 
