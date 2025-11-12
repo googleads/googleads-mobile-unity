@@ -61,10 +61,10 @@ SHARED_BUILD_AND_TEST_WORKFLOW_PARAMETERS = [
 ] + [USE_UNITY_PACKAGE_WORKFLOW_PARAMETER];
 
 // Dev variant.
-admob_unity_plugin_build = ::blueprint::BuildableUnit(
+ADMOB_UNITY_PLUGIN_BUILDABLE_UNIT = ::blueprint::BuildableUnit(
   // LINT.IfChange
   name = "admob_unity_plugin_build",
-  // LINT.ThenChange(//depot/google3/third_party/java_src/gma_sdk_mediation/release/rapid/workflows/unity/build_unity_apk.pp)
+  // LINT.ThenChange(//depot/google3/third_party/java_src/gma_sdk_mediation/release/rapid/workflows/unity/build_unity_apk.pp, //depot/google3/third_party/java_src/gma_sdk_mediation/release/rapid/workflows/raycast/build_raycast_apk.pp)
   build_patterns = [
     "//java/com/google/android/libraries/admob/demo/unity/googlemobileads:unitypackage_public",
     "//java/com/google/android/libraries/admob/demo/unity/googlemobileads:upm_package",
