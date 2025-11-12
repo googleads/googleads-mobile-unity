@@ -1,6 +1,14 @@
+local include "gmscore/release/blueprint/gmscore_flags.ncl";
 include "releasetools/rapid/ncl/rapid_config.ncl";
+include "devtools/blueprint/ncl/blueprint_file.ncl";
 
-namespace AdMobUnityWorkflowParameters {
+namespace AdMobUnityRapid {
+
+UNITY_PLUGIN_IOS_FLAGS = [
+  "--config=ios_common",
+  "--ios_multi_cpus=arm64,x86_64",
+  "--ios_minimum_os=14.0",
+];
 
 DEFAULT_TARGET_UNITY_VERSION = "6000.1";
 // TODO(jochac): Bump to API 36.
@@ -52,4 +60,20 @@ SHARED_BUILD_AND_TEST_WORKFLOW_PARAMETERS = [
   ),
 ] + [USE_UNITY_PACKAGE_WORKFLOW_PARAMETER];
 
-}  // namespace AdMobUnityWorkflowParameters
+// Dev variant.
+admob_unity_plugin_build = ::blueprint::BuildableUnit(
+  // LINT.IfChange
+  name = "admob_unity_plugin_build",
+  // LINT.ThenChange(//depot/google3/third_party/java_src/gma_sdk_mediation/release/rapid/workflows/unity/build_unity_apk.pp)
+  build_patterns = [
+    "//java/com/google/android/libraries/admob/demo/unity/googlemobileads:unitypackage_public",
+    "//java/com/google/android/libraries/admob/demo/unity/googlemobileads:upm_package",
+  ],
+  build_flags = GMSCoreFlags::SDK_BUILD_FLAGS + UNITY_PLUGIN_IOS_FLAGS
+    + ["--define=build_type=dev"],
+  continuous_build_email = ::blueprint::ContinuousBuildEmailInfo(
+    build_cop_email_addrs = ["vkini@google.com", "jochac@google.com"]),
+  enable_release = true,  // Enabled so it can be pulled by GMS Core during FDR
+);
+
+}  // namespace AdMobUnityRapid
