@@ -16,6 +16,13 @@ DEFAULT_ANDROID_TARGET_SDK = "35";
 DEFAULT_PROJECT_NAME = "HelloWorld";
 DEFAULT_ADMOB_ANDROID_APP_ID = "ca-app-pub-3940256099942544~3347511713";
 
+FORCE_BUILD_UNITS_WORKFLOW_PARAMETER = ::Rapid::WorkflowParameter::Bool(
+  name = "force_build_units",
+  label = "Force Build Units",
+  default_value = true,
+  modifiable = false,
+  description = "Whether to run Blaze build on buildable units before triggering the Kokoro build. Intended when the units are not automatically built during the candidate creation.",
+);
 ADMOB_ANDROID_APP_ID_WORKFLOW_PARAMETER = ::Rapid::WorkflowParameter::Simple(
   name = "admob_android_app_id",
   label = "AdMob Android App ID",
