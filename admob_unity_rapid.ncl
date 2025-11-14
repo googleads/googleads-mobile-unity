@@ -80,6 +80,7 @@ ADMOB_UNITY_PLUGIN_BUILDABLE_UNIT = ::blueprint::BuildableUnit(
     + ["--define=build_type=dev"],
   continuous_build_email = ::blueprint::ContinuousBuildEmailInfo(
     build_cop_email_addrs = ["vkini@google.com", "jochac@google.com"]),
+  enable_continuous_build = true,
   enable_release = true,  // Enabled so it can be pulled by GMS Core during FDR
 );
 
