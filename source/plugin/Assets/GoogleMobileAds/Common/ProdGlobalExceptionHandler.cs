@@ -121,10 +121,6 @@ namespace GoogleMobileAds.Common
                 stacktrace_hash = Sha256Hash(e.StackTrace ?? ""),
             };
             Enqueue(report);
-            if (Debug.isDebugBuild)
-            {
-                Debug.Log("Trapped exception queued for batch.");
-            }
         }
         #endregion
 
@@ -151,10 +147,6 @@ namespace GoogleMobileAds.Common
                 stacktrace_hash = Sha256Hash(stackTrace ?? ""),
             };
             Enqueue(report);
-            if (Debug.isDebugBuild)
-            {
-                Debug.Log("Untrapped exception queued for batch.");
-            }
         }
 
         private string Sha256Hash(string rawData)
