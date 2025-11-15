@@ -20,6 +20,10 @@ namespace GoogleMobileAds.Common
                     {
                         payloads.Add(ToJspb((ExceptionLoggablePayload)(object)payload));
                     }
+                    else if (payload is CuiLoggablePayload)
+                    {
+                        payloads.Add(ToJspb((CuiLoggablePayload)(object)payload));
+                    }
                     else
                     {
                         Debug.LogError("JspbConverter encountered an unknown payload type: " +
@@ -41,6 +45,18 @@ namespace GoogleMobileAds.Common
         internal static string ToJspb(ClientPingMetadata metadata)
         {
             return string.Format("[{0}]", metadata.binary_name);
+        }
+
+        private static string ToJspb(List<string> list)
+        {
+            if (list == null || list.Count == 0) return "null";
+
+            var quotedElements = new List<string>();
+            foreach(string elem in list)
+            {
+                quotedElements.Add(QuoteString(elem));
+            }
+            return string.Format("[{0}]", string.Join(",", quotedElements.ToArray()));
         }
 
         // VisibleForTesting
@@ -136,6 +152,59 @@ namespace GoogleMobileAds.Common
                 QuoteString(report.session_id), // 17
                 QuoteString(report.stacktrace_hash), // 18
                 QuoteString(report.unity_version) // 19
+            };
+            return string.Format("[{0}]", string.Join(",", fields.ToArray()));
+        }
+        #endregion
+
+        #region CUIs handling
+        // VisibleForTesting
+        internal static string ToJspb(CuiLoggablePayload payload)
+        {
+            if (payload.unity_gma_sdk_cui_message == null) return "[]";
+
+            // unity_gma_sdk_cui_message has field index 36.
+            return string.Format("[{{\"36\":{0}}}]",
+                                 ToJspb(payload.unity_gma_sdk_cui_message));
+        }
+
+        // VisibleForTesting
+        internal static string ToJspb(Insight insight)
+        {
+            // The order must match the proto field numbers.
+            var fields = new List<string>
+            {
+                ((int)insight.Name).ToString(), // 1
+                insight.Success.ToString().ToLower(), // 2
+                insight.StartTimeEpochMillis.ToString(), // 3
+                QuoteString(insight.SdkVersion), // 4
+                QuoteString(insight.AppId), // 5
+                QuoteString(insight.AdUnitId), // 6
+                ((int)insight.Format).ToString(), // 7
+                ((int)insight.Platform).ToString(), // 8
+                QuoteString(insight.AppVersionName), // 9
+                QuoteString(insight.UnityVersion), // 10
+                QuoteString(insight.OSVersion), // 11
+                QuoteString(insight.DeviceModel), // 12
+                ToJspb(insight.Tags), // 13
+                ToJspb(insight.Tracing), // 14
+                QuoteString(insight.Details) // 15
+            };
+            return string.Format("[{0}]", string.Join(",", fields.ToArray()));
+        }
+
+        private static string ToJspb(Insight.TracingActivity tracing)
+        {
+            if (tracing == null) return "null";
+
+            // The order must match the proto field numbers.
+            var fields = new List<string>
+            {
+                QuoteString(tracing.OperationName), // 1
+                QuoteString(tracing.Id), // 2
+                QuoteString(tracing.ParentId), // 3
+                tracing.DurationMillis.ToString(), // 4
+                tracing.HasEnded.ToString().ToLower() // 5
             };
             return string.Format("[{0}]", string.Join(",", fields.ToArray()));
         }
