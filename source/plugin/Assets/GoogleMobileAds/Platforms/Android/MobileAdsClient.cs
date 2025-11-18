@@ -28,14 +28,16 @@ namespace GoogleMobileAds.Android
         private readonly static MobileAdsClient _instance = new MobileAdsClient();
 
         private readonly AndroidJavaClass _mobileAdsClass;
-        private readonly IInsightsEmitter _insightsEmitter = new InsightsEmitter();
+        // Ensures InsightsEmitter is initialized from the main thread to handle CUIs.
+        private readonly IInsightsEmitter _insightsEmitter = InsightsEmitter.Instance;
         private readonly ITracer _tracer;
         private Action<IInitializationStatusClient> _initCompleteAction;
 
         private MobileAdsClient() : base(Utils.OnInitializationCompleteListenerClassName) {
             _mobileAdsClass = new AndroidJavaClass(Utils.UnityMobileAdsClassName);
             _tracer = new Tracer(_insightsEmitter);
-            // Ensures GlobalExceptionHandler is initialized to handle Android untrapped exceptions.
+            // Ensures GlobalExceptionHandler is initialized from the main thread to handle Android
+            // untrapped exceptions.
             var _ = GlobalExceptionHandler.Instance;
         }
 

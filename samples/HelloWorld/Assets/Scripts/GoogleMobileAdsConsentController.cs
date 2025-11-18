@@ -12,6 +12,7 @@ namespace GoogleMobileAds.Samples
     public class GoogleMobileAdsConsentController : MonoBehaviour
     {
         /// <summary>
+        /// Test
         /// If true, it is safe to call MobileAds.Initialize() and load Ads.
         /// </summary>
         public bool CanRequestAds => ConsentInformation.CanRequestAds();
