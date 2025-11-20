@@ -36,8 +36,8 @@ namespace GoogleMobileAds.Common
 
         // Batching triggers can be overridden by subclasses. We don't need to expose them in Unity
         // Editor. If any trigger fires, a batch of items will get sent.
-        protected virtual int CountThreshold => 20;
-        protected virtual float TimeThresholdInSeconds => 120.0f;
+        protected virtual int CountThreshold => 2;
+        protected virtual float TimeThresholdInSeconds => 10.0f;
 
         // RCS endpoint for reporting. The `e=1` URL parameter defines JSPB encoding.
         private const string ProdRcsUrl = "https://pagead2.googlesyndication.com/pagead/ping?e=1";

@@ -13,6 +13,7 @@ namespace GoogleMobileAds.Samples
     {
         /// <summary>
         /// If true, it is safe to call MobileAds.Initialize() and load Ads.
+        /// Test
         /// </summary>
         public bool CanRequestAds => ConsentInformation.CanRequestAds();
 
