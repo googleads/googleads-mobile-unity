@@ -214,6 +214,8 @@ namespace GoogleMobileAds.Android
             AndroidJavaClass adSizeClass = new AndroidJavaClass(UnityAdSizeClassName);
             switch (adSize.AdType)
             {
+                // Note: `GoogleMobileAds.Api.AdSize.Type.SmartBanner' has been deprecated in favor
+                // of `AnchoredAdaptive`.
                 case AdSize.Type.SmartBanner:
                     return adSizeClass.CallStatic<AndroidJavaObject>("getSmartBannerAdSize");
                 case AdSize.Type.AnchoredAdaptive:

@@ -32,10 +32,6 @@ namespace GoogleMobileAds.Common
                 }
                 return _instance;
             }
-            private set
-            {
-                _instance = value;
-            }
         }
 
         #region Unity lifecycle methods

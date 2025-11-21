@@ -160,7 +160,7 @@ namespace GoogleMobileAds
             }
             try
             {
-                var unused =
+                var _ =
                     new AndroidJavaClass(GoogleMobileAds.Android.DecagonUtils.MobileAdsClassName);
                 _decagonEnabled = true;
             }
