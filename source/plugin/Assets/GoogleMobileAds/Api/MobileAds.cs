@@ -75,6 +75,7 @@ namespace GoogleMobileAds.Api
         /// Determines whether ad events raised by the Google Mobile Ads Unity plugin should be
         /// invoked on the Unity main thread. The default value is false.
         /// </summary>
+        [Obsolete("Use MobileAdsEventExecutor.ExecuteInUpdate() instead.")]
         public static bool RaiseAdEventsOnUnityMainThread { get; set; }
 
         /// <summary>
@@ -329,11 +330,13 @@ namespace GoogleMobileAds.Api
             }
             // If we are already on the main thread or RaiseAdEventsOnUnityMainThread is false,
             // execute the action immediately.
+#pragma warning disable 0618
             if (!RaiseAdEventsOnUnityMainThread || MobileAdsEventExecutor.IsOnMainThread())
             {
                 action();
                 return;
             }
+#pragma warning restore 0618
             MobileAdsEventExecutor.ExecuteInUpdate(action);
         }
 
