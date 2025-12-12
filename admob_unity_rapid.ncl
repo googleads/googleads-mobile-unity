@@ -84,4 +84,16 @@ ADMOB_UNITY_PLUGIN_BUILDABLE_UNIT = ::blueprint::BuildableUnit(
   enable_release = true,  // Enabled so it can be pulled by GMS Core during FDR
 );
 
+// This workflow is used by GMA SDK Granular and FDR release processes.
+FORCE_BUILD_UNITY_APK_WORKFLOW_NAME = "Force Build Unity APK";
+FORCE_BUILD_UNITY_APK_WORKFLOW = ::Rapid::Workflow::CustomWorkflow(
+  name = FORCE_BUILD_UNITY_APK_WORKFLOW_NAME,
+  config_path = "google3/third_party/java_src/gma_sdk_mediation/release/rapid/workflows/unity/build_unity_apk.pp",
+  parameters = SHARED_BUILD_AND_TEST_WORKFLOW_PARAMETERS + [
+    ADMOB_ANDROID_APP_ID_WORKFLOW_PARAMETER,
+    FORCE_BUILD_UNITS_WORKFLOW_PARAMETER,
+  ],
+  description = "Builds the requested Unity APK, forcing the plugin to be built from source.",
+);
+
 }  // namespace AdMobUnityRapid
