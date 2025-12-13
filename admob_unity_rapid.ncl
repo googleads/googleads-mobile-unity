@@ -10,7 +10,7 @@ UNITY_PLUGIN_IOS_FLAGS = [
   "--ios_minimum_os=14.0",
 ];
 
-DEFAULT_TARGET_UNITY_VERSION = "6000.1";
+DEFAULT_TARGET_UNITY_VERSION = "6000.3";
 // TODO(jochac): Bump to API 36.
 DEFAULT_ANDROID_TARGET_SDK = "35";
 DEFAULT_PROJECT_NAME = "HelloWorld";
@@ -42,7 +42,7 @@ SHARED_BUILD_AND_TEST_WORKFLOW_PARAMETERS = [
     name = "target_unity_ver",
     label = "Target Unity Version",
     // LINT.IfChange
-    possible_values = ["6000.1", "2022.3", "2021.3"],
+    possible_values = ["6000.3", "6000.1", "2022.3", "2021.3"],
     // LINT.ThenChange(//depot/google3/third_party/java_src/gma_sdk_mediation/release/rapid/workflows/unity/build_all_unity_apks.pp)
     default_value = DEFAULT_TARGET_UNITY_VERSION,
     modifiable = true,
