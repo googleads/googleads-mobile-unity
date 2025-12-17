@@ -11,8 +11,7 @@ UNITY_PLUGIN_IOS_FLAGS = [
 ];
 
 DEFAULT_TARGET_UNITY_VERSION = "6000.3";
-// TODO(jochac): Bump to API 36.
-DEFAULT_ANDROID_TARGET_SDK = "35";
+DEFAULT_ANDROID_TARGET_SDK = "36";
 DEFAULT_PROJECT_NAME = "HelloWorld";
 DEFAULT_ADMOB_ANDROID_APP_ID = "ca-app-pub-3940256099942544~3347511713";
 
@@ -36,6 +35,13 @@ USE_UNITY_PACKAGE_WORKFLOW_PARAMETER = ::Rapid::WorkflowParameter::Bool(
   default_value = false,
   modifiable = true,
   description = "Whether the Unity plugin should be imported or tested using the Unity package or the UPM dependency.",
+);
+TARGET_DECAGON_WORKFLOW_PARAMETER = ::Rapid::WorkflowParameter::Bool(
+  name = "target_decagon",
+  label = "Target Decagon",
+  default_value = false,
+  modifiable = true,
+  description = "Whether the Unity plugin should be built for Decagon or Nonagon.",
 );
 SHARED_BUILD_AND_TEST_WORKFLOW_PARAMETERS = [
   ::Rapid::WorkflowParameter::SingleSelectEnum(
