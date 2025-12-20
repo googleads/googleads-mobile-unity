@@ -36,6 +36,13 @@ USE_UNITY_PACKAGE_WORKFLOW_PARAMETER = ::Rapid::WorkflowParameter::Bool(
   modifiable = true,
   description = "Whether the Unity plugin should be imported or tested using the Unity package or the UPM dependency.",
 );
+TARGET_DECAGON_WORKFLOW_PARAMETER = ::Rapid::WorkflowParameter::Bool(
+  name = "target_decagon",
+  label = "Target Decagon",
+  default_value = false,
+  modifiable = true,
+  description = "Whether the Unity plugin should be built for Decagon (as opposed to Nonagon).",
+);
 SHARED_BUILD_AND_TEST_WORKFLOW_PARAMETERS = [
   ::Rapid::WorkflowParameter::SingleSelectEnum(
     name = "target_unity_ver",
