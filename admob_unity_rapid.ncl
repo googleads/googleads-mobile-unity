@@ -7,7 +7,7 @@ namespace AdMobUnityRapid {
 UNITY_PLUGIN_IOS_FLAGS = [
   "--config=ios_common",
   "--ios_multi_cpus=arm64,x86_64",
-  "--ios_minimum_os=14.0",
+  "--ios_minimum_os=17.0",
 ];
 
 DEFAULT_TARGET_UNITY_VERSION = "6000.3";
