@@ -27,12 +27,19 @@ namespace GoogleMobileAds.Android
     {
         private static readonly DecagonMobileAdsClient _instance = new DecagonMobileAdsClient();
         private readonly AndroidJavaObject _mobileAdsClass;
+        // Ensures InsightsEmitter is initialized from the main thread to handle CUIs.
+        private readonly IInsightsEmitter _insightsEmitter = InsightsEmitter.Instance;
+        private readonly ITracer _tracer;
         private Action<IInitializationStatusClient> _initCompleteAction;
 
         private DecagonMobileAdsClient()
             : base(DecagonUtils.OnInitializationCompleteListenerClassName)
         {
           _mobileAdsClass = new AndroidJavaClass(DecagonUtils.UnityMobileAdsClassName);
+          _tracer = new Tracer(_insightsEmitter);
+          // Ensures GlobalExceptionHandler is initialized from the main thread to handle Android
+          // untrapped exceptions.
+          var _ = GlobalExceptionHandler.Instance;
         }
 
         public static DecagonMobileAdsClient Instance
@@ -42,26 +49,36 @@ namespace GoogleMobileAds.Android
 
         public void Initialize(Action<IInitializationStatusClient> initCompleteAction)
         {
-            _initCompleteAction = initCompleteAction;
+            using (_tracer.StartTrace("DecagonMobileAdsClient.Initialize"))
+            {
+                _initCompleteAction = initCompleteAction;
 
-            Task.Run(() => {
-              int env = AndroidJNI.AttachCurrentThread();
-              if (env < 0)
-              {
-                  UnityEngine.Debug.LogError("Failed to attach current thread to JVM.");
-                  return;
-              }
+                Task.Run(() => {
+                    using (_tracer.StartTrace("AttachCurrentThread"))
+                    {
+                        int env = AndroidJNI.AttachCurrentThread();
+                        if (env < 0)
+                        {
+                            UnityEngine.Debug.LogError("Failed to attach current thread to JVM.");
+                            return;
+                        }
+                    }
 
-              try
-              {
-                  _mobileAdsClass.CallStatic("initialize",
-                                           Utils.GetCurrentActivityAndroidJavaObject(),
-                                           this);
-              }
-              finally
-              {
-                  AndroidJNI.DetachCurrentThread();
-              }
+                    try
+                    {
+                        _mobileAdsClass.CallStatic("initialize",
+                                                 Utils.GetCurrentActivityAndroidJavaObject(),
+                                                 this);
+                    }
+                    finally
+                    {
+                        AndroidJNI.DetachCurrentThread();
+                    }
+                });
+            }
+            _insightsEmitter.Emit(new Insight()
+            {
+                Name = Insight.CuiName.SdkInitialized
             });
         }
 
