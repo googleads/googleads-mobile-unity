@@ -100,7 +100,6 @@ namespace GoogleMobileAds.Api
         /// Get the AppOpen ad PreloadConfiguration associated with the given preload ID, or null
         /// if one does not exist.
         /// </summary>
-        [System.Obsolete("Deprecated.")]
         public static PreloadConfiguration GetConfiguration(string preloadId)
         {
             return _client.GetConfiguration(preloadId);
@@ -110,7 +109,6 @@ namespace GoogleMobileAds.Api
         /// Get a dictionary of all AppOpen ad PreloadConfigurations, keyed by their associated
         /// preload ID, or an empty dictionary if no preloaders exist.
         /// </summary>
-        [System.Obsolete("Deprecated.")]
         public static Dictionary<string, PreloadConfiguration> GetConfigurations()
         {
             return _client.GetConfigurations();
