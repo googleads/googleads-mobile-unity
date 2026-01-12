@@ -43,6 +43,12 @@ TARGET_DECAGON_WORKFLOW_PARAMETER = ::Rapid::WorkflowParameter::Bool(
   modifiable = true,
   description = "Whether the Unity plugin should be built for Decagon (as opposed to Nonagon).",
 );
+TARGET_DECAGON_WORKFLOW_PARAMETER_TRUE = ::Rapid::WorkflowParameter::Bool(
+  name = "target_decagon",
+  label = "Target Decagon",
+  default_value = true,
+  modifiable = false,
+);
 USE_CACHES_WORKFLOW_PARAMETER = ::Rapid::WorkflowParameter::Bool(
   name = "use_caches",
   label = "Use Caches",
@@ -104,15 +110,31 @@ ADMOB_UNITY_PLUGIN_BUILDABLE_UNIT = ::blueprint::BuildableUnit(
   enable_release = true,  // Enabled so it can be pulled by GMS Core during FDR
 );
 
-// This workflow is used by GMA SDK Granular and FDR release processes.
 FORCE_BUILD_UNITY_APK_WORKFLOW_NAME = "Force Build Unity APK";
-FORCE_BUILD_UNITY_APK_WORKFLOW = ::Rapid::Workflow::CustomWorkflow(
+
+// This workflow is used by GMA SDK Nonagon Granular and FDR release processes.
+FORCE_BUILD_UNITY_APK_NONAGON_WORKFLOW = ::Rapid::Workflow::CustomWorkflow(
   name = FORCE_BUILD_UNITY_APK_WORKFLOW_NAME,
   config_path = "google3/third_party/java_src/gma_sdk_mediation/release/rapid/workflows/unity/build_unity_apk.pp",
   parameters = SHARED_BUILD_AND_TEST_WORKFLOW_PARAMETERS + [
     ADMOB_ANDROID_APP_ID_WORKFLOW_PARAMETER,
     USE_CACHES_WORKFLOW_PARAMETER,
     FORCE_BUILD_UNITS_WORKFLOW_PARAMETER,
+  // The `target_decagon` argument is false by default in the workflow, so we
+  // don't need to pass it explicitly.
+  ],
+  description = "Builds the requested Unity APK, forcing the plugin to be built from source.",
+);
+
+// This workflow is used by GMA SDK Decagon Gradler release process.
+FORCE_BUILD_UNITY_APK_DECAGON_WORKFLOW = ::Rapid::Workflow::CustomWorkflow(
+  name = FORCE_BUILD_UNITY_APK_WORKFLOW_NAME,
+  config_path = "google3/third_party/java_src/gma_sdk_mediation/release/rapid/workflows/unity/build_unity_apk.pp",
+  parameters = SHARED_BUILD_AND_TEST_WORKFLOW_PARAMETERS + [
+    ADMOB_ANDROID_APP_ID_WORKFLOW_PARAMETER,
+    USE_CACHES_WORKFLOW_PARAMETER,
+    FORCE_BUILD_UNITS_WORKFLOW_PARAMETER,
+    TARGET_DECAGON_WORKFLOW_PARAMETER_TRUE,
   ],
   description = "Builds the requested Unity APK, forcing the plugin to be built from source.",
 );
