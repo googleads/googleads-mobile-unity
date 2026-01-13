@@ -20,8 +20,8 @@
 
 #import <GoogleMobileAds/GoogleMobileAds.h>
 
-#import "GADAppOpenAdPreloader.h"
-#import "GADPreloadDelegate.h"
+#import "GADAppOpenAdPreloader_Beta.h"
+#import "GADPreloadDelegate_Beta.h"
 #import "GADUObjectCache.h"
 #import "GADUPreloadConfigurationV2.h"
 #import "GADUTypes.h"

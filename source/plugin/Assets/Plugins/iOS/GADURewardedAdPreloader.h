@@ -6,10 +6,10 @@
 
 #import <GoogleMobileAds/GoogleMobileAds.h>
 
-#import "GADRewardedAdPreloader.h"
-#import "GADUPreloadConfigurationV2.h"
-#import "GADPreloadDelegate.h"
+#import "GADPreloadDelegate_Beta.h"
+#import "GADRewardedAdPreloader_Beta.h"
 #import "GADUObjectCache.h"
+#import "GADUPreloadConfigurationV2.h"
 #import "GADUTypes.h"
 
 @interface GADRewardedAdPreloader ()
