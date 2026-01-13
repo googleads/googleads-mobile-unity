@@ -1,4 +1,19 @@
 Google Mobile Ads Unity Plugin Change Log
+**************
+Version 10.7.0
+**************
+
+- Updated the GMA iOS SDK dependency version to 12.14.0.
+- Updated the GMA Android SDK dependency version to 24.9.0
+- RaiseAdEventsOnUnityMainThread is marked obsolete. Publishers are advised to use [MobileAdsEventExecutor.ExecuteInUpdate](https://developers.google.com/admob/unity/global-settings#manually-synchronize-ad-events) instead.
+
+Built and tested with:
+
+- Google Mobile Ads Android SDK 24.9.0.
+- Google Mobile Ads iOS SDK 12.14.0.
+- Google User Messaging Platform Android SDK 3.2.0
+- Google User Messaging Platform iOS SDK 3.0.0
+- External Dependency Manager for Unity 1.2.186
 
 **************
 Version 10.6.0
