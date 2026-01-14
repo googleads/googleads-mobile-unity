@@ -12,8 +12,10 @@ UNITY_PLUGIN_IOS_FLAGS = [
 
 DEFAULT_TARGET_UNITY_VERSION = "6000.3";
 DEFAULT_ANDROID_TARGET_SDK = "36";
+DEFAULT_IOS_VERSION = "16";
 DEFAULT_PROJECT_NAME = "HelloWorld";
 DEFAULT_ADMOB_ANDROID_APP_ID = "ca-app-pub-3940256099942544~3347511713";
+DEFAULT_ADMOB_IOS_APP_ID = "ca-app-pub-3940256099942544~1458002511";
 
 FORCE_BUILD_UNITS_WORKFLOW_PARAMETER = ::Rapid::WorkflowParameter::Bool(
   name = "force_build_units",
@@ -28,6 +30,13 @@ ADMOB_ANDROID_APP_ID_WORKFLOW_PARAMETER = ::Rapid::WorkflowParameter::Simple(
   default_value = DEFAULT_ADMOB_ANDROID_APP_ID,
   modifiable = true,
   description = "The unique Android app identifier assigned to your app in the AdMob frontend.",
+);
+ADMOB_IOS_APP_ID_WORKFLOW_PARAMETER = ::Rapid::WorkflowParameter::Simple(
+  name = "admob_ios_app_id",
+  label = "AdMob iOS App ID",
+  default_value = DEFAULT_ADMOB_IOS_APP_ID,
+  modifiable = true,
+  description = "The unique iOS app identifier assigned to your app in the AdMob frontend.",
 );
 USE_UNITY_PACKAGE_WORKFLOW_PARAMETER = ::Rapid::WorkflowParameter::Bool(
   name = "use_unity_package",
@@ -81,6 +90,13 @@ SHARED_BUILD_AND_TEST_WORKFLOW_PARAMETERS = [
     modifiable = true,
     description = "Android target SDK version for which to build or test the APK.",
   ),
+  ::Rapid::WorkflowParameter::Simple(
+    name = "ios_version",
+    label = "iOS Version",
+    default_value = DEFAULT_IOS_VERSION,
+    modifiable = true,
+    description = "iOS version for which to build or test the IPA. It must comply with Unity iOS requirements and compatibility.",
+  ),
   ::Rapid::WorkflowParameter::SingleSelectEnum(
     name = "project_name",
     label = "Project Name",
@@ -112,7 +128,8 @@ ADMOB_UNITY_PLUGIN_BUILDABLE_UNIT = ::blueprint::BuildableUnit(
 
 FORCE_BUILD_UNITY_APK_WORKFLOW_NAME = "Force Build Unity APK";
 
-// This workflow is used by GMA SDK Nonagon Granular and FDR release processes.
+// This workflow is used by GMA SDK Nonagon Granular and FDR release processes
+// (Android).
 FORCE_BUILD_UNITY_APK_NONAGON_WORKFLOW = ::Rapid::Workflow::CustomWorkflow(
   name = FORCE_BUILD_UNITY_APK_WORKFLOW_NAME,
   config_path = "google3/third_party/java_src/gma_sdk_mediation/release/rapid/workflows/unity/build_unity_apk.pp",
@@ -126,7 +143,7 @@ FORCE_BUILD_UNITY_APK_NONAGON_WORKFLOW = ::Rapid::Workflow::CustomWorkflow(
   description = "Builds the requested Unity APK, forcing the plugin to be built from source.",
 );
 
-// This workflow is used by GMA SDK Decagon Gradler release process.
+// This workflow is used by GMA SDK Decagon Gradler release process (Android).
 FORCE_BUILD_UNITY_APK_DECAGON_WORKFLOW = ::Rapid::Workflow::CustomWorkflow(
   name = FORCE_BUILD_UNITY_APK_WORKFLOW_NAME,
   config_path = "google3/third_party/java_src/gma_sdk_mediation/release/rapid/workflows/unity/build_unity_apk.pp",
