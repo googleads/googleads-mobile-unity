@@ -26,7 +26,7 @@ namespace GoogleMobileAds
     [Preserve]
     public class GoogleMobileAdsClientFactory : IClientFactory
     {
-        private static bool? _decagonEnabled;
+        private static bool? _nextGenEnabled;
 
         public IAppStateEventClient BuildAppStateEventClient()
         {
@@ -42,9 +42,9 @@ namespace GoogleMobileAds
         {
             if (Application.platform == RuntimePlatform.Android)
             {
-                if (IsDecagonEnabled())
+                if (IsNextGenEnabled())
                 {
-                    return new GoogleMobileAds.Android.DecagonAppOpenAdClient();
+                    return new GoogleMobileAds.Android.NextGenAppOpenAdClient();
                 }
                 return new GoogleMobileAds.Android.AppOpenAdClient();
             }
@@ -54,9 +54,9 @@ namespace GoogleMobileAds
 
         public IBannerClient BuildBannerClient() {
           if (Application.platform == RuntimePlatform.Android) {
-            if (IsDecagonEnabled())
+            if (IsNextGenEnabled())
             {
-                    return new GoogleMobileAds.Android.DecagonBannerAdClient();
+                    return new GoogleMobileAds.Android.NextGenBannerAdClient();
             }
             return new GoogleMobileAds.Android.BannerClient();
           }
@@ -76,9 +76,9 @@ namespace GoogleMobileAds
         {
             if (Application.platform == RuntimePlatform.Android)
             {
-                if (IsDecagonEnabled())
+                if (IsNextGenEnabled())
                 {
-                    return new GoogleMobileAds.Android.DecagonInterstitialAdClient();
+                    return new GoogleMobileAds.Android.NextGenInterstitialAdClient();
                 }
                 return new GoogleMobileAds.Android.InterstitialClient();
             }
@@ -98,9 +98,9 @@ namespace GoogleMobileAds
         {
             if (Application.platform == RuntimePlatform.Android)
             {
-                if (IsDecagonEnabled())
+                if (IsNextGenEnabled())
                 {
-                    return new GoogleMobileAds.Android.DecagonRewardedAdClient();
+                    return new GoogleMobileAds.Android.NextGenRewardedAdClient();
                 }
                 return new GoogleMobileAds.Android.RewardedAdClient();
             }
@@ -112,9 +112,9 @@ namespace GoogleMobileAds
         {
             if (Application.platform == RuntimePlatform.Android)
             {
-                if (IsDecagonEnabled())
+                if (IsNextGenEnabled())
                 {
-                    return new GoogleMobileAds.Android.DecagonRewardedInterstitialAdClient();
+                    return new GoogleMobileAds.Android.NextGenRewardedInterstitialAdClient();
                 }
                 return new GoogleMobileAds.Android.RewardedInterstitialAdClient();
             }
@@ -142,9 +142,9 @@ namespace GoogleMobileAds
         {
             if (Application.platform == RuntimePlatform.Android)
             {
-                if (IsDecagonEnabled())
+                if (IsNextGenEnabled())
                 {
-                    return GoogleMobileAds.Android.DecagonMobileAdsClient.Instance;
+                    return GoogleMobileAds.Android.NextGenMobileAdsClient.Instance;
                 }
                 return GoogleMobileAds.Android.MobileAdsClient.Instance;
           }
@@ -152,23 +152,23 @@ namespace GoogleMobileAds
                                               " on non-Android runtime");
         }
 
-        private bool IsDecagonEnabled()
+        private bool IsNextGenEnabled()
         {
-            if (_decagonEnabled.HasValue)
+            if (_nextGenEnabled.HasValue)
             {
-                return _decagonEnabled.Value;
+                return _nextGenEnabled.Value;
             }
             try
             {
                 var _ =
-                    new AndroidJavaClass(GoogleMobileAds.Android.DecagonUtils.MobileAdsClassName);
-                _decagonEnabled = true;
+                    new AndroidJavaClass(GoogleMobileAds.Android.NextGenUtils.MobileAdsClassName);
+                _nextGenEnabled = true;
             }
             catch (AndroidJavaException)
             {
-                _decagonEnabled = false;
+                _nextGenEnabled = false;
             }
-            return _decagonEnabled.Value;
+            return _nextGenEnabled.Value;
         }
 
 #if GMA_PREVIEW_FEATURES
