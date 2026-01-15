@@ -18,7 +18,7 @@
 
 #import <Foundation/Foundation.h>
 #import <GoogleMobileAds/GoogleMobileAds.h>
-#import "GADPreloadConfigurationV2.h"
+#import "GADPreloadConfigurationV2_Beta.h"
 
 #import "GADUTypes.h"
 
