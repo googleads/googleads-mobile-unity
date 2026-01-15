@@ -72,6 +72,13 @@ BUILD_OFFLINE_WORKFLOW_PARAMETER = ::Rapid::WorkflowParameter::Bool(
   modifiable = true,
   description = "Whether the Unity plugin should be built offline (if so, caches must be allowed).",
 );
+FOR_IOS_WORKFLOW_PARAMETER = ::Rapid::WorkflowParameter::Bool(
+  name = "for_ios",
+  label = "For iOS",
+  default_value = false,
+  modifiable = true,
+  description = "Whether the Unity plugin should be built for iOS (as opposed to Android).",
+);
 SHARED_BUILD_AND_TEST_WORKFLOW_PARAMETERS = [
   ::Rapid::WorkflowParameter::SingleSelectEnum(
     name = "target_unity_ver",
