@@ -16,13 +16,30 @@
   // ResponseInfo object are not released until the ad object is released.
   NSError *_lastLoadError;
   NSError *_lastPresentError;
+  BOOL _adDidDismissCallbackDeferred;
 }
 
 - (instancetype)initWithRewardedInterstitialAdClientReference:
     (GADUTypeRewardedInterstitialAdClientRef *)rewardedInterstitialAdClient {
   self = [super init];
-  _rewardedInterstitialAdClient = rewardedInterstitialAdClient;
+  if (self) {
+    _rewardedInterstitialAdClient = rewardedInterstitialAdClient;
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(handleDidBecomeActive:)
+                                                 name:UIApplicationDidBecomeActiveNotification
+                                               object:nil];
+  }
   return self;
+}
+
+- (void)dealloc {
+  [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+- (void)handleDidBecomeActive:(NSNotification *)notification {
+  if (_adDidDismissCallbackDeferred) {
+    [self adDidDismissFullScreenContent:self.rewardedInterstitialAd];
+  }
 }
 
 - (void)loadWithAdUnitID:(NSString *)adUnit request:(GADRequest *)request {
@@ -129,8 +146,10 @@
     // We are in the middle of the shutdown sequence, and at this point unity runtime is already
     // destroyed. We shall not call unity API, and definitely not script callbacks, so nothing to do
     // here
+    _adDidDismissCallbackDeferred = YES;
     return;
   }
+  _adDidDismissCallbackDeferred = NO;
   if (UnityIsPaused()) {
     UnityPause(NO);
   }

@@ -1,5 +1,11 @@
 Google Mobile Ads Unity Plugin Change Log
 **************
+Version Next
+**************
+
+- Fixed corner case where OnAdFullScreenContentClosed was not fired when the Home button was pressed at the same time as the ad was being dismissed.
+
+**************
 Version 10.7.0
 **************
 
