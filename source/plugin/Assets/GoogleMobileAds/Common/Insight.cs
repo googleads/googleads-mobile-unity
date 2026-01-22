@@ -7,6 +7,12 @@ namespace GoogleMobileAds.Common
     [Serializable]
     public class Insight
     {
+        /// <summary>
+        /// Used to calculate timestamps since the Unix Epoch for .NET Framework 3.5+.
+        /// </summary>
+        internal static readonly DateTime UnixEpoch =
+            new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+
         private static AdPlatform _platform;
         private static string _appId;
         private static string _appVersionName;
@@ -42,7 +48,7 @@ namespace GoogleMobileAds.Common
         {
             Success = true;
             StartTimeEpochMillis = (long)DateTime.UtcNow
-                .Subtract(new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc))
+                .Subtract(UnixEpoch)
                 .TotalMilliseconds;
             Platform = _platform;
             AppId = _appId;
