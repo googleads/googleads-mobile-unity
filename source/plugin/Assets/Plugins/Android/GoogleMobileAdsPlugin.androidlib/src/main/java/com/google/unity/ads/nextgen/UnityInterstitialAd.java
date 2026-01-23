@@ -26,6 +26,12 @@ public class UnityInterstitialAd extends UnityAdBase<InterstitialAd, UnityInters
     this(activity, callback, AdWrapper.forInterstitial(), Executors.newSingleThreadExecutor());
   }
 
+  public UnityInterstitialAd(
+      Activity activity, UnityInterstitialAdCallback callback, InterstitialAd interstitialAd) {
+    this(activity, callback, AdWrapper.forInterstitial(), Executors.newSingleThreadExecutor());
+    this.ad = interstitialAd;
+  }
+
   @VisibleForTesting
   UnityInterstitialAd(
       Activity activity,
@@ -34,6 +40,11 @@ public class UnityInterstitialAd extends UnityAdBase<InterstitialAd, UnityInters
       Executor executor) {
     super(activity, callback, executor);
     this.adWrapper = adWrapper;
+  }
+
+  @VisibleForTesting
+  InterstitialAd getInterstitialAd() {
+    return ad;
   }
 
   /**

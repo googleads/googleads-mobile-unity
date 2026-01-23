@@ -114,6 +114,7 @@ public class UnityInterstitialAdTest {
 
     eventCallback.onAdDismissedFullScreenContent();
     verify(mockCallback).onAdDismissedFullScreenContent();
+    assertThat(unityInterstitialAd.getInterstitialAd()).isNull();
 
     PrecisionType precisionType = PrecisionType.PRECISE;
     long valueMicros = 1000000L;
@@ -185,5 +186,14 @@ public class UnityInterstitialAdTest {
 
     // Verify that setPlacementId was called on the underlying ad.
     verify(mockInterstitialAd).setPlacementId(placementId);
+  }
+
+  @Test
+  public void testConstructorWithInterstitialAd() {
+    ResponseInfo responseInfo =
+        new ResponseInfo("AdapterName", "responseId", new Bundle(), null, new ArrayList<>());
+    when(mockInterstitialAd.getResponseInfo()).thenReturn(responseInfo);
+    unityInterstitialAd = new UnityInterstitialAd(activity, mockCallback, mockInterstitialAd);
+    assertThat(unityInterstitialAd.getResponseInfo()).isEqualTo(responseInfo);
   }
 }
