@@ -113,6 +113,7 @@ public class UnityAppOpenAdTest {
 
     eventCallback.onAdDismissedFullScreenContent();
     verify(mockCallback).onAdDismissedFullScreenContent();
+    assertThat(unityAppOpenAd.getAppOpenAd()).isNull();
 
     PrecisionType precisionType = PrecisionType.PRECISE;
     long valueMicros = 1000000L;
@@ -185,5 +186,14 @@ public class UnityAppOpenAdTest {
 
     // Verify that setPlacementId was called on the underlying ad.
     verify(mockAppOpenAd).setPlacementId(placementId);
+  }
+
+  @Test
+  public void testConstructorWithAppOpenAd() {
+    ResponseInfo responseInfo =
+        new ResponseInfo("AdapterName", "responseId", new Bundle(), null, new ArrayList<>());
+    when(mockAppOpenAd.getResponseInfo()).thenReturn(responseInfo);
+    unityAppOpenAd = new UnityAppOpenAd(activity, mockCallback, mockAppOpenAd);
+    assertThat(unityAppOpenAd.getResponseInfo()).isEqualTo(responseInfo);
   }
 }

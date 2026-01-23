@@ -20,10 +20,18 @@ import java.util.concurrent.Executors;
 /** AppOpen ad implementation for the Google Mobile Ads Unity plugin. */
 public class UnityAppOpenAd extends UnityAdBase<AppOpenAd, UnityAppOpenAdCallback> {
 
+  /** The {@link AppOpenAd}. */
+  private AppOpenAd appOpenAd;
+
   private final AdWrapper<AppOpenAd> adWrapper;
 
   public UnityAppOpenAd(Activity activity, UnityAppOpenAdCallback callback) {
     this(activity, callback, AdWrapper.forAppOpen(), Executors.newSingleThreadExecutor());
+  }
+
+  public UnityAppOpenAd(Activity activity, UnityAppOpenAdCallback callback, AppOpenAd appOpenAd) {
+    this(activity, callback, AdWrapper.forAppOpen(), Executors.newSingleThreadExecutor());
+    this.appOpenAd = appOpenAd;
   }
 
   @VisibleForTesting
@@ -35,6 +43,78 @@ public class UnityAppOpenAd extends UnityAdBase<AppOpenAd, UnityAppOpenAdCallbac
     super(activity, callback, executor);
     this.adWrapper = adWrapper;
   }
+
+  @SuppressWarnings("EnumOrdinal")
+  private final AppOpenAdEventCallback appOpenAdEventCallback =
+      new AppOpenAdEventCallback() {
+        @Override
+        public void onAdShowedFullScreenContent() {
+          // App open ad did show.
+          executor.execute(
+              () -> {
+                if (callback != null) {
+                  callback.onAdShowedFullScreenContent();
+                }
+              });
+        }
+
+        @Override
+        public void onAdDismissedFullScreenContent() {
+          executor.execute(
+              () -> {
+                if (callback != null) {
+                  callback.onAdDismissedFullScreenContent();
+                }
+              });
+          appOpenAd = null;
+        }
+
+        @Override
+        public void onAdFailedToShowFullScreenContent(
+            @NonNull FullScreenContentError fullScreenContentError) {
+          executor.execute(
+              () -> {
+                if (callback != null) {
+                  callback.onAdFailedToShowFullScreenContent(fullScreenContentError);
+                }
+              });
+        }
+
+        @Override
+        public void onAdImpression() {
+          executor.execute(
+              () -> {
+                if (callback != null) {
+                  callback.onAdImpression();
+                }
+              });
+        }
+
+        @Override
+        public void onAdClicked() {
+          executor.execute(
+              () -> {
+                if (callback != null) {
+                  callback.onAdClicked();
+                }
+              });
+        }
+
+        @Override
+        public void onAdPaid(@NonNull AdValue adValue) {
+          executor.execute(
+              () -> {
+                if (callback != null) {
+                  callback.onPaidEvent(
+                      // TODO(vkini): Remove this cast to int and use Utility method to convert to
+                      // int.
+                      adValue.getPrecisionType().ordinal(),
+                      adValue.getValueMicros(),
+                      adValue.getCurrencyCode());
+                }
+              });
+        }
+      };
 
   /**
    * Loads an app open ad.
@@ -49,7 +129,7 @@ public class UnityAppOpenAd extends UnityAdBase<AppOpenAd, UnityAppOpenAdCallbac
                 new AdLoadCallback<AppOpenAd>() {
                   @Override
                   public void onAdLoaded(@NonNull AppOpenAd ad) {
-                    UnityAppOpenAd.this.ad = ad;
+                    appOpenAd = ad;
                     executor.execute(
                         () -> {
                           if (callback != null) {
@@ -70,10 +150,14 @@ public class UnityAppOpenAd extends UnityAdBase<AppOpenAd, UnityAppOpenAdCallbac
                 }));
   }
 
+  @VisibleForTesting
+  AppOpenAd getAppOpenAd() {
+    return appOpenAd;
+  }
+
   /** Shows the app open ad if it has loaded. */
-  @SuppressWarnings("EnumOrdinal")
   public void show() {
-    if (ad == null) {
+    if (appOpenAd == null) {
       Log.e(
           PluginUtils.LOGTAG,
           "Tried to show app open ad before it was ready. Please call loadAd first and wait for"
@@ -82,90 +166,21 @@ public class UnityAppOpenAd extends UnityAdBase<AppOpenAd, UnityAppOpenAdCallbac
     }
 
     // Listen for ad events.
-    ad.setAdEventCallback(
-        new AppOpenAdEventCallback() {
-          @Override
-          public void onAdShowedFullScreenContent() {
-            // App open ad did show.
-            executor.execute(
-                () -> {
-                  if (callback != null) {
-                    callback.onAdShowedFullScreenContent();
-                  }
-                });
-          }
-
-          @Override
-          public void onAdDismissedFullScreenContent() {
-            executor.execute(
-                () -> {
-                  if (callback != null) {
-                    callback.onAdDismissedFullScreenContent();
-                  }
-                });
-            ad = null;
-          }
-
-          @Override
-          public void onAdFailedToShowFullScreenContent(
-              @NonNull FullScreenContentError fullScreenContentError) {
-            executor.execute(
-                () -> {
-                  if (callback != null) {
-                    callback.onAdFailedToShowFullScreenContent(fullScreenContentError);
-                  }
-                });
-          }
-
-          @Override
-          public void onAdImpression() {
-            executor.execute(
-                () -> {
-                  if (callback != null) {
-                    callback.onAdImpression();
-                  }
-                });
-          }
-
-          @Override
-          public void onAdClicked() {
-            executor.execute(
-                () -> {
-                  if (callback != null) {
-                    callback.onAdClicked();
-                  }
-                });
-          }
-
-          @Override
-          public void onAdPaid(@NonNull AdValue adValue) {
-            executor.execute(
-                () -> {
-                  if (callback != null) {
-                    callback.onPaidEvent(
-                        // TODO(vkini): Remove this cast to int and use Utility method to convert to
-                        // int.
-                        adValue.getPrecisionType().ordinal(),
-                        adValue.getValueMicros(),
-                        adValue.getCurrencyCode());
-                  }
-                });
-          }
-        });
+    appOpenAd.setAdEventCallback(appOpenAdEventCallback);
 
     activity.runOnUiThread(
         () -> {
-          ad.setImmersiveMode(true);
-          ad.show(this.activity);
+          appOpenAd.setImmersiveMode(true);
+          appOpenAd.show(this.activity);
         });
   }
 
   /** Gets the placement ID for the {@link AppOpenAd}. */
   public long getPlacementId() {
-    if (ad == null) {
+    if (appOpenAd == null) {
       return 0;
     }
-    return ad.getPlacementId();
+    return appOpenAd.getPlacementId();
   }
 
   /**
@@ -177,19 +192,19 @@ public class UnityAppOpenAd extends UnityAdBase<AppOpenAd, UnityAppOpenAdCallbac
    * @param placementId A long integer provided by the AdMob UI for the configured placement.
    */
   public void setPlacementId(long placementId) {
-    if (ad == null) {
+    if (appOpenAd == null) {
       return;
     }
-    ad.setPlacementId(placementId);
+    appOpenAd.setPlacementId(placementId);
   }
 
   /** Returns the request response info. */
   @Nullable
   public ResponseInfo getResponseInfo() {
-    if (ad == null) {
+    if (appOpenAd == null) {
       Log.e(PluginUtils.LOGTAG, "Tried to get response info before it was ready. Returning null.");
       return null;
     }
-    return ad.getResponseInfo();
+    return appOpenAd.getResponseInfo();
   }
 }
