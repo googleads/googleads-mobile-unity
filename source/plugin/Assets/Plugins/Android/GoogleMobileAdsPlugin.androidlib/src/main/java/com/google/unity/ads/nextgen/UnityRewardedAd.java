@@ -28,6 +28,12 @@ public class UnityRewardedAd extends UnityAdBase<RewardedAd, UnityRewardedAdCall
     this(activity, callback, AdWrapper.forRewarded(), Executors.newSingleThreadExecutor());
   }
 
+  public UnityRewardedAd(
+      Activity activity, UnityRewardedAdCallback callback, RewardedAd rewardedAd) {
+    this(activity, callback, AdWrapper.forRewarded(), Executors.newSingleThreadExecutor());
+    this.ad = rewardedAd;
+  }
+
   @VisibleForTesting
   UnityRewardedAd(
       Activity activity,
@@ -36,6 +42,11 @@ public class UnityRewardedAd extends UnityAdBase<RewardedAd, UnityRewardedAdCall
       Executor executor) {
     super(activity, callback, executor);
     this.adWrapper = adWrapper;
+  }
+
+  @VisibleForTesting
+  RewardedAd getRewardedAd() {
+    return ad;
   }
 
   /**

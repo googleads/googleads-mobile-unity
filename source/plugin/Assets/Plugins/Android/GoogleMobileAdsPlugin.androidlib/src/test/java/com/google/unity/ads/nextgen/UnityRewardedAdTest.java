@@ -112,6 +112,7 @@ public final class UnityRewardedAdTest {
 
     eventCallback.onAdDismissedFullScreenContent();
     verify(mockCallback).onAdDismissedFullScreenContent();
+    assertThat(unityRewardedAd.getRewardedAd()).isNull();
 
     PrecisionType precisionType = PrecisionType.PRECISE;
     long valueMicros = 1000000L;
@@ -183,5 +184,14 @@ public final class UnityRewardedAdTest {
 
     // Verify that setPlacementId was called on the underlying ad.
     verify(mockRewardedAd).setPlacementId(placementId);
+  }
+
+  @Test
+  public void testConstructorWithRewardedAd() {
+    ResponseInfo responseInfo =
+        new ResponseInfo("AdapterName", "responseId", new Bundle(), null, new ArrayList<>());
+    when(mockRewardedAd.getResponseInfo()).thenReturn(responseInfo);
+    unityRewardedAd = new UnityRewardedAd(activity, mockCallback, mockRewardedAd);
+    assertThat(unityRewardedAd.getResponseInfo()).isEqualTo(responseInfo);
   }
 }
