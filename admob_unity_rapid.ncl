@@ -50,7 +50,7 @@ TARGET_DECAGON_WORKFLOW_PARAMETER = ::Rapid::WorkflowParameter::Bool(
   label = "Target Decagon",
   default_value = false,
   modifiable = true,
-  description = "Whether the Unity plugin should be built for Decagon (as opposed to Nonagon).",
+  description = "Whether the Unity plugin should be built for Decagon, as opposed to Nonagon (Android only).",
 );
 TARGET_DECAGON_WORKFLOW_PARAMETER_TRUE = ::Rapid::WorkflowParameter::Bool(
   name = "target_decagon",
@@ -77,7 +77,7 @@ FOR_IOS_WORKFLOW_PARAMETER = ::Rapid::WorkflowParameter::Bool(
   label = "For iOS",
   default_value = false,
   modifiable = true,
-  description = "Whether the Unity plugin should be built for iOS (as opposed to Android).",
+  description = "Whether the Unity plugin should be built for iOS (IPA), as opposed to Android (APK).",
 );
 PLATFORMS_WORKFLOW_PARAMETER = ::Rapid::WorkflowParameter::MultiSelectEnum(
   name = "platforms",
