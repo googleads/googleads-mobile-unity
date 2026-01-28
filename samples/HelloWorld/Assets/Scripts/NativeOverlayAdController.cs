@@ -161,7 +161,7 @@ namespace GoogleMobileAds.Sample
                 Debug.Log("Rendering Native Overlay ad.");
 
                 // Renders a native overlay ad at the default size
-                // and anchored to the bottom of the screne.
+                // and anchored to the bottom of the screen.
                 _nativeOverlayAd.RenderTemplate(Style, AdPosition.Bottom);
             }
         }
