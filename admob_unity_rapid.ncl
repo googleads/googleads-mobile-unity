@@ -72,13 +72,6 @@ BUILD_OFFLINE_WORKFLOW_PARAMETER = ::Rapid::WorkflowParameter::Bool(
   modifiable = true,
   description = "Whether the Unity plugin should be built offline (if so, caches must be allowed).",
 );
-FOR_IOS_WORKFLOW_PARAMETER = ::Rapid::WorkflowParameter::Bool(
-  name = "for_ios",
-  label = "For iOS",
-  default_value = false,
-  modifiable = true,
-  description = "Whether the Unity plugin should be built for iOS (IPA), as opposed to Android (APK).",
-);
 PLATFORMS_WORKFLOW_PARAMETER = ::Rapid::WorkflowParameter::MultiSelectEnum(
   name = "platforms",
   label = "Platform(s)",
@@ -86,6 +79,20 @@ PLATFORMS_WORKFLOW_PARAMETER = ::Rapid::WorkflowParameter::MultiSelectEnum(
   default_values = ["Android", "iOS"],
   modifiable = true,
   description = "The platforms to build for.",
+);
+FOR_IOS_WORKFLOW_PARAMETER = ::Rapid::WorkflowParameter::Bool(
+  name = "for_ios",
+  label = "For iOS",
+  default_value = false,
+  modifiable = true,
+  description = "Whether the Unity plugin should be built for iOS (IPA), as opposed to Android (APK).",
+);
+IOS_VERSION_WORKFLOW_PARAMETER = ::Rapid::WorkflowParameter::Simple(
+  name = "ios_version",
+  label = "iOS Version",
+  default_value = DEFAULT_IOS_VERSION,
+  modifiable = true,
+  description = "iOS version for which to build or test the IPA (e.g., '16.0'). It must comply with Unity iOS and Apple requirements.",
 );
 SHARED_BUILD_AND_TEST_WORKFLOW_PARAMETERS = [
   ::Rapid::WorkflowParameter::SingleSelectEnum(
@@ -104,13 +111,6 @@ SHARED_BUILD_AND_TEST_WORKFLOW_PARAMETERS = [
     default_value = DEFAULT_ANDROID_TARGET_SDK,
     modifiable = true,
     description = "Android target SDK version for which to build or test the APK.",
-  ),
-  ::Rapid::WorkflowParameter::Simple(
-    name = "ios_version",
-    label = "iOS Version",
-    default_value = DEFAULT_IOS_VERSION,
-    modifiable = true,
-    description = "iOS version for which to build or test the IPA (e.g., '16.0'). It must comply with Unity iOS and Apple requirements.",
   ),
   ::Rapid::WorkflowParameter::SingleSelectEnum(
     name = "project_name",
