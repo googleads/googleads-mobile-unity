@@ -171,23 +171,10 @@ public class UnityBannerAd {
                   @Override
                   public void onAdPaid(@NonNull AdValue adValue) {
                     if (callback != null) {
-                      int precisionType = 0;
-                      switch (adValue.getPrecisionType()) {
-                        case ESTIMATED:
-                          precisionType = 1;
-                          break;
-                        case PUBLISHER_PROVIDED:
-                          precisionType = 2;
-                          break;
-                        case PRECISE:
-                          precisionType = 3;
-                          break;
-                        case UNKNOWN:
-                          precisionType = 0;
-                          break;
-                      }
                       callback.onPaidEvent(
-                          precisionType, adValue.getValueMicros(), adValue.getCurrencyCode());
+                          Util.getAdValuePrecisionType(adValue.getPrecisionType()),
+                          adValue.getValueMicros(),
+                          adValue.getCurrencyCode());
                     }
                   }
                 });

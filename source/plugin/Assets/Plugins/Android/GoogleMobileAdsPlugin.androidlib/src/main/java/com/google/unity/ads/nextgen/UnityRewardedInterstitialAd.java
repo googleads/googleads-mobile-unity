@@ -170,9 +170,7 @@ public class UnityRewardedInterstitialAd
                 () -> {
                   if (callback != null) {
                     callback.onPaidEvent(
-                        // TODO(vkini): Remove this cast to int and use Utility method to convert to
-                        // int.
-                        adValue.getPrecisionType().ordinal(),
+                        Util.getAdValuePrecisionType(adValue.getPrecisionType()),
                         adValue.getValueMicros(),
                         adValue.getCurrencyCode());
                   }
