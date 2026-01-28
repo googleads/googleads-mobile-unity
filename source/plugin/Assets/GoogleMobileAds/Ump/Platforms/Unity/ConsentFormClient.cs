@@ -15,6 +15,7 @@
 using System;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
 using GoogleMobileAds.Ump.Api;
 using GoogleMobileAds.Ump.Common;
@@ -112,6 +113,7 @@ namespace GoogleMobileAds.Ump.Unity
         /// </summary>
         private void AddClickBehavior(GameObject placeholder, Action<FormError> onClick)
         {
+            WarnIfNoEventSystem();
             Image[] images = placeholder.GetComponentsInChildren<Image>();
             Image adImage = images[1];
             Button button = adImage.GetComponentInChildren<Button>();
@@ -145,6 +147,17 @@ namespace GoogleMobileAds.Ump.Unity
         {
             _formBehaviour.DestroyForm(_placeholderForm);
             _prefabForm = null;
+        }
+
+        /// <summary>
+        /// Logs a warning if no UI event system available in the current scene.
+        /// </summary>
+        private void WarnIfNoEventSystem()
+        {
+            if (EventSystem.current == null)
+            {
+                Debug.LogWarning("No event system available in the current scene. You need to add an UI Event System for interacting with the consent form.");
+            }
         }
     }
 }
