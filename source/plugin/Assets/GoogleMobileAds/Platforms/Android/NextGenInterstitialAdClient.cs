@@ -22,17 +22,15 @@ namespace GoogleMobileAds.Android
 {
     public class NextGenInterstitialAdClient : AndroidJavaProxy, IInterstitialClient
     {
-        internal AndroidJavaObject _androidInterstitialAd;
+      internal AndroidJavaObject androidInterstitialAd;
 
-        public NextGenInterstitialAdClient()
-            : base(NextGenUtils.UnityInterstitialAdCallbackClassName)
-        {
-            AndroidJavaClass playerClass = new AndroidJavaClass(Utils.UnityActivityClassName);
-            AndroidJavaObject activity =
-                    playerClass.GetStatic<AndroidJavaObject>("currentActivity");
-            _androidInterstitialAd =
-                new AndroidJavaObject(NextGenUtils.UnityInterstitialAdClassName, activity, this);
-        }
+      public NextGenInterstitialAdClient()
+          : base(NextGenUtils.UnityInterstitialAdCallbackClassName) {
+        AndroidJavaClass playerClass = new AndroidJavaClass(Utils.UnityActivityClassName);
+        AndroidJavaObject activity = playerClass.GetStatic<AndroidJavaObject>("currentActivity");
+        androidInterstitialAd =
+            new AndroidJavaObject(NextGenUtils.UnityInterstitialAdClassName, activity, this);
+      }
 
         public event EventHandler<EventArgs> OnAdLoaded;
 
@@ -61,14 +59,14 @@ namespace GoogleMobileAds.Android
         // Loads an ad.
         public void LoadAd(string adUnitId, AdRequest request)
         {
-            _androidInterstitialAd.Call("load",
-                                        NextGenUtils.GetAdRequestJavaObject(request, adUnitId));
+          androidInterstitialAd.Call("load",
+                                     NextGenUtils.GetAdRequestJavaObject(request, adUnitId));
         }
 
         // Presents the interstitial ad on the screen.
         public void Show()
         {
-            _androidInterstitialAd.Call("show");
+          androidInterstitialAd.Call("show");
         }
 
         // Destroys the interstitial ad.
@@ -86,22 +84,16 @@ namespace GoogleMobileAds.Android
 
         public long PlacementId
         {
-            get
-            {
-                return _androidInterstitialAd.Call<long>("getPlacementId");
-            }
-            set
-            {
-                _androidInterstitialAd.Call("setPlacementId", value);
-            }
+          get { return androidInterstitialAd.Call<long>("getPlacementId"); }
+          set { androidInterstitialAd.Call("setPlacementId", value); }
         }
 
         // Returns ad request response info
         public IResponseInfoClient GetResponseInfoClient()
         {
-            var responseInfoJavaObject
-                = _androidInterstitialAd.Call<AndroidJavaObject>("getResponseInfo");
-            return new NextGenResponseInfoClient(responseInfoJavaObject);
+          var responseInfoJavaObject =
+              androidInterstitialAd.Call<AndroidJavaObject>("getResponseInfo");
+          return new NextGenResponseInfoClient(responseInfoJavaObject);
         }
 
         #endregion

@@ -187,12 +187,18 @@ namespace GoogleMobileAds
             return new GoogleMobileAds.Android.AppOpenAdPreloaderClient();
         }
 
-        public IInterstitialAdPreloaderClient BuildInterstitialAdPreloaderClient() {
-          if (Application.platform == RuntimePlatform.Android) {
+        public IInterstitialAdPreloaderClient BuildInterstitialAdPreloaderClient()
+        {
+            if (Application.platform != RuntimePlatform.Android)
+            {
+                throw new InvalidOperationException(@"Called " + MethodBase.GetCurrentMethod().Name +
+                                                    " on non-Android runtime");
+            }
+            if (IsNextGenEnabled())
+            {
+                return new GoogleMobileAds.Android.NextGenInterstitialAdPreloaderClient();
+            }
             return new GoogleMobileAds.Android.InterstitialAdPreloaderClient();
-          }
-          throw new InvalidOperationException(@"Called " + MethodBase.GetCurrentMethod().Name +
-                                              " on non-Android runtime");
         }
 
         public IRewardedAdPreloaderClient BuildRewardedAdPreloaderClient()
