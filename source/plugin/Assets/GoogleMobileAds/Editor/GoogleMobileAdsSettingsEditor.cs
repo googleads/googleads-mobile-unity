@@ -18,6 +18,7 @@ namespace GoogleMobileAds.Editor
     SerializedProperty _enableKotlinXCoroutinesPackagingOption;
     SerializedProperty _disableOptimizeInitialization;
     SerializedProperty _disableOptimizeAdLoading;
+    SerializedProperty _enableNextGenSDK;
     SerializedProperty _userLanguage;
     SerializedProperty _userTrackingUsageDescription;
 
@@ -44,6 +45,7 @@ namespace GoogleMobileAds.Editor
           serializedObject.FindProperty("enableKotlinXCoroutinesPackagingOption");
       _disableOptimizeInitialization = serializedObject.FindProperty("disableOptimizeInitialization");
       _disableOptimizeAdLoading = serializedObject.FindProperty("disableOptimizeAdLoading");
+      _enableNextGenSDK = serializedObject.FindProperty("enableNextGenSDK");
       _userLanguage = serializedObject.FindProperty("userLanguage");
       _userTrackingUsageDescription =
           serializedObject.FindProperty("userTrackingUsageDescription");
@@ -137,6 +139,17 @@ namespace GoogleMobileAds.Editor
       if (settings.DisableOptimizeAdLoading)
       {
         EditorGUILayout.HelpBox(localization.ForKey("DISABLE_OPTIMIZE_AD_LOADING_HELPBOX"),
+                                MessageType.Info);
+      }
+
+
+      EditorGUILayout.PropertyField(
+          _enableNextGenSDK,
+          new GUIContent(localization.ForKey("ENABLE_NEXT_GEN_SDK")));
+
+      if (settings.EnableNextGenSDK)
+      {
+        EditorGUILayout.HelpBox(localization.ForKey("ENABLE_NEXT_GEN_SDK_HELPBOX"),
                                 MessageType.Info);
       }
 
