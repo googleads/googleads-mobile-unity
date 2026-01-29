@@ -22,14 +22,14 @@ namespace GoogleMobileAds.Android
 {
     public class NextGenAppOpenAdClient : AndroidJavaProxy, IAppOpenAdClient
     {
-        internal AndroidJavaObject _androidAppOpenAd;
+        internal AndroidJavaObject androidAppOpenAd;
 
         public NextGenAppOpenAdClient() : base(NextGenUtils.UnityAppOpenAdCallbackClassName)
         {
             AndroidJavaClass playerClass = new AndroidJavaClass(Utils.UnityActivityClassName);
             AndroidJavaObject activity =
                     playerClass.GetStatic<AndroidJavaObject>("currentActivity");
-            _androidAppOpenAd =
+            androidAppOpenAd =
                 new AndroidJavaObject(NextGenUtils.UnityAppOpenAdClassName, activity, this);
         }
 
@@ -51,14 +51,15 @@ namespace GoogleMobileAds.Android
 
         public event Action OnAdClicked;
 
-        public long PlacementId {
+        public long PlacementId
+        {
             get
             {
-                return _androidAppOpenAd.Call<long>("getPlacementId");
+                return androidAppOpenAd.Call<long>("getPlacementId");
             }
             set
             {
-                _androidAppOpenAd.Call("setPlacementId", value);
+                androidAppOpenAd.Call("setPlacementId", value);
             }
         }
 
@@ -69,18 +70,18 @@ namespace GoogleMobileAds.Android
 
         public void LoadAd(string adUnitID, AdRequest request)
         {
-            _androidAppOpenAd.Call("load", NextGenUtils.GetAdRequestJavaObject(request, adUnitID));
+            androidAppOpenAd.Call("load", NextGenUtils.GetAdRequestJavaObject(request, adUnitID));
         }
 
         public void Show()
         {
-            _androidAppOpenAd.Call("show");
+            androidAppOpenAd.Call("show");
         }
 
         public IResponseInfoClient GetResponseInfoClient()
         {
             var responseInfoJavaObject
-                = _androidAppOpenAd.Call<AndroidJavaObject>("getResponseInfo");
+                = androidAppOpenAd.Call<AndroidJavaObject>("getResponseInfo");
             return new NextGenResponseInfoClient(responseInfoJavaObject);
         }
 
