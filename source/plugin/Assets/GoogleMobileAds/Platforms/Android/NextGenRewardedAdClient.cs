@@ -22,214 +22,159 @@ namespace GoogleMobileAds.Android
 {
     public class NextGenRewardedAdClient : AndroidJavaProxy, IRewardedAdClient
     {
-        private AndroidJavaObject _androidRewardedAd;
+      internal AndroidJavaObject androidRewardedAd;
 
-        public NextGenRewardedAdClient() : base(NextGenUtils.UnityRewardedAdCallbackClassName)
-        {
-            AndroidJavaClass playerClass = new AndroidJavaClass(Utils.UnityActivityClassName);
-            AndroidJavaObject activity =
-                playerClass.GetStatic<AndroidJavaObject>("currentActivity");
-            _androidRewardedAd = new AndroidJavaObject(
-                NextGenUtils.UnityRewardedAdClassName, activity, this);
+      public NextGenRewardedAdClient() : base(NextGenUtils.UnityRewardedAdCallbackClassName) {
+        AndroidJavaClass playerClass = new AndroidJavaClass(Utils.UnityActivityClassName);
+        AndroidJavaObject activity = playerClass.GetStatic<AndroidJavaObject>("currentActivity");
+        androidRewardedAd =
+            new AndroidJavaObject(NextGenUtils.UnityRewardedAdClassName, activity, this);
+      }
+
+#region IRewardedClient implementation
+
+      public event EventHandler<EventArgs> OnAdLoaded;
+
+      public event EventHandler<LoadAdErrorClientEventArgs> OnAdFailedToLoad;
+
+      public event EventHandler<Reward> OnUserEarnedReward;
+
+      public event Action<AdValue> OnPaidEvent;
+
+      public event EventHandler<AdErrorClientEventArgs> OnAdFailedToPresentFullScreenContent;
+
+      public event EventHandler<EventArgs> OnAdDidPresentFullScreenContent;
+
+      public event EventHandler<EventArgs> OnAdDidDismissFullScreenContent;
+
+      public event EventHandler<EventArgs> OnAdDidRecordImpression;
+
+      public event Action OnAdClicked;
+
+      public void CreateRewardedAd() {
+        // No op.
+      }
+
+      public void LoadAd(string adUnitId, AdRequest request) {
+        androidRewardedAd.Call("load", NextGenUtils.GetAdRequestJavaObject(request, adUnitId));
+      }
+
+      public void Show() {
+        androidRewardedAd.Call("show");
+      }
+
+      public void SetServerSideVerificationOptions(
+          ServerSideVerificationOptions serverSideVerificationOptions) {
+        // TODO(vkini): Implement SetServerSideVerificationOptions for NextGen SDK.
+      }
+
+      public long PlacementId {
+        get { return androidRewardedAd.Call<long>("getPlacementId"); }
+        set { androidRewardedAd.Call("setPlacementId", value); }
+      }
+
+      // Returns the reward item for the loaded rewarded ad.
+      public Reward GetRewardItem() {
+        AndroidJavaObject rewardItem = androidRewardedAd.Call<AndroidJavaObject>("getRewardItem");
+        if (rewardItem == null) {
+          return null;
         }
+        string type = rewardItem.Call<string>("getType");
+        int amount = rewardItem.Call<int>("getAmount");
+        return new Reward() { Type = type, Amount = (double)amount };
+      }
 
-        #region IRewardedClient implementation
+      // Returns the ad unit ID.
+      public string GetAdUnitID() {
+        // TODO(vkini): Implement GetAdUnitID for NextGen.
+        return "";
+      }
 
-        public event EventHandler<EventArgs> OnAdLoaded;
+      // Ad Preloading v1 will not be supported in NextGen.
+      public bool IsAdAvailable(string adUnitId) {
+        return false;
+      }
 
-        public event EventHandler<LoadAdErrorClientEventArgs> OnAdFailedToLoad;
+      public IRewardedAdClient PollAd(string adUnitId) {
+        return null;
+      }
 
-        public event EventHandler<Reward> OnUserEarnedReward;
+      // Returns ad request response info
+      public IResponseInfoClient GetResponseInfoClient() {
+        var responseInfoJavaObject = androidRewardedAd.Call<AndroidJavaObject>("getResponseInfo");
+        return new NextGenResponseInfoClient(responseInfoJavaObject);
+      }
 
-        public event Action<AdValue> OnPaidEvent;
+      // Destroy the rewarded ad.
+      public void DestroyRewardedAd() {
+        // Currently we don't have to do anything on destroy.
+      }
 
-        public event EventHandler<AdErrorClientEventArgs> OnAdFailedToPresentFullScreenContent;
+#endregion
 
-        public event EventHandler<EventArgs> OnAdDidPresentFullScreenContent;
-
-        public event EventHandler<EventArgs> OnAdDidDismissFullScreenContent;
-
-        public event EventHandler<EventArgs> OnAdDidRecordImpression;
-
-        public event Action OnAdClicked;
-
-        public void CreateRewardedAd()
-        {
-            // No op.
+#region Callbacks from UnityRewardedAdCallback
+      void onRewardedAdLoaded() {
+        if (this.OnAdLoaded != null) {
+          this.OnAdLoaded(this, EventArgs.Empty);
         }
+      }
 
-        public void LoadAd(string adUnitId, AdRequest request)
-        {
-            _androidRewardedAd.Call("load", NextGenUtils.GetAdRequestJavaObject(request, adUnitId));
+      void onRewardedAdFailedToLoad(AndroidJavaObject error) {
+        if (this.OnAdFailedToLoad != null) {
+          LoadAdErrorClientEventArgs args =
+              new LoadAdErrorClientEventArgs() { LoadAdErrorClient =
+                                                     new NextGenLoadAdErrorClient(error) };
+          this.OnAdFailedToLoad(this, args);
         }
+      }
 
-        public void Show()
-        {
-            _androidRewardedAd.Call("show");
+      void onAdFailedToShowFullScreenContent(AndroidJavaObject error) {
+        if (this.OnAdFailedToPresentFullScreenContent != null) {
+          AdErrorClientEventArgs args =
+              new AdErrorClientEventArgs() { AdErrorClient =
+                                                 new NextGenFullScreenContentErrorClient(error) };
+          this.OnAdFailedToPresentFullScreenContent(this, args);
         }
+      }
 
-        public void SetServerSideVerificationOptions(
-                        ServerSideVerificationOptions serverSideVerificationOptions)
-        {
-            // TODO(vkini): Implement SetServerSideVerificationOptions for NextGen SDK.
+      void onAdShowedFullScreenContent() {
+        if (this.OnAdDidPresentFullScreenContent != null) {
+          this.OnAdDidPresentFullScreenContent(this, EventArgs.Empty);
         }
+      }
 
-        public long PlacementId
-        {
-            get
-            {
-                return _androidRewardedAd.Call<long>("getPlacementId");
-            }
-            set
-            {
-                _androidRewardedAd.Call("setPlacementId", value);
-            }
+      void onAdDismissedFullScreenContent() {
+        if (this.OnAdDidDismissFullScreenContent != null) {
+          this.OnAdDidDismissFullScreenContent(this, EventArgs.Empty);
         }
+      }
 
-        // Returns the reward item for the loaded rewarded ad.
-        public Reward GetRewardItem()
-        {
-            AndroidJavaObject rewardItem =
-                _androidRewardedAd.Call<AndroidJavaObject>("getRewardItem");
-            if (rewardItem == null)
-            {
-                return null;
-            }
-            string type = rewardItem.Call<string>("getType");
-            int amount = rewardItem.Call<int>("getAmount");
-            return new Reward()
-            {
-                Type = type,
-                Amount = (double)amount
-            };
+      void onAdImpression() {
+        if (this.OnAdDidRecordImpression != null) {
+          this.OnAdDidRecordImpression(this, EventArgs.Empty);
         }
+      }
 
-        // Returns the ad unit ID.
-        public string GetAdUnitID()
-        {
-            // TODO(vkini): Implement GetAdUnitID for NextGen.
-            return "";
+      void onAdClicked() {
+        if (this.OnAdClicked != null) {
+          this.OnAdClicked();
         }
+      }
 
-        // Ad Preloading v1 will not be supported in NextGen.
-        public bool IsAdAvailable(string adUnitId)
-        {
-            return false;
+      void onUserEarnedReward(string type, float amount) {
+        if (this.OnUserEarnedReward != null) {
+          Reward args = new Reward() { Type = type, Amount = amount };
+          this.OnUserEarnedReward(this, args);
         }
+      }
 
-        public IRewardedAdClient PollAd(string adUnitId)
-        {
-            return null;
+      public void onPaidEvent(int precision, long valueInMicros, string currencyCode) {
+        if (this.OnPaidEvent != null) {
+          AdValue adValue = new AdValue() { Precision = (AdValue.PrecisionType)precision,
+                                            Value = valueInMicros, CurrencyCode = currencyCode };
+          this.OnPaidEvent(adValue);
         }
-
-        // Returns ad request response info
-        public IResponseInfoClient GetResponseInfoClient()
-        {
-            var responseInfoJavaObject = _androidRewardedAd.Call<AndroidJavaObject>(
-                    "getResponseInfo");
-            return new NextGenResponseInfoClient(responseInfoJavaObject);
-        }
-
-        // Destroy the rewarded ad.
-        public void DestroyRewardedAd()
-        {
-            // Currently we don't have to do anything on destroy.
-        }
-
-        #endregion
-
-        #region Callbacks from UnityRewardedAdCallback
-        void onRewardedAdLoaded()
-        {
-            if (this.OnAdLoaded != null)
-            {
-                this.OnAdLoaded(this, EventArgs.Empty);
-            }
-        }
-
-        void onRewardedAdFailedToLoad(AndroidJavaObject error)
-        {
-            if (this.OnAdFailedToLoad != null)
-            {
-                LoadAdErrorClientEventArgs args = new LoadAdErrorClientEventArgs()
-                {
-                    LoadAdErrorClient = new NextGenLoadAdErrorClient(error)
-                };
-                this.OnAdFailedToLoad(this, args);
-            }
-        }
-
-        void onAdFailedToShowFullScreenContent(AndroidJavaObject error)
-        {
-            if (this.OnAdFailedToPresentFullScreenContent != null)
-            {
-                AdErrorClientEventArgs args = new AdErrorClientEventArgs()
-                {
-                    AdErrorClient = new NextGenFullScreenContentErrorClient(error)
-                };
-                this.OnAdFailedToPresentFullScreenContent(this, args);
-            }
-        }
-
-        void onAdShowedFullScreenContent()
-        {
-            if (this.OnAdDidPresentFullScreenContent != null)
-            {
-                this.OnAdDidPresentFullScreenContent(this, EventArgs.Empty);
-            }
-        }
-
-
-        void onAdDismissedFullScreenContent()
-        {
-            if (this.OnAdDidDismissFullScreenContent != null)
-            {
-                this.OnAdDidDismissFullScreenContent(this, EventArgs.Empty);
-            }
-        }
-
-        void onAdImpression()
-        {
-            if (this.OnAdDidRecordImpression != null)
-            {
-                this.OnAdDidRecordImpression(this, EventArgs.Empty);
-            }
-        }
-
-        void onAdClicked()
-        {
-            if (this.OnAdClicked != null)
-            {
-                this.OnAdClicked();
-            }
-        }
-
-        void onUserEarnedReward(string type, float amount)
-        {
-            if (this.OnUserEarnedReward != null)
-            {
-                Reward args = new Reward()
-                {
-                    Type = type,
-                    Amount = amount
-                };
-                this.OnUserEarnedReward(this, args);
-            }
-        }
-
-        public void onPaidEvent(int precision, long valueInMicros, string currencyCode)
-        {
-            if (this.OnPaidEvent != null)
-            {
-                AdValue adValue = new AdValue()
-                {
-                    Precision = (AdValue.PrecisionType)precision,
-                    Value = valueInMicros,
-                    CurrencyCode = currencyCode
-                };
-                this.OnPaidEvent(adValue);
-            }
-        }
+      }
 
         #endregion
     }
