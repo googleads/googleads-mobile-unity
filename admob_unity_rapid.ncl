@@ -21,7 +21,7 @@ FORCE_BUILD_UNITS_WORKFLOW_PARAMETER = ::Rapid::WorkflowParameter::Bool(
   name = "force_build_units",
   label = "Force Build Units",
   default_value = true,
-  modifiable = false,
+  modifiable = true,  // useful for retries when the candidate was already built
   description = "Whether to run Blaze build on buildable units before triggering the Kokoro build. Intended when the units are not automatically built during the candidate creation.",
 );
 ADMOB_ANDROID_APP_ID_WORKFLOW_PARAMETER = ::Rapid::WorkflowParameter::Simple(
