@@ -51,6 +51,8 @@ namespace GoogleMobileAds.Android {
         "com.google.android.libraries.ads.mobile.sdk.common.AdRequest$Builder";
     public const string BannerAdRequestBuilderClassName =
         "com.google.android.libraries.ads.mobile.sdk.banner.BannerAdRequest$Builder";
+    public const string NativeAdRequestBuilderClassName =
+        "com.google.android.libraries.ads.mobile.sdk.nativead.NativeAdRequest$Builder";
 #endregion
 
 #region AdSize
@@ -61,6 +63,11 @@ namespace GoogleMobileAds.Android {
 #region PreloadConfiguration
     public const string PreloadConfigurationClassName =
         "com.google.android.libraries.ads.mobile.sdk.common.PreloadConfiguration";
+#endregion
+
+#region NativeAd
+    public const string NativeAdTypeClassName =
+        "com.google.android.libraries.ads.mobile.sdk.nativead.NativeAd$NativeAdType";
 #endregion
 
 #endregion
@@ -142,6 +149,36 @@ namespace GoogleMobileAds.Android {
                                                      AdRequest.BuildVersionString());
 
       return bannerAdRequestBuilder.Call<AndroidJavaObject>("build");
+    }
+
+    /// <summary>
+    /// Converts the plugin AdRequest object to a native java proxy object for use by the sdk.
+    /// </summary>
+    /// <param name="AdRequest">the AdRequest from the unity plugin.</param>
+    public static AndroidJavaObject GetNativeAdRequestJavaObject(
+        string adUnitId, AdRequest request, string nativePluginVersion = null) {
+      AndroidJavaClass nativeAdTypeClass = new AndroidJavaClass(NativeAdTypeClassName);
+      AndroidJavaObject nativeTypeNative = nativeAdTypeClass.GetStatic<AndroidJavaObject>("NATIVE");
+
+      AndroidJavaObject nativeAdTypesList = new AndroidJavaObject("java.util.ArrayList");
+      nativeAdTypesList.Call<bool>("add", nativeTypeNative);
+
+      AndroidJavaObject nativeAdRequestBuilder =
+          new AndroidJavaObject(NativeAdRequestBuilderClassName, adUnitId, nativeAdTypesList);
+      nativeAdRequestBuilder.Call<AndroidJavaObject>("disableImageDownloading");
+
+      foreach (string keyword in request.Keywords) {
+        nativeAdRequestBuilder.Call<AndroidJavaObject>("addKeyword", keyword);
+      }
+
+      foreach (KeyValuePair<string, string> entry in request.CustomTargeting) {
+        nativeAdRequestBuilder.Call<AndroidJavaObject>("putCustomTargeting", entry.Key,
+                                                       entry.Value);
+      }
+      nativeAdRequestBuilder.Call<AndroidJavaObject>(
+          "setRequestAgent", AdRequest.BuildVersionString(nativePluginVersion));
+
+      return nativeAdRequestBuilder.Call<AndroidJavaObject>("build");
     }
 
     public static AndroidJavaObject GetAdSizeJavaObject(AdSize adSize) {
