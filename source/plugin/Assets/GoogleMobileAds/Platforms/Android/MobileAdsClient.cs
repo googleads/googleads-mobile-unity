@@ -32,6 +32,7 @@ namespace GoogleMobileAds.Android
         private readonly IInsightsEmitter _insightsEmitter = InsightsEmitter.Instance;
         private readonly ITracer _tracer;
         private Action<IInitializationStatusClient> _initCompleteAction;
+        private readonly AsyncTraceScope _initScope = new AsyncTraceScope();
 
         private MobileAdsClient() : base(Utils.OnInitializationCompleteListenerClassName) {
             _mobileAdsClass = new AndroidJavaClass(Utils.UnityMobileAdsClassName);
@@ -48,8 +49,10 @@ namespace GoogleMobileAds.Android
 
         public void Initialize(Action<IInitializationStatusClient> initCompleteAction)
         {
-          using (_tracer.StartTrace("MobileAdsClient.Initialize"))
-          {
+            if (!_initScope.StartIfIdle(_tracer, "MobileAdsClient.Initialize"))
+            {
+                return;
+            }
             _initCompleteAction = initCompleteAction;
 
             Task.Run(() => {
@@ -70,11 +73,6 @@ namespace GoogleMobileAds.Android
                 AndroidJNI.DetachCurrentThread();
               }
             });
-          }
-          _insightsEmitter.Emit(new Insight()
-          {
-              Name = Insight.CuiName.SdkInitialized
-          });
         }
 
         public void SetApplicationVolume(float volume)
@@ -175,6 +173,7 @@ namespace GoogleMobileAds.Android
 
         public void onInitializationComplete(AndroidJavaObject initStatus)
         {
+            _initScope.Complete();
           if (_initCompleteAction != null) {
             IInitializationStatusClient statusClient = new InitializationStatusClient(initStatus);
             _initCompleteAction(statusClient);
