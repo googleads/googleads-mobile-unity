@@ -181,6 +181,15 @@ namespace GoogleMobileAds.Unity
                 {
                     OnAdDidRecordImpression(this, EventArgs.Empty);
                 }
+                if (OnPaidEvent != null)
+                {
+                    OnPaidEvent(new AdValue()
+                    {
+                        Value = 2000,
+                        Precision = AdValue.PrecisionType.Estimated,
+                        CurrencyCode = "USD"
+                    });
+                }
             }
             else
             {
