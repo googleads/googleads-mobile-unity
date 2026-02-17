@@ -160,21 +160,25 @@ namespace GoogleMobileAds.Common
 
                 yield return uwr.SendWebRequest();
 
+                if (Debug.isDebugBuild)
+                {
+
 #if UNITY_2020_2_OR_NEWER
-                if (uwr.result != UnityWebRequest.Result.Success)
+                    if (uwr.result != UnityWebRequest.Result.Success)
 #else
-                if (uwr.isHttpError || uwr.isNetworkError)
+                    if (uwr.isHttpError || uwr.isNetworkError)
 #endif
-                {
-                    Debug.LogError(string.Format(
-                        "Error sending batch: {0} | Response code: {1}.",
-                        uwr.error, uwr.responseCode));
-                }
-                else if (Debug.isDebugBuild)
-                {
-                    // This only guarantees transport, not that the request is fully processed as
-                    // RCS will just drop unknown fields if it can't otherwise parse them.
-                    Debug.Log("Batch sent successfully.");
+                    {
+                        Debug.Log(string.Format(
+                            "Error sending batch: {0} | Response code: {1}.",
+                            uwr.error, uwr.responseCode));
+                    }
+                    else
+                    {
+                        // This only guarantees transport, not that the request is fully processed
+                        // as RCS will just drop unknown fields if it can't otherwise parse them.
+                        Debug.Log("Batch sent successfully.");
+                    }
                 }
             }
         }
