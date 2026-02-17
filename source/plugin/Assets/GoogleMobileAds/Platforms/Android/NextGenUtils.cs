@@ -171,6 +171,19 @@ namespace GoogleMobileAds.Android {
         nativeAdRequestBuilder.Call<AndroidJavaObject>("addKeyword", keyword);
       }
 
+      // TODO(b/485327880): Extras are split into two different categories in the next-gen sdk. The
+      // below implementation only maps to the GoogleExtras so the third-party extras should be
+      // handled separately.
+      if (request.Extras != null)
+      {
+          AndroidJavaObject bundle = new AndroidJavaObject(Utils.BundleClassName);
+          foreach (KeyValuePair<string, string> entry in request.Extras)
+          {
+              bundle.Call("putString", entry.Key, entry.Value);
+          }
+          nativeAdRequestBuilder.Call<AndroidJavaObject>("setGoogleExtrasBundle", bundle);
+      }
+
       foreach (KeyValuePair<string, string> entry in request.CustomTargeting) {
         nativeAdRequestBuilder.Call<AndroidJavaObject>("putCustomTargeting", entry.Key,
                                                        entry.Value);
