@@ -3,6 +3,8 @@ Google Mobile Ads Unity Plugin Change Log
 Version Next
 **************
 
+- Updated the GMA iOS SDK dependency version to 13.0.0.
+- Updated the GMA Android SDK dependency version to 25.0.0
 - Fixed corner case where OnAdFullScreenContentClosed was not fired when the Home button was pressed at the same time as the ad was being dismissed.
 - Fire onPaidEvent when showing Rewarded and RewardedInterstitial ads in the Unity Editor.
 
