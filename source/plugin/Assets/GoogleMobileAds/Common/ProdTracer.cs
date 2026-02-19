@@ -61,12 +61,18 @@ namespace GoogleMobileAds.Common
             return _traceStack;
         }
 
-        /// <summary>
-        /// Starts a new trace.
-        /// </summary>
-        /// <param name="name">The name of the trace operation.</param>
         /// <returns>A Trace instance.</returns>
         public ITrace StartTrace(string name)
+        {
+            return StartTraceInternal(name, isSynchronous: true);
+        }
+
+        public ITrace StartAsyncTrace(string name)
+        {
+            return StartTraceInternal(name, isSynchronous: false);
+        }
+
+        private ITrace StartTraceInternal(string name, bool isSynchronous)
         {
             Stack<TraceInfo> traceStack = GetTraceStack();
 
@@ -85,7 +91,10 @@ namespace GoogleMobileAds.Common
                 StartTimeEpochMillis = startTime,
             };
 
-            traceStack.Push(traceInfo);
+            if (isSynchronous)
+            {
+                traceStack.Push(traceInfo);
+            }
 
             _insightsEmitter.Emit(new Insight
             {
@@ -97,7 +106,7 @@ namespace GoogleMobileAds.Common
                 }
             });
 
-            return new Trace(traceInfo, parentId, this);
+            return new Trace(traceInfo, parentId, this, isSynchronous);
         }
 
         /// <summary>
@@ -108,16 +117,18 @@ namespace GoogleMobileAds.Common
             private readonly TraceInfo _traceInfo;
             private readonly string _parentId;
             private readonly Tracer _tracer;
+            private readonly bool _isSynchronous;
             private bool _isDisposed = false;
             private readonly object _disposeLock = new object();
 
-            public Trace(TraceInfo traceInfo, string parentId, Tracer tracer)
+            public Trace(TraceInfo traceInfo, string parentId, Tracer tracer, bool isSynchronous)
             {
                 _traceInfo = traceInfo;
                 // We capture the parentId on init to ensure the end-of-trace insight is consistent
                 // with the start-of-trace insight, even if the stack state is modified in between.
                 _parentId = parentId;
                 _tracer = tracer;
+                _isSynchronous = isSynchronous;
             }
 
             /// <summary>
@@ -132,23 +143,6 @@ namespace GoogleMobileAds.Common
                 {
                     if (_isDisposed) return;
                     _isDisposed = true;
-                }
-                // If LIFO order is maintained, verify current trace is top
-                // before popping to ensure the trace tree structure remains valid.
-                Stack<TraceInfo> traceStack = _tracer.GetTraceStack();
-                if (traceStack.Count > 0 && traceStack.Peek().Id == _traceInfo.Id)
-                {
-                    traceStack.Pop();
-                }
-
-                // If LIFO order is broken, this branch will handle cleanup.
-                else if (traceStack.Count > 0)
-                {
-                    // If top of the stack is not the current trace, this indicates that traces are
-                    // not being disposed in LIFO order (e.g., parent disposed before child), or
-                    // traces are being disposed on different threads without context.
-                    // The stack is likely corrupted, so we clear it to prevent further issues.
-                    traceStack.Clear();
                 }
 
                 long endTime = (long)DateTime.UtcNow
@@ -169,6 +163,29 @@ namespace GoogleMobileAds.Common
                         HasEnded = true,
                     }
                 });
+                if (!_isSynchronous)
+                {
+                    // Because `ThreadStatic` stacks are local to a specific thread, they cannot
+                    // track state for asynchronous operations that migrate between threads.
+                    // `AsyncTraceScope` holds a direct reference to an `ITrace` handle,
+                    // which keeps track of the start time.
+                    return;
+                }
+                // For synchronous traces, manage the trace stack.
+                // If the current trace is at the top of the stack, pop it. Otherwise, the stack is
+                // in a corrupted state, so we clear it to prevent further issues.
+                Stack<TraceInfo> traceStack = _tracer.GetTraceStack();
+                if (traceStack.Count > 0)
+                {
+                    if (traceStack.Peek().Id == _traceInfo.Id)
+                    {
+                        traceStack.Pop();
+                    }
+                    else
+                    {
+                        traceStack.Clear();
+                    }
+                }
             }
         }
     }

@@ -31,11 +31,13 @@ namespace GoogleMobileAds.Android
         // Ensures InsightsEmitter is initialized from the main thread to handle CUIs.
         private readonly IInsightsEmitter _insightsEmitter = InsightsEmitter.Instance;
         private readonly ITracer _tracer;
+        private readonly AsyncTraceScope _asyncTraceScope;
         private Action<IInitializationStatusClient> _initCompleteAction;
 
         private MobileAdsClient() : base(Utils.OnInitializationCompleteListenerClassName) {
             _mobileAdsClass = new AndroidJavaClass(Utils.UnityMobileAdsClassName);
             _tracer = new Tracer(_insightsEmitter);
+            _asyncTraceScope = new AsyncTraceScope(_tracer);
             // Ensures GlobalExceptionHandler is initialized from the main thread to handle Android
             // untrapped exceptions.
             var _ = GlobalExceptionHandler.Instance;
@@ -48,8 +50,7 @@ namespace GoogleMobileAds.Android
 
         public void Initialize(Action<IInitializationStatusClient> initCompleteAction)
         {
-          using (_tracer.StartTrace("MobileAdsClient.Initialize"))
-          {
+            _asyncTraceScope.StartTraceIfInactive("MobileAdsClient.Initialize");
             _initCompleteAction = initCompleteAction;
 
             Task.Run(() => {
@@ -70,12 +71,7 @@ namespace GoogleMobileAds.Android
                 AndroidJNI.DetachCurrentThread();
               }
             });
-          }
-          _insightsEmitter.Emit(new Insight()
-          {
-              Name = Insight.CuiName.SdkInitialized
-          });
-        }
+       }
 
         public void SetApplicationVolume(float volume)
         {
@@ -175,10 +171,12 @@ namespace GoogleMobileAds.Android
 
         public void onInitializationComplete(AndroidJavaObject initStatus)
         {
-          if (_initCompleteAction != null) {
-            IInitializationStatusClient statusClient = new InitializationStatusClient(initStatus);
-            _initCompleteAction(statusClient);
-          }
+            _asyncTraceScope.Complete();
+            _insightsEmitter.Emit(new Insight() { Name = Insight.CuiName.SdkInitialized });
+            if (_initCompleteAction != null) {
+              IInitializationStatusClient statusClient = new InitializationStatusClient(initStatus);
+              _initCompleteAction(statusClient);
+            }
             string nativePluginVersion = "";
             try {
               var assembly = Assembly.Load("GoogleMobileAdsNative.Common");
