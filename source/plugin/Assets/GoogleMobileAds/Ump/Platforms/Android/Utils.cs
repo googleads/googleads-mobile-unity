@@ -86,6 +86,16 @@ namespace GoogleMobileAds.Ump.Android
                             "setTagForUnderAgeOfConsent",
                             consentRequestParameters.TagForUnderAgeOfConsent);
 
+
+            // Set ConsentSyncId
+            if (consentRequestParameters.ConsentSyncId != null &&
+                consentRequestParameters.ConsentSyncId.Length > 0)
+            {
+                consentRequestParametersBuilder =
+                    consentRequestParametersBuilder.Call<AndroidJavaObject>(
+                        "setConsentSyncId", consentRequestParameters.ConsentSyncId);
+            }
+
             // Build ConsentDebugSettings object
             ConsentDebugSettings consentDebugSettings =
                     consentRequestParameters.ConsentDebugSettings;
