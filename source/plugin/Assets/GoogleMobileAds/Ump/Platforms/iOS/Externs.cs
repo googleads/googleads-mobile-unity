@@ -38,6 +38,10 @@ namespace GoogleMobileAds.Ump.iOS
                 IntPtr requestParametersRef, bool tagForUnderAgeOfConsent);
 
         [DllImport("__Internal")]
+        internal static extern void GADUSetRequestParametersConsentSyncID(
+                IntPtr requestParametersRef, string consentSyncID);
+
+        [DllImport("__Internal")]
         internal static extern IntPtr GADUCreateDebugSettings();
 
         [DllImport("__Internal")]

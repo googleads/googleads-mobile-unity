@@ -82,6 +82,10 @@
   __weak GADUConsentInformation *weakSelf = self;
   UMPRequestParameters *parameters = [[UMPRequestParameters alloc] init];
   parameters.tagForUnderAgeOfConsent = bridgeParams.tagForUnderAgeOfConsent;
+  if (bridgeParams.consentSyncID) {
+    parameters.consentSyncID = bridgeParams.consentSyncID;
+  }
+
   UMPDebugSettings *debugSettings = [[UMPDebugSettings alloc] init];
   debugSettings.geography = (NSInteger)bridgeParams.debugSettings.geography;
   debugSettings.testDeviceIdentifiers = bridgeParams.debugSettings.testDeviceIdentifiers;
