@@ -11,6 +11,6 @@
   "dependencies": {
     "com.unity.ugui": "1.0.0",
     "com.unity.modules.androidjni": "1.0.0",
-    "com.google.ads.mobile" : "10.7.0"
+    "com.google.ads.mobile" : "11.0.0"
   }
 }

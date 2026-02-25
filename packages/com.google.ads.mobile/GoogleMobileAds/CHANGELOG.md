@@ -1,5 +1,18 @@
 Google Mobile Ads Unity Plugin Change Log
 **************
+Version 11.0.0
+**************
+
+- Updated the GMA iOS SDK dependency version to 13.0.0.
+- Updated the GMA Android SDK dependency version to 25.0.0
+- Updated the UMP Android dependency version to 4.0.0.
+- Updated the UMP iOS dependency version to 3.1.0.
+- Added ConsentSyncId parameter to sync a user's consent across apps configured for consent syncing via the UMP SDK.
+- Fixed Analytics module firing error logs.
+- Fixed corner case where OnAdFullScreenContentClosed was not fired when the Home button was pressed at the same time as the ad was being dismissed.
+- Fire onPaidEvent when showing Rewarded and RewardedInterstitial ads in the Unity Editor.
+
+**************
 Version 10.7.0
 **************
 

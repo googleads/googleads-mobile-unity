@@ -6,7 +6,8 @@ namespace GoogleMobileAds.Snippets
     /// <summary>
     /// Code snippets used for the developer guides.
     /// </summary>
-    internal class ReduceFirstImpressionLatencySnippets : MonoBehaviour {
+    internal class ReduceFirstImpressionLatencySnippets : MonoBehaviour
+    {
         // [START reduce_first_impression_latency]
         private bool _isInitialAdLoaded = false;
 
@@ -32,7 +33,8 @@ namespace GoogleMobileAds.Snippets
         }
         // [END reduce_first_impression_latency]
 
-        void LoadAd() {
+        void LoadAd()
+        {
             // TODO: Load an ad.
         }
     }
