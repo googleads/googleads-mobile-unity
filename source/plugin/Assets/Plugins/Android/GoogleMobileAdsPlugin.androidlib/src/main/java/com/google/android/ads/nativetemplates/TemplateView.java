@@ -251,14 +251,13 @@ public final class TemplateView extends FrameLayout {
   }
 
   private boolean areAllViewsInitialized() {
+    // some views are not required. For example, tertiaryView and mediaView are not used in the
+    // small template.
     return nativeAdView != null
         && callToActionView != null
         && primaryView != null
         && secondaryView != null
-        && tertiaryView != null
-        && mediaView != null
-        && iconView != null
-        && ratingBar != null;
+        && iconView != null;
   }
 
   private boolean adHasOnlyStore(NativeAd nativeAd) {
