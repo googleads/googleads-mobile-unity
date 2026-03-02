@@ -251,14 +251,12 @@ public final class TemplateView extends FrameLayout {
   }
 
   private boolean areAllViewsInitialized() {
+    // Check that the views required by both the small and medium templates are initialized.
     return nativeAdView != null
         && callToActionView != null
         && primaryView != null
         && secondaryView != null
-        && tertiaryView != null
-        && mediaView != null
-        && iconView != null
-        && ratingBar != null;
+        && iconView != null;
   }
 
   private boolean adHasOnlyStore(NativeAd nativeAd) {
