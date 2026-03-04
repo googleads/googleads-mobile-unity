@@ -13,6 +13,7 @@ using System;
 using UnityEngine;
 using UnityEditor;
 using System.IO;
+using System.Text.RegularExpressions;
 using GooglePlayServices;
 using UnityEditor.Build;
 using UnityEditor.Build.Reporting;
@@ -38,6 +39,13 @@ namespace GoogleMobileAds.Editor
         const string CustomMainGradleTemplateFileName = "mainTemplate.gradle";
         const string JetifierEntry =
             "android.jetifier.ignorelist=annotation-experimental-1.4.0.aar";
+        const string PlayServicesAdsSDK = "com.google.android.gms:play-services-ads:24.9.0";
+        const string NextGenSDK =
+            "com.google.android.libraries.ads.mobile.sdk:ads-mobile-sdk:0.23.0-beta01";
+        const string NextGenSDKRegex =
+            "com\\.google\\.android\\.libraries\\.ads\\.mobile\\.sdk:ads-mobile-sdk:[^\"]*";
+        const string PlayServicesAdsSDKRegex =
+            "com\\.google\\.android\\.gms:play-services-ads:[^\"]*";
 
         // Set the callback order to be before EDM4U.
         // https://github.com/googlesamples/unity-jar-resolver/blob/master/source/AndroidResolver/src/PlayServicesPreBuild.cs#L39
@@ -45,6 +53,8 @@ namespace GoogleMobileAds.Editor
 
         public void OnPreprocessBuild(BuildReport report)
         {
+            UpdateSDKDependencies();
+
             if(!GoogleMobileAdsSettings.LoadInstance().EnableGradleBuildPreProcessor)
             {
                 return;
@@ -53,6 +63,47 @@ namespace GoogleMobileAds.Editor
 #if ANDROID_GRADLE_BUILD_PRE_PROCESSOR_ENABLED
             ApplyBuildSettings(report);
 #endif
+        }
+
+        private void UpdateSDKDependencies()
+        {
+            // Update GoogleMobileAdsDependencies.xml if Next Gen SDK is enabled.
+            string dependenciesDir =
+                Path.Combine(Application.dataPath, "GoogleMobileAds", "Editor");
+            string projectPath = Directory.GetParent(Application.dataPath).ToString();
+            string[] scripts = Directory.GetFiles(projectPath, "AndroidBuildPreProcessor.cs",
+                                                  SearchOption.AllDirectories);
+            if (scripts.Length > 0)
+            {
+                dependenciesDir = Path.GetDirectoryName(scripts[0]);
+            }
+            string dependenciesFilePath =
+                Path.Combine(dependenciesDir, "GoogleMobileAdsDependencies.xml");
+            string content = File.ReadAllText(dependenciesFilePath);
+
+            if (File.Exists(dependenciesFilePath))
+            {
+                if (GoogleMobileAdsSettings.LoadInstance().EnableNextGenSDK &&
+                    Regex.IsMatch(content, PlayServicesAdsSDKRegex))
+                {
+                    string newContent = Regex.Replace(content, PlayServicesAdsSDKRegex, NextGenSDK);
+                    if (content != newContent)
+                    {
+                        File.WriteAllText(dependenciesFilePath, newContent);
+                    }
+                }
+                else if (!GoogleMobileAdsSettings.LoadInstance().EnableNextGenSDK &&
+                    Regex.IsMatch(content, NextGenSDKRegex))
+                {
+                    // Reverting from Next Gen SDK to Play Services Ads SDK.
+                    string newContent = Regex.Replace(content, NextGenSDKRegex, PlayServicesAdsSDK);
+                    if (content != newContent)
+                    {
+                        File.WriteAllText(dependenciesFilePath, newContent);
+                    }
+                }
+                PlayServicesResolver.ResolveSync(true);
+            }
         }
 
         private void ApplyBuildSettings(BuildReport report)
