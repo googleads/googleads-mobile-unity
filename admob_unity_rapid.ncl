@@ -70,7 +70,7 @@ USE_CACHES_WORKFLOW_PARAMETER_TRUE = ::Rapid::WorkflowParameter::Bool(
   label = "Use Caches",
   default_value = true,
   modifiable = true,
-  description = "Whether the Unity and Gradle (if Android is selected) caches should be used to speed up the build. It must be enabled for offline builds.",
+  description = "Whether the Unity and Gradle caches should be used to speed up the build.",
 );
 BUILD_OFFLINE_WORKFLOW_PARAMETER = ::Rapid::WorkflowParameter::Bool(
   name = "build_offline",
