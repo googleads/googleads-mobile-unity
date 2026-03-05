@@ -65,6 +65,13 @@ USE_CACHES_WORKFLOW_PARAMETER = ::Rapid::WorkflowParameter::Bool(
   modifiable = true,
   description = "Whether the Unity and Gradle (if Android is selected) caches should be used to speed up the build. It must be enabled for offline builds.",
 );
+USE_CACHES_WORKFLOW_PARAMETER_TRUE = ::Rapid::WorkflowParameter::Bool(
+  name = "use_caches",
+  label = "Use Caches",
+  default_value = true,
+  modifiable = true,
+  description = "Whether the Unity and Gradle (if Android is selected) caches should be used to speed up the build. It must be enabled for offline builds.",
+);
 BUILD_OFFLINE_WORKFLOW_PARAMETER = ::Rapid::WorkflowParameter::Bool(
   name = "build_offline",
   label = "Build Offline",
@@ -150,7 +157,7 @@ FORCE_BUILD_UNITY_APK_NONAGON_WORKFLOW = ::Rapid::Workflow::CustomWorkflow(
   config_path = "google3/third_party/java_src/gma_sdk_mediation/release/rapid/workflows/unity/build_unity_apk_or_ipa.pp",
   parameters = SHARED_BUILD_AND_TEST_WORKFLOW_PARAMETERS + [
     ADMOB_ANDROID_APP_ID_WORKFLOW_PARAMETER,
-    USE_CACHES_WORKFLOW_PARAMETER,
+    USE_CACHES_WORKFLOW_PARAMETER_TRUE,
     FORCE_BUILD_UNITS_WORKFLOW_PARAMETER,
   // The `target_decagon` argument is false by default in the workflow, so we
   // don't need to pass it explicitly.
@@ -164,7 +171,7 @@ FORCE_BUILD_UNITY_APK_DECAGON_WORKFLOW = ::Rapid::Workflow::CustomWorkflow(
   config_path = "google3/third_party/java_src/gma_sdk_mediation/release/rapid/workflows/unity/build_unity_apk_or_ipa.pp",
   parameters = SHARED_BUILD_AND_TEST_WORKFLOW_PARAMETERS + [
     ADMOB_ANDROID_APP_ID_WORKFLOW_PARAMETER,
-    USE_CACHES_WORKFLOW_PARAMETER,
+    USE_CACHES_WORKFLOW_PARAMETER_TRUE,
     FORCE_BUILD_UNITS_WORKFLOW_PARAMETER,
     TARGET_DECAGON_WORKFLOW_PARAMETER_TRUE,
   ],
