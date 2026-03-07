@@ -90,7 +90,7 @@ namespace GoogleMobileAds.Samples
         /// </summary>
         private void InitializeGoogleMobileAds()
         {
-            // The Google Mobile Ads Unity plugin needs to be run only once and before loading any ads.
+            // The Google Mobile Ads Unity plugin should be initialized once before loading any ads.
             if (_isInitialized.HasValue)
             {
                 return;
