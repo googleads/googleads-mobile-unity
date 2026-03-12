@@ -22,6 +22,21 @@ namespace GoogleMobileAds.Snippets
         }
         // [END request_consent]
 
+
+        void StartWithSyncIdentifier()
+        {
+            // [START sync_consent_identifier]
+            // Create a ConsentRequestParameters object with a consent sync ID.
+            ConsentRequestParameters requestParameters = new ConsentRequestParameters
+            {
+                ConsentSyncId = "CONSENT_SYNC_ID"
+            };
+            // [END sync_consent_identifier]
+
+            // Request an update of the user's consent information.
+            ConsentInformation.Update(requestParameters, OnConsentInfoUpdated);
+        }
+
         void OnConsentInfoUpdated(FormError consentError)
         {
             if (consentError != null)
