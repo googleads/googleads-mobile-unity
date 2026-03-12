@@ -87,6 +87,8 @@ namespace GoogleMobileAds.Common
             AdShown = 5,
             AdClosed = 6,
             AdClicked = 7,
+            AdOpened = 8,
+            AdPaid = 9,
         }
 
         public enum AdFormat
