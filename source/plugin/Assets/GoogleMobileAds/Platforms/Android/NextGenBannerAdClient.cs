@@ -145,7 +145,7 @@ namespace GoogleMobileAds.Android
         public IResponseInfoClient GetResponseInfoClient()
         {
             var responseInfoJavaObject = bannerView.Call<AndroidJavaObject>("getResponseInfo");
-            return new ResponseInfoClient(ResponseInfoClientType.AdLoaded, responseInfoJavaObject);
+            return new NextGenResponseInfoClient(responseInfoJavaObject);
         }
 
         #region Callbacks from UnityBannerAdListener.
