@@ -35,6 +35,10 @@ namespace GoogleMobileAds.Api
 
         public Reward() {}
 
+        /// <summary>
+        /// Creates a Reward based on an existing Reward.
+        /// </summary>
+        /// <param name="reward">The Reward to copy.</param>
         public Reward(Reward reward)
         {
             Type = reward.Type;

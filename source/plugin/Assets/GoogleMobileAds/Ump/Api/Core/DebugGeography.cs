@@ -31,7 +31,7 @@ namespace GoogleMobileAds.Ump.Api
 
         /// <summary>
         /// Geography appears as not in EEA for debug devices.
-        /// @deprecated Use @ref DebugGeography.Other instead.
+        /// @deprecated Use <see cref="Other"/> instead.
         /// </summary>
         [System.Obsolete("Deprecated. Use DebugGeography.Other instead.")]
         NotEEA = 2,
