@@ -54,18 +54,19 @@ namespace GoogleMobileAds.Api
 
         /// <summary>
         /// Returns the error message.
-        /// <seealso href="https://support.google.com/admob/answer/9905175"/>
+        /// <a href="https://support.google.com/admob/answer/9905175">
+        /// https://support.google.com/admob/answer/9905175</a>
         /// for explanations of common errors.
-        /// <summary>
+        /// </summary>
         /// <returns>Ad Error Message. </returns>
         public string GetMessage()
         {
             return _client.GetMessage();
         }
 
-        ///<summary>
-        /// Returns the cause of this error or <c>null</c> if the cause is nonexistent or unknown.
         /// <summary>
+        /// Returns the cause of this error or <c>null</c> if the cause is nonexistent or unknown.
+        /// </summary>
         /// <returns>Returns the cause of this error.</returns>
         public AdError GetCause()
         {

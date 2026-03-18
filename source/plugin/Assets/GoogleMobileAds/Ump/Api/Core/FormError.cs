@@ -23,8 +23,8 @@ namespace GoogleMobileAds.Ump.Api
         /// The error code.
         /// <remarks>
         /// The error code constant values are different depending on the runtime platform.
-        /// For iOS <see href="https://developers.google.com/admob/ump/ios/api/reference/Enums/UMPFormErrorCode"/>
-        /// For Android <see href="https://developers.google.com/admob/ump/android/api/reference/com/google/android/ump/FormError"/>
+        /// For iOS <a href="https://developers.google.com/admob/ump/ios/api/reference/Enums/UMPFormErrorCode">iOS error codes</a>
+        /// For Android <a href="https://developers.google.com/admob/ump/android/api/reference/com/google/android/ump/FormError">Android error codes</a>
         /// </remarks>
         /// </summary>
         public int ErrorCode { get; private set; }

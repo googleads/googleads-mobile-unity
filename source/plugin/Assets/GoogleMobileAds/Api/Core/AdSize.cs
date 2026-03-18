@@ -31,8 +31,8 @@ namespace GoogleMobileAds.Api
 
     /// <summary>
     /// The size of a banner ad.
-    /// <seealso cref="https://developers.google.com/admob/unity/banner#banner_sizes">
-    /// Banner sizes.</seealso>
+    /// <a href="https://developers.google.com/admob/unity/banner#banner_sizes">
+    /// Banner sizes.</a>
     /// </summary>
     public class AdSize
     {
@@ -81,6 +81,9 @@ namespace GoogleMobileAds.Api
         [System.Obsolete("Deprecated. Use AnchoredAdaptive.")]
         public static readonly AdSize SmartBanner = new AdSize(0, 0, Type.SmartBanner);
 
+        /// <summary>
+        /// A flag indicating that the banner ad should be full-width.
+        /// </summary>
         public static readonly int FullWidth = -1;
 
         /// <summary>
@@ -108,16 +111,31 @@ namespace GoogleMobileAds.Api
             return adSize;
         }
 
+        /// <summary>
+        /// Returns an anchored adaptive banner ad size in landscape orientation with the given width.
+        /// </summary>
+        /// <param name="width">The width of the ad in density-independent pixels.</param>
+        /// <returns>The anchored adaptive banner ad size.</returns>
         public static AdSize GetLandscapeAnchoredAdaptiveBannerAdSizeWithWidth(int width)
         {
             return CreateAnchoredAdaptiveAdSize(width, Orientation.Landscape);
         }
 
+        /// <summary>
+        /// Returns an anchored adaptive banner ad size in portrait orientation with the given width.
+        /// </summary>
+        /// <param name="width">The width of the ad in density-independent pixels.</param>
+        /// <returns>The anchored adaptive banner ad size.</returns>
         public static AdSize GetPortraitAnchoredAdaptiveBannerAdSizeWithWidth(int width)
         {
             return CreateAnchoredAdaptiveAdSize(width, Orientation.Portrait);
         }
 
+        /// <summary>
+        /// Returns an anchored adaptive banner ad size in the current orientation with the given width.
+        /// </summary>
+        /// <param name="width">The width of the ad in density-independent pixels.</param>
+        /// <returns>The anchored adaptive banner ad size.</returns>
         public static AdSize GetCurrentOrientationAnchoredAdaptiveBannerAdSizeWithWidth(int width)
         {
             return CreateAnchoredAdaptiveAdSize(width, Orientation.Current);
@@ -167,6 +185,11 @@ namespace GoogleMobileAds.Api
             }
         }
 
+        /// <summary>
+        /// Determines whether the specified object is equal to the current AdSize.
+        /// </summary>
+        /// <param name="obj">The object to compare with the current AdSize.</param>
+        /// <returns>true if the specified object is equal to the current AdSize; otherwise, false.</returns>
         public override bool Equals(object obj)
         {
             if (obj == null || GetType() != obj.GetType())
@@ -179,6 +202,12 @@ namespace GoogleMobileAds.Api
             && (_type == other._type) && (_orientation == other._orientation);
         }
 
+        /// <summary>
+        /// Determines whether two specified AdSize objects have the same value.
+        /// </summary>
+        /// <param name="a">The first AdSize to compare.</param>
+        /// <param name="b">The second AdSize to compare.</param>
+        /// <returns>true if the value of a is the same as the value of b; otherwise, false.</returns>
         public static bool operator ==(AdSize a, AdSize b)
         {
             if ((object)a == null)
@@ -189,6 +218,12 @@ namespace GoogleMobileAds.Api
             return a.Equals(b);
         }
 
+        /// <summary>
+        /// Determines whether two specified AdSize objects have different values.
+        /// </summary>
+        /// <param name="a">The first AdSize to compare.</param>
+        /// <param name="b">The second AdSize to compare.</param>
+        /// <returns>true if the value of a is different from the value of b; otherwise, false.</returns>
         public static bool operator !=(AdSize a, AdSize b)
         {
             if ((object)a == null)
@@ -199,6 +234,10 @@ namespace GoogleMobileAds.Api
             return !a.Equals(b);
         }
 
+        /// <summary>
+        /// Returns the hash code for this AdSize.
+        /// </summary>
+        /// <returns>A 32-bit signed integer hash code.</returns>
         public override int GetHashCode()
         {
             int hashBase = 71;

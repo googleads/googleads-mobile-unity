@@ -133,7 +133,7 @@ namespace GoogleMobileAds.Api
         /// <summary>
         /// Shows a rewarded interstitial ad.
         /// </summary>
-        /// <param name="userRewardEarnedCallback">
+        /// <param name="userEarnedRewardCallback">
         /// An action to be raised when the user earns a reward.
         /// </param>
         public void Show(Action<Reward> userEarnedRewardCallback)

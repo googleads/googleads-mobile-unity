@@ -45,6 +45,10 @@ namespace GoogleMobileAds.Api
 
         public PreloadConfiguration() { }
 
+        /// <summary>
+        /// Creates a PreloadConfiguration based on an existing PreloadConfiguration.
+        /// </summary>
+        /// <param name="configuration">The PreloadConfiguration to copy.</param>
         public PreloadConfiguration(PreloadConfiguration configuration)
         {
             AdUnitId = configuration.AdUnitId;

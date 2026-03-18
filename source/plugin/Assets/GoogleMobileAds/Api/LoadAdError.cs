@@ -36,9 +36,9 @@ namespace GoogleMobileAds.Api
 
         /// <summary>
         /// Returns ResponseInfo object for the failed request.
-        /// <seealso href="https://developers.google.com/admob/unity/response-info">
-        /// response-info</seealso> for more inforomation about Response Info.
-        /// <summary>
+        /// <a href="https://developers.google.com/admob/unity/response-info">
+        /// response-info</a> for more inforomation about Response Info.
+        /// </summary>
         /// <returns>The <see cref="ResponseInfo"/> of this error.</returns>
         public ResponseInfo GetResponseInfo()
         {

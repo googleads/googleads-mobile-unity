@@ -35,6 +35,10 @@ namespace GoogleMobileAds.Api
 
         public ServerSideVerificationOptions() {}
 
+        /// <summary>
+        /// Creates a ServerSideVerificationOptions based on an existing ServerSideVerificationOptions.
+        /// </summary>
+        /// <param name="options">The ServerSideVerificationOptions to copy.</param>
         public ServerSideVerificationOptions(ServerSideVerificationOptions options)
         {
             UserId = options.UserId;

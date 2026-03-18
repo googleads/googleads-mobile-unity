@@ -24,6 +24,10 @@ namespace GoogleMobileAds.Api
     {
         private IAdapterResponseInfoClient _client;
 
+        /// <summary>
+        /// Creates an AdapterResponseInfo.
+        /// </summary>
+        /// <param name="client">The client used to get adapter response info.</param>
         public AdapterResponseInfo(IAdapterResponseInfoClient client)
         {
             _client = client;

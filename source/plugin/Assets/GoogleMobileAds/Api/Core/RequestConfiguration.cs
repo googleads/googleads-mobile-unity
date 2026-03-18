@@ -32,8 +32,8 @@ namespace GoogleMobileAds.Api
         /// <summary>
         /// This property allows you to specify whether you would like your app to be treated as
         /// child-directed for purposes of the Children’s Online Privacy Protection Act (COPPA) -
-        /// <seealso href="http://business.ftc.gov/privacy-and-security/childrens-privacy">
-        /// http://business.ftc.gov/privacy-and-security/childrens-privacy</seealso>.
+        /// <a href="http://business.ftc.gov/privacy-and-security/childrens-privacy">
+        /// http://business.ftc.gov/privacy-and-security/childrens-privacy</a>.
         ///
         /// If you set this property to True, you will
         /// indicate that your app should be treated as child-directed for purposes of the Children’s
@@ -83,6 +83,10 @@ namespace GoogleMobileAds.Api
 
         public RequestConfiguration() {}
 
+        /// <summary>
+        /// Creates a RequestConfiguration based on an existing RequestConfiguration.
+        /// </summary>
+        /// <param name="requestConfiguration">The RequestConfiguration to copy.</param>
         public RequestConfiguration(RequestConfiguration requestConfiguration)
         {
             MaxAdContentRating = requestConfiguration.MaxAdContentRating;
