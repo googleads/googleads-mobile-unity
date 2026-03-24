@@ -35,7 +35,7 @@ namespace GoogleMobileAds.Api
 
         /// <summary>
         /// Test device ID used to load test ads.
-        /// <seealso href="https://developers.google.com/admob/unity/test-ads"/>.
+        /// <a href="https://developers.google.com/admob/unity/test-ads">https://developers.google.com/admob/unity/test-ads</a>.
         /// </summary>
         public const string TestDeviceSimulator = "SIMULATOR";
 
@@ -52,6 +52,10 @@ namespace GoogleMobileAds.Api
 
         public AdRequest() {}
 
+        /// <summary>
+        /// Creates an <see cref="AdRequest"/> from a given <see cref="AdRequest"/>.
+        /// </summary>
+        /// <param name="request">The <see cref="AdRequest"/> parameter to copy.</param>
         public AdRequest(AdRequest request)
         {
             Keywords = request.Keywords;

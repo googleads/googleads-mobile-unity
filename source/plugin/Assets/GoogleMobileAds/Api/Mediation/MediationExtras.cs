@@ -19,7 +19,7 @@ namespace GoogleMobileAds.Api.Mediation
     /// <summary>
     /// Extra parameters for mediation custom events. These parameters will be
     /// passed by the Google Mobile Ads SDK to mediation.
-    /// <seealso href="https://developers.google.com/admob/unity/custom-events"/>
+    /// <a href="https://developers.google.com/admob/unity/custom-events">https://developers.google.com/admob/unity/custom-events</a>
     /// </summary>
     public abstract class MediationExtras
     {
@@ -33,8 +33,14 @@ namespace GoogleMobileAds.Api.Mediation
             Extras = new Dictionary<string, string>();
         }
 
+        /// <summary>
+        /// The Android mediation extra builder class name.
+        /// </summary>
         public abstract string AndroidMediationExtraBuilderClassName { get; }
 
+        /// <summary>
+        /// The iOS mediation extra builder class name.
+        /// </summary>
         public abstract string IOSMediationExtraBuilderClassName { get; }
     }
 }

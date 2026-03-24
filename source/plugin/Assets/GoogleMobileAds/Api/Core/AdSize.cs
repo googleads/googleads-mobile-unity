@@ -81,6 +81,9 @@ namespace GoogleMobileAds.Api
         [System.Obsolete("Deprecated. Use AnchoredAdaptive.")]
         public static readonly AdSize SmartBanner = new AdSize(0, 0, Type.SmartBanner);
 
+        /// <summary>
+        /// The full width banner size.
+        /// </summary>
         public static readonly int FullWidth = -1;
 
         /// <summary>
@@ -108,16 +111,31 @@ namespace GoogleMobileAds.Api
             return adSize;
         }
 
+        /// <summary>
+        /// Gets a landscape adaptive banner ad size.
+        /// </summary>
+        /// <param name="width">The width of the ad in density-independent pixels.</param>
+        /// <returns>A landscape adaptive banner ad size.</returns>
         public static AdSize GetLandscapeAnchoredAdaptiveBannerAdSizeWithWidth(int width)
         {
             return CreateAnchoredAdaptiveAdSize(width, Orientation.Landscape);
         }
 
+        /// <summary>
+        /// Gets a portrait adaptive banner ad size.
+        /// </summary>
+        /// <param name="width">The width of the ad in density-independent pixels.</param>
+        /// <returns>A portrait adaptive banner ad size.</returns>
         public static AdSize GetPortraitAnchoredAdaptiveBannerAdSizeWithWidth(int width)
         {
             return CreateAnchoredAdaptiveAdSize(width, Orientation.Portrait);
         }
 
+        /// <summary>
+        /// Gets a current orientation adaptive banner ad size.
+        /// </summary>
+        /// <param name="width">The width of the ad in density-independent pixels.</param>
+        /// <returns>A current orientation adaptive banner ad size.</returns>
         public static AdSize GetCurrentOrientationAnchoredAdaptiveBannerAdSizeWithWidth(int width)
         {
             return CreateAnchoredAdaptiveAdSize(width, Orientation.Current);
@@ -167,6 +185,9 @@ namespace GoogleMobileAds.Api
             }
         }
 
+        /// <summary>
+        /// Returns whether the <see cref="AdSize"/> objects are equal.
+        /// </summary>
         public override bool Equals(object obj)
         {
             if (obj == null || GetType() != obj.GetType())
@@ -179,6 +200,12 @@ namespace GoogleMobileAds.Api
             && (_type == other._type) && (_orientation == other._orientation);
         }
 
+        /// <summary>
+        /// Returns whether the <see cref="AdSize"/> objects are equal.
+        /// </summary>
+        /// <param name="a">The first <see cref="AdSize"/> object.</param>
+        /// <param name="b">The second <see cref="AdSize"/> object.</param>
+        /// <returns>True if the <see cref="AdSize"/> objects are equal.</returns>
         public static bool operator ==(AdSize a, AdSize b)
         {
             if ((object)a == null)
@@ -189,6 +216,12 @@ namespace GoogleMobileAds.Api
             return a.Equals(b);
         }
 
+        /// <summary>
+        /// Returns whether the <see cref="AdSize"/> objects are not equal.
+        /// </summary>
+        /// <param name="a">The first <see cref="AdSize"/> object.</param>
+        /// <param name="b">The second <see cref="AdSize"/> object.</param>
+        /// <returns>True if the <see cref="AdSize"/> objects are not equal.</returns>
         public static bool operator !=(AdSize a, AdSize b)
         {
             if ((object)a == null)
@@ -199,6 +232,9 @@ namespace GoogleMobileAds.Api
             return !a.Equals(b);
         }
 
+        /// <summary>
+        /// Returns the hash code.
+        /// </summary>
         public override int GetHashCode()
         {
             int hashBase = 71;

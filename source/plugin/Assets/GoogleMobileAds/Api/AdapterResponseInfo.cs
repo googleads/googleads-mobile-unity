@@ -24,6 +24,12 @@ namespace GoogleMobileAds.Api
     {
         private IAdapterResponseInfoClient _client;
 
+        /// <summary>
+        /// Creates an <see cref="AdapterResponseInfo"/>.
+        /// </summary>
+        /// <param name="client">
+        /// A platform level <see cref="IAdapterResponseInfoClient"/> implementation.
+        /// </param>
         public AdapterResponseInfo(IAdapterResponseInfoClient client)
         {
             _client = client;

@@ -45,6 +45,10 @@ namespace GoogleMobileAds.Api
 
         public PreloadConfiguration() { }
 
+        /// <summary>
+        /// Creates a <see cref="PreloadConfiguration"/> from a given <see cref="PreloadConfiguration"/>.
+        /// </summary>
+        /// <param name="configuration">The <see cref="PreloadConfiguration"/> parameter to copy.</param>
         public PreloadConfiguration(PreloadConfiguration configuration)
         {
             AdUnitId = configuration.AdUnitId;

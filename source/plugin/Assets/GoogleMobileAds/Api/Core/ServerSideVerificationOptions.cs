@@ -35,6 +35,10 @@ namespace GoogleMobileAds.Api
 
         public ServerSideVerificationOptions() {}
 
+        /// <summary>
+        /// Creates a <see cref="ServerSideVerificationOptions"/> from a given <see cref="ServerSideVerificationOptions"/>.
+        /// </summary>
+        /// <param name="options">The <see cref="ServerSideVerificationOptions"/> parameter to copy.</param>
         public ServerSideVerificationOptions(ServerSideVerificationOptions options)
         {
             UserId = options.UserId;

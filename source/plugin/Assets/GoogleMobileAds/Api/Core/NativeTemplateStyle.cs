@@ -43,36 +43,43 @@ namespace GoogleMobileAds.Api
     public string TemplateId;
 
     /// <summary>
-    // The background color.
+    /// The background color.
     /// </summary>
     public Color MainBackgroundColor;
 
     /// <summary>
-    // The NativeTemplateTextStyle for the primary text.
+    /// The NativeTemplateTextStyle for the primary text.
     /// </summary>
     public NativeTemplateTextStyle PrimaryText;
 
     /// <summary>
     /// The NativeTemplateTextStyle for the second row of text in the template.
-    /// <summary>
+    /// </summary>
     public NativeTemplateTextStyle SecondaryText;
 
     /// <summary>
     /// The NativeTemplateTextStyle for the third row of text in the template.
-    /// <summary>
+    /// </summary>
     public NativeTemplateTextStyle TertiaryText;
 
     /// <summary>
     /// The NativeTemplateTextStyle for the call to action.
-    /// <summary>
+    /// </summary>
     public NativeTemplateTextStyle CallToActionText;
 
+    /// <summary>
+    /// Creates a <see cref="NativeTemplateStyle"/> using the Small Template<see cref="TemplateId"/>.
+    /// </summary>
     public NativeTemplateStyle()
     {
       // Default to using the small template.
       TemplateId = NativeTemplateId.Small;
     }
 
+    /// <summary>
+    /// Creates a <see cref="NativeTemplateStyle"/> from a given <see cref="NativeTemplateStyle"/>.
+    /// </summary>
+    /// <param name="templateStyle">The <see cref="NativeTemplateStyle"/> parameter to copy.</param>
     public NativeTemplateStyle(NativeTemplateStyle templateStyle)
     {
       TemplateId = templateStyle.TemplateId;

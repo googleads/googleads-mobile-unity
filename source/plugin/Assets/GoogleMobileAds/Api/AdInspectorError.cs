@@ -18,34 +18,44 @@ namespace GoogleMobileAds.Api {
 
   /// <summary>
   /// Error information about why the ad inspector failed.
-  /// <summary>
+  /// </summary>
   public class AdInspectorError : AdError {
 
         /// <summary>
         /// Error information about why the ad inspector failed.
-        /// <summary>
+        /// </summary>
         public enum AdInspectorErrorCode {
           /// <summary>
           /// Ad inspector had an internal error.
-          /// <summary>
+          /// </summary>
           ERROR_CODE_INTERNAL_ERROR = 0,
           /// <summary>
           /// Ad inspector failed to load.
-          /// <summary>
+          /// </summary>
           ERROR_CODE_FAILED_TO_LOAD = 1,
           /// <summary>
           /// Ad inspector cannot be opened because the device is not in test mode.
           /// information.
-          /// <summary>
+          /// </summary>
           ERROR_CODE_NOT_IN_TEST_MODE = 2,
           /// <summary>
           /// Ad inspector cannot be opened because it is already open.
-          /// <summary>
+          /// </summary>
           ERROR_CODE_ALREADY_OPEN = 3
         }
 
+    /// <summary>
+    /// Creates an <see cref="AdInspectorError"/>.
+    /// </summary>
+    /// <param name="client">
+    /// A platform level <see cref="IAdInspectorErrorClient"/> implementation.
+    /// </param>
     public AdInspectorError(IAdInspectorErrorClient client) : base(client) {}
 
+    /// <summary>
+    /// Returns the error code.
+    /// </summary>
+    /// <returns>The error code.</returns>
     public new AdInspectorErrorCode GetCode() {
       return (AdInspectorErrorCode)base.GetCode();
     }
