@@ -22,6 +22,8 @@ namespace GoogleMobileAds.Android
 {
     public class NextGenBannerAdClient : AndroidJavaProxy, IBannerClient
     {
+        private readonly IInsightsEmitter _insightsEmitter = InsightsEmitter.Instance;
+
         protected internal AndroidJavaObject bannerView;
 
         String adUnitId;
@@ -152,6 +154,14 @@ namespace GoogleMobileAds.Android
 
         public void onAdLoaded()
         {
+            _insightsEmitter.Emit(new Insight()
+            {
+                Name = Insight.CuiName.AdLoaded,
+                Format = Insight.AdFormat.Banner,
+                AdUnitId = this.adUnitId,
+                Success = true
+            });
+
             if (this.OnAdLoaded != null)
             {
                 this.OnAdLoaded(this, EventArgs.Empty);
@@ -213,6 +223,13 @@ namespace GoogleMobileAds.Android
         {
             if (this.OnAdImpressionRecorded != null)
             {
+                _insightsEmitter.Emit(new Insight()
+                {
+                    Name = Insight.CuiName.AdShown,
+                    Format = Insight.AdFormat.Banner,
+                    AdUnitId = this.adUnitId,
+                    Success = true
+                });
                 this.OnAdImpressionRecorded();
             }
         }
