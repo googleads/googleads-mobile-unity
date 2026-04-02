@@ -56,6 +56,14 @@
       "en": "Disable initialization optimization",
       "fr": "Désactiver l'optimisation de l'initialisation"
     },
+    "KEY_ENABLE_NEXT_GEN_SDK": {
+      "en": "Enable Next Gen SDK",
+      "fr": "Activer le SDK de nouvelle génération"
+    },
+    "KEY_ENABLE_NEXT_GEN_SDK_HELPBOX": {
+      "en": "Utilizes the Google Mobile Ads Next Gen SDK. Please run Clean & Build after enabling or disabling this option for the first time.",
+      "fr": "Utilise le SDK de nouvelle génération Google Mobile Ads. Veuillez effectuer un nettoyage et une nouvelle compilation après avoir activé ou désactivé cette option pour la première fois."
+    },
     "KEY_UMP_SPECIFIC_SETTINGS_LABEL": {
       "en": "UMP-specific settings",
       "fr": "Paramètres spécifiques UMP"
