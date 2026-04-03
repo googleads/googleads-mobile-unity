@@ -95,11 +95,15 @@
                return;
              }
              if (strongSelf.didEarnRewardCallback) {
-               strongSelf.didEarnRewardCallback(
-                   strongSelf.rewardedInterstitialAdClient,
-                   [strongSelf.rewardedInterstitialAd.adReward.type
-                       cStringUsingEncoding:NSUTF8StringEncoding],
-                   strongSelf.rewardedInterstitialAd.adReward.amount.doubleValue);
+               NSString *rewardType = strongSelf.rewardedInterstitialAd.adReward.type;
+               double rewardAmount =
+                   strongSelf.rewardedInterstitialAd.adReward.amount.doubleValue;
+               dispatch_async(dispatch_get_main_queue(), ^{
+                 strongSelf.didEarnRewardCallback(
+                     strongSelf.rewardedInterstitialAdClient,
+                     [rewardType cStringUsingEncoding:NSUTF8StringEncoding],
+                     rewardAmount);
+               });
              }
            }];
 }

@@ -6,6 +6,7 @@ Version 11.1.0
 
 - Updated the GMA iOS SDK dependency version to 13.1.0.
 - Updated the GMA Android SDK dependency version to 25.1.0
+- Defer and raise userRewardEarnedCallback on main thread when running on iOS.
 
 **************
 Version 11.0.0
