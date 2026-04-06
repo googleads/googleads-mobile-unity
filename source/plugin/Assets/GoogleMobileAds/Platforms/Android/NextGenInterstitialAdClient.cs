@@ -22,6 +22,8 @@ namespace GoogleMobileAds.Android
 {
     public class NextGenInterstitialAdClient : AndroidJavaProxy, IInterstitialClient
     {
+      private readonly IInsightsEmitter _insightsEmitter = InsightsEmitter.Instance;
+      private const Insight.AdFormat InterstitialFormat = Insight.AdFormat.Interstitial;
       internal AndroidJavaObject androidInterstitialAd;
 
       public NextGenInterstitialAdClient()
@@ -117,6 +119,12 @@ namespace GoogleMobileAds.Android
 
         public void onInterstitialAdLoaded()
         {
+            _insightsEmitter.Emit(new Insight()
+            {
+                Name = Insight.CuiName.AdLoaded,
+                Format = InterstitialFormat,
+                AdUnitId = GetAdUnitID(),
+            });
             if (this.OnAdLoaded != null)
             {
                 this.OnAdLoaded(this, EventArgs.Empty);
@@ -125,6 +133,12 @@ namespace GoogleMobileAds.Android
 
         public void onInterstitialAdFailedToLoad(AndroidJavaObject error)
         {
+            _insightsEmitter.Emit(new Insight()
+            {
+                Name = Insight.CuiName.AdFailedToLoad,
+                Format = InterstitialFormat,
+                AdUnitId = GetAdUnitID(),
+            });
             if (this.OnAdFailedToLoad != null)
             {
                 LoadAdErrorClientEventArgs args = new LoadAdErrorClientEventArgs()
@@ -137,6 +151,13 @@ namespace GoogleMobileAds.Android
 
         void onAdFailedToShowFullScreenContent(AndroidJavaObject error)
         {
+            _insightsEmitter.Emit(new Insight()
+            {
+                Name = Insight.CuiName.AdShowedFullScreenContent,
+                Format = InterstitialFormat,
+                AdUnitId = GetAdUnitID(),
+                Success = false,
+            });
             if (this.OnAdFailedToPresentFullScreenContent != null)
             {
                 AdErrorClientEventArgs args = new AdErrorClientEventArgs()
@@ -149,6 +170,13 @@ namespace GoogleMobileAds.Android
 
         void onAdShowedFullScreenContent()
         {
+            _insightsEmitter.Emit(new Insight()
+            {
+                Name = Insight.CuiName.AdShowedFullScreenContent,
+                Format = InterstitialFormat,
+                AdUnitId = GetAdUnitID(),
+            });
+
             if (this.OnAdDidPresentFullScreenContent != null)
             {
                 this.OnAdDidPresentFullScreenContent(this, EventArgs.Empty);
@@ -158,6 +186,12 @@ namespace GoogleMobileAds.Android
 
         void onAdDismissedFullScreenContent()
         {
+            _insightsEmitter.Emit(new Insight()
+            {
+                Name = Insight.CuiName.AdDismissedFullScreenContent,
+                Format = InterstitialFormat,
+                AdUnitId = GetAdUnitID(),
+            });
             if (this.OnAdDidDismissFullScreenContent != null)
             {
                 this.OnAdDidDismissFullScreenContent(this, EventArgs.Empty);
@@ -166,6 +200,12 @@ namespace GoogleMobileAds.Android
 
         void onAdImpression()
         {
+            _insightsEmitter.Emit(new Insight()
+            {
+                Name = Insight.CuiName.AdShown,
+                Format = InterstitialFormat,
+                AdUnitId = GetAdUnitID(),
+            });
             if (this.OnAdDidRecordImpression != null)
             {
                 this.OnAdDidRecordImpression(this, EventArgs.Empty);
@@ -174,6 +214,12 @@ namespace GoogleMobileAds.Android
 
         internal void onAdClicked()
         {
+            _insightsEmitter.Emit(new Insight()
+            {
+                Name = Insight.CuiName.AdClicked,
+                Format = InterstitialFormat,
+                AdUnitId = GetAdUnitID(),
+            });
             if (this.OnAdClicked != null)
             {
                 this.OnAdClicked();
@@ -182,6 +228,12 @@ namespace GoogleMobileAds.Android
 
         void onPaidEvent(int precision, long valueInMicros, string currencyCode)
         {
+            _insightsEmitter.Emit(new Insight()
+            {
+                Name = Insight.CuiName.AdPaid,
+                Format = InterstitialFormat,
+                AdUnitId = GetAdUnitID(),
+            });
             if (this.OnPaidEvent != null)
             {
                 AdValue adValue = new AdValue()
