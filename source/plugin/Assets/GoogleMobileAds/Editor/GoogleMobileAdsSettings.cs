@@ -51,6 +51,9 @@ namespace GoogleMobileAds.Editor
     private bool disableOptimizeAdLoading;
 
     [SerializeField]
+    private bool enableNextGenSDK = false;
+
+    [SerializeField]
     private string userTrackingUsageDescription;
 
     [SerializeField]
@@ -96,6 +99,13 @@ namespace GoogleMobileAds.Editor
       get { return disableOptimizeAdLoading; }
 
       set { disableOptimizeAdLoading = value; }
+    }
+
+    public bool EnableNextGenSDK
+    {
+      get { return enableNextGenSDK; }
+
+      set { enableNextGenSDK = value; }
     }
 
     public string UserTrackingUsageDescription
