@@ -91,6 +91,7 @@ namespace GoogleMobileAds.Common
             AdPaid = 9,
             AdShowedFullScreenContent = 10,
             AdDismissedFullScreenContent = 11,
+            UserEarnedReward = 12,
         }
 
         public enum AdFormat
