@@ -1673,42 +1673,41 @@ void GADUSetRequestConfigurationPublisherPrivacyPersonalizationState(int state) 
 }
 
 /// Returns RequestConfiguration Max Ad Content Rating
-const char *GADUGetMaxAdContentRating(GADUTypeRequestConfigurationRef requestConfiguration) {
-  GADURequestConfiguration *internalRequestConfiguration =
-      (__bridge GADURequestConfiguration *)requestConfiguration;
-  return cStringCopy(internalRequestConfiguration.maxAdContentRating.UTF8String);
+const char *GADUGetMaxAdContentRating() {
+  return cStringCopy(
+      GADMobileAds.sharedInstance.requestConfiguration.maxAdContentRating.UTF8String);
 }
 
 /// Returns RequestConfiguration tag For Under Age Of Consent
-const int GADUGetRequestConfigurationTagForUnderAgeOfConsent(
-    GADUTypeRequestConfigurationRef requestConfiguration) {
-  GADURequestConfiguration *internalRequestConfiguration =
-      (__bridge GADURequestConfiguration *)requestConfiguration;
-  return internalRequestConfiguration.tagForUnderAgeOfConsent;
+const int GADUGetRequestConfigurationTagForUnderAgeOfConsent() {
+  NSNumber *tag = GADMobileAds.sharedInstance.requestConfiguration.tagForUnderAgeOfConsent;
+  if (!tag) {
+    return kGADURequestConfigurationTagForUnderAgeOfConsentUnspecified;
+  }
+  return tag.boolValue ? kGADURequestConfigurationTagForUnderAgeOfConsentTrue
+                       : kGADURequestConfigurationTagForUnderAgeOfConsentFalse;
 }
 
 /// Returns RequestConfiguration tag For Child Directed Treatment
-const int GADUGetRequestConfigurationTagForChildDirectedTreatment(
-    GADUTypeRequestConfigurationRef requestConfiguration) {
-  GADURequestConfiguration *internalRequestConfiguration =
-      (__bridge GADURequestConfiguration *)requestConfiguration;
-  return internalRequestConfiguration.tagForChildDirectedTreatment;
+const int GADUGetRequestConfigurationTagForChildDirectedTreatment() {
+  NSNumber *tag = GADMobileAds.sharedInstance.requestConfiguration.tagForChildDirectedTreatment;
+  if (!tag) {
+    return kGADURequestConfigurationTagForChildDirectedTreatmentUnspecified;
+  }
+  return tag.boolValue ? kGADURequestConfigurationTagForChildDirectedTreatmentTrue
+                       : kGADURequestConfigurationTagForChildDirectedTreatmentFalse;
 }
 
 /// Returns List RequestConfiguration Test Device Ids
-const char **GADUGetTestDeviceIdentifiers(GADUTypeRequestConfigurationRef requestConfiguration) {
-  GADURequestConfiguration *internalRequestConfiguration =
-      (__bridge GADURequestConfiguration *)requestConfiguration;
-  NSArray<NSString *> *testDeviceIDs = internalRequestConfiguration.testDeviceIdentifiers;
+const char **GADUGetTestDeviceIdentifiers() {
+  NSArray<NSString *> *testDeviceIDs =
+      GADMobileAds.sharedInstance.requestConfiguration.testDeviceIdentifiers;
   return cStringArrayCopy(testDeviceIDs);
 }
 
 /// Returns count of RequestConfiguration Test Device Ids
-int GADUGetTestDeviceIdentifiersCount(GADUTypeRequestConfigurationRef requestConfiguration) {
-  GADURequestConfiguration *internalRequestConfiguration =
-      (__bridge GADURequestConfiguration *)requestConfiguration;
-  NSArray<NSString *> *testDeviceIDs = internalRequestConfiguration.testDeviceIdentifiers;
-  return testDeviceIDs.count;
+int GADUGetTestDeviceIdentifiersCount() {
+  return [GADMobileAds.sharedInstance.requestConfiguration.testDeviceIdentifiers count];
 }
 
 /// Returns the current value of publisherPrivacyPersonalizationState from requestConfiguration.

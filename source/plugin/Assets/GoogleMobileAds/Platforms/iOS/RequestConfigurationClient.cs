@@ -73,12 +73,12 @@ namespace GoogleMobileAds.iOS
 
         public static RequestConfiguration GetRequestConfiguration()
         {
-            MaxAdContentRating maxAdContentRating = MaxAdContentRating.ToMaxAdContentRating(Externs.GADUGetMaxAdContentRating(requestConfigurationPtr));
-            IntPtr testDeviceIdsArray = Externs.GADUGetTestDeviceIdentifiers(requestConfigurationPtr);
-            List<string> testDeviceIds = Utils.PtrArrayToManagedList(testDeviceIdsArray, Externs.GADUGetTestDeviceIdentifiersCount(requestConfigurationPtr));
+            MaxAdContentRating maxAdContentRating = MaxAdContentRating.ToMaxAdContentRating(Externs.GADUGetMaxAdContentRating());
+            IntPtr testDeviceIdsArray = Externs.GADUGetTestDeviceIdentifiers();
+            List<string> testDeviceIds = Utils.PtrArrayToManagedList(testDeviceIdsArray, Externs.GADUGetTestDeviceIdentifiersCount());
 
-            TagForChildDirectedTreatment tagForChildDirectedTreatment = (TagForChildDirectedTreatment)Externs.GADUGetRequestConfigurationTagForChildDirectedTreatment(requestConfigurationPtr);
-            TagForUnderAgeOfConsent tagForUnderAgeOfConsent = (TagForUnderAgeOfConsent)Externs.GADUGetRequestConfigurationTagForUnderAgeOfConsent(requestConfigurationPtr);
+            TagForChildDirectedTreatment tagForChildDirectedTreatment = (TagForChildDirectedTreatment)Externs.GADUGetRequestConfigurationTagForChildDirectedTreatment();
+            TagForUnderAgeOfConsent tagForUnderAgeOfConsent = (TagForUnderAgeOfConsent)Externs.GADUGetRequestConfigurationTagForUnderAgeOfConsent();
             PublisherPrivacyPersonalizationState publisherPrivacyPersonalizationState =
                 (PublisherPrivacyPersonalizationState)Externs.GADUGetRequestConfigurationPublisherPrivacyPersonalizationState();
 

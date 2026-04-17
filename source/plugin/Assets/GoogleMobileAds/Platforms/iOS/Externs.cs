@@ -226,21 +226,19 @@ namespace GoogleMobileAds.iOS
           int state);
 
       [DllImport("__Internal")]
-      internal static extern IntPtr GADUGetTestDeviceIdentifiers(IntPtr request);
+      internal static extern IntPtr GADUGetTestDeviceIdentifiers();
 
       [DllImport("__Internal")]
-      internal static extern int GADUGetTestDeviceIdentifiersCount(IntPtr request);
+      internal static extern int GADUGetTestDeviceIdentifiersCount();
 
       [DllImport("__Internal")]
-      internal static extern string GADUGetMaxAdContentRating(IntPtr requestConfiguration);
+      internal static extern string GADUGetMaxAdContentRating();
 
       [DllImport("__Internal")]
-      internal static extern int GADUGetRequestConfigurationTagForUnderAgeOfConsent(
-          IntPtr requestConfiguration);
+      internal static extern int GADUGetRequestConfigurationTagForUnderAgeOfConsent();
 
       [DllImport("__Internal")]
-      internal static extern int GADUGetRequestConfigurationTagForChildDirectedTreatment(
-          IntPtr requestConfiguration);
+      internal static extern int GADUGetRequestConfigurationTagForChildDirectedTreatment();
 
       [DllImport("__Internal")]
       internal static extern int GADUGetRequestConfigurationPublisherPrivacyPersonalizationState();
