@@ -18,7 +18,6 @@
 #import "GADUPreloadConfiguration.h"
 #import "GADUPreloadConfigurationV2.h"
 #import "GADURequest.h"
-#import "GADURequestConfiguration.h"
 #import "GADURewardedAd.h"
 #import "GADURewardedInterstitialAd.h"
 #import "GADUTypes.h"
@@ -1572,24 +1571,22 @@ GADUTypeNativeTemplateStyleRef GADUSetNativeTemplateStyleText(
   return (__bridge GADUTypeNativeTemplateStyleRef)(tplStyle);
 }
 
-/// Create an empty GADURequestConfiguration
-GADUTypeRequestConfigurationRef GADUCreateRequestConfiguration() {
-  GADURequestConfiguration *requestConfiguration = [[GADURequestConfiguration alloc] init];
-  GADUObjectCache *cache = GADUObjectCache.sharedInstance;
-  cache[requestConfiguration.gadu_referenceKey] = requestConfiguration;
-  return (__bridge GADUTypeRequestConfigurationRef)(requestConfiguration);
+void GADUSetRequestConfigurationMaxAdContentRating(const char *maxAdContentRating) {
+  GADMobileAds.sharedInstance.requestConfiguration.maxAdContentRating =
+      GADUStringFromUTF8String(maxAdContentRating);
 }
 
-/// Set MobileAds RequestConfiguration
-void GADUSetRequestConfiguration(GADUTypeRequestConfigurationRef requestConfiguration) {
-  GADURequestConfiguration *internalRequestConfiguration =
-      (__bridge GADURequestConfiguration *)requestConfiguration;
-  GADMobileAds.sharedInstance.requestConfiguration.maxAdContentRating =
-      internalRequestConfiguration.maxAdContentRating;
-  GADMobileAds.sharedInstance.requestConfiguration.testDeviceIdentifiers =
-      internalRequestConfiguration.testDeviceIdentifiers;
+void GADUSetRequestConfigurationTestDeviceIdentifiers(const char **testDeviceIDs,
+                                                      NSInteger testDeviceIDLength) {
+  NSMutableArray *testDeviceIDsArray = [[NSMutableArray alloc] init];
+  for (int i = 0; i < testDeviceIDLength; i++) {
+    [testDeviceIDsArray addObject:GADUStringFromUTF8String(testDeviceIDs[i])];
+  }
+  GADMobileAds.sharedInstance.requestConfiguration.testDeviceIdentifiers = testDeviceIDsArray;
+}
 
-  switch (internalRequestConfiguration.tagForUnderAgeOfConsent) {
+void GADUSetRequestConfigurationTagForUnderAgeOfConsent(int tagForUnderAgeOfConsent) {
+  switch (tagForUnderAgeOfConsent) {
     case kGADURequestConfigurationTagForUnderAgeOfConsentTrue:
       GADMobileAds.sharedInstance.requestConfiguration.tagForUnderAgeOfConsent = @YES;
       break;
@@ -1599,8 +1596,10 @@ void GADUSetRequestConfiguration(GADUTypeRequestConfigurationRef requestConfigur
     case kGADURequestConfigurationTagForUnderAgeOfConsentUnspecified:
       break;
   }
+}
 
-  switch (internalRequestConfiguration.tagForChildDirectedTreatment) {
+void GADUSetRequestConfigurationTagForChildDirectedTreatment(int tagForChildDirectedTreatment) {
+  switch (tagForChildDirectedTreatment) {
     case kGADURequestConfigurationTagForChildDirectedTreatmentTrue:
       GADMobileAds.sharedInstance.requestConfiguration.tagForChildDirectedTreatment = @YES;
       break;
@@ -1610,43 +1609,6 @@ void GADUSetRequestConfiguration(GADUTypeRequestConfigurationRef requestConfigur
     case kGADURequestConfigurationTagForChildDirectedTreatmentUnspecified:
       break;
   }
-}
-
-/// Set RequestConfiguration Max Ad Content Rating
-void GADUSetRequestConfigurationMaxAdContentRating(
-    GADUTypeRequestConfigurationRef requestConfiguration, const char *maxAdContentRating) {
-  GADURequestConfiguration *internalRequestConfiguration =
-      (__bridge GADURequestConfiguration *)requestConfiguration;
-  [internalRequestConfiguration setMaxAdContentRating:GADUStringFromUTF8String(maxAdContentRating)];
-}
-
-/// Set RequestConfiguration Test Device Ids
-void GADUSetRequestConfigurationTestDeviceIdentifiers(
-    GADUTypeRequestConfigurationRef requestConfiguration, const char **testDeviceIDs,
-    NSInteger testDeviceIDLength) {
-  GADURequestConfiguration *internalRequestConfiguration =
-      (__bridge GADURequestConfiguration *)requestConfiguration;
-  NSMutableArray *testDeviceIDsArray = [[NSMutableArray alloc] init];
-  for (int i = 0; i < testDeviceIDLength; i++) {
-    [testDeviceIDsArray addObject:GADUStringFromUTF8String(testDeviceIDs[i])];
-  }
-  [internalRequestConfiguration setTestDeviceIdentifiers:testDeviceIDsArray];
-}
-
-/// Set RequestConfiguration tagForUnderAgeOfConsent
-void GADUSetRequestConfigurationTagForUnderAgeOfConsent(
-    GADUTypeRequestConfigurationRef requestConfiguration, int tagForUnderAgeOfConsent) {
-  GADURequestConfiguration *internalRequestConfiguration =
-      (__bridge GADURequestConfiguration *)requestConfiguration;
-  internalRequestConfiguration.tagForUnderAgeOfConsent = tagForUnderAgeOfConsent;
-}
-
-/// Set RequestConfiguration tagForChildDirectedTreatment
-void GADUSetRequestConfigurationTagForChildDirectedTreatment(
-    GADUTypeRequestConfigurationRef requestConfiguration, int tagForChildDirectedTreatment) {
-  GADURequestConfiguration *internalRequestConfiguration =
-      (__bridge GADURequestConfiguration *)requestConfiguration;
-  internalRequestConfiguration.tagForChildDirectedTreatment = tagForChildDirectedTreatment;
 }
 
 /// Calls the RequestConfiguration's setPublisherFirstPartyIDEnabled

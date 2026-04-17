@@ -1,6 +1,24 @@
 // Copyright 2014 Google Inc. All Rights Reserved.
 #import <Foundation/Foundation.h>
 
+typedef NS_ENUM(NSInteger, GADURequestConfigurationTagForChildDirectedTreatment) {
+  kGADURequestConfigurationTagForChildDirectedTreatmentTrue = 1,          // true.
+  kGADURequestConfigurationTagForChildDirectedTreatmentFalse = 0,         /// false
+  kGADURequestConfigurationTagForChildDirectedTreatmentUnspecified = -1,  // Unspecified
+};
+
+typedef NS_ENUM(NSInteger, GADURequestConfigurationTagForUnderAgeOfConsent) {
+  kGADURequestConfigurationTagForUnderAgeOfConsentTrue = 1,          // true.
+  kGADURequestConfigurationTagForUnderAgeOfConsentFalse = 0,         /// false
+  kGADURequestConfigurationTagForUnderAgeOfConsentUnspecified = -1,  // Unspecified
+};
+
+typedef NS_ENUM(NSInteger, GADURequestConfigurationPublisherPrivacyPersonalizationState) {
+  kGADURequestConfigurationPublisherPrivacyPersonalizationStateDefault = 0,   /// Default.
+  kGADURequestConfigurationPublisherPrivacyPersonalizationStateEnabled = 1,   /// Enabled
+  kGADURequestConfigurationPublisherPrivacyPersonalizationStateDisabled = 2,  /// Disabled
+};
+
 /// Positions to place an ad.
 typedef NS_ENUM(NSInteger, GADAdPosition) {
   kGADAdPositionCustom = -1,              ///< Custom ad position.

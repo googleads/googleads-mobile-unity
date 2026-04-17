@@ -196,26 +196,20 @@ namespace GoogleMobileAds.iOS
       internal static extern string GADUMobileAdsVersion();
 
       [DllImport("__Internal")]
-      internal static extern IntPtr GADUCreateRequestConfiguration();
-
-      [DllImport("__Internal")]
-      internal static extern void GADUSetRequestConfiguration(IntPtr requestConfiguration);
-
-      [DllImport("__Internal")]
       internal static extern void GADUSetRequestConfigurationTestDeviceIdentifiers(
-          IntPtr requestConfiguration, string[] testDeviceIDs, int testDeviceIDLength);
+          string[] testDeviceIDs, int testDeviceIDLength);
 
       [DllImport("__Internal")]
       internal static extern void GADUSetRequestConfigurationMaxAdContentRating(
-          IntPtr requestConfiguration, string maxAdContentRating);
+          string maxAdContentRating);
 
       [DllImport("__Internal")]
       internal static extern void GADUSetRequestConfigurationTagForUnderAgeOfConsent(
-          IntPtr requestConfiguration, int tagForUnderAgeOfConsent);
+          int tagForUnderAgeOfConsent);
 
       [DllImport("__Internal")]
       internal static extern void GADUSetRequestConfigurationTagForChildDirectedTreatment(
-          IntPtr requestConfiguration, int tagForChildDirectedTreatment);
+          int tagForChildDirectedTreatment);
 
       [DllImport("__Internal")]
       internal static extern void GADUSetRequestConfigurationPublisherFirstPartyIDEnabled(

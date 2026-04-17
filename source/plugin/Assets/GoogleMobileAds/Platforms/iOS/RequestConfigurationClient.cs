@@ -27,32 +27,30 @@ namespace GoogleMobileAds.iOS
     public class RequestConfigurationClient
 
     {
-        private static IntPtr requestConfigurationPtr = Externs.GADUCreateRequestConfiguration();
-
         public static void SetRequestConfiguration(RequestConfiguration requestConfiguration)
         {
 
             if (requestConfiguration.MaxAdContentRating != null)
             {
-                Externs.GADUSetRequestConfigurationMaxAdContentRating(requestConfigurationPtr, requestConfiguration.MaxAdContentRating.Value);
+                Externs.GADUSetRequestConfigurationMaxAdContentRating(requestConfiguration.MaxAdContentRating.Value);
             }
 
             if (requestConfiguration.TestDeviceIds.Count > 0)
             {
                 string[] testDeviceIdsArray = new string[requestConfiguration.TestDeviceIds.Count];
                 requestConfiguration.TestDeviceIds.CopyTo(testDeviceIdsArray);
-                Externs.GADUSetRequestConfigurationTestDeviceIdentifiers(requestConfigurationPtr, testDeviceIdsArray, requestConfiguration.TestDeviceIds.Count);
+                Externs.GADUSetRequestConfigurationTestDeviceIdentifiers(testDeviceIdsArray, requestConfiguration.TestDeviceIds.Count);
             }
             if (requestConfiguration.TagForChildDirectedTreatment.HasValue)
             {
                 TagForChildDirectedTreatment? tagForChildDirectedTreatment = requestConfiguration.TagForChildDirectedTreatment;
-                Externs.GADUSetRequestConfigurationTagForChildDirectedTreatment(requestConfigurationPtr, (int)tagForChildDirectedTreatment.GetValueOrDefault());
+                Externs.GADUSetRequestConfigurationTagForChildDirectedTreatment((int)tagForChildDirectedTreatment.GetValueOrDefault());
             }
 
             if (requestConfiguration.TagForUnderAgeOfConsent.HasValue)
             {
                 TagForUnderAgeOfConsent? TagForUnderAgeOfConsent = requestConfiguration.TagForUnderAgeOfConsent;
-                Externs.GADUSetRequestConfigurationTagForUnderAgeOfConsent(requestConfigurationPtr, (int)TagForUnderAgeOfConsent.GetValueOrDefault());
+                Externs.GADUSetRequestConfigurationTagForUnderAgeOfConsent((int)TagForUnderAgeOfConsent.GetValueOrDefault());
             }
 
             if (requestConfiguration.PublisherFirstPartyIdEnabled.HasValue) {
@@ -66,8 +64,6 @@ namespace GoogleMobileAds.iOS
                   (int)requestConfiguration.PublisherPrivacyPersonalizationState
                       .GetValueOrDefault());
             }
-
-            Externs.GADUSetRequestConfiguration(requestConfigurationPtr);
 
         }
 
