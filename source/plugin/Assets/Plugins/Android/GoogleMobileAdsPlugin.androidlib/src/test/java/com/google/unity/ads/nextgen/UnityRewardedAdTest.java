@@ -14,6 +14,8 @@ import com.google.android.libraries.ads.mobile.sdk.common.FullScreenContentError
 import com.google.android.libraries.ads.mobile.sdk.common.LoadAdError;
 import com.google.android.libraries.ads.mobile.sdk.common.PrecisionType;
 import com.google.android.libraries.ads.mobile.sdk.common.ResponseInfo;
+import com.google.android.libraries.ads.mobile.sdk.rewarded.OnUserEarnedRewardListener;
+import com.google.android.libraries.ads.mobile.sdk.rewarded.RewardItem;
 import com.google.android.libraries.ads.mobile.sdk.rewarded.RewardedAd;
 import com.google.android.libraries.ads.mobile.sdk.rewarded.RewardedAdEventCallback;
 import java.util.ArrayList;
@@ -46,6 +48,7 @@ public final class UnityRewardedAdTest {
   @Captor private ArgumentCaptor<AdRequest> adRequestCaptor;
   @Captor private ArgumentCaptor<AdLoadCallback<RewardedAd>> adLoadCallbackCaptor;
   @Captor private ArgumentCaptor<RewardedAdEventCallback> adEventCallbackCaptor;
+  @Captor private ArgumentCaptor<OnUserEarnedRewardListener> rewardListenerCaptor;
 
   private UnityRewardedAd unityRewardedAd;
 
@@ -94,7 +97,7 @@ public final class UnityRewardedAdTest {
 
     // Verify the ad is shown and the event callback is set.
     verify(mockRewardedAd).setAdEventCallback(adEventCallbackCaptor.capture());
-    verify(mockRewardedAd).show(Mockito.eq(activity), Mockito.any());
+    verify(mockRewardedAd).show(Mockito.eq(activity), rewardListenerCaptor.capture());
     // Verify immersive mode was set on the ad.
     verify(mockRewardedAd).setImmersiveMode(true);
 
@@ -119,6 +122,27 @@ public final class UnityRewardedAdTest {
     String currencyCode = "USD";
     eventCallback.onAdPaid(new AdValue(precisionType, valueMicros, currencyCode));
     verify(mockCallback).onPaidEvent(precisionType.ordinal(), valueMicros, currencyCode);
+
+    eventCallback.onAdImpression();
+    verify(mockCallback).onAdImpression();
+
+    eventCallback.onAdClicked();
+    verify(mockCallback).onAdClicked();
+    OnUserEarnedRewardListener rewardListener = rewardListenerCaptor.getValue();
+    RewardItem rewardItem =
+        new RewardItem() {
+          @Override
+          public int getAmount() {
+            return 10;
+          }
+
+          @Override
+          public String getType() {
+            return "coins";
+          }
+        };
+    rewardListener.onUserEarnedReward(rewardItem);
+    verify(mockCallback).onUserEarnedReward("coins", 10);
   }
 
   @Test
@@ -193,5 +217,20 @@ public final class UnityRewardedAdTest {
     when(mockRewardedAd.getResponseInfo()).thenReturn(responseInfo);
     unityRewardedAd = new UnityRewardedAd(activity, mockCallback, mockRewardedAd);
     assertThat(unityRewardedAd.getResponseInfo()).isEqualTo(responseInfo);
+  }
+
+  @Test
+  public void testPublicConstructor() {
+    // verifies creation doesn't crash
+    UnityRewardedAd ad = new UnityRewardedAd(activity, mockCallback);
+    assertThat(ad).isNotNull();
+  }
+
+  // Extra Test for AdWrapper, can be used for any ad type.
+  @Test
+  public void testAdWrapper_Mechanics() {
+    AdWrapper<String> dummyWrapper = new AdWrapper<>((request, callback) -> {});
+
+    dummyWrapper.load(mockAdRequest, null);
   }
 }

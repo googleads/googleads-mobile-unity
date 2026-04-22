@@ -78,6 +78,12 @@ public class UnityAppOpenAdTest {
   }
 
   @Test
+  public void testShow_whenAdNotLoaded_doesNotThrow() {
+    // Should log an error but not crash
+    unityAppOpenAd.show();
+  }
+
+  @Test
   @SuppressWarnings("EnumOrdinal")
   public void testShow_showsAdAndTriggersCallbacks() {
     // First, simulate a successful ad load.
@@ -195,5 +201,12 @@ public class UnityAppOpenAdTest {
     when(mockAppOpenAd.getResponseInfo()).thenReturn(responseInfo);
     unityAppOpenAd = new UnityAppOpenAd(activity, mockCallback, mockAppOpenAd);
     assertThat(unityAppOpenAd.getResponseInfo()).isEqualTo(responseInfo);
+  }
+
+  @Test
+  public void testPublicConstructor() {
+    // verifies creation doesn't crash
+    UnityAppOpenAd ad = new UnityAppOpenAd(activity, mockCallback);
+    assertThat(ad).isNotNull();
   }
 }
