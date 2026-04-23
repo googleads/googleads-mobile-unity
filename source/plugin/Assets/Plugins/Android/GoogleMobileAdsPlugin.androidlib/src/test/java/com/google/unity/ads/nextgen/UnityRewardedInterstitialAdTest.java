@@ -14,6 +14,8 @@ import com.google.android.libraries.ads.mobile.sdk.common.FullScreenContentError
 import com.google.android.libraries.ads.mobile.sdk.common.LoadAdError;
 import com.google.android.libraries.ads.mobile.sdk.common.PrecisionType;
 import com.google.android.libraries.ads.mobile.sdk.common.ResponseInfo;
+import com.google.android.libraries.ads.mobile.sdk.rewarded.OnUserEarnedRewardListener;
+import com.google.android.libraries.ads.mobile.sdk.rewarded.RewardItem;
 import com.google.android.libraries.ads.mobile.sdk.rewardedinterstitial.RewardedInterstitialAd;
 import com.google.android.libraries.ads.mobile.sdk.rewardedinterstitial.RewardedInterstitialAdEventCallback;
 import java.util.ArrayList;
@@ -45,6 +47,7 @@ public final class UnityRewardedInterstitialAdTest {
   @Captor private ArgumentCaptor<AdRequest> adRequestCaptor;
   @Captor private ArgumentCaptor<AdLoadCallback<RewardedInterstitialAd>> adLoadCallbackCaptor;
   @Captor private ArgumentCaptor<RewardedInterstitialAdEventCallback> adEventCallbackCaptor;
+  @Captor private ArgumentCaptor<OnUserEarnedRewardListener> rewardListenerCaptor;
 
   private UnityRewardedInterstitialAd unityRewardedInterstitialAd;
 
@@ -94,7 +97,7 @@ public final class UnityRewardedInterstitialAdTest {
 
     // Verify the ad is shown and the event callback is set.
     verify(mockRewardedInterstitialAd).setAdEventCallback(adEventCallbackCaptor.capture());
-    verify(mockRewardedInterstitialAd).show(Mockito.eq(activity), Mockito.any());
+    verify(mockRewardedInterstitialAd).show(Mockito.eq(activity), rewardListenerCaptor.capture());
     // Verify immersive mode was set on the ad.
     verify(mockRewardedInterstitialAd).setImmersiveMode(true);
 
@@ -118,6 +121,28 @@ public final class UnityRewardedInterstitialAdTest {
     String currencyCode = "USD";
     eventCallback.onAdPaid(new AdValue(precisionType, valueMicros, currencyCode));
     verify(mockCallback).onPaidEvent(precisionType.ordinal(), valueMicros, currencyCode);
+
+    eventCallback.onAdImpression();
+    verify(mockCallback).onAdImpression();
+
+    eventCallback.onAdClicked();
+    verify(mockCallback).onAdClicked();
+
+    OnUserEarnedRewardListener rewardListener = rewardListenerCaptor.getValue();
+    RewardItem rewardItem =
+        new RewardItem() {
+          @Override
+          public int getAmount() {
+            return 10;
+          }
+
+          @Override
+          public String getType() {
+            return "coins";
+          }
+        };
+    rewardListener.onUserEarnedReward(rewardItem);
+    verify(mockCallback).onUserEarnedReward("coins", 10);
   }
 
   @Test
@@ -183,5 +208,12 @@ public final class UnityRewardedInterstitialAdTest {
 
     // Verify that setPlacementId was called on the underlying ad.
     verify(mockRewardedInterstitialAd).setPlacementId(placementId);
+  }
+
+  @Test
+  public void testPublicConstructor() {
+    // verifies creation doesn't crash
+    UnityRewardedInterstitialAd ad = new UnityRewardedInterstitialAd(activity, mockCallback);
+    assertThat(ad).isNotNull();
   }
 }
