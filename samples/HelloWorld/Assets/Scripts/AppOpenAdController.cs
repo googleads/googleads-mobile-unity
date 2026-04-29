@@ -90,7 +90,11 @@ namespace GoogleMobileAds.Sample
                     RegisterEventHandlers(ad);
 
                     // Inform the UI that the ad is ready.
-                    AdLoadedStatus?.SetActive(true);
+                    // Use MobileAdsEventExecutor to ensure the UI is updated on the main thread.
+                    MobileAdsEventExecutor.ExecuteInUpdate(() =>
+                    {
+                        AdLoadedStatus?.SetActive(true);
+                    });
                 });
         }
 
@@ -158,9 +162,20 @@ namespace GoogleMobileAds.Sample
             // Raised when the ad is estimated to have earned money.
             ad.OnAdPaid += (AdValue adValue) =>
             {
+                // This log is executed off the Unity main thread.
+                // Write all time-sensitive code before ExecuteInUpdate().
                 Debug.Log(String.Format("App open ad paid {0} {1}.",
                     adValue.Value,
                     adValue.CurrencyCode));
+
+                MobileAdsEventExecutor.ExecuteInUpdate(() =>
+                {
+                    // This callback may be delayed on Android until the user
+                    // returns to the app. Place all code that interacts with
+                    // Unity UI and GameObjects inside this callback.
+                    Debug.Log("App open ad paid callback " +
+                        "invoked inside ExecuteInUpdate.");
+                });
             };
             // Raised when an impression is recorded for an ad.
             ad.OnAdImpressionRecorded += () =>
@@ -177,8 +192,11 @@ namespace GoogleMobileAds.Sample
             {
                 Debug.Log("App open ad full screen content opened.");
 
-                // Inform the UI that the ad is consumed and not ready.
-                AdLoadedStatus?.SetActive(false);
+                // Use MobileAdsEventExecutor to ensure the UI is updated on the main thread.
+                MobileAdsEventExecutor.ExecuteInUpdate(() =>
+                {
+                    AdLoadedStatus?.SetActive(false);
+                });
             };
             // Raised when the ad closed full screen content.
             ad.OnAdFullScreenContentClosed += () =>
@@ -192,7 +210,13 @@ namespace GoogleMobileAds.Sample
             ad.OnAdFullScreenContentFailed += (AdError error) =>
             {
                 Debug.LogError("App open ad failed to open full screen content with error : "
-                                + error);
+                    + error);
+
+                // Use MobileAdsEventExecutor to ensure the UI is updated on the main thread.
+                MobileAdsEventExecutor.ExecuteInUpdate(() =>
+                {
+                    AdLoadedStatus?.SetActive(false);
+                });
             };
         }
     }
