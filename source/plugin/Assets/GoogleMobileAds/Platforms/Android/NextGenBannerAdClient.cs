@@ -181,7 +181,7 @@ namespace GoogleMobileAds.Android
             {
                 LoadAdErrorClientEventArgs args = new LoadAdErrorClientEventArgs()
                 {
-                    LoadAdErrorClient = new LoadAdErrorClient(error)
+                    LoadAdErrorClient = new NextGenLoadAdErrorClient(error)
                 };
                 this.OnAdFailedToLoad(this, args);
             }

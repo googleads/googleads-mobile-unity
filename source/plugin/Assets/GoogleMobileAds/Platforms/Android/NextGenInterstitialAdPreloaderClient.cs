@@ -103,13 +103,13 @@ namespace GoogleMobileAds.Android {
     void onAdPreloaded(string preloadId, AndroidJavaObject responseInfo) {
       if (_onAdPreloaded != null) {
         _onAdPreloaded(preloadId,
-                       new ResponseInfoClient(ResponseInfoClientType.AdLoaded, responseInfo));
+                       new NextGenResponseInfoClient(responseInfo));
       }
     }
 
     void onAdFailedToPreload(string preloadId, AndroidJavaObject error) {
       if (_onAdFailedToPreload != null) {
-        _onAdFailedToPreload(preloadId, new AdErrorClient(error));
+        _onAdFailedToPreload(preloadId, new NextGenLoadAdErrorClient(error));
       }
     }
 
