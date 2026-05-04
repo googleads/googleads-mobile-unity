@@ -97,6 +97,11 @@ public final class UnityInterstitialAdPreloaderTest {
 
     // Should not interact with any callback, and definitely not crash
     callback.onAdPreloaded(PRELOAD_ID, responseInfo);
+    LoadAdError loadAdError =
+        new LoadAdError(LoadAdError.ErrorCode.INTERNAL_ERROR, "error message", null);
+    callback.onAdFailedToPreload(PRELOAD_ID, loadAdError);
+
+    callback.onAdsExhausted(PRELOAD_ID);
   }
 
   @Test
@@ -148,5 +153,13 @@ public final class UnityInterstitialAdPreloaderTest {
   public void testDestroy() {
     unityInterstitialAdPreloader.destroy(PRELOAD_ID);
     verify(mockWrapper).destroy(PRELOAD_ID);
+  }
+
+  @Test
+  public void testPublicConstructor() {
+    // verifies creation doesn't crash
+    UnityInterstitialAdPreloader preloader =
+        new UnityInterstitialAdPreloader(activity, mockPreloadCallback);
+    assertThat(preloader).isNotNull();
   }
 }
