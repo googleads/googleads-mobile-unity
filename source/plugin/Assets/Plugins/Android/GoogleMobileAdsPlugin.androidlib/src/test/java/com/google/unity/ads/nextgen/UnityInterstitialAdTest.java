@@ -79,6 +79,12 @@ public class UnityInterstitialAdTest {
   }
 
   @Test
+  public void testShow_whenAdNotLoaded_doesNotThrow() {
+    // Should log an error but not crash
+    unityInterstitialAd.show();
+  }
+
+  @Test
   @SuppressWarnings("EnumOrdinal")
   public void testShow_showsAdAndTriggersCallbacks() {
     // First, simulate a successful ad load.
@@ -195,5 +201,12 @@ public class UnityInterstitialAdTest {
     when(mockInterstitialAd.getResponseInfo()).thenReturn(responseInfo);
     unityInterstitialAd = new UnityInterstitialAd(activity, mockCallback, mockInterstitialAd);
     assertThat(unityInterstitialAd.getResponseInfo()).isEqualTo(responseInfo);
+  }
+
+  @Test
+  public void testPublicConstructor() {
+    // verifies creation doesn't crash
+    UnityInterstitialAd ad = new UnityInterstitialAd(activity, mockCallback);
+    assertThat(ad).isNotNull();
   }
 }
