@@ -58,6 +58,11 @@ namespace GoogleMobileAds.Api
         public static readonly AdSize Banner = new AdSize(320, 50);
 
         /// <summary>
+        /// Large banner ad size (320x100 density-independent pixels).
+        /// </summary>
+        public static readonly AdSize LargeBanner = new AdSize(320, 100);
+
+        /// <summary>
         /// Interactive Advertising Bureau (IAB) medium rectangle ad size (300x250
         /// density-independent pixels).
         /// </summary>
