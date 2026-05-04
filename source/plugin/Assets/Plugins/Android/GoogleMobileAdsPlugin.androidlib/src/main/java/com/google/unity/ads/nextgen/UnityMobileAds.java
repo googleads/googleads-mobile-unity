@@ -23,7 +23,6 @@ import android.os.Bundle;
 import android.util.Log;
 import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
-import com.google.android.libraries.ads.mobile.sdk.MobileAds;
 import com.google.android.libraries.ads.mobile.sdk.common.RequestConfiguration;
 import com.google.android.libraries.ads.mobile.sdk.initialization.InitializationConfig;
 import com.google.android.libraries.ads.mobile.sdk.initialization.OnAdapterInitializationCompleteListener;
@@ -43,7 +42,8 @@ public final class UnityMobileAds {
   private static volatile boolean isMobileAdsInitialized = false;
 
   @GuardedBy("stateLock")
-  private static volatile RequestConfiguration requestConfiguration;
+  private static volatile RequestConfiguration requestConfiguration =
+      new RequestConfiguration.Builder().build();
 
   @GuardedBy("stateLock")
   private static volatile float userVolume = -1;
@@ -87,7 +87,7 @@ public final class UnityMobileAds {
     // Initialize the Google Mobile Ads SDK on a background thread.
     new Thread(
             () ->
-                MobileAds.initialize(
+                mobileAdsWrapper.initialize(
                     activity,
                     config,
                     initializationStatus -> {
@@ -95,15 +95,15 @@ public final class UnityMobileAds {
                         isMobileAdsInitialized = true;
                         requestConfiguration = null;
                         if (isPublisherFirstPartyIdEnabled) {
-                          var unused = MobileAds.putPublisherFirstPartyIdEnabled(true);
+                          var unused = mobileAdsWrapper.putPublisherFirstPartyIdEnabled(true);
                           isPublisherFirstPartyIdEnabled = false;
                         }
                         if (userVolume >= 0) {
-                          MobileAds.setUserControlledAppVolume(userVolume);
+                          mobileAdsWrapper.setUserControlledAppVolume(userVolume);
                           userVolume = -1;
                         }
                         if (isMuted) {
-                          MobileAds.setUserMutedApp(isMuted);
+                          mobileAdsWrapper.setUserMutedApp(isMuted);
                           isMuted = false;
                         }
                       }
@@ -125,7 +125,7 @@ public final class UnityMobileAds {
         return;
       }
     }
-    MobileAds.setRequestConfiguration(config);
+    mobileAdsWrapper.setRequestConfiguration(config);
   }
 
   /**
@@ -134,6 +134,11 @@ public final class UnityMobileAds {
    * @return The {@link RequestConfiguration} that was set.
    */
   public static RequestConfiguration getRequestConfiguration() {
+    synchronized (stateLock) {
+      if (!isMobileAdsInitialized) {
+        return requestConfiguration;
+      }
+    }
     return mobileAdsWrapper.getRequestConfiguration();
   }
 
@@ -149,7 +154,7 @@ public final class UnityMobileAds {
         return true;
       }
     }
-    return MobileAds.putPublisherFirstPartyIdEnabled(enabled);
+    return mobileAdsWrapper.putPublisherFirstPartyIdEnabled(enabled);
   }
 
   /**
@@ -164,7 +169,7 @@ public final class UnityMobileAds {
         return;
       }
     }
-    MobileAds.setUserControlledAppVolume(volume);
+    mobileAdsWrapper.setUserControlledAppVolume(volume);
   }
 
   /**
@@ -179,7 +184,7 @@ public final class UnityMobileAds {
         return;
       }
     }
-    MobileAds.setUserMutedApp(muted);
+    mobileAdsWrapper.setUserMutedApp(muted);
   }
 
   /**
