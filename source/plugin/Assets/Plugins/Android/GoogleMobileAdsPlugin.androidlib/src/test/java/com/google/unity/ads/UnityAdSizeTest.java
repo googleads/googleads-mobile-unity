@@ -3,7 +3,6 @@
 package com.google.unity.ads;
 
 import static com.google.common.truth.Truth.assertThat;
-import static junit.framework.Assert.fail;
 import static org.junit.Assert.assertThrows;
 
 import android.app.Activity;
@@ -92,12 +91,10 @@ public final class UnityAdSizeTest {
   @Test
   public void
       testGetPortraitAnchoredAdaptiveBannerAdSize_withInvalidWidth_raisesIllegalArgumentException() {
-    try {
-      UnityAdSize.getPortraitAnchoredAdaptiveBannerAdSize(activity, -WIDTH);
-      fail("Exception expected to be raised already.");
-    } catch (IllegalArgumentException e) {
-      // Expected.
-    }
+    // Expected.
+    assertThrows(
+        IllegalArgumentException.class,
+        () -> UnityAdSize.getPortraitAnchoredAdaptiveBannerAdSize(activity, -WIDTH));
   }
 
   @Test
