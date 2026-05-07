@@ -75,7 +75,16 @@ namespace GoogleMobileAds.Api
                 {
                     if (onAdFailedToPreload != null)
                     {
-                        onAdFailedToPreload(preloadIdOnAdFailedToPreload, new AdError(error));
+                        ILoadAdErrorClient loadAdErrorClient = error as ILoadAdErrorClient;
+                        if (loadAdErrorClient != null)
+                        {
+                            onAdFailedToPreload(preloadIdOnAdFailedToPreload,
+                                                new LoadAdError(loadAdErrorClient));
+                        }
+                        else
+                        {
+                            onAdFailedToPreload(preloadIdOnAdFailedToPreload, new AdError(error));
+                        }
                     }
                 });
             };
