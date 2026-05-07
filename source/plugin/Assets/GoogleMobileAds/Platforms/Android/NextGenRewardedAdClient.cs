@@ -130,9 +130,10 @@ namespace GoogleMobileAds.Android
       void onRewardedAdFailedToLoad(AndroidJavaObject error) {
         _insightsEmitter.Emit(new Insight()
         {
-            Name = Insight.CuiName.AdFailedToLoad,
+            Name = Insight.CuiName.AdLoaded,
             Format = RewardedFormat,
             AdUnitId = GetAdUnitID(),
+            Success = false,
         });
         if (this.OnAdFailedToLoad != null) {
           LoadAdErrorClientEventArgs args =

@@ -172,9 +172,10 @@ namespace GoogleMobileAds.Android
         {
             _insightsEmitter.Emit(new Insight()
             {
-                Name = Insight.CuiName.AdFailedToLoad,
+                Name = Insight.CuiName.AdLoaded,
                 Format = BannerFormat,
                 AdUnitId = this.adUnitId,
+                Success = false,
             });
 
             if (this.OnAdFailedToLoad != null)

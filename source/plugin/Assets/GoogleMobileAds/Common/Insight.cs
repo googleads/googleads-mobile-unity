@@ -83,6 +83,7 @@ namespace GoogleMobileAds.Common
             SdkInitialized = 1,
             AdRequested = 2,
             AdLoaded = 3,
+            [Obsolete("Use CuiName.AdLoaded with Success = false instead.")]
             AdFailedToLoad = 4,
             AdShown = 5,
             AdClosed = 6,
