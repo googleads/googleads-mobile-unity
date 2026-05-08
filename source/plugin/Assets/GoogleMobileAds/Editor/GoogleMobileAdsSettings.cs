@@ -13,6 +13,12 @@ namespace GoogleMobileAds.Editor
 
     private const string MobileAdsSettingsFileExtension = ".asset";
 
+    public enum GmaAndroidSdk
+    {
+      Standard = 0,
+      NextGen = 1
+    }
+
     internal static GoogleMobileAdsSettings LoadInstance()
     {
       // Read from resources.
@@ -55,6 +61,12 @@ namespace GoogleMobileAds.Editor
 
     [SerializeField]
     private string userLanguage = "en";
+
+    [SerializeField]
+    private bool overrideDefaultGmaAndroidSdk = false;
+
+    [SerializeField]
+    private int selectedGmaAndroidSdk = 0;
 
     public string GoogleMobileAdsAndroidAppId
     {
@@ -110,6 +122,20 @@ namespace GoogleMobileAds.Editor
       get { return userLanguage; }
 
       set { userLanguage = value; }
+    }
+
+    public bool OverrideDefaultGmaAndroidSdk
+    {
+      get { return overrideDefaultGmaAndroidSdk; }
+
+      set { overrideDefaultGmaAndroidSdk = value; }
+    }
+
+    public int SelectedGmaAndroidSdk
+    {
+      get { return selectedGmaAndroidSdk; }
+
+      set { selectedGmaAndroidSdk = value; }
     }
   }
 }

@@ -67,6 +67,22 @@
     "KEY_USER_TRACKING_USAGE_DESCRIPTION_SETTING": {
       "en": "User Tracking Usage Description",
       "fr": "Description de l'utilisation du suivi des utilisateurs"
+    },
+    "KEY_OVERRIDE_DEFAULT_GMA_ANDROID_ARCHITECTURE_SETTING": {
+      "en": "Switch Google Mobile Ads Android architecture",
+      "fr": "Changer l'architecture Google Mobile Ads Android"
+    },
+    "KEY_OVERRIDE_DEFAULT_GMA_ANDROID_ARCHITECTURE_DESCRIPTION": {
+      "en": "Enable this to change your Android build from the standard Google Mobile Ads SDK to the new Next-Gen SDK for improved performance and stability.",
+      "fr": "Activer cette option pour basculer votre build Android du SDK Google Mobile Ads standard vers le SDK de nouvelle génération pour améliorer les performances et la stabilité."
+    },
+    "KEY_GMA_ANDROID_ARCHITECTURE_STANDARD": {
+      "en": "Standard SDK",
+      "fr": "SDK standard"
+    },
+    "KEY_GMA_ANDROID_ARCHITECTURE_NEXT_GEN": {
+      "en": "Next-Gen SDK (Improves latency and stability)",
+      "fr": "SDK Next-Gen (Améliore la latence et la stabilité)"
     }
   }
 }
