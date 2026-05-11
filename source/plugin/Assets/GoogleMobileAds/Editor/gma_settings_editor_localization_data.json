@@ -73,16 +73,28 @@
       "fr": "Changer l'architecture Google Mobile Ads Android"
     },
     "KEY_OVERRIDE_DEFAULT_GMA_ANDROID_ARCHITECTURE_DESCRIPTION": {
-      "en": "Enable this to change your Android build from the standard Google Mobile Ads SDK to the new Next-Gen SDK for improved performance and stability.",
-      "fr": "Activer cette option pour basculer votre build Android du SDK Google Mobile Ads standard vers le SDK de nouvelle génération pour améliorer les performances et la stabilité."
+      "en": "You can continue using the current Google Mobile Ads SDK architecture or you can switch to the Next-Gen architecture to improve latency and stability. You can switch back to the current architecture at any time.",
+      "fr": "Vous pouvez continuer à utiliser l'architecture actuelle du SDK Google Mobile Ads ou passer à l'architecture Next-Gen pour améliorer la latence et la stabilité. Vous pouvez revenir à l'architecture actuelle à tout moment."
     },
-    "KEY_GMA_ANDROID_ARCHITECTURE_STANDARD": {
-      "en": "Standard SDK",
-      "fr": "SDK standard"
+    "KEY_ACTIVE_ARCHITECTURE_LABEL": {
+      "en": "Selected architecture: ",
+      "fr": "Architecture sélectionnée : "
     },
-    "KEY_GMA_ANDROID_ARCHITECTURE_NEXT_GEN": {
-      "en": "Next-Gen SDK (Improves latency and stability)",
-      "fr": "SDK Next-Gen (Améliore la latence et la stabilité)"
+    "KEY_GMA_ANDROID_SDK_STANDARD": {
+      "en": "Legacy Google Mobile Ads SDK",
+      "fr": "SDK Google Mobile Ads hérité"
+    },
+    "KEY_GMA_ANDROID_SDK_NEXT_GEN": {
+      "en": "GMA Next-Gen SDK",
+      "fr": "SDK GMA Next-Gen"
+    },
+    "KEY_GMA_ANDROID_SDK_STANDARD_OPTION": {
+      "en": "Continue using the legacy Google Mobile Ads SDK",
+      "fr": "Continuer à utiliser le SDK Google Mobile Ads hérité"
+    },
+    "KEY_GMA_ANDROID_SDK_NEXT_GEN_OPTION": {
+      "en": "Upgrade to the GMA Next-Gen SDK",
+      "fr": "Mettre à niveau vers le SDK GMA Next-Gen"
     }
   }
 }

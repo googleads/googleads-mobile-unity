@@ -96,6 +96,17 @@ namespace GoogleMobileAds.Editor
                                  EditorStyles.boldLabel);
       EditorGUI.indentLevel++;
 
+      var activeArch = settings.EffectiveGmaAndroidSdk;
+      string activeArchStr = activeArch == GoogleMobileAdsSettings.GmaAndroidSdk.Standard
+                                 ? localization.ForKey("GMA_ANDROID_SDK_STANDARD")
+                                 : localization.ForKey("GMA_ANDROID_SDK_NEXT_GEN");
+
+      GUIStyle richLabelStyle = new GUIStyle(EditorStyles.label);
+      richLabelStyle.richText = true;
+      EditorGUILayout.LabelField(
+          localization.ForKey("ACTIVE_ARCHITECTURE_LABEL") + "<b>" + activeArchStr + "</b>",
+          richLabelStyle);
+
       EditorGUILayout.PropertyField(
           _overrideDefaultGmaAndroidSdk,
           new GUIContent(localization.ForKey("OVERRIDE_DEFAULT_GMA_ANDROID_ARCHITECTURE_SETTING")));
@@ -122,7 +133,7 @@ namespace GoogleMobileAds.Editor
       EditorGUILayout.BeginHorizontal();
       GUILayout.Space(EditorGUI.indentLevel * 15); // Manually apply indentation
       if (GUILayout.Toggle(currentSelected == (int)GoogleMobileAdsSettings.GmaAndroidSdk.Standard,
-                           localization.ForKey("GMA_ANDROID_ARCHITECTURE_STANDARD"), radioStyle))
+                           localization.ForKey("GMA_ANDROID_SDK_STANDARD_OPTION"), radioStyle))
       {
         currentSelected = (int)GoogleMobileAdsSettings.GmaAndroidSdk.Standard;
       }
@@ -132,7 +143,7 @@ namespace GoogleMobileAds.Editor
       EditorGUILayout.BeginHorizontal();
       GUILayout.Space(EditorGUI.indentLevel * 15); // Manually apply indentation
       if (GUILayout.Toggle(currentSelected == (int)GoogleMobileAdsSettings.GmaAndroidSdk.NextGen,
-                           localization.ForKey("GMA_ANDROID_ARCHITECTURE_NEXT_GEN"), radioStyle))
+                           localization.ForKey("GMA_ANDROID_SDK_NEXT_GEN_OPTION"), radioStyle))
       {
         currentSelected = (int)GoogleMobileAdsSettings.GmaAndroidSdk.NextGen;
       }

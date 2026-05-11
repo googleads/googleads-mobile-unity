@@ -137,5 +137,22 @@ namespace GoogleMobileAds.Editor
 
       set { selectedGmaAndroidSdk = value; }
     }
+
+    /// <summary>
+    /// Returns the active GMA Android SDK architecture.
+    /// This property is decoupled from the stored value to allow easily switching the default
+    /// to Next-Gen in the next phase of migration for users who haven't overridden the default.
+    /// </summary>
+    public GmaAndroidSdk EffectiveGmaAndroidSdk
+    {
+      get
+      {
+        if (overrideDefaultGmaAndroidSdk)
+        {
+          return (GmaAndroidSdk)selectedGmaAndroidSdk;
+        }
+        return GmaAndroidSdk.Standard;
+      }
+    }
   }
 }
