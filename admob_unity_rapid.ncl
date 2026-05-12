@@ -112,7 +112,7 @@ OVERRIDE_TARGET_UNITY_VER_WORKFLOW_PARAMETER = ::Rapid::WorkflowParameter::Singl
   possible_values = POSSIBLE_UNITY_VERSIONS + ["None"],
   default_value = "None",
   modifiable = true,
-  description = "If set, overrides the target Unity version and disables rotation.",
+  description = "If set, overrides the target Unity version and disables the rotation.",
 );
 SHARED_BUILD_AND_TEST_WORKFLOW_PARAMETERS = [
   ::Rapid::WorkflowParameter::SingleSelectEnum(
