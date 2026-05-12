@@ -10,6 +10,10 @@ UNITY_PLUGIN_IOS_FLAGS = [
   "--ios_minimum_os=14.0",
 ];
 
+// LINT.IfChange
+POSSIBLE_UNITY_VERSIONS = ["6000.3", "6000.1", "2022.3", "2021.3"];
+// LINT.ThenChange(//depot/google3/third_party/java_src/gma_sdk_mediation/release/rapid/workflows/unity/build_all_unity_apks_and_ipas.pp)
+
 DEFAULT_TARGET_UNITY_VERSION = "6000.3";
 DEFAULT_ANDROID_TARGET_SDK = "36";
 DEFAULT_IOS_VERSION = "18.0";
@@ -101,13 +105,20 @@ IOS_VERSION_WORKFLOW_PARAMETER = ::Rapid::WorkflowParameter::Simple(
   modifiable = true,
   description = "iOS version for which to build or test the IPA (e.g., '16.0'). It must comply with Unity iOS and Apple requirements.",
 );
+OVERRIDE_TARGET_UNITY_VER_WORKFLOW_PARAMETER = ::Rapid::WorkflowParameter::SingleSelectEnum(
+  name = "override_target_unity_ver",
+  label = "Override Target Unity Version",
+  // An empty string is not user-friendly while "None" is more descriptive.
+  possible_values = POSSIBLE_UNITY_VERSIONS + ["None"],
+  default_value = "None",
+  modifiable = true,
+  description = "If set, overrides the target Unity version and disables rotation.",
+);
 SHARED_BUILD_AND_TEST_WORKFLOW_PARAMETERS = [
   ::Rapid::WorkflowParameter::SingleSelectEnum(
     name = "target_unity_ver",
     label = "Target Unity Version",
-    // LINT.IfChange
-    possible_values = ["6000.3", "6000.1", "2022.3", "2021.3"],
-    // LINT.ThenChange(//depot/google3/third_party/java_src/gma_sdk_mediation/release/rapid/workflows/unity/build_all_unity_apks_and_ipas.pp)
+    possible_values = POSSIBLE_UNITY_VERSIONS,
     default_value = DEFAULT_TARGET_UNITY_VERSION,
     modifiable = true,
     description = "Unity version for which to build or test the APK.",
@@ -150,12 +161,16 @@ ADMOB_UNITY_PLUGIN_BUILDABLE_UNIT = ::blueprint::BuildableUnit(
 
 FORCE_BUILD_UNITY_APK_WORKFLOW_NAME = "Force Build Unity APK";
 
+local def RemoveTargetUnityVerFromParams(params) =
+  [p for p in params if p.name != "target_unity_ver"];
+
 // This workflow is used by GMA SDK Nonagon Granular and FDR release processes
 // (Android).
 FORCE_BUILD_UNITY_APK_NONAGON_WORKFLOW = ::Rapid::Workflow::CustomWorkflow(
   name = FORCE_BUILD_UNITY_APK_WORKFLOW_NAME,
   config_path = "google3/third_party/java_src/gma_sdk_mediation/release/rapid/workflows/unity/build_unity_apk_or_ipa.pp",
-  parameters = SHARED_BUILD_AND_TEST_WORKFLOW_PARAMETERS + [
+  parameters = RemoveTargetUnityVerFromParams(SHARED_BUILD_AND_TEST_WORKFLOW_PARAMETERS) + [
+    OVERRIDE_TARGET_UNITY_VER_WORKFLOW_PARAMETER,
     ADMOB_ANDROID_APP_ID_WORKFLOW_PARAMETER,
     USE_CACHES_WORKFLOW_PARAMETER_TRUE,
     FORCE_BUILD_UNITS_WORKFLOW_PARAMETER,
@@ -169,7 +184,8 @@ FORCE_BUILD_UNITY_APK_NONAGON_WORKFLOW = ::Rapid::Workflow::CustomWorkflow(
 FORCE_BUILD_UNITY_APK_DECAGON_WORKFLOW = ::Rapid::Workflow::CustomWorkflow(
   name = FORCE_BUILD_UNITY_APK_WORKFLOW_NAME,
   config_path = "google3/third_party/java_src/gma_sdk_mediation/release/rapid/workflows/unity/build_unity_apk_or_ipa.pp",
-  parameters = SHARED_BUILD_AND_TEST_WORKFLOW_PARAMETERS + [
+  parameters = RemoveTargetUnityVerFromParams(SHARED_BUILD_AND_TEST_WORKFLOW_PARAMETERS) + [
+    OVERRIDE_TARGET_UNITY_VER_WORKFLOW_PARAMETER,
     ADMOB_ANDROID_APP_ID_WORKFLOW_PARAMETER,
     USE_CACHES_WORKFLOW_PARAMETER_TRUE,
     FORCE_BUILD_UNITS_WORKFLOW_PARAMETER,
