@@ -35,8 +35,19 @@ namespace GoogleMobileAds.Editor
     public class AndroidBuildPreProcessor : IPreprocessBuildWithReport
     {
         private const string NextGenLibrary = "com.google.android.libraries.ads.mobile.sdk:ads-mobile-sdk";
-        private const string NextGenVersion = "1.0.1";
-        private const string NextGenSpec = NextGenLibrary + ":" + NextGenVersion;
+        private static readonly Version MinAGPForLatestNextGen = new Version(8, 1, 0);
+        private static readonly string LatestNextGenVersion = "1.0.1";
+        private static readonly string LowerAGPNextGenVersion = "0.22.0-beta04";
+        private static string NextGenVersion
+        {
+            get
+            {
+                Version agpVersion = GoogleMobileAds.Editor.Utils.AndroidGradlePluginVersion;
+                return agpVersion < MinAGPForLatestNextGen ? LowerAGPNextGenVersion
+                                                           : LatestNextGenVersion;
+            }
+        }
+        private static string NextGenSpec => NextGenLibrary + ":" + NextGenVersion;
 
         private const string CurrentLibrary = "com.google.android.gms:play-services-ads";
         private const string CurrentVersion = "25.2.0";

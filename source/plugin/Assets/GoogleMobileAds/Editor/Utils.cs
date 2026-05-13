@@ -24,9 +24,6 @@ namespace GoogleMobileAds.Editor
     */
     public static class Utils
     {
-        internal static string GradleTemplatePath =
-            Path.Combine(AndroidPluginsDir, "baseProjectTemplate.gradle");
-
         //  Android library plugins directory that contains custom gradle templates.
         internal const string AndroidPluginsDir = "Assets/Plugins/Android";
 
@@ -44,44 +41,69 @@ namespace GoogleMobileAds.Editor
         private static Regex androidGradlePluginVersionExtract =
             new Regex(@"^\s*id\s+['""]com\.android\.application['""] version ['""]([^'""]+)['""]");
 
+        // Extracts major.minor[.patch] version numbers from a string.
+        private static readonly Regex versionParseRegex =
+            new Regex(@"^(\d+)\.(\d+)(?:\.(\d+))?", RegexOptions.Compiled);
+
         /// <summary>
         /// Get the Android Gradle Plugin version used by the Unity project.
         /// </summary>
-        public static string AndroidGradlePluginVersion
+        public static Version AndroidGradlePluginVersion
         {
-            private set {}
             get
             {
-                if (!Directory.Exists(AndroidPluginsDir) || !File.Exists(GradleTemplatePath))
-                {
-                    return DefaultAndroidGradlePlugin();
-                }
-                var gradleTemplates = Directory.GetFiles(AndroidPluginsDir, "*.gradle",
-                                                         SearchOption.TopDirectoryOnly);
-                foreach (var path in gradleTemplates)
-                {
-                    foreach (var line in File.ReadAllLines(path))
-                    {
-                        var match = androidGradlePluginVersionExtract_legacy.Match(line);
-                        if (match != null && match.Success)
-                        {
-                            return match.Result("$1");
-                        }
-                        match = androidGradlePluginVersionExtract.Match(line);
-                        if (match != null && match.Success)
-                        {
-                            return match.Result("$1");
-                        }
-                    }
-                }
-                return DefaultAndroidGradlePlugin();
+                return ParseVersion(GetAndroidGradlePluginVersionString());
             }
         }
+        private static string GetAndroidGradlePluginVersionString()
+        {
+            if (!Directory.Exists(AndroidPluginsDir))
+            {
+                return DefaultAndroidGradlePlugin();
+            }
+            var gradleTemplates = Directory.GetFiles(AndroidPluginsDir, "*.gradle",
+                                                     SearchOption.TopDirectoryOnly);
+            foreach (var path in gradleTemplates)
+            {
+                foreach (var line in File.ReadLines(path))
+                {
+                    var match = androidGradlePluginVersionExtract_legacy.Match(line);
+                    if (match != null && match.Success)
+                    {
+                        return match.Result("$1");
+                    }
+                    match = androidGradlePluginVersionExtract.Match(line);
+                    if (match != null && match.Success)
+                    {
+                        return match.Result("$1");
+                    }
+                }
+            }
+            return DefaultAndroidGradlePlugin();
+        }
+        private static Version ParseVersion(string versionStr)
+        {
+            var match = versionParseRegex.Match(versionStr);
+            if (match.Success)
+            {
+                int major = int.Parse(match.Groups[1].Value);
+                int minor = int.Parse(match.Groups[2].Value);
+                int patch = match.Groups[3].Success ? int.Parse(match.Groups[3].Value) : 0;
+                return new Version(major, minor, patch);
+            }
+            return new Version(0, 0, 0);
+        }
 
-        // TODO(@vkini): read from default Unity baseProjectTemplate.gradle file
+        // These values are based on the Unity documentation for the latest version of Unity. See
+        // https://docs.unity3d.com/2023.2/Documentation/Manual/android-gradle-overview.html
+        // https://docs.unity3d.com/6000.0/Documentation/Manual/android-gradle-version-compatibility.html
         private static string DefaultAndroidGradlePlugin()
         {
-#if UNITY_2022_3_OR_NEWER
+#if UNITY_6000_0_OR_NEWER
+            return "8.3.0";
+#elif UNITY_2023_2_OR_NEWER
+            return "7.3.1";
+#elif UNITY_2022_2_OR_NEWER
             return "7.1.2";
 #else
             return "4.0.1";
