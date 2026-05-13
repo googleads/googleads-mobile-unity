@@ -81,16 +81,16 @@
       "fr": "Architecture sélectionnée : "
     },
     "KEY_GMA_ANDROID_SDK_STANDARD": {
-      "en": "Legacy Google Mobile Ads SDK",
-      "fr": "SDK Google Mobile Ads hérité"
+      "en": "Google Mobile Ads SDK",
+      "fr": "SDK Google Mobile Ads"
     },
     "KEY_GMA_ANDROID_SDK_NEXT_GEN": {
       "en": "GMA Next-Gen SDK",
       "fr": "SDK GMA Next-Gen"
     },
     "KEY_GMA_ANDROID_SDK_STANDARD_OPTION": {
-      "en": "Continue using the legacy Google Mobile Ads SDK",
-      "fr": "Continuer à utiliser le SDK Google Mobile Ads hérité"
+      "en": "Continue using the Google Mobile Ads SDK",
+      "fr": "Continuer à utiliser le SDK Google Mobile Ads"
     },
     "KEY_GMA_ANDROID_SDK_NEXT_GEN_OPTION": {
       "en": "Upgrade to the GMA Next-Gen SDK",
