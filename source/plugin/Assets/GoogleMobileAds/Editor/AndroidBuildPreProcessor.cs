@@ -45,7 +45,9 @@ namespace GoogleMobileAds.Editor
         private static readonly string NextGenRegex = Regex.Escape(NextGenLibrary) + @":[\d\.]+[-a-zA-Z0-9]*";
         private static readonly string CurrentRegex = Regex.Escape(CurrentLibrary) + @":[\d\.]+[-a-zA-Z0-9]*";
 
-        const int MinimumAPILevel = 23;
+        const int StandardMinimumAPILevel = 23;
+        const int NextGenMinimumAPILevel = 24;
+
         const string CustomGradlePropertiesTemplatesFileName = "gradleTemplate.properties";
         const string CustomMainGradleTemplateFileName = "mainTemplate.gradle";
         const string JetifierEntry =
@@ -73,15 +75,18 @@ namespace GoogleMobileAds.Editor
         {
             Debug.Log("Running Android Gradle Build Pre-Processor.");
 
-            // Set Minimum Api Level.
-            if (PlayerSettings.Android.minSdkVersion < (AndroidSdkVersions)MinimumAPILevel)
+            var sdk = GoogleMobileAdsSettings.LoadInstance().EffectiveGmaAndroidSdk;
+            int targetMinApi = (sdk == GoogleMobileAdsSettings.GmaAndroidSdk.NextGen)
+                                   ? NextGenMinimumAPILevel
+                                   : StandardMinimumAPILevel;
+            if (PlayerSettings.Android.minSdkVersion < (AndroidSdkVersions)targetMinApi)
             {
-                PlayerSettings.Android.minSdkVersion = (AndroidSdkVersions)MinimumAPILevel;
-                Debug.Log($"Set minimum API Level to: {MinimumAPILevel}.");
+                PlayerSettings.Android.minSdkVersion = (AndroidSdkVersions)targetMinApi;
+                Debug.Log($"Set minimum API Level to: {targetMinApi}.");
             }
             else
             {
-                Debug.Log($"Verified Minimum API Level is >= {MinimumAPILevel}.");
+                Debug.Log($"Verified Minimum API Level is >= {targetMinApi}.");
             }
 
             // Create Assets/Plugins folder.
