@@ -50,7 +50,7 @@ namespace GoogleMobileAds.Android
                         androidAdapterList.Call<AndroidJavaObject>("get", i);
                 if (androidAdapterResponseInfo != null)
                 {
-                    var client = new AdapterResponseInfoClient(androidAdapterResponseInfo);
+                    var client = new NextGenAdSourceResponseInfoClient(androidAdapterResponseInfo);
                     adapterList.Add(client);
                 }
             }

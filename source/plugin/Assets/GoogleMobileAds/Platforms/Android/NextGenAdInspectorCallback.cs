@@ -40,7 +40,7 @@ namespace GoogleMobileAds.Android
             }
             var args = error == null ? null : new AdInspectorErrorClientEventArgs
             {
-                AdErrorClient = new AdInspectorErrorClient(error)
+                AdErrorClient = new NextGenAdInspectorErrorClient(error)
             };
             adInspectorClosedAction(args);
         }
