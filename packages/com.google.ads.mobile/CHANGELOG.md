@@ -1,4 +1,17 @@
 Google Mobile Ads Unity Plugin Change Log
+
+**************
+Version 11.1.0
+**************
+
+- Updated the GMA iOS SDK dependency version to 13.3.0.
+- Updated the GMA Android SDK dependency version to 25.2.0
+- Defer and raise userRewardEarnedCallback on main thread when running on iOS.
+- Added Android Settings Architecture toggle to allow for switching between the GMA Next-Gen Android SDK and the Legacy GMA Android SDK.
+- Added ability to surface ResponseInfo via LoadAdError object in case Ad Preloader fails to load an ad.
+- Added support for large banner ad size to the AdSize class.
+- Fixed GetRequestConfiguration on iOS to return RequestConfiguration set on the GMA iOS SDK.
+
 **************
 Version 11.0.0
 **************

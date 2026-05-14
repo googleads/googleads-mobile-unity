@@ -20,6 +20,8 @@ namespace GoogleMobileAds.Editor
     SerializedProperty _disableOptimizeAdLoading;
     SerializedProperty _userLanguage;
     SerializedProperty _userTrackingUsageDescription;
+    SerializedProperty _overrideDefaultGmaAndroidSdk;
+    SerializedProperty _gmaAndroidSdk;
 
     // Using an ordered list of languages is computationally expensive when trying to create an
     // array out of them for purposes of showing a dropdown menu. Care should be taken to ensure
@@ -38,6 +40,8 @@ namespace GoogleMobileAds.Editor
     {
       _appIdAndroid = serializedObject.FindProperty("adMobAndroidAppId");
       _appIdiOS = serializedObject.FindProperty("adMobIOSAppId");
+      _overrideDefaultGmaAndroidSdk = serializedObject.FindProperty("overrideDefaultGmaAndroidSdk");
+      _gmaAndroidSdk = serializedObject.FindProperty("selectedGmaAndroidSdk");
       _enableGradleBuildPreProcessor =
           serializedObject.FindProperty("enableGradleBuildPreProcessor");
       _enableKotlinXCoroutinesPackagingOption =
@@ -91,6 +95,73 @@ namespace GoogleMobileAds.Editor
       EditorGUILayout.LabelField(localization.ForKey("ANDROID_SETTINGS_LABEL"),
                                  EditorStyles.boldLabel);
       EditorGUI.indentLevel++;
+
+      var activeArch = settings.EffectiveGmaAndroidSdk;
+      string activeArchStr = activeArch == GoogleMobileAdsSettings.GmaAndroidSdk.Standard
+                                 ? localization.ForKey("GMA_ANDROID_SDK_STANDARD")
+                                 : localization.ForKey("GMA_ANDROID_SDK_NEXT_GEN");
+
+      GUIStyle richLabelStyle = new GUIStyle(EditorStyles.label);
+      richLabelStyle.richText = true;
+      EditorGUILayout.LabelField(
+          localization.ForKey("ACTIVE_ARCHITECTURE_LABEL") + "<b>" + activeArchStr + "</b>",
+          richLabelStyle);
+
+      EditorGUILayout.PropertyField(
+          _overrideDefaultGmaAndroidSdk,
+          new GUIContent(localization.ForKey("OVERRIDE_DEFAULT_GMA_ANDROID_ARCHITECTURE_SETTING")));
+
+      if (!_overrideDefaultGmaAndroidSdk.boolValue)
+      {
+        EditorGUILayout.LabelField(localization.ForKey("OVERRIDE_DEFAULT_GMA_ANDROID_ARCHITECTURE_DESCRIPTION"), EditorStyles.wordWrappedMiniLabel);
+      }
+
+      EditorGUI.BeginDisabledGroup(!_overrideDefaultGmaAndroidSdk.boolValue);
+      EditorGUI.indentLevel++;
+
+      int currentSelected = _gmaAndroidSdk.intValue;
+      if (!_overrideDefaultGmaAndroidSdk.boolValue)
+      {
+        // Force to Standard when disabled.
+        currentSelected = (int)GoogleMobileAdsSettings.GmaAndroidSdk.Standard;
+      }
+
+      GUIStyle radioStyle = new GUIStyle(EditorStyles.radioButton);
+      radioStyle.padding.left += 10;
+
+      // Standard Radio Button
+      EditorGUILayout.BeginHorizontal();
+      GUILayout.Space(EditorGUI.indentLevel * 15); // Manually apply indentation
+      if (GUILayout.Toggle(currentSelected == (int)GoogleMobileAdsSettings.GmaAndroidSdk.Standard,
+                           localization.ForKey("GMA_ANDROID_SDK_STANDARD_OPTION"), radioStyle))
+      {
+        currentSelected = (int)GoogleMobileAdsSettings.GmaAndroidSdk.Standard;
+      }
+      EditorGUILayout.EndHorizontal();
+
+      // Next Gen Radio Button
+      EditorGUILayout.BeginHorizontal();
+      GUILayout.Space(EditorGUI.indentLevel * 15); // Manually apply indentation
+      if (GUILayout.Toggle(currentSelected == (int)GoogleMobileAdsSettings.GmaAndroidSdk.NextGen,
+                           localization.ForKey("GMA_ANDROID_SDK_NEXT_GEN_OPTION"), radioStyle))
+      {
+        currentSelected = (int)GoogleMobileAdsSettings.GmaAndroidSdk.NextGen;
+      }
+      EditorGUILayout.EndHorizontal();
+
+      if (_overrideDefaultGmaAndroidSdk.boolValue)
+      {
+        _gmaAndroidSdk.intValue = currentSelected;
+      }
+      else
+      {
+        _gmaAndroidSdk.intValue = (int)GoogleMobileAdsSettings.GmaAndroidSdk.Standard;
+      }
+
+      EditorGUI.indentLevel--;
+      EditorGUI.EndDisabledGroup();
+
+      EditorGUILayout.Separator();
 
       EditorGUI.BeginChangeCheck();
 

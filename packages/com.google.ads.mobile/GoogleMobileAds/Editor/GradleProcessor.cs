@@ -14,8 +14,10 @@ public class GradleProcessor : IPostGenerateGradleAndroidProject
     private const string GMA_PACKAGING_OPTIONS =
       "apply from: 'GoogleMobileAdsPlugin.androidlib/packaging_options.gradle'";
 
-    private const string GMA_VALIDATE_GRADLE_DEPENDENCIES =
-      "gradle.projectsEvaluated { apply from: 'GoogleMobileAdsPlugin.androidlib/validate_dependencies.gradle' }";
+    private const string GMA_VALIDATE_GRADLE_DEPENDENCIES_FILENAME = "validate_dependencies.gradle";
+
+    private const string GMA_NEXT_GEN_EXCLUSIONS =
+      "apply from: 'GoogleMobileAdsPlugin.androidlib/next_gen_exclusions.gradle'";
 
     public void OnPostGenerateGradleAndroidProject(string path)
     {
@@ -25,13 +27,13 @@ public class GradleProcessor : IPostGenerateGradleAndroidProject
 
         var packagingOptionsLauncher = GMA_PACKAGING_OPTIONS_LAUNCHER;
         var packagingOptionsUnityLibrary = GMA_PACKAGING_OPTIONS;
-        var validateGradleDependencies = GMA_VALIDATE_GRADLE_DEPENDENCIES;
+        var nextGenExclusionsUnityLibrary = GMA_NEXT_GEN_EXCLUSIONS;
 
         // Windows path requires '\\'
 #if UNITY_EDITOR_WIN
         packagingOptionsLauncher = packagingOptionsLauncher.Replace("/","\\\\");
         packagingOptionsUnityLibrary = packagingOptionsUnityLibrary.Replace("/","\\\\");
-        validateGradleDependencies = validateGradleDependencies.Replace("/","\\\\");
+        nextGenExclusionsUnityLibrary = nextGenExclusionsUnityLibrary.Replace("/","\\\\");
 #endif
 
         foreach (var gradlepath in gradleList)
@@ -45,55 +47,71 @@ public class GradleProcessor : IPostGenerateGradleAndroidProject
             }
 
             var contents = File.ReadAllText(gradlepath);
-            // Delete existing packaging_options and then set it if enabled.
+            bool modified = false;
+
+            // 1. Clear any previously injected gradle script references (to start with a clean
+            // baseline)
             if (contents.Contains("packaging_options.gradle"))
             {
                 contents = DeleteLineContainingSubstring(contents, "packaging_options.gradle");
+                modified = true;
             }
 
-            if (!GoogleMobileAdsSettings.LoadInstance().EnableKotlinXCoroutinesPackagingOption)
+            if (contents.Contains("next_gen_exclusions.gradle"))
+            {
+                contents = DeleteLineContainingSubstring(contents, "next_gen_exclusions.gradle");
+                modified = true;
+            }
+
+            // 2. Remove validate_dependencies.gradle script reference if present. This gradle file
+            // is no longer needed since the offending AndroidManifest.xml tags have been removed.
+            // This check will also be removed in the next major plugin release (v12.0.0).
+            if (contents.Contains(GMA_VALIDATE_GRADLE_DEPENDENCIES_FILENAME))
+            {
+                contents = DeleteLineContainingSubstring(contents, GMA_VALIDATE_GRADLE_DEPENDENCIES_FILENAME);
+                modified = true;
+            }
+
+            // 3. Apply packaging options if enabled
+            if (GoogleMobileAdsSettings.LoadInstance().EnableKotlinXCoroutinesPackagingOption)
+            {
+                if (gradlepath.Contains("unityLibrary/build.gradle") ||
+                    gradlepath.Contains("unityLibrary\\build.gradle"))
+                {
+                    contents += Environment.NewLine + packagingOptionsUnityLibrary;
+                }
+                else if (gradlepath.Contains("launcher/build.gradle") ||
+                         gradlepath.Contains("launcher\\build.gradle"))
+                {
+                    contents += Environment.NewLine + packagingOptionsLauncher;
+                }
+                modified = true;
+            }
+
+            // 4. Apply Next-Gen exclusions if target is NextGen SDK.
+            if (GoogleMobileAdsSettings.LoadInstance().EffectiveGmaAndroidSdk ==
+                GoogleMobileAdsSettings.GmaAndroidSdk.NextGen)
+            {
+                if (gradlepath.Contains("unityLibrary/build.gradle") ||
+                    gradlepath.Contains("unityLibrary\\build.gradle"))
+                {
+                    contents += Environment.NewLine + nextGenExclusionsUnityLibrary;
+                    modified = true;
+                }
+            }
+
+            if (modified)
             {
                 File.WriteAllText(gradlepath, contents);
-                continue;
-            }
-
-            if (gradlepath.Contains("unityLibrary/build.gradle") || gradlepath.Contains("unityLibrary\\build.gradle"))
-            {
-                contents += Environment.NewLine + packagingOptionsUnityLibrary;
-            }
-            else if (gradlepath.Contains("launcher/build.gradle") || gradlepath.Contains("launcher\\build.gradle"))
-            {
-                contents += Environment.NewLine + packagingOptionsLauncher;
-            }
-            File.WriteAllText(gradlepath, contents);
-        }
-
-        // TODO (b/311555203) Use delete then write approach above to update this Gradle script too.
-        var unityLibraryGradle = Directory.GetFiles(rootPath, "unityLibrary/build.gradle",
-                    SearchOption.TopDirectoryOnly);
-
-        foreach (var gradlePath in unityLibraryGradle)
-        {
-            var contents = File.ReadAllText(gradlePath);
-            if (contents.Contains(validateGradleDependencies))
-            {
-                contents = DeleteLineContainingSubstring(contents, validateGradleDependencies);
-                File.WriteAllText(gradlePath, contents);
             }
         }
     }
 
     private string DeleteLineContainingSubstring(string file, string substring)
     {
-        string newFile = "";
-        var lines = file.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
-        foreach (var line in lines)
-        {
-            if (!line.Contains(substring))
-            {
-                newFile += line + Environment.NewLine;
-            }
-        }
-        return newFile;
+      string escapedSubstring = System.Text.RegularExpressions.Regex.Escape(substring);
+      string pattern = @"^.*" + escapedSubstring + @".*(?:\r\n|\r|\n|$)";
+      return System.Text.RegularExpressions.Regex.Replace(
+          file, pattern, "", System.Text.RegularExpressions.RegexOptions.Multiline);
     }
 }
