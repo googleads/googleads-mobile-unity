@@ -146,7 +146,7 @@ SHARED_BUILD_AND_TEST_WORKFLOW_PARAMETERS = [
 ADMOB_UNITY_PLUGIN_BUILDABLE_UNIT = ::blueprint::BuildableUnit(
   // LINT.IfChange
   name = "admob_unity_plugin_build",
-  // LINT.ThenChange(//depot/google3/third_party/java_src/gma_sdk_mediation/release/rapid/workflows/unity/build_unity_apk_or_ipa.pp, //depot/google3/third_party/java_src/gma_sdk_mediation/release/rapid/workflows/raycast/build_raycast_apk_or_ipa.pp)
+  // LINT.ThenChange(//depot/google3/java/com/google/android/libraries/admob/demo/unity/googlemobileads/tools/rapid/workflows/create_candidate_with_split_builds.pp, //depot/google3/third_party/java_src/gma_sdk_mediation/release/rapid/workflows/unity/build_unity_apk_or_ipa.pp, //depot/google3/third_party/java_src/gma_sdk_mediation/release/rapid/workflows/raycast/build_raycast_apk_or_ipa.pp)
   build_patterns = [
     "//java/com/google/android/libraries/admob/demo/unity/googlemobileads:unitypackage_public",
     "//java/com/google/android/libraries/admob/demo/unity/googlemobileads:upm_package",
