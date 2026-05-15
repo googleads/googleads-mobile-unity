@@ -95,7 +95,7 @@ namespace GoogleMobileAds.Android
                 return new Dictionary<string, string>();
             }
 
-            return Utils.GetDictionary(androidBundle);
+            return NextGenUtils.GetDictionary(androidBundle);
         }
 
         public string GetResponseId()

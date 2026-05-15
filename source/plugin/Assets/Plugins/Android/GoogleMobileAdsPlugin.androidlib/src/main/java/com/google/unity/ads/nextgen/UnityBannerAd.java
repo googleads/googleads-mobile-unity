@@ -33,7 +33,6 @@ import com.google.android.libraries.ads.mobile.sdk.common.AdLoadCallback;
 import com.google.android.libraries.ads.mobile.sdk.common.AdValue;
 import com.google.android.libraries.ads.mobile.sdk.common.LoadAdError;
 import com.google.android.libraries.ads.mobile.sdk.common.ResponseInfo;
-import com.google.unity.ads.PluginUtils;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.FutureTask;
 
@@ -114,7 +113,7 @@ public class UnityBannerAd {
    * @param positionY Position of banner ad on the y axis.
    */
   public void create(final int positionX, final int positionY) {
-    positionCode = PluginUtils.POSITION_CUSTOM;
+    positionCode = NextGenPluginUtils.POSITION_CUSTOM;
     horizontalOffset = positionX;
     verticalOffset = positionY;
     hidden = false;
@@ -198,7 +197,7 @@ public class UnityBannerAd {
     unityPlayerActivity.runOnUiThread(
         () -> {
           if (bannerAd == null) {
-            Log.w(PluginUtils.LOGTAG, "Tried to show banner before ad was ready.");
+            Log.w(NextGenPluginUtils.LOGTAG, "Tried to show banner before ad was ready.");
             return;
           }
 
@@ -236,7 +235,9 @@ public class UnityBannerAd {
   @Nullable
   public ResponseInfo getResponseInfo() {
     if (bannerAd == null) {
-      Log.e(PluginUtils.LOGTAG, "Tried to get response info before it was ready. Returning null.");
+      Log.e(
+          NextGenPluginUtils.LOGTAG,
+          "Tried to get response info before it was ready. Returning null.");
       return null;
     }
     return bannerAd.getResponseInfo();
@@ -284,7 +285,7 @@ public class UnityBannerAd {
         new Runnable() {
           @Override
           public void run() {
-            positionCode = PluginUtils.POSITION_CUSTOM;
+            positionCode = NextGenPluginUtils.POSITION_CUSTOM;
             horizontalOffset = positionX;
             verticalOffset = positionY;
             updatePosition();
@@ -299,7 +300,7 @@ public class UnityBannerAd {
    */
   public float getHeightInPixels() {
     if (bannerAd == null) {
-      Log.e(PluginUtils.LOGTAG, "Tried to get height of a null banner ad.");
+      Log.e(NextGenPluginUtils.LOGTAG, "Tried to get height of a null banner ad.");
       return -1;
     }
 
@@ -311,7 +312,7 @@ public class UnityBannerAd {
       return task.get();
     } catch (InterruptedException | ExecutionException e) {
       Log.e(
-          PluginUtils.LOGTAG,
+          NextGenPluginUtils.LOGTAG,
           String.format("Failed to get ad view height: %s", e.getLocalizedMessage()));
       return -1;
     }
@@ -324,7 +325,7 @@ public class UnityBannerAd {
    */
   public float getWidthInPixels() {
     if (bannerAd == null) {
-      Log.e(PluginUtils.LOGTAG, "Tried to get width of a null banner ad.");
+      Log.e(NextGenPluginUtils.LOGTAG, "Tried to get width of a null banner ad.");
       return -1;
     }
 
@@ -336,7 +337,7 @@ public class UnityBannerAd {
       return task.get();
     } catch (InterruptedException | ExecutionException e) {
       Log.e(
-          PluginUtils.LOGTAG,
+          NextGenPluginUtils.LOGTAG,
           String.format("Failed to get ad view width: %s", e.getLocalizedMessage()));
       return -1;
     }
@@ -416,7 +417,7 @@ public class UnityBannerAd {
     final FrameLayout.LayoutParams adParams =
         new FrameLayout.LayoutParams(
             FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT);
-    adParams.gravity = PluginUtils.getLayoutGravityForPositionCode(positionCode);
+    adParams.gravity = NextGenPluginUtils.getLayoutGravityForPositionCode(positionCode);
 
     Insets insets = getSafeInsets();
     int safeInsetLeft = insets.left;
@@ -424,12 +425,12 @@ public class UnityBannerAd {
     adParams.bottomMargin = insets.bottom;
     adParams.rightMargin = insets.right;
 
-    if (positionCode == PluginUtils.POSITION_CUSTOM) {
-      int leftOffset = (int) PluginUtils.convertDpToPixel(horizontalOffset);
+    if (positionCode == NextGenPluginUtils.POSITION_CUSTOM) {
+      int leftOffset = (int) NextGenPluginUtils.convertDpToPixel(horizontalOffset);
       if (leftOffset < safeInsetLeft) {
         leftOffset = safeInsetLeft;
       }
-      int topOffset = (int) PluginUtils.convertDpToPixel(verticalOffset);
+      int topOffset = (int) NextGenPluginUtils.convertDpToPixel(verticalOffset);
       if (topOffset < safeInsetTop) {
         topOffset = safeInsetTop;
       }
@@ -437,9 +438,9 @@ public class UnityBannerAd {
       adParams.topMargin = topOffset;
     } else {
       adParams.leftMargin = safeInsetLeft;
-      if (positionCode == PluginUtils.POSITION_TOP
-          || positionCode == PluginUtils.POSITION_TOP_LEFT
-          || positionCode == PluginUtils.POSITION_TOP_RIGHT) {
+      if (positionCode == NextGenPluginUtils.POSITION_TOP
+          || positionCode == NextGenPluginUtils.POSITION_TOP_LEFT
+          || positionCode == NextGenPluginUtils.POSITION_TOP_RIGHT) {
         adParams.topMargin = safeInsetTop;
       }
     }

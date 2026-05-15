@@ -102,7 +102,7 @@ namespace GoogleMobileAds.Android
                 {
                     return emptyAdUnitMapping;
                 }
-                return Utils.GetDictionary(androidBundle);
+                return NextGenUtils.GetDictionary(androidBundle);
             }
         }
 

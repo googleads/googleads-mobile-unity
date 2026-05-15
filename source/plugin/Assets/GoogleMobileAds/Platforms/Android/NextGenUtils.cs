@@ -110,6 +110,14 @@ namespace GoogleMobileAds.Android {
         "com.google.unity.ads.nextgen.UnityInterstitialAdPreloader";
 #endregion
 
+#region Unity class names
+    public const string UnityActivityClassName = "com.unity3d.player.UnityPlayer";
+#endregion
+
+#region Android SDK class names
+    public const string BundleClassName = "android.os.Bundle";
+#endregion
+
     /// <summary>
     /// Converts the plugin AdRequest object to a native java proxy object for use by the sdk.
     /// </summary>
@@ -176,7 +184,7 @@ namespace GoogleMobileAds.Android {
       // handled separately.
       if (request.Extras != null)
       {
-          AndroidJavaObject bundle = new AndroidJavaObject(Utils.BundleClassName);
+          AndroidJavaObject bundle = new AndroidJavaObject(BundleClassName);
           foreach (KeyValuePair<string, string> entry in request.Extras)
           {
               bundle.Call("putString", entry.Key, entry.Value);
@@ -198,7 +206,7 @@ namespace GoogleMobileAds.Android {
       AndroidJavaClass adSizeClass = new AndroidJavaClass(AdSizeClassName);
       switch (adSize.AdType) {
         case AdSize.Type.AnchoredAdaptive:
-          AndroidJavaClass playerClass = new AndroidJavaClass(Utils.UnityActivityClassName);
+          AndroidJavaClass playerClass = new AndroidJavaClass(UnityActivityClassName);
           AndroidJavaObject activity = playerClass.GetStatic<AndroidJavaObject>("currentActivity");
           switch (adSize.Orientation) {
             case Orientation.Landscape:
@@ -242,6 +250,61 @@ namespace GoogleMobileAds.Android {
       string adUnitId = configurationJavaObject.Call<string>("getAdUnitId");
       uint bufferSize = Convert.ToUInt32(configurationJavaObject.Call<int>("getBufferSize"));
       return new PreloadConfiguration() { AdUnitId = adUnitId, BufferSize = bufferSize };
+    }
+
+    public static Dictionary<string, string> GetDictionary(AndroidJavaObject androidBundle)
+    {
+        AndroidJavaObject bundleKeySet = androidBundle.Call<AndroidJavaObject>("keySet");
+        int length = bundleKeySet.Call<int>("size");
+
+        AndroidJavaObject bundleKeyArray = bundleKeySet.Call<AndroidJavaObject>("toArray");
+        IntPtr bundleKeyArrayPtr = bundleKeyArray.GetRawObject();
+
+        Dictionary<string, string> dict = new Dictionary<string, string>();
+        for (int i = 0; i < length; i++)
+        {
+            IntPtr keyPtr = AndroidJNI.GetObjectArrayElement(bundleKeyArrayPtr, i);
+            string key = AndroidJNI.GetStringUTFChars(keyPtr);
+            string val = androidBundle.Call<string>("getString", key);
+            dict.Add(key, val);
+        }
+        return dict;
+    }
+
+    internal static int GetScreenWidth()
+    {
+        DisplayMetrics metrics = new DisplayMetrics();
+        return (int)(metrics.WidthPixels / metrics.Density);
+    }
+
+    public static AndroidJavaObject GetJavaListObject(List<String> csTypeList)
+    {
+        AndroidJavaObject javaTypeArrayList = new AndroidJavaObject("java.util.ArrayList");
+        foreach (string itemList in csTypeList)
+        {
+            javaTypeArrayList.Call<bool>("add", itemList);
+        }
+        return javaTypeArrayList;
+    }
+
+    public static List<String> GetCsTypeList(AndroidJavaObject javaTypeList)
+    {
+        List<String> csTypeList = new List<String>();
+        int length = javaTypeList.Call<int>("size");
+        for (int i = 0; i < length; i++)
+        {
+            csTypeList.Add(javaTypeList.Call<string>("get", i));
+        }
+
+        return csTypeList;
+    }
+
+    internal static AndroidJavaObject GetCurrentActivityAndroidJavaObject()
+    {
+        AndroidJavaClass unityPlayer = new AndroidJavaClass(UnityActivityClassName);
+        AndroidJavaObject currentActivity =
+                unityPlayer.GetStatic<AndroidJavaObject>("currentActivity");
+        return currentActivity;
     }
   }
 }

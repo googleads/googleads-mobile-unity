@@ -54,7 +54,7 @@ namespace GoogleMobileAds.Android {
 
       if (requestConfiguration.TestDeviceIds.Count > 0) {
         AndroidJavaObject testDeviceIdsJavaObject =
-            Utils.GetJavaListObject(requestConfiguration.TestDeviceIds);
+            NextGenUtils.GetJavaListObject(requestConfiguration.TestDeviceIds);
         requestConfigurationBuilder = requestConfigurationBuilder.Call<AndroidJavaObject>(
             "setTestDeviceIds", testDeviceIdsJavaObject);
       }
@@ -155,7 +155,7 @@ namespace GoogleMobileAds.Android {
 
       MaxAdContentRating maxAdContentRating = MaxAdContentRating.ToMaxAdContentRating(
           androidRequestConfiguration.Call<string>("getMaxAdContentRating"));
-      List<string> testDeviceIds = GoogleMobileAds.Android.Utils.GetCsTypeList(
+      List<string> testDeviceIds = NextGenUtils.GetCsTypeList(
           androidRequestConfiguration.Call<AndroidJavaObject>("getTestDeviceIds"));
 
       AndroidJavaObject publisherPrivacyPersonalizationStateEnum =

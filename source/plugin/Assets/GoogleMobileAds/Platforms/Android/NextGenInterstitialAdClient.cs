@@ -28,7 +28,7 @@ namespace GoogleMobileAds.Android
 
       public NextGenInterstitialAdClient()
           : base(NextGenUtils.UnityInterstitialAdCallbackClassName) {
-        AndroidJavaClass playerClass = new AndroidJavaClass(Utils.UnityActivityClassName);
+        AndroidJavaClass playerClass = new AndroidJavaClass(NextGenUtils.UnityActivityClassName);
         AndroidJavaObject activity = playerClass.GetStatic<AndroidJavaObject>("currentActivity");
         androidInterstitialAd =
             new AndroidJavaObject(NextGenUtils.UnityInterstitialAdClassName, activity, this);

@@ -34,7 +34,7 @@ namespace GoogleMobileAds.Android
 
         public NextGenBannerAdClient() : base(NextGenUtils.UnityBannerAdCallbackClassName)
         {
-            AndroidJavaClass playerClass = new AndroidJavaClass(Utils.UnityActivityClassName);
+            AndroidJavaClass playerClass = new AndroidJavaClass(NextGenUtils.UnityActivityClassName);
             AndroidJavaObject activity =
                     playerClass.GetStatic<AndroidJavaObject>("currentActivity");
             this.bannerView = new AndroidJavaObject(

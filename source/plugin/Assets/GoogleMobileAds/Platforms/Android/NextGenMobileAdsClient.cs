@@ -67,7 +67,7 @@ namespace GoogleMobileAds.Android
                     try
                     {
                         _mobileAdsClass.CallStatic("initialize",
-                                                 Utils.GetCurrentActivityAndroidJavaObject(),
+                                                 NextGenUtils.GetCurrentActivityAndroidJavaObject(),
                                                  this);
                     }
                     finally
@@ -131,7 +131,7 @@ namespace GoogleMobileAds.Android
 
         public void OpenAdInspector(Action<AdInspectorErrorClientEventArgs> onAdInspectorClosed)
         {
-            AndroidJavaObject activity = Utils.GetCurrentActivityAndroidJavaObject();
+            AndroidJavaObject activity = NextGenUtils.GetCurrentActivityAndroidJavaObject();
             AndroidJavaClass adInspectorClass =
                 new AndroidJavaClass(NextGenUtils.UnityAdInspectorClassName);
             NextGenAdInspectorCallback callback = new NextGenAdInspectorCallback(onAdInspectorClosed);
@@ -149,7 +149,7 @@ namespace GoogleMobileAds.Android
 
         public float GetDeviceScale()
         {
-            AndroidJavaObject activity = Utils.GetCurrentActivityAndroidJavaObject();
+            AndroidJavaObject activity = NextGenUtils.GetCurrentActivityAndroidJavaObject();
             AndroidJavaObject resources = activity.Call<AndroidJavaObject>("getResources");
             AndroidJavaObject metrics = resources.Call<AndroidJavaObject>("getDisplayMetrics");
             return metrics.Get<float>("density");
@@ -157,7 +157,7 @@ namespace GoogleMobileAds.Android
 
         public int GetDeviceSafeWidth()
         {
-            return Utils.GetScreenWidth();
+            return NextGenUtils.GetScreenWidth();
         }
 
         public Version GetSDKVersion()

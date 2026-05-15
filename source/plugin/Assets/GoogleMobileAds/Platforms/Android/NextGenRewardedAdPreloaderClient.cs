@@ -30,7 +30,7 @@ namespace GoogleMobileAds.Android {
     private Action<string> _onAdsExhausted;
 
     public NextGenRewardedAdPreloaderClient() : base(NextGenUtils.UnityPreloadCallbackClassName) {
-      var playerClass = new AndroidJavaClass(Utils.UnityActivityClassName);
+      var playerClass = new AndroidJavaClass(NextGenUtils.UnityActivityClassName);
       var activity = playerClass.GetStatic<AndroidJavaObject>("currentActivity");
       _unityRewardedAdPreloader =
           new AndroidJavaObject(NextGenUtils.UnityRewardedAdPreloaderClassName, activity, this);

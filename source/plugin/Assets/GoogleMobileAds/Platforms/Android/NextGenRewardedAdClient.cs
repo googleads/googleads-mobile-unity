@@ -27,7 +27,7 @@ namespace GoogleMobileAds.Android
       internal AndroidJavaObject androidRewardedAd;
 
       public NextGenRewardedAdClient() : base(NextGenUtils.UnityRewardedAdCallbackClassName) {
-        AndroidJavaClass playerClass = new AndroidJavaClass(Utils.UnityActivityClassName);
+        AndroidJavaClass playerClass = new AndroidJavaClass(NextGenUtils.UnityActivityClassName);
         AndroidJavaObject activity = playerClass.GetStatic<AndroidJavaObject>("currentActivity");
         androidRewardedAd =
             new AndroidJavaObject(NextGenUtils.UnityRewardedAdClassName, activity, this);

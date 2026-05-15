@@ -29,12 +29,12 @@ namespace GoogleMobileAds.Android
 
         public DisplayMetrics() {
             using (
-                AndroidJavaClass unityPlayerClass = new AndroidJavaClass(Utils.UnityActivityClassName),
-                metricsClass = new AndroidJavaClass(Utils.DisplayMetricsClassName)
+                AndroidJavaClass unityPlayerClass = new AndroidJavaClass("com.unity3d.player.UnityPlayer"),
+                metricsClass = new AndroidJavaClass("android.util.DisplayMetrics")
             )
             {
                 using (
-                    AndroidJavaObject metricsInstance = new AndroidJavaObject(Utils.DisplayMetricsClassName),
+                    AndroidJavaObject metricsInstance = new AndroidJavaObject("android.util.DisplayMetrics"),
                     activityInstance = unityPlayerClass.GetStatic<AndroidJavaObject>("currentActivity"),
                     windowManagerInstance = activityInstance.Call<AndroidJavaObject>("getWindowManager"),
                     displayInstance = windowManagerInstance.Call<AndroidJavaObject>("getDefaultDisplay")

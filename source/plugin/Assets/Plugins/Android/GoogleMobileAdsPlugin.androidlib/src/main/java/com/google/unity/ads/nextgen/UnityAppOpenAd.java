@@ -13,7 +13,6 @@ import com.google.android.libraries.ads.mobile.sdk.common.AdValue;
 import com.google.android.libraries.ads.mobile.sdk.common.FullScreenContentError;
 import com.google.android.libraries.ads.mobile.sdk.common.LoadAdError;
 import com.google.android.libraries.ads.mobile.sdk.common.ResponseInfo;
-import com.google.unity.ads.PluginUtils;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
@@ -157,7 +156,7 @@ public class UnityAppOpenAd extends UnityAdBase<AppOpenAd, UnityAppOpenAdCallbac
   public void show() {
     if (appOpenAd == null) {
       Log.e(
-          PluginUtils.LOGTAG,
+          NextGenPluginUtils.LOGTAG,
           "Tried to show app open ad before it was ready. Please call loadAd first and wait for"
               + " a successful onAdLoaded callback.");
       return;
@@ -200,7 +199,9 @@ public class UnityAppOpenAd extends UnityAdBase<AppOpenAd, UnityAppOpenAdCallbac
   @Nullable
   public ResponseInfo getResponseInfo() {
     if (appOpenAd == null) {
-      Log.e(PluginUtils.LOGTAG, "Tried to get response info before it was ready. Returning null.");
+      Log.e(
+          NextGenPluginUtils.LOGTAG,
+          "Tried to get response info before it was ready. Returning null.");
       return null;
     }
     return appOpenAd.getResponseInfo();

@@ -31,7 +31,7 @@ namespace GoogleMobileAds.Android {
     private Action<string> _onAdsExhausted;
 
     public NextGenInterstitialAdPreloaderClient() : base(NextGenUtils.UnityPreloadCallbackClassName) {
-      var playerClass = new AndroidJavaClass(Utils.UnityActivityClassName);
+      var playerClass = new AndroidJavaClass(NextGenUtils.UnityActivityClassName);
       var activity = playerClass.GetStatic<AndroidJavaObject>("currentActivity");
       _unityInterstitialAdPreloader =
           new AndroidJavaObject(NextGenUtils.UnityInterstitialAdPreloaderClassName, activity, this);
