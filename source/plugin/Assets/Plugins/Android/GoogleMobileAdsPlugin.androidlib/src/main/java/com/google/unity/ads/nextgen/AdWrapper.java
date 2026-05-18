@@ -1,6 +1,8 @@
 package com.google.unity.ads.nextgen;
 
 import com.google.android.libraries.ads.mobile.sdk.appopen.AppOpenAd;
+import com.google.android.libraries.ads.mobile.sdk.banner.BannerAd;
+import com.google.android.libraries.ads.mobile.sdk.banner.BannerAdRequest;
 import com.google.android.libraries.ads.mobile.sdk.common.AdLoadCallback;
 import com.google.android.libraries.ads.mobile.sdk.common.AdRequest;
 import com.google.android.libraries.ads.mobile.sdk.interstitial.InterstitialAd;
@@ -33,6 +35,22 @@ class AdWrapper<T> {
   /** Creates a new AdWrapper for loading AppOpenAds. */
   public static AdWrapper<AppOpenAd> forAppOpen() {
     return new AdWrapper<>(AppOpenAd::load);
+  }
+
+  /** Creates a new AdWrapper for loading BannerAds. */
+  public static AdWrapper<BannerAd> forBanner() {
+    return new AdWrapper<BannerAd>(
+        new AdLoader<BannerAd>() {
+          @Override
+          public void load(AdRequest adRequest, AdLoadCallback<BannerAd> callback) {
+            if (adRequest instanceof BannerAdRequest) {
+              BannerAd.load((BannerAdRequest) adRequest, callback);
+            } else {
+              throw new IllegalArgumentException(
+                  "AdRequest must be of type BannerAdRequest for Banner Ads");
+            }
+          }
+        });
   }
 
   /** Creates a new AdWrapper for loading InterstitialAds. */

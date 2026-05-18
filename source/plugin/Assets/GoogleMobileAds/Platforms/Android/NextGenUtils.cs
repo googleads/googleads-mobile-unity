@@ -108,6 +108,11 @@ namespace GoogleMobileAds.Android {
         "com.google.unity.ads.nextgen.UnityRewardedInterstitialAdCallback";
     public const string UnityInterstitialAdPreloaderClassName =
         "com.google.unity.ads.nextgen.UnityInterstitialAdPreloader";
+
+    public const string UnityNativeTemplateAdClassName =
+        "com.google.unity.ads.nextgen.UnityNativeTemplateAdNextgen";
+    public const string UnityNativeTemplateAdCallbackClassName =
+        "com.google.unity.ads.nextgen.UnityNativeTemplateAdCallbackNextgen";
 #endregion
 
     /// <summary>
