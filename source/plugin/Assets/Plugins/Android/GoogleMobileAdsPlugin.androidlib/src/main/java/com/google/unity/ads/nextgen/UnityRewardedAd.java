@@ -186,6 +186,22 @@ public class UnityRewardedAd extends UnityAdBase<RewardedAd, UnityRewardedAdCall
         });
   }
 
+  /**
+   * Gets the reward item for the {@link RewardedAd}.
+   *
+   * @return The reward item for the {@link RewardedAd} or null if the ad is not loaded.
+   */
+  @Nullable
+  public RewardItem getRewardItem() {
+    if (this.ad == null) {
+      Log.e(
+          PluginUtils.LOGTAG,
+          "Tried to get reward item before it was ready. Unable to get reward item.");
+      return null;
+    }
+    return ad.getRewardItem();
+  }
+
   /** Gets the placement ID for the {@link RewardedAd}. */
   public long getPlacementId() {
     if (ad == null) {

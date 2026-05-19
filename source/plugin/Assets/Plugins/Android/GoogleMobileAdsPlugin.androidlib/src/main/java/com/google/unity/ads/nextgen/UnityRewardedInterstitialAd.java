@@ -220,6 +220,18 @@ public class UnityRewardedInterstitialAd
     ad.setPlacementId(placementId);
   }
 
+  /** Returns the reward item for the {@link RewardedInterstitialAd}. */
+  @Nullable
+  public RewardItem getRewardItem() {
+    if (ad == null) {
+      Log.e(
+          PluginUtils.LOGTAG,
+          "Tried to get reward item before it was ready. Unable to get reward item.");
+      return null;
+    }
+    return ad.getRewardItem();
+  }
+
   /** Returns the request response info. */
   @Nullable
   public ResponseInfo getResponseInfo() {

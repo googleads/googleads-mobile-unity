@@ -146,6 +146,38 @@ public final class UnityRewardedAdTest {
   }
 
   @Test
+  public void testGetRewardItem_whenAdNotLoaded_returnsNull() {
+    assertThat(unityRewardedAd.getRewardItem()).isNull();
+  }
+
+  @Test
+  public void testGetRewardItem_whenAdLoaded_returnsRewardItem() {
+    RewardItem rewardItem =
+        new RewardItem() {
+          @Override
+          public int getAmount() {
+            return 10;
+          }
+
+          @Override
+          public String getType() {
+            return "coins";
+          }
+        };
+    when(mockRewardedAd.getRewardItem()).thenReturn(rewardItem);
+
+    // Simulate a successful ad load.
+    unityRewardedAd.load(mockAdRequest);
+    verify(mockAdWrapper).load(Mockito.eq(mockAdRequest), adLoadCallbackCaptor.capture());
+    adLoadCallbackCaptor.getValue().onAdLoaded(mockRewardedAd);
+
+    // Verify that getRewardItem() was called on the underlying ad and its result is returned.
+    RewardItem actualRewardItem = unityRewardedAd.getRewardItem();
+    verify(mockRewardedAd).getRewardItem();
+    assertThat(actualRewardItem).isEqualTo(rewardItem);
+  }
+
+  @Test
   public void testGetResponseInfo_whenAdNotLoaded_returnsNull() {
     assertThat(unityRewardedAd.getResponseInfo()).isNull();
   }

@@ -211,6 +211,38 @@ public final class UnityRewardedInterstitialAdTest {
   }
 
   @Test
+  public void testGetRewardItem_whenAdNotLoaded_returnsNull() {
+    assertThat(unityRewardedInterstitialAd.getRewardItem()).isNull();
+  }
+
+  @Test
+  public void testGetRewardItem_whenAdLoaded_returnsRewardItem() {
+    RewardItem rewardItem =
+        new RewardItem() {
+          @Override
+          public int getAmount() {
+            return 10;
+          }
+
+          @Override
+          public String getType() {
+            return "coins";
+          }
+        };
+    when(mockRewardedInterstitialAd.getRewardItem()).thenReturn(rewardItem);
+
+    // Simulate a successful ad load.
+    unityRewardedInterstitialAd.load(mockAdRequest);
+    verify(mockAdWrapper).load(Mockito.eq(mockAdRequest), adLoadCallbackCaptor.capture());
+    adLoadCallbackCaptor.getValue().onAdLoaded(mockRewardedInterstitialAd);
+
+    // Verify that getRewardItem() was called on the underlying ad and its result is returned.
+    RewardItem actualRewardItem = unityRewardedInterstitialAd.getRewardItem();
+    verify(mockRewardedInterstitialAd).getRewardItem();
+    assertThat(actualRewardItem).isEqualTo(rewardItem);
+  }
+
+  @Test
   public void testPublicConstructor() {
     // verifies creation doesn't crash
     UnityRewardedInterstitialAd ad = new UnityRewardedInterstitialAd(activity, mockCallback);
