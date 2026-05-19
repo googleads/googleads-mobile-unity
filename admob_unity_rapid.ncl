@@ -11,7 +11,7 @@ UNITY_PLUGIN_IOS_FLAGS = [
 ];
 
 // LINT.IfChange
-POSSIBLE_UNITY_VERSIONS = ["6000.3", "6000.1", "2022.3", "2021.3"];
+POSSIBLE_UNITY_VERSIONS = ["6000.3", "2023.2", "2022.3", "2021.3"];
 // LINT.ThenChange(//depot/google3/third_party/java_src/gma_sdk_mediation/release/rapid/workflows/unity/build_all_unity_apks_and_ipas.pp)
 
 DEFAULT_TARGET_UNITY_VERSION = "6000.3";
