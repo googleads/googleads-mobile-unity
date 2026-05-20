@@ -26,6 +26,7 @@ import android.view.WindowInsets;
 import android.widget.FrameLayout;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.VisibleForTesting;
 import com.google.android.libraries.ads.mobile.sdk.banner.BannerAd;
 import com.google.android.libraries.ads.mobile.sdk.banner.BannerAdEventCallback;
 import com.google.android.libraries.ads.mobile.sdk.banner.BannerAdRequest;
@@ -54,8 +55,12 @@ public class UnityBannerAd {
   /** The {@link BannerAd} to display to the user. */
   private BannerAd bannerAd;
 
+  /** The {@link AdWrapper} used to load ads. */
+  private final AdWrapper<BannerAd> adWrapper;
+
   /** The {@link View} that contains the banner ad. */
   private View adView;
+
 
   /** A code indicating where to place the ad. */
   private int positionCode;
@@ -91,8 +96,14 @@ public class UnityBannerAd {
   private View.OnLayoutChangeListener layoutChangeListener;
 
   public UnityBannerAd(Activity activity, UnityBannerAdCallback callback) {
+    this(activity, callback, AdWrapper.forBanner());
+  }
+
+  @VisibleForTesting
+  UnityBannerAd(Activity activity, UnityBannerAdCallback callback, AdWrapper<BannerAd> adWrapper) {
     unityPlayerActivity = activity;
     this.callback = callback;
+    this.adWrapper = adWrapper;
   }
 
   /**
@@ -121,7 +132,7 @@ public class UnityBannerAd {
   }
 
   protected void load(final BannerAdRequest adRequest) {
-    BannerAd.load(
+    adWrapper.load(
         adRequest,
         new AdLoadCallback<BannerAd>() {
           @Override
@@ -359,6 +370,9 @@ public class UnityBannerAd {
           }
           if (bannerLayout != null) {
             bannerLayout.removeView(adView);
+            if (bannerLayout.getParent() != null) {
+              ((ViewGroup) bannerLayout.getParent()).removeView(bannerLayout);
+            }
           }
           bannerAd.destroy();
         });
@@ -368,6 +382,8 @@ public class UnityBannerAd {
         .getDecorView()
         .getRootView()
         .removeOnLayoutChangeListener(layoutChangeListener);
+
+    layoutChangeListener = null;
   }
 
   /**
@@ -375,6 +391,10 @@ public class UnityBannerAd {
    * reposition banner ads as required.
    */
   protected void setLayoutChangeListener() {
+    if (layoutChangeListener != null) {
+      return;
+    }
+
     layoutChangeListener =
         new View.OnLayoutChangeListener() {
           @Override
