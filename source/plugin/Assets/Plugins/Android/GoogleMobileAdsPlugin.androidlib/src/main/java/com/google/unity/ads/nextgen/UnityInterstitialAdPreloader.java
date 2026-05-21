@@ -118,6 +118,10 @@ public class UnityInterstitialAdPreloader {
     boolean unused = preloaderWrapper.destroy(preloadId);
   }
 
+  public void destroyAll() {
+    preloaderWrapper.destroyAll();
+  }
+
   /** Wrapper for InterstitialAdPreloader static methods to facilitate testing. */
   @VisibleForTesting
   public static class InterstitialAdPreloaderWrapper {
@@ -147,6 +151,10 @@ public class UnityInterstitialAdPreloader {
 
     public boolean destroy(String preloadId) {
       return InterstitialAdPreloader.destroy(preloadId);
+    }
+
+    public void destroyAll() {
+      InterstitialAdPreloader.destroyAll();
     }
   }
 }

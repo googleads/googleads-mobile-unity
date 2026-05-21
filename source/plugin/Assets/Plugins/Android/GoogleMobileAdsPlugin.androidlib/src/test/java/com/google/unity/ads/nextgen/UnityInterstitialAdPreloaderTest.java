@@ -156,6 +156,12 @@ public final class UnityInterstitialAdPreloaderTest {
   }
 
   @Test
+  public void testDestroyAll() {
+    unityInterstitialAdPreloader.destroyAll();
+    verify(mockWrapper).destroyAll();
+  }
+
+  @Test
   public void testPublicConstructor() {
     // verifies creation doesn't crash
     UnityInterstitialAdPreloader preloader =

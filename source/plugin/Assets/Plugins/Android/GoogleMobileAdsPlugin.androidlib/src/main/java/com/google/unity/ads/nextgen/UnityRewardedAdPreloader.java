@@ -118,6 +118,10 @@ public class UnityRewardedAdPreloader {
     boolean unused = preloaderWrapper.destroy(preloadId);
   }
 
+  public void destroyAll() {
+    preloaderWrapper.destroyAll();
+  }
+
   /** Wrapper for RewardedAdPreloader static methods to facilitate testing. */
   @VisibleForTesting
   public static class RewardedAdPreloaderWrapper {
@@ -147,6 +151,10 @@ public class UnityRewardedAdPreloader {
 
     public boolean destroy(String preloadId) {
       return RewardedAdPreloader.destroy(preloadId);
+    }
+
+    public void destroyAll() {
+      RewardedAdPreloader.destroyAll();
     }
   }
 }

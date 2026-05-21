@@ -157,6 +157,12 @@ public final class UnityRewardedAdPreloaderTest {
   }
 
   @Test
+  public void testDestroyAll() {
+    unityRewardedAdPreloader.destroyAll();
+    verify(mockWrapper).destroyAll();
+  }
+
+  @Test
   public void testPublicConstructor() {
     // verifies creation doesn't crash
     UnityRewardedAdPreloader preloader =

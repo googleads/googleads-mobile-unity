@@ -157,6 +157,12 @@ public final class UnityAppOpenAdPreloaderTest {
   }
 
   @Test
+  public void testDestroyAll() {
+    unityAppOpenAdPreloader.destroyAll();
+    verify(mockWrapper).destroyAll();
+  }
+
+  @Test
   public void testPublicConstructor() {
     // verifies creation doesn't crash
     UnityAppOpenAdPreloader preloader = new UnityAppOpenAdPreloader(activity, mockPreloadCallback);
