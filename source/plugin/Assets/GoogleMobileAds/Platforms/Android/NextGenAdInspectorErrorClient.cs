@@ -30,8 +30,8 @@ namespace GoogleMobileAds.Android {
     }
 
     public string GetDomain() {
-      using (AndroidJavaClass mediationAdErrorClass = new AndroidJavaClass(
-          "com.google.android.libraries.ads.mobile.sdk.common.MediationAdError")) {
+      using (AndroidJavaClass mediationAdErrorClass =
+                 new AndroidJavaClass(NextGenUtils.MediationAdErrorClassName)) {
         return mediationAdErrorClass.GetStatic<string>("GOOGLE_MOBILE_ADS_DOMAIN");
       }
     }

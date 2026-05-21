@@ -70,6 +70,11 @@ namespace GoogleMobileAds.Android {
         "com.google.android.libraries.ads.mobile.sdk.nativead.NativeAd$NativeAdType";
 #endregion
 
+#region MediationAdError
+    public const string MediationAdErrorClassName =
+        "com.google.android.libraries.ads.mobile.sdk.common.MediationAdError";
+#endregion
+
 #endregion
 
 #region Fully - qualified Unity NextGen Bridge class names
