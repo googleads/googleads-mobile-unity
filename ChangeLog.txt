@@ -1,6 +1,12 @@
 Google Mobile Ads Unity Plugin Change Log
 
 **************
+Version Next
+**************
+
+- Fixed an issue with fetching error code from Next-Gen AdInspectorError Class.
+
+**************
 Version 11.1.0
 **************
 
