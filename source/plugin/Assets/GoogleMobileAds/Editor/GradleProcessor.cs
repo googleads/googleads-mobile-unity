@@ -8,16 +8,30 @@ public class GradleProcessor : IPostGenerateGradleAndroidProject
 {
     public int callbackOrder { get { return 0; } }
 
-    private const string GMA_PACKAGING_OPTIONS_LAUNCHER =
-      "apply from: '../unityLibrary/GoogleMobileAdsPlugin.androidlib/packaging_options.gradle'";
+    private const string ApplyFrom = "apply from: ";
+    private const string GmaPluginPath = "GoogleMobileAdsPlugin.androidlib/";
+    private const string LauncherPath = "../unityLibrary/" + GmaPluginPath;
 
-    private const string GMA_PACKAGING_OPTIONS =
-      "apply from: 'GoogleMobileAdsPlugin.androidlib/packaging_options.gradle'";
+    private const string PackagingOptionsGradle = "packaging_options.gradle";
+    private const string NextGenExclusionsGradle = "next_gen_exclusions.gradle";
+    private const string NextGenResolutionStrategyGradle = "next_gen_resolution_strategy.gradle";
+    private const string GmaValidateDependenciesGradle = "validate_dependencies.gradle";
 
-    private const string GMA_VALIDATE_GRADLE_DEPENDENCIES_FILENAME = "validate_dependencies.gradle";
+    private const string GmaPackagingOptionsLauncher =
+            ApplyFrom + "'" + LauncherPath + PackagingOptionsGradle + "'";
+    private const string GmaPackagingOptions =
+            ApplyFrom + "'" + GmaPluginPath + PackagingOptionsGradle + "'";
+    private const string GmaNextGenExclusions =
+            ApplyFrom + "'" + GmaPluginPath + NextGenExclusionsGradle + "'";
+    private const string GmaNextGenResolutionStrategy =
+            ApplyFrom + "'" + GmaPluginPath + NextGenResolutionStrategyGradle + "'";
+    private const string GmaNextGenResolutionStrategyLauncher =
+            ApplyFrom + "'" + LauncherPath + NextGenResolutionStrategyGradle + "'";
 
-    private const string GMA_NEXT_GEN_EXCLUSIONS =
-      "apply from: 'GoogleMobileAdsPlugin.androidlib/next_gen_exclusions.gradle'";
+    // The newer versions of webkit (1.15.0+) require AGP 8.1.0+. Thus we are downgrading the
+    // webkit and error_prone_annotations dependencies in Apps using older AGP versions.
+    // See go/gma-unity:decagon-webkit-issue for more details.
+    private static readonly Version gmaAgpDowngradeVersion = new Version("8.1.0");
 
     public void OnPostGenerateGradleAndroidProject(string path)
     {
@@ -25,17 +39,22 @@ public class GradleProcessor : IPostGenerateGradleAndroidProject
         var rootPath = rootDirinfo.Parent.FullName;
         var gradleList = Directory.GetFiles(rootPath, "build.gradle", SearchOption.AllDirectories);
 
-        var packagingOptionsLauncher = GMA_PACKAGING_OPTIONS_LAUNCHER;
-        var packagingOptionsUnityLibrary = GMA_PACKAGING_OPTIONS;
-        var nextGenExclusionsUnityLibrary = GMA_NEXT_GEN_EXCLUSIONS;
+        var packagingOptionsLauncher = GmaPackagingOptionsLauncher;
+        var packagingOptionsUnityLibrary = GmaPackagingOptions;
+        var nextGenExclusionsUnityLibrary = GmaNextGenExclusions;
+        var nextGenResolutionStrategyLauncher = GmaNextGenResolutionStrategyLauncher;
+        var nextGenResolutionStrategyUnityLibrary = GmaNextGenResolutionStrategy;
 
         // Windows path requires '\\'
 #if UNITY_EDITOR_WIN
         packagingOptionsLauncher = packagingOptionsLauncher.Replace("/","\\\\");
         packagingOptionsUnityLibrary = packagingOptionsUnityLibrary.Replace("/","\\\\");
         nextGenExclusionsUnityLibrary = nextGenExclusionsUnityLibrary.Replace("/","\\\\");
+        nextGenResolutionStrategyLauncher = nextGenResolutionStrategyLauncher.Replace("/","\\\\");
+        nextGenResolutionStrategyUnityLibrary = nextGenResolutionStrategyUnityLibrary.Replace("/","\\\\");
 #endif
 
+        Version agpVersion = GoogleMobileAds.Editor.Utils.AndroidGradlePluginVersion;
         foreach (var gradlepath in gradleList)
         {
             if (!gradlepath.Contains("unityLibrary/build.gradle") &&
@@ -51,24 +70,30 @@ public class GradleProcessor : IPostGenerateGradleAndroidProject
 
             // 1. Clear any previously injected gradle script references (to start with a clean
             // baseline)
-            if (contents.Contains("packaging_options.gradle"))
+            if (contents.Contains(PackagingOptionsGradle))
             {
-                contents = DeleteLineContainingSubstring(contents, "packaging_options.gradle");
+                contents = DeleteLineContainingSubstring(contents, PackagingOptionsGradle);
                 modified = true;
             }
 
-            if (contents.Contains("next_gen_exclusions.gradle"))
+            if (contents.Contains(NextGenExclusionsGradle))
             {
-                contents = DeleteLineContainingSubstring(contents, "next_gen_exclusions.gradle");
+                contents = DeleteLineContainingSubstring(contents, NextGenExclusionsGradle);
+                modified = true;
+            }
+
+            if (contents.Contains(NextGenResolutionStrategyGradle))
+            {
+                contents = DeleteLineContainingSubstring(contents, NextGenResolutionStrategyGradle);
                 modified = true;
             }
 
             // 2. Remove validate_dependencies.gradle script reference if present. This gradle file
             // is no longer needed since the offending AndroidManifest.xml tags have been removed.
             // This check will also be removed in the next major plugin release (v12.0.0).
-            if (contents.Contains(GMA_VALIDATE_GRADLE_DEPENDENCIES_FILENAME))
+            if (contents.Contains(GmaValidateDependenciesGradle))
             {
-                contents = DeleteLineContainingSubstring(contents, GMA_VALIDATE_GRADLE_DEPENDENCIES_FILENAME);
+                contents = DeleteLineContainingSubstring(contents, GmaValidateDependenciesGradle);
                 modified = true;
             }
 
@@ -98,8 +123,26 @@ public class GradleProcessor : IPostGenerateGradleAndroidProject
                     contents += Environment.NewLine + nextGenExclusionsUnityLibrary;
                     modified = true;
                 }
+
+                if (agpVersion < gmaAgpDowngradeVersion)
+                {
+                    if (gradlepath.Contains("unityLibrary/build.gradle") ||
+                        gradlepath.Contains("unityLibrary\\build.gradle"))
+                    {
+                        contents += Environment.NewLine + nextGenResolutionStrategyUnityLibrary;
+                        modified = true;
+                    }
+                    else if (gradlepath.Contains("launcher/build.gradle") ||
+                             gradlepath.Contains("launcher\\build.gradle"))
+                    {
+                        contents += Environment.NewLine + nextGenResolutionStrategyLauncher;
+                        modified = true;
+                    }
+                }
             }
 
+            // TODO(b/512712897): Check if there are permissions issues with writing to the gradle
+            // files.
             if (modified)
             {
                 File.WriteAllText(gradlepath, contents);

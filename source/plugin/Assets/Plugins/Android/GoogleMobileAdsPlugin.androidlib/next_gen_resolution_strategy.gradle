@@ -1,0 +1,6 @@
+configurations.configureEach {
+    resolutionStrategy {
+        force 'androidx.webkit:webkit:1.12.0'
+        force 'com.google.errorprone:error_prone_annotations:2.23.0'
+    }
+}
