@@ -138,7 +138,8 @@ public final class UnityNativeTemplateStyle {
         tertiaryTextStyle);
   }
 
-  private NativeTemplateStyle asNativeTemplateStyle() {
+  @NonNull
+  public NativeTemplateStyle asNativeTemplateStyle() {
     NativeTemplateStyle.Builder builder = new NativeTemplateStyle.Builder();
     if (mainBackgroundColor != null) {
       builder.withMainBackgroundColor(mainBackgroundColor);

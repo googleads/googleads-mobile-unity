@@ -15,7 +15,9 @@ public final class UnityNativeTemplateTypeTest {
     INVALID_INDEX(-1, UnityNativeTemplateType.MEDIUM), // should return default value
     ZERO(0, UnityNativeTemplateType.SMALL),
     ONE(1, UnityNativeTemplateType.MEDIUM),
-    MISSING_INDEX(2, UnityNativeTemplateType.MEDIUM); // should return default value
+    NEXTGEN_SMALL_INDEX(2, UnityNativeTemplateType.NEXTGEN_SMALL),
+    NEXTGEN_MEDIUM_INDEX(3, UnityNativeTemplateType.NEXTGEN_MEDIUM),
+    MISSING_INDEX(99, UnityNativeTemplateType.MEDIUM); // should return default value
 
     final int intValue;
     final UnityNativeTemplateType expectedTemplateType;
