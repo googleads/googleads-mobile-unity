@@ -1,6 +1,19 @@
 Google Mobile Ads Unity Plugin Change Log
 
 **************
+Version 11.2.0
+**************
+
+- Updated the GMA iOS SDK dependency version to 13.4.0.
+- Updated the GMA Android SDK dependency version to 25.3.0.
+- Updated the GMA Android Next-Gen SDK dependency version to 1.1.1.
+- Added NativeOverlay support for GMA Android Next-Gen SDK.
+- Added next_gen_resolution_strategy.gradle to use lower webkit and error_prone_annotation library to support older Unity Editors.
+- Fixed an issue with fetching error code from Next-Gen AdInspectorError Class.
+- Added destroyAll() support for Preloading APIs when using Next-Gen SDK
+- Fixed getRewardItem() API returning NPE on UnityRewardedAd and UnityRewardedInterstitialAd class when using Next-Gen SDK.
+
+**************
 Version 11.1.0
 **************
 

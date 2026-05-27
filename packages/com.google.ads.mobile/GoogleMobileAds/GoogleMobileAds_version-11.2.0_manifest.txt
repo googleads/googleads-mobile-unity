@@ -56,6 +56,7 @@ Assets/GoogleMobileAds/LICENSE
 Assets/GoogleMobileAds/link.xml
 Assets/Plugins/Android/GoogleMobileAdsPlugin.androidlib/AndroidManifest.xml
 Assets/Plugins/Android/GoogleMobileAdsPlugin.androidlib/next_gen_exclusions.gradle
+Assets/Plugins/Android/GoogleMobileAdsPlugin.androidlib/next_gen_resolution_strategy.gradle
 Assets/Plugins/Android/GoogleMobileAdsPlugin.androidlib/packaging_options.gradle
 Assets/Plugins/Android/GoogleMobileAdsPlugin.androidlib/project.properties
 Assets/Plugins/Android/googlemobileads-unity.aar

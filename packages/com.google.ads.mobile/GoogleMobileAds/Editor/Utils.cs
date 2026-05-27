@@ -55,6 +55,7 @@ namespace GoogleMobileAds.Editor
                 return ParseVersion(GetAndroidGradlePluginVersionString());
             }
         }
+
         private static string GetAndroidGradlePluginVersionString()
         {
             if (!Directory.Exists(AndroidPluginsDir))
@@ -81,6 +82,7 @@ namespace GoogleMobileAds.Editor
             }
             return DefaultAndroidGradlePlugin();
         }
+
         private static Version ParseVersion(string versionStr)
         {
             var match = versionParseRegex.Match(versionStr);
