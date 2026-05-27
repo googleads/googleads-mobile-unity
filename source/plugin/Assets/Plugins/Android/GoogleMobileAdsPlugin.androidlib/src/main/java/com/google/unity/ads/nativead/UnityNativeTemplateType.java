@@ -23,7 +23,9 @@ import com.google.unity.ads.R;
 /** Enums to specify Type of Native Template to be used and its associated layout file */
 public enum UnityNativeTemplateType {
   SMALL(R.layout.small_template_view_layout),
-  MEDIUM(R.layout.medium_template_view_layout);
+  MEDIUM(R.layout.medium_template_view_layout),
+  NEXTGEN_SMALL(R.layout.nextgen_small_template_view_layout),
+  NEXTGEN_MEDIUM(R.layout.nextgen_medium_template_view_layout);
 
   private final int resourceId;
 
