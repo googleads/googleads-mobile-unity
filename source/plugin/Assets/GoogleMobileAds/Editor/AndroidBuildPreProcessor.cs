@@ -36,7 +36,7 @@ namespace GoogleMobileAds.Editor
     {
         private const string NextGenLibrary = "com.google.android.libraries.ads.mobile.sdk:ads-mobile-sdk";
         private const string CurrentLibrary = "com.google.android.gms:play-services-ads";
-        private const string LatestNextGenVersion = "1.1.0";
+        private const string LatestNextGenVersion = "1.1.1";
         private const string CurrentVersion = "25.3.0";
 
         private const string NextGenSpec = NextGenLibrary + ":" + LatestNextGenVersion;
