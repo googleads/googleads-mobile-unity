@@ -17,6 +17,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 using GoogleMobileAds.Api;
+using GoogleMobileAds.Api.AdManager;
 
 namespace GoogleMobileAds.Android {
   internal class NextGenUtils {
@@ -137,6 +138,7 @@ namespace GoogleMobileAds.Android {
         adRequestBuilder.Call<AndroidJavaObject>("putCustomTargeting", entry.Key, entry.Value);
       }
       adRequestBuilder.Call<AndroidJavaObject>("setRequestAgent", AdRequest.BuildVersionString());
+      ApplyAdManagerFields(adRequestBuilder, request);
 
       return adRequestBuilder.Call<AndroidJavaObject>("build");
     }
@@ -159,6 +161,8 @@ namespace GoogleMobileAds.Android {
       }
       bannerAdRequestBuilder.Call<AndroidJavaObject>("setRequestAgent",
                                                      AdRequest.BuildVersionString());
+
+      ApplyAdManagerFields(bannerAdRequestBuilder, request);
 
       return bannerAdRequestBuilder.Call<AndroidJavaObject>("build");
     }
@@ -202,6 +206,8 @@ namespace GoogleMobileAds.Android {
       }
       nativeAdRequestBuilder.Call<AndroidJavaObject>(
           "setRequestAgent", AdRequest.BuildVersionString(nativePluginVersion));
+
+      ApplyAdManagerFields(nativeAdRequestBuilder, request);
 
       return nativeAdRequestBuilder.Call<AndroidJavaObject>("build");
     }
@@ -254,6 +260,20 @@ namespace GoogleMobileAds.Android {
       string adUnitId = configurationJavaObject.Call<string>("getAdUnitId");
       uint bufferSize = Convert.ToUInt32(configurationJavaObject.Call<int>("getBufferSize"));
       return new PreloadConfiguration() { AdUnitId = adUnitId, BufferSize = bufferSize };
+    }
+
+    private static void ApplyAdManagerFields(AndroidJavaObject builder, AdRequest request) {
+      AdManagerAdRequest adManagerAdRequest = request as AdManagerAdRequest;
+      if (adManagerAdRequest != null) {
+        if (!string.IsNullOrEmpty(adManagerAdRequest.PublisherProvidedId)) {
+          builder.Call<AndroidJavaObject>("setPublisherProvidedId", adManagerAdRequest.PublisherProvidedId);
+        }
+        if (adManagerAdRequest.CategoryExclusions != null) {
+          foreach (string exclusion in adManagerAdRequest.CategoryExclusions) {
+            builder.Call<AndroidJavaObject>("addCategoryExclusion", exclusion);
+          }
+        }
+      }
     }
   }
 }

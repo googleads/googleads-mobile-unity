@@ -15,12 +15,13 @@
 using System;
 
 using GoogleMobileAds.Api;
+using GoogleMobileAds.Api.AdManager;
 using GoogleMobileAds.Common;
 using UnityEngine;
 
 namespace GoogleMobileAds.Android
 {
-    public class NextGenInterstitialAdClient : AndroidJavaProxy, IInterstitialClient
+    public class NextGenInterstitialAdClient : AndroidJavaProxy, IInterstitialClient, IAdManagerInterstitialClient
     {
       private readonly IInsightsEmitter _insightsEmitter = InsightsEmitter.Instance;
       private const Insight.AdFormat InterstitialFormat = Insight.AdFormat.Interstitial;
@@ -49,6 +50,8 @@ namespace GoogleMobileAds.Android
         public event Action<AdValue> OnPaidEvent;
 
         public event Action OnAdClicked;
+
+        public event Action<AppEvent> OnAppEvent;
 
         #region IGoogleMobileAdsInterstitialClient implementation
 
@@ -246,6 +249,21 @@ namespace GoogleMobileAds.Android
                 this.OnPaidEvent(adValue);
             }
         }
+
+        public void onAppEvent(string name, string data)
+        {
+            if (this.OnAppEvent != null)
+            {
+                this.OnAppEvent(new AppEvent() { Name = name, Data = data });
+            }
+        }
+
+#if GMA_PREVIEW_FEATURES
+        public IAdManagerInterstitialClient PollAdManagerAd(string adUnitId)
+        {
+            return null;
+        }
+#endif
 
         #endregion
     }

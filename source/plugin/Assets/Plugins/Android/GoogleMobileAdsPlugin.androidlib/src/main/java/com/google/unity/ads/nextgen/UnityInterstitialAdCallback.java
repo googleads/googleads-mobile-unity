@@ -16,6 +16,8 @@
 
 package com.google.unity.ads.nextgen;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import com.google.android.libraries.ads.mobile.sdk.common.LoadAdError;
 
 /**
@@ -28,4 +30,6 @@ public interface UnityInterstitialAdCallback
   void onInterstitialAdLoaded();
 
   void onInterstitialAdFailedToLoad(LoadAdError error);
+
+  void onAppEvent(@NonNull String name, @Nullable String data);
 }

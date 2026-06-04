@@ -88,6 +88,10 @@ namespace GoogleMobileAds
 
         public IAdManagerInterstitialClient BuildAdManagerInterstitialClient() {
           if (Application.platform == RuntimePlatform.Android) {
+            if (IsNextGenEnabled())
+            {
+                return new GoogleMobileAds.Android.NextGenInterstitialAdClient();
+            }
             return new GoogleMobileAds.Android.AdManagerInterstitialClient();
           }
           throw new InvalidOperationException(@"Called " + MethodBase.GetCurrentMethod().Name +

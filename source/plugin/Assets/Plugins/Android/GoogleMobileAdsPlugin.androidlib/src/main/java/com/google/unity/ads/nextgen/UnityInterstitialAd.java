@@ -164,6 +164,16 @@ public class UnityInterstitialAd extends UnityAdBase<InterstitialAd, UnityInters
                   }
                 });
           }
+
+          @Override
+          public void onAppEvent(@NonNull String name, @Nullable String data) {
+            executor.execute(
+                () -> {
+                  if (callback != null) {
+                    callback.onAppEvent(name, data);
+                  }
+                });
+          }
         });
 
     activity.runOnUiThread(

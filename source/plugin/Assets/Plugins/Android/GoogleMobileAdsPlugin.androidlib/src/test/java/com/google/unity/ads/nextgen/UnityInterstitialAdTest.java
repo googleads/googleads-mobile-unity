@@ -130,6 +130,40 @@ public class UnityInterstitialAdTest {
   }
 
   @Test
+  public void testShow_onAppEvent() {
+    unityInterstitialAd.load(mockAdRequest);
+    verify(mockAdWrapper).load(Mockito.eq(mockAdRequest), adLoadCallbackCaptor.capture());
+    adLoadCallbackCaptor.getValue().onAdLoaded(mockInterstitialAd);
+
+    unityInterstitialAd.show();
+
+    verify(mockInterstitialAd).setAdEventCallback(adEventCallbackCaptor.capture());
+
+    InterstitialAdEventCallback eventCallback = adEventCallbackCaptor.getValue();
+    String eventName = "test_event";
+    String eventData = "test_data";
+    eventCallback.onAppEvent(eventName, eventData);
+
+    verify(mockCallback).onAppEvent(eventName, eventData);
+  }
+
+  @Test
+  public void testShow_onAppEvent_withNullData() {
+    unityInterstitialAd.load(mockAdRequest);
+    verify(mockAdWrapper).load(Mockito.eq(mockAdRequest), adLoadCallbackCaptor.capture());
+    adLoadCallbackCaptor.getValue().onAdLoaded(mockInterstitialAd);
+
+    unityInterstitialAd.show();
+
+    verify(mockInterstitialAd).setAdEventCallback(adEventCallbackCaptor.capture());
+    InterstitialAdEventCallback eventCallback = adEventCallbackCaptor.getValue();
+    String eventName = "test_event";
+    String eventData = null;
+    eventCallback.onAppEvent(eventName, eventData);
+    verify(mockCallback).onAppEvent(eventName, eventData);
+  }
+
+  @Test
   public void testGetResponseInfo_whenAdNotLoaded_returnsNull() {
     assertThat(unityInterstitialAd.getResponseInfo()).isNull();
   }
