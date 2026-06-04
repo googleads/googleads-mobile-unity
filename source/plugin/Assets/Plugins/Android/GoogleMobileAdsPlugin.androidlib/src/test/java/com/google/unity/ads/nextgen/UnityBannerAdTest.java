@@ -153,6 +153,12 @@ public final class UnityBannerAdTest {
     eventCallback.onAdPaid(adValue);
     verify(mockCallback)
         .onPaidEvent(Util.getAdValuePrecisionType(precisionType), valueMicros, currencyCode);
+
+    eventCallback.onAppEvent("test_event_name", "test_event_data");
+    verify(mockCallback).onAppEvent("test_event_name", "test_event_data");
+
+    eventCallback.onAppEvent("test_event_name", null);
+    verify(mockCallback).onAppEvent("test_event_name", null);
   }
 
   @Test

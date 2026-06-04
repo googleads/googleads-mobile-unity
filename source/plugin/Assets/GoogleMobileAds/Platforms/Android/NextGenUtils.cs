@@ -146,11 +146,26 @@ namespace GoogleMobileAds.Android {
     /// <summary>
     /// Converts the plugin AdRequest object to a native java proxy object for use by the sdk.
     /// </summary>
-    /// <param name="AdRequest">the AdRequest from the unity plugin.</param>
+    /// <param name="adUnitId">the ad unit ID.</param>
+    /// <param name="request">the AdRequest from the unity plugin.</param>
+    /// <param name="adSize">the ad size.</param>
+    /// <param name="adSizes">the list of valid ad sizes.</param>
     public static AndroidJavaObject GetBannerAdRequestJavaObject(string adUnitId, AdRequest request,
-                                                                 AdSize adSize) {
+                                                                 AdSize adSize = null,
+                                                                 List<AdSize> adSizes = null) {
+      AndroidJavaObject adSizeObject = null;
+      if (adSizes != null && adSizes.Count > 0) {
+        AndroidJavaObject adSizeArrayList = new AndroidJavaObject("java.util.ArrayList");
+        foreach (AdSize size in adSizes) {
+          adSizeArrayList.Call<bool>("add", GetAdSizeJavaObject(size));
+        }
+        adSizeObject = adSizeArrayList;
+      } else if (adSize != null) {
+        adSizeObject = GetAdSizeJavaObject(adSize);
+      }
+
       AndroidJavaObject bannerAdRequestBuilder = new AndroidJavaObject(
-          BannerAdRequestBuilderClassName, adUnitId, GetAdSizeJavaObject(adSize));
+          BannerAdRequestBuilderClassName, adUnitId, adSizeObject);
       foreach (string keyword in request.Keywords) {
         bannerAdRequestBuilder.Call<AndroidJavaObject>("addKeyword", keyword);
       }

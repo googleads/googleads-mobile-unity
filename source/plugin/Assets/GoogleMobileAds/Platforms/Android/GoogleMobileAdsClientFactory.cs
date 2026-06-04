@@ -64,12 +64,18 @@ namespace GoogleMobileAds
                                               " on non-Android runtime");
         }
 
-        public IAdManagerBannerClient BuildAdManagerBannerClient() {
-          if (Application.platform == RuntimePlatform.Android) {
-            return new GoogleMobileAds.Android.AdManagerBannerClient();
-          }
-          throw new InvalidOperationException(@"Called " + MethodBase.GetCurrentMethod().Name +
-                                              " on non-Android runtime");
+        public IAdManagerBannerClient BuildAdManagerBannerClient()
+        {
+            if (Application.platform == RuntimePlatform.Android)
+            {
+                if (IsNextGenEnabled())
+                {
+                    return new GoogleMobileAds.Android.NextGenBannerAdClient();
+                }
+                return new GoogleMobileAds.Android.AdManagerBannerClient();
+            }
+            throw new InvalidOperationException(@"Called " + MethodBase.GetCurrentMethod().Name +
+                                                " on non-Android runtime");
         }
 
         public IInterstitialClient BuildInterstitialClient()

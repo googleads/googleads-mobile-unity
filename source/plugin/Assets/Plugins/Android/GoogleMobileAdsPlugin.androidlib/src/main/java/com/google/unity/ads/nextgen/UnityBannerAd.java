@@ -188,6 +188,13 @@ public class UnityBannerAd {
                           adValue.getCurrencyCode());
                     }
                   }
+
+                  @Override
+                  public void onAppEvent(@NonNull String name, @Nullable String data) {
+                    if (callback != null) {
+                      callback.onAppEvent(name, data);
+                    }
+                  }
                 });
           }
 

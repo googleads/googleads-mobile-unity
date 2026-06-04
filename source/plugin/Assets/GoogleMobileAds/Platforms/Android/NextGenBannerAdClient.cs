@@ -13,14 +13,16 @@
 // limitations under the License.
 
 using System;
+using System.Collections.Generic;
 
 using GoogleMobileAds.Api;
+using GoogleMobileAds.Api.AdManager;
 using GoogleMobileAds.Common;
 using UnityEngine;
 
 namespace GoogleMobileAds.Android
 {
-    public class NextGenBannerAdClient : AndroidJavaProxy, IBannerClient
+    public class NextGenBannerAdClient : AndroidJavaProxy, IAdManagerBannerClient
     {
         private readonly IInsightsEmitter _insightsEmitter = InsightsEmitter.Instance;
         private const Insight.AdFormat BannerFormat = Insight.AdFormat.Banner;
@@ -55,6 +57,16 @@ namespace GoogleMobileAds.Android
 
         public event Action OnAdImpressionRecorded;
 
+        public event Action<AppEvent> OnAppEvent;
+
+        private List<AdSize> _validAdSizes;
+
+        public List<AdSize> ValidAdSizes
+        {
+            get { return _validAdSizes; }
+            set { _validAdSizes = value; }
+        }
+
         // Creates a banner view.
         public void CreateBannerView(string adUnitId, AdSize adSize, AdPosition position)
         {
@@ -76,7 +88,7 @@ namespace GoogleMobileAds.Android
         public virtual void LoadAd(AdRequest request)
         {
             this.bannerView.Call("load", NextGenUtils.GetBannerAdRequestJavaObject(
-                                            this.adUnitId, request, this.adSize));
+                                             this.adUnitId, request, this.adSize, _validAdSizes));
         }
 
         // Displays the banner view on the screen.
@@ -267,6 +279,18 @@ namespace GoogleMobileAds.Android
             if (this.OnAdImpressionRecorded != null)
             {
                 this.OnAdImpressionRecorded();
+            }
+        }
+
+        public void onAppEvent(string name, string data)
+        {
+            if (this.OnAppEvent != null)
+            {
+                this.OnAppEvent(new AppEvent()
+                {
+                    Name = name,
+                    Data = data
+                });
             }
         }
 
