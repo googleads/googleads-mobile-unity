@@ -44,7 +44,8 @@ namespace GoogleMobileAds.Api
             Standard = 0,
             [System.Obsolete("Deprecated. Use AnchoredAdaptive.")]
             SmartBanner = 1,
-            AnchoredAdaptive = 2
+            AnchoredAdaptive = 2,
+            LargeAnchoredAdaptive = 3
         }
 
         private Type _type;
@@ -109,9 +110,14 @@ namespace GoogleMobileAds.Api
             _type = type;
         }
 
-        private static AdSize CreateAnchoredAdaptiveAdSize(int width, Orientation orientation)
+        private static AdSize CreateAnchoredAdaptiveAdSize(int width, Orientation orientation,
+                                                           bool isLarge = false)
         {
             AdSize adSize = new AdSize(width, 0, Type.AnchoredAdaptive);
+            if (isLarge)
+            {
+                adSize._type = Type.LargeAnchoredAdaptive;
+            }
             adSize._orientation = orientation;
             return adSize;
         }
@@ -144,6 +150,36 @@ namespace GoogleMobileAds.Api
         public static AdSize GetCurrentOrientationAnchoredAdaptiveBannerAdSizeWithWidth(int width)
         {
             return CreateAnchoredAdaptiveAdSize(width, Orientation.Current);
+        }
+
+        /// <summary>
+        /// Gets a large landscape adaptive banner ad size.
+        /// </summary>
+        /// <param name="width">The width of the ad in density-independent pixels.</param>
+        /// <returns>A large landscape adaptive banner ad size.</returns>
+        public static AdSize GetLargeLandscapeAnchoredAdaptiveBannerAdSizeWithWidth(int width)
+        {
+            return CreateAnchoredAdaptiveAdSize(width, Orientation.Landscape, true);
+        }
+
+        /// <summary>
+        /// Gets a large portrait adaptive banner ad size.
+        /// </summary>
+        /// <param name="width">The width of the ad in density-independent pixels.</param>
+        /// <returns>A large portrait adaptive banner ad size.</returns>
+        public static AdSize GetLargePortraitAnchoredAdaptiveBannerAdSizeWithWidth(int width)
+        {
+            return CreateAnchoredAdaptiveAdSize(width, Orientation.Portrait, true);
+        }
+
+        /// <summary>
+        /// Gets a large current orientation adaptive banner ad size.
+        /// </summary>
+        /// <param name="width">The width of the ad in density-independent pixels.</param>
+        /// <returns>A large current orientation adaptive banner ad size.</returns>
+        public static AdSize GetCurrentOrientationLargeAnchoredAdaptiveBannerAdSizeWithWidth(int width)
+        {
+            return CreateAnchoredAdaptiveAdSize(width, Orientation.Current, true);
         }
 
         /// <summary>

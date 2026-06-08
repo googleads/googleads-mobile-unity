@@ -229,10 +229,28 @@ namespace GoogleMobileAds.Android {
 
     public static AndroidJavaObject GetAdSizeJavaObject(AdSize adSize) {
       AndroidJavaClass adSizeClass = new AndroidJavaClass(AdSizeClassName);
+      AndroidJavaClass playerClass;
+      AndroidJavaObject activity;
       switch (adSize.AdType) {
+        case AdSize.Type.LargeAnchoredAdaptive:
+          playerClass = new AndroidJavaClass(Utils.UnityActivityClassName);
+          activity = playerClass.GetStatic<AndroidJavaObject>("currentActivity");
+          switch (adSize.Orientation) {
+            case Orientation.Landscape:
+              return adSizeClass.CallStatic<AndroidJavaObject>(
+                  "getLargeLandscapeAnchoredAdaptiveBannerAdSize", activity, adSize.Width);
+            case Orientation.Portrait:
+              return adSizeClass.CallStatic<AndroidJavaObject>(
+                  "getLargePortraitAnchoredAdaptiveBannerAdSize", activity, adSize.Width);
+            case Orientation.Current:
+              return adSizeClass.CallStatic<AndroidJavaObject>(
+                  "getLargeAnchoredAdaptiveBannerAdSize", activity, adSize.Width);
+            default:
+              throw new ArgumentException("Invalid Orientation provided for ad size.");
+          }
         case AdSize.Type.AnchoredAdaptive:
-          AndroidJavaClass playerClass = new AndroidJavaClass(Utils.UnityActivityClassName);
-          AndroidJavaObject activity = playerClass.GetStatic<AndroidJavaObject>("currentActivity");
+          playerClass = new AndroidJavaClass(Utils.UnityActivityClassName);
+          activity = playerClass.GetStatic<AndroidJavaObject>("currentActivity");
           switch (adSize.Orientation) {
             case Orientation.Landscape:
               return adSizeClass.CallStatic<AndroidJavaObject>(
