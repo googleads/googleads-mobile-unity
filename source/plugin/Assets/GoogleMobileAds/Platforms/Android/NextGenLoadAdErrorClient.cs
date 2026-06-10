@@ -28,7 +28,10 @@ namespace GoogleMobileAds.Android
 
         public int GetCode()
         {
-           return _loadAdError.Call<int>("getCode");
+            using (AndroidJavaObject codeEnum = _loadAdError.Call<AndroidJavaObject>("getCode"))
+            {
+                return codeEnum.Call<int>("getValue");
+            }
         }
 
         public string GetDomain()
