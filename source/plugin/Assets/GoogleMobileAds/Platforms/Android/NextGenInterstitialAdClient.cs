@@ -25,7 +25,9 @@ namespace GoogleMobileAds.Android
     {
       private readonly IInsightsEmitter _insightsEmitter = InsightsEmitter.Instance;
       private const Insight.AdFormat InterstitialFormat = Insight.AdFormat.Interstitial;
+
       internal AndroidJavaObject androidInterstitialAd;
+      private string _adUnitId;
 
       public NextGenInterstitialAdClient()
           : base(NextGenUtils.UnityInterstitialAdCallbackClassName) {
@@ -64,6 +66,7 @@ namespace GoogleMobileAds.Android
         // Loads an ad.
         public void LoadAd(string adUnitId, AdRequest request)
         {
+          _adUnitId = adUnitId;
           androidInterstitialAd.Call("load",
                                      NextGenUtils.GetAdRequestJavaObject(request, adUnitId));
         }
@@ -126,8 +129,9 @@ namespace GoogleMobileAds.Android
             {
                 Name = Insight.CuiName.AdLoaded,
                 Format = InterstitialFormat,
-                AdUnitId = GetAdUnitID(),
+                AdUnitId = _adUnitId,
             });
+
             if (this.OnAdLoaded != null)
             {
                 this.OnAdLoaded(this, EventArgs.Empty);
@@ -140,9 +144,10 @@ namespace GoogleMobileAds.Android
             {
                 Name = Insight.CuiName.AdLoaded,
                 Format = InterstitialFormat,
-                AdUnitId = GetAdUnitID(),
+                AdUnitId = _adUnitId,
                 Success = false,
             });
+
             if (this.OnAdFailedToLoad != null)
             {
                 LoadAdErrorClientEventArgs args = new LoadAdErrorClientEventArgs()
@@ -159,9 +164,10 @@ namespace GoogleMobileAds.Android
             {
                 Name = Insight.CuiName.AdShowedFullScreenContent,
                 Format = InterstitialFormat,
-                AdUnitId = GetAdUnitID(),
+                AdUnitId = _adUnitId,
                 Success = false,
             });
+
             if (this.OnAdFailedToPresentFullScreenContent != null)
             {
                 AdErrorClientEventArgs args = new AdErrorClientEventArgs()
@@ -178,7 +184,7 @@ namespace GoogleMobileAds.Android
             {
                 Name = Insight.CuiName.AdShowedFullScreenContent,
                 Format = InterstitialFormat,
-                AdUnitId = GetAdUnitID(),
+                AdUnitId = _adUnitId,
             });
 
             if (this.OnAdDidPresentFullScreenContent != null)
@@ -194,8 +200,9 @@ namespace GoogleMobileAds.Android
             {
                 Name = Insight.CuiName.AdDismissedFullScreenContent,
                 Format = InterstitialFormat,
-                AdUnitId = GetAdUnitID(),
+                AdUnitId = _adUnitId,
             });
+
             if (this.OnAdDidDismissFullScreenContent != null)
             {
                 this.OnAdDidDismissFullScreenContent(this, EventArgs.Empty);
@@ -208,8 +215,9 @@ namespace GoogleMobileAds.Android
             {
                 Name = Insight.CuiName.AdShown,
                 Format = InterstitialFormat,
-                AdUnitId = GetAdUnitID(),
+                AdUnitId = _adUnitId,
             });
+
             if (this.OnAdDidRecordImpression != null)
             {
                 this.OnAdDidRecordImpression(this, EventArgs.Empty);
@@ -222,8 +230,9 @@ namespace GoogleMobileAds.Android
             {
                 Name = Insight.CuiName.AdClicked,
                 Format = InterstitialFormat,
-                AdUnitId = GetAdUnitID(),
+                AdUnitId = _adUnitId,
             });
+
             if (this.OnAdClicked != null)
             {
                 this.OnAdClicked();
@@ -236,8 +245,9 @@ namespace GoogleMobileAds.Android
             {
                 Name = Insight.CuiName.AdPaid,
                 Format = InterstitialFormat,
-                AdUnitId = GetAdUnitID(),
+                AdUnitId = _adUnitId,
             });
+
             if (this.OnPaidEvent != null)
             {
                 AdValue adValue = new AdValue()

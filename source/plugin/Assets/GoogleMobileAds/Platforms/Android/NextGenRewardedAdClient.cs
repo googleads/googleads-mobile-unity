@@ -24,7 +24,9 @@ namespace GoogleMobileAds.Android
     {
       private readonly IInsightsEmitter _insightsEmitter = InsightsEmitter.Instance;
       private const Insight.AdFormat RewardedFormat = Insight.AdFormat.Rewarded;
+
       internal AndroidJavaObject androidRewardedAd;
+      private string _adUnitId;
 
       public NextGenRewardedAdClient() : base(NextGenUtils.UnityRewardedAdCallbackClassName) {
         AndroidJavaClass playerClass = new AndroidJavaClass(Utils.UnityActivityClassName);
@@ -58,6 +60,7 @@ namespace GoogleMobileAds.Android
       }
 
       public void LoadAd(string adUnitId, AdRequest request) {
+        _adUnitId = adUnitId;
         androidRewardedAd.Call("load", NextGenUtils.GetAdRequestJavaObject(request, adUnitId));
       }
 
@@ -120,8 +123,9 @@ namespace GoogleMobileAds.Android
         {
             Name = Insight.CuiName.AdLoaded,
             Format = RewardedFormat,
-            AdUnitId = GetAdUnitID(),
+            AdUnitId = _adUnitId,
         });
+
         if (this.OnAdLoaded != null) {
           this.OnAdLoaded(this, EventArgs.Empty);
         }
@@ -132,9 +136,10 @@ namespace GoogleMobileAds.Android
         {
             Name = Insight.CuiName.AdLoaded,
             Format = RewardedFormat,
-            AdUnitId = GetAdUnitID(),
+            AdUnitId = _adUnitId,
             Success = false,
         });
+
         if (this.OnAdFailedToLoad != null) {
           LoadAdErrorClientEventArgs args =
               new LoadAdErrorClientEventArgs() { LoadAdErrorClient =
@@ -148,9 +153,10 @@ namespace GoogleMobileAds.Android
         {
             Name = Insight.CuiName.AdShowedFullScreenContent,
             Format = RewardedFormat,
-            AdUnitId = GetAdUnitID(),
+            AdUnitId = _adUnitId,
             Success = false,
         });
+
         if (this.OnAdFailedToPresentFullScreenContent != null) {
           AdErrorClientEventArgs args =
               new AdErrorClientEventArgs() { AdErrorClient =
@@ -164,8 +170,9 @@ namespace GoogleMobileAds.Android
         {
             Name = Insight.CuiName.AdShowedFullScreenContent,
             Format = RewardedFormat,
-            AdUnitId = GetAdUnitID(),
+            AdUnitId = _adUnitId,
         });
+
         if (this.OnAdDidPresentFullScreenContent != null) {
           this.OnAdDidPresentFullScreenContent(this, EventArgs.Empty);
         }
@@ -176,8 +183,9 @@ namespace GoogleMobileAds.Android
         {
             Name = Insight.CuiName.AdDismissedFullScreenContent,
             Format = RewardedFormat,
-            AdUnitId = GetAdUnitID(),
+            AdUnitId = _adUnitId,
         });
+
         if (this.OnAdDidDismissFullScreenContent != null) {
           this.OnAdDidDismissFullScreenContent(this, EventArgs.Empty);
         }
@@ -188,8 +196,9 @@ namespace GoogleMobileAds.Android
         {
             Name = Insight.CuiName.AdShown,
             Format = RewardedFormat,
-            AdUnitId = GetAdUnitID(),
+            AdUnitId = _adUnitId,
         });
+
         if (this.OnAdDidRecordImpression != null) {
           this.OnAdDidRecordImpression(this, EventArgs.Empty);
         }
@@ -200,8 +209,9 @@ namespace GoogleMobileAds.Android
         {
             Name = Insight.CuiName.AdClicked,
             Format = RewardedFormat,
-            AdUnitId = GetAdUnitID(),
+            AdUnitId = _adUnitId,
         });
+
         if (this.OnAdClicked != null) {
           this.OnAdClicked();
         }
@@ -212,8 +222,9 @@ namespace GoogleMobileAds.Android
         {
             Name = Insight.CuiName.UserEarnedReward,
             Format = RewardedFormat,
-            AdUnitId = GetAdUnitID(),
+            AdUnitId = _adUnitId,
         });
+
         if (this.OnUserEarnedReward != null) {
           Reward args = new Reward() { Type = type, Amount = amount };
           this.OnUserEarnedReward(this, args);
@@ -225,8 +236,9 @@ namespace GoogleMobileAds.Android
         {
             Name = Insight.CuiName.AdPaid,
             Format = RewardedFormat,
-            AdUnitId = GetAdUnitID(),
+            AdUnitId = _adUnitId,
         });
+
         if (this.OnPaidEvent != null) {
           AdValue adValue = new AdValue() { Precision = (AdValue.PrecisionType)precision,
                                             Value = valueInMicros, CurrencyCode = currencyCode };

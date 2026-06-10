@@ -22,7 +22,11 @@ namespace GoogleMobileAds.Android
 {
     public class NextGenNativeOverlayAdClient : AndroidJavaProxy, INativeOverlayAdClient
     {
+        private readonly IInsightsEmitter _insightsEmitter = InsightsEmitter.Instance;
+        private const Insight.AdFormat NativeFormat = Insight.AdFormat.Native;
+
         private AndroidJavaObject nativeOverlayAd;
+        private string _adUnitId;
 
         public NextGenNativeOverlayAdClient() : base(NextGenUtils.UnityNativeTemplateAdCallbackClassName)
         {
@@ -64,6 +68,7 @@ namespace GoogleMobileAds.Android
         // Loads a native ad
         public void Load(string adUnitId, AdRequest request, NativeAdOptions options)
         {
+            _adUnitId = adUnitId;
             AndroidJavaObject nativeAdOptionsJava = new AndroidJavaObject(
                 NextGenUtils.NativeAdOptionsClassName,
                 (int)options.MediaAspectRatio,
@@ -172,6 +177,13 @@ namespace GoogleMobileAds.Android
 #region Callbacks from UnityNativeTemplateAdCallback.
         void onNativeAdLoaded()
         {
+            _insightsEmitter.Emit(new Insight()
+            {
+                Name = Insight.CuiName.AdLoaded,
+                Format = NativeFormat,
+                AdUnitId = _adUnitId,
+            });
+
             if (this.OnAdLoaded != null)
             {
                 this.OnAdLoaded(this, EventArgs.Empty);
@@ -180,6 +192,14 @@ namespace GoogleMobileAds.Android
 
         void onNativeAdFailedToLoad(AndroidJavaObject error)
         {
+            _insightsEmitter.Emit(new Insight()
+            {
+                Name = Insight.CuiName.AdLoaded,
+                Format = NativeFormat,
+                AdUnitId = _adUnitId,
+                Success = false,
+            });
+
             if (this.OnAdFailedToLoad != null)
             {
                 LoadAdErrorClientEventArgs args = new LoadAdErrorClientEventArgs()
@@ -192,6 +212,13 @@ namespace GoogleMobileAds.Android
 
         void onAdImpression()
         {
+            _insightsEmitter.Emit(new Insight()
+            {
+                Name = Insight.CuiName.AdShown,
+                Format = NativeFormat,
+                AdUnitId = _adUnitId,
+            });
+
             if (this.OnAdDidRecordImpression != null)
             {
                 this.OnAdDidRecordImpression(this, EventArgs.Empty);
@@ -200,6 +227,13 @@ namespace GoogleMobileAds.Android
 
         void onAdClicked()
         {
+            _insightsEmitter.Emit(new Insight()
+            {
+                Name = Insight.CuiName.AdClicked,
+                Format = NativeFormat,
+                AdUnitId = _adUnitId,
+            });
+
             if (this.OnAdClicked != null)
             {
                 this.OnAdClicked();
@@ -208,6 +242,13 @@ namespace GoogleMobileAds.Android
 
         void onAdShowedFullScreenContent()
         {
+            _insightsEmitter.Emit(new Insight()
+            {
+                Name = Insight.CuiName.AdShowedFullScreenContent,
+                Format = NativeFormat,
+                AdUnitId = _adUnitId,
+            });
+
             if (this.OnAdDidPresentFullScreenContent != null)
             {
                 this.OnAdDidPresentFullScreenContent(this, EventArgs.Empty);
@@ -216,6 +257,13 @@ namespace GoogleMobileAds.Android
 
         void onAdDismissedFullScreenContent()
         {
+            _insightsEmitter.Emit(new Insight()
+            {
+                Name = Insight.CuiName.AdDismissedFullScreenContent,
+                Format = NativeFormat,
+                AdUnitId = _adUnitId,
+            });
+
             if (this.OnAdDidDismissFullScreenContent != null)
             {
                 this.OnAdDidDismissFullScreenContent(this, EventArgs.Empty);
@@ -224,11 +272,26 @@ namespace GoogleMobileAds.Android
 
         void onAdFailedToShowFullScreenContent(AndroidJavaObject error)
         {
+            _insightsEmitter.Emit(new Insight()
+            {
+                Name = Insight.CuiName.AdShowedFullScreenContent,
+                Format = NativeFormat,
+                AdUnitId = _adUnitId,
+                Success = false,
+            });
+
             // No-op
         }
 
         void onPaidEvent(int precision, long valueInMicros, string currencyCode)
         {
+            _insightsEmitter.Emit(new Insight()
+            {
+                Name = Insight.CuiName.AdPaid,
+                Format = NativeFormat,
+                AdUnitId = _adUnitId,
+            });
+
             if (this.OnPaidEvent != null)
             {
                 AdValue adValue = new AdValue()
