@@ -76,6 +76,11 @@ namespace GoogleMobileAds.Android {
         "com.google.android.libraries.ads.mobile.sdk.common.MediationAdError";
 #endregion
 
+#region ServerSideVerificationOptions
+    public const string ServerSideVerificationOptionsClassName =
+        "com.google.android.libraries.ads.mobile.sdk.rewarded.ServerSideVerificationOptions";
+#endregion
+
 #endregion
 
 #region Fully - qualified Unity NextGen Bridge class names
@@ -293,6 +298,19 @@ namespace GoogleMobileAds.Android {
       string adUnitId = configurationJavaObject.Call<string>("getAdUnitId");
       uint bufferSize = Convert.ToUInt32(configurationJavaObject.Call<int>("getBufferSize"));
       return new PreloadConfiguration() { AdUnitId = adUnitId, BufferSize = bufferSize };
+    }
+
+    public static AndroidJavaObject GetServerSideVerificationOptionsJavaObject(
+        ServerSideVerificationOptions serverSideVerificationOptions) {
+      if (serverSideVerificationOptions == null ||
+          serverSideVerificationOptions.UserId == null ||
+          serverSideVerificationOptions.CustomData == null) {
+        Debug.LogError("ServerSideVerificationOptions is null or empty.");
+        return null;
+      }
+      return new AndroidJavaObject(NextGenUtils.ServerSideVerificationOptionsClassName,
+                                   serverSideVerificationOptions.UserId,
+                                   serverSideVerificationOptions.CustomData);
     }
 
     private static void ApplyAdManagerFields(AndroidJavaObject builder, AdRequest request) {
