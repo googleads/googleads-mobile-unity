@@ -15,6 +15,7 @@ import com.google.android.libraries.ads.mobile.sdk.rewarded.OnUserEarnedRewardLi
 import com.google.android.libraries.ads.mobile.sdk.rewarded.RewardItem;
 import com.google.android.libraries.ads.mobile.sdk.rewarded.RewardedAd;
 import com.google.android.libraries.ads.mobile.sdk.rewarded.RewardedAdEventCallback;
+import com.google.android.libraries.ads.mobile.sdk.rewarded.ServerSideVerificationOptions;
 import com.google.unity.ads.PluginUtils;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
@@ -223,6 +224,22 @@ public class UnityRewardedAd extends UnityAdBase<RewardedAd, UnityRewardedAdCall
       return;
     }
     ad.setPlacementId(placementId);
+  }
+
+  /**
+   * Sets server side verification options.
+   *
+   * @param serverSideVerificationOptions The server side verification options to set.
+   */
+  public void setServerSideVerificationOptions(
+      final ServerSideVerificationOptions serverSideVerificationOptions) {
+    if (ad == null) {
+      Log.e(
+          PluginUtils.LOGTAG,
+          "Tried to set server side verification before ad was ready. Returning.");
+      return;
+    }
+    ad.setServerSideVerificationOptions(serverSideVerificationOptions);
   }
 
   /** Returns the request response info. */

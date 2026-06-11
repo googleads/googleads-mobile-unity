@@ -29,6 +29,7 @@ import com.google.android.libraries.ads.mobile.sdk.common.LoadAdError;
 import com.google.android.libraries.ads.mobile.sdk.common.ResponseInfo;
 import com.google.android.libraries.ads.mobile.sdk.rewarded.OnUserEarnedRewardListener;
 import com.google.android.libraries.ads.mobile.sdk.rewarded.RewardItem;
+import com.google.android.libraries.ads.mobile.sdk.rewarded.ServerSideVerificationOptions;
 import com.google.android.libraries.ads.mobile.sdk.rewardedinterstitial.RewardedInterstitialAd;
 import com.google.android.libraries.ads.mobile.sdk.rewardedinterstitial.RewardedInterstitialAdEventCallback;
 import com.google.unity.ads.PluginUtils;
@@ -218,6 +219,22 @@ public class UnityRewardedInterstitialAd
       return;
     }
     ad.setPlacementId(placementId);
+  }
+
+  /**
+   * Sets server side verification options.
+   *
+   * @param serverSideVerificationOptions The server side verification options to set.
+   */
+  public void setServerSideVerificationOptions(
+      final ServerSideVerificationOptions serverSideVerificationOptions) {
+    if (ad == null) {
+      Log.e(
+          PluginUtils.LOGTAG,
+          "Tried to set server side verification before ad was ready. Returning.");
+      return;
+    }
+    ad.setServerSideVerificationOptions(serverSideVerificationOptions);
   }
 
   /** Returns the reward item for the {@link RewardedInterstitialAd}. */

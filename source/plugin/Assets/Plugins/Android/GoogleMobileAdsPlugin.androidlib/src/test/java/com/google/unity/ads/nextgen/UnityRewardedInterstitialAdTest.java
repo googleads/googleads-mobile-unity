@@ -16,6 +16,7 @@ import com.google.android.libraries.ads.mobile.sdk.common.PrecisionType;
 import com.google.android.libraries.ads.mobile.sdk.common.ResponseInfo;
 import com.google.android.libraries.ads.mobile.sdk.rewarded.OnUserEarnedRewardListener;
 import com.google.android.libraries.ads.mobile.sdk.rewarded.RewardItem;
+import com.google.android.libraries.ads.mobile.sdk.rewarded.ServerSideVerificationOptions;
 import com.google.android.libraries.ads.mobile.sdk.rewardedinterstitial.RewardedInterstitialAd;
 import com.google.android.libraries.ads.mobile.sdk.rewardedinterstitial.RewardedInterstitialAdEventCallback;
 import java.util.ArrayList;
@@ -208,6 +209,30 @@ public final class UnityRewardedInterstitialAdTest {
 
     // Verify that setPlacementId was called on the underlying ad.
     verify(mockRewardedInterstitialAd).setPlacementId(placementId);
+  }
+
+  @Test
+  public void testSetServerSideVerificationOptions_whenAdNotLoaded_doesNothing() {
+    ServerSideVerificationOptions options =
+        new ServerSideVerificationOptions("userId", "customData");
+    unityRewardedInterstitialAd.setServerSideVerificationOptions(options);
+    verify(mockRewardedInterstitialAd, Mockito.never())
+        .setServerSideVerificationOptions(Mockito.any());
+  }
+
+  @Test
+  public void testSetServerSideVerificationOptions_setsOptions() {
+    unityRewardedInterstitialAd.load(mockAdRequest);
+    // Capture the callback and simulate successful ad load.
+    verify(mockAdWrapper).load(Mockito.eq(mockAdRequest), adLoadCallbackCaptor.capture());
+    adLoadCallbackCaptor.getValue().onAdLoaded(mockRewardedInterstitialAd);
+
+    ServerSideVerificationOptions options =
+        new ServerSideVerificationOptions("userId", "customData");
+    unityRewardedInterstitialAd.setServerSideVerificationOptions(options);
+
+    // Verify that setServerSideVerificationOptions was called on the underlying ad.
+    verify(mockRewardedInterstitialAd).setServerSideVerificationOptions(options);
   }
 
   @Test
