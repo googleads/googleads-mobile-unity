@@ -111,6 +111,14 @@ namespace GoogleMobileAds.iOS
                             (int)adSize.Orientation,
                             (int)position);
                     break;
+                case AdSize.Type.LargeAnchoredAdaptive:
+                    this.BannerViewPtr = Externs.GADUCreateLargeAnchoredAdaptiveBannerView(
+                            this.bannerClientPtr,
+                            adUnitId,
+                            adSize.Width,
+                            (int)adSize.Orientation,
+                            (int)position);
+                    break;
                 case AdSize.Type.Standard:
                     this.BannerViewPtr = Externs.GADUCreateBannerView(
                             this.bannerClientPtr, adUnitId, adSize.Width, adSize.Height, (int)position);
@@ -147,6 +155,15 @@ namespace GoogleMobileAds.iOS
                     break;
                 case AdSize.Type.AnchoredAdaptive:
                     this.BannerViewPtr = Externs.GADUCreateAnchoredAdaptiveBannerViewWithCustomPosition(
+                        this.bannerClientPtr,
+                        adUnitId,
+                        adSize.Width,
+                        (int)adSize.Orientation,
+                        x,
+                        y);
+                    break;
+                case AdSize.Type.LargeAnchoredAdaptive:
+                    this.BannerViewPtr = Externs.GADUCreateLargeAnchoredAdaptiveBannerViewWithCustomPosition(
                         this.bannerClientPtr,
                         adUnitId,
                         adSize.Width,

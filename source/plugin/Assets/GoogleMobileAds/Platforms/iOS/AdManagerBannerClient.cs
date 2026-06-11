@@ -140,6 +140,14 @@ namespace GoogleMobileAds.iOS
                             (int)adSize.Orientation,
                             (int)position);
                     break;
+                case AdSize.Type.LargeAnchoredAdaptive:
+                    this.BannerViewPtr = Externs.GAMUCreateLargeAnchoredAdaptiveBannerView(
+                            this._bannerClientPtr,
+                            adUnitId,
+                            adSize.Width,
+                            (int)adSize.Orientation,
+                            (int)position);
+                    break;
                 case AdSize.Type.Standard:
                     this.BannerViewPtr = Externs.GAMUCreateBannerView(this._bannerClientPtr,
                             adUnitId, adSize.Width, adSize.Height, (int)position);
@@ -171,6 +179,16 @@ namespace GoogleMobileAds.iOS
                 case AdSize.Type.AnchoredAdaptive:
                     this.BannerViewPtr =
                             Externs.GAMUCreateAnchoredAdaptiveBannerViewWithCustomPosition(
+                            this._bannerClientPtr,
+                            adUnitId,
+                            adSize.Width,
+                            (int)adSize.Orientation,
+                            x,
+                            y);
+                    break;
+                case AdSize.Type.LargeAnchoredAdaptive:
+                    this.BannerViewPtr =
+                            Externs.GAMUCreateLargeAnchoredAdaptiveBannerViewWithCustomPosition(
                             this._bannerClientPtr,
                             adUnitId,
                             adSize.Width,
