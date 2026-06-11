@@ -56,6 +56,24 @@
                                                     orientation:(GADUBannerOrientation)orientation
                                                customAdPosition:(CGPoint)customAdPosition;
 
+/// Initializes a large adaptive GAMUBanner, positioned at either the top or bottom of the screen.
+- (nonnull instancetype)
+    initWithLargeAdaptiveBannerSizeAndAdManagerBannerClientReference:
+        (_Nonnull GAMUTypeBannerClientRef *_Nonnull)bannerClient
+                                                       adUnitID:(nonnull NSString *)adUnitID
+                                                          width:(NSInteger)width
+                                                    orientation:(GADUBannerOrientation)orientation
+                                                     adPosition:(GADAdPosition)adPosition;
+
+/// Initializes a large adaptive GAMUBanner with a custom position at given point from top left.
+- (nonnull instancetype)
+    initWithLargeAdaptiveBannerSizeAndAdManagerBannerClientReference:
+        (_Nonnull GAMUTypeBannerClientRef *_Nonnull)bannerClient
+                                                       adUnitID:(nonnull NSString *)adUnitID
+                                                          width:(NSInteger)width
+                                                    orientation:(GADUBannerOrientation)orientation
+                                               customAdPosition:(CGPoint)customAdPosition;
+
 /// A reference to the Unity Ad Manager banner client.
 @property(nonatomic, assign) _Nonnull GAMUTypeBannerClientRef *_Nonnull bannerClientGAM;
 
