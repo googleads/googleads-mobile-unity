@@ -79,7 +79,15 @@ namespace GoogleMobileAds.Android
         public void SetServerSideVerificationOptions(
             ServerSideVerificationOptions serverSideVerificationOptions)
         {
-            // TODO(vkini): Implement SetServerSideVerificationOptions for Next Gen SDK.
+            AndroidJavaObject serverSideVerificationOptionsJavaObject =
+                NextGenUtils.GetServerSideVerificationOptionsJavaObject(
+                    serverSideVerificationOptions);
+            if (serverSideVerificationOptionsJavaObject == null)
+            {
+                return;
+            }
+            _androidRewardedInterstitialAd.Call("setServerSideVerificationOptions",
+                                                serverSideVerificationOptionsJavaObject);
         }
 
         public long PlacementId
