@@ -185,9 +185,25 @@ namespace GoogleMobileAds.Android {
     /// <summary>
     /// Converts the plugin AdRequest object to a native java proxy object for use by the sdk.
     /// </summary>
-    /// <param name="AdRequest">the AdRequest from the unity plugin.</param>
+    /// <param name="adUnitId">the ad unit ID.</param>
+    /// <param name="request">the AdRequest from the unity plugin.</param>
+    /// <param name="nativePluginVersion">the native plugin version.</param>
     public static AndroidJavaObject GetNativeAdRequestJavaObject(
         string adUnitId, AdRequest request, string nativePluginVersion = null) {
+      return GetNativeAdRequestJavaObject(adUnitId, request, null, true, nativePluginVersion);
+    }
+
+    /// <summary>
+    /// Converts the plugin AdRequest object to a native java proxy object for use by the sdk.
+    /// </summary>
+    /// <param name="adUnitId">the ad unit ID.</param>
+    /// <param name="request">the AdRequest from the unity plugin.</param>
+    /// <param name="nativeAdOptionsJava">the Java NativeAdOptions.</param>
+    /// <param name="disableImageDownloading">Whether image downloading is disabled.</param>
+    /// <param name="nativePluginVersion">the native plugin version.</param>
+    public static AndroidJavaObject GetNativeAdRequestJavaObject(
+        string adUnitId, AdRequest request, AndroidJavaObject nativeAdOptionsJava,
+        bool disableImageDownloading, string nativePluginVersion = null) {
       AndroidJavaClass nativeAdTypeClass = new AndroidJavaClass(NativeAdTypeClassName);
       AndroidJavaObject nativeTypeNative = nativeAdTypeClass.GetStatic<AndroidJavaObject>("NATIVE");
 
@@ -196,7 +212,25 @@ namespace GoogleMobileAds.Android {
 
       AndroidJavaObject nativeAdRequestBuilder =
           new AndroidJavaObject(NativeAdRequestBuilderClassName, adUnitId, nativeAdTypesList);
-      nativeAdRequestBuilder.Call<AndroidJavaObject>("disableImageDownloading");
+
+      if (disableImageDownloading) {
+        nativeAdRequestBuilder.Call<AndroidJavaObject>("disableImageDownloading");
+      }
+
+      if (nativeAdOptionsJava != null) {
+        AndroidJavaObject mediaAspectRatio = nativeAdOptionsJava.Call<AndroidJavaObject>("getMediaAspectRatio");
+        if (mediaAspectRatio != null) {
+          nativeAdRequestBuilder.Call<AndroidJavaObject>("setMediaAspectRatio", mediaAspectRatio);
+        }
+        AndroidJavaObject adChoicesPlacement = nativeAdOptionsJava.Call<AndroidJavaObject>("getAdChoicesPlacement");
+        if (adChoicesPlacement != null) {
+          nativeAdRequestBuilder.Call<AndroidJavaObject>("setAdChoicesPlacement", adChoicesPlacement);
+        }
+        AndroidJavaObject videoOptions = nativeAdOptionsJava.Call<AndroidJavaObject>("getVideoOptions");
+        if (videoOptions != null) {
+          nativeAdRequestBuilder.Call<AndroidJavaObject>("setVideoOptions", videoOptions);
+        }
+      }
 
       foreach (string keyword in request.Keywords) {
         nativeAdRequestBuilder.Call<AndroidJavaObject>("addKeyword", keyword);
