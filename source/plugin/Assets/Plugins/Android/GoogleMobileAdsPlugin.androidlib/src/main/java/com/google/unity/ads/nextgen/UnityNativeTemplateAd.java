@@ -29,7 +29,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
 import com.google.android.libraries.ads.mobile.sdk.banner.AdSize;
-import com.google.android.libraries.ads.mobile.sdk.common.AdRequest;
 import com.google.android.libraries.ads.mobile.sdk.common.AdValue;
 import com.google.android.libraries.ads.mobile.sdk.common.LoadAdError;
 import com.google.android.libraries.ads.mobile.sdk.common.ResponseInfo;
@@ -40,7 +39,6 @@ import com.google.android.libraries.ads.mobile.sdk.nativead.NativeAdLoaderCallba
 import com.google.android.libraries.ads.mobile.sdk.nativead.NativeAdRequest;
 import com.google.unity.ads.PluginUtils;
 import com.google.unity.ads.nativead.UnityNativeTemplateStyle;
-import java.util.Arrays;
 
 /** Native Template ad implementation for the Google Mobile Ads Unity plugin. */
 public class UnityNativeTemplateAd {
@@ -124,36 +122,13 @@ public class UnityNativeTemplateAd {
     verticalOffset = 0;
   }
 
-  /**
-   * Loads a native ad using the provided NativeAdOptions and AdRequest.
-   *
-   * @param adUnitId Your ad unit ID.
-   * @param options The NativeAdOptions used to customize the native ad request.
-   * @param request The AdRequest used to fetch the native ad.
-   */
-  public void loadAd(
-      final String adUnitId, final NativeAdOptions options, final AdRequest request) {
+  public void loadAd(final NativeAdRequest request) {
     activity.runOnUiThread(
         new Runnable() {
           @Override
           public void run() {
-            NativeAdRequest.Builder builder =
-                new NativeAdRequest.Builder(adUnitId, Arrays.asList(NativeAd.NativeAdType.NATIVE));
-
-            if (options != null) {
-              builder.setMediaAspectRatio(options.getMediaAspectRatio());
-              builder.setAdChoicesPlacement(options.getAdChoicesPlacement());
-
-              // Apply VideoOptions
-              if (options.getVideoOptions() != null) {
-                builder.setVideoOptions(options.getVideoOptions());
-              }
-            }
-
-            NativeAdRequest nativeAdRequest = builder.build();
-
             adLoaderWrapper.load(
-                nativeAdRequest,
+                request,
                 new NativeAdLoaderCallback() {
                   @Override
                   public void onNativeAdLoaded(@NonNull NativeAd ad) {

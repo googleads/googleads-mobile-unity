@@ -84,8 +84,8 @@ namespace GoogleMobileAds.Android
                 nativeAdOptionsJava.Call("setVideoOptions", videoOptionsJava);
             }
 
-            this.nativeOverlayAd.Call("loadAd", adUnitId, nativeAdOptionsJava,
-                                      NextGenUtils.GetAdRequestJavaObject(request, adUnitId));
+            this.nativeOverlayAd.Call("loadAd",
+                                      NextGenUtils.GetNativeAdRequestJavaObject(adUnitId, request, nativeAdOptionsJava, false));
         }
 
         // Hides the native overlay from the screen.
