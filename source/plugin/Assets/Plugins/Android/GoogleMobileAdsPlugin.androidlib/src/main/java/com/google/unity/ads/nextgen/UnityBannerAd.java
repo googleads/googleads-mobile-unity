@@ -26,7 +26,6 @@ import android.view.WindowInsets;
 import android.widget.FrameLayout;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.VisibleForTesting;
 import com.google.android.libraries.ads.mobile.sdk.banner.BannerAd;
 import com.google.android.libraries.ads.mobile.sdk.banner.BannerAdEventCallback;
 import com.google.android.libraries.ads.mobile.sdk.banner.BannerAdRequest;
@@ -99,7 +98,6 @@ public class UnityBannerAd {
     this(activity, callback, AdWrapper.forBanner());
   }
 
-  @VisibleForTesting
   UnityBannerAd(Activity activity, UnityBannerAdCallback callback, AdWrapper<BannerAd> adWrapper) {
     unityPlayerActivity = activity;
     this.callback = callback;

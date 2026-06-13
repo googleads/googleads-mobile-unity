@@ -12,7 +12,6 @@ import com.google.android.libraries.ads.mobile.sdk.interstitial.InterstitialAd;
 import com.google.android.libraries.ads.mobile.sdk.interstitial.InterstitialAdPreloader;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 /** Unity implementation of the {@link InterstitialAdPreloader}. */
 public class UnityInterstitialAdPreloader {
@@ -36,7 +35,7 @@ public class UnityInterstitialAdPreloader {
         activity,
         preloadCallback,
         new InterstitialAdPreloaderWrapper(),
-        Executors.newSingleThreadExecutor());
+        PreloaderExecutor.getExecutor());
   }
 
   @VisibleForTesting

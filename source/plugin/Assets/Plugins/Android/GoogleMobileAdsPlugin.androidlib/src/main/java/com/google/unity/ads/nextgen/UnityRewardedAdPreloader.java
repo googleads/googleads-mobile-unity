@@ -12,7 +12,6 @@ import com.google.android.libraries.ads.mobile.sdk.rewarded.RewardedAd;
 import com.google.android.libraries.ads.mobile.sdk.rewarded.RewardedAdPreloader;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 /** Unity implementation of the {@link RewardedAdPreloader}. */
 public class UnityRewardedAdPreloader {
@@ -36,7 +35,7 @@ public class UnityRewardedAdPreloader {
         activity,
         preloadCallback,
         new RewardedAdPreloaderWrapper(),
-        Executors.newSingleThreadExecutor());
+        PreloaderExecutor.getExecutor());
   }
 
   @VisibleForTesting

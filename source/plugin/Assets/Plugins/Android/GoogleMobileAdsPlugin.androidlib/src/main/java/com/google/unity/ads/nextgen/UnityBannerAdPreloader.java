@@ -4,8 +4,10 @@ import android.app.Activity;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
-import com.google.android.libraries.ads.mobile.sdk.appopen.AppOpenAd;
-import com.google.android.libraries.ads.mobile.sdk.appopen.AppOpenAdPreloader;
+import com.google.android.libraries.ads.mobile.sdk.banner.BannerAd;
+import com.google.android.libraries.ads.mobile.sdk.banner.BannerAdPreloader;
+import com.google.android.libraries.ads.mobile.sdk.common.AdLoadCallback;
+import com.google.android.libraries.ads.mobile.sdk.common.AdRequest;
 import com.google.android.libraries.ads.mobile.sdk.common.LoadAdError;
 import com.google.android.libraries.ads.mobile.sdk.common.PreloadCallback;
 import com.google.android.libraries.ads.mobile.sdk.common.PreloadConfiguration;
@@ -13,10 +15,10 @@ import com.google.android.libraries.ads.mobile.sdk.common.ResponseInfo;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 
-/** Unity implementation of the {@link AppOpenAdPreloader}. */
-public class UnityAppOpenAdPreloader {
+/** Unity implementation of the {@link BannerAdPreloader}. */
+public class UnityBannerAdPreloader {
 
-  /** The {@code Activity} on which the app open ad will display. */
+  /** The {@code Activity} on which the banner ad will display. */
   private final Activity activity;
 
   /** An executor used to run the callbacks. */
@@ -28,21 +30,18 @@ public class UnityAppOpenAdPreloader {
    */
   private final UnityPreloadCallback preloadCallback;
 
-  private final AppOpenAdPreloaderWrapper preloaderWrapper;
+  private final BannerAdPreloaderWrapper preloaderWrapper;
 
-  public UnityAppOpenAdPreloader(Activity activity, UnityPreloadCallback preloadCallback) {
+  public UnityBannerAdPreloader(Activity activity, UnityPreloadCallback preloadCallback) {
     this(
-        activity,
-        preloadCallback,
-        new AppOpenAdPreloaderWrapper(),
-        PreloaderExecutor.getExecutor());
+        activity, preloadCallback, new BannerAdPreloaderWrapper(), PreloaderExecutor.getExecutor());
   }
 
   @VisibleForTesting
-  public UnityAppOpenAdPreloader(
+  public UnityBannerAdPreloader(
       Activity activity,
       UnityPreloadCallback preloadCallback,
-      AppOpenAdPreloaderWrapper preloaderWrapper,
+      BannerAdPreloaderWrapper preloaderWrapper,
       ExecutorService service) {
     this.activity = activity;
     this.preloadCallback = preloadCallback;
@@ -95,13 +94,22 @@ public class UnityAppOpenAdPreloader {
     return preloaderWrapper.getNumAdsAvailable(preloadId);
   }
 
+  @SuppressWarnings("VisibleForTests")
   @Nullable
-  public UnityAppOpenAd pollAd(String preloadId, UnityAppOpenAdCallback callback) {
-    AppOpenAd appOpenAd = preloaderWrapper.pollAd(preloadId);
-    if (appOpenAd == null) {
+  public UnityBannerAd pollAd(String preloadId, UnityBannerAdCallback callback) {
+    final BannerAd pooledAd = preloaderWrapper.pollAd(preloadId);
+    if (pooledAd == null) {
       return null;
     }
-    return new UnityAppOpenAd(activity, callback, appOpenAd);
+    AdWrapper<BannerAd> preloadedWrapper =
+        new AdWrapper<BannerAd>(
+            new AdWrapper.AdLoader<BannerAd>() {
+              @Override
+              public void load(AdRequest adRequest, AdLoadCallback<BannerAd> loadCallback) {
+                loadCallback.onAdLoaded(pooledAd);
+              }
+            });
+    return new UnityBannerAd(activity, callback, preloadedWrapper);
   }
 
   @Nullable
@@ -117,43 +125,35 @@ public class UnityAppOpenAdPreloader {
     boolean unused = preloaderWrapper.destroy(preloadId);
   }
 
-  public void destroyAll() {
-    preloaderWrapper.destroyAll();
-  }
-
-  /** Wrapper for AppOpenAdPreloader static methods to facilitate testing. */
+  /** Wrapper for BannerAdPreloader static methods to facilitate testing. */
   @VisibleForTesting
-  public static class AppOpenAdPreloaderWrapper {
+  public static class BannerAdPreloaderWrapper {
     public boolean start(String preloadId, PreloadConfiguration config, PreloadCallback callback) {
-      return AppOpenAdPreloader.start(preloadId, config, callback);
+      return BannerAdPreloader.start(preloadId, config, callback);
     }
 
     public boolean isAdAvailable(String preloadId) {
-      return AppOpenAdPreloader.isAdAvailable(preloadId);
+      return BannerAdPreloader.isAdAvailable(preloadId);
     }
 
     public int getNumAdsAvailable(String preloadId) {
-      return AppOpenAdPreloader.getNumAdsAvailable(preloadId);
+      return BannerAdPreloader.getNumAdsAvailable(preloadId);
     }
 
-    public AppOpenAd pollAd(String preloadId) {
-      return AppOpenAdPreloader.pollAd(preloadId);
+    public BannerAd pollAd(String preloadId) {
+      return BannerAdPreloader.pollAd(preloadId);
     }
 
     public PreloadConfiguration getConfiguration(String preloadId) {
-      return AppOpenAdPreloader.getConfiguration(preloadId);
+      return BannerAdPreloader.getConfiguration(preloadId);
     }
 
     public Map<String, PreloadConfiguration> getConfigurations() {
-      return AppOpenAdPreloader.getConfigurations();
+      return BannerAdPreloader.getConfigurations();
     }
 
     public boolean destroy(String preloadId) {
-      return AppOpenAdPreloader.destroy(preloadId);
-    }
-
-    public void destroyAll() {
-      AppOpenAdPreloader.destroyAll();
+      return BannerAdPreloader.destroy(preloadId);
     }
   }
 }
