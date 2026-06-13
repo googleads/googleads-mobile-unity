@@ -385,11 +385,7 @@ public final class TemplateViewTest {
     when(mockAttrs.getAttributeName(0)).thenReturn("gnt_template_type");
     when(mockAttrs.getAttributeValue(anyInt())).thenReturn("garbage");
 
-    assertThrows(
-        RuntimeException.class,
-        () -> {
-          TemplateView unused = new TemplateView(context, mockAttrs);
-        });
+    assertThrows(RuntimeException.class, () -> new TemplateView(context, mockAttrs));
   }
 
   private static class CustomLayoutInflater extends LayoutInflater {
