@@ -51,6 +51,18 @@ public class UnityRewardedInterstitialAd
         Executors.newSingleThreadExecutor());
   }
 
+  public UnityRewardedInterstitialAd(
+      Activity activity,
+      UnityRewardedInterstitialAdCallback callback,
+      RewardedInterstitialAd rewardedInterstitialAd) {
+    this(
+        activity,
+        callback,
+        AdWrapper.forRewardedInterstitial(),
+        Executors.newSingleThreadExecutor());
+    this.ad = rewardedInterstitialAd;
+  }
+
   @VisibleForTesting
   UnityRewardedInterstitialAd(
       Activity activity,
@@ -59,6 +71,11 @@ public class UnityRewardedInterstitialAd
       Executor executor) {
     super(activity, callback, executor);
     this.adWrapper = adWrapper;
+  }
+
+  @VisibleForTesting
+  RewardedInterstitialAd getRewardedInterstitialAd() {
+    return ad;
   }
 
   /**
