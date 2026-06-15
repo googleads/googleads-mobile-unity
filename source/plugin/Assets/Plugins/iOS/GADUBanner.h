@@ -57,6 +57,24 @@
                                            orientation:(GADUBannerOrientation)orientation
                                       customAdPosition:(CGPoint)customAdPosition;
 
+/// Initializes a large adaptive GADUBanner, positioned at either the top or bottom of the screen.
+- (nonnull instancetype)
+    initWithLargeAdaptiveBannerSizeAndBannerClientReference:
+        (_Nonnull GADUTypeBannerClientRef *_Nonnull)bannerClient
+                                               adUnitID:(nonnull NSString *)adUnitID
+                                                  width:(NSInteger)width
+                                            orientation:(GADUBannerOrientation)orientation
+                                             adPosition:(GADAdPosition)adPosition;
+
+/// Initializes a large adaptive GADUBanner with a custom position at given point from top left.
+- (nonnull instancetype)
+    initWithLargeAdaptiveBannerSizeAndBannerClientReference:
+        (_Nonnull GADUTypeBannerClientRef *_Nonnull)bannerClient
+                                               adUnitID:(nonnull NSString *)adUnitID
+                                                  width:(NSInteger)width
+                                            orientation:(GADUBannerOrientation)orientation
+                                       customAdPosition:(CGPoint)customAdPosition;
+
 /// Initializes a GADUBanner with a preset ad position.
 - (nonnull instancetype)initWithBannerClientReference:
                             (_Nonnull GADUTypeBannerClientRef *_Nonnull)bannerClient

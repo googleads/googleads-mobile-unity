@@ -465,6 +465,40 @@ GADUTypeBannerRef GADUCreateAnchoredAdaptiveBannerViewWithCustomPosition(
   return (__bridge GADUTypeBannerRef)banner;
 }
 
+/// Creates a large adaptive sized GADBannerView with the specified width, orientation, and position.
+/// Returns a reference to the GADUBannerView.
+GADUTypeBannerRef GADUCreateLargeAnchoredAdaptiveBannerView(GADUTypeBannerClientRef *bannerClient,
+                                                           const char *adUnitID, NSInteger width,
+                                                           GADUBannerOrientation orientation,
+                                                           GADAdPosition adPosition) {
+  GADUBanner *banner = [[GADUBanner alloc]
+      initWithLargeAdaptiveBannerSizeAndBannerClientReference:bannerClient
+                                                     adUnitID:GADUStringFromUTF8String(adUnitID)
+                                                        width:(int)width
+                                                  orientation:orientation
+                                                   adPosition:adPosition];
+  GADUObjectCache *cache = GADUObjectCache.sharedInstance;
+  cache[banner.gadu_referenceKey] = banner;
+  return (__bridge GADUTypeBannerRef)banner;
+}
+
+/// Creates a large adaptive sized GADBannerView with the specified width, orientation, and custom position.
+/// Returns a reference to the GADUBannerView.
+GADUTypeBannerRef GADUCreateLargeAnchoredAdaptiveBannerViewWithCustomPosition(
+    GADUTypeBannerClientRef *bannerClient, const char *adUnitID, NSInteger width,
+    GADUBannerOrientation orientation, NSInteger x, NSInteger y) {
+  CGPoint adPosition = CGPointMake(x, y);
+  GADUBanner *banner = [[GADUBanner alloc]
+      initWithLargeAdaptiveBannerSizeAndBannerClientReference:bannerClient
+                                                     adUnitID:GADUStringFromUTF8String(adUnitID)
+                                                        width:(int)width
+                                                  orientation:orientation
+                                             customAdPosition:adPosition];
+  GADUObjectCache *cache = GADUObjectCache.sharedInstance;
+  cache[banner.gadu_referenceKey] = banner;
+  return (__bridge GADUTypeBannerRef)banner;
+}
+
 /// Creates a GAMBannerView with the specified width, height, and position. Returns a reference to
 /// the GADUBannerView.
 GADUTypeBannerRef GAMUCreateBannerView(GAMUTypeBannerClientRef *bannerClient, const char *adUnitID,
@@ -528,6 +562,40 @@ GADUTypeBannerRef GAMUCreateAnchoredAdaptiveBannerViewWithCustomPosition(
                                                             width:(int)width
                                                       orientation:orientation
                                                  customAdPosition:adPosition];
+  GADUObjectCache *cache = GADUObjectCache.sharedInstance;
+  cache[banner.gadu_referenceKey] = banner;
+  return (__bridge GADUTypeBannerRef)banner;
+}
+
+/// Creates a large adaptive sized GAMBannerView with the specified width, orientation, and position.
+/// Returns a reference to the GAMUBannerView.
+GADUTypeBannerRef GAMUCreateLargeAnchoredAdaptiveBannerView(GAMUTypeBannerClientRef *bannerClient,
+                                                           const char *adUnitID, NSInteger width,
+                                                           GADUBannerOrientation orientation,
+                                                           GADAdPosition adPosition) {
+  GAMUBanner *banner = [[GAMUBanner alloc]
+      initWithLargeAdaptiveBannerSizeAndAdManagerBannerClientReference:bannerClient
+                                                              adUnitID:GADUStringFromUTF8String(adUnitID)
+                                                                 width:(int)width
+                                                           orientation:orientation
+                                                            adPosition:adPosition];
+  GADUObjectCache *cache = GADUObjectCache.sharedInstance;
+  cache[banner.gadu_referenceKey] = banner;
+  return (__bridge GADUTypeBannerRef)banner;
+}
+
+/// Creates a large adaptive sized GAMBannerView with the specified width, orientation, and custom position.
+/// Returns a reference to the GAMUBannerView.
+GADUTypeBannerRef GAMUCreateLargeAnchoredAdaptiveBannerViewWithCustomPosition(
+    GAMUTypeBannerClientRef *bannerClient, const char *adUnitID, NSInteger width,
+    GADUBannerOrientation orientation, NSInteger x, NSInteger y) {
+  CGPoint adPosition = CGPointMake(x, y);
+  GAMUBanner *banner = [[GAMUBanner alloc]
+      initWithLargeAdaptiveBannerSizeAndAdManagerBannerClientReference:bannerClient
+                                                              adUnitID:GADUStringFromUTF8String(adUnitID)
+                                                                 width:(int)width
+                                                           orientation:orientation
+                                                      customAdPosition:adPosition];
   GADUObjectCache *cache = GADUObjectCache.sharedInstance;
   cache[banner.gadu_referenceKey] = banner;
   return (__bridge GADUTypeBannerRef)banner;

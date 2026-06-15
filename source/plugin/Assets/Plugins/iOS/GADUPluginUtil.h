@@ -44,6 +44,9 @@ UIInterfaceOrientation GADUUIInterfaceOrientationForGADUScreenOrientation(
 /// Returns the anchored adaptive banner ad size for the given width and orientation.
 + (GADAdSize)adaptiveAdSizeForWidth:(CGFloat)width orientation:(GADUBannerOrientation)orientation;
 
+/// Returns the large anchored adaptive banner ad size for the given width and orientation.
++ (GADAdSize)largeAdaptiveAdSizeForWidth:(CGFloat)width orientation:(GADUBannerOrientation)orientation;
+
 /// If requesting smart banner landscape, returns the custom size for landscape smart banners which
 /// is full width of the safe area and auto height. Assumes that the application window is visible.
 /// If requesting any other ad size, returns the un-modified ad size.
