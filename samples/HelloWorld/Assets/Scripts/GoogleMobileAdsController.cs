@@ -19,6 +19,9 @@ namespace GoogleMobileAds.Samples
             AdRequest.TestDeviceSimulator,
 #if UNITY_IPHONE
             "96e23e80653bb28980d3f40beb58915c",
+            "BEA46E23-2691-5BBE-BC5A-624FFF8F7D24",
+            "d3359d875ebf140ae93f040ba3c9c7cf",
+            "F5FE5304-74F0-4B2F-AAD3-2B56E5D1679B",
 #elif UNITY_ANDROID
             "702815ACFC14FF222DA1DC767672A573"
 #endif
