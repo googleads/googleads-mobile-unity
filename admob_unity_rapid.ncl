@@ -14,10 +14,13 @@ UNITY_PLUGIN_IOS_FLAGS = [
 POSSIBLE_UNITY_VERSIONS = ["6000.3", "2023.2", "2022.3", "2021.3"];
 // LINT.ThenChange(//depot/google3/third_party/java_src/gma_sdk_mediation/release/rapid/workflows/unity/build_all_unity_apks_and_ipas.pp)
 
+// LINT.IfChange
 DEFAULT_TARGET_UNITY_VERSION = "6000.3";
 DEFAULT_ANDROID_TARGET_SDK = "36";
 DEFAULT_IOS_VERSION = "18.0";
 DEFAULT_PROJECT_NAME = "HelloWorld";
+// LINT.ThenChange(//depot/google3/java/com/google/android/libraries/admob/demo/unity/googlemobileads/mediation/release/rapid/workflows/build_unity_apk.pp)
+
 DEFAULT_ADMOB_ANDROID_APP_ID = "ca-app-pub-3940256099942544~3347511713";
 DEFAULT_ADMOB_IOS_APP_ID = "ca-app-pub-3940256099942544~1458002511";
 
