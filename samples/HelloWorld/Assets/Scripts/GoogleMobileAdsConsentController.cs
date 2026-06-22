@@ -11,10 +11,12 @@ namespace GoogleMobileAds.Samples
     /// </summary>
     public class GoogleMobileAdsConsentController : MonoBehaviour
     {
+        private const string BypassConsentFlag = "bypass_consent";
+
         /// <summary>
         /// If true, it is safe to call MobileAds.Initialize() and load Ads.
         /// </summary>
-        public bool CanRequestAds => ConsentInformation.CanRequestAds();
+        public bool CanRequestAds => ShouldBypassConsent() || ConsentInformation.CanRequestAds();
 
         [SerializeField, Tooltip("Button to show user consent and privacy settings.")]
         private Button _privacyButton;
@@ -42,6 +44,16 @@ namespace GoogleMobileAds.Samples
         public void GatherConsent(Action<string> onComplete)
         {
             Debug.Log("Gathering consent.");
+
+            if (ShouldBypassConsent())
+            {
+                Debug.Log("Bypassing consent gathering.");
+                if (onComplete != null)
+                {
+                    onComplete(null);
+                }
+                return;
+            }
 
             var requestParameters = new ConsentRequestParameters
             {
@@ -186,6 +198,35 @@ namespace GoogleMobileAds.Samples
                     _privacyButton.interactable = true;
                 }
             });
+        }
+
+        private bool ShouldBypassConsent()
+        {
+#if UNITY_ANDROID && !UNITY_EDITOR
+            try
+            {
+                using (var playerClass = new AndroidJavaClass("com.unity3d.player.UnityPlayer"))
+                {
+                    using (var currentActivity = playerClass.GetStatic<AndroidJavaObject>("currentActivity"))
+                    {
+                        using (var intent = currentActivity.Call<AndroidJavaObject>("getIntent"))
+                        {
+                            return intent != null && intent.Call<bool>("getBooleanExtra", BypassConsentFlag, false);
+                        }
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                // Fail silently.
+            }
+            return false;
+#elif UNITY_IOS && !UNITY_EDITOR
+            var args = Environment.GetCommandLineArgs();
+            return args != null && Array.IndexOf(args, "-" + BypassConsentFlag) >= 0;
+#else
+            return false;
+#endif
         }
     }
 }
