@@ -57,7 +57,7 @@ namespace GoogleMobileAds.Android
 
         public override string ToString()
         {
-            return string.Empty;
+            return _loadAdError == null ? string.Empty : _loadAdError.Call<string>("toString");
         }
     }
 }

@@ -110,7 +110,8 @@ namespace GoogleMobileAds.Android
 
         public override string ToString()
         {
-            return string.Empty;
+            return _androidResponseInfo == null ? string.Empty
+                    : _androidResponseInfo.Call<string>("toString");
         }
     }
 }

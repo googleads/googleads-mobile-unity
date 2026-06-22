@@ -48,7 +48,7 @@ namespace GoogleMobileAds.Android
 
         public override string ToString()
         {
-            return string.Empty;
+            return _error == null ? string.Empty : _error.Call<string>("toString");
         }
     }
 }
