@@ -56,7 +56,7 @@ namespace GoogleMobileAds.Unity
             {
                 _adUnitId = adUnitId;
 
-                if (adSize == AdSize.SmartBanner || adSize.AdType == AdSize.Type.AnchoredAdaptive)
+                if (adSize == AdSize.SmartBanner || adSize.AdType == AdSize.Type.AnchoredAdaptive || adSize.AdType == AdSize.Type.LargeAnchoredAdaptive)
                 {
                     SetAndStretchAd(position, adSize);
                 }
@@ -75,7 +75,7 @@ namespace GoogleMobileAds.Unity
             {
                 _adUnitId = adUnitId;
                 RectTransform rect = GetRectTransform();
-                if (adSize == AdSize.SmartBanner || adSize.AdType == AdSize.Type.AnchoredAdaptive)
+                if (adSize == AdSize.SmartBanner || adSize.AdType == AdSize.Type.AnchoredAdaptive || adSize.AdType == AdSize.Type.LargeAnchoredAdaptive)
                 {
                     SetAndStretchAd(0, adSize);
                     rect.anchoredPosition = new Vector3(0, y, 1);
@@ -93,7 +93,7 @@ namespace GoogleMobileAds.Unity
         {
             string prefabName;
 
-            if (adSize == AdSize.SmartBanner || adSize.AdType == AdSize.Type.AnchoredAdaptive)
+            if (adSize == AdSize.SmartBanner || adSize.AdType == AdSize.Type.AnchoredAdaptive || adSize.AdType == AdSize.Type.LargeAnchoredAdaptive)
             {
                 if (position.HasValue && position.Value == AdPosition.Center)
                 {
@@ -296,6 +296,23 @@ namespace GoogleMobileAds.Unity
 
                 rect.pivot = new Vector2(0.5f, 0.5f);
 
+                Text adText = _gameObject.GetComponentInChildren<Text>();
+                if (adText != null)
+                {
+                    if (adSize.AdType == AdSize.Type.AnchoredAdaptive)
+                    {
+                        adText.text = "This is a Test Adaptive Banner";
+                    }
+                    else if (adSize.AdType == AdSize.Type.LargeAnchoredAdaptive)
+                    {
+                        adText.text = "This is a Test Large Adaptive Banner";
+                    }
+                    else if (adSize == AdSize.SmartBanner)
+                    {
+                        adText.text = "This is a Test Smart Banner";
+                    }
+                }
+
                 if (pos == AdPosition.Bottom || pos == AdPosition.BottomLeft || pos == AdPosition.BottomRight)
                 {
                     rect.SetInsetAndSizeFromParentEdge(RectTransform.Edge.Bottom, 0, rect.sizeDelta.y);
@@ -308,21 +325,13 @@ namespace GoogleMobileAds.Unity
                 }
                 else if (pos == AdPosition.Center)
                 {
-                    if (adSize.AdType == AdSize.Type.AnchoredAdaptive)
-                    {
-                        Text adText = _gameObject.GetComponentInChildren<Text>();
-                        adText.text = "This is a Test Adaptive Banner";
-                    }
-                    else if (adSize == AdSize.SmartBanner)
-                    {
-                        Text adText = _gameObject.GetComponentInChildren<Text>();
-                        adText.text = "This is a Test Smart Banner";
-                    }
-                    else
+                    if (adSize.AdType != AdSize.Type.AnchoredAdaptive &&
+                        adSize.AdType != AdSize.Type.LargeAnchoredAdaptive &&
+                        adSize != AdSize.SmartBanner)
                     {
                         rect.anchoredPosition = new Vector2(0, 0);
                     }
-                } 
+                }
                 else
                 {
                     rect.anchoredPosition = rect.position;
