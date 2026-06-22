@@ -69,6 +69,8 @@ namespace GoogleMobileAds.Android {
 #region NativeAd
     public const string NativeAdTypeClassName =
         "com.google.android.libraries.ads.mobile.sdk.nativead.NativeAd$NativeAdType";
+    public const string NativeMediaAspectRatioClassName =
+        "com.google.android.libraries.ads.mobile.sdk.nativead.NativeAd$NativeMediaAspectRatio";
 #endregion
 
 #region MediationAdError
@@ -79,6 +81,20 @@ namespace GoogleMobileAds.Android {
 #region ServerSideVerificationOptions
     public const string ServerSideVerificationOptionsClassName =
         "com.google.android.libraries.ads.mobile.sdk.rewarded.ServerSideVerificationOptions";
+#endregion
+
+#region AdChoicesPlacement
+    public const string AdChoicesPlacementClassName =
+        "com.google.android.libraries.ads.mobile.sdk.common.AdChoicesPlacement";
+#endregion
+
+#region VideoOptions
+    public const string VideoOptionsBuilderClassName =
+        "com.google.android.libraries.ads.mobile.sdk.common.VideoOptions$Builder";
+#endregion
+
+#region Java util
+    public const string ArrayListClassName = "java.util.ArrayList";
 #endregion
 
 #endregion
@@ -126,8 +142,6 @@ namespace GoogleMobileAds.Android {
         "com.google.unity.ads.nextgen.UnityNativeTemplateAd";
     public const string UnityNativeTemplateAdCallbackClassName =
         "com.google.unity.ads.nextgen.UnityNativeTemplateAdCallback";
-    public const string NativeAdOptionsClassName =
-        "com.google.unity.ads.nextgen.NativeAdOptions";
 #endregion
 
     /// <summary>
@@ -162,7 +176,7 @@ namespace GoogleMobileAds.Android {
                                                                  List<AdSize> adSizes = null) {
       AndroidJavaObject adSizeObject = null;
       if (adSizes != null && adSizes.Count > 0) {
-        AndroidJavaObject adSizeArrayList = new AndroidJavaObject("java.util.ArrayList");
+        AndroidJavaObject adSizeArrayList = new AndroidJavaObject(ArrayListClassName);
         foreach (AdSize size in adSizes) {
           adSizeArrayList.Call<bool>("add", GetAdSizeJavaObject(size));
         }
@@ -192,18 +206,93 @@ namespace GoogleMobileAds.Android {
     /// <summary>
     /// Converts the plugin AdRequest object to a native java proxy object for use by the sdk.
     /// </summary>
-    /// <param name="AdRequest">the AdRequest from the unity plugin.</param>
+    /// <param name="adUnitId">the ad unit ID.</param>
+    /// <param name="request">the AdRequest from the unity plugin.</param>
+    /// <param name="nativePluginVersion">the native plugin version.</param>
     public static AndroidJavaObject GetNativeAdRequestJavaObject(
         string adUnitId, AdRequest request, string nativePluginVersion = null) {
+      return GetNativeAdRequestJavaObject(adUnitId, request, null, true, nativePluginVersion);
+    }
+
+    /// <summary>
+    /// Converts the plugin AdRequest object to a native java proxy object for use by the sdk.
+    /// </summary>
+    /// <param name="adUnitId">the ad unit ID.</param>
+    /// <param name="request">the AdRequest from the unity plugin.</param>
+    /// <param name="nativeAdOptions">the C# NativeAdOptions.</param>
+    /// <param name="disableImageDownloading">Whether image downloading is disabled.</param>
+    /// <param name="nativePluginVersion">the native plugin version.</param>
+    public static AndroidJavaObject GetNativeAdRequestJavaObject(
+        string adUnitId, AdRequest request, NativeAdOptions nativeAdOptions,
+        bool disableImageDownloading, string nativePluginVersion = null) {
       AndroidJavaClass nativeAdTypeClass = new AndroidJavaClass(NativeAdTypeClassName);
       AndroidJavaObject nativeTypeNative = nativeAdTypeClass.GetStatic<AndroidJavaObject>("NATIVE");
 
-      AndroidJavaObject nativeAdTypesList = new AndroidJavaObject("java.util.ArrayList");
+      AndroidJavaObject nativeAdTypesList = new AndroidJavaObject(ArrayListClassName);
       nativeAdTypesList.Call<bool>("add", nativeTypeNative);
 
       AndroidJavaObject nativeAdRequestBuilder =
           new AndroidJavaObject(NativeAdRequestBuilderClassName, adUnitId, nativeAdTypesList);
-      nativeAdRequestBuilder.Call<AndroidJavaObject>("disableImageDownloading");
+
+      if (disableImageDownloading) {
+        nativeAdRequestBuilder.Call<AndroidJavaObject>("disableImageDownloading");
+      }
+
+      if (nativeAdOptions != null) {
+        AndroidJavaClass mediaClass = new AndroidJavaClass(NativeMediaAspectRatioClassName);
+        AndroidJavaObject mediaAspectRatio = null;
+        switch (nativeAdOptions.MediaAspectRatio) {
+          case MediaAspectRatio.Any:
+            mediaAspectRatio = mediaClass.GetStatic<AndroidJavaObject>("ANY");
+            break;
+          case MediaAspectRatio.Landscape:
+            mediaAspectRatio = mediaClass.GetStatic<AndroidJavaObject>("LANDSCAPE");
+            break;
+          case MediaAspectRatio.Portrait:
+            mediaAspectRatio = mediaClass.GetStatic<AndroidJavaObject>("PORTRAIT");
+            break;
+          case MediaAspectRatio.Square:
+            mediaAspectRatio = mediaClass.GetStatic<AndroidJavaObject>("SQUARE");
+            break;
+          case MediaAspectRatio.Unknown:
+          default:
+            mediaAspectRatio = mediaClass.GetStatic<AndroidJavaObject>("UNKNOWN");
+            break;
+        }
+        if (mediaAspectRatio != null) {
+          nativeAdRequestBuilder.Call<AndroidJavaObject>("setMediaAspectRatio", mediaAspectRatio);
+        }
+
+        AndroidJavaClass placementClass = new AndroidJavaClass(AdChoicesPlacementClassName);
+        AndroidJavaObject adChoicesPlacement = null;
+        switch (nativeAdOptions.AdChoicesPlacement) {
+          case AdChoicesPlacement.TopLeftCorner:
+            adChoicesPlacement = placementClass.GetStatic<AndroidJavaObject>("TOP_LEFT");
+            break;
+          case AdChoicesPlacement.BottomRightCorner:
+            adChoicesPlacement = placementClass.GetStatic<AndroidJavaObject>("BOTTOM_RIGHT");
+            break;
+          case AdChoicesPlacement.BottomLeftCorner:
+            adChoicesPlacement = placementClass.GetStatic<AndroidJavaObject>("BOTTOM_LEFT");
+            break;
+          case AdChoicesPlacement.TopRightCorner:
+          default:
+            adChoicesPlacement = placementClass.GetStatic<AndroidJavaObject>("TOP_RIGHT");
+            break;
+        }
+        if (adChoicesPlacement != null) {
+          nativeAdRequestBuilder.Call<AndroidJavaObject>("setAdChoicesPlacement", adChoicesPlacement);
+        }
+
+        if (nativeAdOptions.VideoOptions != null) {
+          AndroidJavaObject videoOptionsBuilder = new AndroidJavaObject(VideoOptionsBuilderClassName);
+          videoOptionsBuilder.Call<AndroidJavaObject>("setStartMuted", (bool)nativeAdOptions.VideoOptions.StartMuted);
+          videoOptionsBuilder.Call<AndroidJavaObject>("setCustomControlsRequested", (bool)nativeAdOptions.VideoOptions.CustomControlsRequested);
+          videoOptionsBuilder.Call<AndroidJavaObject>("setClickToExpandRequested", (bool)nativeAdOptions.VideoOptions.ClickToExpandRequested);
+          AndroidJavaObject videoOptionsJava = videoOptionsBuilder.Call<AndroidJavaObject>("build");
+          nativeAdRequestBuilder.Call<AndroidJavaObject>("setVideoOptions", videoOptionsJava);
+        }
+      }
 
       foreach (string keyword in request.Keywords) {
         nativeAdRequestBuilder.Call<AndroidJavaObject>("addKeyword", keyword);

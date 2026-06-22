@@ -40,19 +40,17 @@ import android.view.Window;
 import android.view.WindowInsets;
 import android.widget.FrameLayout;
 import com.google.android.libraries.ads.mobile.sdk.banner.AdSize;
-import com.google.android.libraries.ads.mobile.sdk.common.AdChoicesPlacement;
-import com.google.android.libraries.ads.mobile.sdk.common.AdRequest;
 import com.google.android.libraries.ads.mobile.sdk.common.AdValue;
 import com.google.android.libraries.ads.mobile.sdk.common.LoadAdError;
 import com.google.android.libraries.ads.mobile.sdk.common.PrecisionType;
 import com.google.android.libraries.ads.mobile.sdk.common.ResponseInfo;
-import com.google.android.libraries.ads.mobile.sdk.common.VideoOptions;
 import com.google.android.libraries.ads.mobile.sdk.initialization.InitializationConfig;
 import com.google.android.libraries.ads.mobile.sdk.internal.GmaComponent;
 import com.google.android.libraries.ads.mobile.sdk.nativead.NativeAd;
 import com.google.android.libraries.ads.mobile.sdk.nativead.NativeAdEventCallback;
 import com.google.android.libraries.ads.mobile.sdk.nativead.NativeAdLoaderCallback;
 import com.google.android.libraries.ads.mobile.sdk.nativead.NativeAdRequest;
+import com.google.common.collect.ImmutableList;
 import com.google.unity.ads.PluginUtils;
 import com.google.unity.ads.nativead.UnityNativeTemplateStyle;
 import com.google.unity.ads.nativead.UnityNativeTemplateType;
@@ -755,7 +753,10 @@ public final class UnityNativeTemplateAdTest {
     UnityNativeTemplateAd client =
         new UnityNativeTemplateAd(activity, mockCallback, mockNativeAdLoader);
 
-    client.loadAd(TEST_AD_UNIT, null, mock(AdRequest.class));
+    NativeAdRequest request =
+        new NativeAdRequest.Builder(TEST_AD_UNIT, ImmutableList.of(NativeAd.NativeAdType.NATIVE))
+            .build();
+    client.loadAd(request);
     ShadowLooper.idleMainLooper();
 
     ArgumentCaptor<NativeAdRequest> requestCaptor = ArgumentCaptor.forClass(NativeAdRequest.class);
@@ -763,8 +764,7 @@ public final class UnityNativeTemplateAdTest {
         ArgumentCaptor.forClass(NativeAdLoaderCallback.class);
     verify(mockNativeAdLoader).load(requestCaptor.capture(), loaderCallbackCaptor.capture());
 
-    assertThat(requestCaptor.getValue()).isNotNull();
-    assertThat(requestCaptor.getValue().getAdUnitId()).isEqualTo(TEST_AD_UNIT);
+    assertThat(requestCaptor.getValue()).isSameInstanceAs(request);
 
     NativeAd localMockNativeAd = mock(NativeAd.class);
     loaderCallbackCaptor.getValue().onNativeAdLoaded(localMockNativeAd);
@@ -778,7 +778,10 @@ public final class UnityNativeTemplateAdTest {
     UnityNativeTemplateAd client =
         new UnityNativeTemplateAd(activity, mockCallback, mockNativeAdLoader);
 
-    client.loadAd(TEST_AD_UNIT, null, mock(AdRequest.class));
+    NativeAdRequest request =
+        new NativeAdRequest.Builder(TEST_AD_UNIT, ImmutableList.of(NativeAd.NativeAdType.NATIVE))
+            .build();
+    client.loadAd(request);
     ShadowLooper.idleMainLooper();
 
     ArgumentCaptor<NativeAdRequest> requestCaptor = ArgumentCaptor.forClass(NativeAdRequest.class);
@@ -786,8 +789,7 @@ public final class UnityNativeTemplateAdTest {
         ArgumentCaptor.forClass(NativeAdLoaderCallback.class);
     verify(mockNativeAdLoader).load(requestCaptor.capture(), loaderCallbackCaptor.capture());
 
-    assertThat(requestCaptor.getValue()).isNotNull();
-    assertThat(requestCaptor.getValue().getAdUnitId()).isEqualTo(TEST_AD_UNIT);
+    assertThat(requestCaptor.getValue()).isSameInstanceAs(request);
 
     LoadAdError loadAdError =
         new LoadAdError(LoadAdError.ErrorCode.INTERNAL_ERROR, "error message", null);
@@ -797,27 +799,20 @@ public final class UnityNativeTemplateAdTest {
   }
 
   @Test
-  public void testLoadAd_withOptions_appliesOptionsToRequest() {
+  public void testLoadAd_loadsRequest() {
     UnityNativeTemplateAd client =
         new UnityNativeTemplateAd(activity, mockCallback, mockNativeAdLoader);
 
-    NativeAdOptions options = new NativeAdOptions(2, 1); // LANDSCAPE, TOP_LEFT
-    VideoOptions videoOptions = new VideoOptions.Builder().setStartMuted(true).build();
-    options.setVideoOptions(videoOptions);
-
-    client.loadAd(TEST_AD_UNIT, options, mock(AdRequest.class));
+    NativeAdRequest request =
+        new NativeAdRequest.Builder(TEST_AD_UNIT, ImmutableList.of(NativeAd.NativeAdType.NATIVE))
+            .build();
+    client.loadAd(request);
     ShadowLooper.idleMainLooper();
 
     ArgumentCaptor<NativeAdRequest> requestCaptor = ArgumentCaptor.forClass(NativeAdRequest.class);
     verify(mockNativeAdLoader).load(requestCaptor.capture(), any(NativeAdLoaderCallback.class));
 
-    NativeAdRequest capturedRequest = requestCaptor.getValue();
-    assertThat(capturedRequest).isNotNull();
-    assertThat(capturedRequest.getAdUnitId()).isEqualTo(TEST_AD_UNIT);
-    assertThat(capturedRequest.getMediaAspectRatio())
-        .isEqualTo(NativeAd.NativeMediaAspectRatio.LANDSCAPE);
-    assertThat(capturedRequest.getAdChoicesPlacement()).isEqualTo(AdChoicesPlacement.TOP_LEFT);
-    assertThat(capturedRequest.getVideoOptions()).isEqualTo(videoOptions);
+    assertThat(requestCaptor.getValue()).isSameInstanceAs(request);
   }
 
   private TemplateView setUpMockLayoutInflater() {

@@ -69,23 +69,8 @@ namespace GoogleMobileAds.Android
         public void Load(string adUnitId, AdRequest request, NativeAdOptions options)
         {
             _adUnitId = adUnitId;
-            AndroidJavaObject nativeAdOptionsJava = new AndroidJavaObject(
-                NextGenUtils.NativeAdOptionsClassName,
-                (int)options.MediaAspectRatio,
-                (int)options.AdChoicesPlacement);
-
-            if (options.VideoOptions != null)
-            {
-                AndroidJavaObject videoOptionsBuilder = new AndroidJavaObject("com.google.android.libraries.ads.mobile.sdk.common.VideoOptions$Builder");
-                videoOptionsBuilder.Call<AndroidJavaObject>("setStartMuted", (bool)options.VideoOptions.StartMuted);
-                videoOptionsBuilder.Call<AndroidJavaObject>("setCustomControlsRequested", (bool)options.VideoOptions.CustomControlsRequested);
-                videoOptionsBuilder.Call<AndroidJavaObject>("setClickToExpandRequested", (bool)options.VideoOptions.ClickToExpandRequested);
-                AndroidJavaObject videoOptionsJava = videoOptionsBuilder.Call<AndroidJavaObject>("build");
-                nativeAdOptionsJava.Call("setVideoOptions", videoOptionsJava);
-            }
-
-            this.nativeOverlayAd.Call("loadAd", adUnitId, nativeAdOptionsJava,
-                                      NextGenUtils.GetAdRequestJavaObject(request, adUnitId));
+            this.nativeOverlayAd.Call("loadAd",
+                                      NextGenUtils.GetNativeAdRequestJavaObject(adUnitId, request, options, false));
         }
 
         // Hides the native overlay from the screen.
