@@ -62,6 +62,8 @@ namespace GoogleMobileAds.Unity
 
         private ButtonBehaviour buttonBehaviour;
 
+        private RequestConfiguration _requestConfiguration = new RequestConfiguration();
+
         private void AddClickBehavior(GameObject dummyAd)
         {
             Image[] images = dummyAd.GetComponentsInChildren<Image>();
@@ -105,11 +107,14 @@ namespace GoogleMobileAds.Unity
 
         public void SetApplicationMuted(bool muted) {}
 
-        public void SetRequestConfiguration(RequestConfiguration requestConfiguration) {}
+        public void SetRequestConfiguration(RequestConfiguration requestConfiguration)
+        {
+            _requestConfiguration = requestConfiguration;
+        }
 
         public RequestConfiguration GetRequestConfiguration()
         {
-            return null;
+            return _requestConfiguration;
         }
 
         public void SetApplicationVolume(float volume) {}
