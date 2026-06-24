@@ -208,6 +208,10 @@ namespace GoogleMobileAds.iOS
           int tagForUnderAgeOfConsent);
 
       [DllImport("__Internal")]
+      internal static extern void GADUSetRequestConfigurationAgeRestrictedTreatment(
+          int ageRestrictedTreatment);
+
+      [DllImport("__Internal")]
       internal static extern void GADUSetRequestConfigurationTagForChildDirectedTreatment(
           int tagForChildDirectedTreatment);
 
@@ -230,6 +234,9 @@ namespace GoogleMobileAds.iOS
 
       [DllImport("__Internal")]
       internal static extern int GADUGetRequestConfigurationTagForUnderAgeOfConsent();
+
+      [DllImport("__Internal")]
+      internal static extern int GADUGetRequestConfigurationAgeRestrictedTreatment();
 
       [DllImport("__Internal")]
       internal static extern int GADUGetRequestConfigurationTagForChildDirectedTreatment();

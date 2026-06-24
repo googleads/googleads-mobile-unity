@@ -13,6 +13,12 @@ typedef NS_ENUM(NSInteger, GADURequestConfigurationTagForUnderAgeOfConsent) {
   kGADURequestConfigurationTagForUnderAgeOfConsentUnspecified = -1,  // Unspecified
 };
 
+typedef NS_ENUM(NSInteger, GADURequestConfigurationAgeRestrictedTreatment) {
+  kGADURequestConfigurationAgeRestrictedTreatmentUnspecified = 0,
+  kGADURequestConfigurationAgeRestrictedTreatmentChild = 1,
+  kGADURequestConfigurationAgeRestrictedTreatmentTeen = 2,
+};
+
 typedef NS_ENUM(NSInteger, GADURequestConfigurationPublisherPrivacyPersonalizationState) {
   kGADURequestConfigurationPublisherPrivacyPersonalizationStateDefault = 0,   /// Default.
   kGADURequestConfigurationPublisherPrivacyPersonalizationStateEnabled = 1,   /// Enabled

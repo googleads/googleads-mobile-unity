@@ -34,6 +34,8 @@ namespace GoogleMobileAds.Android {
         "com.google.android.libraries.ads.mobile.sdk.common.RequestConfiguration$TagForChildDirectedTreatment";
     public const string TagForUnderAgeOfConsentClassName =
         "com.google.android.libraries.ads.mobile.sdk.common.RequestConfiguration$TagForUnderAgeOfConsent";
+    public const string AgeRestrictedTreatmentClassName =
+        "com.google.android.libraries.ads.mobile.sdk.common.AgeRestrictedTreatment";
 #endregion
 
 #region MobileAds

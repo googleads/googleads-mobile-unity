@@ -115,6 +115,31 @@ namespace GoogleMobileAds.Android {
                                                               tagForChildDirectedTreatmentCode);
         }
       }
+      if (requestConfiguration.AgeRestrictedTreatment.HasValue) {
+        AndroidJavaObject ageRestrictedTreatmentCode = null;
+        switch (requestConfiguration.AgeRestrictedTreatment.GetValueOrDefault()) {
+          case Api.AgeRestrictedTreatment.Child:
+            ageRestrictedTreatmentCode =
+                new AndroidJavaClass(NextGenUtils.AgeRestrictedTreatmentClassName)
+                    .GetStatic<AndroidJavaObject>("CHILD");
+            break;
+          case Api.AgeRestrictedTreatment.Teen:
+            ageRestrictedTreatmentCode =
+                new AndroidJavaClass(NextGenUtils.AgeRestrictedTreatmentClassName)
+                    .GetStatic<AndroidJavaObject>("TEEN");
+            break;
+          case Api.AgeRestrictedTreatment.Unspecified:
+            ageRestrictedTreatmentCode =
+                new AndroidJavaClass(NextGenUtils.AgeRestrictedTreatmentClassName)
+                    .GetStatic<AndroidJavaObject>("UNSPECIFIED");
+            break;
+        }
+
+        if (ageRestrictedTreatmentCode != null) {
+          requestConfigurationBuilder.Call<AndroidJavaObject>("setAgeRestrictedTreatment",
+                                                              ageRestrictedTreatmentCode);
+        }
+      }
       if (requestConfiguration.PublisherPrivacyPersonalizationState.HasValue) {
         AndroidJavaObject personalizationState = null;
         switch (requestConfiguration.PublisherPrivacyPersonalizationState.GetValueOrDefault()) {
@@ -153,6 +178,14 @@ namespace GoogleMobileAds.Android {
           (TagForUnderAgeOfConsent)androidRequestConfiguration.Call<int>(
               "getTagForUnderAgeOfConsent");
 
+      AndroidJavaObject ageRestrictedTreatmentEnum =
+          androidRequestConfiguration.Call<AndroidJavaObject>("getAgeRestrictedTreatment");
+      AgeRestrictedTreatment ageRestrictedTreatment = AgeRestrictedTreatment.Unspecified;
+      if (ageRestrictedTreatmentEnum != null) {
+        int value = ageRestrictedTreatmentEnum.Call<int>("getValue");
+        ageRestrictedTreatment = (AgeRestrictedTreatment)value;
+      }
+
       MaxAdContentRating maxAdContentRating = MaxAdContentRating.ToMaxAdContentRating(
           androidRequestConfiguration.Call<string>("getMaxAdContentRating"));
       List<string> testDeviceIds = GoogleMobileAds.Android.Utils.GetCsTypeList(
@@ -168,7 +201,9 @@ namespace GoogleMobileAds.Android {
       RequestConfiguration requestConfiguration = new RequestConfiguration() {
         MaxAdContentRating = maxAdContentRating,
         TagForChildDirectedTreatment = tagForChildDirectedTreatment,
-        TagForUnderAgeOfConsent = tagForUnderAgeOfConsent, TestDeviceIds = testDeviceIds,
+        TagForUnderAgeOfConsent = tagForUnderAgeOfConsent,
+        AgeRestrictedTreatment = ageRestrictedTreatment,
+        TestDeviceIds = testDeviceIds,
         PublisherPrivacyPersonalizationState = publisherPrivacyPersonalizationState
       };
 

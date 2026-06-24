@@ -53,6 +53,12 @@ namespace GoogleMobileAds.iOS
                 Externs.GADUSetRequestConfigurationTagForUnderAgeOfConsent((int)TagForUnderAgeOfConsent.GetValueOrDefault());
             }
 
+            if (requestConfiguration.AgeRestrictedTreatment.HasValue)
+            {
+                AgeRestrictedTreatment? ageRestrictedTreatment = requestConfiguration.AgeRestrictedTreatment;
+                Externs.GADUSetRequestConfigurationAgeRestrictedTreatment((int)ageRestrictedTreatment.GetValueOrDefault());
+            }
+
             if (requestConfiguration.PublisherFirstPartyIdEnabled.HasValue) {
                 Externs.GADUSetRequestConfigurationPublisherFirstPartyIDEnabled(
                     requestConfiguration.PublisherFirstPartyIdEnabled.Value);
@@ -75,6 +81,7 @@ namespace GoogleMobileAds.iOS
 
             TagForChildDirectedTreatment tagForChildDirectedTreatment = (TagForChildDirectedTreatment)Externs.GADUGetRequestConfigurationTagForChildDirectedTreatment();
             TagForUnderAgeOfConsent tagForUnderAgeOfConsent = (TagForUnderAgeOfConsent)Externs.GADUGetRequestConfigurationTagForUnderAgeOfConsent();
+            AgeRestrictedTreatment ageRestrictedTreatment = (AgeRestrictedTreatment)Externs.GADUGetRequestConfigurationAgeRestrictedTreatment();
             PublisherPrivacyPersonalizationState publisherPrivacyPersonalizationState =
                 (PublisherPrivacyPersonalizationState)Externs.GADUGetRequestConfigurationPublisherPrivacyPersonalizationState();
 
@@ -83,6 +90,7 @@ namespace GoogleMobileAds.iOS
                 MaxAdContentRating = maxAdContentRating,
                 TagForChildDirectedTreatment = tagForChildDirectedTreatment,
                 TagForUnderAgeOfConsent = tagForUnderAgeOfConsent,
+                AgeRestrictedTreatment = ageRestrictedTreatment,
                 TestDeviceIds = testDeviceIds,
                 PublisherPrivacyPersonalizationState = publisherPrivacyPersonalizationState
             };

@@ -63,6 +63,11 @@ namespace GoogleMobileAds.Api
         public TagForUnderAgeOfConsent? TagForUnderAgeOfConsent;
 
         /// <summary>
+        /// Indicates the publisher specified that the ad request should receive age-restricted treatment.
+        /// </summary>
+        public AgeRestrictedTreatment? AgeRestrictedTreatment;
+
+        /// <summary>
         /// This property lets you specify the personalization treatment that applies to subsequent
         /// ad requests.
         /// </summary>
@@ -93,6 +98,7 @@ namespace GoogleMobileAds.Api
             TagForChildDirectedTreatment =
                         requestConfiguration.TagForChildDirectedTreatment;
             TagForUnderAgeOfConsent = requestConfiguration.TagForUnderAgeOfConsent;
+            AgeRestrictedTreatment = requestConfiguration.AgeRestrictedTreatment;
             PublisherPrivacyPersonalizationState =
                 requestConfiguration.PublisherPrivacyPersonalizationState;
             TestDeviceIds = requestConfiguration.TestDeviceIds;

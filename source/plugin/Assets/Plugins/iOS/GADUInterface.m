@@ -1666,6 +1666,20 @@ void GADUSetRequestConfigurationTagForUnderAgeOfConsent(int tagForUnderAgeOfCons
   }
 }
 
+void GADUSetRequestConfigurationAgeRestrictedTreatment(GADURequestConfigurationAgeRestrictedTreatment ageRestrictedTreatment) {
+  switch (ageRestrictedTreatment) {
+    case kGADURequestConfigurationAgeRestrictedTreatmentChild:
+      GADMobileAds.sharedInstance.requestConfiguration.ageRestrictedTreatment = GADAgeRestrictedTreatmentChild;
+      break;
+    case kGADURequestConfigurationAgeRestrictedTreatmentTeen:
+      GADMobileAds.sharedInstance.requestConfiguration.ageRestrictedTreatment = GADAgeRestrictedTreatmentTeen;
+      break;
+    case kGADURequestConfigurationAgeRestrictedTreatmentUnspecified:
+      GADMobileAds.sharedInstance.requestConfiguration.ageRestrictedTreatment = GADAgeRestrictedTreatmentUnspecified;
+      break;
+  }
+}
+
 void GADUSetRequestConfigurationTagForChildDirectedTreatment(int tagForChildDirectedTreatment) {
   switch (tagForChildDirectedTreatment) {
     case kGADURequestConfigurationTagForChildDirectedTreatmentTrue:
@@ -1716,6 +1730,19 @@ const int GADUGetRequestConfigurationTagForUnderAgeOfConsent() {
   }
   return tag.boolValue ? kGADURequestConfigurationTagForUnderAgeOfConsentTrue
                        : kGADURequestConfigurationTagForUnderAgeOfConsentFalse;
+}
+
+const GADURequestConfigurationAgeRestrictedTreatment GADUGetRequestConfigurationAgeRestrictedTreatment() {
+  GADAgeRestrictedTreatment treatment = GADMobileAds.sharedInstance.requestConfiguration.ageRestrictedTreatment;
+  switch (treatment) {
+    case GADAgeRestrictedTreatmentChild:
+      return kGADURequestConfigurationAgeRestrictedTreatmentChild;
+    case GADAgeRestrictedTreatmentTeen:
+      return kGADURequestConfigurationAgeRestrictedTreatmentTeen;
+    case GADAgeRestrictedTreatmentUnspecified:
+    default:
+      return kGADURequestConfigurationAgeRestrictedTreatmentUnspecified;
+  }
 }
 
 /// Returns RequestConfiguration tag For Child Directed Treatment
