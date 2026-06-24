@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 using GoogleMobileAds.Api;
+using GoogleMobileAds.Common;
 
 namespace GoogleMobileAds.Sample
 {
@@ -67,7 +68,11 @@ namespace GoogleMobileAds.Sample
                 RegisterEventHandlers(ad);
 
                 // Inform the UI that the ad is ready.
-                AdLoadedStatus?.SetActive(true);
+                // Use MobileAdsEventExecutor to ensure the UI is updated on the main thread.
+                MobileAdsEventExecutor.ExecuteInUpdate(() =>
+                {
+                    AdLoadedStatus?.SetActive(true);
+                });
             });
         }
 
@@ -85,9 +90,6 @@ namespace GoogleMobileAds.Sample
             {
                 Debug.LogError("Interstitial ad is not ready yet.");
             }
-
-            // Inform the UI that the ad is not ready.
-            AdLoadedStatus?.SetActive(false);
         }
 
         /// <summary>
@@ -123,9 +125,20 @@ namespace GoogleMobileAds.Sample
             // Raised when the ad is estimated to have earned money.
             ad.OnAdPaid += (AdValue adValue) =>
             {
+                // This log is executed off the Unity main thread.
+                // Write all time-sensitive code before ExecuteInUpdate().
                 Debug.Log(String.Format("Interstitial ad paid {0} {1}.",
                     adValue.Value,
                     adValue.CurrencyCode));
+
+                MobileAdsEventExecutor.ExecuteInUpdate(() =>
+                {
+                    // This callback may be delayed on Android until the user
+                    // returns to the app. Place all code that interacts with
+                    // Unity UI and GameObjects inside this callback.
+                    Debug.Log("Interstitial ad paid callback " +
+                        "invoked inside ExecuteInUpdate.");
+                });
             };
             // Raised when an impression is recorded for an ad.
             ad.OnAdImpressionRecorded += () =>
@@ -141,6 +154,12 @@ namespace GoogleMobileAds.Sample
             ad.OnAdFullScreenContentOpened += () =>
             {
                 Debug.Log("Interstitial ad full screen content opened.");
+
+                // Use MobileAdsEventExecutor to ensure the UI is updated on the main thread.
+                MobileAdsEventExecutor.ExecuteInUpdate(() =>
+                {
+                    AdLoadedStatus?.SetActive(false);
+                });
             };
             // Raised when the ad closed full screen content.
             ad.OnAdFullScreenContentClosed += () =>
@@ -152,6 +171,12 @@ namespace GoogleMobileAds.Sample
             {
                 Debug.LogError("Interstitial ad failed to open full screen content with error : "
                     + error);
+
+                // Use MobileAdsEventExecutor to ensure the UI is updated on the main thread.
+                MobileAdsEventExecutor.ExecuteInUpdate(() =>
+                {
+                    AdLoadedStatus?.SetActive(false);
+                });
             };
         }
     }
