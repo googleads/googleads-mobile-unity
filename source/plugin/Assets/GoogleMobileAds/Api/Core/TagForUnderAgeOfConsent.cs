@@ -15,9 +15,12 @@
 namespace GoogleMobileAds.Api
 {
     /// <summary>
+    /// Deprecated. Use AgeRestrictedTreatment instead.
+    ///
     /// Indicates the publisher specified that the ad request should receive treatment for
     /// users in the European Economic Area (EEA) under the age of consent.
     /// </summary>
+    [System.Obsolete("Use AgeRestrictedTreatment instead.")]
     public enum TagForUnderAgeOfConsent
     {
         /// Unspecified

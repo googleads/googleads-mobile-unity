@@ -15,6 +15,8 @@
 namespace GoogleMobileAds.Api
 {
     /// <summary>
+    /// Deprecated. Use AgeRestrictedTreatment instead.
+    ///
     /// This enum lets you specify whether you would like your app to be treated as
     /// child-directed for purposes of the Children's Online Privacy Protection Act (COPPA)
     /// <a href="http://business.ftc.gov/privacy-and-security/childrens-privacy">
@@ -33,6 +35,7 @@ namespace GoogleMobileAds.Api
     /// authorized to act on behalf of the owner of the app. You understand that abuse of this
     /// setting can result in termination of your Google account.
     /// </summary>
+    [System.Obsolete("Use AgeRestrictedTreatment instead.")]
     public enum TagForChildDirectedTreatment
     {
         /// Unspecified

@@ -39,6 +39,7 @@ namespace GoogleMobileAds.Android
                     requestConfigurationBuilder.Call<AndroidJavaObject>("setTestDeviceIds",
                     testDeviceIdsJavaObject);
             }
+#pragma warning disable 618
             if (requestConfiguration.TagForUnderAgeOfConsent.HasValue)
             {
                 int? tagForUnderAgeOfConsentCode = null;
@@ -99,6 +100,7 @@ namespace GoogleMobileAds.Android
                          tagForChildDirectedTreatmentCode);
                 }
             }
+#pragma warning restore 618
             if (requestConfiguration.AgeRestrictedTreatment.HasValue)
             {
                 AndroidJavaObject ageRestrictedTreatmentCode = null;
@@ -157,9 +159,11 @@ namespace GoogleMobileAds.Android
         public static RequestConfiguration GetRequestConfiguration(AndroidJavaObject androidRequestConfiguration)
         {
 
+#pragma warning disable 618
             TagForChildDirectedTreatment tagForChildDirectedTreatment = (TagForChildDirectedTreatment)androidRequestConfiguration.Call<int>("getTagForChildDirectedTreatment");
 
             TagForUnderAgeOfConsent tagForUnderAgeOfConsent = (TagForUnderAgeOfConsent)androidRequestConfiguration.Call<int>("getTagForUnderAgeOfConsent");
+#pragma warning restore 618
 
             AndroidJavaObject ageRestrictedTreatmentEnum = androidRequestConfiguration.Call<AndroidJavaObject>("getAgeRestrictedTreatment");
             AgeRestrictedTreatment ageRestrictedTreatment = AgeRestrictedTreatment.Unspecified;
@@ -185,8 +189,10 @@ namespace GoogleMobileAds.Android
             RequestConfiguration requestConfiguration = new RequestConfiguration()
             {
                 MaxAdContentRating = maxAdContentRating,
+#pragma warning disable 618
                 TagForChildDirectedTreatment = tagForChildDirectedTreatment,
                 TagForUnderAgeOfConsent = tagForUnderAgeOfConsent,
+#pragma warning restore 618
                 AgeRestrictedTreatment = ageRestrictedTreatment,
                 TestDeviceIds = testDeviceIds,
                 PublisherPrivacyPersonalizationState = publisherPrivacyPersonalizationState

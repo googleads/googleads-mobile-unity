@@ -41,6 +41,7 @@ namespace GoogleMobileAds.iOS
                 requestConfiguration.TestDeviceIds.CopyTo(testDeviceIdsArray);
                 Externs.GADUSetRequestConfigurationTestDeviceIdentifiers(testDeviceIdsArray, requestConfiguration.TestDeviceIds.Count);
             }
+#pragma warning disable 618
             if (requestConfiguration.TagForChildDirectedTreatment.HasValue)
             {
                 TagForChildDirectedTreatment? tagForChildDirectedTreatment = requestConfiguration.TagForChildDirectedTreatment;
@@ -52,6 +53,7 @@ namespace GoogleMobileAds.iOS
                 TagForUnderAgeOfConsent? TagForUnderAgeOfConsent = requestConfiguration.TagForUnderAgeOfConsent;
                 Externs.GADUSetRequestConfigurationTagForUnderAgeOfConsent((int)TagForUnderAgeOfConsent.GetValueOrDefault());
             }
+#pragma warning restore 618
 
             if (requestConfiguration.AgeRestrictedTreatment.HasValue)
             {
@@ -79,8 +81,10 @@ namespace GoogleMobileAds.iOS
             IntPtr testDeviceIdsArray = Externs.GADUGetTestDeviceIdentifiers();
             List<string> testDeviceIds = Utils.PtrArrayToManagedList(testDeviceIdsArray, Externs.GADUGetTestDeviceIdentifiersCount());
 
+#pragma warning disable 618
             TagForChildDirectedTreatment tagForChildDirectedTreatment = (TagForChildDirectedTreatment)Externs.GADUGetRequestConfigurationTagForChildDirectedTreatment();
             TagForUnderAgeOfConsent tagForUnderAgeOfConsent = (TagForUnderAgeOfConsent)Externs.GADUGetRequestConfigurationTagForUnderAgeOfConsent();
+#pragma warning restore 618
             AgeRestrictedTreatment ageRestrictedTreatment = (AgeRestrictedTreatment)Externs.GADUGetRequestConfigurationAgeRestrictedTreatment();
             PublisherPrivacyPersonalizationState publisherPrivacyPersonalizationState =
                 (PublisherPrivacyPersonalizationState)Externs.GADUGetRequestConfigurationPublisherPrivacyPersonalizationState();
@@ -88,8 +92,10 @@ namespace GoogleMobileAds.iOS
             RequestConfiguration requestConfiguration = new RequestConfiguration()
             {
                 MaxAdContentRating = maxAdContentRating,
+#pragma warning disable 618
                 TagForChildDirectedTreatment = tagForChildDirectedTreatment,
                 TagForUnderAgeOfConsent = tagForUnderAgeOfConsent,
+#pragma warning restore 618
                 AgeRestrictedTreatment = ageRestrictedTreatment,
                 TestDeviceIds = testDeviceIds,
                 PublisherPrivacyPersonalizationState = publisherPrivacyPersonalizationState
