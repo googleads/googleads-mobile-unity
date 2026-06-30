@@ -1,3 +1,5 @@
+// Copyright 2026 Google LLC
+
 using UnityEngine;
 using GoogleMobileAds.Api;
 using System.Collections.Generic;
@@ -27,6 +29,17 @@ namespace GoogleMobileAds.Snippets
             // [START set_request_configuration]
             MobileAds.SetRequestConfiguration(requestConfiguration);
             // [END set_request_configuration]
+        }
+
+        private void SetChildAgeTreatment()
+        {
+            // [START set_child_age_treatment]
+            RequestConfiguration requestConfiguration = new RequestConfiguration
+            {
+                AgeRestrictedTreatment = AgeRestrictedTreatment.Child
+            };
+            MobileAds.SetRequestConfiguration(requestConfiguration);
+            // [END set_child_age_treatment]
         }
     }
 }
