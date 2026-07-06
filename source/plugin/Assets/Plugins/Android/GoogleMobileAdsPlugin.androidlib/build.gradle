@@ -1,7 +1,7 @@
 apply plugin: 'com.android.library'
 
 android {
-    namespace 'com.google.unity.ads'
+    namespace 'com.google.unity.ads.plugin'
     compileSdkVersion 31
 
     defaultConfig {
