@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using GoogleMobileAds.Api;
+using GoogleMobileAds.Common;
 using GoogleMobileAds.Ump.Api;
 
 namespace GoogleMobileAds.Samples
@@ -127,10 +128,10 @@ namespace GoogleMobileAds.Samples
                 Debug.Log("Google Mobile Ads initialization complete.");
                 _isInitialized = true;
 
-                // Google Mobile Ads events are raised off the Unity Main thread. If you need to
-                // access UnityEngine objects after initialization,
-                // use MobileAdsEventExecutor.ExecuteInUpdate(). For more information, see:
-                // https://developers.google.com/admob/unity/global-settings#raise_ad_events_on_the_unity_main_thread
+                MobileAdsEventExecutor.ExecuteInUpdate(() =>
+                {
+                    // Interact with UnityEngine objects on the main thread here.
+                });
             });
             // [END initialize_sdk]
         }
