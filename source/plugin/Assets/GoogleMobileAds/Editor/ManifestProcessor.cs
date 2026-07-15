@@ -64,6 +64,7 @@ namespace GoogleMobileAds.Editor {
     public void OnPreprocessBuild(BuildTarget target, string path)
 #endif
     {
+      Debug.Log("Manifest processor triggered during the Player build process.");
       string manifestPath = Path.Combine(Application.dataPath, MANIFEST_RELATIVE_PATH);
       string propertiesPath = Path.Combine(Application.dataPath, PROPERTIES_RELATIVE_PATH);
 
