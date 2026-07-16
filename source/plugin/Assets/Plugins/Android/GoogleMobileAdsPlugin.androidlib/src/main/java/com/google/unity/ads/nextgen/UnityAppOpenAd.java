@@ -120,32 +120,30 @@ public class UnityAppOpenAd extends UnityAdBase<AppOpenAd, UnityAppOpenAdCallbac
    * @param request The {@link AdRequest} object with targeting parameters.
    */
   public void load(final AdRequest request) {
-    activity.runOnUiThread(
-        () ->
-            adWrapper.load(
-                request,
-                new AdLoadCallback<AppOpenAd>() {
-                  @Override
-                  public void onAdLoaded(@NonNull AppOpenAd ad) {
-                    appOpenAd = ad;
-                    executor.execute(
-                        () -> {
-                          if (callback != null) {
-                            callback.onAppOpenAdLoaded();
-                          }
-                        });
+    adWrapper.load(
+        request,
+        new AdLoadCallback<AppOpenAd>() {
+          @Override
+          public void onAdLoaded(@NonNull AppOpenAd ad) {
+            appOpenAd = ad;
+            executor.execute(
+                () -> {
+                  if (callback != null) {
+                    callback.onAppOpenAdLoaded();
                   }
+                });
+          }
 
-                  @Override
-                  public void onAdFailedToLoad(@NonNull LoadAdError adError) {
-                    executor.execute(
-                        () -> {
-                          if (callback != null) {
-                            callback.onAppOpenAdFailedToLoad(adError);
-                          }
-                        });
+          @Override
+          public void onAdFailedToLoad(@NonNull LoadAdError adError) {
+            executor.execute(
+                () -> {
+                  if (callback != null) {
+                    callback.onAppOpenAdFailedToLoad(adError);
                   }
-                }));
+                });
+          }
+        });
   }
 
   @VisibleForTesting
@@ -165,10 +163,9 @@ public class UnityAppOpenAd extends UnityAdBase<AppOpenAd, UnityAppOpenAdCallbac
 
     // Listen for ad events.
     appOpenAd.setAdEventCallback(appOpenAdEventCallback);
-
+    appOpenAd.setImmersiveMode(true);
     activity.runOnUiThread(
         () -> {
-          appOpenAd.setImmersiveMode(true);
           appOpenAd.show(this.activity);
         });
   }

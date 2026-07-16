@@ -84,35 +84,33 @@ public class UnityRewardedInterstitialAd
    * @param request The {@link AdRequest} object with targeting parameters.
    */
   public void load(final AdRequest request) {
-    activity.runOnUiThread(
-        () ->
-            this.adWrapper.load(
-                request,
-                new AdLoadCallback<RewardedInterstitialAd>() {
-                  @Override
-                  public void onAdLoaded(@NonNull RewardedInterstitialAd rewardedInterstitialAd) {
-                    // Rewarded interstitial ad loaded.
-                    UnityRewardedInterstitialAd.this.ad = rewardedInterstitialAd;
-                    executor.execute(
-                        () -> {
-                          if (callback != null) {
-                            callback.onRewardedInterstitialAdLoaded();
-                          }
-                        });
+    this.adWrapper.load(
+        request,
+        new AdLoadCallback<RewardedInterstitialAd>() {
+          @Override
+          public void onAdLoaded(@NonNull RewardedInterstitialAd rewardedInterstitialAd) {
+            // Rewarded interstitial ad loaded.
+            UnityRewardedInterstitialAd.this.ad = rewardedInterstitialAd;
+            executor.execute(
+                () -> {
+                  if (callback != null) {
+                    callback.onRewardedInterstitialAdLoaded();
                   }
+                });
+          }
 
-                  @Override
-                  public void onAdFailedToLoad(@NonNull LoadAdError adError) {
-                    // Rewarded interstitial ad failed to load.
-                    executor.execute(
-                        () -> {
-                          if (callback != null) {
-                            callback.onRewardedInterstitialAdFailedToLoad(adError);
-                          }
-                        });
-                    ad = null;
+          @Override
+          public void onAdFailedToLoad(@NonNull LoadAdError adError) {
+            // Rewarded interstitial ad failed to load.
+            executor.execute(
+                () -> {
+                  if (callback != null) {
+                    callback.onRewardedInterstitialAdFailedToLoad(adError);
                   }
-                }));
+                });
+            ad = null;
+          }
+        });
   }
 
   /** Shows the rewarded interstitial ad if it has loaded. */
@@ -196,9 +194,10 @@ public class UnityRewardedInterstitialAd
           }
         });
 
+    ad.setImmersiveMode(true);
+
     activity.runOnUiThread(
         () -> {
-          ad.setImmersiveMode(true);
           ad.show(
               this.activity,
               new OnUserEarnedRewardListener() {

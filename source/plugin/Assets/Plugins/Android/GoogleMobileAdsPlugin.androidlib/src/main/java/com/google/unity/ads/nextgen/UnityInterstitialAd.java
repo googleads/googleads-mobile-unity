@@ -53,32 +53,30 @@ public class UnityInterstitialAd extends UnityAdBase<InterstitialAd, UnityInters
    * @param request The {@link AdRequest} object with targeting parameters.
    */
   public void load(final AdRequest request) {
-    activity.runOnUiThread(
-        () ->
-            adWrapper.load(
-                request,
-                new AdLoadCallback<InterstitialAd>() {
-                  @Override
-                  public void onAdLoaded(@NonNull InterstitialAd ad) {
-                    UnityInterstitialAd.this.ad = ad;
-                    executor.execute(
-                        () -> {
-                          if (callback != null) {
-                            callback.onInterstitialAdLoaded();
-                          }
-                        });
+    adWrapper.load(
+        request,
+        new AdLoadCallback<InterstitialAd>() {
+          @Override
+          public void onAdLoaded(@NonNull InterstitialAd ad) {
+            UnityInterstitialAd.this.ad = ad;
+            executor.execute(
+                () -> {
+                  if (callback != null) {
+                    callback.onInterstitialAdLoaded();
                   }
+                });
+          }
 
-                  @Override
-                  public void onAdFailedToLoad(@NonNull LoadAdError adError) {
-                    executor.execute(
-                        () -> {
-                          if (callback != null) {
-                            callback.onInterstitialAdFailedToLoad(adError);
-                          }
-                        });
+          @Override
+          public void onAdFailedToLoad(@NonNull LoadAdError adError) {
+            executor.execute(
+                () -> {
+                  if (callback != null) {
+                    callback.onInterstitialAdFailedToLoad(adError);
                   }
-                }));
+                });
+          }
+        });
   }
 
   /** Shows the interstitial ad if it has loaded. */
@@ -175,10 +173,10 @@ public class UnityInterstitialAd extends UnityAdBase<InterstitialAd, UnityInters
                 });
           }
         });
+    ad.setImmersiveMode(true);
 
     activity.runOnUiThread(
         () -> {
-          ad.setImmersiveMode(true);
           ad.show(this.activity);
         });
   }

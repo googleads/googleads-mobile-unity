@@ -2,6 +2,7 @@ package com.google.unity.ads.nextgen;
 
 import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.util.concurrent.MoreExecutors.directExecutor;
+import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -17,6 +18,7 @@ import com.google.android.libraries.ads.mobile.sdk.common.LoadAdError;
 import com.google.android.libraries.ads.mobile.sdk.common.PrecisionType;
 import com.google.android.libraries.ads.mobile.sdk.common.ResponseInfo;
 import java.util.ArrayList;
+import java.util.concurrent.CountDownLatch;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -75,6 +77,28 @@ public class UnityAppOpenAdTest {
     adLoadCallbackCaptor.getValue().onAdFailedToLoad(loadAdError);
 
     verify(mockCallback).onAppOpenAdFailedToLoad(loadAdError);
+  }
+
+  @Test
+  public void testLoad_runsOnCallingThread_notUIThread() throws Exception {
+    final Thread[] invocationThread = new Thread[1];
+    CountDownLatch latch = new CountDownLatch(1);
+
+    Mockito.doAnswer(
+            invocation -> {
+              invocationThread[0] = Thread.currentThread();
+              latch.countDown();
+              return null;
+            })
+        .when(mockAdWrapper)
+        .load(Mockito.any(), Mockito.any());
+
+    Thread backgroundThread = new Thread(() -> unityAppOpenAd.load(mockAdRequest));
+    backgroundThread.start();
+
+    assertThat(latch.await(5, SECONDS)).isTrue();
+    assertThat(invocationThread[0]).isEqualTo(backgroundThread);
+    assertThat(invocationThread[0]).isNotEqualTo(activity.getMainLooper().getThread());
   }
 
   @Test

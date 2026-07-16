@@ -122,36 +122,31 @@ public class UnityNativeTemplateAd {
     verticalOffset = 0;
   }
 
-  public void loadAd(final NativeAdRequest request) {
-    activity.runOnUiThread(
-        new Runnable() {
-          @Override
-          public void run() {
-            adLoaderWrapper.load(
-                request,
-                new NativeAdLoaderCallback() {
-                  @Override
-                  public void onNativeAdLoaded(@NonNull NativeAd ad) {
-                    nativeAd = ad;
-                    if (callback != null) {
-                      callback.onNativeAdLoaded();
-                    }
-                    setAdEventsListener(nativeAd);
-                  }
+  // TODO(534859248): Call callbacks using executor service.
 
-                  @Override
-                  public void onAdFailedToLoad(@NonNull LoadAdError adError) {
-                    if (callback != null) {
-                      callback.onNativeAdFailedToLoad(adError);
-                    }
-                  }
-                });
+  public void loadAd(final NativeAdRequest request) {
+    adLoaderWrapper.load(
+        request,
+        new NativeAdLoaderCallback() {
+          @Override
+          public void onNativeAdLoaded(@NonNull NativeAd ad) {
+            nativeAd = ad;
+            if (callback != null) {
+              callback.onNativeAdLoaded();
+            }
+            setAdEventsListener(nativeAd);
+          }
+
+          @Override
+          public void onAdFailedToLoad(@NonNull LoadAdError adError) {
+            if (callback != null) {
+              callback.onNativeAdFailedToLoad(adError);
+            }
           }
         });
   }
 
   private void setAdEventsListener(NativeAd ad) {
-
     ad.setAdEventCallback(
         new NativeAdEventCallback() {
           @Override

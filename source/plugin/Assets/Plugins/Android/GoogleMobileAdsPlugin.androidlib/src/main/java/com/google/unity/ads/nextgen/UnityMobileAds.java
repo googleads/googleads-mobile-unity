@@ -20,6 +20,7 @@ import android.app.Activity;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.os.Looper;
 import android.util.Log;
 import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
@@ -70,6 +71,9 @@ public final class UnityMobileAds {
    */
   public static void initialize(
       Activity activity, OnAdapterInitializationCompleteListener callback) {
+    if (Looper.myLooper() == Looper.getMainLooper()) {
+      throw new IllegalStateException("Initialize must not be called on the UI thread.");
+    }
     String appId = getApplicationMetaData(activity, APPLICATION_ID_KEY);
 
     if (appId == null) {
@@ -84,32 +88,30 @@ public final class UnityMobileAds {
       }
     }
     InitializationConfig config = configBuilder.build();
+
     // Initialize the Google Mobile Ads SDK on a background thread.
-    new Thread(
-            () ->
-                mobileAdsWrapper.initialize(
-                    activity,
-                    config,
-                    initializationStatus -> {
-                      synchronized (stateLock) {
-                        isMobileAdsInitialized = true;
-                        requestConfiguration = null;
-                        if (isPublisherFirstPartyIdEnabled) {
-                          var unused = mobileAdsWrapper.putPublisherFirstPartyIdEnabled(true);
-                          isPublisherFirstPartyIdEnabled = false;
-                        }
-                        if (userVolume >= 0) {
-                          mobileAdsWrapper.setUserControlledAppVolume(userVolume);
-                          userVolume = -1;
-                        }
-                        if (isMuted) {
-                          mobileAdsWrapper.setUserMutedApp(isMuted);
-                          isMuted = false;
-                        }
-                      }
-                      callback.onAdapterInitializationComplete(initializationStatus);
-                    }))
-        .start();
+    mobileAdsWrapper.initialize(
+        activity,
+        config,
+        initializationStatus -> {
+          synchronized (stateLock) {
+            isMobileAdsInitialized = true;
+            requestConfiguration = null;
+            if (isPublisherFirstPartyIdEnabled) {
+              var unused = mobileAdsWrapper.putPublisherFirstPartyIdEnabled(true);
+              isPublisherFirstPartyIdEnabled = false;
+            }
+            if (userVolume >= 0) {
+              mobileAdsWrapper.setUserControlledAppVolume(userVolume);
+              userVolume = -1;
+            }
+            if (isMuted) {
+              mobileAdsWrapper.setUserMutedApp(isMuted);
+              isMuted = false;
+            }
+          }
+          callback.onAdapterInitializationComplete(initializationStatus);
+        });
   }
 
   /**

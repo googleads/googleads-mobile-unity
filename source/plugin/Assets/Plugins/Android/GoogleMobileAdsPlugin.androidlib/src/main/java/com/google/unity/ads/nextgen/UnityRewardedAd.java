@@ -56,35 +56,33 @@ public class UnityRewardedAd extends UnityAdBase<RewardedAd, UnityRewardedAdCall
    * @param request The {@link AdRequest} object with targeting parameters.
    */
   public void load(final AdRequest request) {
-    activity.runOnUiThread(
-        () ->
-            this.adWrapper.load(
-                request,
-                new AdLoadCallback<RewardedAd>() {
-                  @Override
-                  public void onAdLoaded(@NonNull RewardedAd rewardedAd) {
-                    // Rewarded ad loaded.
-                    UnityRewardedAd.this.ad = rewardedAd;
-                    executor.execute(
-                        () -> {
-                          if (callback != null) {
-                            callback.onRewardedAdLoaded();
-                          }
-                        });
+    this.adWrapper.load(
+        request,
+        new AdLoadCallback<RewardedAd>() {
+          @Override
+          public void onAdLoaded(@NonNull RewardedAd rewardedAd) {
+            // Rewarded ad loaded.
+            UnityRewardedAd.this.ad = rewardedAd;
+            executor.execute(
+                () -> {
+                  if (callback != null) {
+                    callback.onRewardedAdLoaded();
                   }
+                });
+          }
 
-                  @Override
-                  public void onAdFailedToLoad(@NonNull LoadAdError adError) {
-                    // Rewarded ad failed to load.
-                    executor.execute(
-                        () -> {
-                          if (callback != null) {
-                            callback.onRewardedAdFailedToLoad(adError);
-                          }
-                        });
-                    ad = null;
+          @Override
+          public void onAdFailedToLoad(@NonNull LoadAdError adError) {
+            // Rewarded ad failed to load.
+            executor.execute(
+                () -> {
+                  if (callback != null) {
+                    callback.onRewardedAdFailedToLoad(adError);
                   }
-                }));
+                });
+            ad = null;
+          }
+        });
   }
 
   /** Shows the rewarded ad if it has loaded. */
@@ -168,9 +166,9 @@ public class UnityRewardedAd extends UnityAdBase<RewardedAd, UnityRewardedAdCall
           }
         });
 
+    ad.setImmersiveMode(true);
     activity.runOnUiThread(
         () -> {
-          ad.setImmersiveMode(true);
           ad.show(
               this.activity,
               new OnUserEarnedRewardListener() {

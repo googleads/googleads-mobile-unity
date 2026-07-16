@@ -13,6 +13,7 @@ import android.app.Activity;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.os.Bundle;
+import android.os.Looper;
 import androidx.annotation.Nullable;
 import com.google.android.libraries.ads.mobile.sdk.common.RequestConfiguration;
 import com.google.android.libraries.ads.mobile.sdk.initialization.InitializationConfig;
@@ -21,6 +22,8 @@ import com.google.android.libraries.ads.mobile.sdk.initialization.OnAdapterIniti
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.atomic.AtomicReference;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -69,7 +72,7 @@ public class UnityMobileAdsTest {
   @Test
   public void testInitialize_nullAppId() throws Exception {
     Activity activity = setupActivityWithAppId(null);
-    UnityMobileAds.initialize(activity, status -> {});
+    runOnBackgroundThread(() -> UnityMobileAds.initialize(activity, status -> {}));
     verify(mockMobileAdsWrapper, never()).initialize(any(), any(), any());
   }
 
@@ -90,16 +93,55 @@ public class UnityMobileAdsTest {
         .initialize(any(), any(), any());
 
     CountDownLatch latch = new CountDownLatch(1);
-    UnityMobileAds.initialize(
-        activity,
-        status -> {
-          assertThat(status).isEqualTo(mockStatus);
-          latch.countDown();
-        });
+    runOnBackgroundThread(
+        () ->
+            UnityMobileAds.initialize(
+                activity,
+                status -> {
+                  assertThat(status).isEqualTo(mockStatus);
+                  latch.countDown();
+                }));
 
     assertThat(latch.await(5, SECONDS)).isTrue();
 
     verify(mockMobileAdsWrapper).initialize(any(), any(), any());
+  }
+
+  @Test
+  public void testInitialize_onUiThread_throwsException() throws Exception {
+    Activity activity = setupActivityWithAppId("ca-app-pub-3940256099942544~3347511713");
+    Assert.assertThrows(
+        IllegalStateException.class, () -> UnityMobileAds.initialize(activity, status -> {}));
+  }
+
+  @Test
+  public void testInitialize_runsOnBackgroundThread() throws Exception {
+    Activity activity = setupActivityWithAppId("ca-app-pub-3940256099942544~3347511713");
+    final Thread[] invocationThread = new Thread[1];
+    CountDownLatch latch = new CountDownLatch(1);
+
+    doAnswer(
+            invocation -> {
+              invocationThread[0] = Thread.currentThread();
+              OnAdapterInitializationCompleteListener listener = invocation.getArgument(2);
+              listener.onAdapterInitializationComplete(mock(InitializationStatus.class));
+              latch.countDown();
+              return null;
+            })
+        .when(mockMobileAdsWrapper)
+        .initialize(any(), any(), any());
+
+    Thread backgroundThread =
+        new Thread(
+            () -> {
+              UnityMobileAds.initialize(activity, status -> {});
+            });
+    backgroundThread.start();
+    backgroundThread.join();
+
+    assertThat(latch.await(5, SECONDS)).isTrue();
+    assertThat(invocationThread[0]).isEqualTo(backgroundThread);
+    assertThat(invocationThread[0]).isNotEqualTo(Looper.getMainLooper().getThread());
   }
 
   @Test
@@ -118,7 +160,7 @@ public class UnityMobileAdsTest {
         .initialize(any(), any(), any());
 
     CountDownLatch latch = new CountDownLatch(1);
-    UnityMobileAds.initialize(activity, status -> latch.countDown());
+    runOnBackgroundThread(() -> UnityMobileAds.initialize(activity, status -> latch.countDown()));
     assertThat(latch.await(5, SECONDS)).isTrue();
 
     verify(mockMobileAdsWrapper).setUserMutedApp(true);
@@ -147,7 +189,7 @@ public class UnityMobileAdsTest {
         .initialize(any(), configCaptor.capture(), any());
 
     CountDownLatch latch = new CountDownLatch(1);
-    UnityMobileAds.initialize(activity, status -> latch.countDown());
+    runOnBackgroundThread(() -> UnityMobileAds.initialize(activity, status -> latch.countDown()));
     assertThat(latch.await(5, SECONDS)).isTrue();
 
     assertThat(configCaptor.getValue().getRequestConfiguration()).isEqualTo(config);
@@ -174,7 +216,7 @@ public class UnityMobileAdsTest {
         .initialize(any(), any(), any());
 
     CountDownLatch latch = new CountDownLatch(1);
-    UnityMobileAds.initialize(activity, status -> latch.countDown());
+    runOnBackgroundThread(() -> UnityMobileAds.initialize(activity, status -> latch.countDown()));
     assertThat(latch.await(5, SECONDS)).isTrue();
 
     verify(mockMobileAdsWrapper).setUserControlledAppVolume(0.5f);
@@ -200,7 +242,7 @@ public class UnityMobileAdsTest {
         .initialize(any(), any(), any());
 
     CountDownLatch latch = new CountDownLatch(1);
-    UnityMobileAds.initialize(activity, status -> latch.countDown());
+    runOnBackgroundThread(() -> UnityMobileAds.initialize(activity, status -> latch.countDown()));
     assertThat(latch.await(5, SECONDS)).isTrue();
 
     verify(mockMobileAdsWrapper).putPublisherFirstPartyIdEnabled(true);
@@ -380,6 +422,28 @@ public class UnityMobileAdsTest {
   }
 
   // Helpers
+  private void runOnBackgroundThread(Runnable runnable) throws Exception {
+    AtomicReference<Throwable> throwableRef = new AtomicReference<>();
+    Thread thread =
+        new Thread(
+            () -> {
+              try {
+                runnable.run();
+              } catch (Throwable t) {
+                throwableRef.set(t);
+              }
+            });
+    thread.start();
+    thread.join();
+    if (throwableRef.get() != null) {
+      if (throwableRef.get() instanceof Exception) {
+        throw (Exception) throwableRef.get();
+      } else {
+        throw new RuntimeException(throwableRef.get());
+      }
+    }
+  }
+
   private void setStaticField(String fieldName, Object value) throws Exception {
     Field field = UnityMobileAds.class.getDeclaredField(fieldName);
     field.setAccessible(true);

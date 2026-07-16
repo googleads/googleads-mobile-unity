@@ -17,6 +17,7 @@
 package com.google.unity.ads.nextgen;
 
 import static com.google.common.truth.Truth.assertThat;
+import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.nullable;
@@ -57,12 +58,14 @@ import com.google.unity.ads.nativead.UnityNativeTemplateType;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Collections;
+import java.util.concurrent.CountDownLatch;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 import org.robolectric.Robolectric;
@@ -813,6 +816,33 @@ public final class UnityNativeTemplateAdTest {
     verify(mockNativeAdLoader).load(requestCaptor.capture(), any(NativeAdLoaderCallback.class));
 
     assertThat(requestCaptor.getValue()).isSameInstanceAs(request);
+  }
+
+  @Test
+  public void testLoadAd_runsOnCallingThread_notUIThread() throws Exception {
+    UnityNativeTemplateAd client =
+        new UnityNativeTemplateAd(activity, mockCallback, mockNativeAdLoader);
+    NativeAdRequest request =
+        new NativeAdRequest.Builder(TEST_AD_UNIT, ImmutableList.of(NativeAd.NativeAdType.NATIVE))
+            .build();
+    final Thread[] invocationThread = new Thread[1];
+    CountDownLatch latch = new CountDownLatch(1);
+
+    Mockito.doAnswer(
+            invocation -> {
+              invocationThread[0] = Thread.currentThread();
+              latch.countDown();
+              return null;
+            })
+        .when(mockNativeAdLoader)
+        .load(any(NativeAdRequest.class), any(NativeAdLoaderCallback.class));
+
+    Thread backgroundThread = new Thread(() -> client.loadAd(request));
+    backgroundThread.start();
+
+    assertThat(latch.await(5, SECONDS)).isTrue();
+    assertThat(invocationThread[0]).isEqualTo(backgroundThread);
+    assertThat(invocationThread[0]).isNotEqualTo(activity.getMainLooper().getThread());
   }
 
   private TemplateView setUpMockLayoutInflater() {
