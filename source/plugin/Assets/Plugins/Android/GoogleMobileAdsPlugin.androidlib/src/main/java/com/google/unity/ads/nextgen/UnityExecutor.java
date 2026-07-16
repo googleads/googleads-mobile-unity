@@ -20,20 +20,36 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
 
-/** Centralized executor service for running nextgen ad preloader callbacks. */
-public final class PreloaderExecutor {
-  private static final ExecutorService service =
+/** Centralized executor services for running nextgen ad and preloader callbacks. */
+public final class UnityExecutor {
+
+  private static final ExecutorService adEventExecutor =
       Executors.newSingleThreadExecutor(
           new ThreadFactory() {
             @Override
             public Thread newThread(Runnable r) {
-              return new Thread(r, "GMAUnityThread");
+              return new Thread(r, "GMAUnityAdEventsThread");
             }
           });
 
+  private static final ExecutorService preloaderExecutor =
+      Executors.newSingleThreadExecutor(
+          new ThreadFactory() {
+            @Override
+            public Thread newThread(Runnable r) {
+              return new Thread(r, "GMAUnityPreloaderThread");
+            }
+          });
+
+  /** Returns the executor service for regular ad callbacks. */
   public static ExecutorService getExecutor() {
-    return service;
+    return adEventExecutor;
   }
 
-  private PreloaderExecutor() {}
+  /** Returns the executor service for ad preloader callbacks. */
+  public static ExecutorService getPreloaderExecutor() {
+    return preloaderExecutor;
+  }
+
+  private UnityExecutor() {}
 }

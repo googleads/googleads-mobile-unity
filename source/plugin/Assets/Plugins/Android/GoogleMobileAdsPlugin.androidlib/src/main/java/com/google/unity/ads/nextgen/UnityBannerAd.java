@@ -35,6 +35,7 @@ import com.google.android.libraries.ads.mobile.sdk.common.LoadAdError;
 import com.google.android.libraries.ads.mobile.sdk.common.ResponseInfo;
 import com.google.unity.ads.PluginUtils;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Executor;
 import java.util.concurrent.FutureTask;
 
 /**
@@ -56,6 +57,9 @@ public class UnityBannerAd {
 
   /** The {@link AdWrapper} used to load ads. */
   private final AdWrapper<BannerAd> adWrapper;
+
+  /** The executor for running callbacks. */
+  private final Executor executor;
 
   /** The {@link View} that contains the banner ad. */
   private View adView;
@@ -95,13 +99,22 @@ public class UnityBannerAd {
   private View.OnLayoutChangeListener layoutChangeListener;
 
   public UnityBannerAd(Activity activity, UnityBannerAdCallback callback) {
-    this(activity, callback, AdWrapper.forBanner());
+    this(activity, callback, AdWrapper.forBanner(), UnityExecutor.getExecutor());
   }
 
   UnityBannerAd(Activity activity, UnityBannerAdCallback callback, AdWrapper<BannerAd> adWrapper) {
+    this(activity, callback, adWrapper, UnityExecutor.getExecutor());
+  }
+
+  UnityBannerAd(
+      Activity activity,
+      UnityBannerAdCallback callback,
+      AdWrapper<BannerAd> adWrapper,
+      Executor executor) {
     unityPlayerActivity = activity;
     this.callback = callback;
     this.adWrapper = adWrapper;
+    this.executor = executor;
   }
 
   /**
@@ -139,72 +152,88 @@ public class UnityBannerAd {
             if (!hidden) {
               show();
             }
-            new Thread(
-                    () -> {
-                      if (callback != null) {
-                        callback.onAdLoaded();
-                      }
-                    })
-                .start();
+            executor.execute(
+                () -> {
+                  if (callback != null) {
+                    callback.onAdLoaded();
+                  }
+                });
 
             ad.setAdEventCallback(
                 new BannerAdEventCallback() {
                   @Override
                   public void onAdImpression() {
-                    if (callback != null) {
-                      callback.onAdImpression();
-                    }
+                    executor.execute(
+                        () -> {
+                          if (callback != null) {
+                            callback.onAdImpression();
+                          }
+                        });
                   }
 
                   @Override
                   public void onAdClicked() {
-                    if (callback != null) {
-                      callback.onAdClicked();
-                    }
+                    executor.execute(
+                        () -> {
+                          if (callback != null) {
+                            callback.onAdClicked();
+                          }
+                        });
                   }
 
                   @Override
                   public void onAdShowedFullScreenContent() {
-                    if (callback != null) {
-                      callback.onAdOpened();
-                    }
+                    executor.execute(
+                        () -> {
+                          if (callback != null) {
+                            callback.onAdOpened();
+                          }
+                        });
                   }
 
                   @Override
                   public void onAdDismissedFullScreenContent() {
-                    if (callback != null) {
-                      callback.onAdClosed();
-                    }
+                    executor.execute(
+                        () -> {
+                          if (callback != null) {
+                            callback.onAdClosed();
+                          }
+                        });
                   }
 
                   @Override
                   public void onAdPaid(@NonNull AdValue adValue) {
-                    if (callback != null) {
-                      callback.onPaidEvent(
-                          Util.getAdValuePrecisionType(adValue.getPrecisionType()),
-                          adValue.getValueMicros(),
-                          adValue.getCurrencyCode());
-                    }
+                    executor.execute(
+                        () -> {
+                          if (callback != null) {
+                            callback.onPaidEvent(
+                                Util.getAdValuePrecisionType(adValue.getPrecisionType()),
+                                adValue.getValueMicros(),
+                                adValue.getCurrencyCode());
+                          }
+                        });
                   }
 
                   @Override
                   public void onAppEvent(@NonNull String name, @Nullable String data) {
-                    if (callback != null) {
-                      callback.onAppEvent(name, data);
-                    }
+                    executor.execute(
+                        () -> {
+                          if (callback != null) {
+                            callback.onAppEvent(name, data);
+                          }
+                        });
                   }
                 });
           }
 
           @Override
           public void onAdFailedToLoad(@NonNull LoadAdError adError) {
-            new Thread(
-                    () -> {
-                      if (callback != null) {
-                        callback.onAdFailedToLoad(adError);
-                      }
-                    })
-                .start();
+            executor.execute(
+                () -> {
+                  if (callback != null) {
+                    callback.onAdFailedToLoad(adError);
+                  }
+                });
           }
         });
     setLayoutChangeListener();

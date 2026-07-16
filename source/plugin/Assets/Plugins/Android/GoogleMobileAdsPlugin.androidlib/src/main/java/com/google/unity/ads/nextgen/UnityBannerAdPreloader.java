@@ -34,7 +34,10 @@ public class UnityBannerAdPreloader {
 
   public UnityBannerAdPreloader(Activity activity, UnityPreloadCallback preloadCallback) {
     this(
-        activity, preloadCallback, new BannerAdPreloaderWrapper(), PreloaderExecutor.getExecutor());
+        activity,
+        preloadCallback,
+        new BannerAdPreloaderWrapper(),
+        UnityExecutor.getPreloaderExecutor());
   }
 
   @VisibleForTesting

@@ -39,6 +39,7 @@ import com.google.android.libraries.ads.mobile.sdk.nativead.NativeAdLoaderCallba
 import com.google.android.libraries.ads.mobile.sdk.nativead.NativeAdRequest;
 import com.google.unity.ads.PluginUtils;
 import com.google.unity.ads.nativead.UnityNativeTemplateStyle;
+import java.util.concurrent.Executor;
 
 /** Native Template ad implementation for the Google Mobile Ads Unity plugin. */
 public class UnityNativeTemplateAd {
@@ -97,6 +98,9 @@ public class UnityNativeTemplateAd {
 
   private final NativeAdLoaderWrapper adLoaderWrapper;
 
+  /** The executor for running callbacks. */
+  private final Executor executor;
+
   public UnityNativeTemplateAd(Activity activity, UnityNativeTemplateAdCallback callback) {
     this(
         activity,
@@ -106,7 +110,8 @@ public class UnityNativeTemplateAd {
           public void load(NativeAdRequest request, NativeAdLoaderCallback callback) {
             NativeAdLoader.load(request, callback);
           }
-        });
+        },
+        UnityExecutor.getExecutor());
   }
 
   @VisibleForTesting
@@ -114,15 +119,23 @@ public class UnityNativeTemplateAd {
       Activity activity,
       UnityNativeTemplateAdCallback callback,
       NativeAdLoaderWrapper adLoaderWrapper) {
+    this(activity, callback, adLoaderWrapper, UnityExecutor.getExecutor());
+  }
+
+  @VisibleForTesting
+  UnityNativeTemplateAd(
+      Activity activity,
+      UnityNativeTemplateAdCallback callback,
+      NativeAdLoaderWrapper adLoaderWrapper,
+      Executor executor) {
     this.activity = activity;
     this.callback = callback;
     this.adLoaderWrapper = adLoaderWrapper;
+    this.executor = executor;
     hidden = false;
     horizontalOffset = 0;
     verticalOffset = 0;
   }
-
-  // TODO(534859248): Call callbacks using executor service.
 
   public void loadAd(final NativeAdRequest request) {
     adLoaderWrapper.load(
@@ -131,17 +144,23 @@ public class UnityNativeTemplateAd {
           @Override
           public void onNativeAdLoaded(@NonNull NativeAd ad) {
             nativeAd = ad;
-            if (callback != null) {
-              callback.onNativeAdLoaded();
-            }
+            executor.execute(
+                () -> {
+                  if (callback != null) {
+                    callback.onNativeAdLoaded();
+                  }
+                });
             setAdEventsListener(nativeAd);
           }
 
           @Override
           public void onAdFailedToLoad(@NonNull LoadAdError adError) {
-            if (callback != null) {
-              callback.onNativeAdFailedToLoad(adError);
-            }
+            executor.execute(
+                () -> {
+                  if (callback != null) {
+                    callback.onNativeAdFailedToLoad(adError);
+                  }
+                });
           }
         });
   }
@@ -151,47 +170,55 @@ public class UnityNativeTemplateAd {
         new NativeAdEventCallback() {
           @Override
           public void onAdImpression() {
-            if (callback != null) {
-              callback.onAdImpression();
-            }
+            executor.execute(
+                () -> {
+                  if (callback != null) {
+                    callback.onAdImpression();
+                  }
+                });
           }
 
           @Override
           public void onAdClicked() {
-            if (callback != null) {
-              callback.onAdClicked();
-            }
+            executor.execute(
+                () -> {
+                  if (callback != null) {
+                    callback.onAdClicked();
+                  }
+                });
           }
 
           @Override
           public void onAdShowedFullScreenContent() {
-            if (callback != null) {
-              callback.onAdShowedFullScreenContent();
-            }
+            executor.execute(
+                () -> {
+                  if (callback != null) {
+                    callback.onAdShowedFullScreenContent();
+                  }
+                });
           }
 
           @Override
           public void onAdDismissedFullScreenContent() {
-            if (callback != null) {
-              callback.onAdDismissedFullScreenContent();
-            }
+            executor.execute(
+                () -> {
+                  if (callback != null) {
+                    callback.onAdDismissedFullScreenContent();
+                  }
+                });
           }
 
           @Override
           public void onAdPaid(@NonNull AdValue adValue) {
-            new Thread(
-                    new Runnable() {
-                      @Override
-                      public void run() {
-                        if (callback != null) {
-                          callback.onPaidEvent(
-                              Util.getAdValuePrecisionType(adValue.getPrecisionType()),
-                              adValue.getValueMicros(),
-                              adValue.getCurrencyCode());
-                        }
-                      }
-                    })
-                .start();
+            executor.execute(
+                () -> {
+                  if (callback != null) {
+                    callback.onPaidEvent(
+                        Util.getAdValuePrecisionType(adValue.getPrecisionType()),
+                        adValue.getValueMicros(),
+                        adValue.getCurrencyCode());
+                  }
+                });
           }
         });
   }
