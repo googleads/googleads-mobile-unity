@@ -1,5 +1,13 @@
 Google Mobile Ads Unity Plugin Change Log
 
+
+**************
+Version 9.9.9
+**************
+
+- Updated the GMA iOS SDK dependency version to 12.0.0.
+- Updated the GMA Android SDK dependency version to 24.0.0.
+
 **************
 Version 11.2.0
 **************
