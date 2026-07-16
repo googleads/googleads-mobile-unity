@@ -51,35 +51,17 @@ namespace GoogleMobileAds.Android
         {
             using (_tracer.StartTrace("NextGenMobileAdsClient.Initialize"))
             {
+                if (!MobileAdsEventExecutor.IsOnMainThread())
+                {
+                    UnityEngine.Debug.LogError(
+                        "MobileAds.Initialize() was called on a non-main thread! Please make sure that you are calling this method from the main thread.");
+                    return;
+                }
                 _initCompleteAction = initCompleteAction;
-
-                Task.Run(() => {
-                    using (_tracer.StartTrace("AttachCurrentThread"))
-                    {
-                        int env = AndroidJNI.AttachCurrentThread();
-                        if (env < 0)
-                        {
-                            UnityEngine.Debug.LogError("Failed to attach current thread to JVM.");
-                            return;
-                        }
-                    }
-
-                    try
-                    {
-                        _mobileAdsClass.CallStatic("initialize",
+                _mobileAdsClass.CallStatic("initialize",
                                                  Utils.GetCurrentActivityAndroidJavaObject(),
                                                  this);
-                    }
-                    finally
-                    {
-                        AndroidJNI.DetachCurrentThread();
-                    }
-                });
             }
-            _insightsEmitter.Emit(new Insight()
-            {
-                Name = Insight.CuiName.SdkInitialized
-            });
         }
 
         public void DisableMediationInitialization()
@@ -172,6 +154,10 @@ namespace GoogleMobileAds.Android
             {
                 IInitializationStatusClient statusClient = new NextGenInitializationStatusClient(initStatus);
                 _initCompleteAction(statusClient);
+                _insightsEmitter.Emit(new Insight()
+                {
+                    Name = Insight.CuiName.SdkInitialized
+                });
             }
         }
 
