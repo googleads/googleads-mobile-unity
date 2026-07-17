@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 using GoogleMobileAds.Api;
+using GoogleMobileAds.Common;
 
 namespace GoogleMobileAds.Sample
 {
@@ -135,8 +136,11 @@ namespace GoogleMobileAds.Sample
                 Debug.Log("Banner view loaded an ad with response : "
                     + _bannerView.GetResponseInfo());
 
-                // Inform the UI that the ad is ready.
-                AdLoadedStatus?.SetActive(true);
+                MobileAdsEventExecutor.ExecuteInUpdate(() =>
+                {
+                    // Inform the UI that the ad is ready.
+                    AdLoadedStatus?.SetActive(true);
+                });
             };
             // Raised when an ad fails to load into the banner view.
             _bannerView.OnBannerAdLoadFailed += (LoadAdError error) =>
@@ -146,9 +150,20 @@ namespace GoogleMobileAds.Sample
             // Raised when the ad is estimated to have earned money.
             _bannerView.OnAdPaid += (AdValue adValue) =>
             {
+                // This log is executed off the Unity main thread.
+                // Write all time-sensitive code before ExecuteInUpdate().
                 Debug.Log(String.Format("Banner view paid {0} {1}.",
                     adValue.Value,
                     adValue.CurrencyCode));
+
+                MobileAdsEventExecutor.ExecuteInUpdate(() =>
+                {
+                    // This callback may be delayed on Android until the user
+                    // returns to the app. Place all code that interacts with
+                    // Unity UI and GameObjects inside this callback.
+                    Debug.Log("Banner view paid callback " +
+                        "invoked inside ExecuteInUpdate.");
+                });
             };
             // Raised when an impression is recorded for an ad.
             _bannerView.OnAdImpressionRecorded += () =>

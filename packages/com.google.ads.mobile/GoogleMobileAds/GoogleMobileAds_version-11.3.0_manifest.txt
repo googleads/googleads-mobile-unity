@@ -63,5 +63,9 @@ Assets/Plugins/Android/googlemobileads-unity.aar
 Assets/Plugins/iOS/GADUAdNetworkExtras.h
 Assets/Plugins/iOS/NativeTemplates/GADTMediumTemplateView.xib
 Assets/Plugins/iOS/NativeTemplates/GADTSmallTemplateView.xib
-Assets/Plugins/iOS/unity-plugin-library.a
+Assets/Plugins/iOS/unity-plugin-library.xcframework/Info.plist
+Assets/Plugins/iOS/unity-plugin-library.xcframework/ios-arm64/unity-plugin-library.framework/Info.plist
+Assets/Plugins/iOS/unity-plugin-library.xcframework/ios-arm64/unity-plugin-library.framework/unity-plugin-library
+Assets/Plugins/iOS/unity-plugin-library.xcframework/ios-arm64_x86_64-simulator/unity-plugin-library.framework/Info.plist
+Assets/Plugins/iOS/unity-plugin-library.xcframework/ios-arm64_x86_64-simulator/unity-plugin-library.framework/unity-plugin-library
 Assets/package.json
