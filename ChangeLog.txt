@@ -14,6 +14,7 @@ Version 11.3.0
 - Added `AgeRestrictedTreatment` configuration to `RequestConfiguration`.
 - Deprecated `TagForChildDirectedTreatment` and `TagForUnderAgeOfConsent` fields in favor of `AgeRestrictedTreatment`.
 - Added `androidx.fragment` dependency requirements for Android builds.
+- Prevent garbage collection of Android Bundle keys while making AndroidJNI calls.
 
 **************
 Version 11.2.0

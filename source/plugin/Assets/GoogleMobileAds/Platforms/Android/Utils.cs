@@ -257,6 +257,8 @@ namespace GoogleMobileAds.Android
                 string val = androidBundle.Call<string>("getString", key);
                 dict.Add(key, val);
             }
+            GC.KeepAlive(bundleKeyArray);
+            GC.KeepAlive(bundleKeySet);
             return dict;
         }
 
