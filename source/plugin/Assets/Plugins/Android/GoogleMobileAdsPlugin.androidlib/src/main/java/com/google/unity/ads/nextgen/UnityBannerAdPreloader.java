@@ -102,7 +102,7 @@ public class UnityBannerAdPreloader {
       return null;
     }
     AdWrapper<BannerAd> preloadedWrapper =
-        new AdWrapper<BannerAd>(
+        new AdWrapper<>(
             new AdWrapper.AdLoader<BannerAd>() {
               @Override
               public void load(AdRequest adRequest, AdLoadCallback<BannerAd> loadCallback) {

@@ -39,7 +39,7 @@ class AdWrapper<T> {
 
   /** Creates a new AdWrapper for loading BannerAds. */
   public static AdWrapper<BannerAd> forBanner() {
-    return new AdWrapper<BannerAd>(
+    return new AdWrapper<>(
         new AdLoader<BannerAd>() {
           @Override
           public void load(AdRequest adRequest, AdLoadCallback<BannerAd> callback) {
