@@ -15,7 +15,6 @@ import com.google.android.libraries.ads.mobile.sdk.common.LoadAdError;
 import com.google.android.libraries.ads.mobile.sdk.common.ResponseInfo;
 import com.google.unity.ads.PluginUtils;
 import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
 
 /** AppOpen ad implementation for the Google Mobile Ads Unity plugin. */
 public class UnityAppOpenAd extends UnityAdBase<AppOpenAd, UnityAppOpenAdCallback> {
@@ -26,11 +25,11 @@ public class UnityAppOpenAd extends UnityAdBase<AppOpenAd, UnityAppOpenAdCallbac
   private final AdWrapper<AppOpenAd> adWrapper;
 
   public UnityAppOpenAd(Activity activity, UnityAppOpenAdCallback callback) {
-    this(activity, callback, AdWrapper.forAppOpen(), Executors.newSingleThreadExecutor());
+    this(activity, callback, AdWrapper.forAppOpen(), UnityExecutor.getExecutor());
   }
 
   public UnityAppOpenAd(Activity activity, UnityAppOpenAdCallback callback, AppOpenAd appOpenAd) {
-    this(activity, callback, AdWrapper.forAppOpen(), Executors.newSingleThreadExecutor());
+    this(activity, callback, AdWrapper.forAppOpen(), UnityExecutor.getExecutor());
     this.appOpenAd = appOpenAd;
   }
 

@@ -34,7 +34,6 @@ import com.google.android.libraries.ads.mobile.sdk.rewardedinterstitial.Rewarded
 import com.google.android.libraries.ads.mobile.sdk.rewardedinterstitial.RewardedInterstitialAdEventCallback;
 import com.google.unity.ads.PluginUtils;
 import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
 
 /** Rewarded ad implementation for the Google Mobile Ads Unity plugin. */
 public class UnityRewardedInterstitialAd
@@ -44,22 +43,14 @@ public class UnityRewardedInterstitialAd
 
   public UnityRewardedInterstitialAd(
       Activity activity, UnityRewardedInterstitialAdCallback callback) {
-    this(
-        activity,
-        callback,
-        AdWrapper.forRewardedInterstitial(),
-        Executors.newSingleThreadExecutor());
+    this(activity, callback, AdWrapper.forRewardedInterstitial(), UnityExecutor.getExecutor());
   }
 
   public UnityRewardedInterstitialAd(
       Activity activity,
       UnityRewardedInterstitialAdCallback callback,
       RewardedInterstitialAd rewardedInterstitialAd) {
-    this(
-        activity,
-        callback,
-        AdWrapper.forRewardedInterstitial(),
-        Executors.newSingleThreadExecutor());
+    this(activity, callback, AdWrapper.forRewardedInterstitial(), UnityExecutor.getExecutor());
     this.ad = rewardedInterstitialAd;
   }
 

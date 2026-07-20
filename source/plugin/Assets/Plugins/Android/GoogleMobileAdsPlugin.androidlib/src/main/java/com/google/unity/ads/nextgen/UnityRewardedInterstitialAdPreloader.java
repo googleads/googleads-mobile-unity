@@ -43,7 +43,7 @@ public class UnityRewardedInterstitialAdPreloader {
         activity,
         preloadCallback,
         new RewardedInterstitialAdPreloaderWrapper(),
-        PreloaderExecutor.getExecutor());
+        UnityExecutor.getPreloaderExecutor());
   }
 
   @VisibleForTesting
