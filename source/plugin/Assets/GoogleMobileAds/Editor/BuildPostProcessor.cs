@@ -28,6 +28,13 @@ namespace GoogleMobileAds.Editor {
                                  "GMA_PREVIEW_FEATURES=1");
       }
 
+      // Fix "Undefined symbol" compilation errors on new Unity iOS split configurations.
+      // Defers symbol checks specifically for Unity's engine callback runtime hooks
+      // while preserving link-time verification checks on all other references.
+      project.AddBuildProperty(unityFrameworkTargetGuid, "OTHER_LDFLAGS", "-Wl,-U,_UnitySendMessage");
+      project.AddBuildProperty(unityFrameworkTargetGuid, "OTHER_LDFLAGS", "-Wl,-U,_UnityPause");
+      project.AddBuildProperty(unityFrameworkTargetGuid, "OTHER_LDFLAGS", "-Wl,-U,_UnityIsPaused");
+
       project.WriteToFile(projectPath);
     }
   }
