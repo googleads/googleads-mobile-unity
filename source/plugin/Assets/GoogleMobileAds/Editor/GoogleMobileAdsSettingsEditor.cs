@@ -191,7 +191,6 @@ namespace GoogleMobileAds.Editor
             MessageType.Info);
       }
 
-
       EditorGUILayout.PropertyField(
           _disableOptimizeInitialization,
           new GUIContent(localization.ForKey("DISABLE_OPTIMIZE_INITIALIZATION_SETTING")));
