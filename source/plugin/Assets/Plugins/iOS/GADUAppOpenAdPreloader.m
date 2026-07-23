@@ -21,7 +21,7 @@
 #import <CoreGraphics/CoreGraphics.h>
 #import <UIKit/UIKit.h>
 
-#import "GADAppOpenAdPreloader_Beta.h"
+#import <GoogleMobileAds/GADAppOpenAdPreloader_Beta.h>
 #import "GADUAppOpenAdPreloader.h"
 #import "UnityInterface.h"
 
