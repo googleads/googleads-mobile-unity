@@ -126,7 +126,7 @@ namespace GoogleMobileAds.Api
         /// Returns a preloaded ad and removes it from the cache.
         /// </summary>
         /// <param name="preloadId">
-        /// The ad's preload ID.
+        /// A string identifier used to preload the ads for that configuration.
         /// </param>
         /// <returns>
         /// The preloaded ad for the given preload ID, or null if no ad is available.
@@ -143,6 +143,26 @@ namespace GoogleMobileAds.Api
                 return null;
             }
             return new RewardedAd(client);
+        }
+
+        /// <summary>
+        /// Returns the ResponseInfo of a preloaded ad for the given preload ID without
+        /// dequeuing it, or null if no ad is available.
+        /// </summary>
+        /// <param name="preloadId">
+        /// A string identifier used to preload the ads for that configuration.
+        /// </param>
+        /// <returns>
+        /// The ResponseInfo of the preloaded ad for the given preload ID, or null if no ad is available.
+        /// </returns>
+        public static ResponseInfo PeekAdResponseInfo(string preloadId)
+        {
+            var responseInfoClient = _client.PeekAdResponseInfo(preloadId);
+            if (responseInfoClient == null)
+            {
+                return null;
+            }
+            return new ResponseInfo(responseInfoClient);
         }
 
         /// <summary>
