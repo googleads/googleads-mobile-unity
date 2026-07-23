@@ -63,6 +63,9 @@
 /// available.
 - (nullable GADRewardedAd *)adWithPreloadID:(nonnull NSString *)preloadID rewardedAdClient:(_Nonnull GADUTypeRewardedAdClientRef *_Nonnull)rewardedAdClient;
 
+/// Returns the responseInfo of a preloaded rewarded ad for the given preload ID.
+- (nullable GADResponseInfo *)adResponseInfoWithPreloadID:(nonnull NSString *)preloadID;
+
 /// Returns the corresponding configuration for the given preload ID.
 - (nullable GADUPreloadConfigurationV2 *)configurationWithPreloadID:(nonnull NSString *)preloadID;
 
