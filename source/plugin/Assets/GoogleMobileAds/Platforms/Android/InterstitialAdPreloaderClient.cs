@@ -70,6 +70,13 @@ namespace GoogleMobileAds.Android
             return interstitialClient;
         }
 
+        public IResponseInfoClient PeekAdResponseInfo(string preloadId)
+        {
+            UnityEngine.Debug.LogError(
+                "PeekAdResponseInfo API is not available on the Legacy version of Google Mobile Ads Android SDK.");
+            return null;
+        }
+
         public int GetNumAdsAvailable(string preloadId)
         {
             return _unityInterstitialPreloader.Call<int>("getNumAdsAvailable", preloadId);
