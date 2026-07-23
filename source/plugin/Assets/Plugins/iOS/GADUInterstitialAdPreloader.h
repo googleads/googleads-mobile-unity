@@ -65,6 +65,10 @@
                            interstitialAdClient:(_Nonnull GADUTypeInterstitialClientRef *_Nonnull)
                                                     interstitialAdClient;
 
+/// Returns the response info of a preloaded interstitial ad for the given preload ID without
+/// removing the ad from the queue. Returns nil if an ad is not available.
+- (nullable GADResponseInfo *)adResponseInfoWithPreloadID:(nonnull NSString *)preloadID;
+
 /// Returns the corresponding configuration for the given preload ID.
 - (nullable GADUPreloadConfigurationV2 *)configurationWithPreloadID:(nonnull NSString *)preloadID;
 
