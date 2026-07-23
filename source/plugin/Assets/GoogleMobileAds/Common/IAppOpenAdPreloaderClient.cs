@@ -77,6 +77,18 @@ namespace GoogleMobileAds.Common
         IAppOpenAdClient DequeueAd(string preloadId);
 
         /// <summary>
+        /// Returns the ResponseInfo of an ad available for the given preload ID without
+        /// dequeuing it, or null if no ad is available.
+        /// </summary>
+        /// <param name="preloadId">
+        /// A string identifier used to preload the ads for that configuration.
+        /// </param>
+        /// <returns>
+        /// The ResponseInfo of the preloaded ad for the given preload ID, or null if no ad is available.
+        /// </returns>
+        IResponseInfoClient PeekAdResponseInfo(string preloadId);
+
+        /// <summary>
         /// Get the number of ads available for the given preload ID.
         /// </summary>
         /// <param name="preloadId">
