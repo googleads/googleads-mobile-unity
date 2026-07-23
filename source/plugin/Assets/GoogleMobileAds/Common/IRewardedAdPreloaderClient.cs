@@ -65,7 +65,7 @@ namespace GoogleMobileAds.Common
         /// Returns a preloaded ad and removes it from the cache.
         /// </summary>
         /// <param name="preloadId">
-        /// The ad's preload ID.
+        /// A string identifier used to preload the ads for that configuration.
         /// </param>
         /// <returns>
         /// The preloaded ad for the given preload ID, or null if no ad is available.
@@ -75,6 +75,18 @@ namespace GoogleMobileAds.Common
         /// The order returned is not guaranteed to match the order of <c>OnAdAvailable</c> events.
         /// </remarks>
         IRewardedAdClient DequeueAd(string preloadId);
+
+        /// <summary>
+        /// Returns the ResponseInfo of an ad available for the given preload ID without
+        /// dequeuing it, or null if no ad is available.
+        /// </summary>
+        /// <param name="preloadId">
+        /// A string identifier used to preload the ads for that configuration.
+        /// </param>
+        /// <returns>
+        /// The ResponseInfo of the preloaded ad for the given preload ID, or null if no ad is available.
+        /// </returns>
+        IResponseInfoClient PeekAdResponseInfo(string preloadId);
 
         /// <summary>
         /// Get the number of ads available for the given preload ID.

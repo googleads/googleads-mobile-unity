@@ -79,6 +79,9 @@
                            appOpenAdClient:
                                (_Nonnull GADUTypeAppOpenAdClientRef *_Nonnull)appOpenAdClient;
 
+/// Returns the responseInfo of a preloaded app open ad for the given preload ID.
+- (nullable GADResponseInfo *)adResponseInfoWithPreloadID:(nonnull NSString *)preloadID;
+
 /// Returns the corresponding configuration for the given preload ID.
 - (nullable GADUPreloadConfigurationV2 *)configurationWithPreloadID:(nonnull NSString *)preloadID;
 
