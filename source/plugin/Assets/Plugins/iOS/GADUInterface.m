@@ -1155,6 +1155,23 @@ GADUTypeInterstitialRef GADUInterstitialAdPreloaderDequeueAd(
   return nil;
 }
 
+GADUTypeResponseInfoRef GADUInterstitialAdPreloaderPeekAdResponseInfo(
+    GADUTypeInterstitialAdPreloaderClientRef interstitialAdPreloader, const char *preloadId) {
+  GADUInterstitialAdPreloader *internalInterstitialAdPreloader =
+      (__bridge GADUInterstitialAdPreloader *)interstitialAdPreloader;
+  if (!internalInterstitialAdPreloader) {
+    return nil;
+  }
+  GADResponseInfo *responseInfo = [internalInterstitialAdPreloader
+      adResponseInfoWithPreloadID:GADUStringFromUTF8String(preloadId)];
+  if (responseInfo) {
+    GADUObjectCache *cache = GADUObjectCache.sharedInstance;
+    cache[responseInfo.gadu_referenceKey] = responseInfo;
+    return (__bridge GADUTypeResponseInfoRef)responseInfo;
+  }
+  return nil;
+}
+
 unsigned long GADUInterstitialAdPreloaderGetNumAdsAvailable(
     GADUTypeInterstitialAdPreloaderClientRef interstitialAdPreloader, const char *preloadId) {
   GADUInterstitialAdPreloader *internalInterstitialAdPreloader =

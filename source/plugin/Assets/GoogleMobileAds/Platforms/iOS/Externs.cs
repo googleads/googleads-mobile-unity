@@ -415,6 +415,10 @@ namespace GoogleMobileAds.iOS
           IntPtr interstitialAdPreloader, string preloadId, IntPtr appOpenAdClientPtr);
 
       [DllImport("__Internal")]
+      internal static extern IntPtr GADUInterstitialAdPreloaderPeekAdResponseInfo(
+          IntPtr interstitialAdPreloader, string preloadId);
+
+      [DllImport("__Internal")]
       internal static extern int GADUInterstitialAdPreloaderGetNumAdsAvailable(
           IntPtr interstitialAdPreloader, string preloadId);
 
