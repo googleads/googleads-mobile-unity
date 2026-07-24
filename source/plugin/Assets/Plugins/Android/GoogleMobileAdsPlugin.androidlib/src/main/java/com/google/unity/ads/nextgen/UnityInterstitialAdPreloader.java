@@ -105,6 +105,11 @@ public class UnityInterstitialAdPreloader {
   }
 
   @Nullable
+  public ResponseInfo peekAdResponseInfo(String preloadId) {
+    return preloaderWrapper.peekAdResponseInfo(preloadId);
+  }
+
+  @Nullable
   public PreloadConfiguration getConfiguration(String preloadId) {
     return preloaderWrapper.getConfiguration(preloadId);
   }
@@ -138,6 +143,11 @@ public class UnityInterstitialAdPreloader {
 
     public InterstitialAd pollAd(String preloadId) {
       return InterstitialAdPreloader.pollAd(preloadId);
+    }
+
+    @Nullable
+    public ResponseInfo peekAdResponseInfo(String preloadId) {
+      return InterstitialAdPreloader.peekAdResponseInfo(preloadId);
     }
 
     public PreloadConfiguration getConfiguration(String preloadId) {
