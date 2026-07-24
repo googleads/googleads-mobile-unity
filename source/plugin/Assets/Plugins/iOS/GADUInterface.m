@@ -959,6 +959,23 @@ GADUTypeAppOpenAdRef GADUAppOpenAdPreloaderDequeueAd(
   return nil;
 }
 
+GADUTypeResponseInfoRef GADUAppOpenAdPreloaderPeekAdResponseInfo(
+    GADUTypeAppOpenAdPreloaderRef appOpenAdPreloader, const char *preloadId) {
+  GADUAppOpenAdPreloader *internalAppOpenAdPreloader =
+      (__bridge GADUAppOpenAdPreloader *)appOpenAdPreloader;
+  if (!internalAppOpenAdPreloader) {
+    return nil;
+  }
+  GADResponseInfo *responseInfo = [internalAppOpenAdPreloader
+      adResponseInfoWithPreloadID:GADUStringFromUTF8String(preloadId)];
+  if (responseInfo) {
+    GADUObjectCache *cache = GADUObjectCache.sharedInstance;
+    cache[responseInfo.gadu_referenceKey] = responseInfo;
+    return (__bridge GADUTypeResponseInfoRef)responseInfo;
+  }
+  return nil;
+}
+
 unsigned long GADUAppOpenAdPreloaderGetNumAdsAvailable(
     GADUTypeAppOpenAdPreloaderRef appOpenAdPreloader, const char *preloadId) {
   GADUAppOpenAdPreloader *internalAppOpenAdPreloader =
@@ -1053,6 +1070,23 @@ GADUTypeRewardedAdRef GADURewardedAdPreloaderDequeueAd(
     GADUObjectCache *cache = GADUObjectCache.sharedInstance;
     cache[rewardedAd.gadu_referenceKey] = rewardedAd;
     return (__bridge GADUTypeRewardedAdRef)rewardedAd;
+  }
+  return nil;
+}
+
+GADUTypeResponseInfoRef GADURewardedAdPreloaderPeekAdResponseInfo(
+    GADUTypeRewardedAdPreloaderClientRef rewardedAdPreloader, const char *preloadId) {
+  GADURewardedAdPreloader *internalRewardedAdPreloader =
+      (__bridge GADURewardedAdPreloader *)rewardedAdPreloader;
+  if (!internalRewardedAdPreloader) {
+    return nil;
+  }
+  GADResponseInfo *responseInfo =
+      [internalRewardedAdPreloader adResponseInfoWithPreloadID:GADUStringFromUTF8String(preloadId)];
+  if (responseInfo) {
+    GADUObjectCache *cache = GADUObjectCache.sharedInstance;
+    cache[responseInfo.gadu_referenceKey] = responseInfo;
+    return (__bridge GADUTypeResponseInfoRef)responseInfo;
   }
   return nil;
 }

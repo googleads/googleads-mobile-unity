@@ -122,6 +122,21 @@ namespace GoogleMobileAds.iOS
             return appOpenAdClient;
         }
 
+        public IResponseInfoClient PeekAdResponseInfo(string preloadId)
+        {
+            if (AppOpenAdPreloaderPtr == IntPtr.Zero)
+            {
+                return null;
+            }
+            var responseInfoPtr = Externs.GADUAppOpenAdPreloaderPeekAdResponseInfo(
+                    AppOpenAdPreloaderPtr, preloadId);
+            if (responseInfoPtr == IntPtr.Zero)
+            {
+                return null;
+            }
+            return new ResponseInfoClient(responseInfoPtr);
+        }
+
         public int GetNumAdsAvailable(string preloadId)
         {
             if (AppOpenAdPreloaderPtr == IntPtr.Zero)

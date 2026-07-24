@@ -111,6 +111,18 @@ public final class UnityInterstitialAdPreloaderTest {
   }
 
   @Test
+  public void testPeekAdResponseInfo() {
+    ResponseInfo responseInfo =
+        new ResponseInfo("AdapterName", "responseId", new Bundle(), null, new ArrayList<>());
+    when(mockWrapper.peekAdResponseInfo(PRELOAD_ID)).thenReturn(responseInfo);
+
+    ResponseInfo result = unityInterstitialAdPreloader.peekAdResponseInfo(PRELOAD_ID);
+
+    assertThat(result).isEqualTo(responseInfo);
+    verify(mockWrapper).peekAdResponseInfo(PRELOAD_ID);
+  }
+
+  @Test
   public void testGetNumAdsAvailable() {
     int unused = unityInterstitialAdPreloader.getNumAdsAvailable(PRELOAD_ID);
     verify(mockWrapper).getNumAdsAvailable(PRELOAD_ID);

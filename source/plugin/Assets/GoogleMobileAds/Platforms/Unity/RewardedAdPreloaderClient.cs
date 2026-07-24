@@ -117,6 +117,17 @@ namespace GoogleMobileAds.Unity
             return null;
         }
 
+        public IResponseInfoClient PeekAdResponseInfo(string preloadId)
+        {
+            Queue<RewardedAdClient> queue;
+            if (_bufferedAds.TryGetValue(preloadId, out queue) && queue.Count > 0)
+            {
+                RewardedAdClient adClient = queue.Peek();
+                return adClient.GetResponseInfoClient();
+            }
+            return null;
+        }
+
         public int GetNumAdsAvailable(string preloadId)
         {
             Queue<RewardedAdClient> queue;
