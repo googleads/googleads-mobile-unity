@@ -50,6 +50,10 @@
     return nil;
 }
 
+- (nullable GADResponseInfo *)adResponseInfoWithPreloadID:(nonnull NSString *)preloadID {
+  return [GADRewardedAdPreloader.sharedInstance adResponseInfoWithPreloadID:preloadID];
+}
+
 - (nullable GADUPreloadConfigurationV2 *)configurationWithPreloadID:(nonnull NSString *)preloadID {
   GADPreloadConfigurationV2 *config = [GADRewardedAdPreloader.sharedInstance configurationWithPreloadID:preloadID];
   if (!config) {

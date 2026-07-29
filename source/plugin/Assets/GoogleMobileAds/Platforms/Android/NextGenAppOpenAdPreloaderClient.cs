@@ -62,6 +62,15 @@ namespace GoogleMobileAds.Android {
       return appOpenAdClient;
     }
 
+    public IResponseInfoClient PeekAdResponseInfo(string preloadId) {
+      var responseInfo = _unityAppOpenAdPreloader.Call<AndroidJavaObject>(
+          "peekAdResponseInfo", preloadId);
+      if (responseInfo == null) {
+        return null;
+      }
+      return new NextGenResponseInfoClient(responseInfo);
+    }
+
     public int GetNumAdsAvailable(string preloadId) {
       return _unityAppOpenAdPreloader.Call<int>("getNumAdsAvailable", preloadId);
     }
