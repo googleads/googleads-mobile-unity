@@ -30,6 +30,7 @@ namespace GoogleMobileAds.Samples.Utility
             new SceneInfo("Rewarded Interstitial Ad", "GoogleRewardedInterstitialAdScene"),
             new SceneInfo("App Open Ad", "GoogleAppOpenAdScene"),
             new SceneInfo("Native Overlay Ad", "GoogleNativeOverlayAdScene"),
+            new SceneInfo("Preload Ads", "GooglePreloadAdsScene"),
         };
 
         [Tooltip("Prefab for the SceneMenuButton.")]
