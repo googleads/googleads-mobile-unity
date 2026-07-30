@@ -1057,6 +1057,23 @@ GADUTypeRewardedAdRef GADURewardedAdPreloaderDequeueAd(
   return nil;
 }
 
+GADUTypeResponseInfoRef GADURewardedAdPreloaderPeekAdResponseInfo(
+    GADUTypeRewardedAdPreloaderClientRef rewardedAdPreloader, const char *preloadId) {
+  GADURewardedAdPreloader *internalRewardedAdPreloader =
+      (__bridge GADURewardedAdPreloader *)rewardedAdPreloader;
+  if (!internalRewardedAdPreloader) {
+    return nil;
+  }
+  GADResponseInfo *responseInfo =
+      [internalRewardedAdPreloader adResponseInfoWithPreloadID:GADUStringFromUTF8String(preloadId)];
+  if (responseInfo) {
+    GADUObjectCache *cache = GADUObjectCache.sharedInstance;
+    cache[responseInfo.gadu_referenceKey] = responseInfo;
+    return (__bridge GADUTypeResponseInfoRef)responseInfo;
+  }
+  return nil;
+}
+
 unsigned long GADURewardedAdPreloaderGetNumAdsAvailable(
     GADUTypeRewardedAdPreloaderClientRef rewardedAdPreloader, const char *preloadId) {
   GADURewardedAdPreloader *internalRewardedAdPreloader =
