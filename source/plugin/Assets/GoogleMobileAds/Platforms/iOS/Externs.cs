@@ -326,6 +326,10 @@ namespace GoogleMobileAds.iOS
                                                                     IntPtr appOpenAdClientPtr);
 
       [DllImport("__Internal")]
+      internal static extern IntPtr GADUAppOpenAdPreloaderPeekAdResponseInfo(
+          IntPtr appOpenAdPreloader, string preloadId);
+
+      [DllImport("__Internal")]
       internal static extern int GADUAppOpenAdPreloaderGetNumAdsAvailable(IntPtr appOpenAdPreloader,
                                                                           string preloadId);
 
