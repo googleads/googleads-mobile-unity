@@ -34,6 +34,7 @@ namespace GoogleMobileAds.Editor
     public static void OpenInspector()
     {
       Selection.activeObject = GoogleMobileAdsSettings.LoadInstance();
+
     }
 
     public void OnEnable()
