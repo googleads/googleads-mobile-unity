@@ -18,7 +18,6 @@ import com.google.android.libraries.ads.mobile.sdk.rewarded.RewardedAdEventCallb
 import com.google.android.libraries.ads.mobile.sdk.rewarded.ServerSideVerificationOptions;
 import com.google.unity.ads.PluginUtils;
 import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
 
 /** Rewarded ad implementation for the Google Mobile Ads Unity plugin. */
 public class UnityRewardedAd extends UnityAdBase<RewardedAd, UnityRewardedAdCallback> {
@@ -26,12 +25,12 @@ public class UnityRewardedAd extends UnityAdBase<RewardedAd, UnityRewardedAdCall
   private final AdWrapper<RewardedAd> adWrapper;
 
   public UnityRewardedAd(Activity activity, UnityRewardedAdCallback callback) {
-    this(activity, callback, AdWrapper.forRewarded(), Executors.newSingleThreadExecutor());
+    this(activity, callback, AdWrapper.forRewarded(), UnityExecutor.getExecutor());
   }
 
   public UnityRewardedAd(
       Activity activity, UnityRewardedAdCallback callback, RewardedAd rewardedAd) {
-    this(activity, callback, AdWrapper.forRewarded(), Executors.newSingleThreadExecutor());
+    this(activity, callback, AdWrapper.forRewarded(), UnityExecutor.getExecutor());
     this.ad = rewardedAd;
   }
 

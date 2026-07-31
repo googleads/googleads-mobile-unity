@@ -35,7 +35,7 @@ public class UnityInterstitialAdPreloader {
         activity,
         preloadCallback,
         new InterstitialAdPreloaderWrapper(),
-        PreloaderExecutor.getExecutor());
+        UnityExecutor.getPreloaderExecutor());
   }
 
   @VisibleForTesting

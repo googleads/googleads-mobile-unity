@@ -35,7 +35,7 @@ public class UnityAppOpenAdPreloader {
         activity,
         preloadCallback,
         new AppOpenAdPreloaderWrapper(),
-        PreloaderExecutor.getExecutor());
+        UnityExecutor.getPreloaderExecutor());
   }
 
   @VisibleForTesting

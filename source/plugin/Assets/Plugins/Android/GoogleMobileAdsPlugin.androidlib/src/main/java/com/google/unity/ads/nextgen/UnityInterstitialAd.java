@@ -15,7 +15,6 @@ import com.google.android.libraries.ads.mobile.sdk.interstitial.InterstitialAd;
 import com.google.android.libraries.ads.mobile.sdk.interstitial.InterstitialAdEventCallback;
 import com.google.unity.ads.PluginUtils;
 import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
 
 /** Interstitial ad implementation for the Google Mobile Ads Unity plugin. */
 public class UnityInterstitialAd extends UnityAdBase<InterstitialAd, UnityInterstitialAdCallback> {
@@ -23,12 +22,12 @@ public class UnityInterstitialAd extends UnityAdBase<InterstitialAd, UnityInters
   private final AdWrapper<InterstitialAd> adWrapper;
 
   public UnityInterstitialAd(Activity activity, UnityInterstitialAdCallback callback) {
-    this(activity, callback, AdWrapper.forInterstitial(), Executors.newSingleThreadExecutor());
+    this(activity, callback, AdWrapper.forInterstitial(), UnityExecutor.getExecutor());
   }
 
   public UnityInterstitialAd(
       Activity activity, UnityInterstitialAdCallback callback, InterstitialAd interstitialAd) {
-    this(activity, callback, AdWrapper.forInterstitial(), Executors.newSingleThreadExecutor());
+    this(activity, callback, AdWrapper.forInterstitial(), UnityExecutor.getExecutor());
     this.ad = interstitialAd;
   }
 

@@ -17,6 +17,7 @@
 package com.google.unity.ads.nextgen;
 
 import static com.google.common.truth.Truth.assertThat;
+import static com.google.common.util.concurrent.MoreExecutors.directExecutor;
 import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
@@ -113,7 +114,8 @@ public final class UnityNativeTemplateAdTest {
     GmaComponent unusedComponent =
         GmaComponent.Companion.getInstance(activity, config, activity.getClass());
 
-    unityNativeTemplateAd = new UnityNativeTemplateAd(activity, mockCallback);
+    unityNativeTemplateAd =
+        new UnityNativeTemplateAd(activity, mockCallback, mockNativeAdLoader, directExecutor());
     Field nativeAdField = UnityNativeTemplateAd.class.getDeclaredField("nativeAd");
     nativeAdField.setAccessible(true);
     nativeAdField.set(unityNativeTemplateAd, mockNativeAd);
@@ -754,7 +756,7 @@ public final class UnityNativeTemplateAdTest {
   @Test
   public void testLoadAd_onNativeAdLoaded_invokesCallbackAndSetsListener() {
     UnityNativeTemplateAd client =
-        new UnityNativeTemplateAd(activity, mockCallback, mockNativeAdLoader);
+        new UnityNativeTemplateAd(activity, mockCallback, mockNativeAdLoader, directExecutor());
 
     NativeAdRequest request =
         new NativeAdRequest.Builder(TEST_AD_UNIT, ImmutableList.of(NativeAd.NativeAdType.NATIVE))
@@ -779,7 +781,7 @@ public final class UnityNativeTemplateAdTest {
   @Test
   public void testLoadAd_onAdFailedToLoad_invokesFailedCallback() {
     UnityNativeTemplateAd client =
-        new UnityNativeTemplateAd(activity, mockCallback, mockNativeAdLoader);
+        new UnityNativeTemplateAd(activity, mockCallback, mockNativeAdLoader, directExecutor());
 
     NativeAdRequest request =
         new NativeAdRequest.Builder(TEST_AD_UNIT, ImmutableList.of(NativeAd.NativeAdType.NATIVE))
@@ -804,7 +806,7 @@ public final class UnityNativeTemplateAdTest {
   @Test
   public void testLoadAd_loadsRequest() {
     UnityNativeTemplateAd client =
-        new UnityNativeTemplateAd(activity, mockCallback, mockNativeAdLoader);
+        new UnityNativeTemplateAd(activity, mockCallback, mockNativeAdLoader, directExecutor());
 
     NativeAdRequest request =
         new NativeAdRequest.Builder(TEST_AD_UNIT, ImmutableList.of(NativeAd.NativeAdType.NATIVE))
@@ -821,7 +823,7 @@ public final class UnityNativeTemplateAdTest {
   @Test
   public void testLoadAd_runsOnCallingThread_notUIThread() throws Exception {
     UnityNativeTemplateAd client =
-        new UnityNativeTemplateAd(activity, mockCallback, mockNativeAdLoader);
+        new UnityNativeTemplateAd(activity, mockCallback, mockNativeAdLoader, directExecutor());
     NativeAdRequest request =
         new NativeAdRequest.Builder(TEST_AD_UNIT, ImmutableList.of(NativeAd.NativeAdType.NATIVE))
             .build();

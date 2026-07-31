@@ -35,7 +35,7 @@ public class UnityRewardedAdPreloader {
         activity,
         preloadCallback,
         new RewardedAdPreloaderWrapper(),
-        PreloaderExecutor.getExecutor());
+        UnityExecutor.getPreloaderExecutor());
   }
 
   @VisibleForTesting

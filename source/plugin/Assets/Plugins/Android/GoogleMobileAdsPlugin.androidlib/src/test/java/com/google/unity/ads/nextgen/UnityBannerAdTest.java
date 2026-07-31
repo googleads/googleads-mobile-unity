@@ -1,6 +1,7 @@
 package com.google.unity.ads.nextgen;
 
 import static com.google.common.truth.Truth.assertThat;
+import static com.google.common.util.concurrent.MoreExecutors.directExecutor;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.never;
@@ -60,7 +61,7 @@ public final class UnityBannerAdTest {
   @Before
   public void setUp() {
     activity = Robolectric.buildActivity(Activity.class).create().start().resume().visible().get();
-    unityBannerAd = new UnityBannerAd(activity, mockCallback, mockAdWrapper);
+    unityBannerAd = new UnityBannerAd(activity, mockCallback, mockAdWrapper, directExecutor());
     bannerAdRequest = new BannerAdRequest.Builder("test-ad-unit", AdSize.BANNER).build();
   }
 
@@ -417,7 +418,7 @@ public final class UnityBannerAdTest {
   @Config(sdk = 28)
   public void testGetSafeInsets_whenWindowIsNull_returnsZeroInsets() {
     shadowOf(activity).setWindow(null);
-    UnityBannerAd ad = new UnityBannerAd(activity, mockCallback, mockAdWrapper);
+    UnityBannerAd ad = new UnityBannerAd(activity, mockCallback, mockAdWrapper, directExecutor());
     ad.create(PluginUtils.POSITION_TOP);
 
     FrameLayout.LayoutParams params = ad.getLayoutParams();
