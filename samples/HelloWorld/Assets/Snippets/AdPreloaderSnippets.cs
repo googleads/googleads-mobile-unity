@@ -39,11 +39,12 @@ namespace GoogleMobileAds.Snippets
         void SetBufferSize()
         {
             // [START set_buffer_size]
+            // Define a PreloadConfiguration and set the buffer size to 2 preloaded ads.
             new PreloadConfiguration
             {
                 AdUnitId = AD_UNIT_ID,
                 Request = new AdRequest(),
-                BufferSize = 3
+                BufferSize = 2
             };
             // [END set_buffer_size]
         }
