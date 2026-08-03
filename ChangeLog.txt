@@ -1,6 +1,16 @@
 Google Mobile Ads Unity Plugin Change Log
 
 **************
+Version 11.4.0
+**************
+
+- Updated the GMA iOS SDK dependency version to 13.6.0.
+- Updated the GMA Android SDK dependency version to 25.4.0.
+- Added PeekAdResponseInfo API to AppOpenAdPreloader.
+- Used shared UnityExecutor for next-gen ad callbacks on Android.
+- Fixed Unity HelloWorld sample scene.
+
+**************
 Version 11.3.0
 **************
 
