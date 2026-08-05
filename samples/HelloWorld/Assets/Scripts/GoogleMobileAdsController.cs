@@ -81,7 +81,10 @@ namespace GoogleMobileAds.Samples
 
                 if (_consentController.CanRequestAds)
                 {
-                    InitializeGoogleMobileAds();
+                    MobileAdsEventExecutor.ExecuteInUpdate(() =>
+                    {
+                        InitializeGoogleMobileAds();
+                    });
                 }
             });
         }
