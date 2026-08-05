@@ -1,3 +1,5 @@
+// Copyright 2026 Google LLC
+
 using UnityEngine;
 using GoogleMobileAds.Api;
 using System.Collections.Generic;
@@ -27,6 +29,44 @@ namespace GoogleMobileAds.Snippets
             // [START set_request_configuration]
             MobileAds.SetRequestConfiguration(requestConfiguration);
             // [END set_request_configuration]
+        }
+
+#if false
+        // TODO(b/537425782): Remove #if false once AgeRestrictedTreatment is
+        // available in the released Unity package.
+        private void SetChildAgeTreatment()
+        {
+            // [START set_child_age_treatment]
+            RequestConfiguration requestConfiguration = new RequestConfiguration
+            {
+                // Indicate that ad requests should have child age treatment.
+                AgeRestrictedTreatment = AgeRestrictedTreatment.Child
+            };
+            MobileAds.SetRequestConfiguration(requestConfiguration);
+            // [END set_child_age_treatment]
+        }
+#endif
+
+        private void SetUnderAgeOfConsent()
+        {
+            // [START set_under_age_of_consent]
+            RequestConfiguration requestConfiguration = new RequestConfiguration
+            {
+                TagForUnderAgeOfConsent = TagForUnderAgeOfConsent.True
+            };
+            MobileAds.SetRequestConfiguration(requestConfiguration);
+            // [END set_under_age_of_consent]
+        }
+
+        private void SetAdContentFiltering()
+        {
+            // [START set_ad_content_filtering]
+            RequestConfiguration requestConfiguration = new RequestConfiguration
+            {
+                MaxAdContentRating = MaxAdContentRating.G
+            };
+            MobileAds.SetRequestConfiguration(requestConfiguration);
+            // [END set_ad_content_filtering]
         }
     }
 }
