@@ -63,8 +63,12 @@ namespace GoogleMobileAds.Android {
     }
 
     public IResponseInfoClient PeekAdResponseInfo(string preloadId) {
-      // TODO: Implement Android Peek API
-      return null;
+      var responseInfo = _unityAppOpenAdPreloader.Call<AndroidJavaObject>(
+          "peekAdResponseInfo", preloadId);
+      if (responseInfo == null) {
+        return null;
+      }
+      return new NextGenResponseInfoClient(responseInfo);
     }
 
     public int GetNumAdsAvailable(string preloadId) {
