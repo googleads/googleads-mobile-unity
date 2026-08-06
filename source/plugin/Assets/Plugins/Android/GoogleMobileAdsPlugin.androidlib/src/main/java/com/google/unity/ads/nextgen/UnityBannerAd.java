@@ -89,6 +89,9 @@ public class UnityBannerAd {
   /** The {@code Activity} that the banner will be displayed in. */
   protected Activity unityPlayerActivity;
 
+  /** A boolean indicating whether the ad has been destroyed. */
+  private boolean isDestroyed = false;
+
   /** A callback implemented in Unity via {@code AndroidJavaProxy} to receive ad events. */
   private final UnityBannerAdCallback callback;
 
@@ -143,11 +146,16 @@ public class UnityBannerAd {
   }
 
   protected void load(final BannerAdRequest adRequest) {
+    isDestroyed = false;
     adWrapper.load(
         adRequest,
         new AdLoadCallback<BannerAd>() {
           @Override
           public void onAdLoaded(@NonNull BannerAd ad) {
+            if (isDestroyed) {
+              ad.destroy();
+              return;
+            }
             bannerAd = ad;
             if (!hidden) {
               show();
@@ -397,18 +405,23 @@ public class UnityBannerAd {
 
   /** Destroys the {@link AdView}. */
   public void destroy() {
+    isDestroyed = true;
     unityPlayerActivity.runOnUiThread(
         () -> {
-          if (bannerAd == null) {
-            return;
-          }
           if (bannerLayout != null) {
-            bannerLayout.removeView(adView);
+            if (adView != null) {
+              bannerLayout.removeView(adView);
+              adView = null;
+            }
             if (bannerLayout.getParent() != null) {
               ((ViewGroup) bannerLayout.getParent()).removeView(bannerLayout);
             }
+            bannerLayout = null;
           }
-          bannerAd.destroy();
+          if (bannerAd != null) {
+            bannerAd.destroy();
+            bannerAd = null;
+          }
         });
 
     unityPlayerActivity

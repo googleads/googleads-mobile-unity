@@ -474,4 +474,74 @@ public final class UnityBannerAdTest {
         (View.OnLayoutChangeListener) field.get(unityBannerAd);
     assertThat(listenerAfter).isNull();
   }
+
+  @Test
+  public void testDestroy_beforeAdLoaded_destroysAdOnLoad() {
+    unityBannerAd.load(bannerAdRequest);
+
+    verify(mockAdWrapper).load(eq(bannerAdRequest), adLoadCallbackCaptor.capture());
+
+    // Call destroy before onAdLoaded fires
+    unityBannerAd.destroy();
+
+    // Now simulate onAdLoaded completing asynchronously
+    adLoadCallbackCaptor.getValue().onAdLoaded(mockBannerAd);
+
+    // Verify bannerAd is destroyed and callback is NOT invoked
+    verify(mockBannerAd).destroy();
+    verify(mockCallback, never()).onAdLoaded();
+  }
+
+  @Test
+  public void testInitialState_isDestroyedIsFalse() throws Exception {
+    Field field = UnityBannerAd.class.getDeclaredField("isDestroyed");
+    field.setAccessible(true);
+    boolean isDestroyed = (boolean) field.get(unityBannerAd);
+    assertThat(isDestroyed).isFalse();
+  }
+
+  @Test
+  public void testDestroy_setsIsDestroyedTrue() throws Exception {
+    unityBannerAd.destroy();
+    Field field = UnityBannerAd.class.getDeclaredField("isDestroyed");
+    field.setAccessible(true);
+    boolean isDestroyed = (boolean) field.get(unityBannerAd);
+    assertThat(isDestroyed).isTrue();
+  }
+
+  @Test
+  public void testDestroy_removesAdViewFromBannerLayout() throws Exception {
+    View fakeView = simulateAdLoadSuccess();
+
+    Field bannerLayoutField = UnityBannerAd.class.getDeclaredField("bannerLayout");
+    bannerLayoutField.setAccessible(true);
+    FrameLayout bannerLayout = (FrameLayout) bannerLayoutField.get(unityBannerAd);
+
+    assertThat(bannerLayout).isNotNull();
+    assertThat(bannerLayout.indexOfChild(fakeView)).isNotEqualTo(-1);
+
+    unityBannerAd.destroy();
+    ShadowLooper.idleMainLooper();
+
+    assertThat(bannerLayout.indexOfChild(fakeView)).isEqualTo(-1);
+  }
+
+  @Test
+  public void testDestroy_nullifiesAdViewAndBannerLayout() throws Exception {
+    View unusedView = simulateAdLoadSuccess();
+
+    unityBannerAd.destroy();
+    ShadowLooper.idleMainLooper();
+
+    Field adViewField = UnityBannerAd.class.getDeclaredField("adView");
+    adViewField.setAccessible(true);
+    View adView = (View) adViewField.get(unityBannerAd);
+
+    Field bannerLayoutField = UnityBannerAd.class.getDeclaredField("bannerLayout");
+    bannerLayoutField.setAccessible(true);
+    FrameLayout bannerLayout = (FrameLayout) bannerLayoutField.get(unityBannerAd);
+
+    assertThat(adView).isNull();
+    assertThat(bannerLayout).isNull();
+  }
 }
