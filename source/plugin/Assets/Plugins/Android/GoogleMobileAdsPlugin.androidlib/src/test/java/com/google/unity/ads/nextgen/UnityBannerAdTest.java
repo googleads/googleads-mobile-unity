@@ -544,4 +544,18 @@ public final class UnityBannerAdTest {
     assertThat(adView).isNull();
     assertThat(bannerLayout).isNull();
   }
+
+  @Test
+  public void testLoad_afterDestroy_resetsIsDestroyedAndLoadsAd() {
+    unityBannerAd.destroy();
+    View fakeView = simulateAdLoadSuccess();
+    verify(mockCallback, timeout(1000)).onAdLoaded();
+    assertThat(fakeView).isNotNull();
+  }
+
+  @Test
+  public void testDestroy_calledMultipleTimes_doesNotCrash() {
+    unityBannerAd.destroy();
+    unityBannerAd.destroy();
+  }
 }
