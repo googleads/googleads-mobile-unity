@@ -1,6 +1,12 @@
 Google Mobile Ads Unity Plugin Change Log
 
 **************
+Version Next
+**************
+
+- Added support for forwarding request extras to Android ad request builders when using the Next-Gen SDK.
+
+**************
 Version 11.3.0
 **************
 

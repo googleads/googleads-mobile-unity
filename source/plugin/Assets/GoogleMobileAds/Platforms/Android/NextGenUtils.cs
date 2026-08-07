@@ -157,6 +157,14 @@ namespace GoogleMobileAds.Android {
         adRequestBuilder.Call<AndroidJavaObject>("addKeyword", keyword);
       }
 
+      if (request.Extras != null) {
+        AndroidJavaObject bundle = new AndroidJavaObject(Utils.BundleClassName);
+        foreach (KeyValuePair<string, string> entry in request.Extras) {
+          bundle.Call("putString", entry.Key, entry.Value);
+        }
+        adRequestBuilder.Call<AndroidJavaObject>("setGoogleExtrasBundle", bundle);
+      }
+
       foreach (KeyValuePair<string, string> entry in request.CustomTargeting) {
         adRequestBuilder.Call<AndroidJavaObject>("putCustomTargeting", entry.Key, entry.Value);
       }
@@ -191,6 +199,14 @@ namespace GoogleMobileAds.Android {
           BannerAdRequestBuilderClassName, adUnitId, adSizeObject);
       foreach (string keyword in request.Keywords) {
         bannerAdRequestBuilder.Call<AndroidJavaObject>("addKeyword", keyword);
+      }
+
+      if (request.Extras != null) {
+        AndroidJavaObject bundle = new AndroidJavaObject(Utils.BundleClassName);
+        foreach (KeyValuePair<string, string> entry in request.Extras) {
+          bundle.Call("putString", entry.Key, entry.Value);
+        }
+        bannerAdRequestBuilder.Call<AndroidJavaObject>("setGoogleExtrasBundle", bundle);
       }
 
       foreach (KeyValuePair<string, string> entry in request.CustomTargeting) {
