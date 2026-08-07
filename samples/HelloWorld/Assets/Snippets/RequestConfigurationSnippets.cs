@@ -28,5 +28,40 @@ namespace GoogleMobileAds.Snippets
             MobileAds.SetRequestConfiguration(requestConfiguration);
             // [END set_request_configuration]
         }
-    }
+
+        private void SetChildAgeTreatment()
+        {
+            // [START set_child_age_treatment]
+            RequestConfiguration requestConfiguration = new RequestConfiguration
+            {
+                // Indicate that ad requests should have child age treatment.
+                AgeRestrictedTreatment = AgeRestrictedTreatment.Child
+            };
+            MobileAds.SetRequestConfiguration(requestConfiguration);
+            // [END set_child_age_treatment]
+        }
+
+        private void SetTeenAgeTreatment()
+        {
+            // [START set_teen_age_treatment]
+            RequestConfiguration requestConfiguration = new RequestConfiguration
+            {
+                // Indicate that ad requests should have teen age treatment.
+                AgeRestrictedTreatment = AgeRestrictedTreatment.Teen
+            };
+            MobileAds.SetRequestConfiguration(requestConfiguration);
+            // [END set_teen_age_treatment]
+        }
+
+        private void SetUnspecifiedAgeTreatment()
+        {
+            // [START set_unspecified_age_treatment]
+            RequestConfiguration requestConfiguration = new RequestConfiguration
+            {
+                // Indicate that ad requests should have unspecified age treatment.
+                AgeRestrictedTreatment = AgeRestrictedTreatment.Unspecified
+            };
+            MobileAds.SetRequestConfiguration(requestConfiguration);
+            // [END set_unspecified_age_treatment]
+        }
 }
