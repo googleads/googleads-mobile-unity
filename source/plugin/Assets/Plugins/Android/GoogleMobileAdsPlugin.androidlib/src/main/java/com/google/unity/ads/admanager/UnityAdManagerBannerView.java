@@ -68,7 +68,7 @@ public class UnityAdManagerBannerView extends Banner {
     adView.setBackgroundColor(Color.TRANSPARENT);
     adView.setAdUnitId(publisherId);
     adView.setAdSize(adSize);
-    adView.setVisibility(View.GONE);
+    adView.setVisibility(View.INVISIBLE);
     adView.setDescendantFocusability(ViewGroup.FOCUS_BLOCK_DESCENDANTS);
     unityPlayerActivity.addContentView(adView, getLayoutParams());
     adView.setAdListener(

@@ -151,7 +151,7 @@ public class Banner {
     adView.setBackgroundColor(Color.TRANSPARENT);
     adView.setAdUnitId(publisherId);
     adView.setAdSize(adSize);
-    adView.setVisibility(View.GONE);
+    adView.setVisibility(View.INVISIBLE);
     adView.setDescendantFocusability(ViewGroup.FOCUS_BLOCK_DESCENDANTS);
     unityPlayerActivity.addContentView(adView, getLayoutParams());
     adView.setAdListener(
@@ -346,7 +346,7 @@ public class Banner {
         });
   }
 
-  /** Sets the {@link AdView} to be gone. */
+  /** Sets the {@link AdView} to be invisible. */
   public void hide() {
     unityPlayerActivity.runOnUiThread(
         new Runnable() {
@@ -354,7 +354,7 @@ public class Banner {
           public void run() {
             Log.d(PluginUtils.LOGTAG, "Calling hide() on Android");
             hidden = true;
-            adView.setVisibility(View.GONE);
+            adView.setVisibility(View.INVISIBLE);
             adView.pause();
           }
         });

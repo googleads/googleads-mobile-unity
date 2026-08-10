@@ -139,9 +139,9 @@ public final class BannerTest {
   }
 
   @Test
-  public void hide_setsAdViewVisibilityToGone() {
+  public void hide_setsAdViewVisibilityToInvisible() {
     banner.hide();
-    assertThat(banner.adView.getVisibility()).isEqualTo(View.GONE);
+    assertThat(banner.adView.getVisibility()).isEqualTo(View.INVISIBLE);
   }
 
   @Test
