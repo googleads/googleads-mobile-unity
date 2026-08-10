@@ -64,4 +64,5 @@ namespace GoogleMobileAds.Snippets
             MobileAds.SetRequestConfiguration(requestConfiguration);
             // [END set_unspecified_age_treatment]
         }
+    }
 }
