@@ -5,6 +5,7 @@ Version Next
 **************
 
 - Added support for forwarding request extras to Android ad request builders when using the Next-Gen SDK.
+- Added PeekAdResponseInfo() support for Preloading APIs to inspect first ad object in cache without removing it.
 
 **************
 Version 11.3.0
