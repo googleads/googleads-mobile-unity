@@ -544,4 +544,41 @@ public final class UnityBannerAdTest {
     assertThat(adView).isNull();
     assertThat(bannerLayout).isNull();
   }
+
+  @Test
+  public void testLoad_afterDestroy_resetsIsDestroyedAndLoadsAd() {
+    unityBannerAd.destroy();
+    View fakeView = simulateAdLoadSuccess();
+    verify(mockCallback, timeout(1000)).onAdLoaded();
+    assertThat(fakeView).isNotNull();
+  }
+
+  @Test
+  public void testDestroy_calledMultipleTimes_doesNotCrash() throws Exception {
+    unityBannerAd.destroy();
+    unityBannerAd.destroy();
+    ShadowLooper.idleMainLooper();
+
+    Field isDestroyedField = UnityBannerAd.class.getDeclaredField("isDestroyed");
+    isDestroyedField.setAccessible(true);
+    boolean isDestroyed = (boolean) isDestroyedField.get(unityBannerAd);
+
+    Field adViewField = UnityBannerAd.class.getDeclaredField("adView");
+    adViewField.setAccessible(true);
+    View adView = (View) adViewField.get(unityBannerAd);
+
+    Field bannerLayoutField = UnityBannerAd.class.getDeclaredField("bannerLayout");
+    bannerLayoutField.setAccessible(true);
+    FrameLayout bannerLayout = (FrameLayout) bannerLayoutField.get(unityBannerAd);
+
+    Field layoutChangeListenerField = UnityBannerAd.class.getDeclaredField("layoutChangeListener");
+    layoutChangeListenerField.setAccessible(true);
+    View.OnLayoutChangeListener layoutChangeListener =
+        (View.OnLayoutChangeListener) layoutChangeListenerField.get(unityBannerAd);
+
+    assertThat(isDestroyed).isTrue();
+    assertThat(adView).isNull();
+    assertThat(bannerLayout).isNull();
+    assertThat(layoutChangeListener).isNull();
+  }
 }
