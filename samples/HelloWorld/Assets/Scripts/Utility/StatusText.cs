@@ -12,10 +12,11 @@ namespace GoogleMobileAds.Samples.Utility
     [AddComponentMenu("GoogleMobileAds/Samples/Utility/StatusText")]
     public class StatusText : Text
     {
-        private SynchronizationContext _synchronizationContext;
         private const int MAX_LINES = 25; // Adjust this value as needed
-        private List<string> _lines = new List<string>();
         private Regex _colorTagRegex = new Regex(@"<color=[^>]+>|</color>");
+        private SynchronizationContext _synchronizationContext;
+        private ScrollRect _scrollRect;
+        private List<string> _lines = new List<string>();
 
         protected override void Awake()
         {
@@ -23,9 +24,11 @@ namespace GoogleMobileAds.Samples.Utility
 
             if (Application.isPlaying)
             {
+                verticalOverflow = VerticalWrapMode.Overflow;
                 supportRichText = true;
                 text = string.Empty;
                 _synchronizationContext = SynchronizationContext.Current;
+                _scrollRect = GetComponentInParent<ScrollRect>();
                 Application.logMessageReceivedThreaded += OnLogMessageReceivedThreaded;
             }
         }
@@ -68,6 +71,16 @@ namespace GoogleMobileAds.Samples.Utility
                     RemoveOldestLines();
                 }
                 text = string.Join("", _lines);
+
+                if (_scrollRect == null)
+                {
+                    _scrollRect = GetComponentInParent<ScrollRect>();
+                }
+                if (_scrollRect != null)
+                {
+                    Canvas.ForceUpdateCanvases();
+                    _scrollRect.verticalNormalizedPosition = 0f;
+                }
             }, this);
         }
 
