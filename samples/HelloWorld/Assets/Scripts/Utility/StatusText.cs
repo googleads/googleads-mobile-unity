@@ -12,11 +12,12 @@ namespace GoogleMobileAds.Samples.Utility
     [AddComponentMenu("GoogleMobileAds/Samples/Utility/StatusText")]
     public class StatusText : Text
     {
-        private const int MAX_LINES = 25; // Adjust this value as needed
-        private Regex _colorTagRegex = new Regex(@"<color=[^>]+>|</color>");
         private SynchronizationContext _synchronizationContext;
-        private ScrollRect _scrollRect;
+        private const int MAX_LINES = 25; // Adjust this value as needed
         private List<string> _lines = new List<string>();
+        private Regex _colorTagRegex = new Regex(@"<color=[^>]+>|</color>");
+
+        private ScrollRect _scrollRect;
 
         protected override void Awake()
         {
@@ -25,11 +26,33 @@ namespace GoogleMobileAds.Samples.Utility
             if (Application.isPlaying)
             {
                 verticalOverflow = VerticalWrapMode.Overflow;
+                maskable = true;
                 supportRichText = true;
                 text = string.Empty;
                 _synchronizationContext = SynchronizationContext.Current;
                 _scrollRect = GetComponentInParent<ScrollRect>();
+                EnsureMask();
                 Application.logMessageReceivedThreaded += OnLogMessageReceivedThreaded;
+            }
+        }
+
+        private void EnsureMask()
+        {
+            GameObject target = null;
+            if (_scrollRect != null && _scrollRect.viewport != null)
+            {
+                target = _scrollRect.viewport.gameObject;
+            }
+            else if (transform.parent != null)
+            {
+                target = transform.parent.gameObject;
+            }
+
+            if (target != null &&
+                target.GetComponent<Mask>() == null &&
+                target.GetComponent<RectMask2D>() == null)
+            {
+                target.AddComponent<RectMask2D>();
             }
         }
 
@@ -75,6 +98,7 @@ namespace GoogleMobileAds.Samples.Utility
                 if (_scrollRect == null)
                 {
                     _scrollRect = GetComponentInParent<ScrollRect>();
+                    EnsureMask();
                 }
                 if (_scrollRect != null)
                 {
