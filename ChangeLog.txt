@@ -6,6 +6,8 @@ Version Next
 
 - Added support for forwarding request extras to Android ad request builders when using the Next-Gen SDK.
 - Added PeekAdResponseInfo() support for Preloading APIs to inspect first ad object in cache without removing it.
+- Added fix to handle destroying banner ad before the ad finishes loading when using the next gen SDK.
+- Updated External Dependency Manager for Unity dependency to use 1.2.188
 
 **************
 Version 11.3.0
