@@ -24,7 +24,7 @@
     }
   ],
   "dependencies": {
-    "com.google.external-dependency-manager": "1.2.187",
+    "com.unity.external-dependency-manager": "2.1.0-pre.1",
     "com.unity.modules.androidjni": "1.0.0"
   }
 }
