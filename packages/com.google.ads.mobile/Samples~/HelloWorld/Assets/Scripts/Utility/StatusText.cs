@@ -17,16 +17,42 @@ namespace GoogleMobileAds.Samples.Utility
         private List<string> _lines = new List<string>();
         private Regex _colorTagRegex = new Regex(@"<color=[^>]+>|</color>");
 
+        private ScrollRect _scrollRect;
+
         protected override void Awake()
         {
             base.Awake();
 
             if (Application.isPlaying)
             {
+                verticalOverflow = VerticalWrapMode.Overflow;
+                maskable = true;
                 supportRichText = true;
                 text = string.Empty;
                 _synchronizationContext = SynchronizationContext.Current;
+                _scrollRect = GetComponentInParent<ScrollRect>();
+                EnsureMask();
                 Application.logMessageReceivedThreaded += OnLogMessageReceivedThreaded;
+            }
+        }
+
+        private void EnsureMask()
+        {
+            GameObject target = null;
+            if (_scrollRect != null && _scrollRect.viewport != null)
+            {
+                target = _scrollRect.viewport.gameObject;
+            }
+            else if (transform.parent != null)
+            {
+                target = transform.parent.gameObject;
+            }
+
+            if (target != null &&
+                target.GetComponent<Mask>() == null &&
+                target.GetComponent<RectMask2D>() == null)
+            {
+                target.AddComponent<RectMask2D>();
             }
         }
 
@@ -68,6 +94,17 @@ namespace GoogleMobileAds.Samples.Utility
                     RemoveOldestLines();
                 }
                 text = string.Join("", _lines);
+
+                if (_scrollRect == null)
+                {
+                    _scrollRect = GetComponentInParent<ScrollRect>();
+                    EnsureMask();
+                }
+                if (_scrollRect != null)
+                {
+                    Canvas.ForceUpdateCanvases();
+                    _scrollRect.verticalNormalizedPosition = 0f;
+                }
             }, this);
         }
 

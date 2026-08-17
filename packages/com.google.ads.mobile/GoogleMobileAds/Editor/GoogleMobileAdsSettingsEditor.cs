@@ -34,6 +34,7 @@ namespace GoogleMobileAds.Editor
     public static void OpenInspector()
     {
       Selection.activeObject = GoogleMobileAdsSettings.LoadInstance();
+
     }
 
     public void OnEnable()
@@ -190,7 +191,6 @@ namespace GoogleMobileAds.Editor
             localization.ForKey("ENABLE_KOTLINX_COROUTINES_PACKAGING_OPTION_HELPBOX"),
             MessageType.Info);
       }
-
 
       EditorGUILayout.PropertyField(
           _disableOptimizeInitialization,
