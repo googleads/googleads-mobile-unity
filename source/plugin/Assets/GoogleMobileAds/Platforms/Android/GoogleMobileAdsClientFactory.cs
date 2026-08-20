@@ -146,6 +146,16 @@ namespace GoogleMobileAds
             " on non-Android runtime");
         }
 
+        public IPictureInPictureAdClient BuildPictureInPictureAdClient()
+        {
+            if (Application.platform == RuntimePlatform.Android)
+            {
+                return new GoogleMobileAds.Android.PictureInPictureAdClient();
+            }
+            throw new InvalidOperationException(@"Called " + MethodBase.GetCurrentMethod().Name +
+            " on non-Android runtime");
+        }
+
         public IApplicationPreferencesClient ApplicationPreferencesInstance() {
           if (Application.platform == RuntimePlatform.Android) {
             return new GoogleMobileAds.Android.ApplicationPreferencesClient();
@@ -180,7 +190,7 @@ namespace GoogleMobileAds
                     new AndroidJavaClass(GoogleMobileAds.Android.NextGenUtils.MobileAdsClassName);
                 _nextGenEnabled = true;
             }
-            catch (AndroidJavaException)
+            catch (Exception)
             {
                 _nextGenEnabled = false;
             }
