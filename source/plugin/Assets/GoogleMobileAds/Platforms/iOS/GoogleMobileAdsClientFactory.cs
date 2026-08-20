@@ -129,6 +129,15 @@ namespace GoogleMobileAds
                                           " on non-iOS runtime");
     }
 
+    public IPictureInPictureAdClient BuildPictureInPictureAdClient() {
+      if (Application.platform == RuntimePlatform.IPhonePlayer)
+      {
+        return new GoogleMobileAds.iOS.PictureInPictureAdClient();
+      }
+      throw new InvalidOperationException(@"Called " + MethodBase.GetCurrentMethod().Name +
+                                          " on non-iOS runtime");
+    }
+
 #if GMA_PREVIEW_FEATURES
 
     public IAppOpenAdPreloaderClient BuildAppOpenAdPreloaderClient() {
