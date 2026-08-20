@@ -120,6 +120,11 @@ namespace GoogleMobileAds.Android {
     public const string UnityBannerAdCallbackClassName =
         "com.google.unity.ads.nextgen.UnityBannerAdCallback";
 
+    public const string UnityPictureInPictureAdClassName =
+        "com.google.unity.ads.nextgen.UnityPictureInPictureAd";
+    public const string UnityPictureInPictureAdCallbackClassName =
+        "com.google.unity.ads.nextgen.UnityPictureInPictureAdCallback";
+
     public const string UnityInterstitialAdClassName =
         "com.google.unity.ads.nextgen.UnityInterstitialAd";
     public const string UnityInterstitialAdCallbackClassName =
