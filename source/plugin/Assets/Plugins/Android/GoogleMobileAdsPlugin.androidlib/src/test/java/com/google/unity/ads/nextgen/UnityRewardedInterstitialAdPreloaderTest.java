@@ -32,7 +32,6 @@ import com.google.android.libraries.ads.mobile.sdk.common.ResponseInfo;
 import com.google.android.libraries.ads.mobile.sdk.rewardedinterstitial.RewardedInterstitialAd;
 import com.google.unity.ads.nextgen.UnityRewardedInterstitialAdPreloader.RewardedInterstitialAdPreloaderWrapper;
 import java.util.ArrayList;
-import java.util.Map;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -75,7 +74,7 @@ public final class UnityRewardedInterstitialAdPreloaderTest {
 
   @Test
   public void testStart() {
-    boolean unused = unityRewardedInterstitialAdPreloader.start(PRELOAD_ID, preloadConfiguration);
+    var _ = unityRewardedInterstitialAdPreloader.start(PRELOAD_ID, preloadConfiguration);
 
     verify(mockWrapper)
         .start(eq(PRELOAD_ID), eq(preloadConfiguration), preloadCallbackCaptor.capture());
@@ -102,7 +101,7 @@ public final class UnityRewardedInterstitialAdPreloaderTest {
         new UnityRewardedInterstitialAdPreloader(
             activity, null, mockWrapper, newDirectExecutorService());
 
-    boolean unused = preloader.start(PRELOAD_ID, preloadConfiguration);
+    var _ = preloader.start(PRELOAD_ID, preloadConfiguration);
 
     verify(mockWrapper)
         .start(eq(PRELOAD_ID), eq(preloadConfiguration), preloadCallbackCaptor.capture());
@@ -121,13 +120,13 @@ public final class UnityRewardedInterstitialAdPreloaderTest {
 
   @Test
   public void testIsAdAvailable() {
-    boolean unused = unityRewardedInterstitialAdPreloader.isAdAvailable(PRELOAD_ID);
+    var _ = unityRewardedInterstitialAdPreloader.isAdAvailable(PRELOAD_ID);
     verify(mockWrapper).isAdAvailable(PRELOAD_ID);
   }
 
   @Test
   public void testGetNumAdsAvailable() {
-    int unused = unityRewardedInterstitialAdPreloader.getNumAdsAvailable(PRELOAD_ID);
+    var _ = unityRewardedInterstitialAdPreloader.getNumAdsAvailable(PRELOAD_ID);
     verify(mockWrapper).getNumAdsAvailable(PRELOAD_ID);
   }
 
@@ -155,14 +154,13 @@ public final class UnityRewardedInterstitialAdPreloaderTest {
 
   @Test
   public void testGetConfiguration() {
-    PreloadConfiguration unused = unityRewardedInterstitialAdPreloader.getConfiguration(PRELOAD_ID);
+    var _ = unityRewardedInterstitialAdPreloader.getConfiguration(PRELOAD_ID);
     verify(mockWrapper).getConfiguration(PRELOAD_ID);
   }
 
   @Test
   public void testGetConfigurations() {
-    Map<String, PreloadConfiguration> unused =
-        unityRewardedInterstitialAdPreloader.getConfigurations();
+    var _ = unityRewardedInterstitialAdPreloader.getConfigurations();
     verify(mockWrapper).getConfigurations();
   }
 
