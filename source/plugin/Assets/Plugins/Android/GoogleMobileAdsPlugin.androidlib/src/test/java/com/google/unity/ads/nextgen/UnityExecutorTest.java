@@ -343,7 +343,7 @@ public final class UnityExecutorTest {
           UnityBannerAdPreloader preloader =
               new UnityBannerAdPreloader(
                   activity, testCallback, mockWrapper, UnityExecutor.getPreloaderExecutor());
-          boolean unused = preloader.start(PRELOAD_ID, config);
+          var _ = preloader.start(PRELOAD_ID, config);
           verify(mockWrapper).start(eq(PRELOAD_ID), eq(config), captor.capture());
           return captor.getValue();
         });
@@ -361,7 +361,7 @@ public final class UnityExecutorTest {
           UnityAppOpenAdPreloader preloader =
               new UnityAppOpenAdPreloader(
                   activity, testCallback, mockWrapper, UnityExecutor.getPreloaderExecutor());
-          boolean unused = preloader.start(PRELOAD_ID, config);
+          var _ = preloader.start(PRELOAD_ID, config);
           verify(mockWrapper).start(eq(PRELOAD_ID), eq(config), captor.capture());
           return captor.getValue();
         });
@@ -379,7 +379,7 @@ public final class UnityExecutorTest {
           UnityInterstitialAdPreloader preloader =
               new UnityInterstitialAdPreloader(
                   activity, testCallback, mockWrapper, UnityExecutor.getPreloaderExecutor());
-          boolean unused = preloader.start(PRELOAD_ID, config);
+          var _ = preloader.start(PRELOAD_ID, config);
           verify(mockWrapper).start(eq(PRELOAD_ID), eq(config), captor.capture());
           return captor.getValue();
         });
@@ -397,7 +397,7 @@ public final class UnityExecutorTest {
           UnityRewardedAdPreloader preloader =
               new UnityRewardedAdPreloader(
                   activity, testCallback, mockWrapper, UnityExecutor.getPreloaderExecutor());
-          boolean unused = preloader.start(PRELOAD_ID, config);
+          var _ = preloader.start(PRELOAD_ID, config);
           verify(mockWrapper).start(eq(PRELOAD_ID), eq(config), captor.capture());
           return captor.getValue();
         });
