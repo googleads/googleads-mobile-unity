@@ -229,7 +229,7 @@ public class UnityMobileAdsTest {
   public void testInitialize_flushesBufferedPublisherFirstPartyId() throws Exception {
     Activity activity = setupActivityWithAppId("ca-app-pub-3940256099942544~3347511713");
 
-    var unused = UnityMobileAds.putPublisherFirstPartyIdEnabled(true);
+    var _ = UnityMobileAds.putPublisherFirstPartyIdEnabled(true);
 
     InitializationStatus mockStatus = mock(InitializationStatus.class);
     doAnswer(
@@ -349,7 +349,7 @@ public class UnityMobileAdsTest {
   public void testPutPublisherFirstPartyIdEnabled_initialized() throws Exception {
     setStaticField("isMobileAdsInitialized", true);
 
-    var unused = UnityMobileAds.putPublisherFirstPartyIdEnabled(true);
+    var _ = UnityMobileAds.putPublisherFirstPartyIdEnabled(true);
     verify(mockMobileAdsWrapper).putPublisherFirstPartyIdEnabled(true);
   }
 
