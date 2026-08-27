@@ -123,8 +123,7 @@ namespace GoogleMobileAds.Android
         // Returns the ad unit ID.
         public string GetAdUnitID()
         {
-            // TODO(vkini): Implement GetAdUnitID for Next Gen SDK.
-            return "";
+            return this._androidRewardedInterstitialAd.Call<string>("getAdUnitId");
         }
 
         // Ad Preloading v1 will not be supported in Next Gen SDK.

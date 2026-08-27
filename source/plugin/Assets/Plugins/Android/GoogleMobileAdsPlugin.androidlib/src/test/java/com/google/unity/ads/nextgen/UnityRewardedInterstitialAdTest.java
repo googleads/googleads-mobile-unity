@@ -297,4 +297,23 @@ public final class UnityRewardedInterstitialAdTest {
     UnityRewardedInterstitialAd ad = new UnityRewardedInterstitialAd(activity, mockCallback);
     assertThat(ad).isNotNull();
   }
+
+  @Test
+  public void testGetAdUnitId_whenAdNotLoaded_returnsNull() {
+    String adUnitId = unityRewardedInterstitialAd.getAdUnitId();
+
+    assertThat(adUnitId).isNull();
+  }
+
+  @Test
+  public void testGetAdUnitId_whenAdLoaded_returnsAdUnitId() {
+    when(mockRewardedInterstitialAd.getAdUnitId()).thenReturn("test-ad-unit");
+    unityRewardedInterstitialAd =
+        new UnityRewardedInterstitialAd(activity, mockCallback, mockRewardedInterstitialAd);
+
+    String adUnitId = unityRewardedInterstitialAd.getAdUnitId();
+
+    verify(mockRewardedInterstitialAd).getAdUnitId();
+    assertThat(adUnitId).isEqualTo("test-ad-unit");
+  }
 }
