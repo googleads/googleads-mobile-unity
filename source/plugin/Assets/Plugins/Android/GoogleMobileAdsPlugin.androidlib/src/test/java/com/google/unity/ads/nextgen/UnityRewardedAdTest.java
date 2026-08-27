@@ -313,4 +313,22 @@ public final class UnityRewardedAdTest {
 
     dummyWrapper.load(mockAdRequest, null);
   }
+
+  @Test
+  public void testGetAdUnitId_whenAdNotLoaded_returnsNull() {
+    String adUnitId = unityRewardedAd.getAdUnitId();
+
+    assertThat(adUnitId).isNull();
+  }
+
+  @Test
+  public void testGetAdUnitId_whenAdLoaded_returnsAdUnitId() {
+    when(mockRewardedAd.getAdUnitId()).thenReturn("test-ad-unit");
+    unityRewardedAd = new UnityRewardedAd(activity, mockCallback, mockRewardedAd);
+
+    String adUnitId = unityRewardedAd.getAdUnitId();
+
+    verify(mockRewardedAd).getAdUnitId();
+    assertThat(adUnitId).isEqualTo("test-ad-unit");
+  }
 }

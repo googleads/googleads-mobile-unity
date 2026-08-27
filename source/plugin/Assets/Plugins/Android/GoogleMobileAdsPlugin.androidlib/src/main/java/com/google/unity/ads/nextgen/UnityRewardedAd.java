@@ -248,4 +248,13 @@ public class UnityRewardedAd extends UnityAdBase<RewardedAd, UnityRewardedAdCall
     }
     return ad.getResponseInfo();
   }
+
+  /** Returns the {@link RewardedAd} ad unit ID. */
+  @Nullable
+  public String getAdUnitId() {
+    if (ad == null) {
+      return null;
+    }
+    return ad.getAdUnitId();
+  }
 }
