@@ -86,8 +86,7 @@ namespace GoogleMobileAds.Android
         // Returns the ad unit ID.
         public string GetAdUnitID()
         {
-            // TODO(vkini): Implement GetAdUnitID for NextGen.
-            return "";
+            return this.androidInterstitialAd.Call<string>("getAdUnitId");
         }
 
         public long PlacementId

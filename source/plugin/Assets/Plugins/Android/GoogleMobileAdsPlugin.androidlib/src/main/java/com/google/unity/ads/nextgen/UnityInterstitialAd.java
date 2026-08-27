@@ -212,4 +212,13 @@ public class UnityInterstitialAd extends UnityAdBase<InterstitialAd, UnityInters
     }
     return ad.getResponseInfo();
   }
+
+  /** Returns the {@link InterstitialAd} ad unit ID. */
+  @Nullable
+  public String getAdUnitId() {
+    if (ad == null) {
+      return null;
+    }
+    return ad.getAdUnitId();
+  }
 }

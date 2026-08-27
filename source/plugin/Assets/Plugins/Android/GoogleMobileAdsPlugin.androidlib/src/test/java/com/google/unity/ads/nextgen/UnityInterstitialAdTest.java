@@ -267,4 +267,22 @@ public class UnityInterstitialAdTest {
     UnityInterstitialAd ad = new UnityInterstitialAd(activity, mockCallback);
     assertThat(ad).isNotNull();
   }
+
+  @Test
+  public void testGetAdUnitId_whenAdNotLoaded_returnsNull() {
+    String adUnitId = unityInterstitialAd.getAdUnitId();
+
+    assertThat(adUnitId).isNull();
+  }
+
+  @Test
+  public void testGetAdUnitId_whenAdLoaded_returnsAdUnitId() {
+    when(mockInterstitialAd.getAdUnitId()).thenReturn("test-ad-unit");
+    unityInterstitialAd = new UnityInterstitialAd(activity, mockCallback, mockInterstitialAd);
+
+    String adUnitId = unityInterstitialAd.getAdUnitId();
+
+    verify(mockInterstitialAd).getAdUnitId();
+    assertThat(adUnitId).isEqualTo("test-ad-unit");
+  }
 }
