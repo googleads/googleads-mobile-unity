@@ -581,4 +581,22 @@ public final class UnityBannerAdTest {
     assertThat(bannerLayout).isNull();
     assertThat(layoutChangeListener).isNull();
   }
+
+  @Test
+  public void testGetAdUnitId_whenAdNotLoaded_returnsNull() {
+    String adUnitId = unityBannerAd.getAdUnitId();
+
+    assertThat(adUnitId).isNull();
+  }
+
+  @Test
+  public void testGetAdUnitId_whenAdLoaded_returnsAdUnitId() {
+    when(mockBannerAd.getAdUnitId()).thenReturn("test-ad-unit");
+    var _ = simulateAdLoadSuccess();
+
+    String adUnitId = unityBannerAd.getAdUnitId();
+
+    verify(mockBannerAd).getAdUnitId();
+    assertThat(adUnitId).isEqualTo("test-ad-unit");
+  }
 }

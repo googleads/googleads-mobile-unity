@@ -403,6 +403,15 @@ public class UnityBannerAd {
     return bannerAd.isCollapsible();
   }
 
+  /** Returns the {@link BannerAd} ad unit ID. */
+  @Nullable
+  public String getAdUnitId() {
+    if (bannerAd == null) {
+      return null;
+    }
+    return bannerAd.getAdUnitId();
+  }
+
   /** Destroys the {@link AdView}. */
   public void destroy() {
     isDestroyed = true;

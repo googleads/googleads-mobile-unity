@@ -112,8 +112,7 @@ namespace GoogleMobileAds.Android
         /// Returns the ad unit ID.
         public string GetAdUnitID()
         {
-            // TODO(vkini): Implement GetAdUnitID for Next Gen.
-            return "";
+            return this.bannerView.Call<string>("getAdUnitId");
         }
 
         // Returns the height of the BannerView in pixels.
