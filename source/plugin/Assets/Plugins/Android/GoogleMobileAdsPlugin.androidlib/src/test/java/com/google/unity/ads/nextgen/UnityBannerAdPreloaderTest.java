@@ -20,7 +20,6 @@ import com.google.android.libraries.ads.mobile.sdk.common.PreloadConfiguration;
 import com.google.android.libraries.ads.mobile.sdk.common.ResponseInfo;
 import com.google.unity.ads.nextgen.UnityBannerAdPreloader.BannerAdPreloaderWrapper;
 import java.util.ArrayList;
-import java.util.Map;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -63,7 +62,7 @@ public final class UnityBannerAdPreloaderTest {
 
   @Test
   public void testStart() {
-    boolean unused = unityBannerAdPreloader.start(PRELOAD_ID, preloadConfiguration);
+    var _ = unityBannerAdPreloader.start(PRELOAD_ID, preloadConfiguration);
 
     verify(mockWrapper)
         .start(eq(PRELOAD_ID), eq(preloadConfiguration), preloadCallbackCaptor.capture());
@@ -89,7 +88,7 @@ public final class UnityBannerAdPreloaderTest {
     UnityBannerAdPreloader preloader =
         new UnityBannerAdPreloader(activity, null, mockWrapper, newDirectExecutorService());
 
-    boolean unused = preloader.start(PRELOAD_ID, preloadConfiguration);
+    var _ = preloader.start(PRELOAD_ID, preloadConfiguration);
 
     verify(mockWrapper)
         .start(eq(PRELOAD_ID), eq(preloadConfiguration), preloadCallbackCaptor.capture());
@@ -107,13 +106,13 @@ public final class UnityBannerAdPreloaderTest {
 
   @Test
   public void testIsAdAvailable() {
-    boolean unused = unityBannerAdPreloader.isAdAvailable(PRELOAD_ID);
+    var _ = unityBannerAdPreloader.isAdAvailable(PRELOAD_ID);
     verify(mockWrapper).isAdAvailable(PRELOAD_ID);
   }
 
   @Test
   public void testGetNumAdsAvailable() {
-    int unused = unityBannerAdPreloader.getNumAdsAvailable(PRELOAD_ID);
+    var _ = unityBannerAdPreloader.getNumAdsAvailable(PRELOAD_ID);
     verify(mockWrapper).getNumAdsAvailable(PRELOAD_ID);
   }
 
@@ -142,13 +141,13 @@ public final class UnityBannerAdPreloaderTest {
 
   @Test
   public void testGetConfiguration() {
-    PreloadConfiguration unused = unityBannerAdPreloader.getConfiguration(PRELOAD_ID);
+    var _ = unityBannerAdPreloader.getConfiguration(PRELOAD_ID);
     verify(mockWrapper).getConfiguration(PRELOAD_ID);
   }
 
   @Test
   public void testGetConfigurations() {
-    Map<String, PreloadConfiguration> unused = unityBannerAdPreloader.getConfigurations();
+    var _ = unityBannerAdPreloader.getConfigurations();
     verify(mockWrapper).getConfigurations();
   }
 
