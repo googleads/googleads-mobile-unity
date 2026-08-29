@@ -1,7 +1,6 @@
 // Copyright 2022 Google LLC. All Rights Reserved.
 
 #import "GADUConsentInformation.h"
-#import <UserMessagingPlatform/UMPConsentInformation.h>
 
 #import "GADUDebugSettings.h"
 #import "GADUDispatch.h"
@@ -25,13 +24,13 @@
   return self;
 }
 
-- (GADUConsentStatus)consentStatus {
-  __block GADUConsentStatus status;
-  if (NSThread.isMainThread) {
-    status = (GADUConsentStatus)UMPConsentInformation.sharedInstance.consentStatus;
+- (UMPConsentStatus)consentStatus {
+  __block UMPConsentStatus status;
+  if (!NSThread.isMainThread) {
+    status = UMPConsentInformation.sharedInstance.consentStatus;
   } else {
     dispatch_sync(dispatch_get_main_queue(), ^{
-      status = (GADUConsentStatus)UMPConsentInformation.sharedInstance.consentStatus;
+      status = UMPConsentInformation.sharedInstance.consentStatus;
     });
   }
   return status;
@@ -49,16 +48,13 @@
   return status;
 }
 
-- (GADUPrivacyOptionsRequirementStatus)privacyOptionsRequirementStatus {
-  __block GADUPrivacyOptionsRequirementStatus status;
+- (UMPPrivacyOptionsRequirementStatus)privacyOptionsRequirementStatus {
+  __block UMPPrivacyOptionsRequirementStatus status;
   if (NSThread.isMainThread) {
-    status =
-        (GADUPrivacyOptionsRequirementStatus)[UMPConsentInformation
-                                                  .sharedInstance privacyOptionsRequirementStatus];
+    status = [UMPConsentInformation.sharedInstance privacyOptionsRequirementStatus];
   } else {
     dispatch_sync(dispatch_get_main_queue(), ^{
-      status = (GADUPrivacyOptionsRequirementStatus)[UMPConsentInformation.sharedInstance
-                                                         privacyOptionsRequirementStatus];
+      status = [UMPConsentInformation.sharedInstance privacyOptionsRequirementStatus];
     });
   }
   return status;
