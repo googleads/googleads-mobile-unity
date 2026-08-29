@@ -1,5 +1,11 @@
 Google Mobile Ads Unity Plugin Change Log
 
+************
+Version Next
+************
+
+- Added Picture-in-Picture ad support.
+
 **************
 Version 11.4.0
 **************

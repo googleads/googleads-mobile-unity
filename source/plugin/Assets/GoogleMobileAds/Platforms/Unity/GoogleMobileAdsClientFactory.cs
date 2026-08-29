@@ -78,6 +78,11 @@ namespace GoogleMobileAds
             return new GoogleMobileAds.Unity.MobileAdsClient();
         }
 
+        public IPictureInPictureAdClient BuildPictureInPictureAdClient()
+        {
+            return new GoogleMobileAds.Unity.PictureInPictureAdClient();
+        }
+
 #if GMA_PREVIEW_FEATURES
 
         public IAppOpenAdPreloaderClient BuildAppOpenAdPreloaderClient() {
