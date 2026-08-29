@@ -7,6 +7,11 @@ validate_template=true
 template_path=.github/ISSUE_TEMPLATE/bug_report.md
 -->
 
+> [!WARNING]
+> Bugs should be filed [here](https://developers.google.com/admob/support)
+> because they are best equipped to help. This repository is for the
+> sample and community feedback only.
+
 ### [REQUIRED] Step 1: Describe your environment
 
   * Unity version: _____

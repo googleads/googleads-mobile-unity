@@ -1,5 +1,8 @@
 blank_issues_enabled: false
 contact_links:
+  - name: BUG REPORT
+    url: https://developers.google.com/admob/support
+    about: File a bug report to the Google Mobile Ads SDK team.
   - name: Google Mobile Ads Unity Plugin Support
     url: https://developers.google.com/admob/support
     about: Please file feature requests, bugs, and other issues to the official Google Mobile Ads SDK developer support channels.
