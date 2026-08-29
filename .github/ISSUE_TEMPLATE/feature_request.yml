@@ -1,0 +1,20 @@
+name: Feature Request
+description: Suggest an enhancement or new capability for the Google Mobile Ads Unity plugin.
+title: "[Feature]: "
+labels: ["enhancement"]
+body:
+  - type: textarea
+    id: feature-description
+    attributes:
+      label: Feature Description
+      description: Describe the proposed enhancement or addition to the Unity plugin wrapper.
+    validations:
+      required: true
+
+  - type: textarea
+    id: use-case
+    attributes:
+      label: Use Case and Motivation
+      description: Explain why this capability is needed and what workflow it enables.
+    validations:
+      required: true
