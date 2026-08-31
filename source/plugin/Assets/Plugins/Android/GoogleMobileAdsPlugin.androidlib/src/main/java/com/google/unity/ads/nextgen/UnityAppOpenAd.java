@@ -201,4 +201,13 @@ public class UnityAppOpenAd extends UnityAdBase<AppOpenAd, UnityAppOpenAdCallbac
     }
     return appOpenAd.getResponseInfo();
   }
+
+  /** Returns the {@link AppOpenAd} ad unit ID. */
+  @Nullable
+  public String getAdUnitId() {
+    if (appOpenAd == null) {
+      return null;
+    }
+    return appOpenAd.getAdUnitId();
+  }
 }

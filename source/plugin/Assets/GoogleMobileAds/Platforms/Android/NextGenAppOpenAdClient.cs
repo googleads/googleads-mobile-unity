@@ -93,8 +93,7 @@ namespace GoogleMobileAds.Android
         // Returns the ad unit ID.
         public string GetAdUnitID()
         {
-            // TODO(vkini): Implement GetAdUnitID for NextGen.
-            return "";
+            return this.androidAppOpenAd.Call<string>("getAdUnitId");
         }
 
 #if GMA_PREVIEW_FEATURES

@@ -233,4 +233,22 @@ public class UnityAppOpenAdTest {
     UnityAppOpenAd ad = new UnityAppOpenAd(activity, mockCallback);
     assertThat(ad).isNotNull();
   }
+
+  @Test
+  public void testGetAdUnitId_whenAdNotLoaded_returnsNull() {
+    String adUnitId = unityAppOpenAd.getAdUnitId();
+
+    assertThat(adUnitId).isNull();
+  }
+
+  @Test
+  public void testGetAdUnitId_whenAdLoaded_returnsAdUnitId() {
+    when(mockAppOpenAd.getAdUnitId()).thenReturn("test-ad-unit");
+    unityAppOpenAd = new UnityAppOpenAd(activity, mockCallback, mockAppOpenAd);
+
+    String adUnitId = unityAppOpenAd.getAdUnitId();
+
+    verify(mockAppOpenAd).getAdUnitId();
+    assertThat(adUnitId).isEqualTo("test-ad-unit");
+  }
 }
