@@ -45,3 +45,8 @@
 -keep public class com.google.android.ump.** {
    public *;
 }
+
+# Workaround for suspected R8/AppReduce class merging issue that strips
+# Throwable inheritance from exception classes, causing runtime
+# java.lang.VerifyError. See b/547999771.
+-keep,allowobfuscation class * extends java.lang.Throwable { *; }
