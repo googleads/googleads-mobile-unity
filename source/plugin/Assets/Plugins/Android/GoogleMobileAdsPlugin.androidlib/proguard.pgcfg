@@ -46,7 +46,16 @@
    public *;
 }
 
-# Workaround for suspected R8/AppReduce class merging issue that strips
-# Throwable inheritance from exception classes, causing runtime
-# java.lang.VerifyError. See b/547999771.
--keep,allowobfuscation class * extends java.lang.Throwable { *; }
+# Workaround for AppReduce VerifyError horizontal class merging bug (prevents
+# stripping of Throwable inheritance from Exception classes during class
+# merging). Omitting 'allowoptimization' disables horizontal class merging in
+# R8/AppReduce while preserving shrinking and obfuscation. See b/547999771.
+-keep,allowshrinking,allowobfuscation class * extends java.lang.Throwable {
+    <fields>;
+    <methods>;
+}
+
+# Direct name matching serves as a fail-safe if superclass hierarchy resolution
+# fails during AppReduce repackaging, and '{ *; }' keeps static factory methods.
+-keep,allowshrinking,allowobfuscation class com.google.protobuf.**Exception { *; }
+-keep,allowshrinking,allowobfuscation class androidx.datastore.**Exception { *; }
