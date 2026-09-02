@@ -1,6 +1,13 @@
 Google Mobile Ads Unity Plugin Change Log
 
 **************
+Version 11.5.0
+**************
+
+- Updated the GMA iOS SDK dependency version to 13.9.0.
+- Updated the GMA Android Next-Gen SDK dependency version to 1.4.0.
+
+**************
 Version 11.4.0
 **************
 
@@ -11,6 +18,7 @@ Version 11.4.0
 - Added PeekAdResponseInfo() support for Preloading APIs to inspect first ad object in cache without removing it.
 - Added fix to handle destroying banner ad before the ad finishes loading when using the next gen SDK.
 - Updated External Dependency Manager for Unity dependency to use 1.2.188
+- Added menu items for Access documentation and Raise an issue.
 
 **************
 Version 11.3.0
