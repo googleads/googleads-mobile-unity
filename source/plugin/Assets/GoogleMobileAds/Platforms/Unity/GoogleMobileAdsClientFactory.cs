@@ -12,6 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System;
+using System.Reflection;
 using UnityEngine;
 using GoogleMobileAds;
 using GoogleMobileAds.Api;
@@ -76,6 +78,46 @@ namespace GoogleMobileAds
         public IMobileAdsClient MobileAdsInstance()
         {
             return new GoogleMobileAds.Unity.MobileAdsClient();
+        }
+
+        public IPictureInPictureAdClient BuildPictureInPictureAdClient()
+        {
+            if (!IsNextGenEnabled())
+            {
+                return new GoogleMobileAds.Common.UnsupportedPictureInPictureAdClient();
+            }
+            return new GoogleMobileAds.Unity.PictureInPictureAdClient();
+        }
+
+        private static bool IsNextGenEnabled()
+        {
+            try
+            {
+                Type settingsType = Type.GetType("GoogleMobileAds.Editor.GoogleMobileAdsSettings, GoogleMobileAds.Editor")
+                    ?? Type.GetType("GoogleMobileAds.Editor.GoogleMobileAdsSettings, Assembly-CSharp-Editor")
+                    ?? Type.GetType("GoogleMobileAds.Editor.GoogleMobileAdsSettings");
+                if (settingsType != null)
+                {
+                    MethodInfo loadMethod = settingsType.GetMethod(
+                        "LoadInstance",
+                        BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static);
+                    object settings = loadMethod != null ? loadMethod.Invoke(null, null) : null;
+                    if (settings != null)
+                    {
+                        PropertyInfo effectiveProp = settingsType.GetProperty("EffectiveGmaAndroidSdk");
+                        if (effectiveProp != null)
+                        {
+                            int sdkValue = (int)effectiveProp.GetValue(settings, null);
+                            return sdkValue == 1;
+                        }
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                // Ignored.
+            }
+            return false;
         }
 
 #if GMA_PREVIEW_FEATURES

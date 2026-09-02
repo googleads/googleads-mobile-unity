@@ -56,6 +56,8 @@ namespace GoogleMobileAds.Android {
         "com.google.android.libraries.ads.mobile.sdk.banner.BannerAdRequest$Builder";
     public const string NativeAdRequestBuilderClassName =
         "com.google.android.libraries.ads.mobile.sdk.nativead.NativeAdRequest$Builder";
+    public const string PictureInPictureAdRequestBuilderClassName =
+        "com.google.android.libraries.ads.mobile.sdk.pip.PictureInPictureAdRequest$Builder";
 #endregion
 
 #region AdSize
@@ -119,6 +121,11 @@ namespace GoogleMobileAds.Android {
     public const string UnityBannerAdClassName = "com.google.unity.ads.nextgen.UnityBannerAd";
     public const string UnityBannerAdCallbackClassName =
         "com.google.unity.ads.nextgen.UnityBannerAdCallback";
+
+    public const string UnityPictureInPictureAdClassName =
+        "com.google.unity.ads.nextgen.UnityPictureInPictureAd";
+    public const string UnityPictureInPictureAdCallbackClassName =
+        "com.google.unity.ads.nextgen.UnityPictureInPictureAdCallback";
 
     public const string UnityInterstitialAdClassName =
         "com.google.unity.ads.nextgen.UnityInterstitialAd";
@@ -219,6 +226,36 @@ namespace GoogleMobileAds.Android {
       ApplyAdManagerFields(bannerAdRequestBuilder, request);
 
       return bannerAdRequestBuilder.Call<AndroidJavaObject>("build");
+    }
+
+    /// <summary>
+    /// Converts the plugin AdRequest object to a native java proxy object for use by the sdk.
+    /// </summary>
+    /// <param name="adUnitId">the ad unit ID.</param>
+    /// <param name="request">the AdRequest from the unity plugin.</param>
+    public static AndroidJavaObject GetPictureInPictureAdRequestJavaObject(string adUnitId,
+                                                                          AdRequest request) {
+      AndroidJavaObject pipAdRequestBuilder =
+          new AndroidJavaObject(PictureInPictureAdRequestBuilderClassName, adUnitId);
+      foreach (string keyword in request.Keywords) {
+        pipAdRequestBuilder.Call<AndroidJavaObject>("addKeyword", keyword);
+      }
+
+      if (request.Extras != null) {
+        AndroidJavaObject bundle = new AndroidJavaObject(Utils.BundleClassName);
+        foreach (KeyValuePair<string, string> entry in request.Extras) {
+          bundle.Call("putString", entry.Key, entry.Value);
+        }
+        pipAdRequestBuilder.Call<AndroidJavaObject>("setGoogleExtrasBundle", bundle);
+      }
+
+      foreach (KeyValuePair<string, string> entry in request.CustomTargeting) {
+        pipAdRequestBuilder.Call<AndroidJavaObject>("putCustomTargeting", entry.Key, entry.Value);
+      }
+      pipAdRequestBuilder.Call<AndroidJavaObject>("setRequestAgent", AdRequest.BuildVersionString());
+      ApplyAdManagerFields(pipAdRequestBuilder, request);
+
+      return pipAdRequestBuilder.Call<AndroidJavaObject>("build");
     }
 
     /// <summary>

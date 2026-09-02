@@ -299,6 +299,57 @@ namespace GoogleMobileAds.iOS
 
 #endregion
 
+#region PictureInPictureAd externs
+
+      [DllImport("__Internal")]
+      internal static extern IntPtr GADUCreatePictureInPictureAd(IntPtr pipAdClient);
+
+      [DllImport("__Internal")]
+      internal static extern void GADULoadPictureInPictureAd(
+          IntPtr pipAd, string adUnitID, IntPtr request);
+
+      [DllImport("__Internal")]
+      internal static extern void GADUShowPictureInPictureAd(IntPtr pipAd, int position);
+
+      [DllImport("__Internal")]
+      internal static extern void GADUHidePictureInPictureAd(IntPtr pipAd);
+
+      [DllImport("__Internal")]
+      internal static extern int GADUGetPictureInPictureAdPosition(IntPtr pipAd);
+
+      [DllImport("__Internal")]
+      internal static extern string GADUGetPictureInPictureAdUnitID(IntPtr pipAd);
+
+      [DllImport("__Internal")]
+      internal static extern void GADUSetPictureInPictureAdCallbacks(
+          IntPtr pipAd,
+          PictureInPictureAdClient.GADUPictureInPictureAdLoadedCallback
+              adLoadedCallback,
+          PictureInPictureAdClient.GADUPictureInPictureAdFailToLoadCallback
+              adFailedToLoadCallback,
+          PictureInPictureAdClient.GADUPictureInPictureAdShownCallback
+              adShownCallback,
+          PictureInPictureAdClient.GADUPictureInPictureAdHiddenCallback
+              adHiddenCallback,
+          PictureInPictureAdClient
+              .GADUPictureInPictureAdDidRecordImpressionCallback
+                  adDidRecordImpressionCallback,
+          PictureInPictureAdClient.GADUPictureInPictureAdDidRecordClickCallback
+              adDidRecordClickCallback,
+          PictureInPictureAdClient
+              .GADUPictureInPictureAdFailedToPresentFullScreenContentCallback
+                  adFailedToPresentFullScreenContentCallback,
+          PictureInPictureAdClient
+              .GADUPictureInPictureAdWillPresentFullScreenContentCallback
+                  adWillPresentFullScreenContentCallback,
+          PictureInPictureAdClient
+              .GADUPictureInPictureAdDidDismissFullScreenContentCallback
+                  adDidDismissFullScreenContentCallback,
+          PictureInPictureAdClient.GADUPictureInPictureAdPaidEventCallback
+              paidEventCallback);
+
+#endregion
+
 #if GMA_PREVIEW_FEATURES
 
 #region AppOpenAdPreloader externs
