@@ -6,6 +6,8 @@ import com.google.android.libraries.ads.mobile.sdk.banner.BannerAdRequest;
 import com.google.android.libraries.ads.mobile.sdk.common.AdLoadCallback;
 import com.google.android.libraries.ads.mobile.sdk.common.AdRequest;
 import com.google.android.libraries.ads.mobile.sdk.interstitial.InterstitialAd;
+import com.google.android.libraries.ads.mobile.sdk.pip.PictureInPictureAd;
+import com.google.android.libraries.ads.mobile.sdk.pip.PictureInPictureAdRequest;
 import com.google.android.libraries.ads.mobile.sdk.rewarded.RewardedAd;
 import com.google.android.libraries.ads.mobile.sdk.rewardedinterstitial.RewardedInterstitialAd;
 
@@ -66,5 +68,21 @@ class AdWrapper<T> {
   /** Creates a new AdWrapper for loading RewardedInterstitialAds. */
   public static AdWrapper<RewardedInterstitialAd> forRewardedInterstitial() {
     return new AdWrapper<>(RewardedInterstitialAd::load);
+  }
+
+  /** Creates a new AdWrapper for loading PictureInPictureAds. */
+  public static AdWrapper<PictureInPictureAd> forPictureInPicture() {
+    return new AdWrapper<>(
+        new AdLoader<PictureInPictureAd>() {
+          @Override
+          public void load(AdRequest adRequest, AdLoadCallback<PictureInPictureAd> callback) {
+            if (adRequest instanceof PictureInPictureAdRequest) {
+              PictureInPictureAd.load((PictureInPictureAdRequest) adRequest, callback);
+            } else {
+              throw new IllegalArgumentException(
+                  "AdRequest must be of type PictureInPictureAdRequest for PiP Ads");
+            }
+          }
+        });
   }
 }
