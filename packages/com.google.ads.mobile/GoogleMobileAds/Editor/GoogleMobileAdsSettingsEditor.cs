@@ -34,7 +34,18 @@ namespace GoogleMobileAds.Editor
     public static void OpenInspector()
     {
       Selection.activeObject = GoogleMobileAdsSettings.LoadInstance();
+    }
 
+    [MenuItem("Assets/Google Mobile Ads/Access documentation")]
+    public static void AccessDocumentation()
+    {
+      Application.OpenURL("https://developers.google.com/admob/unity/quick-start");
+    }
+
+    [MenuItem("Assets/Google Mobile Ads/Raise an issue")]
+    public static void RaiseAnIssue()
+    {
+      Application.OpenURL("https://support.google.com/admob/contact/contact_us_gma_sdk");
     }
 
     public void OnEnable()
