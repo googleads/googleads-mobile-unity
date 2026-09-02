@@ -110,6 +110,12 @@ typedef const void *GADUTypeRewardedAdPreloaderClientRef;
 /// Type representing a GADUAppOpenAd.
 typedef const void *GADUTypeAppOpenAdRef;
 
+/// Type representing a GADUPictureInPictureAd.
+typedef const void *GADUTypePictureInPictureAdRef;
+
+/// Type representing a Unity Picture-in-Picture client.
+typedef const void *GADUTypePictureInPictureAdClientRef;
+
 /// Type representing a GADUBanner.
 typedef const void *GADUTypeBannerRef;
 
@@ -244,6 +250,49 @@ typedef void (*GADUAppOpenAdDidDismissFullScreenContentCallback)(
 typedef void (*GADUAppOpenAdPaidEventCallback)(GADUTypeAppOpenAdClientRef *appOpenAdClient,
                                                int precision, int64_t value,
                                                const char *currencyCode);
+
+// MARK: - GADUPictureInPictureAd
+
+/// Callback for when a Picture-in-Picture ad is loaded.
+typedef void (*GADUPictureInPictureAdLoadedCallback)(
+    GADUTypePictureInPictureAdClientRef *pipAdClient);
+
+/// Callback for when a Picture-in-Picture ad request failed to load.
+typedef void (*GADUPictureInPictureAdFailedToLoadCallback)(
+    GADUTypePictureInPictureAdClientRef *pipAdClient, GADUTypeErrorRef error);
+
+/// Callback when a Picture-in-Picture ad is shown.
+typedef void (*GADUPictureInPictureAdShownCallback)(
+    GADUTypePictureInPictureAdClientRef *pipAdClient);
+
+/// Callback when a Picture-in-Picture ad is hidden.
+typedef void (*GADUPictureInPictureAdHiddenCallback)(
+    GADUTypePictureInPictureAdClientRef *pipAdClient);
+
+/// Callback when an impression has been recorded for the Picture-in-Picture ad.
+typedef void (*GADUPictureInPictureAdDidRecordImpressionCallback)(
+    GADUTypePictureInPictureAdClientRef *pipAdClient);
+
+/// Callback when a click has been recorded for the Picture-in-Picture ad.
+typedef void (*GADUPictureInPictureAdDidRecordClickCallback)(
+    GADUTypePictureInPictureAdClientRef *pipAdClient);
+
+/// Callback when a Picture-in-Picture ad failed to present full screen content.
+typedef void (*GADUPictureInPictureAdFailedToPresentFullScreenContentCallback)(
+    GADUTypePictureInPictureAdClientRef *pipAdClient, GADUTypeErrorRef error);
+
+/// Callback when a Picture-in-Picture ad will present full screen content.
+typedef void (*GADUPictureInPictureAdWillPresentFullScreenContentCallback)(
+    GADUTypePictureInPictureAdClientRef *pipAdClient);
+
+/// Callback when a Picture-in-Picture ad dismissed full screen content.
+typedef void (*GADUPictureInPictureAdDidDismissFullScreenContentCallback)(
+    GADUTypePictureInPictureAdClientRef *pipAdClient);
+
+/// Callback when a Picture-in-Picture ad is estimated to have earned money.
+typedef void (*GADUPictureInPictureAdPaidEventCallback)(
+    GADUTypePictureInPictureAdClientRef *pipAdClient, int precision,
+    int64_t value, const char *currencyCode);
 
 // MARK: - GADUAdView
 
