@@ -111,10 +111,6 @@ namespace GoogleMobileAds
                                           " on non-iOS runtime");
     }
 
-    public IPictureInPictureAdClient BuildPictureInPictureAdClient(){
-        return null;
-    }
-
     public IApplicationPreferencesClient ApplicationPreferencesInstance() {
       if (Application.platform == RuntimePlatform.IPhonePlayer)
       {
@@ -128,6 +124,15 @@ namespace GoogleMobileAds
       if (Application.platform == RuntimePlatform.IPhonePlayer)
       {
         return GoogleMobileAds.iOS.MobileAdsClient.Instance;
+      }
+      throw new InvalidOperationException(@"Called " + MethodBase.GetCurrentMethod().Name +
+                                          " on non-iOS runtime");
+    }
+
+    public IPictureInPictureAdClient BuildPictureInPictureAdClient() {
+      if (Application.platform == RuntimePlatform.IPhonePlayer)
+      {
+        return new GoogleMobileAds.iOS.PictureInPictureAdClient();
       }
       throw new InvalidOperationException(@"Called " + MethodBase.GetCurrentMethod().Name +
                                           " on non-iOS runtime");

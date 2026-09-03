@@ -68,10 +68,6 @@ namespace GoogleMobileAds
             return new GoogleMobileAds.Unity.NativeOverlayAdClient();
         }
 
-        public IPictureInPictureAdClient BuildPictureInPictureAdClient(){
-            return null;
-        }
-
         public IApplicationPreferencesClient ApplicationPreferencesInstance()
         {
             return new GoogleMobileAds.Unity.ApplicationPreferencesClient();
@@ -80,6 +76,11 @@ namespace GoogleMobileAds
         public IMobileAdsClient MobileAdsInstance()
         {
             return new GoogleMobileAds.Unity.MobileAdsClient();
+        }
+
+        public IPictureInPictureAdClient BuildPictureInPictureAdClient()
+        {
+            return new GoogleMobileAds.Unity.PictureInPictureAdClient();
         }
 
 #if GMA_PREVIEW_FEATURES
