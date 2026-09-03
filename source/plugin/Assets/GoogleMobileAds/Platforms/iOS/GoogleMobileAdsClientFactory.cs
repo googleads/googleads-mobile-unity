@@ -111,6 +111,10 @@ namespace GoogleMobileAds
                                           " on non-iOS runtime");
     }
 
+    public IPictureInPictureAdClient BuildPictureInPictureAdClient(){
+        return null;
+    }
+
     public IApplicationPreferencesClient ApplicationPreferencesInstance() {
       if (Application.platform == RuntimePlatform.IPhonePlayer)
       {
