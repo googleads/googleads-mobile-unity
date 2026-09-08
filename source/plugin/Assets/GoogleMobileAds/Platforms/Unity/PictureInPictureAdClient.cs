@@ -39,7 +39,7 @@ namespace GoogleMobileAds.Unity
         private const float BadgeOffsetX = 8f;
         private const float BadgeOffsetY = 4f;
         internal const float DragThreshold = 10f;
-        internal const float SnapDuration = 0.5f;
+        internal const float SnapDuration = 0.3f;
         internal const float CountdownIntervalSeconds = 1.0f;
         private const int OuterCardRadius = 12;
         private const int InnerMaskRadius = 8;
@@ -240,6 +240,12 @@ namespace GoogleMobileAds.Unity
             {
                 _didImpress = true;
                 OnAdDidRecordImpression?.Invoke();
+                OnPaidEvent?.Invoke(new AdValue
+                {
+                    Value = 2000,
+                    CurrencyCode = "USD",
+                    Precision = AdValue.PrecisionType.PublisherProvided
+                });
             }
         }
 
@@ -300,12 +306,6 @@ namespace GoogleMobileAds.Unity
             OnAdClicked?.Invoke();
             OnAdDidPresentFullScreenContent?.Invoke();
             Application.OpenURL("https://google.com");
-            OnPaidEvent?.Invoke(new AdValue
-            {
-                Value = 2000,
-                CurrencyCode = "USD",
-                Precision = AdValue.PrecisionType.PublisherProvided
-            });
             OnAdDidDismissFullScreenContent?.Invoke();
         }
 
