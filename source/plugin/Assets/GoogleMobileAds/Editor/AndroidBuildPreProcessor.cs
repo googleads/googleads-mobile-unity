@@ -42,8 +42,10 @@ namespace GoogleMobileAds.Editor
         private const string NextGenSpec = NextGenLibrary + ":" + LatestNextGenVersion;
         private const string CurrentSpec = CurrentLibrary + ":" + CurrentVersion;
 
-        private static readonly string NextGenRegex = Regex.Escape(NextGenLibrary) + @":[\d\.]+[-a-zA-Z0-9]*";
-        private static readonly string CurrentRegex = Regex.Escape(CurrentLibrary) + @":[\d\.]+[-a-zA-Z0-9]*";
+        private static readonly string NextGenRegex =
+            Regex.Escape(NextGenLibrary) + @":(?:[\d\.]+[-a-zA-Z0-9]*|LATEST)";
+        private static readonly string CurrentRegex =
+            Regex.Escape(CurrentLibrary) + @":(?:[\d\.]+[-a-zA-Z0-9]*|LATEST)";
 
         const int StandardMinimumAPILevel = 23;
         const int NextGenMinimumAPILevel = 24;
@@ -61,11 +63,12 @@ namespace GoogleMobileAds.Editor
         {
             UpdateGmaDependency();
 
-            if(!GoogleMobileAdsSettings.LoadInstance().EnableGradleBuildPreProcessor)
+            if (!GoogleMobileAdsSettings.LoadInstance().EnableGradleBuildPreProcessor)
             {
                 return;
             }
-            // For more details see, https://developers.google.com/admob/unity/android
+
+            // For more details, see https://developers.google.com/admob/unity/android.
 #if ANDROID_GRADLE_BUILD_PRE_PROCESSOR_ENABLED
             ApplyBuildSettings(report);
 #endif
@@ -123,11 +126,11 @@ namespace GoogleMobileAds.Editor
                     File.AppendAllText(
                         customGradlePropertiesTemplatesFilePath,
                         Environment.NewLine + JetifierEntry);
-                    Debug.Log($"Added Jetifier Entry.");
+                    Debug.Log("Added Jetifier Entry.");
                 }
                 else
                 {
-                    Debug.Log($"Verified Jetifier Entry exists.");
+                    Debug.Log("Verified Jetifier Entry exists.");
                 }
             }
             else
@@ -207,16 +210,12 @@ namespace GoogleMobileAds.Editor
         }
 
         /// <summary>
-        /// Updates the GoogleMobileAdsDependencies.xml file with the selected SDK dependency.
-        /// If the file is changed, the EDM4U will be triggered to resolve the dependencies.
+        /// Updates GoogleMobileAdsDependencies.xml with the selected GMA SDK dependency.
+        /// Existing dependency versions are preserved if the desired GMA SDK is already present.
+        /// If the file is modified, EDM4U is triggered to resolve dependencies.
         /// </summary>
         private void UpdateGmaDependency()
         {
-            string desiredSpec = (GoogleMobileAdsSettings.LoadInstance().EffectiveGmaAndroidSdk ==
-                                    GoogleMobileAdsSettings.GmaAndroidSdk.NextGen)
-                                    ? NextGenSpec
-                                    : CurrentSpec;
-
             var pathUtils = ScriptableObject.CreateInstance<EditorPathUtils>();
             string directoryPath = pathUtils.GetDirectoryAssetPath();
             string dependenciesFilePath =
@@ -228,30 +227,36 @@ namespace GoogleMobileAds.Editor
                 return;
             }
 
+            bool isNextGen = (GoogleMobileAdsSettings.LoadInstance().EffectiveGmaAndroidSdk ==
+                              GoogleMobileAdsSettings.GmaAndroidSdk.NextGen);
             string fileContent = File.ReadAllText(dependenciesFilePath);
-            string newContent = fileContent;
 
-            if (Regex.IsMatch(fileContent, NextGenRegex))
+            string desiredRegex = isNextGen ? NextGenRegex : CurrentRegex;
+            if (Regex.IsMatch(fileContent, desiredRegex))
             {
-                newContent = Regex.Replace(fileContent, NextGenRegex, desiredSpec);
+                Debug.Log("GoogleMobileAdsDependencies.xml already matches the desired " +
+                          "Google Mobile Ads SDK.");
+                return;
             }
-            else if (Regex.IsMatch(fileContent, CurrentRegex))
+
+            // Identify the regex for the SDK currently in the file to be replaced
+            // (e.g., if switching to Next Gen, look for the existing Standard SDK to replace).
+            string targetRegex = isNextGen ? CurrentRegex : NextGenRegex;
+
+            if (Regex.IsMatch(fileContent, targetRegex))
             {
-                newContent = Regex.Replace(fileContent, CurrentRegex, desiredSpec);
+                string desiredSpec = isNextGen ? NextGenSpec : CurrentSpec;
+                string newContent = Regex.Replace(fileContent, targetRegex, desiredSpec);
+                Debug.Log($"Updating GoogleMobileAdsDependencies.xml with {desiredSpec}");
+                File.WriteAllText(dependenciesFilePath, newContent);
+                AssetDatabase.Refresh();
+                PlayServicesResolver.ResolveSync(true);
             }
             else
             {
                 Debug.LogWarning(
                     "Could not find existing Google Mobile Ads SDK dependency in " +
                     "GoogleMobileAdsDependencies.xml to replace.");
-            }
-
-            if (newContent != fileContent)
-            {
-                Debug.Log($"Updating GoogleMobileAdsDependencies.xml with {desiredSpec}");
-                File.WriteAllText(dependenciesFilePath, newContent);
-                AssetDatabase.Refresh();
-                PlayServicesResolver.ResolveSync(true);
             }
         }
     }
