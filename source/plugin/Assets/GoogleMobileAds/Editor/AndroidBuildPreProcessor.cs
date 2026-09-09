@@ -232,16 +232,23 @@ namespace GoogleMobileAds.Editor
             string fileContent = File.ReadAllText(dependenciesFilePath);
 
             string desiredRegex = isNextGen ? NextGenRegex : CurrentRegex;
-            if (Regex.IsMatch(fileContent, desiredRegex))
-            {
-                Debug.Log("GoogleMobileAdsDependencies.xml already matches the desired " +
-                          "Google Mobile Ads SDK.");
-                return;
-            }
 
             // Identify the regex for the SDK currently in the file to be replaced
             // (e.g., if switching to Next Gen, look for the existing Standard SDK to replace).
             string targetRegex = isNextGen ? CurrentRegex : NextGenRegex;
+
+            if (Regex.IsMatch(fileContent, desiredRegex))
+            {
+                if (!fileContent.Contains(":0.0.0"))
+                {
+                    Debug.Log("GoogleMobileAdsDependencies.xml already matches the desired " +
+                              "Google Mobile Ads SDK.");
+                    return;
+                }
+
+                // Replace the placeholder version with the desired SDK.
+                targetRegex = desiredRegex;
+            }
 
             if (Regex.IsMatch(fileContent, targetRegex))
             {
