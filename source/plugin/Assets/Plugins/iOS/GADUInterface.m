@@ -14,6 +14,7 @@
 #import "GADUNativeTemplateStyle.h"
 #import "GADUNativeTemplateTextStyle.h"
 #import "GADUObjectCache.h"
+#import "GADUPictureInPictureAd.h"
 #import "GADUPluginUtil.h"
 #import "GADUPreloadConfiguration.h"
 #import "GADUPreloadConfigurationV2.h"
@@ -369,6 +370,16 @@ GADUTypeAppOpenAdRef GADUCreateAppOpenAd(GADUTypeAppOpenAdClientRef *appOpenAdCl
   return (__bridge GADUTypeAppOpenAdRef)appOpenAd;
 }
 
+/// Creates a GADUPictureInPictureAd and returns its reference.
+GADUTypePictureInPictureAdRef GADUCreatePictureInPictureAd(
+    GADUTypePictureInPictureAdClientRef *pipAdClient) {
+  GADUPictureInPictureAd *pipAd =
+      [[GADUPictureInPictureAd alloc] initWithPictureInPictureAdClientReference:pipAdClient];
+  GADUObjectCache *cache = GADUObjectCache.sharedInstance;
+  cache[pipAd.gadu_referenceKey] = pipAd;
+  return (__bridge GADUTypePictureInPictureAdRef)pipAd;
+}
+
 /// Creates a GADBannerView with the specified width, height, and position. Returns a reference to
 /// the GADUBannerView.
 GADUTypeBannerRef GADUCreateBannerView(GADUTypeBannerClientRef *bannerClient, const char *adUnitID,
@@ -694,6 +705,38 @@ void GADUSetAppOpenAdCallbacks(
   internalAppOpenAd.adDidDismissFullScreenContentCallback = adDidDismissFullScreenContentCallback;
   internalAppOpenAd.adDidRecordImpressionCallback = adDidRecordImpressionCallback;
   internalAppOpenAd.adDidRecordClickCallback = adDidRecordClickCallback;
+}
+
+/// Sets the Picture-in-Picture ad callback methods to be invoked during ad events.
+void GADUSetPictureInPictureAdCallbacks(
+    GADUTypePictureInPictureAdRef pipAd,
+    GADUPictureInPictureAdLoadedCallback adLoadedCallback,
+    GADUPictureInPictureAdFailedToLoadCallback adFailedToLoadCallback,
+    GADUPictureInPictureAdShownCallback adShownCallback,
+    GADUPictureInPictureAdHiddenCallback adHiddenCallback,
+    GADUPictureInPictureAdDidRecordImpressionCallback adDidRecordImpressionCallback,
+    GADUPictureInPictureAdDidRecordClickCallback adDidRecordClickCallback,
+    GADUPictureInPictureAdFailedToPresentFullScreenContentCallback
+        adFailedToPresentFullScreenContentCallback,
+    GADUPictureInPictureAdWillPresentFullScreenContentCallback
+        adWillPresentFullScreenContentCallback,
+    GADUPictureInPictureAdDidDismissFullScreenContentCallback
+        adDidDismissFullScreenContentCallback,
+    GADUPictureInPictureAdPaidEventCallback paidEventCallback) {
+  GADUPictureInPictureAd *internalAd = (__bridge GADUPictureInPictureAd *)pipAd;
+  internalAd.adLoadedCallback = adLoadedCallback;
+  internalAd.adFailedToLoadCallback = adFailedToLoadCallback;
+  internalAd.adShownCallback = adShownCallback;
+  internalAd.adHiddenCallback = adHiddenCallback;
+  internalAd.adDidRecordImpressionCallback = adDidRecordImpressionCallback;
+  internalAd.adDidRecordClickCallback = adDidRecordClickCallback;
+  internalAd.adFailedToPresentFullScreenContentCallback =
+      adFailedToPresentFullScreenContentCallback;
+  internalAd.adWillPresentFullScreenContentCallback =
+      adWillPresentFullScreenContentCallback;
+  internalAd.adDidDismissFullScreenContentCallback =
+      adDidDismissFullScreenContentCallback;
+  internalAd.paidEventCallback = paidEventCallback;
 }
 
 /// Sets the banner callback methods to be invoked during banner ad events.
@@ -1327,6 +1370,34 @@ int64_t GADUGetAppOpenAdPlacementID(GADUTypeAppOpenAdRef appOpenAd) {
 void GADUSetAppOpenAdPlacementID(GADUTypeAppOpenAdRef appOpenAd, int64_t placementID) {
   GADUAppOpenAd *internalAppOpenAd = (__bridge GADUAppOpenAd *)appOpenAd;
   [internalAppOpenAd setPlacementID:placementID];
+}
+
+/// Shows the Picture-in-Picture ad at the specified position.
+void GADUShowPictureInPictureAd(GADUTypePictureInPictureAdRef pipAd, NSInteger position) {
+  GADUPictureInPictureAd *internalAd = (__bridge GADUPictureInPictureAd *)pipAd;
+  [internalAd showWithPosition:position];
+}
+
+/// Hides the Picture-in-Picture ad.
+void GADUHidePictureInPictureAd(GADUTypePictureInPictureAdRef pipAd) {
+  GADUPictureInPictureAd *internalAd = (__bridge GADUPictureInPictureAd *)pipAd;
+  [internalAd hide];
+}
+
+/// Returns the current position of the Picture-in-Picture ad.
+NSInteger GADUGetPictureInPictureAdPosition(GADUTypePictureInPictureAdRef pipAd) {
+  GADUPictureInPictureAd *internalAd = (__bridge GADUPictureInPictureAd *)pipAd;
+  return [internalAd position];
+}
+
+/// Gets the Picture-in-Picture ad unit ID.
+const char *GADUGetPictureInPictureAdUnitID(GADUTypePictureInPictureAdRef pipAd) {
+  GADUPictureInPictureAd *internalAd = (__bridge GADUPictureInPictureAd *)pipAd;
+#if GMA_PREVIEW_FEATURES
+  return cStringCopy(internalAd.pictureInPictureAd.adUnitID.UTF8String);
+#else
+  return nil;
+#endif
 }
 
 /// Sets the GADBannerView's hidden property to YES.
@@ -2015,6 +2086,15 @@ void GADULoadAppOpenAdWithAdUnitID(GADUTypeAppOpenAdRef appOpenAd, const char *a
                               request:[internalRequest request]];
 }
 
+/// Makes a Picture-in-Picture ad request.
+void GADULoadPictureInPictureAd(GADUTypePictureInPictureAdRef pipAd, const char *adUnitID,
+                               GADUTypeRequestRef request) {
+  GADUPictureInPictureAd *internalAd = (__bridge GADUPictureInPictureAd *)pipAd;
+  GADURequest *internalRequest = (__bridge GADURequest *)request;
+  [internalAd loadWithAdUnitID:GADUStringFromUTF8String(adUnitID)
+                       request:[internalRequest request]];
+}
+
 /// Makes a rewarded interstitial ad request.
 void GADULoadRewardedInterstitialAd(GADUTypeRewardedInterstitialAdRef rewardedInterstitialAd,
                                     const char *adUnitID, GADUTypeRequestRef request) {
@@ -2094,6 +2174,9 @@ const GADUTypeResponseInfoRef GADUGetResponseInfo(GADUTypeRef adFormat) {
   } else if ([internalAd isKindOfClass:[GADUNativeTemplateAd class]]) {
     GADUNativeTemplateAd *internalGADUNativeTemplateAd = (GADUNativeTemplateAd *)internalAd;
     responseInfo = internalGADUNativeTemplateAd.responseInfo;
+  } else if ([internalAd isKindOfClass:[GADUPictureInPictureAd class]]) {
+    GADUPictureInPictureAd *internalGADUPictureInPictureAd = (GADUPictureInPictureAd *)internalAd;
+    responseInfo = internalGADUPictureInPictureAd.responseInfo;
   }
 
   if (responseInfo) {

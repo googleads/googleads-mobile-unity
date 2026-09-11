@@ -150,7 +150,11 @@ namespace GoogleMobileAds
         {
             if (Application.platform == RuntimePlatform.Android)
             {
-                return new GoogleMobileAds.Android.PictureInPictureAdClient();
+                if (IsNextGenEnabled())
+                {
+                    return new GoogleMobileAds.Android.PictureInPictureAdClient();
+                }
+                return new GoogleMobileAds.Common.UnsupportedPictureInPictureAdClient();
             }
             throw new InvalidOperationException(@"Called " + MethodBase.GetCurrentMethod().Name +
             " on non-Android runtime");
