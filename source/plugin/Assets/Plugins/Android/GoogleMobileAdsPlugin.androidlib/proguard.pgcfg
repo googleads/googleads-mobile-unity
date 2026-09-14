@@ -45,3 +45,14 @@
 -keep public class com.google.android.ump.** {
    public *;
 }
+
+# Keep Google Mobile Ads internal and bundled runtime classes.
+-keep class ads_mobile_sdk.** {
+   *;
+}
+-keep class com.google.protobuf.** {
+   *;
+}
+-keep class androidx.datastore.** {
+   *;
+}
