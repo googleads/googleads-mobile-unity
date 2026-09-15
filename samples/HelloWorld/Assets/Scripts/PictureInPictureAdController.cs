@@ -11,6 +11,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+#if GMA_PREVIEW_FEATURES
 
 using System;
 using UnityEngine;
@@ -230,3 +231,28 @@ namespace GoogleMobileAds.Sample
         }
     }
 }
+
+#else
+
+using UnityEngine;
+
+namespace GoogleMobileAds.Sample
+{
+    /// <summary>
+    /// Picture-in-Picture is a preview feature and requires GMA_PREVIEW_FEATURES to be defined.
+    /// </summary>
+    [AddComponentMenu("GoogleMobileAds/Samples/PictureInPictureAdController")]
+    public class PictureInPictureAdController : MonoBehaviour
+    {
+        public GameObject AdLoadedStatus;
+
+        public void LoadAd() {}
+        public void ShowAd() {}
+        public void HideAd() {}
+        public void DestroyAd() {}
+        public void LogResponseInfo() {}
+        public void LogAdPosition() {}
+    }
+}
+
+#endif
