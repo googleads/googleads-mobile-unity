@@ -82,7 +82,7 @@ namespace GoogleMobileAds.Unity
             while (currentQueue.Count < config.BufferSize)
             {
                 AppOpenAdClient adClient = new AppOpenAdClient();
-                adClient.OnAdLoaded += (sender, args) =>
+                adClient.OnAdLoaded += () =>
                 {
                     if (_onAdPreloaded != null)
                     {

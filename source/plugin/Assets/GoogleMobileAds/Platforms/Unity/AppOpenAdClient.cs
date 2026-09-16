@@ -25,19 +25,19 @@ namespace GoogleMobileAds.Unity
 {
     public class AppOpenAdClient : BaseAdClient, IAppOpenAdClient
     {
-        public event EventHandler<EventArgs> OnAdLoaded;
+        public event Action OnAdLoaded;
 
-        public event EventHandler<LoadAdErrorClientEventArgs> OnAdFailedToLoad;
+        public event Action<LoadAdErrorClientEventArgs> OnAdFailedToLoad;
 
         public event Action<AdValue> OnPaidEvent;
 
-        public event EventHandler<AdErrorClientEventArgs> OnAdFailedToPresentFullScreenContent;
+        public event Action<AdErrorClientEventArgs> OnAdFailedToPresentFullScreenContent;
 
-        public event EventHandler<EventArgs> OnAdDidPresentFullScreenContent;
+        public event Action OnAdDidPresentFullScreenContent;
 
-        public event EventHandler<EventArgs> OnAdDidDismissFullScreenContent;
+        public event Action OnAdDidDismissFullScreenContent;
 
-        public event EventHandler<EventArgs> OnAdDidRecordImpression;
+        public event Action OnAdDidRecordImpression;
 
         public event Action OnAdClicked;
 
@@ -70,7 +70,7 @@ namespace GoogleMobileAds.Unity
                 DestroyAppOpenAd();
                 if(OnAdDidDismissFullScreenContent != null)
                 {
-                    OnAdDidDismissFullScreenContent.Invoke(this, new EventArgs());
+                    OnAdDidDismissFullScreenContent.Invoke();
                 }
                 AdBehaviour.ResumeGame();
             });
@@ -110,14 +110,14 @@ namespace GoogleMobileAds.Unity
             {
                 if(OnAdLoaded != null)
                 {
-                    OnAdLoaded.Invoke(this, EventArgs.Empty);
+                    OnAdLoaded.Invoke();
                 }
             }
             else
             {
                 if(OnAdFailedToLoad != null)
                 {
-                    OnAdFailedToLoad.Invoke(this, new LoadAdErrorClientEventArgs()
+                    OnAdFailedToLoad.Invoke(new LoadAdErrorClientEventArgs()
                     {
                         LoadAdErrorClient = new LoadAdErrorClient()
                     });
@@ -137,11 +137,11 @@ namespace GoogleMobileAds.Unity
 
               if(OnAdDidPresentFullScreenContent != null)
               {
-                OnAdDidPresentFullScreenContent.Invoke(this, EventArgs.Empty);
+                OnAdDidPresentFullScreenContent.Invoke();
               }
               if (OnAdDidRecordImpression != null)
               {
-                  OnAdDidRecordImpression(this, EventArgs.Empty);
+                  OnAdDidRecordImpression();
               }
           }
           else

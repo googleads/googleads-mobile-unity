@@ -23,25 +23,25 @@ namespace GoogleMobileAds.Common
   public interface IAppOpenAdClient
   {
     // Ad event fired when the app open ad has been loaded.
-    event EventHandler<EventArgs> OnAdLoaded;
+    event Action OnAdLoaded;
 
     // Ad event fired when the app open ad has failed to load.
-    event EventHandler<LoadAdErrorClientEventArgs> OnAdFailedToLoad;
+    event Action<LoadAdErrorClientEventArgs> OnAdFailedToLoad;
 
     // Ad event fired when the app open ad is estimated to have earned money.
     event Action<AdValue> OnPaidEvent;
 
     // Ad event fired when the ad failed to present full screen content.
-    event EventHandler<AdErrorClientEventArgs> OnAdFailedToPresentFullScreenContent;
+    event Action<AdErrorClientEventArgs> OnAdFailedToPresentFullScreenContent;
 
     // Ad event fired when the ad presented the full screen content.
-    event EventHandler<EventArgs> OnAdDidPresentFullScreenContent;
+    event Action OnAdDidPresentFullScreenContent;
 
     // Ad event fired when the ad dismissed full screen content.
-    event EventHandler<EventArgs> OnAdDidDismissFullScreenContent;
+    event Action OnAdDidDismissFullScreenContent;
 
     // Ad event fired when an impression has been recorded for the ad.
-    event EventHandler<EventArgs> OnAdDidRecordImpression;
+    event Action OnAdDidRecordImpression;
 
     // Ad event fired when an ad is clicked.
     event Action OnAdClicked;

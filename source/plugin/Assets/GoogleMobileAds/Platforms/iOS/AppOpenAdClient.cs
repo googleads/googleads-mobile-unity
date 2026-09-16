@@ -76,21 +76,21 @@ namespace GoogleMobileAds.iOS
         internal delegate void GADUAppOpenAdDidRecordClickCallback(IntPtr appOpenAdClient);
         #endregion
 
-        public event EventHandler<EventArgs> OnAdLoaded;
+        public event Action OnAdLoaded;
 
-        public event EventHandler<LoadAdErrorClientEventArgs> OnAdFailedToLoad;
+        public event Action<LoadAdErrorClientEventArgs> OnAdFailedToLoad;
 
         public event Action<AdValue> OnPaidEvent;
 
-        public event EventHandler<AdErrorClientEventArgs> OnAdFailedToPresentFullScreenContent;
+        public event Action<AdErrorClientEventArgs> OnAdFailedToPresentFullScreenContent;
 
-        public event EventHandler<EventArgs> OnAdDidPresentFullScreenContent;
+        public event Action OnAdDidPresentFullScreenContent;
 
-        public event EventHandler<EventArgs> OnAdDidRecordImpression;
+        public event Action OnAdDidRecordImpression;
 
         public event Action OnAdClicked;
 
-        public event EventHandler<EventArgs> OnAdDidDismissFullScreenContent;
+        public event Action OnAdDidDismissFullScreenContent;
 
         // This property should be used when setting the appOpenAdPtr.
         private IntPtr AppOpenAdPtr
@@ -216,7 +216,7 @@ namespace GoogleMobileAds.iOS
             AppOpenAdClient client = IntPtrToAppOpenAdClient(appOpenAdClient);
             if (client.OnAdLoaded != null)
             {
-                client.OnAdLoaded(client, EventArgs.Empty);
+                client.OnAdLoaded();
             }
         }
 
@@ -231,7 +231,7 @@ namespace GoogleMobileAds.iOS
                 {
                     LoadAdErrorClient = new LoadAdErrorClient(error),
                 };
-                client.OnAdFailedToLoad(client, args);
+                client.OnAdFailedToLoad(args);
             }
         }
 
@@ -263,7 +263,7 @@ namespace GoogleMobileAds.iOS
                 {
                     AdErrorClient = new AdErrorClient(error),
                 };
-                client.OnAdFailedToPresentFullScreenContent(client, args);
+                client.OnAdFailedToPresentFullScreenContent(args);
             }
         }
 
@@ -273,7 +273,7 @@ namespace GoogleMobileAds.iOS
             AppOpenAdClient client = IntPtrToAppOpenAdClient(appOpenAdClient);
             if (client.OnAdDidPresentFullScreenContent != null)
             {
-                client.OnAdDidPresentFullScreenContent(client, EventArgs.Empty);
+                client.OnAdDidPresentFullScreenContent();
             }
         }
 
@@ -283,7 +283,7 @@ namespace GoogleMobileAds.iOS
             AppOpenAdClient client = IntPtrToAppOpenAdClient(appOpenAdClient);
             if (client.OnAdDidDismissFullScreenContent != null)
             {
-                client.OnAdDidDismissFullScreenContent(client, EventArgs.Empty);
+                client.OnAdDidDismissFullScreenContent();
             }
         }
 
@@ -293,7 +293,7 @@ namespace GoogleMobileAds.iOS
             AppOpenAdClient client = IntPtrToAppOpenAdClient(appOpenAdClient);
             if (client.OnAdDidRecordImpression != null)
             {
-                client.OnAdDidRecordImpression(client, EventArgs.Empty);
+                client.OnAdDidRecordImpression();
             }
         }
 
