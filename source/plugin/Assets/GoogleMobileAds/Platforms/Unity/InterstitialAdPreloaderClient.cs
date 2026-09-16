@@ -73,7 +73,7 @@ namespace GoogleMobileAds.Unity
             while (currentQueue.Count < config.BufferSize)
             {
                 InterstitialClient adClient = new InterstitialClient();
-                adClient.OnAdLoaded += (sender, args) =>
+                adClient.OnAdLoaded += () =>
                 {
                     if (_onAdPreloaded != null)
                     {

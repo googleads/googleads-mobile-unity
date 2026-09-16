@@ -94,14 +94,14 @@ namespace GoogleMobileAds.Api.AdManager
 
             var client = MobileAds.GetClientFactory().BuildAdManagerInterstitialClient();
             client.CreateInterstitialAd();
-            client.OnAdLoaded += (sender, args) =>
+            client.OnAdLoaded += () =>
             {
                 MobileAds.RaiseAction(() =>
                 {
                     adLoadCallback(new AdManagerInterstitialAd(client), null);
                 });
             };
-            client.OnAdFailedToLoad += (sender, error) =>
+            client.OnAdFailedToLoad += (error) =>
             {
                 var loadAdError = new LoadAdError(error.LoadAdErrorClient);
                 MobileAds.RaiseAction(() =>

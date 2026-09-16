@@ -142,7 +142,7 @@ namespace GoogleMobileAds.Api
 
             var client = MobileAds.GetClientFactory().BuildInterstitialClient();
             client.CreateInterstitialAd();
-            client.OnAdLoaded += (sender, args) =>
+            client.OnAdLoaded += () =>
             {
                 var interstitialAd = new InterstitialAd(client);
                 MobileAds.RaiseAction(() =>
@@ -150,7 +150,7 @@ namespace GoogleMobileAds.Api
                     adLoadCallback(interstitialAd, null);
                 });
             };
-            client.OnAdFailedToLoad += (sender, error) =>
+            client.OnAdFailedToLoad += (error) =>
             {
                 var loadAdError = new LoadAdError(error.LoadAdErrorClient);
                 MobileAds.RaiseAction(() =>
@@ -222,7 +222,7 @@ namespace GoogleMobileAds.Api
                 });
             };
 
-            _client.OnAdDidDismissFullScreenContent += (sender, args) =>
+            _client.OnAdDidDismissFullScreenContent += () =>
             {
                 MobileAds.RaiseAction(() =>
                 {
@@ -233,7 +233,7 @@ namespace GoogleMobileAds.Api
                 });
             };
 
-            _client.OnAdDidPresentFullScreenContent += (sender, args) =>
+            _client.OnAdDidPresentFullScreenContent += () =>
             {
                 MobileAds.RaiseAction(() =>
                 {
@@ -244,7 +244,7 @@ namespace GoogleMobileAds.Api
                 });
             };
 
-            _client.OnAdDidRecordImpression += (sender, args) =>
+            _client.OnAdDidRecordImpression += () =>
             {
                 MobileAds.RaiseAction(() =>
                 {
@@ -254,7 +254,7 @@ namespace GoogleMobileAds.Api
                     }
                 });
             };
-            _client.OnAdFailedToPresentFullScreenContent += (sender, error) =>
+            _client.OnAdFailedToPresentFullScreenContent += (error) =>
             {
                 var adError = new AdError(error.AdErrorClient);
                 MobileAds.RaiseAction(() =>
