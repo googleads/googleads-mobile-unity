@@ -6,10 +6,7 @@ Version Next
 
 - Added support for Picture-in-Picture ads.
 - Updated External Dependency Manager for Unity dependency to use 1.2.189.
-- Migrated App Open ad client events from EventHandler to Action delegates.
-- Migrated Banner and Ad Manager Banner ad client events from EventHandler to Action delegates.
-- Migrated Interstitial and Ad Manager Interstitial ad client events from EventHandler to Action delegates.
-- Migrated Rewarded and Rewarded Interstitial ad client events from EventHandler to Action delegates.
+- Migrated ad client events from EventHandler to Action delegates across all ad formats.
 
 **************
 Version 11.5.0

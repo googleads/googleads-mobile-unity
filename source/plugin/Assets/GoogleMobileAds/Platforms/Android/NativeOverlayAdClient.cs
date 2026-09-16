@@ -34,15 +34,15 @@ namespace GoogleMobileAds.Android
 
 #region INativeOverlayAdClient implementation
         // Ad event fired when the native ad has loaded.
-        public event EventHandler<EventArgs> OnAdLoaded;
+        public event Action OnAdLoaded;
         // Ad event fired when the native ad has failed to load.
-        public event EventHandler<LoadAdErrorClientEventArgs> OnAdFailedToLoad;
+        public event Action<LoadAdErrorClientEventArgs> OnAdFailedToLoad;
         // Ad event fired when an ad impression has been recorded.
-        public event EventHandler<EventArgs> OnAdDidRecordImpression;
+        public event Action OnAdDidRecordImpression;
         // Ad event fired when the full screen content has been presented.
-        public event EventHandler<EventArgs> OnAdDidPresentFullScreenContent;
+        public event Action OnAdDidPresentFullScreenContent;
         // Ad event fired when the full screen content has been dismissed.
-        public event EventHandler<EventArgs> OnAdDidDismissFullScreenContent;
+        public event Action OnAdDidDismissFullScreenContent;
         // Ad event fired when an ad has been clicked.
         public event Action OnAdClicked;
 
@@ -160,7 +160,7 @@ namespace GoogleMobileAds.Android
         {
             if (this.OnAdLoaded != null)
             {
-                this.OnAdLoaded(this, EventArgs.Empty);
+                this.OnAdLoaded();
             }
         }
 
@@ -172,7 +172,7 @@ namespace GoogleMobileAds.Android
                 {
                     LoadAdErrorClient = new LoadAdErrorClient(error)
                 };
-                this.OnAdFailedToLoad(this, args);
+                this.OnAdFailedToLoad(args);
             }
         }
 
@@ -180,7 +180,7 @@ namespace GoogleMobileAds.Android
         {
             if (this.OnAdDidRecordImpression != null)
             {
-                this.OnAdDidRecordImpression(this, EventArgs.Empty);
+                this.OnAdDidRecordImpression();
             }
         }
 
@@ -196,7 +196,7 @@ namespace GoogleMobileAds.Android
         {
             if (this.OnAdDidPresentFullScreenContent != null)
             {
-                this.OnAdDidPresentFullScreenContent(this, EventArgs.Empty);
+                this.OnAdDidPresentFullScreenContent();
             }
         }
 
@@ -204,7 +204,7 @@ namespace GoogleMobileAds.Android
         {
             if (this.OnAdDidDismissFullScreenContent != null)
             {
-                this.OnAdDidDismissFullScreenContent(this, EventArgs.Empty);
+                this.OnAdDidDismissFullScreenContent();
             }
         }
 

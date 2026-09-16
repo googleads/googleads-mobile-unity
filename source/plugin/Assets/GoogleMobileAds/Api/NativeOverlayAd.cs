@@ -105,11 +105,11 @@ namespace GoogleMobileAds.Api
             }
 
             var client = MobileAds.GetClientFactory().BuildNativeOverlayAdClient();
-            client.OnAdLoaded += (sender, args) =>
+            client.OnAdLoaded += () =>
             {
                 MobileAds.RaiseAction(() => { adLoadCallback(new NativeOverlayAd(client), null); });
             };
-            client.OnAdFailedToLoad += (sender, error) =>
+            client.OnAdFailedToLoad += (error) =>
             {
                 var loadAdError = new LoadAdError(error.LoadAdErrorClient);
                 MobileAds.RaiseAction(() => { adLoadCallback(null, loadAdError); });
@@ -303,7 +303,7 @@ namespace GoogleMobileAds.Api
                 });
             };
 
-            _client.OnAdDidRecordImpression += (sender, args) =>
+            _client.OnAdDidRecordImpression += () =>
             {
                 MobileAds.RaiseAction(() =>
                 {
@@ -314,7 +314,7 @@ namespace GoogleMobileAds.Api
                 });
             };
 
-            _client.OnAdDidDismissFullScreenContent += (sender, args) =>
+            _client.OnAdDidDismissFullScreenContent += () =>
             {
                 MobileAds.RaiseAction(() =>
                 {
@@ -325,7 +325,7 @@ namespace GoogleMobileAds.Api
                 });
             };
 
-            _client.OnAdDidPresentFullScreenContent += (sender, args) =>
+            _client.OnAdDidPresentFullScreenContent += () =>
             {
                 MobileAds.RaiseAction(() =>
                 {
