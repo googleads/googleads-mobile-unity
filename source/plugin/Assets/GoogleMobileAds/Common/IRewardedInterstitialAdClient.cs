@@ -21,21 +21,21 @@ namespace GoogleMobileAds.Common
     public interface IRewardedInterstitialAdClient
     {
         // Ad event fired when the rewarded interstitial ad has been received.
-        event EventHandler<EventArgs> OnAdLoaded;
+        event Action OnAdLoaded;
         // Ad event fired when the rewarded interstitial ad has failed to load.
-        event EventHandler<LoadAdErrorClientEventArgs> OnAdFailedToLoad;
+        event Action<LoadAdErrorClientEventArgs> OnAdFailedToLoad;
         // Ad event fired when the rewarded interstitial ad is estimated to have earned money.
         event Action<AdValue> OnPaidEvent;
         // Ad event fired when the rewarded interstitial ad has rewarded the user.
-        event EventHandler<Reward> OnUserEarnedReward;
+        event Action<Reward> OnUserEarnedReward;
         // Ad event fired when the rewarded interstitial ad has failed to present the full screen content.
-        event EventHandler<AdErrorClientEventArgs> OnAdFailedToPresentFullScreenContent;
+        event Action<AdErrorClientEventArgs> OnAdFailedToPresentFullScreenContent;
         // Ad event fired when the rewarded interstitial ad has presented the full screen content.
-        event EventHandler<EventArgs> OnAdDidPresentFullScreenContent;
+        event Action OnAdDidPresentFullScreenContent;
         // Ad event fired when the rewarded interstitial ad has dismissed the full screen content.
-        event EventHandler<EventArgs> OnAdDidDismissFullScreenContent;
+        event Action OnAdDidDismissFullScreenContent;
         // Ad event fired when the rewarded interstitial ad has recorded an impression.
-        event EventHandler<EventArgs> OnAdDidRecordImpression;
+        event Action OnAdDidRecordImpression;
         // Ad event fired when an ad is clicked.
         event Action OnAdClicked;
 

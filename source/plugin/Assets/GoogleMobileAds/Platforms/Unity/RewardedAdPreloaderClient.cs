@@ -73,7 +73,7 @@ namespace GoogleMobileAds.Unity
             while (currentQueue.Count < config.BufferSize)
             {
                 RewardedAdClient adClient = new RewardedAdClient();
-                adClient.OnAdLoaded += (sender, args) =>
+                adClient.OnAdLoaded += () =>
                 {
                     if (_onAdPreloaded != null)
                     {

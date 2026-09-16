@@ -9,6 +9,7 @@ Version Next
 - Migrated App Open ad client events from EventHandler to Action delegates.
 - Migrated Banner and Ad Manager Banner ad client events from EventHandler to Action delegates.
 - Migrated Interstitial and Ad Manager Interstitial ad client events from EventHandler to Action delegates.
+- Migrated Rewarded and Rewarded Interstitial ad client events from EventHandler to Action delegates.
 
 **************
 Version 11.5.0

@@ -140,14 +140,14 @@ namespace GoogleMobileAds.Api
 
             var client = MobileAds.GetClientFactory().BuildRewardedAdClient();
             client.CreateRewardedAd();
-            client.OnAdLoaded += (sender, args) =>
+            client.OnAdLoaded += () =>
             {
                 MobileAds.RaiseAction(() =>
                 {
                     adLoadCallback(new RewardedAd(client), null);
                 });
             };
-            client.OnAdFailedToLoad += (sender, error) =>
+            client.OnAdFailedToLoad += (error) =>
             {
                 var loadAdError = new LoadAdError(error.LoadAdErrorClient);
                 MobileAds.RaiseAction(() =>
@@ -239,7 +239,7 @@ namespace GoogleMobileAds.Api
                 });
             };
 
-            _client.OnAdDidDismissFullScreenContent += (sender, args) =>
+            _client.OnAdDidDismissFullScreenContent += () =>
             {
                 MobileAds.RaiseAction(() =>
                 {
@@ -250,7 +250,7 @@ namespace GoogleMobileAds.Api
                 });
             };
 
-            _client.OnAdDidPresentFullScreenContent += (sender, args) =>
+            _client.OnAdDidPresentFullScreenContent += () =>
             {
                 MobileAds.RaiseAction(() =>
                 {
@@ -261,7 +261,7 @@ namespace GoogleMobileAds.Api
                 });
             };
 
-            _client.OnAdDidRecordImpression += (sender, args) =>
+            _client.OnAdDidRecordImpression += () =>
             {
                 MobileAds.RaiseAction(() =>
                 {
@@ -272,7 +272,7 @@ namespace GoogleMobileAds.Api
                 });
             };
 
-            _client.OnAdFailedToPresentFullScreenContent += (sender, error) =>
+            _client.OnAdFailedToPresentFullScreenContent += (error) =>
             {
                 var adError = new AdError(error.AdErrorClient);
                 MobileAds.RaiseAction(() =>
@@ -295,7 +295,7 @@ namespace GoogleMobileAds.Api
                 });
             };
 
-            _client.OnUserEarnedReward += (sender, args) =>
+            _client.OnUserEarnedReward += (args) =>
             {
                 MobileAds.RaiseAction(() =>
                 {

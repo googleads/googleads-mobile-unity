@@ -27,21 +27,21 @@ namespace GoogleMobileAds.Unity
     public class RewardingAdBaseClient : BaseAdClient
     {
         // Ad event fired when the rewarding ad has been received.
-        public event EventHandler<EventArgs> OnAdLoaded;
+        public event Action OnAdLoaded;
         // Ad event fired when the rewarding ad has failed to load.
-        public event EventHandler<LoadAdErrorClientEventArgs> OnAdFailedToLoad;
+        public event Action<LoadAdErrorClientEventArgs> OnAdFailedToLoad;
         // Ad event fired when the rewarding ad is estimated to have earned money.
         public event Action<AdValue> OnPaidEvent;
         // Ad event fired when the rewarding ad has rewarded the user.
-        public event EventHandler<Reward> OnUserEarnedReward;
+        public event Action<Reward> OnUserEarnedReward;
         // Ad event fired when the full screen content has failed to be presented.
-        public event EventHandler<AdErrorClientEventArgs> OnAdFailedToPresentFullScreenContent;
+        public event Action<AdErrorClientEventArgs> OnAdFailedToPresentFullScreenContent;
         // Ad event fired when the full screen content has been presented.
-        public event EventHandler<EventArgs> OnAdDidPresentFullScreenContent;
+        public event Action OnAdDidPresentFullScreenContent;
         // Ad event fired when the full screen content has been dismissed.
-        public event EventHandler<EventArgs> OnAdDidDismissFullScreenContent;
+        public event Action OnAdDidDismissFullScreenContent;
         // Ad event fired when an ad impression has been recorded.
-        public event EventHandler<EventArgs> OnAdDidRecordImpression;
+        public event Action OnAdDidRecordImpression;
         // Ad event fired when an ad impression has been clicked.
         public event Action OnAdClicked;
 
@@ -85,7 +85,7 @@ namespace GoogleMobileAds.Unity
                 prefabAd = null;
                 if (OnAdDidDismissFullScreenContent != null)
                 {
-                    OnAdDidDismissFullScreenContent.Invoke(this, EventArgs.Empty);
+                    OnAdDidDismissFullScreenContent.Invoke();
                 }
                 AdBehaviour.ResumeGame();
             });
@@ -129,14 +129,14 @@ namespace GoogleMobileAds.Unity
             {
                 if (OnAdLoaded != null)
                 {
-                    OnAdLoaded.Invoke(this, EventArgs.Empty);
+                    OnAdLoaded.Invoke();
                 }
             }
             else
             {
                 if (OnAdFailedToLoad != null)
                 {
-                    OnAdFailedToLoad.Invoke(this, new LoadAdErrorClientEventArgs()
+                    OnAdFailedToLoad.Invoke(new LoadAdErrorClientEventArgs()
                     {
                         LoadAdErrorClient = new LoadAdErrorClient()
                     });
@@ -169,17 +169,17 @@ namespace GoogleMobileAds.Unity
                 {
                     if (OnUserEarnedReward != null)
                     {
-                        OnUserEarnedReward.Invoke(this, GetRewardItem());
+                        OnUserEarnedReward.Invoke(GetRewardItem());
                     }
                 };
 
                 if (OnAdDidPresentFullScreenContent != null)
                 {
-                    OnAdDidPresentFullScreenContent.Invoke(this, EventArgs.Empty);
+                    OnAdDidPresentFullScreenContent.Invoke();
                 }
                 if (OnAdDidRecordImpression != null)
                 {
-                    OnAdDidRecordImpression(this, EventArgs.Empty);
+                    OnAdDidRecordImpression();
                 }
                 if (OnPaidEvent != null)
                 {
@@ -195,7 +195,7 @@ namespace GoogleMobileAds.Unity
             {
                 if (OnAdFailedToPresentFullScreenContent != null)
                 {
-                    OnAdFailedToPresentFullScreenContent.Invoke(this, new AdErrorClientEventArgs()
+                    OnAdFailedToPresentFullScreenContent.Invoke(new AdErrorClientEventArgs()
                     {
                         AdErrorClient = new AdErrorClient()
                     });

@@ -34,21 +34,21 @@ namespace GoogleMobileAds.Android
 
         #region IRewardedClient implementation
 
-        public event EventHandler<EventArgs> OnAdLoaded;
+        public event Action OnAdLoaded;
 
-        public event EventHandler<LoadAdErrorClientEventArgs> OnAdFailedToLoad;
+        public event Action<LoadAdErrorClientEventArgs> OnAdFailedToLoad;
 
-        public event EventHandler<Reward> OnUserEarnedReward;
+        public event Action<Reward> OnUserEarnedReward;
 
         public event Action<AdValue> OnPaidEvent;
 
-        public event EventHandler<AdErrorClientEventArgs> OnAdFailedToPresentFullScreenContent;
+        public event Action<AdErrorClientEventArgs> OnAdFailedToPresentFullScreenContent;
 
-        public event EventHandler<EventArgs> OnAdDidPresentFullScreenContent;
+        public event Action OnAdDidPresentFullScreenContent;
 
-        public event EventHandler<EventArgs> OnAdDidDismissFullScreenContent;
+        public event Action OnAdDidDismissFullScreenContent;
 
-        public event EventHandler<EventArgs> OnAdDidRecordImpression;
+        public event Action OnAdDidRecordImpression;
 
         public event Action OnAdClicked;
 
@@ -142,7 +142,7 @@ namespace GoogleMobileAds.Android
         {
             if (this.OnAdLoaded != null)
             {
-                this.OnAdLoaded(this, EventArgs.Empty);
+                this.OnAdLoaded();
             }
         }
 
@@ -154,7 +154,7 @@ namespace GoogleMobileAds.Android
                 {
                     LoadAdErrorClient = new LoadAdErrorClient(error)
                 };
-                this.OnAdFailedToLoad(this, args);
+                this.OnAdFailedToLoad(args);
             }
         }
 
@@ -166,7 +166,7 @@ namespace GoogleMobileAds.Android
                 {
                     AdErrorClient = new AdErrorClient(error)
                 };
-                this.OnAdFailedToPresentFullScreenContent(this, args);
+                this.OnAdFailedToPresentFullScreenContent(args);
             }
         }
 
@@ -174,7 +174,7 @@ namespace GoogleMobileAds.Android
         {
             if (this.OnAdDidPresentFullScreenContent != null)
             {
-                this.OnAdDidPresentFullScreenContent(this, EventArgs.Empty);
+                this.OnAdDidPresentFullScreenContent();
             }
         }
 
@@ -183,7 +183,7 @@ namespace GoogleMobileAds.Android
         {
             if (this.OnAdDidDismissFullScreenContent != null)
             {
-                this.OnAdDidDismissFullScreenContent(this, EventArgs.Empty);
+                this.OnAdDidDismissFullScreenContent();
             }
         }
 
@@ -191,7 +191,7 @@ namespace GoogleMobileAds.Android
         {
             if (this.OnAdDidRecordImpression != null)
             {
-                this.OnAdDidRecordImpression(this, EventArgs.Empty);
+                this.OnAdDidRecordImpression();
             }
         }
 
@@ -212,7 +212,7 @@ namespace GoogleMobileAds.Android
                     Type = type,
                     Amount = amount
                 };
-                this.OnUserEarnedReward(this, args);
+                this.OnUserEarnedReward(args);
             }
         }
 
