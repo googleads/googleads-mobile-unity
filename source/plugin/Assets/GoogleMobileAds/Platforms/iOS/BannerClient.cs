@@ -48,13 +48,13 @@ namespace GoogleMobileAds.iOS
 
         #endregion
 
-        public event EventHandler<EventArgs> OnAdLoaded;
+        public event Action OnAdLoaded;
 
-        public event EventHandler<LoadAdErrorClientEventArgs> OnAdFailedToLoad;
+        public event Action<LoadAdErrorClientEventArgs> OnAdFailedToLoad;
 
-        public event EventHandler<EventArgs> OnAdOpening;
+        public event Action OnAdOpening;
 
-        public event EventHandler<EventArgs> OnAdClosed;
+        public event Action OnAdClosed;
 
         public event Action<AdValue> OnPaidEvent;
 
@@ -285,7 +285,7 @@ namespace GoogleMobileAds.iOS
             BannerClient client = IntPtrToBannerClient(bannerClient);
             if (client.OnAdLoaded != null)
             {
-                client.OnAdLoaded(client, EventArgs.Empty);
+                client.OnAdLoaded();
             }
         }
 
@@ -300,7 +300,7 @@ namespace GoogleMobileAds.iOS
                 {
                     LoadAdErrorClient = new LoadAdErrorClient(error)
                 };
-                client.OnAdFailedToLoad(client, args);
+                client.OnAdFailedToLoad(args);
             }
         }
 
@@ -310,7 +310,7 @@ namespace GoogleMobileAds.iOS
             BannerClient client = IntPtrToBannerClient(bannerClient);
             if (client.OnAdOpening != null)
             {
-                client.OnAdOpening(client, EventArgs.Empty);
+                client.OnAdOpening();
             }
         }
 
@@ -320,7 +320,7 @@ namespace GoogleMobileAds.iOS
             BannerClient client = IntPtrToBannerClient(bannerClient);
             if (client.OnAdClosed != null)
             {
-                client.OnAdClosed(client, EventArgs.Empty);
+                client.OnAdClosed();
             }
         }
 

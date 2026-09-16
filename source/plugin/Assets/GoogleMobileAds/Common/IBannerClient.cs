@@ -21,13 +21,13 @@ namespace GoogleMobileAds.Common
     public interface IBannerClient
     {
         // Ad event fired when the banner ad has been received.
-        event EventHandler<EventArgs> OnAdLoaded;
+        event Action OnAdLoaded;
         // Ad event fired when the banner ad has failed to load.
-        event EventHandler<LoadAdErrorClientEventArgs> OnAdFailedToLoad;
+        event Action<LoadAdErrorClientEventArgs> OnAdFailedToLoad;
         // Ad event fired when the banner ad is opened.
-        event EventHandler<EventArgs> OnAdOpening;
+        event Action OnAdOpening;
         // Ad event fired when the banner ad is closed.
-        event EventHandler<EventArgs> OnAdClosed;
+        event Action OnAdClosed;
         // Ad event fired when the banner ad is estimated to have earned money.
         event Action<AdValue> OnPaidEvent;
         // Ad event fired when the banner ad is clicked.

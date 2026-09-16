@@ -27,10 +27,10 @@ namespace GoogleMobileAds.Unity
         public event Action<AdValue> OnPaidEvent;
         public event Action OnAdClicked;
         public event Action OnAdImpressionRecorded;
-        public event EventHandler<EventArgs> OnAdLoaded;
-        public event EventHandler<LoadAdErrorClientEventArgs> OnAdFailedToLoad;
-        public event EventHandler<EventArgs> OnAdOpening;
-        public event EventHandler<EventArgs> OnAdClosed;
+        public event Action OnAdLoaded;
+        public event Action<LoadAdErrorClientEventArgs> OnAdFailedToLoad;
+        public event Action OnAdOpening;
+        public event Action OnAdClosed;
         public long PlacementId { get; set; }
 
         private bool _isHidden = false;
@@ -135,7 +135,7 @@ namespace GoogleMobileAds.Unity
                 }
                 if (OnAdOpening != null)
                 {
-                    OnAdOpening(this, EventArgs.Empty);
+                    OnAdOpening();
                 }
                 Application.OpenURL("https://google.com");
                 if (OnPaidEvent != null)
@@ -147,7 +147,7 @@ namespace GoogleMobileAds.Unity
                 }
                 if (OnAdClosed != null)
                 {
-                    OnAdClosed(this, EventArgs.Empty);
+                    OnAdClosed();
                 }
             });
 
@@ -165,7 +165,7 @@ namespace GoogleMobileAds.Unity
             {
                 if(OnAdFailedToLoad != null)
                 {
-                    OnAdFailedToLoad.Invoke(this, new LoadAdErrorClientEventArgs {
+                    OnAdFailedToLoad.Invoke(new LoadAdErrorClientEventArgs {
                             LoadAdErrorClient = new LoadAdErrorClient()
                         });
                 }
@@ -177,7 +177,7 @@ namespace GoogleMobileAds.Unity
 
                 if(OnAdLoaded != null)
                 {
-                    OnAdLoaded.Invoke(this, EventArgs.Empty);
+                    OnAdLoaded.Invoke();
                 }
 
                 if (!_isHidden)

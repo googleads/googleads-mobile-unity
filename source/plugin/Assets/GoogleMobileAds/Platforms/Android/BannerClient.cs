@@ -35,13 +35,13 @@ namespace GoogleMobileAds.Android
                 Utils.BannerViewClassName, activity, this);
         }
 
-        public event EventHandler<EventArgs> OnAdLoaded;
+        public event Action OnAdLoaded;
 
-        public event EventHandler<LoadAdErrorClientEventArgs> OnAdFailedToLoad;
+        public event Action<LoadAdErrorClientEventArgs> OnAdFailedToLoad;
 
-        public event EventHandler<EventArgs> OnAdOpening;
+        public event Action OnAdOpening;
 
-        public event EventHandler<EventArgs> OnAdClosed;
+        public event Action OnAdClosed;
 
         public event Action<AdValue> OnPaidEvent;
 
@@ -150,7 +150,7 @@ namespace GoogleMobileAds.Android
         {
             if (this.OnAdLoaded != null)
             {
-                this.OnAdLoaded(this, EventArgs.Empty);
+                this.OnAdLoaded();
             }
         }
 
@@ -162,7 +162,7 @@ namespace GoogleMobileAds.Android
                 {
                     LoadAdErrorClient = new LoadAdErrorClient(error)
                 };
-                this.OnAdFailedToLoad(this, args);
+                this.OnAdFailedToLoad(args);
             }
         }
 
@@ -170,7 +170,7 @@ namespace GoogleMobileAds.Android
         {
             if (this.OnAdOpening != null)
             {
-                this.OnAdOpening(this, EventArgs.Empty);
+                this.OnAdOpening();
             }
         }
 
@@ -178,7 +178,7 @@ namespace GoogleMobileAds.Android
         {
             if (this.OnAdClosed != null)
             {
-                this.OnAdClosed(this, EventArgs.Empty);
+                this.OnAdClosed();
             }
         }
 

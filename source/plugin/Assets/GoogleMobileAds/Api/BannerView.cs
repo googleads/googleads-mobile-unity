@@ -224,7 +224,7 @@ namespace GoogleMobileAds.Api
         protected internal virtual void ConfigureBannerEvents()
         {
 
-            _client.OnAdLoaded += (sender, args) =>
+            _client.OnAdLoaded += () =>
             {
                 MobileAds.RaiseAction(() =>
                 {
@@ -235,7 +235,7 @@ namespace GoogleMobileAds.Api
                 });
             };
 
-            _client.OnAdFailedToLoad += (sender, args) =>
+            _client.OnAdFailedToLoad += (args) =>
             {
                 LoadAdError loadAdError = new LoadAdError(args.LoadAdErrorClient);
                 MobileAds.RaiseAction(() =>
@@ -247,7 +247,7 @@ namespace GoogleMobileAds.Api
                 });
             };
 
-            _client.OnAdOpening += (sender, args) =>
+            _client.OnAdOpening += () =>
             {
                 MobileAds.RaiseAction(() =>
                 {
@@ -258,7 +258,7 @@ namespace GoogleMobileAds.Api
                 });
             };
 
-            _client.OnAdClosed += (sender, args) =>
+            _client.OnAdClosed += () =>
             {
                 MobileAds.RaiseAction(() =>
                 {
