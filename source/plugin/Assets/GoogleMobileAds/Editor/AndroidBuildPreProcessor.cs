@@ -14,7 +14,6 @@ using System.Text.RegularExpressions;
 using UnityEngine;
 using UnityEditor;
 using System.IO;
-using GooglePlayServices;
 using UnityEditor.Build;
 using UnityEditor.Build.Reporting;
 
@@ -140,8 +139,31 @@ namespace GoogleMobileAds.Editor
             #endif
 
             Debug.Log("Resolving Android Gradle dependencies.");
-            PlayServicesResolver.ResolveSync(true);
+            ResolvePlayServicesDependencies();
             Debug.Log("Android Build Pre-Processor finished.");
+        }
+
+        private static void ResolvePlayServicesDependencies()
+        {
+            Type resolverType = Type.GetType("GooglePlayServices.PlayServicesResolver, Google.JarResolver") ??
+                                Type.GetType("GooglePlayServices.PlayServicesResolver, Google.VersionHandlerImpl");
+            if (resolverType != null)
+            {
+                var method = resolverType.GetMethod("ResolveSync", new[] { typeof(bool) });
+                method?.Invoke(null, new object[] { true });
+            }
+        }
+
+        private static string GetAndroidPlaybackEngineDirectory()
+        {
+            Type resolverType = Type.GetType("GooglePlayServices.PlayServicesResolver, Google.JarResolver") ??
+                                Type.GetType("GooglePlayServices.PlayServicesResolver, Google.VersionHandlerImpl");
+            if (resolverType != null)
+            {
+                var property = resolverType.GetProperty("AndroidPlaybackEngineDirectory");
+                return property?.GetValue(null) as string;
+            }
+            return null;
         }
 
         /// <summary>
@@ -191,8 +213,8 @@ namespace GoogleMobileAds.Editor
             }
 
             // If target does not exist, create it from source.
-            var unityGradleTemplateDirectory = Path.Combine(
-                PlayServicesResolver.AndroidPlaybackEngineDirectory,
+            string unityGradleTemplateDirectory = Path.Combine(
+                GetAndroidPlaybackEngineDirectory() ?? "",
                 "Tools",
                 "GradleTemplates");
             string sourceFileName = Path.Combine(unityGradleTemplateDirectory, fileName);
@@ -250,7 +272,7 @@ namespace GoogleMobileAds.Editor
                 Debug.Log($"Updating GoogleMobileAdsDependencies.xml with {desiredSpec}");
                 File.WriteAllText(dependenciesFilePath, newContent);
                 AssetDatabase.Refresh();
-                PlayServicesResolver.ResolveSync(true);
+                ResolvePlayServicesDependencies();
             }
             else
             {
