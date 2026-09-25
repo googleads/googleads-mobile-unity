@@ -67,6 +67,17 @@ namespace GoogleMobileAds.Snippets
             // [END set_unspecified_age_treatment]
         }
 
+        private void SetChildDirectedTreatment()
+        {
+            // [START set_child_directed_treatment]
+            RequestConfiguration requestConfiguration = new RequestConfiguration
+            {
+                TagForChildDirectedTreatment = TagForChildDirectedTreatment.True
+            };
+            MobileAds.SetRequestConfiguration(requestConfiguration);
+            // [END set_child_directed_treatment]
+        }
+
         private void SetUnderAgeOfConsent()
         {
             // [START set_under_age_of_consent]
