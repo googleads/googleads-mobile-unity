@@ -67,8 +67,22 @@ namespace GoogleMobileAds.Snippets
             // [END set_unspecified_age_treatment]
         }
 
+        private void SetChildDirectedTreatment()
+        {
+#pragma warning disable 618
+            // [START set_child_directed_treatment]
+            RequestConfiguration requestConfiguration = new RequestConfiguration
+            {
+                TagForChildDirectedTreatment = TagForChildDirectedTreatment.True
+            };
+            MobileAds.SetRequestConfiguration(requestConfiguration);
+            // [END set_child_directed_treatment]
+#pragma warning restore 618
+        }
+
         private void SetUnderAgeOfConsent()
         {
+#pragma warning disable 618
             // [START set_under_age_of_consent]
             RequestConfiguration requestConfiguration = new RequestConfiguration
             {
@@ -76,6 +90,7 @@ namespace GoogleMobileAds.Snippets
             };
             MobileAds.SetRequestConfiguration(requestConfiguration);
             // [END set_under_age_of_consent]
+#pragma warning restore 618
         }
 
         private void SetAdContentFiltering()
