@@ -2,6 +2,7 @@ using System;
 using UnityEngine;
 using GoogleMobileAds.Api;
 using GoogleMobileAds.Common;
+using GoogleMobileAds.Samples.Utility;
 
 namespace GoogleMobileAds.Sample
 {
@@ -136,16 +137,20 @@ namespace GoogleMobileAds.Sample
                 Debug.Log("Banner view loaded an ad with response : "
                     + _bannerView.GetResponseInfo());
 
+                AdMobTestBridge.RecordEvent("bannerViewDidReceiveAd");
+
                 MobileAdsEventExecutor.ExecuteInUpdate(() =>
                 {
                     // Inform the UI that the ad is ready.
                     AdLoadedStatus?.SetActive(true);
+                    AdMobTestBridge.SyncButtons();
                 });
             };
             // Raised when an ad fails to load into the banner view.
             _bannerView.OnBannerAdLoadFailed += (LoadAdError error) =>
             {
                 Debug.LogError("Banner view failed to load an ad with error : " + error);
+                AdMobTestBridge.RecordEvent("bannerViewDidFailToReceiveAdWithError");
             };
             // Raised when the ad is estimated to have earned money.
             _bannerView.OnAdPaid += (AdValue adValue) =>
@@ -169,21 +174,25 @@ namespace GoogleMobileAds.Sample
             _bannerView.OnAdImpressionRecorded += () =>
             {
                 Debug.Log("Banner view recorded an impression.");
+                AdMobTestBridge.RecordEvent("bannerViewDidRecordImpression");
             };
             // Raised when a click is recorded for an ad.
             _bannerView.OnAdClicked += () =>
             {
                 Debug.Log("Banner view was clicked.");
+                AdMobTestBridge.RecordEvent("bannerViewDidRecordClick");
             };
             // Raised when an ad opened full screen content.
             _bannerView.OnAdFullScreenContentOpened += () =>
             {
                 Debug.Log("Banner view full screen content opened.");
+                AdMobTestBridge.RecordEvent("bannerViewWillPresentScreen");
             };
             // Raised when the ad closed full screen content.
             _bannerView.OnAdFullScreenContentClosed += () =>
             {
                 Debug.Log("Banner view full screen content closed.");
+                AdMobTestBridge.RecordEvent("bannerViewDidDismissScreen");
             };
         }
     }
