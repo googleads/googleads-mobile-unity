@@ -92,6 +92,9 @@ namespace GoogleMobileAds.Editor
     [SerializeField]
     private string addedEdmVersion;
 
+    [SerializeField]
+    private int debugGeography = 0;
+
     public string GoogleMobileAdsAndroidAppId
     {
       get { return adMobAndroidAppId; }
@@ -181,6 +184,13 @@ namespace GoogleMobileAds.Editor
       get { return addedEdmVersion; }
 
       set { addedEdmVersion = value; }
+    }
+
+    public int DebugGeography
+    {
+      get { return debugGeography; }
+
+      set { debugGeography = value; }
     }
 
     /// <summary>
