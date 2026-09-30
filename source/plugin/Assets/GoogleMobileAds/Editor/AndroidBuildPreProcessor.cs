@@ -10,11 +10,12 @@
 #endif
 
 using System;
+using System.Linq;
+using System.Reflection;
 using System.Text.RegularExpressions;
 using UnityEngine;
 using UnityEditor;
 using System.IO;
-using GooglePlayServices;
 using UnityEditor.Build;
 using UnityEditor.Build.Reporting;
 
@@ -140,8 +141,43 @@ namespace GoogleMobileAds.Editor
             #endif
 
             Debug.Log("Resolving Android Gradle dependencies.");
-            PlayServicesResolver.ResolveSync(true);
+            ResolvePlayServicesDependencies();
             Debug.Log("Android Build Pre-Processor finished.");
+        }
+
+        /// <summary>
+        /// Runs External Dependency Manager's Android resolution if an EDM is present in the
+        /// project. EDM is looked up by reflection so that this assembly compiles with Unity's EDM
+        /// package, Google's legacy EDM, or no EDM at all for publishers who resolve native
+        /// dependencies with their own tooling.
+        /// </summary>
+        private static void ResolvePlayServicesDependencies()
+        {
+            Type resolverType = AppDomain.CurrentDomain.GetAssemblies()
+                .Select(assembly => assembly.GetType("GooglePlayServices.PlayServicesResolver",
+                                                     false))
+                .FirstOrDefault(type => type != null);
+            MethodInfo resolveSync = resolverType?.GetMethod(
+                "ResolveSync", BindingFlags.Public | BindingFlags.Static, null,
+                new[] { typeof(bool) }, null);
+            if (resolveSync == null)
+            {
+                const string message =
+                    "External Dependency Manager was not found, so Android dependency resolution " +
+                    "was skipped. Native Android dependencies must be resolved by your own " +
+                    "dependency management tooling.";
+                if (!GoogleMobileAdsSettings.LoadInstance().EnableExternalDependencyManager)
+                {
+                    // The publisher opted out of EDM and manages dependencies themselves.
+                    Debug.Log(message);
+                }
+                else
+                {
+                    Debug.LogWarning(message);
+                }
+                return;
+            }
+            resolveSync.Invoke(null, new object[] { true });
         }
 
         /// <summary>
@@ -192,7 +228,7 @@ namespace GoogleMobileAds.Editor
 
             // If target does not exist, create it from source.
             var unityGradleTemplateDirectory = Path.Combine(
-                PlayServicesResolver.AndroidPlaybackEngineDirectory,
+                BuildPipeline.GetPlaybackEngineDirectory(BuildTarget.Android, BuildOptions.None),
                 "Tools",
                 "GradleTemplates");
             string sourceFileName = Path.Combine(unityGradleTemplateDirectory, fileName);
@@ -250,7 +286,7 @@ namespace GoogleMobileAds.Editor
                 Debug.Log($"Updating GoogleMobileAdsDependencies.xml with {desiredSpec}");
                 File.WriteAllText(dependenciesFilePath, newContent);
                 AssetDatabase.Refresh();
-                PlayServicesResolver.ResolveSync(true);
+                ResolvePlayServicesDependencies();
             }
             else
             {
