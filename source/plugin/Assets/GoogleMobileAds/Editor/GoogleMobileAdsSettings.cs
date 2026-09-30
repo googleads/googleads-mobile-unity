@@ -13,6 +13,10 @@ namespace GoogleMobileAds.Editor
 
     private const string MobileAdsSettingsFileExtension = ".asset";
 
+    // Project-relative path of the settings asset.
+    internal const string AssetPath =
+        MobileAdsSettingsResDir + "/" + MobileAdsSettingsFile + MobileAdsSettingsFileExtension;
+
     public enum GmaAndroidSdk
     {
       Standard = 0,
@@ -67,6 +71,16 @@ namespace GoogleMobileAds.Editor
 
     [SerializeField]
     private int selectedGmaAndroidSdk = 0;
+
+    // When true, the plugin installs and uses Unity's External Dependency Manager package.
+    // Disabled automatically when the publisher removes the package after it was installed.
+    [SerializeField]
+    private bool enableExternalDependencyManager = true;
+
+    // Whether Unity's External Dependency Manager package has been detected in this project.
+    // Used to tell a publisher removal apart from a first-time import.
+    [SerializeField]
+    private bool edmPackageDetected;
 
     public string GoogleMobileAdsAndroidAppId
     {
@@ -136,6 +150,20 @@ namespace GoogleMobileAds.Editor
       get { return selectedGmaAndroidSdk; }
 
       set { selectedGmaAndroidSdk = value; }
+    }
+
+    public bool EnableExternalDependencyManager
+    {
+      get { return enableExternalDependencyManager; }
+
+      set { enableExternalDependencyManager = value; }
+    }
+
+    public bool EdmPackageDetected
+    {
+      get { return edmPackageDetected; }
+
+      set { edmPackageDetected = value; }
     }
 
     /// <summary>
