@@ -95,6 +95,18 @@
     "KEY_GMA_ANDROID_SDK_NEXT_GEN_OPTION": {
       "en": "Upgrade to the GMA Next-Gen SDK",
       "fr": "Mettre à niveau vers le SDK GMA Next-Gen"
+    },
+    "KEY_EDM_SETTINGS_LABEL": {
+      "en": "External Dependency Manager",
+      "fr": "External Dependency Manager"
+    },
+    "KEY_ENABLE_EDM_SETTING": {
+      "en": "Enable External Dependency Manager",
+      "fr": "Activer External Dependency Manager"
+    },
+    "KEY_ENABLE_EDM_HELPBOX": {
+      "en": "External Dependency Manager (com.unity.external-dependency-manager) is disabled. If no External Dependency Manager is present in the project, you must resolve native Android and iOS dependencies yourself. To reinstall it, enable this option.",
+      "fr": "External Dependency Manager (com.unity.external-dependency-manager) est désactivé. Si aucun External Dependency Manager n'est présent dans le projet, vous devez résoudre vous-même les dépendances natives Android et iOS. Pour le réinstaller, activez cette option."
     }
   }
 }
