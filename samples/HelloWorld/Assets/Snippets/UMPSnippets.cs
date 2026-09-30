@@ -129,5 +129,49 @@ namespace GoogleMobileAds.Snippets
             });
         }
         // [END show_privacy_options]
+
+        // [START present_consent_overlay]
+        [SerializeField, Tooltip("Canvas panel for the location consent overlay.")]
+        private GameObject _consentOverlay;
+
+        [SerializeField, Tooltip("Title text for the location consent overlay.")]
+        private Text _titleText;
+
+        [SerializeField, Tooltip("Message text for the location consent overlay.")]
+        private Text _messageText;
+
+        [SerializeField, Tooltip("OK button for the location consent overlay.")]
+        private Button _okButton;
+
+        /// <summary>
+        /// Presents the location consent overlay to the user.
+        /// </summary>
+        public void PresentConsentOverlay()
+        {
+            if (_consentOverlay == null)
+            {
+                return;
+            }
+
+            _titleText.text = "Location data";
+            _messageText.text = "We may use your location, " +
+                "and share it with third parties, " +
+                "for the purposes of personalized advertising, " +
+                "analytics, and attribution. " +
+                "To learn more, visit our privacy policy " +
+                "at https://admob.google.com/.";
+
+            _okButton.onClick.RemoveAllListeners();
+            _okButton.onClick.AddListener(() =>
+            {
+                _consentOverlay.SetActive(false);
+                // TODO: Replace the following log statement with code that specifies how
+                // you want to handle the user's acknowledgement.
+                Debug.Log("Got consent.");
+            });
+
+            _consentOverlay.SetActive(true);
+        }
+        // [END present_consent_overlay]
     }
 }
