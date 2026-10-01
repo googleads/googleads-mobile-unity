@@ -71,6 +71,16 @@ namespace GoogleMobileAds.Api
             }
         }
 
+        // Resets static state at the start of every play session, so behavior is the same
+        // whether or not domain reload is enabled ("Enter Play Mode Options" in the Editor).
+        // Without this, MobileAdsEventExecutor is not re-created after its GameObject is
+        // destroyed on exiting play mode.
+        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+        private static void ResetStaticState()
+        {
+            instance = null;
+        }
+
         /// <summary>
         /// Determines whether ad events raised by the Google Mobile Ads Unity plugin should be
         /// invoked on the Unity main thread. The default value is false.
