@@ -23,7 +23,21 @@ namespace GoogleMobileAds.Unity
 {
     public class BaseAdClient
     {
-        protected static AdBehaviour AdBehaviour = new GameObject().AddComponent<AdBehaviour>();
+        private static AdBehaviour _adBehaviour;
+
+        // Created lazily, and re-created if it was destroyed (e.g. when exiting play mode with
+        // domain reload disabled, or on scene change).
+        protected static AdBehaviour AdBehaviour
+        {
+            get
+            {
+                if (_adBehaviour == null)
+                {
+                    _adBehaviour = new GameObject("AdBehaviour").AddComponent<AdBehaviour>();
+                }
+                return _adBehaviour;
+            }
+        }
         protected string _adUnitId;
         protected GameObject prefabAd, dummyAd = null;
 
