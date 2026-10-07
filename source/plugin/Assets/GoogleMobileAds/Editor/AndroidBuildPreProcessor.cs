@@ -25,7 +25,7 @@ namespace GoogleMobileAds.Editor
     /// with the Google Mobile Ads SDK. This includes:
     ///  - Verify the Android Google Mobile Ads app ID is set.
     ///  - Throw an exception if the Android Google Mobile Ads app ID is not set.
-    ///  - Set minimum API level to 23 (the target API level may be automatically set, we should not
+    ///  - Set minimum API level to 24 (the target API level may be automatically set, we should not
     ///    hardcode it).
     ///  - Enable Custom Main Gradle Template.
     ///  - Update Custom Main Gradle Template with dependencies using the Play Services Resolver.
@@ -47,8 +47,7 @@ namespace GoogleMobileAds.Editor
         private static readonly string CurrentRegex =
             Regex.Escape(CurrentLibrary) + @":(?:[\d\.]+[-a-zA-Z0-9]*|LATEST)";
 
-        const int StandardMinimumAPILevel = 23;
-        const int NextGenMinimumAPILevel = 24;
+        const int MinimumAPILevel = 24;
 
         const string CustomGradlePropertiesTemplatesFileName = "gradleTemplate.properties";
         const string CustomMainGradleTemplateFileName = "mainTemplate.gradle";
@@ -78,18 +77,14 @@ namespace GoogleMobileAds.Editor
         {
             Debug.Log("Running Android Gradle Build Pre-Processor.");
 
-            var sdk = GoogleMobileAdsSettings.LoadInstance().EffectiveGmaAndroidSdk;
-            int targetMinApi = (sdk == GoogleMobileAdsSettings.GmaAndroidSdk.NextGen)
-                                   ? NextGenMinimumAPILevel
-                                   : StandardMinimumAPILevel;
-            if (PlayerSettings.Android.minSdkVersion < (AndroidSdkVersions)targetMinApi)
+            if (PlayerSettings.Android.minSdkVersion < (AndroidSdkVersions)MinimumAPILevel)
             {
-                PlayerSettings.Android.minSdkVersion = (AndroidSdkVersions)targetMinApi;
-                Debug.Log($"Set minimum API Level to: {targetMinApi}.");
+                PlayerSettings.Android.minSdkVersion = (AndroidSdkVersions)MinimumAPILevel;
+                Debug.Log($"Set minimum API Level to: {MinimumAPILevel}.");
             }
             else
             {
-                Debug.Log($"Verified Minimum API Level is >= {targetMinApi}.");
+                Debug.Log($"Verified Minimum API Level is >= {MinimumAPILevel}.");
             }
 
             // Create Assets/Plugins folder.
