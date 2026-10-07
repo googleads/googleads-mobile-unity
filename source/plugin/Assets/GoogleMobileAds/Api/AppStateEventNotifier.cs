@@ -14,6 +14,7 @@
 
 using System;
 using GoogleMobileAds.Common;
+using UnityEngine;
 
 namespace GoogleMobileAds.Api
 {
@@ -31,19 +32,38 @@ namespace GoogleMobileAds.Api
         {
             add
             {
-                client.AppStateChanged += value;
+                Client.AppStateChanged += value;
             }
             remove
             {
-                client.AppStateChanged -= value;
+                Client.AppStateChanged -= value;
             }
         }
 
         private static IAppStateEventClient client;
 
-        static AppStateEventNotifier()
+        private static IAppStateEventClient Client
         {
-            client = MobileAds.GetClientFactory().BuildAppStateEventClient();
+            get
+            {
+                // In the Unity Editor the client is a MonoBehaviour that is destroyed when play
+                // mode exits. With "Enter Play Mode Options" (domain reload disabled) this static
+                // survives into the next play session, so re-create the client if it is gone.
+                if (client == null ||
+                    (client is UnityEngine.Object && (UnityEngine.Object)client == null))
+                {
+                    client = MobileAds.GetClientFactory().BuildAppStateEventClient();
+                }
+                return client;
+            }
+        }
+
+        // Resets static state at the start of every play session, so behavior is the same
+        // whether or not domain reload is enabled.
+        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+        private static void ResetStaticState()
+        {
+            client = null;
         }
     }
 }

@@ -27,8 +27,22 @@ namespace GoogleMobileAds.Ump.Unity
         internal const string ErrorMessage = "Form not found!";
         internal static GameObject _prefabForm;
         internal static GameObject _placeholderForm;
-        private static readonly PlaceholderFormBehaviour _formBehaviour =
-                new GameObject().AddComponent<PlaceholderFormBehaviour>();
+        private static PlaceholderFormBehaviour _formBehaviourInstance;
+
+        // Created lazily, and re-created if it was destroyed (e.g. when exiting play mode with
+        // domain reload disabled, or on scene change).
+        private static PlaceholderFormBehaviour _formBehaviour
+        {
+            get
+            {
+                if (_formBehaviourInstance == null)
+                {
+                    _formBehaviourInstance = new GameObject("PlaceholderFormBehaviour")
+                            .AddComponent<PlaceholderFormBehaviour>();
+                }
+                return _formBehaviourInstance;
+            }
+        }
         private ButtonBehaviour _buttonBehaviour;
 
         /// <summary>

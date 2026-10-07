@@ -41,7 +41,9 @@ namespace GoogleMobileAds.Common
 
             // Add an invisible game object to the scene
             GameObject obj = new GameObject("MobileAdsMainThreadExecuter");
-            obj.hideFlags = HideFlags.HideAndDontSave;
+            // HideInHierarchy (rather than HideAndDontSave) so the Unity Editor destroys the
+            // object when exiting play mode instead of leaking one per play session.
+            obj.hideFlags = HideFlags.HideInHierarchy;
             DontDestroyOnLoad(obj);
             instance = obj.AddComponent<MobileAdsEventExecutor>();
         }
@@ -57,6 +59,19 @@ namespace GoogleMobileAds.Common
         public static bool IsActive()
         {
             return instance != null;
+        }
+
+        // Resets static state at the start of every play session, so behavior is the same
+        // whether or not domain reload is enabled ("Enter Play Mode Options" in the Editor).
+        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+        private static void ResetStaticState()
+        {
+            instance = null;
+            lock (adEventsQueue)
+            {
+                adEventsQueue.Clear();
+                adEventsQueueEmpty = true;
+            }
         }
 
         public void Awake()
