@@ -25,8 +25,12 @@ namespace GoogleMobileAds.iOS
 {
     public class NativeOverlayAdClient : INativeOverlayAdClient, IDisposable
     {
+        private readonly IInsightsEmitter _insightsEmitter = InsightsEmitter.Instance;
+        private const Insight.AdFormat NativeFormat = Insight.AdFormat.Native;
+
         private IntPtr nativeClientPtr;
         private IntPtr nativePtr;
+        private string _adUnitId;
 
 #region native ad callback types
         internal delegate void GADUNativeAdLoadedCallback(IntPtr nativeClient);
@@ -96,6 +100,7 @@ namespace GoogleMobileAds.iOS
         // Loads a native ad
         public void Load(string adUnitID, AdRequest request, NativeAdOptions nativeOptions)
         {
+            _adUnitId = adUnitID;
             this.nativeClientPtr = (IntPtr)GCHandle.Alloc(this);
             this.NativePtr = Externs.GADUCreateNativeTemplateAd(this.nativeClientPtr);
             Externs.GADUSetNativeTemplateAdCallbacks(
@@ -217,6 +222,12 @@ namespace GoogleMobileAds.iOS
         private static void NativeLoadedCallback(IntPtr nativeClient)
         {
             NativeOverlayAdClient client = IntPtrToNativeClient(nativeClient);
+            client._insightsEmitter.Emit(new Insight()
+            {
+                Name = Insight.CuiName.AdLoaded,
+                Format = NativeFormat,
+                AdUnitId = client._adUnitId,
+            });
             if (client.OnAdLoaded != null)
             {
                 client.OnAdLoaded();
@@ -227,6 +238,13 @@ namespace GoogleMobileAds.iOS
         private static void NativeFailedToLoadCallback(IntPtr nativeClient, IntPtr error)
         {
             NativeOverlayAdClient client = IntPtrToNativeClient(nativeClient);
+            client._insightsEmitter.Emit(new Insight()
+            {
+                Name = Insight.CuiName.AdLoaded,
+                Format = NativeFormat,
+                AdUnitId = client._adUnitId,
+                Success = false,
+            });
             if (client.OnAdFailedToLoad != null)
             {
                 LoadAdErrorClientEventArgs args = new LoadAdErrorClientEventArgs()
@@ -242,6 +260,12 @@ namespace GoogleMobileAds.iOS
                                                     string currencyCode)
         {
             NativeOverlayAdClient client = IntPtrToNativeClient(nativeClient);
+            client._insightsEmitter.Emit(new Insight()
+            {
+                Name = Insight.CuiName.AdPaid,
+                Format = NativeFormat,
+                AdUnitId = client._adUnitId,
+            });
             if (client.OnPaidEvent != null)
             {
                 AdValue adValue = new AdValue()
@@ -259,6 +283,12 @@ namespace GoogleMobileAds.iOS
         private static void AdDidRecordImpressionCallback(IntPtr nativeClient)
         {
             NativeOverlayAdClient client = IntPtrToNativeClient(nativeClient);
+            client._insightsEmitter.Emit(new Insight()
+            {
+                Name = Insight.CuiName.AdShown,
+                Format = NativeFormat,
+                AdUnitId = client._adUnitId,
+            });
             if (client.OnAdDidRecordImpression != null)
             {
                 client.OnAdDidRecordImpression();
@@ -269,26 +299,44 @@ namespace GoogleMobileAds.iOS
         private static void AdDidRecordClickCallback(IntPtr nativeClient)
         {
             NativeOverlayAdClient client = IntPtrToNativeClient(nativeClient);
+            client._insightsEmitter.Emit(new Insight()
+            {
+                Name = Insight.CuiName.AdClicked,
+                Format = NativeFormat,
+                AdUnitId = client._adUnitId,
+            });
             if (client.OnAdClicked != null)
             {
                 client.OnAdClicked();
             }
         }
 
-        [MonoPInvokeCallback(typeof(GADUNativeAdLoadedCallback))]
+        [MonoPInvokeCallback(typeof(GADUNativeAdWillPresentScreenCallback))]
         private static void NativeAdWillPresentScreenCallback(IntPtr nativeClient)
         {
             NativeOverlayAdClient client = IntPtrToNativeClient(nativeClient);
+            client._insightsEmitter.Emit(new Insight()
+            {
+                Name = Insight.CuiName.AdShowedFullScreenContent,
+                Format = NativeFormat,
+                AdUnitId = client._adUnitId,
+            });
             if (client.OnAdDidPresentFullScreenContent != null)
             {
                 client.OnAdDidPresentFullScreenContent();
             }
         }
 
-        [MonoPInvokeCallback(typeof(GADUNativeAdLoadedCallback))]
+        [MonoPInvokeCallback(typeof(GADUNativeAdDidDismissScreenCallback))]
         private static void NativeAdDidDismissScreenCallback(IntPtr nativeClient)
         {
             NativeOverlayAdClient client = IntPtrToNativeClient(nativeClient);
+            client._insightsEmitter.Emit(new Insight()
+            {
+                Name = Insight.CuiName.AdDismissedFullScreenContent,
+                Format = NativeFormat,
+                AdUnitId = client._adUnitId,
+            });
             if (client.OnAdDidDismissFullScreenContent != null)
             {
                 client.OnAdDidDismissFullScreenContent();

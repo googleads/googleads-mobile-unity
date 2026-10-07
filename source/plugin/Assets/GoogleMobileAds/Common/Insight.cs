@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using UnityEngine;
 
 namespace GoogleMobileAds.Common
@@ -13,6 +14,9 @@ namespace GoogleMobileAds.Common
         internal static readonly DateTime UnixEpoch =
             new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
 
+        [DllImport("__Internal")]
+        private static extern string GADUMobileAdsVersion();
+
         private static AdPlatform _platform;
         private static string _appId;
         private static string _appVersionName;
@@ -20,21 +24,65 @@ namespace GoogleMobileAds.Common
         private static string _osVersion;
         private static string _deviceModel;
 
+        internal static AdSdk CachedSdk { get; private set; }
+        internal static string CachedSdkVersion { get; private set; }
+
         // Ensure it runs on the main thread before any scene is loaded.
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
-        private static void CacheBaseProperties()
+        internal static void CacheBaseProperties()
         {
             switch (Application.platform)
             {
                 case RuntimePlatform.Android:
                     _platform = AdPlatform.Android;
+                    try
+                    {
+                        using (var _ = new AndroidJavaClass(
+                            "com.google.android.libraries.ads.mobile.sdk.MobileAds"))
+                        {
+                            CachedSdk = AdSdk.Decagon;
+                            using (var unityMobileAds = new AndroidJavaClass(
+                                "com.google.unity.ads.nextgen.UnityMobileAds"))
+                            {
+                                CachedSdkVersion =
+                                    unityMobileAds.CallStatic<string>("getSdkVersionString");
+                            }
+                        }
+                    }
+                    catch
+                    {
+                        try
+                        {
+                            CachedSdk = AdSdk.NonagonAndroid;
+                            using (var unityMobileAds = new AndroidJavaClass(
+                                "com.google.unity.ads.UnityMobileAds"))
+                            {
+                                CachedSdkVersion =
+                                    unityMobileAds.CallStatic<string>("getSdkVersionString");
+                            }
+                        }
+                        catch
+                        {
+                            CachedSdk = AdSdk.Unknown;
+                        }
+                    }
                     break;
                 case RuntimePlatform.IPhonePlayer:
                 case RuntimePlatform.OSXPlayer:
                     _platform = AdPlatform.Ios;
+                    CachedSdk = AdSdk.NonagonIos;
+                    try
+                    {
+                        CachedSdkVersion = GADUMobileAdsVersion();
+                    }
+                    catch
+                    {
+                        CachedSdk = AdSdk.Unknown;
+                    }
                     break;
                 default:
                     _platform = AdPlatform.Unity;
+                    CachedSdk = AdSdk.Unknown;
                     break;
             }
             _appId = Application.identifier;
@@ -51,6 +99,8 @@ namespace GoogleMobileAds.Common
                 .Subtract(UnixEpoch)
                 .TotalMilliseconds;
             Platform = _platform;
+            Sdk = CachedSdk;
+            SdkVersion = CachedSdkVersion;
             AppId = _appId;
             AppVersionName = _appVersionName;
             UnityVersion = _unityVersion;
@@ -114,6 +164,14 @@ namespace GoogleMobileAds.Common
             Unity = 3,
         }
 
+        public enum AdSdk
+        {
+            Unknown = 0,
+            NonagonAndroid = 1,
+            NonagonIos = 2,
+            Decagon = 3,
+        }
+
         // The name of the insight, commonly referred as a CUI (Critical User Interaction).
         public CuiName Name;
 
@@ -122,9 +180,6 @@ namespace GoogleMobileAds.Common
 
         // The Epoch time in milliseconds when the insight started.
         public long StartTimeEpochMillis;
-
-        // The GMA SDK version.
-        public string SdkVersion;
 
         // The AdMob / Google Ad Manager app id, or by default the application identifier at
         // runtime.
@@ -138,6 +193,12 @@ namespace GoogleMobileAds.Common
 
         // The platform on which the CUI was performed.
         public AdPlatform Platform;
+
+        // The underlying GMA SDK.
+        public AdSdk Sdk;
+
+        // The GMA SDK version.
+        public string SdkVersion;
 
         // The application version.
         public string AppVersionName;
@@ -165,19 +226,20 @@ namespace GoogleMobileAds.Common
         public override string ToString()
         {
             return string.Format(
-                "Insight[Name={0}, Success={1}, StartTimeEpochMillis={2}, SdkVersion='{3}', " +
-                "AppId='{4}', AdUnitId='{5}', Format={6}, Platform={7}, AppVersionName='{8}', " +
-                "UnityVersion='{9}', OSVersion='{10}', DeviceModel='{11}', Tags='{12}', " +
-                "Tracing[OperationName='{13}', Id='{14}', ParentId='{15}', DurationMillis={16}, " +
-                "HasEnded={17}], Details='{18}']",
+                "Insight[Name={0}, Success={1}, StartTimeEpochMillis={2}, AppId='{3}', " +
+                "AdUnitId='{4}', Format={5}, Platform={6}, Sdk='{7}', SdkVersion='{8}', " +
+                "AppVersionName='{9}', UnityVersion='{10}', OSVersion='{11}', " +
+                "DeviceModel='{12}', Tags='{13}', Tracing[OperationName='{14}', Id='{15}', " +
+                "ParentId='{16}', DurationMillis={17}, HasEnded={18}], Details='{19}']",
                 Name,
                 Success,
                 StartTimeEpochMillis,
-                SdkVersion,
                 AppId,
                 AdUnitId,
                 Format,
                 Platform,
+                Sdk,
+                SdkVersion,
                 AppVersionName,
                 UnityVersion,
                 OSVersion,
