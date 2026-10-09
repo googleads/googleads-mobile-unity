@@ -36,5 +36,61 @@ namespace GoogleMobileAds.Snippets
             });
             // [END execute_in_update]
         }
+
+        private void RaiseAdEventsOnUnityMainThread()
+        {
+            // [START raise_ad_events_on_unity_main_thread]
+            // When true, all events raised by GoogleMobileAds will be raised
+            // on the Unity main thread. The default value is false.
+            MobileAds.RaiseAdEventsOnUnityMainThread = true;
+            // [END raise_ad_events_on_unity_main_thread]
+        }
+
+        private void SetApplicationVolume()
+        {
+            // [START set_application_volume]
+            // Set app volume to be half of current device volume.
+            MobileAds.SetApplicationVolume(0.5f);
+            // [END set_application_volume]
+        }
+
+        private void SetApplicationMuted()
+        {
+            // [START set_application_muted]
+            // Set app to be muted.
+            MobileAds.SetApplicationMuted(true);
+            // [END set_application_muted]
+        }
+
+        private void SetConsentForCookies()
+        {
+            // [START set_consent_for_cookies]
+            // Enable limited ads
+            ApplicationPreferences.SetInt("gad_has_consent_for_cookies", 0);
+            // [END set_consent_for_cookies]
+        }
+
+        private void DisableSDKCrashReporting()
+        {
+            // [START disable_sdk_crash_reporting]
+            MobileAds.DisableSDKCrashReporting();
+            // [END disable_sdk_crash_reporting]
+        }
+
+        private void GetVersion()
+        {
+            // [START get_version]
+            // Get the Unity SDK version.
+            Debug.Log("Unity SDK Version: " + MobileAds.GetVersion());
+            // [END get_version]
+        }
+
+        private void GetPlatformVersion()
+        {
+            // [START get_platform_version]
+            // Get the underlying platform SDK version.
+            Debug.Log("Platform SDK Version: " + MobileAds.GetPlatformVersion());
+            // [END get_platform_version]
+        }
     }
 }
