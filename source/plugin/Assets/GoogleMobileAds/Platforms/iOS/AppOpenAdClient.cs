@@ -46,8 +46,12 @@ namespace GoogleMobileAds.iOS
             }
         }
 
+        private readonly IInsightsEmitter _insightsEmitter = InsightsEmitter.Instance;
+        private const Insight.AdFormat AppOpenFormat = Insight.AdFormat.AppOpen;
+
         private IntPtr appOpenAdPtr;
         private IntPtr appOpenAdClientPtr;
+        private string _adUnitId;
 
         #region app open callback types
 
@@ -163,6 +167,7 @@ namespace GoogleMobileAds.iOS
         // Load an ad.
         public void LoadAd(string adUnitID, AdRequest request)
         {
+            _adUnitId = adUnitID;
             IntPtr requestPtr = Utils.BuildAdManagerAdRequest(request);
             Externs.GADULoadAppOpenAdWithAdUnitID(this.AppOpenAdPtr, adUnitID,  requestPtr);
             Externs.GADURelease(requestPtr);
@@ -214,6 +219,12 @@ namespace GoogleMobileAds.iOS
         private static void AppOpenAdLoadedCallback(IntPtr appOpenAdClient)
         {
             AppOpenAdClient client = IntPtrToAppOpenAdClient(appOpenAdClient);
+            client._insightsEmitter.Emit(new Insight()
+            {
+                Name = Insight.CuiName.AdLoaded,
+                Format = AppOpenFormat,
+                AdUnitId = client._adUnitId,
+            });
             if (client.OnAdLoaded != null)
             {
                 client.OnAdLoaded();
@@ -225,6 +236,13 @@ namespace GoogleMobileAds.iOS
             IntPtr appOpenAdClient, IntPtr error)
         {
             AppOpenAdClient client = IntPtrToAppOpenAdClient(appOpenAdClient);
+            client._insightsEmitter.Emit(new Insight()
+            {
+                Name = Insight.CuiName.AdLoaded,
+                Format = AppOpenFormat,
+                AdUnitId = client._adUnitId,
+                Success = false,
+            });
             if (client.OnAdFailedToLoad != null)
             {
                 LoadAdErrorClientEventArgs args = new LoadAdErrorClientEventArgs()
@@ -240,6 +258,12 @@ namespace GoogleMobileAds.iOS
             IntPtr appOpenAdClient, int precision, long value, string currencyCode)
         {
             AppOpenAdClient client = IntPtrToAppOpenAdClient(appOpenAdClient);
+            client._insightsEmitter.Emit(new Insight()
+            {
+                Name = Insight.CuiName.AdPaid,
+                Format = AppOpenFormat,
+                AdUnitId = client._adUnitId,
+            });
             if (client.OnPaidEvent != null)
             {
                 AdValue adValue = new AdValue()
@@ -257,6 +281,13 @@ namespace GoogleMobileAds.iOS
             IntPtr appOpenAdClient, IntPtr error)
         {
             AppOpenAdClient client = IntPtrToAppOpenAdClient(appOpenAdClient);
+            client._insightsEmitter.Emit(new Insight()
+            {
+                Name = Insight.CuiName.AdShowedFullScreenContent,
+                Format = AppOpenFormat,
+                AdUnitId = client._adUnitId,
+                Success = false,
+            });
             if (client.OnAdFailedToPresentFullScreenContent != null)
             {
                 AdErrorClientEventArgs args = new AdErrorClientEventArgs()
@@ -271,6 +302,12 @@ namespace GoogleMobileAds.iOS
         private static void AdWillPresentFullScreenContentCallback(IntPtr appOpenAdClient)
         {
             AppOpenAdClient client = IntPtrToAppOpenAdClient(appOpenAdClient);
+            client._insightsEmitter.Emit(new Insight()
+            {
+                Name = Insight.CuiName.AdShowedFullScreenContent,
+                Format = AppOpenFormat,
+                AdUnitId = client._adUnitId,
+            });
             if (client.OnAdDidPresentFullScreenContent != null)
             {
                 client.OnAdDidPresentFullScreenContent();
@@ -281,6 +318,12 @@ namespace GoogleMobileAds.iOS
         private static void AdDidDismissFullScreenContentCallback(IntPtr appOpenAdClient)
         {
             AppOpenAdClient client = IntPtrToAppOpenAdClient(appOpenAdClient);
+            client._insightsEmitter.Emit(new Insight()
+            {
+                Name = Insight.CuiName.AdDismissedFullScreenContent,
+                Format = AppOpenFormat,
+                AdUnitId = client._adUnitId,
+            });
             if (client.OnAdDidDismissFullScreenContent != null)
             {
                 client.OnAdDidDismissFullScreenContent();
@@ -291,6 +334,12 @@ namespace GoogleMobileAds.iOS
         private static void AdDidRecordImpressionCallback(IntPtr appOpenAdClient)
         {
             AppOpenAdClient client = IntPtrToAppOpenAdClient(appOpenAdClient);
+            client._insightsEmitter.Emit(new Insight()
+            {
+                Name = Insight.CuiName.AdShown,
+                Format = AppOpenFormat,
+                AdUnitId = client._adUnitId,
+            });
             if (client.OnAdDidRecordImpression != null)
             {
                 client.OnAdDidRecordImpression();
@@ -301,6 +350,12 @@ namespace GoogleMobileAds.iOS
         private static void AdDidRecordClickCallback(IntPtr appOpenAdClient)
         {
             AppOpenAdClient client = IntPtrToAppOpenAdClient(appOpenAdClient);
+            client._insightsEmitter.Emit(new Insight()
+            {
+                Name = Insight.CuiName.AdClicked,
+                Format = AppOpenFormat,
+                AdUnitId = client._adUnitId,
+            });
             if (client.OnAdClicked != null)
             {
                 client.OnAdClicked();

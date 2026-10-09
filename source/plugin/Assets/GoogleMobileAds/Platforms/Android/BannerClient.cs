@@ -22,7 +22,12 @@ namespace GoogleMobileAds.Android
 {
     public class BannerClient : AndroidJavaProxy, IBannerClient
     {
+        private readonly IInsightsEmitter _insightsEmitter = InsightsEmitter.Instance;
+        private const Insight.AdFormat BannerFormat = Insight.AdFormat.Banner;
+
         protected internal AndroidJavaObject bannerView;
+
+        private string _adUnitId;
 
         protected internal BannerClient(string className) : base(className) {}
 
@@ -52,6 +57,7 @@ namespace GoogleMobileAds.Android
         // Creates a banner view.
         public void CreateBannerView(string adUnitId, AdSize adSize, AdPosition position)
         {
+            this._adUnitId = adUnitId;
             this.bannerView.Call(
                     "create",
                     new object[3] { adUnitId, Utils.GetAdSizeJavaObject(adSize), (int)position });
@@ -60,6 +66,7 @@ namespace GoogleMobileAds.Android
         // Creates a banner view with a custom position.
         public void CreateBannerView(string adUnitId, AdSize adSize, int x, int y)
         {
+            this._adUnitId = adUnitId;
             this.bannerView.Call(
                 "create",
                 new object[4] { adUnitId, Utils.GetAdSizeJavaObject(adSize), x, y });
@@ -148,6 +155,13 @@ namespace GoogleMobileAds.Android
 
         public void onAdLoaded()
         {
+            _insightsEmitter.Emit(new Insight()
+            {
+                Name = Insight.CuiName.AdLoaded,
+                Format = BannerFormat,
+                AdUnitId = this._adUnitId,
+            });
+
             if (this.OnAdLoaded != null)
             {
                 this.OnAdLoaded();
@@ -156,6 +170,14 @@ namespace GoogleMobileAds.Android
 
         public void onAdFailedToLoad(AndroidJavaObject error)
         {
+            _insightsEmitter.Emit(new Insight()
+            {
+                Name = Insight.CuiName.AdLoaded,
+                Format = BannerFormat,
+                AdUnitId = this._adUnitId,
+                Success = false,
+            });
+
             if (this.OnAdFailedToLoad != null)
             {
                 LoadAdErrorClientEventArgs args = new LoadAdErrorClientEventArgs()
@@ -168,6 +190,13 @@ namespace GoogleMobileAds.Android
 
         public void onAdOpened()
         {
+            _insightsEmitter.Emit(new Insight()
+            {
+                Name = Insight.CuiName.AdOpened,
+                Format = BannerFormat,
+                AdUnitId = this._adUnitId,
+            });
+
             if (this.OnAdOpening != null)
             {
                 this.OnAdOpening();
@@ -176,6 +205,13 @@ namespace GoogleMobileAds.Android
 
         public void onAdClosed()
         {
+            _insightsEmitter.Emit(new Insight()
+            {
+                Name = Insight.CuiName.AdClosed,
+                Format = BannerFormat,
+                AdUnitId = this._adUnitId,
+            });
+
             if (this.OnAdClosed != null)
             {
                 this.OnAdClosed();
@@ -184,6 +220,13 @@ namespace GoogleMobileAds.Android
 
         public void onPaidEvent(int precision, long valueInMicros, string currencyCode)
         {
+            _insightsEmitter.Emit(new Insight()
+            {
+                Name = Insight.CuiName.AdPaid,
+                Format = BannerFormat,
+                AdUnitId = this._adUnitId,
+            });
+
             if (this.OnPaidEvent != null)
             {
                 AdValue adValue = new AdValue()
@@ -199,6 +242,13 @@ namespace GoogleMobileAds.Android
 
         internal void onAdClicked()
         {
+            _insightsEmitter.Emit(new Insight()
+            {
+                Name = Insight.CuiName.AdClicked,
+                Format = BannerFormat,
+                AdUnitId = this._adUnitId,
+            });
+
             if (this.OnAdClicked != null)
             {
                 this.OnAdClicked();
@@ -207,6 +257,13 @@ namespace GoogleMobileAds.Android
 
         internal void onAdImpression()
         {
+            _insightsEmitter.Emit(new Insight()
+            {
+                Name = Insight.CuiName.AdShown,
+                Format = BannerFormat,
+                AdUnitId = this._adUnitId,
+            });
+
             if (this.OnAdImpressionRecorded != null)
             {
                 this.OnAdImpressionRecorded();

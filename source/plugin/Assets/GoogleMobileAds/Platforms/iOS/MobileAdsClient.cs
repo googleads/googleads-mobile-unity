@@ -26,6 +26,10 @@ namespace GoogleMobileAds.iOS
     public class MobileAdsClient : IMobileAdsClient
     {
         private static MobileAdsClient instance = new MobileAdsClient();
+        // Ensures `InsightsEmitter` is initialized from the main thread to handle CUIs.
+        private readonly IInsightsEmitter _insightsEmitter = InsightsEmitter.Instance;
+        private readonly ITracer _tracer;
+        private readonly AsyncTraceScope _asyncTraceScope;
         private Action<PreloadConfiguration> adAvailableAction;
         private Action<PreloadConfiguration> adsExhaustedAction;
         private Action<AdInspectorErrorClientEventArgs> adInspectorClosedAction;
@@ -43,6 +47,8 @@ namespace GoogleMobileAds.iOS
         private MobileAdsClient()
         {
             this.mobileAdsClientPtr = (IntPtr)GCHandle.Alloc(this);
+            _tracer = new Tracer(_insightsEmitter);
+            _asyncTraceScope = new AsyncTraceScope(_tracer);
         }
 
         public static MobileAdsClient Instance
@@ -55,6 +61,7 @@ namespace GoogleMobileAds.iOS
 
         public void Initialize(Action<IInitializationStatusClient> initCompleteAction)
         {
+            _asyncTraceScope.StartTraceIfInactive("MobileAdsClient.Initialize");
             this.initCompleteAction = initCompleteAction;
             Externs.GADUInitializeWithCallback(this.mobileAdsClientPtr, InitializationCompleteCallback);
         }
@@ -207,6 +214,8 @@ namespace GoogleMobileAds.iOS
         private static void InitializationCompleteCallback(IntPtr mobileAdsClient, IntPtr initStatus)
         {
             MobileAdsClient client = IntPtrToMobileAdsClient(mobileAdsClient);
+            client._asyncTraceScope.Complete();
+            client._insightsEmitter.Emit(new Insight() { Name = Insight.CuiName.SdkInitialized });
             if (client.initCompleteAction != null)
             {
                 IInitializationStatusClient statusClient = new InitializationStatusClient(initStatus);
