@@ -25,8 +25,13 @@ namespace GoogleMobileAds.iOS
 {
     public class RewardedInterstitialAdClient : IRewardedInterstitialAdClient, IDisposable
     {
+        private readonly IInsightsEmitter _insightsEmitter = InsightsEmitter.Instance;
+        private const Insight.AdFormat RewardedInterstitialFormat =
+            Insight.AdFormat.RewardedInterstitial;
+
         private IntPtr rewardedInterstitialAdClientPtr;
         private IntPtr rewardedInterstitialAdPtr;
+        private string _adUnitId;
 
 #region rewarded interstitial ad callback types
 
@@ -134,6 +139,7 @@ namespace GoogleMobileAds.iOS
         }
 
         public void LoadAd(string adUnitID, AdRequest request) {
+            _adUnitId = adUnitID;
             IntPtr requestPtr = Utils.BuildAdManagerAdRequest(request);
             Externs.GADULoadRewardedInterstitialAd(this.RewardedInterstitialAdPtr, adUnitID, requestPtr);
             Externs.GADURelease(requestPtr);
@@ -201,6 +207,12 @@ namespace GoogleMobileAds.iOS
         private static void RewardedInterstitialAdLoadedCallback(IntPtr rewardedInterstitialAdClient)
         {
             RewardedInterstitialAdClient client = IntPtrToRewardedInterstitialAdClient(rewardedInterstitialAdClient);
+            client._insightsEmitter.Emit(new Insight()
+            {
+                Name = Insight.CuiName.AdLoaded,
+                Format = RewardedInterstitialFormat,
+                AdUnitId = client._adUnitId,
+            });
             if (client.OnAdLoaded != null)
             {
                 client.OnAdLoaded();
@@ -212,6 +224,13 @@ namespace GoogleMobileAds.iOS
             IntPtr rewardedInterstitialAdClient, IntPtr error)
         {
             RewardedInterstitialAdClient client = IntPtrToRewardedInterstitialAdClient(rewardedInterstitialAdClient);
+            client._insightsEmitter.Emit(new Insight()
+            {
+                Name = Insight.CuiName.AdLoaded,
+                Format = RewardedInterstitialFormat,
+                AdUnitId = client._adUnitId,
+                Success = false,
+            });
             if (client.OnAdFailedToLoad != null)
             {
                 LoadAdErrorClientEventArgs args = new LoadAdErrorClientEventArgs()
@@ -228,6 +247,12 @@ namespace GoogleMobileAds.iOS
         {
             RewardedInterstitialAdClient client = IntPtrToRewardedInterstitialAdClient(
                 rewardedInterstitialAdClient);
+            client._insightsEmitter.Emit(new Insight()
+            {
+                Name = Insight.CuiName.UserEarnedReward,
+                Format = RewardedInterstitialFormat,
+                AdUnitId = client._adUnitId,
+            });
             if (client.OnUserEarnedReward != null)
             {
                 Reward args = new Reward()
@@ -244,6 +269,12 @@ namespace GoogleMobileAds.iOS
             IntPtr rewardedInterstitialAdClient, int precision, long value, string currencyCode)
         {
             RewardedInterstitialAdClient client = IntPtrToRewardedInterstitialAdClient(rewardedInterstitialAdClient);
+            client._insightsEmitter.Emit(new Insight()
+            {
+                Name = Insight.CuiName.AdPaid,
+                Format = RewardedInterstitialFormat,
+                AdUnitId = client._adUnitId,
+            });
             if (client.OnPaidEvent != null)
             {
                 AdValue adValue = new AdValue()
@@ -260,6 +291,13 @@ namespace GoogleMobileAds.iOS
         private static void AdFailedToPresentFullScreenContentCallback(IntPtr rewardedInterstitialAdClient, IntPtr error)
         {
             RewardedInterstitialAdClient client = IntPtrToRewardedInterstitialAdClient(rewardedInterstitialAdClient);
+            client._insightsEmitter.Emit(new Insight()
+            {
+                Name = Insight.CuiName.AdShowedFullScreenContent,
+                Format = RewardedInterstitialFormat,
+                AdUnitId = client._adUnitId,
+                Success = false,
+            });
             if (client.OnAdFailedToPresentFullScreenContent != null)
             {
                 AdErrorClientEventArgs args = new AdErrorClientEventArgs()
@@ -274,6 +312,12 @@ namespace GoogleMobileAds.iOS
         private static void AdWillPresentFullScreenContentCallback(IntPtr rewardedInterstitialAdClient)
         {
             RewardedInterstitialAdClient client = IntPtrToRewardedInterstitialAdClient(rewardedInterstitialAdClient);
+            client._insightsEmitter.Emit(new Insight()
+            {
+                Name = Insight.CuiName.AdShowedFullScreenContent,
+                Format = RewardedInterstitialFormat,
+                AdUnitId = client._adUnitId,
+            });
             if (client.OnAdDidPresentFullScreenContent != null)
             {
                 client.OnAdDidPresentFullScreenContent();
@@ -284,6 +328,12 @@ namespace GoogleMobileAds.iOS
         private static void AdDidDismissFullScreenContentCallback(IntPtr rewardedInterstitialAdClient)
         {
             RewardedInterstitialAdClient client = IntPtrToRewardedInterstitialAdClient(rewardedInterstitialAdClient);
+            client._insightsEmitter.Emit(new Insight()
+            {
+                Name = Insight.CuiName.AdDismissedFullScreenContent,
+                Format = RewardedInterstitialFormat,
+                AdUnitId = client._adUnitId,
+            });
             if (client.OnAdDidDismissFullScreenContent != null)
             {
                 client.OnAdDidDismissFullScreenContent();
@@ -294,6 +344,12 @@ namespace GoogleMobileAds.iOS
         private static void AdDidRecordImpressionCallback(IntPtr rewardedInterstitialAdClient)
         {
             RewardedInterstitialAdClient client = IntPtrToRewardedInterstitialAdClient(rewardedInterstitialAdClient);
+            client._insightsEmitter.Emit(new Insight()
+            {
+                Name = Insight.CuiName.AdShown,
+                Format = RewardedInterstitialFormat,
+                AdUnitId = client._adUnitId,
+            });
             if (client.OnAdDidRecordImpression != null)
             {
                 client.OnAdDidRecordImpression();
@@ -305,6 +361,12 @@ namespace GoogleMobileAds.iOS
         {
             RewardedInterstitialAdClient client =
                 IntPtrToRewardedInterstitialAdClient(rewardedInterstitialAdClient);
+            client._insightsEmitter.Emit(new Insight()
+            {
+                Name = Insight.CuiName.AdClicked,
+                Format = RewardedInterstitialFormat,
+                AdUnitId = client._adUnitId,
+            });
             if (client.OnAdClicked != null)
             {
                 client.OnAdClicked();

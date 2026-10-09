@@ -23,7 +23,12 @@ namespace GoogleMobileAds.Android
 {
     public class AppOpenAdClient : AndroidJavaProxy, IAppOpenAdClient
     {
+        private readonly IInsightsEmitter _insightsEmitter = InsightsEmitter.Instance;
+        private const Insight.AdFormat AppOpenFormat = Insight.AdFormat.AppOpen;
+
         internal AndroidJavaObject androidAppOpenAd;
+
+        private string _adUnitId;
 
         public AppOpenAdClient() : base(Utils.UnityAppOpenAdCallbackClassName)
         {
@@ -69,6 +74,7 @@ namespace GoogleMobileAds.Android
 
         public void LoadAd(string adUnitID, AdRequest request)
         {
+            this._adUnitId = adUnitID;
             androidAppOpenAd.Call("loadAd", adUnitID, Utils.GetAdManagerAdRequestJavaObject(request));
         }
 
@@ -92,6 +98,7 @@ namespace GoogleMobileAds.Android
 
         public IAppOpenAdClient PollAd(string adUnitId)
         {
+            this._adUnitId = adUnitId;
             this.androidAppOpenAd.Call("pollAd", adUnitId);
             return this;
         }
@@ -116,6 +123,13 @@ namespace GoogleMobileAds.Android
 
         void onAppOpenAdLoaded()
         {
+            _insightsEmitter.Emit(new Insight()
+            {
+                Name = Insight.CuiName.AdLoaded,
+                Format = AppOpenFormat,
+                AdUnitId = this._adUnitId,
+            });
+
             if (this.OnAdLoaded != null)
             {
                 this.OnAdLoaded();
@@ -124,6 +138,14 @@ namespace GoogleMobileAds.Android
 
         void onAppOpenAdFailedToLoad(AndroidJavaObject error)
         {
+            _insightsEmitter.Emit(new Insight()
+            {
+                Name = Insight.CuiName.AdLoaded,
+                Format = AppOpenFormat,
+                AdUnitId = this._adUnitId,
+                Success = false,
+            });
+
             if (this.OnAdFailedToLoad != null)
             {
                 LoadAdErrorClientEventArgs args = new LoadAdErrorClientEventArgs()
@@ -136,6 +158,14 @@ namespace GoogleMobileAds.Android
 
         void onAdFailedToShowFullScreenContent(AndroidJavaObject error)
         {
+            _insightsEmitter.Emit(new Insight()
+            {
+                Name = Insight.CuiName.AdShowedFullScreenContent,
+                Format = AppOpenFormat,
+                AdUnitId = this._adUnitId,
+                Success = false,
+            });
+
             if (this.OnAdFailedToPresentFullScreenContent != null)
             {
                 AdErrorClientEventArgs args = new AdErrorClientEventArgs()
@@ -148,6 +178,13 @@ namespace GoogleMobileAds.Android
 
         void onAdShowedFullScreenContent()
         {
+            _insightsEmitter.Emit(new Insight()
+            {
+                Name = Insight.CuiName.AdShowedFullScreenContent,
+                Format = AppOpenFormat,
+                AdUnitId = this._adUnitId,
+            });
+
             if (this.OnAdDidPresentFullScreenContent != null)
             {
                 this.OnAdDidPresentFullScreenContent();
@@ -156,6 +193,13 @@ namespace GoogleMobileAds.Android
 
         void onAdDismissedFullScreenContent()
         {
+            _insightsEmitter.Emit(new Insight()
+            {
+                Name = Insight.CuiName.AdDismissedFullScreenContent,
+                Format = AppOpenFormat,
+                AdUnitId = this._adUnitId,
+            });
+
             if (this.OnAdDidDismissFullScreenContent != null)
             {
                 this.OnAdDidDismissFullScreenContent();
@@ -164,6 +208,13 @@ namespace GoogleMobileAds.Android
 
         void onAdImpression()
         {
+            _insightsEmitter.Emit(new Insight()
+            {
+                Name = Insight.CuiName.AdShown,
+                Format = AppOpenFormat,
+                AdUnitId = this._adUnitId,
+            });
+
             if (this.OnAdDidRecordImpression != null)
             {
                 this.OnAdDidRecordImpression();
@@ -172,6 +223,13 @@ namespace GoogleMobileAds.Android
 
         internal void onAdClicked()
         {
+            _insightsEmitter.Emit(new Insight()
+            {
+                Name = Insight.CuiName.AdClicked,
+                Format = AppOpenFormat,
+                AdUnitId = this._adUnitId,
+            });
+
             if (this.OnAdClicked != null)
             {
                 this.OnAdClicked();
@@ -180,6 +238,13 @@ namespace GoogleMobileAds.Android
 
         void onPaidEvent(int precision, long valueInMicros, string currencyCode)
         {
+            _insightsEmitter.Emit(new Insight()
+            {
+                Name = Insight.CuiName.AdPaid,
+                Format = AppOpenFormat,
+                AdUnitId = this._adUnitId,
+            });
+
             if (this.OnPaidEvent != null)
             {
                 AdValue adValue = new AdValue()

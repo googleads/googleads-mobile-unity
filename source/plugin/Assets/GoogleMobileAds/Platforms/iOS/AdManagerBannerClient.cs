@@ -104,6 +104,12 @@ namespace GoogleMobileAds.iOS
 
         private List<AdSize> _validAdSizes;
 
+        private readonly IInsightsEmitter _insightsEmitter = InsightsEmitter.Instance;
+
+        private const Insight.AdFormat BannerFormat = Insight.AdFormat.Banner;
+
+        private string _adUnitId;
+
         private IntPtr _bannerViewPtr;
 
         private IntPtr _bannerClientPtr;
@@ -128,6 +134,7 @@ namespace GoogleMobileAds.iOS
         // Creates an Ad Manager banner view at a preset position.
         public void CreateBannerView(string adUnitId, AdSize adSize, AdPosition position)
         {
+            this._adUnitId = adUnitId;
             this._bannerClientPtr = (IntPtr)GCHandle.Alloc(this);
 
             switch (adSize.AdType)
@@ -171,7 +178,7 @@ namespace GoogleMobileAds.iOS
         // Creates an Ad Manager banner view at provided coordinates.
         public void CreateBannerView(string adUnitId, AdSize adSize, int x, int y)
         {
-
+            this._adUnitId = adUnitId;
             this._bannerClientPtr = (IntPtr)GCHandle.Alloc(this);
 
             switch (adSize.AdType)
@@ -308,6 +315,12 @@ namespace GoogleMobileAds.iOS
         private static void AdViewDidReceiveAdCallback(IntPtr bannerClient)
         {
             AdManagerBannerClient client = IntPtrToBannerClient(bannerClient);
+            client._insightsEmitter.Emit(new Insight()
+            {
+                Name = Insight.CuiName.AdLoaded,
+                Format = BannerFormat,
+                AdUnitId = client._adUnitId,
+            });
             if (client.OnAdLoaded != null)
             {
                 client.OnAdLoaded();
@@ -319,6 +332,13 @@ namespace GoogleMobileAds.iOS
                 IntPtr bannerClient, IntPtr error)
         {
             AdManagerBannerClient client = IntPtrToBannerClient(bannerClient);
+            client._insightsEmitter.Emit(new Insight()
+            {
+                Name = Insight.CuiName.AdLoaded,
+                Format = BannerFormat,
+                AdUnitId = client._adUnitId,
+                Success = false,
+            });
             if (client.OnAdFailedToLoad != null)
             {
                 LoadAdErrorClientEventArgs args = new LoadAdErrorClientEventArgs()
@@ -333,6 +353,12 @@ namespace GoogleMobileAds.iOS
         private static void AdViewWillPresentScreenCallback(IntPtr bannerClient)
         {
             AdManagerBannerClient client = IntPtrToBannerClient(bannerClient);
+            client._insightsEmitter.Emit(new Insight()
+            {
+                Name = Insight.CuiName.AdOpened,
+                Format = BannerFormat,
+                AdUnitId = client._adUnitId,
+            });
             if (client.OnAdOpening != null)
             {
                 client.OnAdOpening();
@@ -343,6 +369,12 @@ namespace GoogleMobileAds.iOS
         private static void AdViewDidDismissScreenCallback(IntPtr bannerClient)
         {
             AdManagerBannerClient client = IntPtrToBannerClient(bannerClient);
+            client._insightsEmitter.Emit(new Insight()
+            {
+                Name = Insight.CuiName.AdClosed,
+                Format = BannerFormat,
+                AdUnitId = client._adUnitId,
+            });
             if (client.OnAdClosed != null)
             {
                 client.OnAdClosed();
@@ -354,6 +386,12 @@ namespace GoogleMobileAds.iOS
             IntPtr bannerClient, int precision, long value, string currencyCode)
         {
             AdManagerBannerClient client = IntPtrToBannerClient(bannerClient);
+            client._insightsEmitter.Emit(new Insight()
+            {
+                Name = Insight.CuiName.AdPaid,
+                Format = BannerFormat,
+                AdUnitId = client._adUnitId,
+            });
             if (client.OnPaidEvent != null)
             {
                 AdValue adValue = new AdValue()
@@ -384,6 +422,12 @@ namespace GoogleMobileAds.iOS
         private static void AdViewImpressionRecordedCallback(IntPtr adClientRef)
         {
             AdManagerBannerClient client = IntPtrToBannerClient(adClientRef);
+            client._insightsEmitter.Emit(new Insight()
+            {
+                Name = Insight.CuiName.AdShown,
+                Format = BannerFormat,
+                AdUnitId = client._adUnitId,
+            });
             if (client.OnAdImpressionRecorded != null)
             {
                 client.OnAdImpressionRecorded();
@@ -394,6 +438,12 @@ namespace GoogleMobileAds.iOS
         private static void AdViewClickRecordedCallback(IntPtr adClientRef)
         {
             AdManagerBannerClient client = IntPtrToBannerClient(adClientRef);
+            client._insightsEmitter.Emit(new Insight()
+            {
+                Name = Insight.CuiName.AdClicked,
+                Format = BannerFormat,
+                AdUnitId = client._adUnitId,
+            });
             if (client.OnAdClicked != null)
             {
                 client.OnAdClicked();
