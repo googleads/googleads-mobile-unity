@@ -1,0 +1,56 @@
+name: Help Request
+description: Request community assistance with the Google Mobile Ads Unity plugin.
+title: "[Help]: "
+labels: ["help wanted"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ### Community Support Notice
+        This issue tracker provides **community support** only.
+
+        For official investigation of **bugs, crashes, account issues, or SDK integration blockers**, please contact [Official Google Support](https://support.google.com/admob/gethelp).
+
+  - type: checkboxes
+    id: support-disclaimer
+    attributes:
+      label: Community Support Disclaimer
+      options:
+        - label: >-
+            I understand this issue tracker is community-supported. I have submitted
+            or will submit critical bugs, crashes, and account issues to
+            [Official Google Support](https://support.google.com/admob/gethelp).
+          required: true
+
+  - type: input
+    id: environment
+    attributes:
+      label: Environment & Versions
+      placeholder: "Unity Version: 2022.3.10f1 | Plugin Version: v9.0.0 | Target Platform: Android / iOS"
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: Describe the issue, question, or assistance needed.
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduction-steps
+    attributes:
+      label: Steps to Reproduce or Code Example
+      description: Provide relevant code snippets or steps to reproduce the issue.
+      placeholder: |
+        1. Initialize SDK with config X...
+        2. Call method Y...
+        3. Observed behavior...
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs & Console Output
+      description: Paste relevant ADB logcat, Xcode console, or Unity console output.
+      render: text
