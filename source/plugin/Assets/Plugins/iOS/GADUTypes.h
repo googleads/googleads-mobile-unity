@@ -1,6 +1,30 @@
 // Copyright 2014 Google Inc. All Rights Reserved.
 #import <Foundation/Foundation.h>
 
+typedef NS_ENUM(NSInteger, GADURequestConfigurationTagForChildDirectedTreatment) {
+  kGADURequestConfigurationTagForChildDirectedTreatmentTrue = 1,          // true.
+  kGADURequestConfigurationTagForChildDirectedTreatmentFalse = 0,         /// false
+  kGADURequestConfigurationTagForChildDirectedTreatmentUnspecified = -1,  // Unspecified
+};
+
+typedef NS_ENUM(NSInteger, GADURequestConfigurationTagForUnderAgeOfConsent) {
+  kGADURequestConfigurationTagForUnderAgeOfConsentTrue = 1,          // true.
+  kGADURequestConfigurationTagForUnderAgeOfConsentFalse = 0,         /// false
+  kGADURequestConfigurationTagForUnderAgeOfConsentUnspecified = -1,  // Unspecified
+};
+
+typedef NS_ENUM(NSInteger, GADURequestConfigurationAgeRestrictedTreatment) {
+  kGADURequestConfigurationAgeRestrictedTreatmentUnspecified = 0,
+  kGADURequestConfigurationAgeRestrictedTreatmentChild = 1,
+  kGADURequestConfigurationAgeRestrictedTreatmentTeen = 2,
+};
+
+typedef NS_ENUM(NSInteger, GADURequestConfigurationPublisherPrivacyPersonalizationState) {
+  kGADURequestConfigurationPublisherPrivacyPersonalizationStateDefault = 0,   /// Default.
+  kGADURequestConfigurationPublisherPrivacyPersonalizationStateEnabled = 1,   /// Enabled
+  kGADURequestConfigurationPublisherPrivacyPersonalizationStateDisabled = 2,  /// Disabled
+};
+
 /// Positions to place an ad.
 typedef NS_ENUM(NSInteger, GADAdPosition) {
   kGADAdPositionCustom = -1,              ///< Custom ad position.
@@ -33,6 +57,16 @@ typedef NS_ENUM(NSUInteger, GADUBannerOrientation) {
 
 typedef NS_ENUM(NSInteger, GADUAdSize) { kGADUAdSizeUseFullWidth = -1 };
 
+/// Ad format enum representing values on the Unity platform.
+typedef NS_ENUM(NSInteger, GADUAdFormat) {
+  kGADUAdFormatBanner = 0,                ///< Banner.
+  kGADUAdFormatInterstitial = 1,          ///< Interstitial.
+  kGADUAdFormatRewarded = 2,              ///< Rewarded.
+  kGADUAdFormatRewardedInterstitial = 3,  ///< Rewarded interstitial.
+  kGADUAdFormatNative = 4,                ///< Native.
+  kGADUAdFormatAppOpen = 5,               ///< App open.
+};
+
 /// Base type representing a GADU* pointer.
 typedef const void *GADUTypeRef;
 
@@ -64,8 +98,23 @@ typedef const void *GADUTypeRewardedInterstitialAdRef;
 /// Type representing a Unity rewarded interstitial ad client.
 typedef const void *GADUTypeRewardedInterstitialAdClientRef;
 
+/// Type representing a Unity app open preloader client.
+typedef const void *GADUTypeAppOpenAdPreloaderClientRef;
+
+/// Type representing a Unity interstitial preloader client.
+typedef const void *GADUTypeInterstitialAdPreloaderClientRef;
+
+/// Type representing a Unity rewarded ad preloader client.
+typedef const void *GADUTypeRewardedAdPreloaderClientRef;
+
 /// Type representing a GADUAppOpenAd.
 typedef const void *GADUTypeAppOpenAdRef;
+
+/// Type representing a GADUPictureInPictureAd.
+typedef const void *GADUTypePictureInPictureAdRef;
+
+/// Type representing a Unity Picture-in-Picture client.
+typedef const void *GADUTypePictureInPictureAdClientRef;
 
 /// Type representing a GADUBanner.
 typedef const void *GADUTypeBannerRef;
@@ -97,22 +146,37 @@ typedef const void *GADUTypeNativeTemplateAdClientRef;
 /// Type representing a GADURewardedAd.
 typedef const void *GADUTypeRewardedAdRef;
 
+/// Type representing a GADUAppOpenAdPreloader.
+typedef const void *GADUTypeAppOpenAdPreloaderRef;
+
+/// Type representing a GADUInterstitialAdPreloader.
+typedef const void *GADUTypeInterstitialAdPreloaderRef;
+
+/// Type representing a GADURewardedAdPreloader.
+typedef const void *GADUTypeRewardedAdPreloaderRef;
+
 /// Type representing a GADURequest.
 typedef const void *GADUTypeRequestRef;
 
 /// Type representing a GAMURequest.
 typedef const void *GAMUTypeRequestRef;
 
-/// Type representing a GADUTypeRequestConfigurationRef
+/// Type representing a GADUPreloadConfiguration
+typedef const void *GADUTypePreloadConfigurationRef;
+
+/// Type representing a GADUPreloadConfigurationV2
+typedef const void *GADUTypePreloadConfigurationV2Ref;
+
+/// Type representing a GADURequestConfiguration
 typedef const void *GADUTypeRequestConfigurationRef;
 
-/// Type representing a GADUTypeResponseInfoRef
+/// Type representing a GADUResponseInfoRef
 typedef const void *GADUTypeResponseInfoRef;
 
-/// Type representing a GADUTypeAdapterResponseInfoRef type
+/// Type representing a GADUAdapterResponseInfo
 typedef const void *GADUTypeAdapterResponseInfoRef;
 
-/// Type representing a AdError type
+/// Type representing an AdError type
 typedef const void *GADUTypeErrorRef;
 
 /// Type representing a NSMutableDictionary of extras.
@@ -129,6 +193,28 @@ typedef const void *GADUTypeUIColorRef;
 
 /// Type representing a GADVideoOptions.
 typedef const void *GADUTypeVideoOptionsRef;
+
+// MARK: - GADUMobileAds
+
+typedef void (*GADUAdAvailableForPreloadConfigurationCallback)(
+    GADUTypeMobileAdsClientRef *clientRef, GADUTypePreloadConfigurationRef configRef);
+
+typedef void (*GADUAdsExhaustedForPreloadConfigurationCallback)(
+    GADUTypeMobileAdsClientRef *clientRef, GADUTypePreloadConfigurationRef configRef);
+
+// MARK: - GADUAppOpenAdPreloader
+
+/// Callback for when an ad is preloaded for the preload ID.
+typedef void (*GADUAdAvailableForPreloadIDCallback)(GADUTypeRef *clientRef, const char *preloadID,
+                                                    GADUTypeResponseInfoRef responseInfo);
+
+/// Callback for when an ad preloader request failed to preload for the preload ID.
+typedef void (*GADUAdFailedToPreloadForPreloadIDCallback)(GADUTypeRef *clientRef,
+                                                          const char *preloadID,
+                                                          GADUTypeErrorRef adError);
+
+/// Callback for when the last available ad is exhausted for the preload ID.
+typedef void (*GADUAdsExhaustedForPreloadIDCallback)(GADUTypeRef *clientRef, const char *preloadID);
 
 // MARK: - GADUAppOpenAd
 
@@ -164,6 +250,49 @@ typedef void (*GADUAppOpenAdDidDismissFullScreenContentCallback)(
 typedef void (*GADUAppOpenAdPaidEventCallback)(GADUTypeAppOpenAdClientRef *appOpenAdClient,
                                                int precision, int64_t value,
                                                const char *currencyCode);
+
+// MARK: - GADUPictureInPictureAd
+
+/// Callback for when a Picture-in-Picture ad is loaded.
+typedef void (*GADUPictureInPictureAdLoadedCallback)(
+    GADUTypePictureInPictureAdClientRef *pipAdClient);
+
+/// Callback for when a Picture-in-Picture ad request failed to load.
+typedef void (*GADUPictureInPictureAdFailedToLoadCallback)(
+    GADUTypePictureInPictureAdClientRef *pipAdClient, GADUTypeErrorRef error);
+
+/// Callback when a Picture-in-Picture ad is shown.
+typedef void (*GADUPictureInPictureAdShownCallback)(
+    GADUTypePictureInPictureAdClientRef *pipAdClient);
+
+/// Callback when a Picture-in-Picture ad is hidden.
+typedef void (*GADUPictureInPictureAdHiddenCallback)(
+    GADUTypePictureInPictureAdClientRef *pipAdClient);
+
+/// Callback when an impression has been recorded for the Picture-in-Picture ad.
+typedef void (*GADUPictureInPictureAdDidRecordImpressionCallback)(
+    GADUTypePictureInPictureAdClientRef *pipAdClient);
+
+/// Callback when a click has been recorded for the Picture-in-Picture ad.
+typedef void (*GADUPictureInPictureAdDidRecordClickCallback)(
+    GADUTypePictureInPictureAdClientRef *pipAdClient);
+
+/// Callback when a Picture-in-Picture ad failed to show.
+typedef void (*GADUPictureInPictureAdDidFailToShowCallback)(
+    GADUTypePictureInPictureAdClientRef *pipAdClient, GADUTypeErrorRef error);
+
+/// Callback when a Picture-in-Picture ad will present full screen content.
+typedef void (*GADUPictureInPictureAdWillPresentFullScreenContentCallback)(
+    GADUTypePictureInPictureAdClientRef *pipAdClient);
+
+/// Callback when a Picture-in-Picture ad dismissed full screen content.
+typedef void (*GADUPictureInPictureAdDidDismissFullScreenContentCallback)(
+    GADUTypePictureInPictureAdClientRef *pipAdClient);
+
+/// Callback when a Picture-in-Picture ad is estimated to have earned money.
+typedef void (*GADUPictureInPictureAdPaidEventCallback)(
+    GADUTypePictureInPictureAdClientRef *pipAdClient, int precision,
+    int64_t value, const char *currencyCode);
 
 // MARK: - GADUAdView
 

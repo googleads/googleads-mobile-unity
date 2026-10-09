@@ -19,3 +19,4 @@ using System.Runtime.CompilerServices;
 
 [assembly: InternalsVisibleTo("GoogleMobileAds")]
 [assembly: InternalsVisibleTo("GoogleMobileAdsNative")]
+[assembly: InternalsVisibleTo("GoogleMobileAdsNative.Android")]

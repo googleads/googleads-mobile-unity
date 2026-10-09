@@ -38,8 +38,20 @@ namespace GoogleMobileAds
 
         INativeOverlayAdClient BuildNativeOverlayAdClient();
 
+        IPictureInPictureAdClient BuildPictureInPictureAdClient();
+
         IApplicationPreferencesClient ApplicationPreferencesInstance();
 
         IMobileAdsClient MobileAdsInstance();
+
+#if GMA_PREVIEW_FEATURES
+
+        IAppOpenAdPreloaderClient BuildAppOpenAdPreloaderClient();
+
+        IInterstitialAdPreloaderClient BuildInterstitialAdPreloaderClient();
+
+        IRewardedAdPreloaderClient BuildRewardedAdPreloaderClient();
+
+#endif
     }
 }

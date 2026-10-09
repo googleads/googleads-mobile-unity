@@ -20,13 +20,6 @@
 #import "GADUPluginUtil.h"
 
 @interface GAMUBanner () <GADBannerViewDelegate, GADAppEventDelegate>
-
-/// Defines where the ad should be positioned on the screen with a GADAdPosition.
-@property(nonatomic, assign) GADAdPosition adPosition;
-
-/// Defines where the ad should be positioned on the screen with a CGPoint.
-@property(nonatomic, assign) CGPoint customAdPosition;
-
 @end
 
 @implementation GAMUBanner {
@@ -88,6 +81,36 @@
                                     adUnitID:adUnitID
                                       adSize:[GADUPluginUtil adaptiveAdSizeForWidth:(CGFloat)width
                                                                         orientation:orientation]
+                            customAdPosition:customAdPosition];
+}
+
+- (nonnull instancetype)
+    initWithLargeAdaptiveBannerSizeAndAdManagerBannerClientReference:
+        (_Nonnull GAMUTypeBannerClientRef *_Nonnull)bannerClient
+                                                       adUnitID:(nonnull NSString *)adUnitID
+                                                          width:(NSInteger)width
+                                                    orientation:(GADUBannerOrientation)orientation
+                                                     adPosition:(GADAdPosition)adPosition {
+  return [self
+      initWithAdManagerBannerClientReference:bannerClient
+                                    adUnitID:adUnitID
+                                      adSize:[GADUPluginUtil largeAdaptiveAdSizeForWidth:(CGFloat)width
+                                                                            orientation:orientation]
+                                  adPosition:adPosition];
+}
+
+- (nonnull instancetype)
+    initWithLargeAdaptiveBannerSizeAndAdManagerBannerClientReference:
+        (_Nonnull GAMUTypeBannerClientRef *_Nonnull)bannerClient
+                                                       adUnitID:(nonnull NSString *)adUnitID
+                                                          width:(NSInteger)width
+                                                    orientation:(GADUBannerOrientation)orientation
+                                               customAdPosition:(CGPoint)customAdPosition {
+  return [self
+      initWithAdManagerBannerClientReference:bannerClient
+                                    adUnitID:adUnitID
+                                      adSize:[GADUPluginUtil largeAdaptiveAdSizeForWidth:(CGFloat)width
+                                                                            orientation:orientation]
                             customAdPosition:customAdPosition];
 }
 

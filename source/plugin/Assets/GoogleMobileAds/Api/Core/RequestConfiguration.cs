@@ -30,10 +30,12 @@ namespace GoogleMobileAds.Api
         public MaxAdContentRating MaxAdContentRating;
 
         /// <summary>
+        /// Deprecated. Use AgeRestrictedTreatment instead.
+        ///
         /// This property allows you to specify whether you would like your app to be treated as
         /// child-directed for purposes of the Children’s Online Privacy Protection Act (COPPA) -
-        /// <seealso href="http://business.ftc.gov/privacy-and-security/childrens-privacy">
-        /// http://business.ftc.gov/privacy-and-security/childrens-privacy</seealso>.
+        /// <a href="http://business.ftc.gov/privacy-and-security/childrens-privacy">
+        /// http://business.ftc.gov/privacy-and-security/childrens-privacy</a>.
         ///
         /// If you set this property to True, you will
         /// indicate that your app should be treated as child-directed for purposes of the Children’s
@@ -50,17 +52,26 @@ namespace GoogleMobileAds.Api
         /// authorized to act on behalf of the owner of the app. You understand that abuse of this
         /// setting may result in termination of your Google account.
         /// </summary>
-        /// </remarks>
+        /// <remarks>
         /// Note: it may take some time for this designation to be fully implemented in applicable
         /// Google services.
         /// </remarks>
+        [Obsolete("Use AgeRestrictedTreatment instead.")]
         public TagForChildDirectedTreatment? TagForChildDirectedTreatment;
 
         /// <summary>
+        /// Deprecated. Use AgeRestrictedTreatment instead.
+        ///
         /// Indicates the publisher specified that the ad request should receive treatment for
         /// users in the European Economic Area (EEA) under the age of consent.
         /// </summary>
+        [Obsolete("Use AgeRestrictedTreatment instead.")]
         public TagForUnderAgeOfConsent? TagForUnderAgeOfConsent;
+
+        /// <summary>
+        /// Indicates the publisher specified that the ad request should receive age-restricted treatment.
+        /// </summary>
+        public AgeRestrictedTreatment? AgeRestrictedTreatment;
 
         /// <summary>
         /// This property lets you specify the personalization treatment that applies to subsequent
@@ -83,12 +94,19 @@ namespace GoogleMobileAds.Api
 
         public RequestConfiguration() {}
 
+        /// <summary>
+        /// Creates a <see cref="RequestConfiguration"/> from a given <see cref="RequestConfiguration"/>.
+        /// </summary>
+        /// <param name="requestConfiguration">The <see cref="RequestConfiguration"/> parameter to copy.</param>
         public RequestConfiguration(RequestConfiguration requestConfiguration)
         {
             MaxAdContentRating = requestConfiguration.MaxAdContentRating;
+#pragma warning disable 618
             TagForChildDirectedTreatment =
                         requestConfiguration.TagForChildDirectedTreatment;
             TagForUnderAgeOfConsent = requestConfiguration.TagForUnderAgeOfConsent;
+#pragma warning restore 618
+            AgeRestrictedTreatment = requestConfiguration.AgeRestrictedTreatment;
             PublisherPrivacyPersonalizationState =
                 requestConfiguration.PublisherPrivacyPersonalizationState;
             TestDeviceIds = requestConfiguration.TestDeviceIds;

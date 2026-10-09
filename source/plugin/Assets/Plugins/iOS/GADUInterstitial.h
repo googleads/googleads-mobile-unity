@@ -3,7 +3,9 @@
 #import <Foundation/Foundation.h>
 
 #import <GoogleMobileAds/GoogleMobileAds.h>
-
+#if GMA_PREVIEW_FEATURES
+#import "GADInterstitialAd_Preview.h"
+#endif
 #import "GADUTypes.h"
 
 /// A wrapper around GADInterstitial. Includes the ability to create GADInterstitial objects, load
@@ -50,6 +52,19 @@
 
 // Returns the interstitial ad response info.
 @property(nonatomic, readonly, copy) GADResponseInfo *responseInfo;
+
+// A long integer provided by the AdMob UI for the configured placement.
+@property(atomic, readwrite) int64_t placementID;
+
+#if GMA_PREVIEW_FEATURES
+
+/// Returns whether an interstitial ad is preloaded for the given ad unit ID.
++ (BOOL)isPreloadedAdAvailable:(nonnull NSString *)adUnitID;
+
+/// Loads a preloaded interstitial ad corresponding to the given ad unit ID if available.
+- (void)preloadedAdWithAdUnitID:(nonnull NSString *)adUnitID;
+
+#endif  // GMA_PREVIEW_FEATURES
 
 /// Makes an ad request. Additional targeting options can be supplied with a request object.
 - (void)loadWithAdUnitID:(NSString *)adUnitID request:(GADRequest *)request;

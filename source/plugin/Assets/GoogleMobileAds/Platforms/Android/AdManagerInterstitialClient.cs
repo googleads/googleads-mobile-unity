@@ -23,23 +23,26 @@ namespace GoogleMobileAds.Android
 {
     public class AdManagerInterstitialClient : AndroidJavaProxy, IAdManagerInterstitialClient
     {
-        public event EventHandler<EventArgs> OnAdLoaded;
+        public event Action OnAdLoaded;
 
-        public event EventHandler<LoadAdErrorClientEventArgs> OnAdFailedToLoad;
+        public event Action<LoadAdErrorClientEventArgs> OnAdFailedToLoad;
 
-        public event EventHandler<AdErrorClientEventArgs> OnAdFailedToPresentFullScreenContent;
+        public event Action<AdErrorClientEventArgs> OnAdFailedToPresentFullScreenContent;
 
-        public event EventHandler<EventArgs> OnAdDidPresentFullScreenContent;
+        public event Action OnAdDidPresentFullScreenContent;
 
-        public event EventHandler<EventArgs> OnAdDidDismissFullScreenContent;
+        public event Action OnAdDidDismissFullScreenContent;
 
-        public event EventHandler<EventArgs> OnAdDidRecordImpression;
+        public event Action OnAdDidRecordImpression;
 
         public event Action<AdValue> OnPaidEvent;
 
         public event Action<AppEvent> OnAppEvent;
 
         public event Action OnAdClicked;
+
+        // Placement ID is not supported for AdManagerInterstitialAd.
+        public long PlacementId { get; set; }
 
         private AndroidJavaObject _androidAdmanagerInterstitialAd;
 
@@ -59,6 +62,26 @@ namespace GoogleMobileAds.Android
         public void CreateInterstitialAd()
         {
             // No op.
+        }
+
+#if GMA_PREVIEW_FEATURES
+
+        public bool IsAdAvailable(string adUnitId)
+        {
+            return this._androidAdmanagerInterstitialAd.Call<bool>("isAdAvailable", adUnitId);
+        }
+
+        public IInterstitialClient PollAd(string adUnitId)
+        {
+            return PollAdManagerAd(adUnitId);
+        }
+
+#endif
+
+        public IAdManagerInterstitialClient PollAdManagerAd(string adUnitId)
+        {
+            this._androidAdmanagerInterstitialAd.Call("pollAd", adUnitId);
+            return this;
         }
 
         // Loads an AdManager Interstitial ad.
@@ -89,8 +112,8 @@ namespace GoogleMobileAds.Android
         // Returns ad request response info
         public IResponseInfoClient GetResponseInfoClient()
         {
-            return new ResponseInfoClient(ResponseInfoClientType.AdLoaded,
-                                          this._androidAdmanagerInterstitialAd);
+            var responseInfoJavaObject = _androidAdmanagerInterstitialAd.Call<AndroidJavaObject>("getResponseInfo");
+            return new ResponseInfoClient(ResponseInfoClientType.AdLoaded, responseInfoJavaObject);
         }
 
         #endregion
@@ -101,7 +124,7 @@ namespace GoogleMobileAds.Android
         {
             if (this.OnAdLoaded != null)
             {
-                this.OnAdLoaded(this, EventArgs.Empty);
+                this.OnAdLoaded();
             }
         }
 
@@ -113,7 +136,7 @@ namespace GoogleMobileAds.Android
                 {
                     LoadAdErrorClient = new LoadAdErrorClient(error)
                 };
-                this.OnAdFailedToLoad(this, args);
+                this.OnAdFailedToLoad(args);
             }
         }
 
@@ -125,7 +148,7 @@ namespace GoogleMobileAds.Android
                 {
                     AdErrorClient = new AdErrorClient(error),
                 };
-                this.OnAdFailedToPresentFullScreenContent(this, args);
+                this.OnAdFailedToPresentFullScreenContent(args);
             }
         }
 
@@ -133,7 +156,7 @@ namespace GoogleMobileAds.Android
         {
             if (this.OnAdDidPresentFullScreenContent != null)
             {
-                this.OnAdDidPresentFullScreenContent(this, EventArgs.Empty);
+                this.OnAdDidPresentFullScreenContent();
             }
         }
 
@@ -142,7 +165,7 @@ namespace GoogleMobileAds.Android
         {
             if (this.OnAdDidDismissFullScreenContent != null)
             {
-                this.OnAdDidDismissFullScreenContent(this, EventArgs.Empty);
+                this.OnAdDidDismissFullScreenContent();
             }
         }
 
@@ -150,7 +173,7 @@ namespace GoogleMobileAds.Android
         {
             if (this.OnAdDidRecordImpression != null)
             {
-                this.OnAdDidRecordImpression(this, EventArgs.Empty);
+                this.OnAdDidRecordImpression();
             }
         }
 

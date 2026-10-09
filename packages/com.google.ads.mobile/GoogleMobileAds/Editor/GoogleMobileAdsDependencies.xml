@@ -1,6 +1,6 @@
 <dependencies>
   <androidPackages>
-    <androidPackage spec="com.google.android.gms:play-services-ads:23.0.0">
+    <androidPackage spec="com.google.android.gms:play-services-ads:25.4.0">
       <repositories>
         <repository>https://maven.google.com/</repository>
       </repositories>
@@ -10,10 +10,20 @@
         <repository>https://maven.google.com/</repository>
       </repositories>
     </androidPackage>
+    <androidPackage spec="androidx.lifecycle:lifecycle-process:2.6.2">
+        <repositories>
+            <repository>https://maven.google.com/</repository>
+        </repositories>
+    </androidPackage>
+    <androidPackage spec="androidx.fragment:fragment:1.7.1">
+        <repositories>
+            <repository>https://maven.google.com/</repository>
+        </repositories>
+    </androidPackage>
   </androidPackages>
 
   <iosPods>
-    <iosPod name="Google-Mobile-Ads-SDK" version="~> 11.3.0">
+    <iosPod name="Google-Mobile-Ads-SDK" version="~> 13.9">
       <sources>
         <source>https://github.com/CocoaPods/Specs</source>
       </sources>

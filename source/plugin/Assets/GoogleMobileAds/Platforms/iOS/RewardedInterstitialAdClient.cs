@@ -56,21 +56,21 @@ namespace GoogleMobileAds.iOS
 
 #endregion
 
-        public event EventHandler<EventArgs> OnAdLoaded;
+        public event Action OnAdLoaded;
 
-        public event EventHandler<LoadAdErrorClientEventArgs> OnAdFailedToLoad;
+        public event Action<LoadAdErrorClientEventArgs> OnAdFailedToLoad;
 
-        public event EventHandler<Reward> OnUserEarnedReward;
+        public event Action<Reward> OnUserEarnedReward;
 
         public event Action<AdValue> OnPaidEvent;
 
-        public event EventHandler<AdErrorClientEventArgs> OnAdFailedToPresentFullScreenContent;
+        public event Action<AdErrorClientEventArgs> OnAdFailedToPresentFullScreenContent;
 
-        public event EventHandler<EventArgs> OnAdDidPresentFullScreenContent;
+        public event Action OnAdDidPresentFullScreenContent;
 
-        public event EventHandler<EventArgs> OnAdDidDismissFullScreenContent;
+        public event Action OnAdDidDismissFullScreenContent;
 
-        public event EventHandler<EventArgs> OnAdDidRecordImpression;
+        public event Action OnAdDidRecordImpression;
 
         public event Action OnAdClicked;
 
@@ -90,6 +90,30 @@ namespace GoogleMobileAds.iOS
         }
 
 #region IRewardedInterstitialAdClient implementation
+
+        public long PlacementId
+        {
+            get
+            {
+                if (this.RewardedInterstitialAdPtr == IntPtr.Zero)
+                {
+                    return 0;
+                }
+                return Externs.GADUGetRewardedInterstitialAdPlacementId(
+                        this.RewardedInterstitialAdPtr);
+            }
+
+            set
+            {
+                if (this.RewardedInterstitialAdPtr == IntPtr.Zero)
+                {
+                    Debug.LogError("Call CreateRewardedInterstitialAd before setting PlacementId.");
+                    return;
+                }
+                Externs.GADUSetRewardedInterstitialAdPlacementId(this.RewardedInterstitialAdPtr,
+                                                                 value);
+            }
+        }
 
         public void CreateRewardedInterstitialAd()
         {
@@ -179,7 +203,7 @@ namespace GoogleMobileAds.iOS
             RewardedInterstitialAdClient client = IntPtrToRewardedInterstitialAdClient(rewardedInterstitialAdClient);
             if (client.OnAdLoaded != null)
             {
-                client.OnAdLoaded(client, EventArgs.Empty);
+                client.OnAdLoaded();
             }
         }
 
@@ -194,7 +218,7 @@ namespace GoogleMobileAds.iOS
                 {
                     LoadAdErrorClient = new LoadAdErrorClient(error)
                 };
-                client.OnAdFailedToLoad(client, args);
+                client.OnAdFailedToLoad(args);
             }
         }
 
@@ -211,7 +235,7 @@ namespace GoogleMobileAds.iOS
                     Type = rewardType,
                     Amount = rewardAmount
                 };
-                client.OnUserEarnedReward(client, args);
+                client.OnUserEarnedReward(args);
             }
         }
 
@@ -242,7 +266,7 @@ namespace GoogleMobileAds.iOS
                 {
                     AdErrorClient = new AdErrorClient(error)
                 };
-                client.OnAdFailedToPresentFullScreenContent(client, args);
+                client.OnAdFailedToPresentFullScreenContent(args);
             }
         }
 
@@ -252,7 +276,7 @@ namespace GoogleMobileAds.iOS
             RewardedInterstitialAdClient client = IntPtrToRewardedInterstitialAdClient(rewardedInterstitialAdClient);
             if (client.OnAdDidPresentFullScreenContent != null)
             {
-                client.OnAdDidPresentFullScreenContent(client, EventArgs.Empty);
+                client.OnAdDidPresentFullScreenContent();
             }
         }
 
@@ -262,7 +286,7 @@ namespace GoogleMobileAds.iOS
             RewardedInterstitialAdClient client = IntPtrToRewardedInterstitialAdClient(rewardedInterstitialAdClient);
             if (client.OnAdDidDismissFullScreenContent != null)
             {
-                client.OnAdDidDismissFullScreenContent(client, EventArgs.Empty);
+                client.OnAdDidDismissFullScreenContent();
             }
         }
 
@@ -272,7 +296,7 @@ namespace GoogleMobileAds.iOS
             RewardedInterstitialAdClient client = IntPtrToRewardedInterstitialAdClient(rewardedInterstitialAdClient);
             if (client.OnAdDidRecordImpression != null)
             {
-                client.OnAdDidRecordImpression(client, EventArgs.Empty);
+                client.OnAdDidRecordImpression();
             }
         }
 

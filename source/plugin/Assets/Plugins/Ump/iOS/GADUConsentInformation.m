@@ -67,10 +67,10 @@
 - (BOOL)isConsentFormAvailable {
   __block BOOL status;
   if (NSThread.isMainThread) {
-    status = UMPConsentInformation.sharedInstance.formStatus == kGADUFormStatusAvailable;
+    status = UMPConsentInformation.sharedInstance.formStatus == UMPFormStatusAvailable;
   } else {
     dispatch_sync(dispatch_get_main_queue(), ^{
-      status = UMPConsentInformation.sharedInstance.formStatus == kGADUFormStatusAvailable;
+      status = UMPConsentInformation.sharedInstance.formStatus == UMPFormStatusAvailable;
     });
   }
   return status;
@@ -82,6 +82,10 @@
   __weak GADUConsentInformation *weakSelf = self;
   UMPRequestParameters *parameters = [[UMPRequestParameters alloc] init];
   parameters.tagForUnderAgeOfConsent = bridgeParams.tagForUnderAgeOfConsent;
+  if (bridgeParams.consentSyncID) {
+    parameters.consentSyncID = bridgeParams.consentSyncID;
+  }
+
   UMPDebugSettings *debugSettings = [[UMPDebugSettings alloc] init];
   debugSettings.geography = (NSInteger)bridgeParams.debugSettings.geography;
   debugSettings.testDeviceIdentifiers = bridgeParams.debugSettings.testDeviceIdentifiers;

@@ -15,6 +15,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -28,6 +29,9 @@ namespace GoogleMobileAds.Common
 
         private volatile static bool adEventsQueueEmpty = true;
 
+        // The managed thread id of the Unity main thread.
+        private static int UnityMainThreadId = -1;
+
         public static void Initialize()
         {
             if (IsActive())
@@ -37,9 +41,19 @@ namespace GoogleMobileAds.Common
 
             // Add an invisible game object to the scene
             GameObject obj = new GameObject("MobileAdsMainThreadExecuter");
-            obj.hideFlags = HideFlags.HideAndDontSave;
+            // HideInHierarchy (rather than HideAndDontSave) so the Unity Editor destroys the
+            // object when exiting play mode instead of leaking one per play session.
+            obj.hideFlags = HideFlags.HideInHierarchy;
             DontDestroyOnLoad(obj);
             instance = obj.AddComponent<MobileAdsEventExecutor>();
+        }
+
+        /// <summary>
+        /// Returns true if the current thread is the Unity main thread.
+        /// </summary>
+        public static bool IsOnMainThread()
+        {
+            return Thread.CurrentThread.ManagedThreadId == UnityMainThreadId;
         }
 
         public static bool IsActive()
@@ -47,8 +61,25 @@ namespace GoogleMobileAds.Common
             return instance != null;
         }
 
+        // Resets static state at the start of every play session, so behavior is the same
+        // whether or not domain reload is enabled ("Enter Play Mode Options" in the Editor).
+        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+        private static void ResetStaticState()
+        {
+            instance = null;
+            lock (adEventsQueue)
+            {
+                adEventsQueue.Clear();
+                adEventsQueueEmpty = true;
+            }
+        }
+
         public void Awake()
         {
+            if (UnityMainThreadId == -1)
+            {
+                UnityMainThreadId = Thread.CurrentThread.ManagedThreadId;
+            }
             DontDestroyOnLoad(gameObject);
         }
 

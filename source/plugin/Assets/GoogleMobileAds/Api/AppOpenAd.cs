@@ -13,8 +13,6 @@
 // limitations under the License.
 
 using System;
-using System.Collections.Generic;
-
 using UnityEngine;
 
 using GoogleMobileAds.Common;
@@ -60,16 +58,73 @@ namespace GoogleMobileAds.Api
         /// </summary>
         public event Action<AdError> OnAdFullScreenContentFailed;
 
-        private IAppOpenAdClient _client;
+        /// <summary>
+        /// A long integer provided by the AdMob UI for the configured placement.
+        /// To ensure this placement ID is included in reporting, set a value before showing the ad.
+        /// </summary>
+        public long PlacementId
+        {
+            get
+            {
+                return _client != null ? _client.PlacementId : 0;
+            }
+
+            set
+            {
+                if (_client != null)
+                {
+                    _client.PlacementId = value;
+                }
+            }
+        }
+
+        private readonly IAppOpenAdClient _client;
         private bool _canShowAd;
 
-        private AppOpenAd(IAppOpenAdClient client)
+        internal AppOpenAd(IAppOpenAdClient client)
         {
             _canShowAd = true;
             _client = client;
 
             RegisterAdEvents();
         }
+
+#if GMA_PREVIEW_FEATURES
+
+        /// <summary>
+        /// Verify if an ad is preloaded and available to show.
+        /// </summary>
+        /// <param name="adUnitId">The ad Unit Id of the ad to verify. </param>
+        [Obsolete("Use AppOpenAdPreloader.IsAdAvailable instead.")]
+        public static bool IsAdAvailable(string adUnitId)
+        {
+            if (string.IsNullOrEmpty(adUnitId))
+            {
+                Debug.LogError("adUnitId cannot be null or empty.");
+                return false;
+            }
+            var client = MobileAds.GetClientFactory().BuildAppOpenAdClient();
+            return client.IsAdAvailable(adUnitId);
+        }
+
+        /// <summary>
+        /// Returns the next pre-loaded app open ad and null if no ad is available.
+        /// </summary>
+        /// <param name="adUnitId">The ad Unit ID of the ad to poll.</param>
+        [Obsolete("Use AppOpenAdPreloader.DequeueAd instead.")]
+        public static AppOpenAd PollAd(string adUnitId)
+        {
+            if (string.IsNullOrEmpty(adUnitId))
+            {
+                Debug.LogError("adUnitId cannot be null or empty.");
+                return null;
+            }
+            var client = MobileAds.GetClientFactory().BuildAppOpenAdClient();
+            client.CreateAppOpenAd();
+            return new AppOpenAd(client.PollAd(adUnitId));
+        }
+
+#endif  // GMA_PREVIEW_FEATURES
 
         /// <summary>
         /// Loads an app open ad.
@@ -86,14 +141,14 @@ namespace GoogleMobileAds.Api
 
             var client = MobileAds.GetClientFactory().BuildAppOpenAdClient();
             client.CreateAppOpenAd();
-            client.OnAdLoaded += (sender, args) =>
+            client.OnAdLoaded += () =>
             {
                 MobileAds.RaiseAction(() =>
                 {
                     adLoadCallback(new AppOpenAd(client), null);
                 });
             };
-            client.OnAdFailedToLoad += (sender, args) =>
+            client.OnAdFailedToLoad += (args) =>
             {
                 LoadAdError loadAdError = new LoadAdError(args.LoadAdErrorClient);
                 MobileAds.RaiseAction(() =>
@@ -167,7 +222,7 @@ namespace GoogleMobileAds.Api
                 });
             };
 
-            _client.OnAdDidDismissFullScreenContent += (sender, args) =>
+            _client.OnAdDidDismissFullScreenContent += () =>
             {
                 MobileAds.RaiseAction(() =>
                 {
@@ -178,7 +233,7 @@ namespace GoogleMobileAds.Api
                 });
             };
 
-            _client.OnAdDidPresentFullScreenContent += (sender, args) =>
+            _client.OnAdDidPresentFullScreenContent += () =>
             {
                 MobileAds.RaiseAction(() =>
                 {
@@ -189,7 +244,7 @@ namespace GoogleMobileAds.Api
                 });
             };
 
-            _client.OnAdDidRecordImpression += (sender, args) =>
+            _client.OnAdDidRecordImpression += () =>
             {
                 MobileAds.RaiseAction(() =>
                 {
@@ -200,7 +255,7 @@ namespace GoogleMobileAds.Api
                 });
             };
 
-            _client.OnAdFailedToPresentFullScreenContent += (sender, error) =>
+            _client.OnAdFailedToPresentFullScreenContent += (error) =>
             {
                 AdError adError = new AdError(error.AdErrorClient);
                 MobileAds.RaiseAction(() =>

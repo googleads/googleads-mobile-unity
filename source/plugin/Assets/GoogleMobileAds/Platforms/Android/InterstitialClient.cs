@@ -22,7 +22,7 @@ namespace GoogleMobileAds.Android
 {
     public class InterstitialClient : AndroidJavaProxy, IInterstitialClient
     {
-        private AndroidJavaObject androidInterstitialAd;
+        internal AndroidJavaObject androidInterstitialAd;
 
         public InterstitialClient() : base(Utils.UnityInterstitialAdCallbackClassName)
         {
@@ -33,21 +33,34 @@ namespace GoogleMobileAds.Android
                 Utils.InterstitialClassName, activity, this);
         }
 
-        public event EventHandler<EventArgs> OnAdLoaded;
+        public event Action OnAdLoaded;
 
-        public event EventHandler<LoadAdErrorClientEventArgs> OnAdFailedToLoad;
+        public event Action<LoadAdErrorClientEventArgs> OnAdFailedToLoad;
 
-        public event EventHandler<AdErrorClientEventArgs> OnAdFailedToPresentFullScreenContent;
+        public event Action<AdErrorClientEventArgs> OnAdFailedToPresentFullScreenContent;
 
-        public event EventHandler<EventArgs> OnAdDidPresentFullScreenContent;
+        public event Action OnAdDidPresentFullScreenContent;
 
-        public event EventHandler<EventArgs> OnAdDidDismissFullScreenContent;
+        public event Action OnAdDidDismissFullScreenContent;
 
-        public event EventHandler<EventArgs> OnAdDidRecordImpression;
+        public event Action OnAdDidRecordImpression;
 
         public event Action<AdValue> OnPaidEvent;
 
         public event Action OnAdClicked;
+
+        // A long integer provided by the AdMob UI for the configured placement.
+        public long PlacementId
+        {
+            get
+            {
+                return this.androidInterstitialAd.Call<long>("getPlacementId");
+            }
+            set
+            {
+                this.androidInterstitialAd.Call("setPlacementId", value);
+            }
+        }
 
         #region IGoogleMobileAdsInterstitialClient implementation
 
@@ -81,11 +94,27 @@ namespace GoogleMobileAds.Android
             return this.androidInterstitialAd.Call<string>("getAdUnitId");
         }
 
+#if GMA_PREVIEW_FEATURES
+
+        public bool IsAdAvailable(string adUnitId)
+        {
+            return this.androidInterstitialAd.Call<bool>("isAdAvailable", adUnitId);
+        }
+
+        public IInterstitialClient PollAd(string adUnitId)
+        {
+            this.androidInterstitialAd.Call("pollAd", adUnitId);
+            return this;
+        }
+
+#endif
+
         // Returns ad request response info
         public IResponseInfoClient GetResponseInfoClient()
         {
-
-            return new ResponseInfoClient(ResponseInfoClientType.AdLoaded, this.androidInterstitialAd);
+            var responseInfoJavaObject = androidInterstitialAd.Call<AndroidJavaObject>(
+                "getResponseInfo");
+            return new ResponseInfoClient(ResponseInfoClientType.AdLoaded, responseInfoJavaObject);
         }
 
         #endregion
@@ -96,7 +125,7 @@ namespace GoogleMobileAds.Android
         {
             if (this.OnAdLoaded != null)
             {
-                this.OnAdLoaded(this, EventArgs.Empty);
+                this.OnAdLoaded();
             }
         }
 
@@ -108,7 +137,7 @@ namespace GoogleMobileAds.Android
                 {
                     LoadAdErrorClient = new LoadAdErrorClient(error)
                 };
-                this.OnAdFailedToLoad(this, args);
+                this.OnAdFailedToLoad(args);
             }
         }
 
@@ -120,7 +149,7 @@ namespace GoogleMobileAds.Android
                 {
                     AdErrorClient = new AdErrorClient(error),
                 };
-                this.OnAdFailedToPresentFullScreenContent(this, args);
+                this.OnAdFailedToPresentFullScreenContent(args);
             }
         }
 
@@ -128,7 +157,7 @@ namespace GoogleMobileAds.Android
         {
             if (this.OnAdDidPresentFullScreenContent != null)
             {
-                this.OnAdDidPresentFullScreenContent(this, EventArgs.Empty);
+                this.OnAdDidPresentFullScreenContent();
             }
         }
 
@@ -137,7 +166,7 @@ namespace GoogleMobileAds.Android
         {
             if (this.OnAdDidDismissFullScreenContent != null)
             {
-                this.OnAdDidDismissFullScreenContent(this, EventArgs.Empty);
+                this.OnAdDidDismissFullScreenContent();
             }
         }
 
@@ -145,7 +174,7 @@ namespace GoogleMobileAds.Android
         {
             if (this.OnAdDidRecordImpression != null)
             {
-                this.OnAdDidRecordImpression(this, EventArgs.Empty);
+                this.OnAdDidRecordImpression();
             }
         }
 

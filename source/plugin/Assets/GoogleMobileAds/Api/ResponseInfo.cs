@@ -25,6 +25,12 @@ namespace GoogleMobileAds.Api
     {
         private IResponseInfoClient _client;
 
+        /// <summary>
+        /// Creates a <see cref="ResponseInfo"/>.
+        /// </summary>
+        /// <param name="client">
+        /// A platform level <see cref="IResponseInfoClient"/> implementation.
+        /// </param>
         public ResponseInfo(IResponseInfoClient client)
         {
             _client = client;
@@ -36,7 +42,14 @@ namespace GoogleMobileAds.Api
         /// </summary>
         public AdapterResponseInfo GetLoadedAdapterResponseInfo()
         {
-            return new AdapterResponseInfo(_client.GetLoadedAdapterResponseInfo());
+            if (_client == null)
+            {
+                return null;
+            }
+            var adapterResponseInfoClient = _client.GetLoadedAdapterResponseInfo();
+            return adapterResponseInfoClient == null
+                    ? null
+                    : new AdapterResponseInfo(adapterResponseInfoClient);
         }
 
         /// <summary>
@@ -46,12 +59,16 @@ namespace GoogleMobileAds.Api
         /// </summary>
         public List<AdapterResponseInfo> GetAdapterResponses()
         {
+            if (_client == null)
+            {
+                return new List<AdapterResponseInfo>();
+            }
             var responses = _client.GetAdapterResponses();
             if (responses == null)
             {
                 return new List<AdapterResponseInfo>();
             }
-            return responses.Select(o => new AdapterResponseInfo(o)).ToList();
+            return responses.Where(o => o != null).Select(o => new AdapterResponseInfo(o)).ToList();
         }
 
         /// <summary>
@@ -59,6 +76,10 @@ namespace GoogleMobileAds.Api
         /// </summary>
         public Dictionary<string, string> GetResponseExtras()
         {
+            if (_client == null)
+            {
+                return new Dictionary<string, string>();
+            }
             return _client.GetResponseExtras();
         }
 
@@ -68,12 +89,16 @@ namespace GoogleMobileAds.Api
         /// In the case of a mediated ad response, this is the name of the class that was
         /// responsible for performing the ad request and rendering the ad.
         ///
-        /// See <seealso href="https://developers.google.com/admob/unity/response-info"/>
+        /// See <a href="https://developers.google.com/admob/unity/response-info">https://developers.google.com/admob/unity/response-info</a>
         /// for possible return values.
         /// Returns null if the ad failed to load.
         /// </summary>
         public string GetMediationAdapterClassName()
         {
+            if (_client == null)
+            {
+                return null;
+            }
             return _client.GetMediationAdapterClassName();
         }
 
@@ -84,6 +109,10 @@ namespace GoogleMobileAds.Api
         /// </summary>
         public string GetResponseId()
         {
+            if (_client == null)
+            {
+                return null;
+            }
             return _client.GetResponseId();
         }
 
@@ -92,6 +121,10 @@ namespace GoogleMobileAds.Api
         /// </summary>
         public override string ToString()
         {
+            if (_client == null)
+            {
+                return string.Empty;
+            }
             return _client.ToString();
         }
     }

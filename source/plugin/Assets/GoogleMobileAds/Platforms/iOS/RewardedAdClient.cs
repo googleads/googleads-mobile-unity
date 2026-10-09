@@ -56,23 +56,44 @@ namespace GoogleMobileAds.iOS
 
 #endregion
 
-        public event EventHandler<EventArgs> OnAdLoaded;
+        public event Action OnAdLoaded;
 
-        public event EventHandler<LoadAdErrorClientEventArgs> OnAdFailedToLoad;
+        public event Action<LoadAdErrorClientEventArgs> OnAdFailedToLoad;
 
-        public event EventHandler<Reward> OnUserEarnedReward;
+        public event Action<Reward> OnUserEarnedReward;
 
         public event Action<AdValue> OnPaidEvent;
 
-        public event EventHandler<AdErrorClientEventArgs> OnAdFailedToPresentFullScreenContent;
+        public event Action<AdErrorClientEventArgs> OnAdFailedToPresentFullScreenContent;
 
-        public event EventHandler<EventArgs> OnAdDidPresentFullScreenContent;
+        public event Action OnAdDidPresentFullScreenContent;
 
-        public event EventHandler<EventArgs> OnAdDidDismissFullScreenContent;
+        public event Action OnAdDidDismissFullScreenContent;
 
-        public event EventHandler<EventArgs> OnAdDidRecordImpression;
+        public event Action OnAdDidRecordImpression;
 
         public event Action OnAdClicked;
+
+        public long PlacementId {
+            get
+            {
+                if (this.RewardedAdPtr == IntPtr.Zero)
+                {
+                    return 0;
+                }
+                return Externs.GADUGetRewardedAdPlacementID(this.RewardedAdPtr);
+            }
+
+            set
+            {
+                if (this.RewardedAdPtr == IntPtr.Zero)
+                {
+                    Debug.LogError("PlacementId can be set once the Rewarded ad is loaded.");
+                    return;
+                }
+                Externs.GADUSetRewardedAdPlacementID(this.RewardedAdPtr, value);
+            }
+        }
 
         // This property should be used when setting the rewardedAdPtr.
         private IntPtr RewardedAdPtr
@@ -87,6 +108,25 @@ namespace GoogleMobileAds.iOS
                 Externs.GADURelease(this.rewardedAdPtr);
                 this.rewardedAdPtr = value;
             }
+        }
+
+        internal void CreateRewardedAdWithReference(IntPtr rewardedAdClientRef,
+                                                    IntPtr rewardedAdRef)
+        {
+            rewardedAdClientPtr = rewardedAdClientRef;
+            RewardedAdPtr = rewardedAdRef;
+
+            Externs.GADUSetRewardedAdCallbacks(
+                RewardedAdPtr,
+                RewardedAdLoadedCallback,
+                RewardedAdFailedToLoadCallback,
+                AdWillPresentFullScreenContentCallback,
+                AdFailedToPresentFullScreenContentCallback,
+                AdDidDismissFullScreenContentCallback,
+                AdDidRecordImpressionCallback,
+                AdDidRecordClickCallback,
+                RewardedAdUserDidEarnRewardCallback,
+                RewardedAdPaidEventCallback);
         }
 
 #region IRewardedAdClient implementation
@@ -108,6 +148,23 @@ namespace GoogleMobileAds.iOS
                 RewardedAdUserDidEarnRewardCallback,
                 RewardedAdPaidEventCallback);
         }
+
+#if GMA_PREVIEW_FEATURES
+
+        // Verify if a rewarded ad is preloaded and available to show.
+        public bool IsAdAvailable(string adUnitId)
+        {
+            return Externs.GADURewardedIsPreloadedAdAvailable(adUnitId);
+        }
+
+        // Returns the next pre-loaded rewarded ad and null if no ad is available.
+        public IRewardedAdClient PollAd(string adUnitId)
+        {
+            Externs.GADURewardedPreloadedAdWithAdUnitID(this.RewardedAdPtr, adUnitId);
+            return this;
+        }
+
+#endif
 
         public void LoadAd(string adUnitID, AdRequest request) {
             IntPtr requestPtr = Utils.BuildAdManagerAdRequest(request);
@@ -161,6 +218,10 @@ namespace GoogleMobileAds.iOS
         public void Dispose()
         {
             this.DestroyRewardedAd();
+            if (this.rewardedAdClientPtr == IntPtr.Zero)
+            {
+                return;
+            }
             ((GCHandle)this.rewardedAdClientPtr).Free();
         }
 
@@ -179,7 +240,7 @@ namespace GoogleMobileAds.iOS
             RewardedAdClient client = IntPtrToRewardedAdClient(rewardedAdClient);
             if (client.OnAdLoaded != null)
             {
-                client.OnAdLoaded(client, EventArgs.Empty);
+                client.OnAdLoaded();
             }
         }
 
@@ -194,7 +255,7 @@ namespace GoogleMobileAds.iOS
                 {
                     LoadAdErrorClient = new LoadAdErrorClient(error)
                 };
-                client.OnAdFailedToLoad(client, args);
+                client.OnAdFailedToLoad(args);
             }
         }
 
@@ -211,7 +272,7 @@ namespace GoogleMobileAds.iOS
                     Type = rewardType,
                     Amount = rewardAmount
                 };
-                client.OnUserEarnedReward(client, args);
+                client.OnUserEarnedReward(args);
             }
         }
 
@@ -242,7 +303,7 @@ namespace GoogleMobileAds.iOS
                 {
                     AdErrorClient = new AdErrorClient(error)
                 };
-                client.OnAdFailedToPresentFullScreenContent(client, args);
+                client.OnAdFailedToPresentFullScreenContent(args);
             }
         }
 
@@ -252,7 +313,7 @@ namespace GoogleMobileAds.iOS
           RewardedAdClient client = IntPtrToRewardedAdClient(rewardedAdClient);
           if (client.OnAdDidPresentFullScreenContent != null)
           {
-            client.OnAdDidPresentFullScreenContent(client, EventArgs.Empty);
+            client.OnAdDidPresentFullScreenContent();
           }
         }
 
@@ -262,7 +323,7 @@ namespace GoogleMobileAds.iOS
             RewardedAdClient client = IntPtrToRewardedAdClient(rewardedAdClient);
             if (client.OnAdDidDismissFullScreenContent != null)
             {
-                client.OnAdDidDismissFullScreenContent(client, EventArgs.Empty);
+                client.OnAdDidDismissFullScreenContent();
             }
         }
 
@@ -272,7 +333,7 @@ namespace GoogleMobileAds.iOS
             RewardedAdClient client = IntPtrToRewardedAdClient(rewardedAdClient);
             if (client.OnAdDidRecordImpression != null)
             {
-                client.OnAdDidRecordImpression(client, EventArgs.Empty);
+                client.OnAdDidRecordImpression();
             }
         }
 

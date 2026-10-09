@@ -57,6 +57,24 @@
                                            orientation:(GADUBannerOrientation)orientation
                                       customAdPosition:(CGPoint)customAdPosition;
 
+/// Initializes a large adaptive GADUBanner, positioned at either the top or bottom of the screen.
+- (nonnull instancetype)
+    initWithLargeAdaptiveBannerSizeAndBannerClientReference:
+        (_Nonnull GADUTypeBannerClientRef *_Nonnull)bannerClient
+                                               adUnitID:(nonnull NSString *)adUnitID
+                                                  width:(NSInteger)width
+                                            orientation:(GADUBannerOrientation)orientation
+                                             adPosition:(GADAdPosition)adPosition;
+
+/// Initializes a large adaptive GADUBanner with a custom position at given point from top left.
+- (nonnull instancetype)
+    initWithLargeAdaptiveBannerSizeAndBannerClientReference:
+        (_Nonnull GADUTypeBannerClientRef *_Nonnull)bannerClient
+                                               adUnitID:(nonnull NSString *)adUnitID
+                                                  width:(NSInteger)width
+                                            orientation:(GADUBannerOrientation)orientation
+                                       customAdPosition:(CGPoint)customAdPosition;
+
 /// Initializes a GADUBanner with a preset ad position.
 - (nonnull instancetype)initWithBannerClientReference:
                             (_Nonnull GADUTypeBannerClientRef *_Nonnull)bannerClient
@@ -99,14 +117,23 @@
 /// The ad clicked event callback into Unity.
 @property(nonatomic, assign, nullable) GADUAdViewClickCallback adClickedCallback;
 
-// Returns the banner ad response info.
+/// Returns the banner ad response info.
 @property(nonatomic, readonly, copy, nullable) GADResponseInfo *responseInfo;
 
-// Returns the height of the banner view in pixels.
+/// Returns the height of the banner view in pixels.
 @property(nonatomic, readonly) CGFloat heightInPixels;
 
-// Returns the width of the banner view in pixels.
+/// Returns the width of the banner view in pixels.
 @property(nonatomic, readonly) CGFloat widthInPixels;
+
+/// Returns whether the last loaded ad is a collapsible banner.
+@property(nonatomic, readonly) BOOL isCollapsible;
+
+/// A long integer provided by the AdMob UI for the configured placement.
+@property(atomic, readwrite) int64_t placementID;
+
+/// Returns whether the ad is currently on screen.
+@property(nonatomic, readonly) BOOL isHidden;
 
 /// Makes an ad request. Additional targeting options can be supplied with a request object.
 - (void)loadRequest:(nonnull GADRequest *)request;

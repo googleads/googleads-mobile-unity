@@ -13,12 +13,14 @@
 // limitations under the License.
 
 using System;
+using System.Collections.Generic;
 using System.Reflection;
-using GoogleMobileAds.Unity;
+
 using GoogleMobileAds.Api;
+using GoogleMobileAds.Common;
+using GoogleMobileAds.Unity;
 using UnityEngine;
 using UnityEngine.UI;
-using GoogleMobileAds.Common;
 
 namespace GoogleMobileAds.Unity
 {
@@ -48,7 +50,7 @@ namespace GoogleMobileAds.Unity
 
         public event EventHandler<EventArgs> OnAdCompleted;
 
-        public event EventHandler<AdValueEventArgs> OnPaidEvent;
+        public event Action<AdValue> OnPaidEvent;
 
         public event EventHandler<AdErrorClientEventArgs> OnAdFailedToPresentFullScreenContent;
 
@@ -59,6 +61,8 @@ namespace GoogleMobileAds.Unity
         public event EventHandler<EventArgs> OnAdDidRecordImpression;
 
         private ButtonBehaviour buttonBehaviour;
+
+        private RequestConfiguration _requestConfiguration = new RequestConfiguration();
 
         private void AddClickBehavior(GameObject dummyAd)
         {
@@ -103,11 +107,14 @@ namespace GoogleMobileAds.Unity
 
         public void SetApplicationMuted(bool muted) {}
 
-        public void SetRequestConfiguration(RequestConfiguration requestConfiguration) {}
+        public void SetRequestConfiguration(RequestConfiguration requestConfiguration)
+        {
+            _requestConfiguration = requestConfiguration;
+        }
 
         public RequestConfiguration GetRequestConfiguration()
         {
-            return null;
+            return _requestConfiguration;
         }
 
         public void SetApplicationVolume(float volume) {}
@@ -126,9 +133,24 @@ namespace GoogleMobileAds.Unity
             return 0;
         }
 
+        public Version GetSDKVersion()
+        {
+            return new Version(AdRequest.Version);
+        }
+
         public void CreateBannerView(string adUnitId, AdSize adSize, AdPosition position) {}
 
         public void CreateBannerView(string adUnitId, AdSize adSize, int positionX, int positionY) {}
+
+#if GMA_PREVIEW_FEATURES
+
+        public void Preload(List<PreloadConfiguration> configurations,
+                Action<PreloadConfiguration> onAdsAvailable,
+                Action<PreloadConfiguration> onAdsExhausted) {
+            Debug.Log("Preloaded ads are not supported on the Unity editor platform.");
+        }
+
+#endif
 
         public void LoadAd(AdRequest request) {}
 

@@ -16,17 +16,59 @@
   // ResponseInfo object are not released until the ad object is released.
   NSError *_lastLoadError;
   NSError *_lastPresentError;
+  BOOL _adDidDismissCallbackDeferred;
 }
 
 - (instancetype)initWithRewardedAdClientReference:(GADUTypeRewardedAdClientRef *)rewardedAdClient {
   self = [super init];
-  _rewardedAdClient = rewardedAdClient;
+  if (self) {
+    _rewardedAdClient = rewardedAdClient;
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(handleDidBecomeActive:)
+                                                 name:UIApplicationDidBecomeActiveNotification
+                                               object:nil];
+  }
   return self;
 }
 
-- (void)loadWithAdUnitID:(NSString *)adUnitID request:(GADRequest *)request {
-  __weak GADURewardedAd *weakSelf = self;
+- (void)dealloc {
+  [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
 
+- (void)handleDidBecomeActive:(NSNotification *)notification {
+  if (_adDidDismissCallbackDeferred) {
+    [self adDidDismissFullScreenContent:self.rewardedAd];
+  }
+}
+
+- (void)setRewardedAdAndConfigure:(GADRewardedAd *)rewardedAd {
+  if (self.rewardedAd == rewardedAd) {
+    return;
+  }
+  self.rewardedAd = rewardedAd;
+  self.rewardedAd.fullScreenContentDelegate = self;
+  [self configurePaidEventHandler];
+}
+
+#if GMA_PREVIEW_FEATURES
+
++ (BOOL)isPreloadedAdAvailable:(NSString *)adUnitID {
+  return [GADRewardedAd isPreloadedAdAvailable:adUnitID];
+}
+
+- (void)preloadedAdWithAdUnitID:(nonnull NSString *)adUnitID {
+  GADRewardedAd *rewardedAd = [GADRewardedAd preloadedAdWithAdUnitID:adUnitID];
+  if (!rewardedAd) {
+    NSLog(@"Preloaded ad failed to load for ad unit ID: %@", adUnitID);
+    return;
+  }
+  [self setRewardedAdAndConfigure:rewardedAd];
+}
+
+#endif  // GMA_PREVIEW_FEATURES
+
+- (void)loadWithAdUnitID:(nonnull NSString *)adUnitID request:(nonnull GADRequest *)request {
+  __weak GADURewardedAd *weakSelf = self;
   [GADRewardedAd loadWithAdUnitID:adUnitID
                           request:request
                 completionHandler:^(GADRewardedAd *_Nullable rewardedAd, NSError *_Nullable error) {
@@ -36,29 +78,15 @@
                   }
                   if (error || !rewardedAd) {
                     if (strongSelf.adFailedToLoadCallback) {
-                      _lastLoadError = error;
+                      strongSelf->_lastLoadError = error;
                       strongSelf.adFailedToLoadCallback(strongSelf.rewardedAdClient,
                                                         (__bridge GADUTypeErrorRef)error);
                     }
                     return;
                   }
-                  strongSelf.rewardedAd = rewardedAd;
-                  rewardedAd.fullScreenContentDelegate = strongSelf;
-                  rewardedAd.paidEventHandler = ^void(GADAdValue *_Nonnull adValue) {
-                    GADURewardedAd *strongSecondSelf = weakSelf;
-                    if (!strongSecondSelf) {
-                      return;
-                    }
-                    if (strongSecondSelf.paidEventCallback) {
-                      int64_t valueInMicros =
-                          [adValue.value decimalNumberByMultiplyingByPowerOf10:6].longLongValue;
-                      strongSecondSelf.paidEventCallback(
-                          strongSecondSelf.rewardedAdClient, (int)adValue.precision, valueInMicros,
-                          [adValue.currencyCode cStringUsingEncoding:NSUTF8StringEncoding]);
-                    }
-                  };
+                  [strongSelf setRewardedAdAndConfigure:rewardedAd];
                   if (strongSelf.adLoadedCallback) {
-                    strongSelf.adLoadedCallback(self.rewardedAdClient);
+                    strongSelf.adLoadedCallback(strongSelf.rewardedAdClient);
                   }
                 }];
 }
@@ -75,16 +103,28 @@
                return;
              }
              if (strongSelf.didEarnRewardCallback) {
-               strongSelf.didEarnRewardCallback(
-                   strongSelf.rewardedAdClient,
-                   [strongSelf.rewardedAd.adReward.type cStringUsingEncoding:NSUTF8StringEncoding],
-                   strongSelf.rewardedAd.adReward.amount.doubleValue);
+               NSString *rewardType = strongSelf.rewardedAd.adReward.type;
+               double rewardAmount = strongSelf.rewardedAd.adReward.amount.doubleValue;
+               dispatch_async(dispatch_get_main_queue(), ^{
+                 strongSelf.didEarnRewardCallback(
+                     strongSelf.rewardedAdClient,
+                     [rewardType cStringUsingEncoding:NSUTF8StringEncoding],
+                     rewardAmount);
+               });
              }
            }];
 }
 
 - (GADResponseInfo *)responseInfo {
   return self.rewardedAd.responseInfo;
+}
+
+- (int64_t)placementID {
+  return _rewardedAd.placementID;
+}
+
+- (void)setPlacementID:(int64_t)placementID {
+  _rewardedAd.placementID = placementID;
 }
 
 - (void)rewardedAd:(nonnull GADRewardedAd *)rewardedAd
@@ -128,8 +168,10 @@
     // We are in the middle of the shutdown sequence, and at this point unity runtime is already
     // destroyed. We shall not call unity API, and definitely not script callbacks, so nothing to do
     // here
+    _adDidDismissCallbackDeferred = YES;
     return;
   }
+  _adDidDismissCallbackDeferred = NO;
   if (UnityIsPaused()) {
     UnityPause(NO);
   }
@@ -150,4 +192,22 @@
     self.adDidRecordClickCallback(self.rewardedAdClient);
   }
 }
+
+/// Helper method to configure the paid event handler for the rewarded ad.
+- (void)configurePaidEventHandler {
+  __weak GADURewardedAd *weakSelf = self;
+  self.rewardedAd.paidEventHandler = ^void(GADAdValue *_Nonnull adValue) {
+    GADURewardedAd *strongSelf = weakSelf;
+    if (!strongSelf) {
+      return;
+    }
+    if (strongSelf.paidEventCallback) {
+      int64_t valueInMicros = [adValue.value decimalNumberByMultiplyingByPowerOf10:6].longLongValue;
+      strongSelf.paidEventCallback(
+          strongSelf.rewardedAdClient, (int)adValue.precision, valueInMicros,
+          [adValue.currencyCode cStringUsingEncoding:NSUTF8StringEncoding]);
+    }
+  };
+}
+
 @end

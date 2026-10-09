@@ -22,18 +22,21 @@ namespace GoogleMobileAds.Unity
 {
     public class NativeOverlayAdClient : BaseAdClient, INativeOverlayAdClient
     {
-        public event EventHandler<EventArgs> OnAdLoaded;
+        public event Action OnAdLoaded;
         // Ad event fired when the rewarded ad has failed to load.
-        public event EventHandler<LoadAdErrorClientEventArgs> OnAdFailedToLoad;
+        public event Action<LoadAdErrorClientEventArgs> OnAdFailedToLoad;
         // Ad event fired when an ad impression has been recorded.
-        public event EventHandler<EventArgs> OnAdDidRecordImpression;
+        public event Action OnAdDidRecordImpression;
         // Ad event fired when the full screen content has been presented.
-        public event EventHandler<EventArgs> OnAdDidPresentFullScreenContent;
+        public event Action OnAdDidPresentFullScreenContent;
         // Ad event fired when the full screen content has been dismissed.
-        public event EventHandler<EventArgs> OnAdDidDismissFullScreenContent;
+        public event Action OnAdDidDismissFullScreenContent;
         // Ad event fired when an ad has been clicked.
         public event Action OnAdClicked;
         public event Action<AdValue> OnPaidEvent;
+
+        // A long integer provided by the AdMob UI for the configured placement.
+        public long PlacementId { get; set; }
 
         public void Load(string adUnitId, AdRequest request, NativeAdOptions nativeOptions)
         {

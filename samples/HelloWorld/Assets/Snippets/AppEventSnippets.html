@@ -1,0 +1,33 @@
+<html>
+<head>
+  <script src="//www.gstatic.com/afma/api/v1/google_mobile_app_ads.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      // Send a color=green event when ad loads.
+      admob.events.dispatchAppEvent("color", "green");
+
+      document.getElementById("ad").addEventListener("click", function() {
+        // Send a color=blue event when ad is clicked.
+        admob.events.dispatchAppEvent("color", "blue");
+      });
+    });
+  </script>
+  <style>
+    #ad {
+      width: 320px;
+      height: 50px;
+      top: 0;
+      left: 0;
+      font-size: 24pt;
+      font-weight: bold;
+      position: absolute;
+      background: black;
+      color: white;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div id="ad">Carpe diem!</div>
+</body>
+</html>

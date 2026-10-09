@@ -1,0 +1,316 @@
+// Copyright (C) 2018 Google, Inc.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+using System;
+using UnityEngine;
+
+using GoogleMobileAds.Api;
+using GoogleMobileAds.Common;
+
+namespace GoogleMobileAds.Android
+{
+    public class NextGenRewardedInterstitialAdClient : AndroidJavaProxy,
+                                                        IRewardedInterstitialAdClient
+    {
+        private readonly IInsightsEmitter _insightsEmitter = InsightsEmitter.Instance;
+        private const Insight.AdFormat RewardedInterstitialFormat = Insight.AdFormat.RewardedInterstitial;
+
+        private AndroidJavaObject _androidRewardedInterstitialAd;
+        private string _adUnitId;
+
+        public NextGenRewardedInterstitialAdClient()
+            : base(NextGenUtils.UnityRewardedInterstitialAdCallbackClassName)
+        {
+            AndroidJavaClass playerClass = new AndroidJavaClass(Utils.UnityActivityClassName);
+            AndroidJavaObject activity =
+                playerClass.GetStatic<AndroidJavaObject>("currentActivity");
+            _androidRewardedInterstitialAd = new AndroidJavaObject(
+                NextGenUtils.UnityRewardedInterstitialAdClassName, activity, this);
+        }
+
+        #region IRewardedClient implementation
+
+        public event Action OnAdLoaded;
+
+        public event Action<LoadAdErrorClientEventArgs> OnAdFailedToLoad;
+
+        public event Action<Reward> OnUserEarnedReward;
+
+        public event Action<AdValue> OnPaidEvent;
+
+        public event Action<AdErrorClientEventArgs> OnAdFailedToPresentFullScreenContent;
+
+        public event Action OnAdDidPresentFullScreenContent;
+
+        public event Action OnAdDidDismissFullScreenContent;
+
+        public event Action OnAdDidRecordImpression;
+
+        public event Action OnAdClicked;
+
+        public void CreateRewardedInterstitialAd()
+        {
+            // No op.
+        }
+
+        public void LoadAd(string adUnitId, AdRequest request)
+        {
+            _adUnitId = adUnitId;
+            _androidRewardedInterstitialAd
+                .Call("load", NextGenUtils.GetAdRequestJavaObject(request, adUnitId));
+        }
+
+        public void Show()
+        {
+            _androidRewardedInterstitialAd.Call("show");
+        }
+
+        public void SetServerSideVerificationOptions(
+            ServerSideVerificationOptions serverSideVerificationOptions)
+        {
+            AndroidJavaObject serverSideVerificationOptionsJavaObject =
+                NextGenUtils.GetServerSideVerificationOptionsJavaObject(
+                    serverSideVerificationOptions);
+            if (serverSideVerificationOptionsJavaObject == null)
+            {
+                return;
+            }
+            _androidRewardedInterstitialAd.Call("setServerSideVerificationOptions",
+                                                serverSideVerificationOptionsJavaObject);
+        }
+
+        public long PlacementId
+        {
+            get
+            {
+                return _androidRewardedInterstitialAd.Call<long>("getPlacementId");
+            }
+            set
+            {
+                _androidRewardedInterstitialAd.Call("setPlacementId", value);
+            }
+        }
+
+        // Returns the reward item for the loaded rewarded ad.
+        public Reward GetRewardItem()
+        {
+            AndroidJavaObject rewardItem =
+                _androidRewardedInterstitialAd.Call<AndroidJavaObject>("getRewardItem");
+            if (rewardItem == null)
+            {
+                return null;
+            }
+            string type = rewardItem.Call<string>("getType");
+            int amount = rewardItem.Call<int>("getAmount");
+            return new Reward()
+            {
+                Type = type,
+                Amount = (double)amount
+            };
+        }
+
+        // Returns the ad unit ID.
+        public string GetAdUnitID()
+        {
+            return this._androidRewardedInterstitialAd.Call<string>("getAdUnitId");
+        }
+
+        // Ad Preloading v1 will not be supported in Next Gen SDK.
+        public bool IsAdAvailable(string adUnitId)
+        {
+            return false;
+        }
+
+        public IRewardedAdClient PollAd(string adUnitId)
+        {
+            return null;
+        }
+
+        // Returns ad request response info
+        public IResponseInfoClient GetResponseInfoClient()
+        {
+            var responseInfoJavaObject = _androidRewardedInterstitialAd.Call<AndroidJavaObject>(
+                    "getResponseInfo");
+            return new NextGenResponseInfoClient(responseInfoJavaObject);
+        }
+
+        // Destroy the rewarded interstitial ad.
+        public void DestroyRewardedInterstitialAd()
+        {
+            // Currently we don't have to do anything on destroy.
+        }
+
+        #endregion
+
+        #region Callbacks from UnityRewardedAdCallback
+        void onRewardedInterstitialAdLoaded()
+        {
+            _insightsEmitter.Emit(new Insight()
+            {
+                Name = Insight.CuiName.AdLoaded,
+                Format = RewardedInterstitialFormat,
+                AdUnitId = _adUnitId,
+            });
+
+            if (this.OnAdLoaded != null)
+            {
+                this.OnAdLoaded();
+            }
+        }
+
+        void onRewardedInterstitialAdFailedToLoad(AndroidJavaObject error)
+        {
+            _insightsEmitter.Emit(new Insight()
+            {
+                Name = Insight.CuiName.AdLoaded,
+                Format = RewardedInterstitialFormat,
+                AdUnitId = _adUnitId,
+                Success = false,
+            });
+
+            if (this.OnAdFailedToLoad != null)
+            {
+                LoadAdErrorClientEventArgs args = new LoadAdErrorClientEventArgs()
+                {
+                    LoadAdErrorClient = new NextGenLoadAdErrorClient(error)
+                };
+                this.OnAdFailedToLoad(args);
+            }
+        }
+
+        void onAdFailedToShowFullScreenContent(AndroidJavaObject error)
+        {
+            _insightsEmitter.Emit(new Insight()
+            {
+                Name = Insight.CuiName.AdShowedFullScreenContent,
+                Format = RewardedInterstitialFormat,
+                AdUnitId = _adUnitId,
+                Success = false,
+            });
+
+            if (this.OnAdFailedToPresentFullScreenContent != null)
+            {
+                AdErrorClientEventArgs args = new AdErrorClientEventArgs()
+                {
+                    AdErrorClient = new NextGenFullScreenContentErrorClient(error)
+                };
+                this.OnAdFailedToPresentFullScreenContent(args);
+            }
+        }
+
+        void onAdShowedFullScreenContent()
+        {
+            _insightsEmitter.Emit(new Insight()
+            {
+                Name = Insight.CuiName.AdShowedFullScreenContent,
+                Format = RewardedInterstitialFormat,
+                AdUnitId = _adUnitId,
+            });
+
+            if (this.OnAdDidPresentFullScreenContent != null)
+            {
+                this.OnAdDidPresentFullScreenContent();
+            }
+        }
+
+
+        void onAdDismissedFullScreenContent()
+        {
+            _insightsEmitter.Emit(new Insight()
+            {
+                Name = Insight.CuiName.AdDismissedFullScreenContent,
+                Format = RewardedInterstitialFormat,
+                AdUnitId = _adUnitId,
+            });
+
+            if (this.OnAdDidDismissFullScreenContent != null)
+            {
+                this.OnAdDidDismissFullScreenContent();
+            }
+        }
+
+        void onAdImpression()
+        {
+            _insightsEmitter.Emit(new Insight()
+            {
+                Name = Insight.CuiName.AdShown,
+                Format = RewardedInterstitialFormat,
+                AdUnitId = _adUnitId,
+            });
+
+            if (this.OnAdDidRecordImpression != null)
+            {
+                this.OnAdDidRecordImpression();
+            }
+        }
+
+        void onAdClicked()
+        {
+            _insightsEmitter.Emit(new Insight()
+            {
+                Name = Insight.CuiName.AdClicked,
+                Format = RewardedInterstitialFormat,
+                AdUnitId = _adUnitId,
+            });
+
+            if (this.OnAdClicked != null)
+            {
+                this.OnAdClicked();
+            }
+        }
+
+        void onUserEarnedReward(string type, float amount)
+        {
+            _insightsEmitter.Emit(new Insight()
+            {
+                Name = Insight.CuiName.UserEarnedReward,
+                Format = RewardedInterstitialFormat,
+                AdUnitId = _adUnitId,
+            });
+
+            if (this.OnUserEarnedReward != null)
+            {
+                Reward args = new Reward()
+                {
+                    Type = type,
+                    Amount = amount
+                };
+                this.OnUserEarnedReward(args);
+            }
+        }
+
+        public void onPaidEvent(int precision, long valueInMicros, string currencyCode)
+        {
+            _insightsEmitter.Emit(new Insight()
+            {
+                Name = Insight.CuiName.AdPaid,
+                Format = RewardedInterstitialFormat,
+                AdUnitId = _adUnitId,
+            });
+
+            if (this.OnPaidEvent != null)
+            {
+                AdValue adValue = new AdValue()
+                {
+                    Precision = (AdValue.PrecisionType)precision,
+                    Value = valueInMicros,
+                    CurrencyCode = currencyCode
+                };
+                this.OnPaidEvent(adValue);
+            }
+        }
+
+        #endregion
+    }
+}

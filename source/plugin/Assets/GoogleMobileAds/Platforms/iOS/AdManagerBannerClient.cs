@@ -54,13 +54,13 @@ namespace GoogleMobileAds.iOS
 
 #endregion
 
-        public event EventHandler<EventArgs> OnAdLoaded;
+        public event Action OnAdLoaded;
 
-        public event EventHandler<LoadAdErrorClientEventArgs> OnAdFailedToLoad;
+        public event Action<LoadAdErrorClientEventArgs> OnAdFailedToLoad;
 
-        public event EventHandler<EventArgs> OnAdOpening;
+        public event Action OnAdOpening;
 
-        public event EventHandler<EventArgs> OnAdClosed;
+        public event Action OnAdClosed;
 
         public event Action<AdValue> OnPaidEvent;
 
@@ -98,6 +98,9 @@ namespace GoogleMobileAds.iOS
                 this._validAdSizes = value;
             }
         }
+
+        // Placement ID is not supported for AdManagerBannerView.
+        public long PlacementId { get; set; }
 
         private List<AdSize> _validAdSizes;
 
@@ -137,6 +140,14 @@ namespace GoogleMobileAds.iOS
                             (int)adSize.Orientation,
                             (int)position);
                     break;
+                case AdSize.Type.LargeAnchoredAdaptive:
+                    this.BannerViewPtr = Externs.GAMUCreateLargeAnchoredAdaptiveBannerView(
+                            this._bannerClientPtr,
+                            adUnitId,
+                            adSize.Width,
+                            (int)adSize.Orientation,
+                            (int)position);
+                    break;
                 case AdSize.Type.Standard:
                     this.BannerViewPtr = Externs.GAMUCreateBannerView(this._bannerClientPtr,
                             adUnitId, adSize.Width, adSize.Height, (int)position);
@@ -168,6 +179,16 @@ namespace GoogleMobileAds.iOS
                 case AdSize.Type.AnchoredAdaptive:
                     this.BannerViewPtr =
                             Externs.GAMUCreateAnchoredAdaptiveBannerViewWithCustomPosition(
+                            this._bannerClientPtr,
+                            adUnitId,
+                            adSize.Width,
+                            (int)adSize.Orientation,
+                            x,
+                            y);
+                    break;
+                case AdSize.Type.LargeAnchoredAdaptive:
+                    this.BannerViewPtr =
+                            Externs.GAMUCreateLargeAnchoredAdaptiveBannerViewWithCustomPosition(
                             this._bannerClientPtr,
                             adUnitId,
                             adSize.Width,
@@ -257,6 +278,12 @@ namespace GoogleMobileAds.iOS
             Externs.GADUSetBannerViewCustomPosition(this.BannerViewPtr, x, y);
         }
 
+        // Returns whether the last loaded ad is a collapsible banner.
+        public bool IsCollapsible()
+        {
+            return Externs.GADUIsBannerViewCollapsible(this.BannerViewPtr);
+        }
+
         public IResponseInfoClient GetResponseInfoClient()
         {
             return new ResponseInfoClient(ResponseInfoClientType.AdLoaded, this.BannerViewPtr);
@@ -283,7 +310,7 @@ namespace GoogleMobileAds.iOS
             AdManagerBannerClient client = IntPtrToBannerClient(bannerClient);
             if (client.OnAdLoaded != null)
             {
-                client.OnAdLoaded(client, EventArgs.Empty);
+                client.OnAdLoaded();
             }
         }
 
@@ -298,7 +325,7 @@ namespace GoogleMobileAds.iOS
                 {
                     LoadAdErrorClient = new LoadAdErrorClient(error)
                 };
-                client.OnAdFailedToLoad(client, args);
+                client.OnAdFailedToLoad(args);
             }
         }
 
@@ -308,7 +335,7 @@ namespace GoogleMobileAds.iOS
             AdManagerBannerClient client = IntPtrToBannerClient(bannerClient);
             if (client.OnAdOpening != null)
             {
-                client.OnAdOpening(client, EventArgs.Empty);
+                client.OnAdOpening();
             }
         }
 
@@ -318,7 +345,7 @@ namespace GoogleMobileAds.iOS
             AdManagerBannerClient client = IntPtrToBannerClient(bannerClient);
             if (client.OnAdClosed != null)
             {
-                client.OnAdClosed(client, EventArgs.Empty);
+                client.OnAdClosed();
             }
         }
 

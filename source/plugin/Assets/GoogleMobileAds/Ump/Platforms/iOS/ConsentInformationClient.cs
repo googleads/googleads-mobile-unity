@@ -87,6 +87,11 @@ namespace GoogleMobileAds.Ump.iOS
                 IntPtr requestParametersPtr = Externs.GADUCreateRequestParameters();
                 Externs.GADUSetRequestParametersTagForUnderAgeOfConsent(requestParametersPtr,
                         request.TagForUnderAgeOfConsent);
+                if (request.ConsentSyncId != null && request.ConsentSyncId.Length > 0)
+                {
+                    Externs.GADUSetRequestParametersConsentSyncID(requestParametersPtr,
+                            request.ConsentSyncId);
+                }
 
                 IntPtr debugSettingsPtr = Externs.GADUCreateDebugSettings();
                 Externs.GADUSetDebugSettingsDebugGeography(debugSettingsPtr,

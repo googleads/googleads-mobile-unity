@@ -1,0 +1,298 @@
+// Copyright (C) 2015 Google, Inc.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+using System;
+using System.Collections.Generic;
+
+using GoogleMobileAds.Api;
+using GoogleMobileAds.Api.AdManager;
+using GoogleMobileAds.Common;
+using UnityEngine;
+
+namespace GoogleMobileAds.Android
+{
+    public class NextGenBannerAdClient : AndroidJavaProxy, IAdManagerBannerClient
+    {
+        private readonly IInsightsEmitter _insightsEmitter = InsightsEmitter.Instance;
+        private const Insight.AdFormat BannerFormat = Insight.AdFormat.Banner;
+
+        protected internal AndroidJavaObject bannerView;
+
+        String adUnitId;
+        AdSize adSize;
+
+        protected internal NextGenBannerAdClient(string className) : base(className) {}
+
+        public NextGenBannerAdClient() : base(NextGenUtils.UnityBannerAdCallbackClassName)
+        {
+            AndroidJavaClass playerClass = new AndroidJavaClass(Utils.UnityActivityClassName);
+            AndroidJavaObject activity =
+                    playerClass.GetStatic<AndroidJavaObject>("currentActivity");
+            this.bannerView = new AndroidJavaObject(
+                NextGenUtils.UnityBannerAdClassName, activity, this);
+        }
+
+        public event Action OnAdLoaded;
+
+        public event Action<LoadAdErrorClientEventArgs> OnAdFailedToLoad;
+
+        public event Action OnAdOpening;
+
+        public event Action OnAdClosed;
+
+        public event Action<AdValue> OnPaidEvent;
+
+        public event Action OnAdClicked;
+
+        public event Action OnAdImpressionRecorded;
+
+        public event Action<AppEvent> OnAppEvent;
+
+        private List<AdSize> _validAdSizes;
+
+        public List<AdSize> ValidAdSizes
+        {
+            get { return _validAdSizes; }
+            set { _validAdSizes = value; }
+        }
+
+        // Creates a banner view.
+        public void CreateBannerView(string adUnitId, AdSize adSize, AdPosition position)
+        {
+            this.adSize = adSize;
+            this.adUnitId = adUnitId;
+            this.bannerView.Call("create", (int)position);
+        }
+
+        // Creates a banner view with a custom position.
+        public void CreateBannerView(string adUnitId, AdSize adSize, int x, int y)
+        {
+            this.adSize = adSize;
+            this.adUnitId = adUnitId;
+            this.bannerView.Call("create",new object[2] { x, y });
+        }
+
+
+        // Loads an ad.
+        public virtual void LoadAd(AdRequest request)
+        {
+            this.bannerView.Call("load", NextGenUtils.GetBannerAdRequestJavaObject(
+                                             this.adUnitId, request, this.adSize, _validAdSizes));
+        }
+
+        // Displays the banner view on the screen.
+        public void ShowBannerView()
+        {
+            this.bannerView.Call("show");
+        }
+
+        // Hides the banner view from the screen.
+        public void HideBannerView()
+        {
+            this.bannerView.Call("hide");
+        }
+
+        // Destroys the banner view.
+        public void DestroyBannerView()
+        {
+            this.bannerView.Call("destroy");
+        }
+
+        /// Returns the ad unit ID.
+        public string GetAdUnitID()
+        {
+            return this.bannerView.Call<string>("getAdUnitId");
+        }
+
+        // Returns the height of the BannerView in pixels.
+        public float GetHeightInPixels()
+        {
+            return this.bannerView.Call<float>("getHeightInPixels");
+        }
+
+        // Returns the width of the BannerView in pixels.
+        public float GetWidthInPixels()
+        {
+            return this.bannerView.Call<float>("getWidthInPixels");
+        }
+
+        // Set the position of the banner view using standard position.
+        public void SetPosition(AdPosition adPosition)
+        {
+            this.bannerView.Call("setPosition", (int)adPosition);
+        }
+
+        // Set the position of the banner view using custom position.
+        public void SetPosition(int x, int y)
+        {
+            this.bannerView.Call("setPosition", x, y);
+        }
+
+        // Indicates whether the last loaded ad is a collapsible banner.
+        public bool IsCollapsible()
+        {
+            return this.bannerView.Call<bool>("isCollapsible");
+        }
+
+        public long PlacementId {
+            get
+            {
+                return 0;
+            }
+            set
+            {
+                // TODO(b/446378376): Implement PlacementId for NextGen.
+            }
+        }
+
+        public IResponseInfoClient GetResponseInfoClient()
+        {
+            var responseInfoJavaObject = bannerView.Call<AndroidJavaObject>("getResponseInfo");
+            return new NextGenResponseInfoClient(responseInfoJavaObject);
+        }
+
+        #region Callbacks from UnityBannerAdListener.
+
+        public void onAdLoaded()
+        {
+            _insightsEmitter.Emit(new Insight()
+            {
+                Name = Insight.CuiName.AdLoaded,
+                Format = BannerFormat,
+                AdUnitId = this.adUnitId,
+            });
+
+            if (this.OnAdLoaded != null)
+            {
+                this.OnAdLoaded();
+            }
+        }
+
+        public void onAdFailedToLoad(AndroidJavaObject error)
+        {
+            _insightsEmitter.Emit(new Insight()
+            {
+                Name = Insight.CuiName.AdLoaded,
+                Format = BannerFormat,
+                AdUnitId = this.adUnitId,
+                Success = false,
+            });
+
+            if (this.OnAdFailedToLoad != null)
+            {
+                LoadAdErrorClientEventArgs args = new LoadAdErrorClientEventArgs()
+                {
+                    LoadAdErrorClient = new NextGenLoadAdErrorClient(error)
+                };
+                this.OnAdFailedToLoad(args);
+            }
+        }
+
+        public void onAdOpened()
+        {
+            _insightsEmitter.Emit(new Insight()
+            {
+                Name = Insight.CuiName.AdOpened,
+                Format = BannerFormat,
+                AdUnitId = this.adUnitId,
+            });
+
+            if (this.OnAdOpening != null)
+            {
+                this.OnAdOpening();
+            }
+        }
+
+        public void onAdClosed()
+        {
+            _insightsEmitter.Emit(new Insight()
+            {
+                Name = Insight.CuiName.AdClosed,
+                Format = BannerFormat,
+                AdUnitId = this.adUnitId,
+            });
+
+            if (this.OnAdClosed != null)
+            {
+                this.OnAdClosed();
+            }
+        }
+
+        public void onPaidEvent(int precision, long valueInMicros, string currencyCode)
+        {
+            _insightsEmitter.Emit(new Insight()
+            {
+                Name = Insight.CuiName.AdPaid,
+                Format = BannerFormat,
+                AdUnitId = this.adUnitId,
+            });
+
+            if (this.OnPaidEvent != null)
+            {
+                AdValue adValue = new AdValue()
+                {
+                    Precision = (AdValue.PrecisionType)precision,
+                    Value = valueInMicros,
+                    CurrencyCode = currencyCode
+                };
+                this.OnPaidEvent(adValue);
+            }
+        }
+
+
+        internal void onAdClicked()
+        {
+            _insightsEmitter.Emit(new Insight()
+            {
+                Name = Insight.CuiName.AdClicked,
+                Format = BannerFormat,
+                AdUnitId = this.adUnitId,
+            });
+
+            if (this.OnAdClicked != null)
+            {
+                this.OnAdClicked();
+            }
+        }
+
+        internal void onAdImpression()
+        {
+            _insightsEmitter.Emit(new Insight()
+            {
+                Name = Insight.CuiName.AdShown,
+                Format = BannerFormat,
+                AdUnitId = this.adUnitId,
+            });
+
+            if (this.OnAdImpressionRecorded != null)
+            {
+                this.OnAdImpressionRecorded();
+            }
+        }
+
+        public void onAppEvent(string name, string data)
+        {
+            if (this.OnAppEvent != null)
+            {
+                this.OnAppEvent(new AppEvent()
+                {
+                    Name = name,
+                    Data = data
+                });
+            }
+        }
+
+        #endregion
+    }
+}

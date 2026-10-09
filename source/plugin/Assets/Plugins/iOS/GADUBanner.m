@@ -105,6 +105,30 @@
                             customAdPosition:customAdPosition];
 }
 
+- (id)initWithLargeAdaptiveBannerSizeAndBannerClientReference:(GADUTypeBannerClientRef *)bannerClient
+                                                     adUnitID:(NSString *)adUnitID
+                                                        width:(NSInteger)width
+                                                  orientation:(GADUBannerOrientation)orientation
+                                                   adPosition:(GADAdPosition)adPosition {
+  return [self initWithBannerClientReference:bannerClient
+                                    adUnitID:adUnitID
+                                      adSize:[GADUPluginUtil largeAdaptiveAdSizeForWidth:(CGFloat)width
+                                                                            orientation:orientation]
+                                  adPosition:adPosition];
+}
+
+- (id)initWithLargeAdaptiveBannerSizeAndBannerClientReference:(GADUTypeBannerClientRef *)bannerClient
+                                                     adUnitID:(NSString *)adUnitID
+                                                        width:(NSInteger)width
+                                                  orientation:(GADUBannerOrientation)orientation
+                                             customAdPosition:(CGPoint)customAdPosition {
+  return [self initWithBannerClientReference:bannerClient
+                                    adUnitID:adUnitID
+                                      adSize:[GADUPluginUtil largeAdaptiveAdSizeForWidth:(CGFloat)width
+                                                                            orientation:orientation]
+                            customAdPosition:customAdPosition];
+}
+
 - (id)initWithBannerClientReference:(GADUTypeBannerClientRef *)bannerClient
                            adUnitID:(NSString *)adUnitID
                              adSize:(GADAdSize)size
@@ -206,9 +230,20 @@
   return CGRectGetWidth(CGRectStandardize(self.bannerView.frame)) * [UIScreen mainScreen].scale;
 }
 
-- (void)setAdPosition:(GADAdPosition)adPosition {
-  _adPosition = adPosition;
-  [self positionBannerView];
+- (BOOL)isCollapsible {
+  return self.bannerView.isCollapsible;
+}
+
+- (int64_t)placementID {
+  return self.bannerView.placementID;
+}
+
+- (void)setPlacementID:(int64_t)placementID {
+  self.bannerView.placementID = placementID;
+}
+
+- (BOOL)isHidden {
+  return self.bannerView == nil || self.bannerView.hidden;
 }
 
 - (void)setCustomAdPosition:(CGPoint)customPosition {

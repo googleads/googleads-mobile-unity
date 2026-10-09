@@ -35,13 +35,13 @@ namespace GoogleMobileAds.Android
                 Utils.BannerViewClassName, activity, this);
         }
 
-        public event EventHandler<EventArgs> OnAdLoaded;
+        public event Action OnAdLoaded;
 
-        public event EventHandler<LoadAdErrorClientEventArgs> OnAdFailedToLoad;
+        public event Action<LoadAdErrorClientEventArgs> OnAdFailedToLoad;
 
-        public event EventHandler<EventArgs> OnAdOpening;
+        public event Action OnAdOpening;
 
-        public event EventHandler<EventArgs> OnAdClosed;
+        public event Action OnAdClosed;
 
         public event Action<AdValue> OnPaidEvent;
 
@@ -119,10 +119,29 @@ namespace GoogleMobileAds.Android
             this.bannerView.Call("setPosition", x, y);
         }
 
+        // Indicates whether the last loaded ad is a collapsible banner.
+        public bool IsCollapsible()
+        {
+            return this.bannerView.Call<bool>("isCollapsible");
+        }
+
+        // A long integer provided by the AdMob UI for the configured placement.
+        public long PlacementId
+        {
+            get
+            {
+                return this.bannerView.Call<long>("getPlacementId");
+            }
+            set
+            {
+                this.bannerView.Call("setPlacementId", value);
+            }
+        }
+
         public IResponseInfoClient GetResponseInfoClient()
         {
-
-            return new ResponseInfoClient(ResponseInfoClientType.AdLoaded, this.bannerView);
+            var responseInfoJavaObject = bannerView.Call<AndroidJavaObject>("getResponseInfo");
+            return new ResponseInfoClient(ResponseInfoClientType.AdLoaded, responseInfoJavaObject);
         }
 
         #region Callbacks from UnityBannerAdListener.
@@ -131,7 +150,7 @@ namespace GoogleMobileAds.Android
         {
             if (this.OnAdLoaded != null)
             {
-                this.OnAdLoaded(this, EventArgs.Empty);
+                this.OnAdLoaded();
             }
         }
 
@@ -143,7 +162,7 @@ namespace GoogleMobileAds.Android
                 {
                     LoadAdErrorClient = new LoadAdErrorClient(error)
                 };
-                this.OnAdFailedToLoad(this, args);
+                this.OnAdFailedToLoad(args);
             }
         }
 
@@ -151,7 +170,7 @@ namespace GoogleMobileAds.Android
         {
             if (this.OnAdOpening != null)
             {
-                this.OnAdOpening(this, EventArgs.Empty);
+                this.OnAdOpening();
             }
         }
 
@@ -159,7 +178,7 @@ namespace GoogleMobileAds.Android
         {
             if (this.OnAdClosed != null)
             {
-                this.OnAdClosed(this, EventArgs.Empty);
+                this.OnAdClosed();
             }
         }
 

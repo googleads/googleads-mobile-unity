@@ -35,9 +35,14 @@ namespace GoogleMobileAds.Api
 
         /// <summary>
         /// Test device ID used to load test ads.
-        /// <seealso href="https://developers.google.com/admob/unity/test-ads"/>.
+        /// <a href="https://developers.google.com/admob/unity/test-ads">https://developers.google.com/admob/unity/test-ads</a>.
         /// </summary>
         public const string TestDeviceSimulator = "SIMULATOR";
+
+        /// <summary>
+        /// The custom targeting parameters.
+        /// </summary>
+        public Dictionary<string, string> CustomTargeting = new Dictionary<string, string>();
 
         static AdRequest()
         {
@@ -47,11 +52,16 @@ namespace GoogleMobileAds.Api
 
         public AdRequest() {}
 
+        /// <summary>
+        /// Creates an <see cref="AdRequest"/> from a given <see cref="AdRequest"/>.
+        /// </summary>
+        /// <param name="request">The <see cref="AdRequest"/> parameter to copy.</param>
         public AdRequest(AdRequest request)
         {
             Keywords = request.Keywords;
             Extras = request.Extras;
             MediationExtras = request.MediationExtras;
+            CustomTargeting = request.CustomTargeting;
         }
 
         /// <summary>
@@ -63,6 +73,11 @@ namespace GoogleMobileAds.Api
         /// Returns extra parameters to be sent in the ad request.
         /// </summary>
         public Dictionary<string, string> Extras = new Dictionary<string, string>();
+
+        /// <summary>
+        /// A long integer provided by the AdMob UI for the configured placement.
+        /// </summary>
+        public long PlacementID;
 
         /// <summary>
         /// Returns extra parameters to be sent to a specific ad partner in the ad request.

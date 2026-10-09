@@ -35,6 +35,10 @@ namespace GoogleMobileAds.Api
 
         public Reward() {}
 
+        /// <summary>
+        /// Creates a <see cref="Reward"/> from a given <see cref="Reward"/>.
+        /// </summary>
+        /// <param name="reward">The <see cref="Reward"/> parameter to copy.</param>
         public Reward(Reward reward)
         {
             Type = reward.Type;

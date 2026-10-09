@@ -52,6 +52,26 @@ namespace GoogleMobileAds.Api
         /// </summary>
         public event Action OnAdFullScreenContentClosed;
 
+        /// <summary>
+        /// A long integer provided by the AdMob UI for the configured placement.
+        /// To ensure this placement ID is included in reporting, set a value before showing the ad.
+        /// </summary>
+        public long PlacementId
+        {
+            get
+            {
+                return _client != null ? _client.PlacementId : 0;
+            }
+
+            set
+            {
+                if (_client != null)
+                {
+                    _client.PlacementId = value;
+                }
+            }
+        }
+
         private INativeOverlayAdClient _client;
 
         private NativeOverlayAd(INativeOverlayAdClient client)
@@ -85,11 +105,11 @@ namespace GoogleMobileAds.Api
             }
 
             var client = MobileAds.GetClientFactory().BuildNativeOverlayAdClient();
-            client.OnAdLoaded += (sender, args) =>
+            client.OnAdLoaded += () =>
             {
                 MobileAds.RaiseAction(() => { adLoadCallback(new NativeOverlayAd(client), null); });
             };
-            client.OnAdFailedToLoad += (sender, error) =>
+            client.OnAdFailedToLoad += (error) =>
             {
                 var loadAdError = new LoadAdError(error.LoadAdErrorClient);
                 MobileAds.RaiseAction(() => { adLoadCallback(null, loadAdError); });
@@ -283,7 +303,7 @@ namespace GoogleMobileAds.Api
                 });
             };
 
-            _client.OnAdDidRecordImpression += (sender, args) =>
+            _client.OnAdDidRecordImpression += () =>
             {
                 MobileAds.RaiseAction(() =>
                 {
@@ -294,7 +314,7 @@ namespace GoogleMobileAds.Api
                 });
             };
 
-            _client.OnAdDidDismissFullScreenContent += (sender, args) =>
+            _client.OnAdDidDismissFullScreenContent += () =>
             {
                 MobileAds.RaiseAction(() =>
                 {
@@ -305,7 +325,7 @@ namespace GoogleMobileAds.Api
                 });
             };
 
-            _client.OnAdDidPresentFullScreenContent += (sender, args) =>
+            _client.OnAdDidPresentFullScreenContent += () =>
             {
                 MobileAds.RaiseAction(() =>
                 {

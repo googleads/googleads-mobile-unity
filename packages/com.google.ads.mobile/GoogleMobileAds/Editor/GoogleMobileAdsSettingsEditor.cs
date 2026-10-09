@@ -1,135 +1,246 @@
+#if UNITY_6000_0_OR_NEWER || UNITY_2023 || UNITY_2022 || UNITY_2021_3_55 || UNITY_2021_3_54 || UNITY_2021_3_53 || UNITY_2021_3_52 || UNITY_2021_3_51 || UNITY_2021_3_50 || UNITY_2021_3_49 || UNITY_2021_3_48 || UNITY_2021_3_47 || UNITY_2021_3_46 || UNITY_2021_3_45 || UNITY_2021_3_44 || UNITY_2021_3_43 || UNITY_2021_3_42 || UNITY_2021_3_41
+#define ANDROID_GRADLE_BUILD_PRE_PROCESSOR_ENABLED
+#endif
+
+using System;
 using UnityEditor;
 using UnityEngine;
 
 namespace GoogleMobileAds.Editor
 {
-    [InitializeOnLoad]
-    [CustomEditor(typeof(GoogleMobileAdsSettings))]
-    public class GoogleMobileAdsSettingsEditor : UnityEditor.Editor
+  [InitializeOnLoad]
+  [CustomEditor(typeof(GoogleMobileAdsSettings))]
+  public class GoogleMobileAdsSettingsEditor : UnityEditor.Editor
+  {
+    SerializedProperty _appIdAndroid;
+    SerializedProperty _appIdiOS;
+    SerializedProperty _enableGradleBuildPreProcessor;
+    SerializedProperty _enableKotlinXCoroutinesPackagingOption;
+    SerializedProperty _disableOptimizeInitialization;
+    SerializedProperty _disableOptimizeAdLoading;
+    SerializedProperty _userLanguage;
+    SerializedProperty _userTrackingUsageDescription;
+    SerializedProperty _overrideDefaultGmaAndroidSdk;
+    SerializedProperty _gmaAndroidSdk;
+
+    // Using an ordered list of languages is computationally expensive when trying to create an
+    // array out of them for purposes of showing a dropdown menu. Care should be taken to ensure
+    // these arrays are kept in sync.
+    string[] availableLanguages = new string[] { "English", "French"};
+    string[] languageCodes = new string[] { "en", "fr" };
+    int selectedIndex = 0;
+
+    [MenuItem("Assets/Google Mobile Ads/Settings...")]
+    public static void OpenInspector()
     {
-
-        SerializedProperty _appIdAndroid;
-        SerializedProperty _appIdiOS;
-        SerializedProperty _enableKotlinXCoroutinesPackagingOption;
-        SerializedProperty _optimizeInitialization;
-        SerializedProperty _optimizeAdLoading;
-        SerializedProperty _userTrackingUsageDescription;
-        SerializedProperty _validateGradleDependencies;
-
-
-        [MenuItem("Assets/Google Mobile Ads/Settings...")]
-        public static void OpenInspector()
-        {
-            Selection.activeObject = GoogleMobileAdsSettings.LoadInstance();
-        }
-
-        public void OnEnable()
-        {
-            _appIdAndroid = serializedObject.FindProperty("adMobAndroidAppId");
-            _appIdiOS = serializedObject.FindProperty("adMobIOSAppId");
-            _enableKotlinXCoroutinesPackagingOption =
-                serializedObject.FindProperty("enableKotlinXCoroutinesPackagingOption");
-            _optimizeInitialization = serializedObject.FindProperty("optimizeInitialization");
-            _optimizeAdLoading = serializedObject.FindProperty("optimizeAdLoading");
-            _userTrackingUsageDescription =
-                    serializedObject.FindProperty("userTrackingUsageDescription");
-            _validateGradleDependencies =
-                    serializedObject.FindProperty("validateGradleDependencies");
-        }
-
-        public override void OnInspectorGUI()
-        {
-            // Make sure the Settings object has all recent changes.
-            serializedObject.Update();
-
-            var settings = (GoogleMobileAdsSettings)target;
-
-            if(settings == null)
-            {
-              UnityEngine.Debug.LogError("GoogleMobileAdsSettings is null.");
-              return;
-            }
-
-            EditorGUIUtility.labelWidth = 60.0f;
-            EditorGUILayout.LabelField("Google Mobile Ads App ID", EditorStyles.boldLabel);
-            EditorGUI.indentLevel++;
-
-            EditorGUILayout.PropertyField(_appIdAndroid, new GUIContent("Android"));
-
-            EditorGUILayout.PropertyField(_appIdiOS, new GUIContent("iOS"));
-
-            EditorGUILayout.HelpBox(
-                    "Google Mobile Ads App ID will look similar to this sample ID: ca-app-pub-3940256099942544~3347511713",
-                    MessageType.Info);
-
-            EditorGUI.indentLevel--;
-            EditorGUILayout.Separator();
-
-            EditorGUIUtility.labelWidth = 325.0f;
-            EditorGUILayout.LabelField("Android settings", EditorStyles.boldLabel);
-            EditorGUI.indentLevel++;
-
-            EditorGUI.BeginChangeCheck();
-
-            EditorGUILayout.PropertyField(_enableKotlinXCoroutinesPackagingOption,
-                              new GUIContent("Enable kotlinx.coroutines packaging option."));
-
-            if (settings.EnableKotlinXCoroutinesPackagingOption)
-            {
-                EditorGUILayout.HelpBox(
-                        "Adds instruction to fix a build.gradle build error with message"+
-                        " '2 files found with path 'META-INF/kotlinx_coroutines_core.version'."+
-                        " For more details see https://developers.google.com/admob/unity/gradle",
-                        MessageType.Info);
-            }
-
-            EditorGUILayout.PropertyField(_validateGradleDependencies,
-                              new GUIContent("Remove property tag from GMA Android SDK"));
-
-            if (settings.ValidateGradleDependencies)
-            {
-                EditorGUILayout.HelpBox(
-                    "This option ensures the GMA Android SDK is compatible with the version of " +
-                    "Android Gradle Plugin being used. Enabling this option is required for Unity" +
-                    " Projects that use Android Gradle Plugin under version 4.2.2.",
-                    MessageType.Info);
-            }
-
-            EditorGUILayout.PropertyField(_optimizeInitialization,
-                                          new GUIContent("Optimize initialization"));
-            if (settings.OptimizeInitialization) {
-                EditorGUILayout.HelpBox(
-                        "Initialization will be offloaded to a background thread.",
-                        MessageType.Info);
-            }
-
-            EditorGUILayout.PropertyField(_optimizeAdLoading,
-                                          new GUIContent("Optimize ad loading"));
-
-            if (settings.OptimizeAdLoading) {
-                EditorGUILayout.HelpBox(
-                        "Ad loading tasks will be offloaded to a background thread.",
-                        MessageType.Info);
-            }
-
-            EditorGUI.indentLevel--;
-            EditorGUILayout.Separator();
-
-            EditorGUIUtility.labelWidth = 205.0f;
-            EditorGUILayout.LabelField("UMP-specific settings", EditorStyles.boldLabel);
-            EditorGUI.indentLevel++;
-
-            EditorGUILayout.PropertyField(_userTrackingUsageDescription,
-                                          new GUIContent("User Tracking Usage Description"));
-
-            EditorGUILayout.HelpBox(
-                    "A message that informs the user why an iOS app is requesting permission to " +
-                    "use data for tracking the user or the device.", MessageType.Info);
-
-            EditorGUI.indentLevel--;
-            EditorGUILayout.Separator();
-
-            serializedObject.ApplyModifiedProperties();
-        }
+      Selection.activeObject = GoogleMobileAdsSettings.LoadInstance();
     }
+
+    [MenuItem("Assets/Google Mobile Ads/Access documentation")]
+    public static void AccessDocumentation()
+    {
+      Application.OpenURL("https://developers.google.com/admob/unity/quick-start");
+    }
+
+    [MenuItem("Assets/Google Mobile Ads/Raise an issue")]
+    public static void RaiseAnIssue()
+    {
+      Application.OpenURL("https://support.google.com/admob/contact/contact_us_gma_sdk");
+    }
+
+    public void OnEnable()
+    {
+      _appIdAndroid = serializedObject.FindProperty("adMobAndroidAppId");
+      _appIdiOS = serializedObject.FindProperty("adMobIOSAppId");
+      _overrideDefaultGmaAndroidSdk = serializedObject.FindProperty("overrideDefaultGmaAndroidSdk");
+      _gmaAndroidSdk = serializedObject.FindProperty("selectedGmaAndroidSdk");
+      _enableGradleBuildPreProcessor =
+          serializedObject.FindProperty("enableGradleBuildPreProcessor");
+      _enableKotlinXCoroutinesPackagingOption =
+          serializedObject.FindProperty("enableKotlinXCoroutinesPackagingOption");
+      _disableOptimizeInitialization = serializedObject.FindProperty("disableOptimizeInitialization");
+      _disableOptimizeAdLoading = serializedObject.FindProperty("disableOptimizeAdLoading");
+      _userLanguage = serializedObject.FindProperty("userLanguage");
+      _userTrackingUsageDescription =
+          serializedObject.FindProperty("userTrackingUsageDescription");
+
+      selectedIndex = Array.IndexOf(languageCodes, _userLanguage.stringValue);
+      selectedIndex = selectedIndex >= 0 ? selectedIndex : 0;
+    }
+
+    public override void OnInspectorGUI()
+    {
+      // Make sure the Settings object has all recent changes.
+      serializedObject.Update();
+
+      var settings = (GoogleMobileAdsSettings)target;
+
+      if (settings == null)
+      {
+        UnityEngine.Debug.LogError("GoogleMobileAdsSettings is null.");
+        return;
+      }
+
+      EditorLocalization localization = new EditorLocalization();
+      EditorGUI.BeginChangeCheck();
+      selectedIndex = EditorGUILayout.Popup("Language", selectedIndex, availableLanguages);
+      if (EditorGUI.EndChangeCheck())
+      {
+        _userLanguage.stringValue = languageCodes[selectedIndex];
+      }
+
+      EditorGUIUtility.labelWidth = 60.0f;
+      EditorGUILayout.LabelField(localization.ForKey("GMA_APP_ID_LABEL"),
+                                 EditorStyles.boldLabel);
+      EditorGUI.indentLevel++;
+
+      EditorGUILayout.PropertyField(_appIdAndroid, new GUIContent("Android"));
+
+      EditorGUILayout.PropertyField(_appIdiOS, new GUIContent("iOS"));
+
+      EditorGUILayout.HelpBox(localization.ForKey("GMA_APP_ID_HELPBOX"), MessageType.Info);
+
+      EditorGUI.indentLevel--;
+      EditorGUILayout.Separator();
+
+      EditorGUIUtility.labelWidth = 325.0f;
+      EditorGUILayout.LabelField(localization.ForKey("ANDROID_SETTINGS_LABEL"),
+                                 EditorStyles.boldLabel);
+      EditorGUI.indentLevel++;
+
+      var activeArch = settings.EffectiveGmaAndroidSdk;
+      string activeArchStr = activeArch == GoogleMobileAdsSettings.GmaAndroidSdk.Standard
+                                 ? localization.ForKey("GMA_ANDROID_SDK_STANDARD")
+                                 : localization.ForKey("GMA_ANDROID_SDK_NEXT_GEN");
+
+      GUIStyle richLabelStyle = new GUIStyle(EditorStyles.label);
+      richLabelStyle.richText = true;
+      EditorGUILayout.LabelField(
+          localization.ForKey("ACTIVE_ARCHITECTURE_LABEL") + "<b>" + activeArchStr + "</b>",
+          richLabelStyle);
+
+      EditorGUILayout.PropertyField(
+          _overrideDefaultGmaAndroidSdk,
+          new GUIContent(localization.ForKey("OVERRIDE_DEFAULT_GMA_ANDROID_ARCHITECTURE_SETTING")));
+
+      if (!_overrideDefaultGmaAndroidSdk.boolValue)
+      {
+        EditorGUILayout.LabelField(localization.ForKey("OVERRIDE_DEFAULT_GMA_ANDROID_ARCHITECTURE_DESCRIPTION"), EditorStyles.wordWrappedMiniLabel);
+      }
+
+      EditorGUI.BeginDisabledGroup(!_overrideDefaultGmaAndroidSdk.boolValue);
+      EditorGUI.indentLevel++;
+
+      int currentSelected = _gmaAndroidSdk.intValue;
+      if (!_overrideDefaultGmaAndroidSdk.boolValue)
+      {
+        // Force to Standard when disabled.
+        currentSelected = (int)GoogleMobileAdsSettings.GmaAndroidSdk.Standard;
+      }
+
+      GUIStyle radioStyle = new GUIStyle(EditorStyles.radioButton);
+      radioStyle.padding.left += 10;
+
+      // Standard Radio Button
+      EditorGUILayout.BeginHorizontal();
+      GUILayout.Space(EditorGUI.indentLevel * 15); // Manually apply indentation
+      if (GUILayout.Toggle(currentSelected == (int)GoogleMobileAdsSettings.GmaAndroidSdk.Standard,
+                           localization.ForKey("GMA_ANDROID_SDK_STANDARD_OPTION"), radioStyle))
+      {
+        currentSelected = (int)GoogleMobileAdsSettings.GmaAndroidSdk.Standard;
+      }
+      EditorGUILayout.EndHorizontal();
+
+      // Next Gen Radio Button
+      EditorGUILayout.BeginHorizontal();
+      GUILayout.Space(EditorGUI.indentLevel * 15); // Manually apply indentation
+      if (GUILayout.Toggle(currentSelected == (int)GoogleMobileAdsSettings.GmaAndroidSdk.NextGen,
+                           localization.ForKey("GMA_ANDROID_SDK_NEXT_GEN_OPTION"), radioStyle))
+      {
+        currentSelected = (int)GoogleMobileAdsSettings.GmaAndroidSdk.NextGen;
+      }
+      EditorGUILayout.EndHorizontal();
+
+      if (_overrideDefaultGmaAndroidSdk.boolValue)
+      {
+        _gmaAndroidSdk.intValue = currentSelected;
+      }
+      else
+      {
+        _gmaAndroidSdk.intValue = (int)GoogleMobileAdsSettings.GmaAndroidSdk.Standard;
+      }
+
+      EditorGUI.indentLevel--;
+      EditorGUI.EndDisabledGroup();
+
+      EditorGUILayout.Separator();
+
+      EditorGUI.BeginChangeCheck();
+
+#if ANDROID_GRADLE_BUILD_PRE_PROCESSOR_ENABLED
+      EditorGUILayout.PropertyField(
+          _enableGradleBuildPreProcessor,
+          new GUIContent(
+              localization.ForKey("ENABLE_GRADLE_BUILD_PRE_PROCESSOR_SETTING")));
+
+      if (settings.EnableGradleBuildPreProcessor)
+      {
+        EditorGUILayout.HelpBox(
+            localization.ForKey("ENABLE_GRADLE_BUILD_PRE_PROCESSOR_HELPBOX"),
+            MessageType.Info);
+      }
+#endif
+
+      EditorGUILayout.PropertyField(
+          _enableKotlinXCoroutinesPackagingOption,
+          new GUIContent(
+              localization.ForKey("ENABLE_KOTLINX_COROUTINES_PACKAGING_OPTION_SETTING")));
+
+      if (settings.EnableKotlinXCoroutinesPackagingOption)
+      {
+        EditorGUILayout.HelpBox(
+            localization.ForKey("ENABLE_KOTLINX_COROUTINES_PACKAGING_OPTION_HELPBOX"),
+            MessageType.Info);
+      }
+
+      EditorGUILayout.PropertyField(
+          _disableOptimizeInitialization,
+          new GUIContent(localization.ForKey("DISABLE_OPTIMIZE_INITIALIZATION_SETTING")));
+      if (settings.DisableOptimizeInitialization)
+      {
+        EditorGUILayout.HelpBox(localization.ForKey("DISABLE_OPTIMIZE_INITIALIZATION_HELPBOX"),
+                                MessageType.Info);
+      }
+
+      EditorGUILayout.PropertyField(
+          _disableOptimizeAdLoading,
+          new GUIContent(localization.ForKey("DISABLE_OPTIMIZE_AD_LOADING_SETTING")));
+
+      if (settings.DisableOptimizeAdLoading)
+      {
+        EditorGUILayout.HelpBox(localization.ForKey("DISABLE_OPTIMIZE_AD_LOADING_HELPBOX"),
+                                MessageType.Info);
+      }
+
+      EditorGUI.indentLevel--;
+      EditorGUILayout.Separator();
+
+      EditorGUIUtility.labelWidth = 300.0f;
+      EditorGUILayout.LabelField(localization.ForKey("UMP_SPECIFIC_SETTINGS_LABEL"),
+                                 EditorStyles.boldLabel);
+      EditorGUI.indentLevel++;
+
+      EditorGUILayout.PropertyField(
+          _userTrackingUsageDescription,
+          new GUIContent(localization.ForKey("USER_TRACKING_USAGE_DESCRIPTION_SETTING")));
+
+      EditorGUILayout.HelpBox(localization.ForKey("USER_TRACKING_USAGE_DESCRIPTION_HELPBOX"),
+                              MessageType.Info);
+
+      EditorGUI.indentLevel--;
+      EditorGUILayout.Separator();
+
+      serializedObject.ApplyModifiedProperties();
+    }
+  }
 }

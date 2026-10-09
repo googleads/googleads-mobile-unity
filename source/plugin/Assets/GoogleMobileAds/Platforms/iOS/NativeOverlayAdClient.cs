@@ -45,19 +45,32 @@ namespace GoogleMobileAds.iOS
         internal delegate void GADUNativeAdDidDismissScreenCallback(IntPtr nativeClient);
 #endregion
 
-        public event EventHandler<EventArgs> OnAdLoaded;
+        public event Action OnAdLoaded;
         // Ad event fired when the rewarded ad has failed to load.
-        public event EventHandler<LoadAdErrorClientEventArgs> OnAdFailedToLoad;
+        public event Action<LoadAdErrorClientEventArgs> OnAdFailedToLoad;
         // Ad event fired when an ad impression has been recorded.
-        public event EventHandler<EventArgs> OnAdDidRecordImpression;
+        public event Action OnAdDidRecordImpression;
         // Ad event fired when an ad has been clicked.
         public event Action OnAdClicked;
         // Ad event fired when the full screen content has been presented.
-        public event EventHandler<EventArgs> OnAdDidPresentFullScreenContent;
+        public event Action OnAdDidPresentFullScreenContent;
         // Ad event fired when the full screen content has been dismissed.
-        public event EventHandler<EventArgs> OnAdDidDismissFullScreenContent;
+        public event Action OnAdDidDismissFullScreenContent;
 
         public event Action<AdValue> OnPaidEvent;
+
+        // A long integer provided by the AdMob UI for the configured placement.
+        public long PlacementId
+        {
+            get
+            {
+                return Externs.GADUGetNativeTemplateAdPlacementID(this.NativePtr);
+            }
+            set
+            {
+                Externs.GADUSetNativeTemplateAdPlacementID(this.NativePtr, value);
+            }
+        }
 
         private static NativeOverlayAdClient IntPtrToNativeClient(IntPtr nativeClient)
         {
@@ -206,7 +219,7 @@ namespace GoogleMobileAds.iOS
             NativeOverlayAdClient client = IntPtrToNativeClient(nativeClient);
             if (client.OnAdLoaded != null)
             {
-                client.OnAdLoaded(client, EventArgs.Empty);
+                client.OnAdLoaded();
             }
         }
 
@@ -220,7 +233,7 @@ namespace GoogleMobileAds.iOS
                 {
                     LoadAdErrorClient = new LoadAdErrorClient(error)
                 };
-                client.OnAdFailedToLoad(client, args);
+                client.OnAdFailedToLoad(args);
             }
         }
 
@@ -248,7 +261,7 @@ namespace GoogleMobileAds.iOS
             NativeOverlayAdClient client = IntPtrToNativeClient(nativeClient);
             if (client.OnAdDidRecordImpression != null)
             {
-                client.OnAdDidRecordImpression(client, EventArgs.Empty);
+                client.OnAdDidRecordImpression();
             }
         }
 
@@ -268,7 +281,7 @@ namespace GoogleMobileAds.iOS
             NativeOverlayAdClient client = IntPtrToNativeClient(nativeClient);
             if (client.OnAdDidPresentFullScreenContent != null)
             {
-                client.OnAdDidPresentFullScreenContent(client, EventArgs.Empty);
+                client.OnAdDidPresentFullScreenContent();
             }
         }
 
@@ -278,7 +291,7 @@ namespace GoogleMobileAds.iOS
             NativeOverlayAdClient client = IntPtrToNativeClient(nativeClient);
             if (client.OnAdDidDismissFullScreenContent != null)
             {
-                client.OnAdDidDismissFullScreenContent(client, EventArgs.Empty);
+                client.OnAdDidDismissFullScreenContent();
             }
         }
 #endregion

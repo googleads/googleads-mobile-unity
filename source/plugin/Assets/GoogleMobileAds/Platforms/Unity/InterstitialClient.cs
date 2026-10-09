@@ -15,6 +15,7 @@
 using System;
 using System.Reflection;
 using System.Collections.Generic;
+
 using GoogleMobileAds.Api;
 using GoogleMobileAds.Common;
 using UnityEngine;
@@ -24,21 +25,24 @@ namespace GoogleMobileAds.Unity
 {
     public class InterstitialClient : BaseAdClient, IInterstitialClient
     {
-        public event EventHandler<EventArgs> OnAdLoaded;
+        public event Action OnAdLoaded;
 
-        public event EventHandler<LoadAdErrorClientEventArgs> OnAdFailedToLoad;
+        public event Action<LoadAdErrorClientEventArgs> OnAdFailedToLoad;
 
         public event Action<AdValue> OnPaidEvent;
 
-        public event EventHandler<AdErrorClientEventArgs> OnAdFailedToPresentFullScreenContent;
+        public event Action<AdErrorClientEventArgs> OnAdFailedToPresentFullScreenContent;
 
-        public event EventHandler<EventArgs> OnAdDidPresentFullScreenContent;
+        public event Action OnAdDidPresentFullScreenContent;
 
-        public event EventHandler<EventArgs> OnAdDidDismissFullScreenContent;
+        public event Action OnAdDidDismissFullScreenContent;
 
-        public event EventHandler<EventArgs> OnAdDidRecordImpression;
+        public event Action OnAdDidRecordImpression;
 
         public event Action OnAdClicked;
+
+        // A long integer provided by the AdMob UI for the configured placement.
+        public long PlacementId { get; set; }
 
         private Dictionary<AdSize, string> prefabAds = new Dictionary<AdSize, string>() {
             {new AdSize (768,1024), "PlaceholderAds/Interstitials/768x1024" },
@@ -67,7 +71,7 @@ namespace GoogleMobileAds.Unity
                 DestroyInterstitial();
                 if (OnAdDidDismissFullScreenContent != null)
                 {
-                    OnAdDidDismissFullScreenContent.Invoke(this, new EventArgs());
+                    OnAdDidDismissFullScreenContent.Invoke();
                 }
                 AdBehaviour.ResumeGame();
             });
@@ -82,6 +86,18 @@ namespace GoogleMobileAds.Unity
         public void CreateInterstitialAd()
         {
 
+        }
+
+        public bool IsAdAvailable(string adUnitId)
+        {
+            Debug.Log("Preloaded ads are not supported on the Unity editor platform.");
+            return false;
+        }
+
+        public IInterstitialClient PollAd(string adUnitId)
+        {
+            Debug.Log("Preloaded ads are not supported on the Unity editor platform.");
+            return new InterstitialClient();
         }
 
         // Loads a new interstitial request.
@@ -101,14 +117,14 @@ namespace GoogleMobileAds.Unity
             {
                 if (OnAdLoaded != null)
                 {
-                    OnAdLoaded.Invoke(this, EventArgs.Empty);
+                    OnAdLoaded.Invoke();
                 }
             }
             else
             {
                 if (OnAdFailedToLoad != null)
                 {
-                    OnAdFailedToLoad.Invoke(this, new LoadAdErrorClientEventArgs()
+                    OnAdFailedToLoad.Invoke(new LoadAdErrorClientEventArgs()
                     {
                         LoadAdErrorClient = new LoadAdErrorClient()
                     });
@@ -127,11 +143,11 @@ namespace GoogleMobileAds.Unity
                 AdBehaviour.PauseGame();
                 if (OnAdDidPresentFullScreenContent != null)
                 {
-                  OnAdDidPresentFullScreenContent.Invoke(this, EventArgs.Empty);
+                  OnAdDidPresentFullScreenContent.Invoke();
                 }
                 if (OnAdDidRecordImpression != null)
                 {
-                    OnAdDidRecordImpression(this, EventArgs.Empty);
+                    OnAdDidRecordImpression();
                 }
             } else
             {

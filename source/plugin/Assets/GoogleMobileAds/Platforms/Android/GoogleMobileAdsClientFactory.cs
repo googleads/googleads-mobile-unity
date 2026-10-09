@@ -26,6 +26,8 @@ namespace GoogleMobileAds
     [Preserve]
     public class GoogleMobileAdsClientFactory : IClientFactory
     {
+        private static bool? _nextGenEnabled;
+
         public IAppStateEventClient BuildAppStateEventClient()
         {
             if (Application.platform == RuntimePlatform.Android)
@@ -40,101 +42,210 @@ namespace GoogleMobileAds
         {
             if (Application.platform == RuntimePlatform.Android)
             {
+                if (IsNextGenEnabled())
+                {
+                    return new GoogleMobileAds.Android.NextGenAppOpenAdClient();
+                }
                 return new GoogleMobileAds.Android.AppOpenAdClient();
             }
             throw new InvalidOperationException(@"Called " + MethodBase.GetCurrentMethod().Name +
             " on non-Android runtime");
         }
 
-        public IBannerClient BuildBannerClient()
-        {
-            if (Application.platform == RuntimePlatform.Android)
+        public IBannerClient BuildBannerClient() {
+          if (Application.platform == RuntimePlatform.Android) {
+            if (IsNextGenEnabled())
             {
-                return new GoogleMobileAds.Android.BannerClient();
+                    return new GoogleMobileAds.Android.NextGenBannerAdClient();
             }
-            throw new InvalidOperationException(@"Called " + MethodBase.GetCurrentMethod().Name +
-            " on non-Android runtime");
+            return new GoogleMobileAds.Android.BannerClient();
+          }
+          throw new InvalidOperationException(@"Called " + MethodBase.GetCurrentMethod().Name +
+                                              " on non-Android runtime");
         }
 
         public IAdManagerBannerClient BuildAdManagerBannerClient()
         {
             if (Application.platform == RuntimePlatform.Android)
             {
+                if (IsNextGenEnabled())
+                {
+                    return new GoogleMobileAds.Android.NextGenBannerAdClient();
+                }
                 return new GoogleMobileAds.Android.AdManagerBannerClient();
             }
             throw new InvalidOperationException(@"Called " + MethodBase.GetCurrentMethod().Name +
-            " on non-Android runtime");
+                                                " on non-Android runtime");
         }
 
         public IInterstitialClient BuildInterstitialClient()
         {
             if (Application.platform == RuntimePlatform.Android)
             {
+                if (IsNextGenEnabled())
+                {
+                    return new GoogleMobileAds.Android.NextGenInterstitialAdClient();
+                }
                 return new GoogleMobileAds.Android.InterstitialClient();
             }
-            throw new InvalidOperationException(@"Called " + MethodBase.GetCurrentMethod().Name +
-            " on non-Android runtime");
+          throw new InvalidOperationException(@"Called " + MethodBase.GetCurrentMethod().Name +
+                                              " on non-Android runtime");
         }
 
-        public IAdManagerInterstitialClient BuildAdManagerInterstitialClient()
-        {
-            if (Application.platform == RuntimePlatform.Android)
+        public IAdManagerInterstitialClient BuildAdManagerInterstitialClient() {
+          if (Application.platform == RuntimePlatform.Android) {
+            if (IsNextGenEnabled())
             {
-                return new GoogleMobileAds.Android.AdManagerInterstitialClient();
+                return new GoogleMobileAds.Android.NextGenInterstitialAdClient();
             }
-            throw new InvalidOperationException(@"Called " + MethodBase.GetCurrentMethod().Name +
-            " on non-Android runtime");
+            return new GoogleMobileAds.Android.AdManagerInterstitialClient();
+          }
+          throw new InvalidOperationException(@"Called " + MethodBase.GetCurrentMethod().Name +
+                                              " on non-Android runtime");
         }
 
         public IRewardedAdClient BuildRewardedAdClient()
         {
             if (Application.platform == RuntimePlatform.Android)
             {
+                if (IsNextGenEnabled())
+                {
+                    return new GoogleMobileAds.Android.NextGenRewardedAdClient();
+                }
                 return new GoogleMobileAds.Android.RewardedAdClient();
             }
             throw new InvalidOperationException(@"Called " + MethodBase.GetCurrentMethod().Name +
-            " on non-Android runtime");
+                                              " on non-Android runtime");
         }
 
         public IRewardedInterstitialAdClient BuildRewardedInterstitialAdClient()
         {
             if (Application.platform == RuntimePlatform.Android)
             {
+                if (IsNextGenEnabled())
+                {
+                    return new GoogleMobileAds.Android.NextGenRewardedInterstitialAdClient();
+                }
                 return new GoogleMobileAds.Android.RewardedInterstitialAdClient();
             }
             throw new InvalidOperationException(@"Called " + MethodBase.GetCurrentMethod().Name +
-            " on non-Android runtime");
+                                                " on non-Android runtime");
         }
 
         public INativeOverlayAdClient BuildNativeOverlayAdClient()
         {
             if (Application.platform == RuntimePlatform.Android)
             {
+                if (IsNextGenEnabled())
+                {
+                    return new GoogleMobileAds.Android.NextGenNativeOverlayAdClient();
+                }
                 return new GoogleMobileAds.Android.NativeOverlayAdClient();
             }
             throw new InvalidOperationException(@"Called " + MethodBase.GetCurrentMethod().Name +
             " on non-Android runtime");
         }
 
-        public IApplicationPreferencesClient ApplicationPreferencesInstance()
+        public IPictureInPictureAdClient BuildPictureInPictureAdClient()
         {
             if (Application.platform == RuntimePlatform.Android)
             {
-                return new GoogleMobileAds.Android.ApplicationPreferencesClient();
+                if (IsNextGenEnabled())
+                {
+                    return new GoogleMobileAds.Android.PictureInPictureAdClient();
+                }
+                return new GoogleMobileAds.Android.UnsupportedPictureInPictureAdClient();
             }
             throw new InvalidOperationException(@"Called " + MethodBase.GetCurrentMethod().Name +
             " on non-Android runtime");
+        }
+
+        public IApplicationPreferencesClient ApplicationPreferencesInstance() {
+          if (Application.platform == RuntimePlatform.Android) {
+            return new GoogleMobileAds.Android.ApplicationPreferencesClient();
+          }
+          throw new InvalidOperationException(@"Called " + MethodBase.GetCurrentMethod().Name +
+                                              " on non-Android runtime");
         }
 
         public IMobileAdsClient MobileAdsInstance()
         {
             if (Application.platform == RuntimePlatform.Android)
             {
+                if (IsNextGenEnabled())
+                {
+                    return GoogleMobileAds.Android.NextGenMobileAdsClient.Instance;
+                }
                 return GoogleMobileAds.Android.MobileAdsClient.Instance;
-            }
-            throw new InvalidOperationException(@"Called " + MethodBase.GetCurrentMethod().Name +
-            " on non-Android runtime");
+          }
+          throw new InvalidOperationException(@"Called " + MethodBase.GetCurrentMethod().Name +
+                                              " on non-Android runtime");
         }
+
+        private bool IsNextGenEnabled()
+        {
+            if (_nextGenEnabled.HasValue)
+            {
+                return _nextGenEnabled.Value;
+            }
+            try
+            {
+                var _ =
+                    new AndroidJavaClass(GoogleMobileAds.Android.NextGenUtils.MobileAdsClassName);
+                _nextGenEnabled = true;
+            }
+            catch (Exception)
+            {
+                _nextGenEnabled = false;
+            }
+            return _nextGenEnabled.Value;
+        }
+
+#if GMA_PREVIEW_FEATURES
+
+        public IAppOpenAdPreloaderClient BuildAppOpenAdPreloaderClient()
+        {
+            if (Application.platform != RuntimePlatform.Android)
+            {
+                throw new InvalidOperationException(@"Called " + MethodBase.GetCurrentMethod().Name +
+                                                    " on non-Android runtime");
+            }
+            if (IsNextGenEnabled())
+            {
+                return new GoogleMobileAds.Android.NextGenAppOpenAdPreloaderClient();
+            }
+            return new GoogleMobileAds.Android.AppOpenAdPreloaderClient();
+        }
+
+        public IInterstitialAdPreloaderClient BuildInterstitialAdPreloaderClient()
+        {
+            if (Application.platform != RuntimePlatform.Android)
+            {
+                throw new InvalidOperationException(@"Called " + MethodBase.GetCurrentMethod().Name +
+                                                    " on non-Android runtime");
+            }
+            if (IsNextGenEnabled())
+            {
+                return new GoogleMobileAds.Android.NextGenInterstitialAdPreloaderClient();
+            }
+            return new GoogleMobileAds.Android.InterstitialAdPreloaderClient();
+        }
+
+        public IRewardedAdPreloaderClient BuildRewardedAdPreloaderClient()
+        {
+            if (Application.platform != RuntimePlatform.Android)
+            {
+                throw new InvalidOperationException(@"Called " + MethodBase.GetCurrentMethod().Name +
+                                                    " on non-Android runtime");
+            }
+            if (IsNextGenEnabled())
+            {
+                return new GoogleMobileAds.Android.NextGenRewardedAdPreloaderClient();
+            }
+            return new GoogleMobileAds.Android.RewardedAdPreloaderClient();
+        }
+
+#endif
     }
 }
 #endif

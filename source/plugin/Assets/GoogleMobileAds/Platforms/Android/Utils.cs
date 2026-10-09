@@ -56,6 +56,16 @@ namespace GoogleMobileAds.Android
 
         public const string MobileAdsClassName = "com.google.android.gms.ads.MobileAds";
 
+        public const string PreloadConfigurationClassName = "com.google.android.gms.ads.preload.PreloadConfiguration";
+
+        public const string PreloadConfigurationBuilderClassName = "com.google.android.gms.ads.preload.PreloadConfiguration$Builder";
+
+        public const string PreloadListenerClassname = "com.google.android.gms.ads.preload.PreloadCallback";
+
+        public const string PreloadCallbackClassname = "com.google.unity.ads.UnityPreloadCallback";
+
+        public const string AdFormatEnumName = "com.google.android.gms.ads.AdFormat";
+
         public const string RequestConfigurationClassName = "com.google.android.gms.ads.RequestConfiguration";
 
         public const string RequestConfigurationBuilderClassName = "com.google.android.gms.ads.RequestConfiguration$Builder";
@@ -78,6 +88,8 @@ namespace GoogleMobileAds.Android
 
         public const string UnityAdSizeClassName = "com.google.unity.ads.UnityAdSize";
 
+        public const string UnityMobileAdsClassName = "com.google.unity.ads.UnityMobileAds";
+
         public const string BannerViewClassName = "com.google.unity.ads.Banner";
 
         public const string InterstitialClassName = "com.google.unity.ads.Interstitial";
@@ -85,6 +97,9 @@ namespace GoogleMobileAds.Android
         public const string RewardBasedVideoClassName = "com.google.unity.ads.RewardBasedVideo";
 
         public const string UnityRewardedAdClassName = "com.google.unity.ads.UnityRewardedAd";
+
+        public const string UnityRewardedAdPreloaderClassName =
+                "com.google.unity.ads.UnityRewardedAdPreloader";
 
         public const string UnityAdListenerClassName = "com.google.unity.ads.UnityAdListener";
 
@@ -121,6 +136,8 @@ namespace GoogleMobileAds.Android
         public const string UnityAppOpenAdCallbackClassName =
                 "com.google.unity.ads.UnityAppOpenAdCallback";
 
+        public const string UnityAppOpenAdPreloaderClassName = "com.google.unity.ads.UnityAppOpenAdPreloader";
+
         public const string OnInitializationCompleteListenerClassName =
                 "com.google.android.gms.ads.initialization.OnInitializationCompleteListener";
 
@@ -138,6 +155,9 @@ namespace GoogleMobileAds.Android
 
         public const string UnityRewardedInterstitialAdClassName =
                 "com.google.unity.ads.UnityRewardedInterstitialAd";
+
+        public const string UnityInterstitialAdPreloaderClassName =
+                "com.google.unity.ads.UnityInterstitialAdPreloader";
 
         public const string UnityRewardedInterstitialAdCallbackClassName =
                 "com.google.unity.ads.UnityRewardedInterstitialAdCallback";
@@ -194,6 +214,8 @@ namespace GoogleMobileAds.Android
             AndroidJavaClass adSizeClass = new AndroidJavaClass(UnityAdSizeClassName);
             switch (adSize.AdType)
             {
+                // Note: `GoogleMobileAds.Api.AdSize.Type.SmartBanner' has been deprecated in favor
+                // of `AnchoredAdaptive`.
                 case AdSize.Type.SmartBanner:
                     return adSizeClass.CallStatic<AndroidJavaObject>("getSmartBannerAdSize");
                 case AdSize.Type.AnchoredAdaptive:
@@ -235,6 +257,8 @@ namespace GoogleMobileAds.Android
                 string val = androidBundle.Call<string>("getString", key);
                 dict.Add(key, val);
             }
+            GC.KeepAlive(bundleKeyArray);
+            GC.KeepAlive(bundleKeySet);
             return dict;
         }
 
@@ -256,6 +280,12 @@ namespace GoogleMobileAds.Android
             foreach (string keyword in request.Keywords)
             {
                 adRequestBuilder.Call<AndroidJavaObject>("addKeyword", keyword);
+            }
+
+            foreach (KeyValuePair<string, string> entry in request.CustomTargeting)
+            {
+                adRequestBuilder.Call<AndroidJavaObject>("addCustomTargeting",
+                                                         entry.Key, entry.Value);
             }
 
             // Denote that the request is coming from this Unity plugin.
@@ -307,6 +337,7 @@ namespace GoogleMobileAds.Android
                 }
             }
 
+            adRequestBuilder.Call<AndroidJavaObject>("setPlacementId", request.PlacementID);
             return adRequestBuilder.Call<AndroidJavaObject>("build");
         }
 
@@ -387,17 +418,72 @@ namespace GoogleMobileAds.Android
             {
                 adManagerAdRequestBuilder.Call<AndroidJavaObject>("addCategoryExclusion", category);
             }
+
             foreach (KeyValuePair<string, string> entry in adManagerAdRequest.CustomTargeting)
             {
                 adManagerAdRequestBuilder.Call<AndroidJavaObject>("addCustomTargeting",
                                                                    entry.Key, entry.Value);
             }
+
             return adManagerAdRequestBuilder.Call<AndroidJavaObject>("build");
+        }
+
+        public static AndroidJavaObject GetPreloadConfigurationJavaObject(
+                PreloadConfiguration preloadConfiguration)
+        {
+            if (preloadConfiguration.AdUnitId == null)
+            {
+                throw new ArgumentNullException("PreloadConfiguration.AdUnitId");
+            }
+            AndroidJavaClass adFormat = new AndroidJavaClass(Utils.AdFormatEnumName);
+            AndroidJavaObject adFormatEnum = adFormat.GetStatic<AndroidJavaObject>(
+#pragma warning disable 0612
+                    preloadConfiguration.Format.ToString());
+#pragma warning restore 0612
+            AndroidJavaObject preloadConfigurationBuilder =
+                    new AndroidJavaObject(Utils.PreloadConfigurationBuilderClassName,
+                                          preloadConfiguration.AdUnitId,
+                                          adFormatEnum);
+            if (preloadConfiguration.Request != null)
+            {
+                preloadConfigurationBuilder =
+                        preloadConfigurationBuilder.Call<AndroidJavaObject>("setAdRequest",
+                                Utils.GetAdManagerAdRequestJavaObject(
+                                        preloadConfiguration.Request));
+            }
+            if (preloadConfiguration.BufferSize > 0)
+            {
+                preloadConfigurationBuilder =
+                        preloadConfigurationBuilder.Call<AndroidJavaObject>("setBufferSize",
+                                Convert.ToInt32(preloadConfiguration.BufferSize));
+            }
+            return preloadConfigurationBuilder.Call<AndroidJavaObject>("build");
+        }
+
+        public static PreloadConfiguration GetPreloadConfiguration(
+                AndroidJavaObject configurationJavaObject)
+        {
+            if (configurationJavaObject == null)
+            {
+                return null;
+            }
+            string adUnitId = configurationJavaObject.Call<string>("getAdUnitId");
+            AndroidJavaObject format =
+                    configurationJavaObject.Call<AndroidJavaObject>("getAdFormat");
+            string enumValue = format.Call<string>("name");
+            AdFormat adFormat = (AdFormat)Enum.Parse(typeof(AdFormat), enumValue);
+            uint bufferSize = Convert.ToUInt32(configurationJavaObject.Call<int>("getBufferSize"));
+            return new PreloadConfiguration() {
+                AdUnitId = adUnitId,
+#pragma warning disable 0612
+                Format = adFormat,
+#pragma warning restore 0612
+                BufferSize = bufferSize
+            };
         }
 
         public static AndroidJavaObject GetJavaListObject(List<String> csTypeList)
         {
-
             AndroidJavaObject javaTypeArrayList = new AndroidJavaObject("java.util.ArrayList");
             foreach (string itemList in csTypeList)
             {
@@ -454,6 +540,18 @@ namespace GoogleMobileAds.Android
             videoOptionsBuilder.Call<AndroidJavaObject>("setStartMuted",
                                                       (bool)videoOptions.StartMuted);
             return videoOptionsBuilder.Call<AndroidJavaObject>("build");
+        }
+
+        #endregion
+
+        #region Internal utility methods
+
+        internal static AndroidJavaObject GetCurrentActivityAndroidJavaObject()
+        {
+            AndroidJavaClass unityPlayer = new AndroidJavaClass(UnityActivityClassName);
+            AndroidJavaObject currentActivity =
+                    unityPlayer.GetStatic<AndroidJavaObject>("currentActivity");
+            return currentActivity;
         }
 
         #endregion

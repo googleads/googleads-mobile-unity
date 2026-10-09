@@ -14,7 +14,9 @@
 
 #import "GAMURequest.h"
 
-@implementation GAMURequest
+@implementation GAMURequest {
+  NSMutableDictionary<NSString *, NSString *> *_customTargeting;
+}
 
 - (id)init {
   self = [super init];
@@ -30,7 +32,7 @@
 }
 
 - (void)setCustomTargetingWithKey:(nonnull NSString *)key value:(NSString *)value {
-  [self.customTargeting setValue:value forKey:key];
+  [_customTargeting setValue:value forKey:key];
 }
 
 - (GAMRequest *)request {
@@ -42,7 +44,7 @@
   [request registerAdNetworkExtras:extras];
   request.publisherProvidedID = self.publisherProvidedID;
   request.categoryExclusions = self.categoryExclusions;
-  request.customTargeting = self.customTargeting;
+  request.customTargeting = _customTargeting;
 
   for (id<GADAdNetworkExtras> mediationExtras in self.mediationExtras) {
     [request registerAdNetworkExtras:mediationExtras];

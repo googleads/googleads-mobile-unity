@@ -177,6 +177,20 @@ static BOOL _pauseOnBackground = NO;
   }
 }
 
++ (GADAdSize)largeAdaptiveAdSizeForWidth:(CGFloat)width orientation:(GADUBannerOrientation)orientation {
+  if (width == kGADUAdSizeUseFullWidth) {
+    width = GADUDeviceSafeWidth();
+  }
+  switch (orientation) {
+    case kGADUBannerOrientationCurrent:
+      return GADLargeAnchoredAdaptiveBannerAdSizeWithWidth(width);
+    case kGADUBannerOrientationLandscape:
+      return GADLargeLandscapeAnchoredAdaptiveBannerAdSizeWithWidth(width);
+    case kGADUBannerOrientationPortrait:
+      return GADLargePortraitAnchoredAdaptiveBannerAdSizeWithWidth(width);
+  }
+}
+
 
 + (BOOL)isNull:(nullable id)object {
   return object == nil || [[NSNull null] isEqual:object];

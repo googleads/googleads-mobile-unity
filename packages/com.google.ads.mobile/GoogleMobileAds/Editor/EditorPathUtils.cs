@@ -12,7 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System;
 using System.IO;
 using UnityEditor;
 using UnityEngine;
@@ -21,38 +20,35 @@ using UnityEngine;
  * EditorPathUtils class finds and processes the AssetPath for
  * EditorPathUtils.cs within unity asset database.
  */
-public class EditorPathUtils : ScriptableObject
-{
+namespace GoogleMobileAds.Editor {
+  public class EditorPathUtils : ScriptableObject {
     /*
      * Returns the asset path of EditorPathUtils.cs
      */
-    private String GetFilePath()
-    {
-        return AssetDatabase.GetAssetPath(MonoScript.FromScriptableObject(this));
+    private string GetFilePath() {
+      return AssetDatabase.GetAssetPath(MonoScript.FromScriptableObject(this));
     }
 
     /*
      * Returns the asset directory path of EditorPathUtils.cs
      */
-    public String GetDirectoryAssetPath()
-    {
-        return Path.GetDirectoryName(GetFilePath());
+    public string GetDirectoryAssetPath() {
+      return Path.GetDirectoryName(GetFilePath());
     }
 
     /*
      * Returns the parent asset directory path of EditorPathUtils.cs
      */
-    public String GetParentDirectoryAssetPath()
-    {
-        return Path.GetDirectoryName(GetDirectoryAssetPath());
+    public string GetParentDirectoryAssetPath() {
+      return Path.GetDirectoryName(GetDirectoryAssetPath());
     }
 
     /*
      * Returns true if GMA import is done via unity package manager,
      * false otherwise.
      */
-    public bool IsPackageRootPath()
-    {
-        return GetFilePath().StartsWith("Packages");
+    public bool IsPackageRootPath() {
+      return GetFilePath().StartsWith("Packages");
     }
+  }
 }

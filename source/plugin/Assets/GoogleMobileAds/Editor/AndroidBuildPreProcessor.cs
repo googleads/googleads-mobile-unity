@@ -1,0 +1,307 @@
+#if UNITY_ANDROID
+#if UNITY_2022 || UNITY_2021_3_58 || UNITY_2021_3_57 || UNITY_2021_3_56 || UNITY_2021_3_55 || UNITY_2021_3_54 || UNITY_2021_3_53 || UNITY_2021_3_52 || UNITY_2021_3_51 || UNITY_2021_3_50 || UNITY_2021_3_49 || UNITY_2021_3_48 || UNITY_2021_3_47 || UNITY_2021_3_46 || UNITY_2021_3_45 || UNITY_2021_3_44 || UNITY_2021_3_43 || UNITY_2021_3_42 || UNITY_2021_3_41
+// 2021.3.41f1+	Gradle version 7.5.1+
+// https://docs.unity3d.com/2021.3/Documentation/Manual/android-gradle-overview.html
+#define ANDROID_GRADLE_BUILD_JETIFIER_ENTRY_ENABLED
+#endif
+
+#if UNITY_6000_0_OR_NEWER || UNITY_2023 || ANDROID_GRADLE_BUILD_JETIFIER_ENTRY_ENABLED
+#define ANDROID_GRADLE_BUILD_PRE_PROCESSOR_ENABLED
+#endif
+
+using System;
+using System.Linq;
+using System.Reflection;
+using System.Runtime.ExceptionServices;
+using System.Text.RegularExpressions;
+using UnityEngine;
+using UnityEditor;
+using System.IO;
+using UnityEditor.Build;
+using UnityEditor.Build.Reporting;
+
+namespace GoogleMobileAds.Editor
+{
+    /// <summary>
+    /// This script will verify and configure your Android build settings to be compatible
+    /// with the Google Mobile Ads SDK. This includes:
+    ///  - Verify the Android Google Mobile Ads app ID is set.
+    ///  - Throw an exception if the Android Google Mobile Ads app ID is not set.
+    ///  - Set minimum API level to 24 (the target API level may be automatically set, we should not
+    ///    hardcode it).
+    ///  - Enable Custom Main Gradle Template.
+    ///  - Update Custom Main Gradle Template with dependencies using the Play Services Resolver.
+    ///  - Enable Custom Gradle Properties Template.
+    ///  - Update Custom Gradle Properties Template with the Jetifier Ignorelist.
+    /// </summary>
+    public class AndroidBuildPreProcessor : IPreprocessBuildWithReport
+    {
+        private const string NextGenLibrary = "com.google.android.libraries.ads.mobile.sdk:ads-mobile-sdk";
+        private const string CurrentLibrary = "com.google.android.gms:play-services-ads";
+        private const string LatestNextGenVersion = "1.4.0";
+        private const string CurrentVersion = "25.4.0";
+
+        private const string NextGenSpec = NextGenLibrary + ":" + LatestNextGenVersion;
+        private const string CurrentSpec = CurrentLibrary + ":" + CurrentVersion;
+
+        private static readonly string NextGenRegex =
+            Regex.Escape(NextGenLibrary) + @":(?:[\d\.]+[-a-zA-Z0-9]*|LATEST)";
+        private static readonly string CurrentRegex =
+            Regex.Escape(CurrentLibrary) + @":(?:[\d\.]+[-a-zA-Z0-9]*|LATEST)";
+
+        const int MinimumAPILevel = 24;
+
+        const string CustomGradlePropertiesTemplatesFileName = "gradleTemplate.properties";
+        const string CustomMainGradleTemplateFileName = "mainTemplate.gradle";
+        const string JetifierEntry =
+            "android.jetifier.ignorelist=annotation-experimental-1.4.0.aar";
+
+        // Set the callback order to be before EDM4U.
+        // https://github.com/googlesamples/unity-jar-resolver/blob/master/source/AndroidResolver/src/PlayServicesPreBuild.cs#L39
+        public int callbackOrder { get { return -1; } }
+
+        public void OnPreprocessBuild(BuildReport report)
+        {
+            UpdateGmaDependency();
+
+            if (!GoogleMobileAdsSettings.LoadInstance().EnableGradleBuildPreProcessor)
+            {
+                return;
+            }
+
+            // For more details, see https://developers.google.com/admob/unity/android.
+#if ANDROID_GRADLE_BUILD_PRE_PROCESSOR_ENABLED
+            ApplyBuildSettings(report);
+#endif
+        }
+
+        private void ApplyBuildSettings(BuildReport report)
+        {
+            Debug.Log("Running Android Gradle Build Pre-Processor.");
+
+            if (PlayerSettings.Android.minSdkVersion < (AndroidSdkVersions)MinimumAPILevel)
+            {
+                PlayerSettings.Android.minSdkVersion = (AndroidSdkVersions)MinimumAPILevel;
+                Debug.Log($"Set minimum API Level to: {MinimumAPILevel}.");
+            }
+            else
+            {
+                Debug.Log($"Verified Minimum API Level is >= {MinimumAPILevel}.");
+            }
+
+            // Create Assets/Plugins folder.
+            if (!AssetDatabase.IsValidFolder(Path.Combine("Assets", "Plugins")))
+            {
+                AssetDatabase.CreateFolder("Assets", "Plugins");
+                AssetDatabase.Refresh();
+            }
+
+            // Create Assets/Plugins/Android folder.
+            if (!AssetDatabase.IsValidFolder(Path.Combine("Assets", "Plugins", "Android")))
+            {
+                AssetDatabase.CreateFolder(Path.Combine("Assets", "Plugins"), "Android");
+                AssetDatabase.Refresh();
+            }
+
+            // Ensure Custom Main Gradle Template.
+            EnsureGradleFileExists(CustomMainGradleTemplateFileName);
+
+            // Ensure Custom Gradle Properties Templates.
+            EnsureGradleFileExists(CustomGradlePropertiesTemplatesFileName);
+
+            #if ANDROID_GRADLE_BUILD_JETIFIER_ENTRY_ENABLED
+            string customGradlePropertiesTemplatesFilePath = Path.Combine(
+                Application.dataPath,
+                "Plugins", "Android",
+                CustomGradlePropertiesTemplatesFileName);
+            if (File.Exists(customGradlePropertiesTemplatesFilePath))
+            {
+                var gradlePropertiesFileContent =
+                    File.ReadAllText(customGradlePropertiesTemplatesFilePath);
+                if (!gradlePropertiesFileContent.Contains(JetifierEntry))
+                {
+                    File.AppendAllText(
+                        customGradlePropertiesTemplatesFilePath,
+                        Environment.NewLine + JetifierEntry);
+                    Debug.Log("Added Jetifier Entry.");
+                }
+                else
+                {
+                    Debug.Log("Verified Jetifier Entry exists.");
+                }
+            }
+            else
+            {
+                Debug.LogError("Failed to add Jetifier Entry.");
+            }
+            #endif
+
+            Debug.Log("Resolving Android Gradle dependencies.");
+            ResolvePlayServicesDependencies();
+            Debug.Log("Android Build Pre-Processor finished.");
+        }
+
+        /// <summary>
+        /// Runs External Dependency Manager's Android resolution if an EDM is present in the
+        /// project. EDM is looked up by reflection so that this assembly compiles with Unity's EDM
+        /// package, Google's legacy EDM, or no EDM at all for publishers who resolve native
+        /// dependencies with their own tooling.
+        /// </summary>
+        private static void ResolvePlayServicesDependencies()
+        {
+            Type resolverType = AppDomain.CurrentDomain.GetAssemblies()
+                .Select(assembly => assembly.GetType("GooglePlayServices.PlayServicesResolver",
+                                                     false))
+                .FirstOrDefault(type => type != null);
+            MethodInfo resolveSync = resolverType?.GetMethod(
+                "ResolveSync", BindingFlags.Public | BindingFlags.Static, null,
+                new[] { typeof(bool) }, null);
+            if (resolveSync == null)
+            {
+                const string message =
+                    "External Dependency Manager was not found, so Android " +
+                    "dependency resolution was skipped. Native Android dependencies must be " +
+                    "resolved by your own dependency management tooling.";
+                if (GoogleMobileAdsSettings.LoadInstance().EnableExternalDependencyManager)
+                {
+                    Debug.LogWarning(message);
+                }
+                else
+                {
+                    // The publisher opted out of EDM and manages dependencies themselves.
+                    Debug.Log(message);
+                }
+                return;
+            }
+            try
+            {
+                resolveSync.Invoke(null, new object[] { true });
+            }
+            catch (TargetInvocationException ex)
+            {
+                if (ex.InnerException != null)
+                {
+                    ExceptionDispatchInfo.Capture(ex.InnerException).Throw();
+                }
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// Ensures that the given Gradle file exists.
+        /// </summary>
+        /// <param name="fileName">name of the given Gradle file.</param>
+        private void EnsureGradleFileExists(string fileName)
+        {
+            bool foundTargetFile = false;
+            bool foundDisabledFile = false;
+
+            // Check for target file.
+            string targetPath = Path.Combine(Application.dataPath, "Plugins", "Android", fileName);
+            if (File.Exists(targetPath))
+            {
+                foundTargetFile = true;
+            }
+
+            // Check for the ".DISABLED" file.
+            string disabledPath = Path.Combine(Application.dataPath, "Plugins", "Android",
+                    $"{fileName}.DISABLED");
+            if (File.Exists(disabledPath))
+            {
+                foundDisabledFile = true;
+            }
+
+            // If DISABLED and target exist, delete DISABLED.
+            if (foundTargetFile && foundDisabledFile)
+            {
+                File.Delete(disabledPath);
+                Debug.Log($"Removed disabled {fileName}.");
+                return;
+            }
+            // If DISABLED exists, move it to target.
+            if (foundDisabledFile)
+            {
+                File.Move(disabledPath, targetPath);
+                AssetDatabase.Refresh();
+                Debug.Log($"Enabled {fileName}.");
+                return;
+            }
+            // If target exists, return true.
+            if (foundTargetFile)
+            {
+                Debug.Log($"Verified {fileName}.");
+                return;
+            }
+
+            // If target does not exist, create it from source.
+            var unityGradleTemplateDirectory = Path.Combine(
+                BuildPipeline.GetPlaybackEngineDirectory(BuildTarget.Android, BuildOptions.None),
+                "Tools",
+                "GradleTemplates");
+            string sourceFileName = Path.Combine(unityGradleTemplateDirectory, fileName);
+            if (!File.Exists(sourceFileName))
+            {
+                throw new BuildFailedException(
+                    "Android Build Pre-Processor failed. "+
+                    $"Unable to find source {sourceFileName}. Is your file system read-only?" +
+                    "If this issue persists, contact Google Mobile Ads Support "+
+                    "at https://developers.google.com/admob/support");
+            }
+            File.Copy(sourceFileName, targetPath);
+            AssetDatabase.Refresh();
+            Debug.Log($"Created {fileName}.");
+        }
+
+        /// <summary>
+        /// Updates GoogleMobileAdsDependencies.xml with the selected GMA SDK dependency.
+        /// Existing dependency versions are preserved if the desired GMA SDK is already present.
+        /// If the file is modified, EDM4U is triggered to resolve dependencies.
+        /// </summary>
+        private void UpdateGmaDependency()
+        {
+            var pathUtils = ScriptableObject.CreateInstance<EditorPathUtils>();
+            string directoryPath = pathUtils.GetDirectoryAssetPath();
+            string dependenciesFilePath =
+                Path.Combine(directoryPath, "GoogleMobileAdsDependencies.xml");
+
+            if (!File.Exists(dependenciesFilePath))
+            {
+                Debug.LogError($"GoogleMobileAdsDependencies.xml not found at {dependenciesFilePath}");
+                return;
+            }
+
+            bool isNextGen = (GoogleMobileAdsSettings.LoadInstance().EffectiveGmaAndroidSdk ==
+                              GoogleMobileAdsSettings.GmaAndroidSdk.NextGen);
+            string fileContent = File.ReadAllText(dependenciesFilePath);
+
+            string desiredRegex = isNextGen ? NextGenRegex : CurrentRegex;
+            if (Regex.IsMatch(fileContent, desiredRegex))
+            {
+                Debug.Log("GoogleMobileAdsDependencies.xml already matches the desired " +
+                          "Google Mobile Ads SDK.");
+                return;
+            }
+
+            // Identify the regex for the SDK currently in the file to be replaced
+            // (e.g., if switching to Next Gen, look for the existing Standard SDK to replace).
+            string targetRegex = isNextGen ? CurrentRegex : NextGenRegex;
+
+            if (Regex.IsMatch(fileContent, targetRegex))
+            {
+                string desiredSpec = isNextGen ? NextGenSpec : CurrentSpec;
+                string newContent = Regex.Replace(fileContent, targetRegex, desiredSpec);
+                Debug.Log($"Updating GoogleMobileAdsDependencies.xml with {desiredSpec}");
+                File.WriteAllText(dependenciesFilePath, newContent);
+                AssetDatabase.Refresh();
+                ResolvePlayServicesDependencies();
+            }
+            else
+            {
+                Debug.LogWarning(
+                    "Could not find existing Google Mobile Ads SDK dependency in " +
+                    "GoogleMobileAdsDependencies.xml to replace.");
+            }
+        }
+    }
+}
+#endif

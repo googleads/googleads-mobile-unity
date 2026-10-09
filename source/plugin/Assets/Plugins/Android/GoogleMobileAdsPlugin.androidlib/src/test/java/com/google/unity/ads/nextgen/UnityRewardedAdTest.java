@@ -1,0 +1,334 @@
+package com.google.unity.ads.nextgen;
+
+import static com.google.common.truth.Truth.assertThat;
+import static com.google.common.util.concurrent.MoreExecutors.directExecutor;
+import static java.util.concurrent.TimeUnit.SECONDS;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+import android.app.Activity;
+import android.os.Bundle;
+import com.google.android.libraries.ads.mobile.sdk.common.AdLoadCallback;
+import com.google.android.libraries.ads.mobile.sdk.common.AdRequest;
+import com.google.android.libraries.ads.mobile.sdk.common.AdValue;
+import com.google.android.libraries.ads.mobile.sdk.common.FullScreenContentError;
+import com.google.android.libraries.ads.mobile.sdk.common.LoadAdError;
+import com.google.android.libraries.ads.mobile.sdk.common.PrecisionType;
+import com.google.android.libraries.ads.mobile.sdk.common.ResponseInfo;
+import com.google.android.libraries.ads.mobile.sdk.rewarded.OnUserEarnedRewardListener;
+import com.google.android.libraries.ads.mobile.sdk.rewarded.RewardItem;
+import com.google.android.libraries.ads.mobile.sdk.rewarded.RewardedAd;
+import com.google.android.libraries.ads.mobile.sdk.rewarded.RewardedAdEventCallback;
+import com.google.android.libraries.ads.mobile.sdk.rewarded.ServerSideVerificationOptions;
+import java.util.ArrayList;
+import java.util.concurrent.CountDownLatch;
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.junit.MockitoJUnit;
+import org.mockito.junit.MockitoRule;
+import org.robolectric.Robolectric;
+import org.robolectric.RobolectricTestRunner;
+
+/** Unit tests for {@link UnityRewardedAd}. */
+@RunWith(RobolectricTestRunner.class)
+public final class UnityRewardedAdTest {
+
+  @Rule public final MockitoRule mocks = MockitoJUnit.rule();
+
+  // TODO(b/446202827): Refactor to use a common base class for all ad tests.
+  private Activity activity;
+  @Mock private UnityRewardedAdCallback mockCallback;
+  @Mock private RewardedAd mockRewardedAd;
+  @Mock private AdWrapper<RewardedAd> mockAdWrapper;
+  @Mock private AdRequest mockAdRequest;
+
+  @Captor private ArgumentCaptor<AdRequest> adRequestCaptor;
+  @Captor private ArgumentCaptor<AdLoadCallback<RewardedAd>> adLoadCallbackCaptor;
+  @Captor private ArgumentCaptor<RewardedAdEventCallback> adEventCallbackCaptor;
+  @Captor private ArgumentCaptor<OnUserEarnedRewardListener> rewardListenerCaptor;
+
+  private UnityRewardedAd unityRewardedAd;
+
+  @Before
+  public void setUp() {
+    activity = Robolectric.buildActivity(Activity.class).create().get();
+    unityRewardedAd = new UnityRewardedAd(activity, mockCallback, mockAdWrapper, directExecutor());
+  }
+
+  @Test
+  public void testLoadAd_onAdLoaded_invokesCallback() {
+    unityRewardedAd.load(mockAdRequest);
+
+    verify(mockAdWrapper).load(adRequestCaptor.capture(), adLoadCallbackCaptor.capture());
+    adLoadCallbackCaptor.getValue().onAdLoaded(mockRewardedAd);
+
+    verify(mockCallback).onRewardedAdLoaded();
+  }
+
+  @Test
+  public void testLoadAd_onAdFailedToLoad_invokesCallback() {
+    unityRewardedAd.load(mockAdRequest);
+
+    verify(mockAdWrapper).load(adRequestCaptor.capture(), adLoadCallbackCaptor.capture());
+    LoadAdError loadAdError = new LoadAdError(LoadAdError.ErrorCode.INTERNAL_ERROR, "domain", null);
+    adLoadCallbackCaptor.getValue().onAdFailedToLoad(loadAdError);
+
+    verify(mockCallback).onRewardedAdFailedToLoad(loadAdError);
+  }
+
+  @Test
+  public void testLoad_runsOnCallingThread_notUIThread() throws Exception {
+    final Thread[] invocationThread = new Thread[1];
+    CountDownLatch latch = new CountDownLatch(1);
+
+    Mockito.doAnswer(
+            invocation -> {
+              invocationThread[0] = Thread.currentThread();
+              latch.countDown();
+              return null;
+            })
+        .when(mockAdWrapper)
+        .load(Mockito.any(), Mockito.any());
+
+    Thread backgroundThread = new Thread(() -> unityRewardedAd.load(mockAdRequest));
+    backgroundThread.start();
+
+    assertThat(latch.await(5, SECONDS)).isTrue();
+    assertThat(invocationThread[0]).isEqualTo(backgroundThread);
+    assertThat(invocationThread[0]).isNotEqualTo(activity.getMainLooper().getThread());
+  }
+
+  @Test
+  public void testShow_whenAdNotLoaded_doesNotThrow() {
+    unityRewardedAd.show();
+  }
+
+  @Test
+  @SuppressWarnings("EnumOrdinal")
+  public void testShow_whenAdLoaded_showsAdAndTriggersCallbacks() {
+    // Simulate a successful ad load.
+    unityRewardedAd.load(mockAdRequest);
+    verify(mockAdWrapper).load(adRequestCaptor.capture(), adLoadCallbackCaptor.capture());
+    adLoadCallbackCaptor.getValue().onAdLoaded(mockRewardedAd);
+
+    // Call show().
+    unityRewardedAd.show();
+
+    // Verify the ad is shown and the event callback is set.
+    verify(mockRewardedAd).setAdEventCallback(adEventCallbackCaptor.capture());
+    verify(mockRewardedAd).show(Mockito.eq(activity), rewardListenerCaptor.capture());
+    // Verify immersive mode was set on the ad.
+    verify(mockRewardedAd).setImmersiveMode(true);
+
+    // Trigger and verify all event callbacks.
+    RewardedAdEventCallback eventCallback = adEventCallbackCaptor.getValue();
+
+    eventCallback.onAdShowedFullScreenContent();
+    verify(mockCallback).onAdShowedFullScreenContent();
+
+    FullScreenContentError fullScreenContentError =
+        new FullScreenContentError(
+            FullScreenContentError.ErrorCode.INTERNAL_ERROR, "error message", null);
+    eventCallback.onAdFailedToShowFullScreenContent(fullScreenContentError);
+    verify(mockCallback).onAdFailedToShowFullScreenContent(fullScreenContentError);
+
+    eventCallback.onAdDismissedFullScreenContent();
+    verify(mockCallback).onAdDismissedFullScreenContent();
+    assertThat(unityRewardedAd.getRewardedAd()).isNull();
+
+    PrecisionType precisionType = PrecisionType.PRECISE;
+    long valueMicros = 1000000L;
+    String currencyCode = "USD";
+    eventCallback.onAdPaid(new AdValue(precisionType, valueMicros, currencyCode));
+    verify(mockCallback).onPaidEvent(precisionType.ordinal(), valueMicros, currencyCode);
+
+    eventCallback.onAdImpression();
+    verify(mockCallback).onAdImpression();
+
+    eventCallback.onAdClicked();
+    verify(mockCallback).onAdClicked();
+    OnUserEarnedRewardListener rewardListener = rewardListenerCaptor.getValue();
+    RewardItem rewardItem =
+        new RewardItem() {
+          @Override
+          public int getAmount() {
+            return 10;
+          }
+
+          @Override
+          public String getType() {
+            return "coins";
+          }
+        };
+    rewardListener.onUserEarnedReward(rewardItem);
+    verify(mockCallback).onUserEarnedReward("coins", 10);
+  }
+
+  @Test
+  public void testGetRewardItem_whenAdNotLoaded_returnsNull() {
+    assertThat(unityRewardedAd.getRewardItem()).isNull();
+  }
+
+  @Test
+  public void testGetRewardItem_whenAdLoaded_returnsRewardItem() {
+    RewardItem rewardItem =
+        new RewardItem() {
+          @Override
+          public int getAmount() {
+            return 10;
+          }
+
+          @Override
+          public String getType() {
+            return "coins";
+          }
+        };
+    when(mockRewardedAd.getRewardItem()).thenReturn(rewardItem);
+
+    // Simulate a successful ad load.
+    unityRewardedAd.load(mockAdRequest);
+    verify(mockAdWrapper).load(Mockito.eq(mockAdRequest), adLoadCallbackCaptor.capture());
+    adLoadCallbackCaptor.getValue().onAdLoaded(mockRewardedAd);
+
+    // Verify that getRewardItem() was called on the underlying ad and its result is returned.
+    RewardItem actualRewardItem = unityRewardedAd.getRewardItem();
+    verify(mockRewardedAd).getRewardItem();
+    assertThat(actualRewardItem).isEqualTo(rewardItem);
+  }
+
+  @Test
+  public void testGetResponseInfo_whenAdNotLoaded_returnsNull() {
+    assertThat(unityRewardedAd.getResponseInfo()).isNull();
+  }
+
+  @Test
+  public void testGetResponseInfo_whenAdLoaded_returnsResponseInfo() {
+    ResponseInfo responseInfo =
+        new ResponseInfo("AdapterName", "responseId", new Bundle(), null, new ArrayList<>());
+    when(mockRewardedAd.getResponseInfo()).thenReturn(responseInfo);
+
+    // Simulate a successful ad load.
+    unityRewardedAd.load(mockAdRequest);
+    verify(mockAdWrapper).load(Mockito.eq(mockAdRequest), adLoadCallbackCaptor.capture());
+    adLoadCallbackCaptor.getValue().onAdLoaded(mockRewardedAd);
+
+    // Verify that getResponseInfo() was called on the underlying ad and its result is returned.
+    ResponseInfo actualResponseInfo = unityRewardedAd.getResponseInfo();
+    verify(mockRewardedAd).getResponseInfo();
+    assertThat(actualResponseInfo).isEqualTo(responseInfo);
+  }
+
+  @Test
+  public void testGetPlacementId_whenAdNotLoaded_returnsZero() {
+    assertThat(unityRewardedAd.getPlacementId()).isEqualTo(0);
+    verify(mockRewardedAd, Mockito.never()).getPlacementId();
+  }
+
+  @Test
+  public void testGetPlacementId_returnsPlacementId() {
+    unityRewardedAd.load(mockAdRequest);
+    // Capture the callback and simulate successful ad load.
+    verify(mockAdWrapper).load(Mockito.eq(mockAdRequest), adLoadCallbackCaptor.capture());
+    adLoadCallbackCaptor.getValue().onAdLoaded(mockRewardedAd);
+
+    // Mock a placement ID to be returned by the underlying ad.
+    long placementId = 12345L;
+    when(mockRewardedAd.getPlacementId()).thenReturn(placementId);
+
+    // Verify that the placement ID returned is same as the one returned by the underlying ad.
+    long result = unityRewardedAd.getPlacementId();
+    assertThat(result).isEqualTo(placementId);
+  }
+
+  @Test
+  public void testSetPlacementId_whenAdNotLoaded_doesNothing() {
+    unityRewardedAd.setPlacementId(12345L);
+    verify(mockRewardedAd, Mockito.never()).setPlacementId(Mockito.anyLong());
+  }
+
+  @Test
+  public void testSetPlacementId_setsPlacementId() {
+    unityRewardedAd.load(mockAdRequest);
+    // Capture the callback and simulate successful ad load.
+    verify(mockAdWrapper).load(Mockito.eq(mockAdRequest), adLoadCallbackCaptor.capture());
+    adLoadCallbackCaptor.getValue().onAdLoaded(mockRewardedAd);
+
+    // Mock a placement ID to be set by the rewarded ad.
+    long placementId = 54321L;
+    unityRewardedAd.setPlacementId(placementId);
+
+    // Verify that setPlacementId was called on the underlying ad.
+    verify(mockRewardedAd).setPlacementId(placementId);
+  }
+
+  @Test
+  public void testSetServerSideVerificationOptions_whenAdNotLoaded_doesNothing() {
+    ServerSideVerificationOptions options =
+        new ServerSideVerificationOptions("userId", "customData");
+    unityRewardedAd.setServerSideVerificationOptions(options);
+    verify(mockRewardedAd, Mockito.never()).setServerSideVerificationOptions(Mockito.any());
+  }
+
+  @Test
+  public void testSetServerSideVerificationOptions_setsOptions() {
+    unityRewardedAd.load(mockAdRequest);
+    // Capture the callback and simulate successful ad load.
+    verify(mockAdWrapper).load(Mockito.eq(mockAdRequest), adLoadCallbackCaptor.capture());
+    adLoadCallbackCaptor.getValue().onAdLoaded(mockRewardedAd);
+
+    ServerSideVerificationOptions options =
+        new ServerSideVerificationOptions("userId", "customData");
+    unityRewardedAd.setServerSideVerificationOptions(options);
+
+    // Verify that setServerSideVerificationOptions was called on the underlying ad.
+    verify(mockRewardedAd).setServerSideVerificationOptions(options);
+  }
+
+  @Test
+  public void testConstructorWithRewardedAd() {
+    ResponseInfo responseInfo =
+        new ResponseInfo("AdapterName", "responseId", new Bundle(), null, new ArrayList<>());
+    when(mockRewardedAd.getResponseInfo()).thenReturn(responseInfo);
+    unityRewardedAd = new UnityRewardedAd(activity, mockCallback, mockRewardedAd);
+    assertThat(unityRewardedAd.getResponseInfo()).isEqualTo(responseInfo);
+  }
+
+  @Test
+  public void testPublicConstructor() {
+    // verifies creation doesn't crash
+    UnityRewardedAd ad = new UnityRewardedAd(activity, mockCallback);
+    assertThat(ad).isNotNull();
+  }
+
+  // Extra Test for AdWrapper, can be used for any ad type.
+  @Test
+  public void testAdWrapper_mechanics() {
+    AdWrapper<String> dummyWrapper = new AdWrapper<>((request, callback) -> {});
+
+    dummyWrapper.load(mockAdRequest, null);
+  }
+
+  @Test
+  public void testGetAdUnitId_whenAdNotLoaded_returnsNull() {
+    String adUnitId = unityRewardedAd.getAdUnitId();
+
+    assertThat(adUnitId).isNull();
+  }
+
+  @Test
+  public void testGetAdUnitId_whenAdLoaded_returnsAdUnitId() {
+    when(mockRewardedAd.getAdUnitId()).thenReturn("test-ad-unit");
+    unityRewardedAd = new UnityRewardedAd(activity, mockCallback, mockRewardedAd);
+
+    String adUnitId = unityRewardedAd.getAdUnitId();
+
+    verify(mockRewardedAd).getAdUnitId();
+    assertThat(adUnitId).isEqualTo("test-ad-unit");
+  }
+}

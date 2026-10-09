@@ -192,10 +192,39 @@ namespace GoogleMobileAds.Api
             }
         }
 
+        /// <summary>
+        /// A long integer provided by the AdMob UI for the configured placement.
+        /// To ensure this placement ID is included in reporting, set a value before loading the ad.
+        /// The default value of 0 also indicates the placement ID is not set.
+        /// </summary>
+        public long PlacementId
+        {
+            get
+            {
+                return _client != null ? _client.PlacementId : 0;
+            }
+
+            set
+            {
+                if (_client != null)
+                {
+                    _client.PlacementId = value;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Indicates whether the last loaded ad is a collapsible banner.
+        /// </summary>
+        public bool IsCollapsible()
+        {
+            return _client == null ? false : _client.IsCollapsible();
+        }
+
         protected internal virtual void ConfigureBannerEvents()
         {
 
-            _client.OnAdLoaded += (sender, args) =>
+            _client.OnAdLoaded += () =>
             {
                 MobileAds.RaiseAction(() =>
                 {
@@ -206,7 +235,7 @@ namespace GoogleMobileAds.Api
                 });
             };
 
-            _client.OnAdFailedToLoad += (sender, args) =>
+            _client.OnAdFailedToLoad += (args) =>
             {
                 LoadAdError loadAdError = new LoadAdError(args.LoadAdErrorClient);
                 MobileAds.RaiseAction(() =>
@@ -218,7 +247,7 @@ namespace GoogleMobileAds.Api
                 });
             };
 
-            _client.OnAdOpening += (sender, args) =>
+            _client.OnAdOpening += () =>
             {
                 MobileAds.RaiseAction(() =>
                 {
@@ -229,7 +258,7 @@ namespace GoogleMobileAds.Api
                 });
             };
 
-            _client.OnAdClosed += (sender, args) =>
+            _client.OnAdClosed += () =>
             {
                 MobileAds.RaiseAction(() =>
                 {

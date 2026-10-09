@@ -52,6 +52,14 @@ void GADUSetRequestParametersTagForUnderAgeOfConsent(
   internalRequestParameters.tagForUnderAgeOfConsent = tagForUnderAgeOfConsent;
 }
 
+/// Set GADURequestParameters consentSyncID
+void GADUSetRequestParametersConsentSyncID(
+    GADUTypeRequestParametersRef requestParameters, const char *consentSyncID) {
+  GADURequestParameters *internalRequestParameters =
+      (__bridge GADURequestParameters *)requestParameters;
+  internalRequestParameters.consentSyncID = GADUStringFromUTF8String(consentSyncID);
+}
+
 /// Create an empty GADUDebugSettings.
 GADUTypeDebugSettingsRef GADUCreateDebugSettings() {
   GADUDebugSettings *debugSettings = [[GADUDebugSettings alloc] init];

@@ -3,8 +3,7 @@
     "references": [
         "GoogleMobileAds.Core",
         "GoogleMobileAds.Common",
-        "GoogleMobileAds.Android",
-        "GoogleMobileAds.iOS"
+        "GoogleMobileAds.Prerelease.Common"
     ],
     "includePlatforms": [],
     "excludePlatforms": []

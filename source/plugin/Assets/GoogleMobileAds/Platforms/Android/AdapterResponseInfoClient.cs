@@ -12,12 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
-using GoogleMobileAds.Api;
 using GoogleMobileAds.Common;
 
 namespace GoogleMobileAds.Android
@@ -35,7 +32,9 @@ namespace GoogleMobileAds.Android
         {
             get
             {
-                return _adapterResponseInfo.Call<string>("getAdapterClassName");
+                return _adapterResponseInfo == null
+                        ? string.Empty
+                        : _adapterResponseInfo.Call<string>("getAdapterClassName");
             }
         }
 
@@ -43,7 +42,9 @@ namespace GoogleMobileAds.Android
         {
             get
             {
-                return _adapterResponseInfo.Call<string>("getAdSourceId");
+                return _adapterResponseInfo == null
+                        ? string.Empty
+                        : _adapterResponseInfo.Call<string>("getAdSourceId");
             }
         }
 
@@ -51,7 +52,9 @@ namespace GoogleMobileAds.Android
         {
             get
             {
-                return _adapterResponseInfo.Call<string>("getAdSourceName");
+                return _adapterResponseInfo == null
+                        ? string.Empty
+                        : _adapterResponseInfo.Call<string>("getAdSourceName");
             }
         }
 
@@ -59,7 +62,9 @@ namespace GoogleMobileAds.Android
         {
             get
             {
-                return _adapterResponseInfo.Call<string>("getAdSourceInstanceId");
+                return _adapterResponseInfo == null
+                        ? string.Empty
+                        : _adapterResponseInfo.Call<string>("getAdSourceInstanceId");
             }
         }
 
@@ -67,7 +72,9 @@ namespace GoogleMobileAds.Android
         {
             get
             {
-                return _adapterResponseInfo.Call<string>("getAdSourceInstanceName");
+                return _adapterResponseInfo == null
+                        ? string.Empty
+                        : _adapterResponseInfo.Call<string>("getAdSourceInstanceName");
             }
         }
 
@@ -75,7 +82,9 @@ namespace GoogleMobileAds.Android
         {
             get
             {
-                return _adapterResponseInfo.Call<long>("getLatencyMillis");
+                return _adapterResponseInfo == null
+                        ? 0
+                        : _adapterResponseInfo.Call<long>("getLatencyMillis");
             }
         }
 
@@ -83,12 +92,15 @@ namespace GoogleMobileAds.Android
         {
             get
             {
-                var androidBundle =
-                        _adapterResponseInfo.Call<AndroidJavaObject>("getCredentials");
-
+                var emptyAdUnitMapping = new Dictionary<string, string>();
+                if (_adapterResponseInfo == null)
+                {
+                    return emptyAdUnitMapping;
+                }
+                var androidBundle = _adapterResponseInfo.Call<AndroidJavaObject>("getCredentials");
                 if (androidBundle == null)
                 {
-                    return new Dictionary<string, string>();
+                    return emptyAdUnitMapping;
                 }
                 return Utils.GetDictionary(androidBundle);
             }
@@ -98,15 +110,19 @@ namespace GoogleMobileAds.Android
         {
             get
             {
-                var androidError =
-                        _adapterResponseInfo.Call<AndroidJavaObject>("getAdError");
+                if (_adapterResponseInfo == null)
+                {
+                    return null;
+                }
+                var androidError = _adapterResponseInfo.Call<AndroidJavaObject>("getAdError");
                 return androidError == null ? null : new AdErrorClient(androidError);
             }
         }
 
         public override string ToString()
         {
-            return _adapterResponseInfo.Call<string>("toString");
+            return _adapterResponseInfo == null ? string.Empty
+                    : _adapterResponseInfo.Call<string>("toString");
         }
     }
 }

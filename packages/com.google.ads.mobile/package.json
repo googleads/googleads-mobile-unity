@@ -1,6 +1,6 @@
 {
   "name": "com.google.ads.mobile",
-  "version": "9.1.0",
+  "version": "11.5.0",
   "displayName": "Google Mobile Ads for Unity",
   "keywords": [
     "Google",
@@ -14,8 +14,17 @@
     "url": "https://github.com/googleads/googleads-mobile-unity"
   },
   "description": "The Google Mobile Ads package allows you to easily monetize your Unity apps for iOS and Android using Google's native iOS and Android Mobile SDKs via a unified C# API in Unity.",
-  "unity": "2019.4",
+  "unity": "2022.3",
+  "unityRelease": "0f1",
+  "samples": [
+    {
+      "displayName": "GMA Unity Sample App",
+      "description": "Sample app to test different ad formats offered as part of the GMA Unity plugin.",
+      "path": "Samples~/HelloWorld"
+    }
+  ],
   "dependencies": {
-    "com.google.external-dependency-manager": "1.2.179"
+    "com.unity.external-dependency-manager": "2.1.0",
+    "com.unity.modules.androidjni": "1.0.0"
   }
 }

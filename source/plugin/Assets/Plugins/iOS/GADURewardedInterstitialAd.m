@@ -16,13 +16,30 @@
   // ResponseInfo object are not released until the ad object is released.
   NSError *_lastLoadError;
   NSError *_lastPresentError;
+  BOOL _adDidDismissCallbackDeferred;
 }
 
 - (instancetype)initWithRewardedInterstitialAdClientReference:
     (GADUTypeRewardedInterstitialAdClientRef *)rewardedInterstitialAdClient {
   self = [super init];
-  _rewardedInterstitialAdClient = rewardedInterstitialAdClient;
+  if (self) {
+    _rewardedInterstitialAdClient = rewardedInterstitialAdClient;
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(handleDidBecomeActive:)
+                                                 name:UIApplicationDidBecomeActiveNotification
+                                               object:nil];
+  }
   return self;
+}
+
+- (void)dealloc {
+  [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+- (void)handleDidBecomeActive:(NSNotification *)notification {
+  if (_adDidDismissCallbackDeferred) {
+    [self adDidDismissFullScreenContent:self.rewardedInterstitialAd];
+  }
 }
 
 - (void)loadWithAdUnitID:(NSString *)adUnit request:(GADRequest *)request {
@@ -78,13 +95,25 @@
                return;
              }
              if (strongSelf.didEarnRewardCallback) {
-               strongSelf.didEarnRewardCallback(
-                   strongSelf.rewardedInterstitialAdClient,
-                   [strongSelf.rewardedInterstitialAd.adReward.type
-                       cStringUsingEncoding:NSUTF8StringEncoding],
-                   strongSelf.rewardedInterstitialAd.adReward.amount.doubleValue);
+               NSString *rewardType = strongSelf.rewardedInterstitialAd.adReward.type;
+               double rewardAmount =
+                   strongSelf.rewardedInterstitialAd.adReward.amount.doubleValue;
+               dispatch_async(dispatch_get_main_queue(), ^{
+                 strongSelf.didEarnRewardCallback(
+                     strongSelf.rewardedInterstitialAdClient,
+                     [rewardType cStringUsingEncoding:NSUTF8StringEncoding],
+                     rewardAmount);
+               });
              }
            }];
+}
+
+- (long)placementID {
+  return _rewardedInterstitialAd.placementID;
+}
+
+- (void)setPlacementID:(long)placementID {
+  _rewardedInterstitialAd.placementID = placementID;
 }
 
 - (GADResponseInfo *)responseInfo {
@@ -121,8 +150,10 @@
     // We are in the middle of the shutdown sequence, and at this point unity runtime is already
     // destroyed. We shall not call unity API, and definitely not script callbacks, so nothing to do
     // here
+    _adDidDismissCallbackDeferred = YES;
     return;
   }
+  _adDidDismissCallbackDeferred = NO;
   if (UnityIsPaused()) {
     UnityPause(NO);
   }

@@ -58,6 +58,26 @@ namespace GoogleMobileAds.Api
         /// </summary>
         public event Action<AdError> OnAdFullScreenContentFailed;
 
+        /// <summary>
+        /// A long integer provided by the AdMob UI for the configured placement.
+        /// To ensure this placement ID is included in reporting, set a value before showing the ad.
+        /// </summary>
+        public long PlacementId
+        {
+            get
+            {
+                return _client != null ? _client.PlacementId : 0;
+            }
+
+            set
+            {
+                if (_client != null)
+                {
+                    _client.PlacementId = value;
+                }
+            }
+        }
+
         private IRewardedInterstitialAdClient _client;
         private bool _canShowAd;
         private Action<Reward> _userRewardEarnedCallback;
@@ -84,14 +104,14 @@ namespace GoogleMobileAds.Api
 
             var client = MobileAds.GetClientFactory().BuildRewardedInterstitialAdClient();
             client.CreateRewardedInterstitialAd();
-            client.OnAdLoaded += (sender, args) =>
+            client.OnAdLoaded += () =>
             {
                 MobileAds.RaiseAction(() =>
                 {
                     adLoadCallback(new RewardedInterstitialAd(client), null);
                 });
             };
-            client.OnAdFailedToLoad += (sender, args) =>
+            client.OnAdFailedToLoad += (args) =>
             {
                 LoadAdError loadAdError = new LoadAdError(args.LoadAdErrorClient);
                 MobileAds.RaiseAction(() =>
@@ -113,7 +133,7 @@ namespace GoogleMobileAds.Api
         /// <summary>
         /// Shows a rewarded interstitial ad.
         /// </summary>
-        /// <param name="userRewardEarnedCallback">
+        /// <param name="userEarnedRewardCallback">
         /// An action to be raised when the user earns a reward.
         /// </param>
         public void Show(Action<Reward> userEarnedRewardCallback)
@@ -138,7 +158,7 @@ namespace GoogleMobileAds.Api
         }
 
         /// <summary>
-        /// The reward item for the loaded rewarded interstital ad.
+        /// The reward item for the loaded rewarded interstitial ad.
         /// </summary>
         public Reward GetRewardItem()
         {
@@ -188,7 +208,7 @@ namespace GoogleMobileAds.Api
                 });
             };
 
-            _client.OnAdDidDismissFullScreenContent += (sender, args) =>
+            _client.OnAdDidDismissFullScreenContent += () =>
             {
                 MobileAds.RaiseAction(() =>
                 {
@@ -199,7 +219,7 @@ namespace GoogleMobileAds.Api
                 });
             };
 
-            _client.OnAdDidPresentFullScreenContent += (sender, args) =>
+            _client.OnAdDidPresentFullScreenContent += () =>
             {
                 MobileAds.RaiseAction(() =>
                 {
@@ -210,7 +230,7 @@ namespace GoogleMobileAds.Api
                 });
             };
 
-            _client.OnAdDidRecordImpression += (sender, args) =>
+            _client.OnAdDidRecordImpression += () =>
             {
                 MobileAds.RaiseAction(() =>
                 {
@@ -221,7 +241,7 @@ namespace GoogleMobileAds.Api
                 });
             };
 
-            _client.OnAdFailedToPresentFullScreenContent += (sender, error) =>
+            _client.OnAdFailedToPresentFullScreenContent += (error) =>
             {
                 var adError = new AdError(error.AdErrorClient);
                 MobileAds.RaiseAction(() =>
@@ -244,7 +264,7 @@ namespace GoogleMobileAds.Api
                 });
             };
 
-            _client.OnUserEarnedReward += (sender, args) =>
+            _client.OnUserEarnedReward += (args) =>
             {
                 MobileAds.RaiseAction(() =>
                 {

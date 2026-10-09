@@ -48,13 +48,13 @@ namespace GoogleMobileAds.iOS
 
         #endregion
 
-        public event EventHandler<EventArgs> OnAdLoaded;
+        public event Action OnAdLoaded;
 
-        public event EventHandler<LoadAdErrorClientEventArgs> OnAdFailedToLoad;
+        public event Action<LoadAdErrorClientEventArgs> OnAdFailedToLoad;
 
-        public event EventHandler<EventArgs> OnAdOpening;
+        public event Action OnAdOpening;
 
-        public event EventHandler<EventArgs> OnAdClosed;
+        public event Action OnAdClosed;
 
         public event Action<AdValue> OnPaidEvent;
 
@@ -79,6 +79,19 @@ namespace GoogleMobileAds.iOS
 
 #region IBannerClient implementation
 
+        // A long integer provided by the AdMob UI for the configured placement.
+        public long PlacementId
+        {
+            get
+            {
+                return Externs.GADUGetBannerViewPlacementID(this.BannerViewPtr);
+            }
+            set
+            {
+                Externs.GADUSetBannerViewPlacementID(this.BannerViewPtr, value);
+            }
+        }
+
         // Creates a banner view.
         public void CreateBannerView(string adUnitId, AdSize adSize, AdPosition position)
         {
@@ -92,6 +105,14 @@ namespace GoogleMobileAds.iOS
                     break;
                 case AdSize.Type.AnchoredAdaptive:
                     this.BannerViewPtr = Externs.GADUCreateAnchoredAdaptiveBannerView(
+                            this.bannerClientPtr,
+                            adUnitId,
+                            adSize.Width,
+                            (int)adSize.Orientation,
+                            (int)position);
+                    break;
+                case AdSize.Type.LargeAnchoredAdaptive:
+                    this.BannerViewPtr = Externs.GADUCreateLargeAnchoredAdaptiveBannerView(
                             this.bannerClientPtr,
                             adUnitId,
                             adSize.Width,
@@ -134,6 +155,15 @@ namespace GoogleMobileAds.iOS
                     break;
                 case AdSize.Type.AnchoredAdaptive:
                     this.BannerViewPtr = Externs.GADUCreateAnchoredAdaptiveBannerViewWithCustomPosition(
+                        this.bannerClientPtr,
+                        adUnitId,
+                        adSize.Width,
+                        (int)adSize.Orientation,
+                        x,
+                        y);
+                    break;
+                case AdSize.Type.LargeAnchoredAdaptive:
+                    this.BannerViewPtr = Externs.GADUCreateLargeAnchoredAdaptiveBannerViewWithCustomPosition(
                         this.bannerClientPtr,
                         adUnitId,
                         adSize.Width,
@@ -223,6 +253,12 @@ namespace GoogleMobileAds.iOS
             Externs.GADUSetBannerViewCustomPosition(this.BannerViewPtr, x, y);
         }
 
+        // Indicates whether the last loaded ad is a collapsible banner.
+        public bool IsCollapsible()
+        {
+            return Externs.GADUIsBannerViewCollapsible(this.BannerViewPtr);
+        }
+
         public IResponseInfoClient GetResponseInfoClient()
         {
             return new ResponseInfoClient(ResponseInfoClientType.AdLoaded, this.BannerViewPtr);
@@ -249,7 +285,7 @@ namespace GoogleMobileAds.iOS
             BannerClient client = IntPtrToBannerClient(bannerClient);
             if (client.OnAdLoaded != null)
             {
-                client.OnAdLoaded(client, EventArgs.Empty);
+                client.OnAdLoaded();
             }
         }
 
@@ -264,7 +300,7 @@ namespace GoogleMobileAds.iOS
                 {
                     LoadAdErrorClient = new LoadAdErrorClient(error)
                 };
-                client.OnAdFailedToLoad(client, args);
+                client.OnAdFailedToLoad(args);
             }
         }
 
@@ -274,7 +310,7 @@ namespace GoogleMobileAds.iOS
             BannerClient client = IntPtrToBannerClient(bannerClient);
             if (client.OnAdOpening != null)
             {
-                client.OnAdOpening(client, EventArgs.Empty);
+                client.OnAdOpening();
             }
         }
 
@@ -284,7 +320,7 @@ namespace GoogleMobileAds.iOS
             BannerClient client = IntPtrToBannerClient(bannerClient);
             if (client.OnAdClosed != null)
             {
-                client.OnAdClosed(client, EventArgs.Empty);
+                client.OnAdClosed();
             }
         }
 

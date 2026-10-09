@@ -21,13 +21,13 @@ namespace GoogleMobileAds.Common
     public interface IBannerClient
     {
         // Ad event fired when the banner ad has been received.
-        event EventHandler<EventArgs> OnAdLoaded;
+        event Action OnAdLoaded;
         // Ad event fired when the banner ad has failed to load.
-        event EventHandler<LoadAdErrorClientEventArgs> OnAdFailedToLoad;
+        event Action<LoadAdErrorClientEventArgs> OnAdFailedToLoad;
         // Ad event fired when the banner ad is opened.
-        event EventHandler<EventArgs> OnAdOpening;
+        event Action OnAdOpening;
         // Ad event fired when the banner ad is closed.
-        event EventHandler<EventArgs> OnAdClosed;
+        event Action OnAdClosed;
         // Ad event fired when the banner ad is estimated to have earned money.
         event Action<AdValue> OnPaidEvent;
         // Ad event fired when the banner ad is clicked.
@@ -68,9 +68,13 @@ namespace GoogleMobileAds.Common
         // Set the position of the banner view using custom position.
         void SetPosition(int x, int y);
 
+        // Indicates whether the last loaded ad is a collapsible banner.
+        bool IsCollapsible();
+
         // Returns ad request Response info client.
         IResponseInfoClient GetResponseInfoClient();
 
-
+        // A long integer provided by the AdMob UI for the configured placement.
+        long PlacementId { get; set; }
     }
 }

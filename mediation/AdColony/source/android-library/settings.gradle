@@ -1,3 +1,0 @@
-include 'adcolony'
-include 'app'
-project(':app').projectDir = new File('../../../../source/android-library/app')

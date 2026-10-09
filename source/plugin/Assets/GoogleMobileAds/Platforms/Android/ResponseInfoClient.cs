@@ -12,8 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System;
-using System.Linq;
 using UnityEngine;
 
 using GoogleMobileAds.Common;
@@ -27,7 +25,7 @@ namespace GoogleMobileAds.Android
 
         public ResponseInfoClient(ResponseInfoClientType type, AndroidJavaObject androidJavaObject)
         {
-            _androidResponseInfo = androidJavaObject.Call<AndroidJavaObject>("getResponseInfo");
+            _androidResponseInfo = androidJavaObject;
         }
 
         public List<IAdapterResponseInfoClient> GetAdapterResponses()
@@ -40,13 +38,21 @@ namespace GoogleMobileAds.Android
 
             var androidAdapterList =
                 _androidResponseInfo.Call<AndroidJavaObject>("getAdapterResponses");
+            if (androidAdapterList == null)
+            {
+                return adapterList;
+            }
+
             var size = androidAdapterList.Call<int>("size");
             for (int i = 0; i < size; i++)
             {
                 var androidAdapterResponseInfo =
                         androidAdapterList.Call<AndroidJavaObject>("get", i);
-                var client = new AdapterResponseInfoClient(androidAdapterResponseInfo);
-                adapterList.Add(client);
+                if (androidAdapterResponseInfo != null)
+                {
+                    var client = new AdapterResponseInfoClient(androidAdapterResponseInfo);
+                    adapterList.Add(client);
+                }
             }
             return adapterList;
         }
@@ -59,7 +65,7 @@ namespace GoogleMobileAds.Android
             }
 
             var androidAdapterResponseInfo =
-                _androidResponseInfo.Call<AndroidJavaObject>("getLoadedAdapterResponseInfo");
+                    _androidResponseInfo.Call<AndroidJavaObject>("getLoadedAdapterResponseInfo");
 
             return androidAdapterResponseInfo == null
                     ? null

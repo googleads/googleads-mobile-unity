@@ -22,5 +22,11 @@ namespace GoogleMobileAds.Common
     {
         // Ad event fired when the ad sends a message to the application.
         event Action<AppEvent> OnAppEvent;
+
+#if GMA_PREVIEW_FEATURES
+
+        // Returns the next pre-loaded ad manager interstitial ad and null if no ad is available.
+        IAdManagerInterstitialClient PollAdManagerAd(string adUnitId);
+#endif
     }
 }

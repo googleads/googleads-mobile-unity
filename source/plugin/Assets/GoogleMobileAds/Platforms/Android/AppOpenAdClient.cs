@@ -23,7 +23,7 @@ namespace GoogleMobileAds.Android
 {
     public class AppOpenAdClient : AndroidJavaProxy, IAppOpenAdClient
     {
-        private AndroidJavaObject androidAppOpenAd;
+        internal AndroidJavaObject androidAppOpenAd;
 
         public AppOpenAdClient() : base(Utils.UnityAppOpenAdCallbackClassName)
         {
@@ -35,21 +35,32 @@ namespace GoogleMobileAds.Android
 
         #region IAppOpenClient implementation
 
-        public event EventHandler<EventArgs> OnAdLoaded;
+        public event Action OnAdLoaded;
 
-        public event EventHandler<LoadAdErrorClientEventArgs> OnAdFailedToLoad;
+        public event Action<LoadAdErrorClientEventArgs> OnAdFailedToLoad;
 
         public event Action<AdValue> OnPaidEvent;
 
-        public event EventHandler<AdErrorClientEventArgs> OnAdFailedToPresentFullScreenContent;
+        public event Action<AdErrorClientEventArgs> OnAdFailedToPresentFullScreenContent;
 
-        public event EventHandler<EventArgs> OnAdDidPresentFullScreenContent;
+        public event Action OnAdDidPresentFullScreenContent;
 
-        public event EventHandler<EventArgs> OnAdDidDismissFullScreenContent;
+        public event Action OnAdDidDismissFullScreenContent;
 
-        public event EventHandler<EventArgs> OnAdDidRecordImpression;
+        public event Action OnAdDidRecordImpression;
 
         public event Action OnAdClicked;
+
+        public long PlacementId {
+            get
+            {
+                return androidAppOpenAd.Call<long>("getPlacementId");
+            }
+            set
+            {
+                androidAppOpenAd.Call("setPlacementId", value);
+            }
+        }
 
         public void CreateAppOpenAd()
         {
@@ -72,9 +83,26 @@ namespace GoogleMobileAds.Android
             return this.androidAppOpenAd.Call<string>("getAdUnitId");
         }
 
+#if GMA_PREVIEW_FEATURES
+
+        public bool IsAdAvailable(string adUnitId)
+        {
+            return this.androidAppOpenAd.Call<bool>("isAdAvailable", adUnitId);
+        }
+
+        public IAppOpenAdClient PollAd(string adUnitId)
+        {
+            this.androidAppOpenAd.Call("pollAd", adUnitId);
+            return this;
+        }
+
+#endif
+
         public IResponseInfoClient GetResponseInfoClient()
         {
-            return new ResponseInfoClient(ResponseInfoClientType.AdLoaded, this.androidAppOpenAd);
+            var responseInfoJavaObject = androidAppOpenAd.Call<AndroidJavaObject>(
+                    "getResponseInfo");
+            return new ResponseInfoClient(ResponseInfoClientType.AdLoaded, responseInfoJavaObject);
         }
 
         public void DestroyAppOpenAd()
@@ -90,7 +118,7 @@ namespace GoogleMobileAds.Android
         {
             if (this.OnAdLoaded != null)
             {
-                this.OnAdLoaded(this, EventArgs.Empty);
+                this.OnAdLoaded();
             }
         }
 
@@ -102,7 +130,7 @@ namespace GoogleMobileAds.Android
                 {
                     LoadAdErrorClient = new LoadAdErrorClient(error),
                 };
-                this.OnAdFailedToLoad(this, args);
+                this.OnAdFailedToLoad(args);
             }
         }
 
@@ -114,7 +142,7 @@ namespace GoogleMobileAds.Android
                 {
                     AdErrorClient = new AdErrorClient(error),
                 };
-                this.OnAdFailedToPresentFullScreenContent(this, args);
+                this.OnAdFailedToPresentFullScreenContent(args);
             }
         }
 
@@ -122,7 +150,7 @@ namespace GoogleMobileAds.Android
         {
             if (this.OnAdDidPresentFullScreenContent != null)
             {
-                this.OnAdDidPresentFullScreenContent(this, EventArgs.Empty);
+                this.OnAdDidPresentFullScreenContent();
             }
         }
 
@@ -130,7 +158,7 @@ namespace GoogleMobileAds.Android
         {
             if (this.OnAdDidDismissFullScreenContent != null)
             {
-                this.OnAdDidDismissFullScreenContent(this, EventArgs.Empty);
+                this.OnAdDidDismissFullScreenContent();
             }
         }
 
@@ -138,7 +166,7 @@ namespace GoogleMobileAds.Android
         {
             if (this.OnAdDidRecordImpression != null)
             {
-                this.OnAdDidRecordImpression(this, EventArgs.Empty);
+                this.OnAdDidRecordImpression();
             }
         }
 

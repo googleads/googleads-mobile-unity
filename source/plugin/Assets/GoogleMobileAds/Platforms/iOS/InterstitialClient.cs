@@ -53,21 +53,34 @@ namespace GoogleMobileAds.iOS
 
 #endregion
 
-        public event EventHandler<EventArgs> OnAdLoaded;
+        public event Action OnAdLoaded;
 
-        public event EventHandler<LoadAdErrorClientEventArgs> OnAdFailedToLoad;
+        public event Action<LoadAdErrorClientEventArgs> OnAdFailedToLoad;
 
         public event Action<AdValue> OnPaidEvent;
 
-        public event EventHandler<AdErrorClientEventArgs> OnAdFailedToPresentFullScreenContent;
+        public event Action<AdErrorClientEventArgs> OnAdFailedToPresentFullScreenContent;
 
-        public event EventHandler<EventArgs> OnAdDidPresentFullScreenContent;
+        public event Action OnAdDidPresentFullScreenContent;
 
-        public event EventHandler<EventArgs> OnAdDidDismissFullScreenContent;
+        public event Action OnAdDidDismissFullScreenContent;
 
-        public event EventHandler<EventArgs> OnAdDidRecordImpression;
+        public event Action OnAdDidRecordImpression;
 
         public event Action OnAdClicked;
+
+        // A long integer provided by the AdMob UI for the configured placement.
+        public long PlacementId
+        {
+            get
+            {
+                return Externs.GADUGetInterstitialAdPlacementID(InterstitialPtr);
+            }
+            set
+            {
+                Externs.GADUSetInterstitialAdPlacementID(InterstitialPtr, value);
+            }
+        }
 
         // This property should be used when setting the interstitialPtr.
         private IntPtr InterstitialPtr
@@ -82,6 +95,24 @@ namespace GoogleMobileAds.iOS
                 Externs.GADURelease(this.interstitialPtr);
                 this.interstitialPtr = value;
             }
+        }
+
+        internal void CreateInterstitialAdWithReference(IntPtr interstitialAdClientRef,
+                                                        IntPtr interstitialAdRef)
+        {
+            interstitialClientPtr = interstitialAdClientRef;
+            InterstitialPtr = interstitialAdRef;
+
+            Externs.GADUSetInterstitialCallbacks(
+                InterstitialPtr,
+                InterstitialLoadedCallback,
+                InterstitialFailedToLoadCallback,
+                AdWillPresentFullScreenContentCallback,
+                AdFailedToPresentFullScreenContentCallback,
+                AdDidDismissFullScreenContentCallback,
+                AdDidRecordImpressionCallback,
+                AdDidRecordClickCallback,
+                InterstitialPaidEventCallback);
         }
 
 #region IInterstitialClient implementation
@@ -101,6 +132,19 @@ namespace GoogleMobileAds.iOS
                 AdDidRecordImpressionCallback,
                 AdDidRecordClickCallback,
                 InterstitialPaidEventCallback);
+        }
+
+        // Verify if an interstitial ad is preloaded and available to show.
+        public bool IsAdAvailable(string adUnitId)
+        {
+            return Externs.GADUInterstitialIsPreloadedAdAvailable(adUnitId);
+        }
+
+        // Returns the next pre-loaded interstitial ad and null if no ad is available.
+        public IInterstitialClient PollAd(string adUnitId)
+        {
+            Externs.GADUInterstitialPreloadedAdWithAdUnitID(this.InterstitialPtr, adUnitId);
+            return this;
         }
 
         public void LoadAd(string adUnitID, AdRequest request) {
@@ -135,6 +179,10 @@ namespace GoogleMobileAds.iOS
         public void Dispose()
         {
             this.DestroyInterstitial();
+            if (this.interstitialClientPtr == IntPtr.Zero)
+            {
+                return;
+            }
             ((GCHandle)this.interstitialClientPtr).Free();
         }
 
@@ -153,7 +201,7 @@ namespace GoogleMobileAds.iOS
             InterstitialClient client = IntPtrToInterstitialClient(interstitialClient);
             if (client.OnAdLoaded != null)
             {
-                client.OnAdLoaded(client, EventArgs.Empty);
+                client.OnAdLoaded();
             }
         }
 
@@ -168,7 +216,7 @@ namespace GoogleMobileAds.iOS
                 {
                     LoadAdErrorClient = new LoadAdErrorClient(error)
                 };
-                client.OnAdFailedToLoad(client, args);
+                client.OnAdFailedToLoad(args);
             }
         }
 
@@ -199,7 +247,7 @@ namespace GoogleMobileAds.iOS
                 {
                     AdErrorClient = new AdErrorClient(error)
                 };
-                client.OnAdFailedToPresentFullScreenContent(client, args);
+                client.OnAdFailedToPresentFullScreenContent(args);
             }
         }
 
@@ -209,7 +257,7 @@ namespace GoogleMobileAds.iOS
             InterstitialClient client = IntPtrToInterstitialClient(interstitialClient);
             if (client.OnAdDidPresentFullScreenContent != null)
             {
-                client.OnAdDidPresentFullScreenContent(client, EventArgs.Empty);
+                client.OnAdDidPresentFullScreenContent();
             }
         }
 
@@ -219,7 +267,7 @@ namespace GoogleMobileAds.iOS
             InterstitialClient client = IntPtrToInterstitialClient(interstitialClient);
             if (client.OnAdDidDismissFullScreenContent != null)
             {
-                client.OnAdDidDismissFullScreenContent(client, EventArgs.Empty);
+                client.OnAdDidDismissFullScreenContent();
             }
         }
 
@@ -229,7 +277,7 @@ namespace GoogleMobileAds.iOS
             InterstitialClient client = IntPtrToInterstitialClient(interstitialClient);
             if (client.OnAdDidRecordImpression != null)
             {
-                client.OnAdDidRecordImpression(client, EventArgs.Empty);
+                client.OnAdDidRecordImpression();
             }
         }
 

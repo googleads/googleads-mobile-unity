@@ -34,6 +34,7 @@ namespace GoogleMobileAds.iOS
         public static IntPtr BuildAdRequest(AdRequest request, string nativePluginVersion = null)
         {
             IntPtr requestPtr = Externs.GADUCreateRequest();
+            Externs.GADUSetPlacementID(requestPtr, request.PlacementID);
             foreach (string keyword in request.Keywords)
             {
                 Externs.GADUAddKeyword(requestPtr, keyword);
@@ -71,6 +72,12 @@ namespace GoogleMobileAds.iOS
 
             Externs.GADUSetRequestAgent(requestPtr,
                     AdRequest.BuildVersionString(nativePluginVersion));
+
+            foreach (KeyValuePair<string, string> entry in request.CustomTargeting)
+            {
+                Externs.GADUSetCustomTargeting(requestPtr, entry.Key, entry.Value);
+            }
+
             return requestPtr;
         }
 
@@ -162,6 +169,23 @@ namespace GoogleMobileAds.iOS
 
             Marshal.FreeHGlobal(arrayPtr);
             return new List<string>(managedAssetArray);
+        }
+
+        public static Dictionary<string, IntPtr> PtrNsDictionaryToDictionary(IntPtr dictPtr)
+        {
+            if (dictPtr == IntPtr.Zero)
+            {
+                return new Dictionary<string, IntPtr>();
+            }
+
+            var dictionary = new Dictionary<string, IntPtr>();
+            var count = Externs.GADUNSDictionaryCount(dictPtr);
+            for (var i = 0; i < count; i++)
+            {
+                var key = Externs.GADUNSDictionaryKeyAtIndex(dictPtr, i);
+                dictionary[key] = Externs.GADUNSDictionaryValueForKey(dictPtr, key);
+            }
+            return dictionary;
         }
     }
 }

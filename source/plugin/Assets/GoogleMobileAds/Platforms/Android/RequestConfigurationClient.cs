@@ -39,6 +39,7 @@ namespace GoogleMobileAds.Android
                     requestConfigurationBuilder.Call<AndroidJavaObject>("setTestDeviceIds",
                     testDeviceIdsJavaObject);
             }
+#pragma warning disable 618
             if (requestConfiguration.TagForUnderAgeOfConsent.HasValue)
             {
                 int? tagForUnderAgeOfConsentCode = null;
@@ -99,6 +100,31 @@ namespace GoogleMobileAds.Android
                          tagForChildDirectedTreatmentCode);
                 }
             }
+#pragma warning restore 618
+            if (requestConfiguration.AgeRestrictedTreatment.HasValue)
+            {
+                AndroidJavaObject ageRestrictedTreatmentCode = null;
+                switch (requestConfiguration.AgeRestrictedTreatment.GetValueOrDefault())
+                {
+                    case Api.AgeRestrictedTreatment.Child:
+                        ageRestrictedTreatmentCode = new AndroidJavaClass("com.google.android.gms.ads.AgeRestrictedTreatment")
+                                .GetStatic<AndroidJavaObject>("CHILD");
+                        break;
+                    case Api.AgeRestrictedTreatment.Teen:
+                        ageRestrictedTreatmentCode = new AndroidJavaClass("com.google.android.gms.ads.AgeRestrictedTreatment")
+                                .GetStatic<AndroidJavaObject>("TEEN");
+                        break;
+                    case Api.AgeRestrictedTreatment.Unspecified:
+                        ageRestrictedTreatmentCode = new AndroidJavaClass("com.google.android.gms.ads.AgeRestrictedTreatment")
+                                .GetStatic<AndroidJavaObject>("UNSPECIFIED");
+                        break;
+                }
+                if (ageRestrictedTreatmentCode != null)
+                {
+                    requestConfigurationBuilder = requestConfigurationBuilder.Call<AndroidJavaObject>("setAgeRestrictedTreatment",
+                         ageRestrictedTreatmentCode);
+                }
+            }
             if (requestConfiguration.PublisherPrivacyPersonalizationState.HasValue)
             {
                 AndroidJavaObject personalizationState = null;
@@ -133,9 +159,19 @@ namespace GoogleMobileAds.Android
         public static RequestConfiguration GetRequestConfiguration(AndroidJavaObject androidRequestConfiguration)
         {
 
+#pragma warning disable 618
             TagForChildDirectedTreatment tagForChildDirectedTreatment = (TagForChildDirectedTreatment)androidRequestConfiguration.Call<int>("getTagForChildDirectedTreatment");
 
             TagForUnderAgeOfConsent tagForUnderAgeOfConsent = (TagForUnderAgeOfConsent)androidRequestConfiguration.Call<int>("getTagForUnderAgeOfConsent");
+#pragma warning restore 618
+
+            AndroidJavaObject ageRestrictedTreatmentEnum = androidRequestConfiguration.Call<AndroidJavaObject>("getAgeRestrictedTreatment");
+            AgeRestrictedTreatment ageRestrictedTreatment = AgeRestrictedTreatment.Unspecified;
+            if (ageRestrictedTreatmentEnum != null)
+            {
+                int value = ageRestrictedTreatmentEnum.Call<int>("getValue");
+                ageRestrictedTreatment = (AgeRestrictedTreatment)value;
+            }
 
             MaxAdContentRating maxAdContentRating = MaxAdContentRating.ToMaxAdContentRating(androidRequestConfiguration.Call<string>("getMaxAdContentRating"));
             List<string> testDeviceIds = Utils.GetCsTypeList(androidRequestConfiguration.Call<AndroidJavaObject>("getTestDeviceIds"));
@@ -153,8 +189,11 @@ namespace GoogleMobileAds.Android
             RequestConfiguration requestConfiguration = new RequestConfiguration()
             {
                 MaxAdContentRating = maxAdContentRating,
+#pragma warning disable 618
                 TagForChildDirectedTreatment = tagForChildDirectedTreatment,
                 TagForUnderAgeOfConsent = tagForUnderAgeOfConsent,
+#pragma warning restore 618
+                AgeRestrictedTreatment = ageRestrictedTreatment,
                 TestDeviceIds = testDeviceIds,
                 PublisherPrivacyPersonalizationState = publisherPrivacyPersonalizationState
             };

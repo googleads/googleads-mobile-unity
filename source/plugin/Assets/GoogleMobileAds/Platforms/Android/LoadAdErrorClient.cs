@@ -48,7 +48,8 @@ namespace GoogleMobileAds.Android
 
         public IResponseInfoClient GetResponseInfoClient()
         {
-            return new ResponseInfoClient(ResponseInfoClientType.AdError, loadAdError);
+            var responseInfoJavaObject = loadAdError.Call<AndroidJavaObject>("getResponseInfo");
+            return new ResponseInfoClient(ResponseInfoClientType.AdError, responseInfoJavaObject);
         }
 
         public override string ToString()
