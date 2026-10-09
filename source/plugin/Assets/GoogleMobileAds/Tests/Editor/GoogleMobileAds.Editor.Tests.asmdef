@@ -1,0 +1,15 @@
+{
+    "name": "GoogleMobileAds.Editor.Tests",
+    "references": [
+        "GoogleMobileAds.Editor",
+        "GoogleMobileAds"
+    ],
+    "optionalUnityReferences": [
+        "TestAssemblies"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": true
+}
