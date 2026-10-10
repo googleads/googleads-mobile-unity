@@ -1,9 +1,0 @@
-<dependencies>
-  <androidPackages>
-    <androidPackage spec="com.google.android.ump:user-messaging-platform:3.2.0">
-      <repositories>
-        <repository>https://maven.google.com/</repository>
-      </repositories>
-    </androidPackage>
-  </androidPackages>
-</dependencies>
