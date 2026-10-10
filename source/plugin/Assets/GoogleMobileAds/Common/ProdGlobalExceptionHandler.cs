@@ -35,6 +35,8 @@ namespace GoogleMobileAds.Common
         public string app_id;
         public string app_version_name;
         public string platform;
+        public Insight.AdSdk sdk;
+        public string sdk_version;
         public string unity_version;
         public string os_version;
         public string device_model;
@@ -188,6 +190,8 @@ namespace GoogleMobileAds.Common
                 report.app_id = staticMetadata.app_id;
                 report.app_version_name = staticMetadata.app_version_name;
                 report.platform = staticMetadata.platform;
+                report.sdk = staticMetadata.sdk;
+                report.sdk_version = staticMetadata.sdk_version;
                 report.unity_version = staticMetadata.unity_version;
                 report.os_version = staticMetadata.os_version;
                 report.device_model = staticMetadata.device_model;

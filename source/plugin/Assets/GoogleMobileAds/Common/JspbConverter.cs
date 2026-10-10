@@ -151,7 +151,9 @@ namespace GoogleMobileAds.Common
                 QuoteString(report.network_type), // 16
                 QuoteString(report.session_id), // 17
                 QuoteString(report.stacktrace_hash), // 18
-                QuoteString(report.unity_version) // 19
+                QuoteString(report.unity_version), // 19
+                ((int)report.sdk).ToString(), // 20
+                QuoteString(report.sdk_version) // 21
             };
             return string.Format("[{0}]", string.Join(",", fields.ToArray()));
         }
@@ -188,7 +190,8 @@ namespace GoogleMobileAds.Common
                 QuoteString(insight.DeviceModel), // 12
                 ToJspb(insight.Tags), // 13
                 ToJspb(insight.Tracing), // 14
-                QuoteString(insight.Details) // 15
+                QuoteString(insight.Details), // 15
+                ((int)insight.Sdk).ToString() // 16
             };
             return string.Format("[{0}]", string.Join(",", fields.ToArray()));
         }
