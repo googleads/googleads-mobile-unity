@@ -84,6 +84,12 @@ namespace GoogleMobileAds.iOS
         // Placement ID is not supported for AdManagerInterstitialAd.
         public long PlacementId { get; set; }
 
+        private readonly IInsightsEmitter _insightsEmitter = InsightsEmitter.Instance;
+
+        private const Insight.AdFormat InterstitialFormat = Insight.AdFormat.Interstitial;
+
+        private string _adUnitId;
+
         private IntPtr _interstitialClientPtr;
 
         private IntPtr _interstitialPtr;
@@ -142,11 +148,13 @@ namespace GoogleMobileAds.iOS
         // Returns the next pre-loaded ad manager interstitial ad and null if no ad is available.
         public IAdManagerInterstitialClient PollAdManagerAd(string adUnitId)
         {
+            this._adUnitId = adUnitId;
             Externs.GAMUInterstitialPreloadedAdWithAdUnitID(this.InterstitialPtr, adUnitId);
             return this;
         }
 
         public void LoadAd(string adUnitID, AdRequest request) {
+            this._adUnitId = adUnitID;
             IntPtr requestPtr = Utils.BuildAdManagerAdRequest(request);
             Externs.GAMULoadInterstitialAd(this.InterstitialPtr, adUnitID, requestPtr);
             Externs.GADURelease(requestPtr);
@@ -198,6 +206,12 @@ namespace GoogleMobileAds.iOS
         private static void InterstitialLoadedCallback(IntPtr interstitialClient)
         {
             AdManagerInterstitialClient client = IntPtrToInterstitialClient(interstitialClient);
+            client._insightsEmitter.Emit(new Insight()
+            {
+                Name = Insight.CuiName.AdLoaded,
+                Format = InterstitialFormat,
+                AdUnitId = client._adUnitId,
+            });
             if (client.OnAdLoaded != null)
             {
                 client.OnAdLoaded();
@@ -209,6 +223,13 @@ namespace GoogleMobileAds.iOS
             IntPtr interstitialClient, IntPtr error)
         {
             AdManagerInterstitialClient client = IntPtrToInterstitialClient(interstitialClient);
+            client._insightsEmitter.Emit(new Insight()
+            {
+                Name = Insight.CuiName.AdLoaded,
+                Format = InterstitialFormat,
+                AdUnitId = client._adUnitId,
+                Success = false,
+            });
             if (client.OnAdFailedToLoad != null)
             {
                 LoadAdErrorClientEventArgs args = new LoadAdErrorClientEventArgs()
@@ -224,6 +245,12 @@ namespace GoogleMobileAds.iOS
             IntPtr interstitialClient, int precision, long value, string currencyCode)
         {
             AdManagerInterstitialClient client = IntPtrToInterstitialClient(interstitialClient);
+            client._insightsEmitter.Emit(new Insight()
+            {
+                Name = Insight.CuiName.AdPaid,
+                Format = InterstitialFormat,
+                AdUnitId = client._adUnitId,
+            });
             if (client.OnPaidEvent != null)
             {
                 AdValue adValue = new AdValue()
@@ -255,6 +282,13 @@ namespace GoogleMobileAds.iOS
         private static void AdFailedToPresentFullScreenContentCallback(IntPtr interstitialClient, IntPtr error)
         {
             AdManagerInterstitialClient client = IntPtrToInterstitialClient(interstitialClient);
+            client._insightsEmitter.Emit(new Insight()
+            {
+                Name = Insight.CuiName.AdShowedFullScreenContent,
+                Format = InterstitialFormat,
+                AdUnitId = client._adUnitId,
+                Success = false,
+            });
             if (client.OnAdFailedToPresentFullScreenContent != null)
             {
                 AdErrorClientEventArgs args = new AdErrorClientEventArgs()
@@ -269,6 +303,12 @@ namespace GoogleMobileAds.iOS
         private static void AdWillPresentFullScreenContentCallback(IntPtr interstitialClient)
         {
             AdManagerInterstitialClient client = IntPtrToInterstitialClient(interstitialClient);
+            client._insightsEmitter.Emit(new Insight()
+            {
+                Name = Insight.CuiName.AdShowedFullScreenContent,
+                Format = InterstitialFormat,
+                AdUnitId = client._adUnitId,
+            });
             if (client.OnAdDidPresentFullScreenContent != null)
             {
                 client.OnAdDidPresentFullScreenContent();
@@ -279,6 +319,12 @@ namespace GoogleMobileAds.iOS
         private static void AdDidDismissFullScreenContentCallback(IntPtr interstitialClient)
         {
             AdManagerInterstitialClient client = IntPtrToInterstitialClient(interstitialClient);
+            client._insightsEmitter.Emit(new Insight()
+            {
+                Name = Insight.CuiName.AdDismissedFullScreenContent,
+                Format = InterstitialFormat,
+                AdUnitId = client._adUnitId,
+            });
             if (client.OnAdDidDismissFullScreenContent != null)
             {
                 client.OnAdDidDismissFullScreenContent();
@@ -289,6 +335,12 @@ namespace GoogleMobileAds.iOS
         private static void AdDidRecordImpressionCallback(IntPtr interstitialClient)
         {
             AdManagerInterstitialClient client = IntPtrToInterstitialClient(interstitialClient);
+            client._insightsEmitter.Emit(new Insight()
+            {
+                Name = Insight.CuiName.AdShown,
+                Format = InterstitialFormat,
+                AdUnitId = client._adUnitId,
+            });
             if (client.OnAdDidRecordImpression != null)
             {
                 client.OnAdDidRecordImpression();
@@ -299,6 +351,12 @@ namespace GoogleMobileAds.iOS
         private static void AdDidRecordClickCallback(IntPtr interstitialClient)
         {
             AdManagerInterstitialClient client = IntPtrToInterstitialClient(interstitialClient);
+            client._insightsEmitter.Emit(new Insight()
+            {
+                Name = Insight.CuiName.AdClicked,
+                Format = InterstitialFormat,
+                AdUnitId = client._adUnitId,
+            });
             if (client.OnAdClicked != null)
             {
                 client.OnAdClicked();

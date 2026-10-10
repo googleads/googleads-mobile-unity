@@ -25,8 +25,12 @@ namespace GoogleMobileAds.iOS
 {
     public class RewardedAdClient : IRewardedAdClient, IDisposable
     {
+        private readonly IInsightsEmitter _insightsEmitter = InsightsEmitter.Instance;
+        private const Insight.AdFormat RewardedFormat = Insight.AdFormat.Rewarded;
+
         private IntPtr rewardedAdClientPtr;
         private IntPtr rewardedAdPtr;
+        private string _adUnitId;
 
 #region rewarded ad callback types
 
@@ -160,6 +164,7 @@ namespace GoogleMobileAds.iOS
         // Returns the next pre-loaded rewarded ad and null if no ad is available.
         public IRewardedAdClient PollAd(string adUnitId)
         {
+            this._adUnitId = adUnitId;
             Externs.GADURewardedPreloadedAdWithAdUnitID(this.RewardedAdPtr, adUnitId);
             return this;
         }
@@ -167,6 +172,7 @@ namespace GoogleMobileAds.iOS
 #endif
 
         public void LoadAd(string adUnitID, AdRequest request) {
+            this._adUnitId = adUnitID;
             IntPtr requestPtr = Utils.BuildAdManagerAdRequest(request);
             Externs.GADULoadRewardedAd(this.RewardedAdPtr, adUnitID, requestPtr);
             Externs.GADURelease(requestPtr);
@@ -238,6 +244,12 @@ namespace GoogleMobileAds.iOS
         private static void RewardedAdLoadedCallback(IntPtr rewardedAdClient)
         {
             RewardedAdClient client = IntPtrToRewardedAdClient(rewardedAdClient);
+            client._insightsEmitter.Emit(new Insight()
+            {
+                Name = Insight.CuiName.AdLoaded,
+                Format = RewardedFormat,
+                AdUnitId = client._adUnitId,
+            });
             if (client.OnAdLoaded != null)
             {
                 client.OnAdLoaded();
@@ -249,6 +261,13 @@ namespace GoogleMobileAds.iOS
             IntPtr rewardedAdClient, IntPtr error)
         {
             RewardedAdClient client = IntPtrToRewardedAdClient(rewardedAdClient);
+            client._insightsEmitter.Emit(new Insight()
+            {
+                Name = Insight.CuiName.AdLoaded,
+                Format = RewardedFormat,
+                AdUnitId = client._adUnitId,
+                Success = false,
+            });
             if (client.OnAdFailedToLoad != null)
             {
                 LoadAdErrorClientEventArgs args = new LoadAdErrorClientEventArgs()
@@ -265,6 +284,12 @@ namespace GoogleMobileAds.iOS
         {
             RewardedAdClient client = IntPtrToRewardedAdClient(
                 rewardedAdClient);
+            client._insightsEmitter.Emit(new Insight()
+            {
+                Name = Insight.CuiName.UserEarnedReward,
+                Format = RewardedFormat,
+                AdUnitId = client._adUnitId,
+            });
             if (client.OnUserEarnedReward != null)
             {
                 Reward args = new Reward()
@@ -281,6 +306,12 @@ namespace GoogleMobileAds.iOS
             IntPtr rewardedAdClient, int precision, long value, string currencyCode)
         {
             RewardedAdClient client = IntPtrToRewardedAdClient(rewardedAdClient);
+            client._insightsEmitter.Emit(new Insight()
+            {
+                Name = Insight.CuiName.AdPaid,
+                Format = RewardedFormat,
+                AdUnitId = client._adUnitId,
+            });
             if (client.OnPaidEvent != null)
             {
                 AdValue adValue = new AdValue()
@@ -297,6 +328,13 @@ namespace GoogleMobileAds.iOS
         private static void AdFailedToPresentFullScreenContentCallback(IntPtr rewardedAdClient, IntPtr error)
         {
             RewardedAdClient client = IntPtrToRewardedAdClient(rewardedAdClient);
+            client._insightsEmitter.Emit(new Insight()
+            {
+                Name = Insight.CuiName.AdShowedFullScreenContent,
+                Format = RewardedFormat,
+                AdUnitId = client._adUnitId,
+                Success = false,
+            });
             if (client.OnAdFailedToPresentFullScreenContent != null)
             {
                 AdErrorClientEventArgs args = new AdErrorClientEventArgs()
@@ -311,6 +349,12 @@ namespace GoogleMobileAds.iOS
         private static void AdWillPresentFullScreenContentCallback(IntPtr rewardedAdClient)
         {
           RewardedAdClient client = IntPtrToRewardedAdClient(rewardedAdClient);
+          client._insightsEmitter.Emit(new Insight()
+          {
+              Name = Insight.CuiName.AdShowedFullScreenContent,
+              Format = RewardedFormat,
+              AdUnitId = client._adUnitId,
+          });
           if (client.OnAdDidPresentFullScreenContent != null)
           {
             client.OnAdDidPresentFullScreenContent();
@@ -321,6 +365,12 @@ namespace GoogleMobileAds.iOS
         private static void AdDidDismissFullScreenContentCallback(IntPtr rewardedAdClient)
         {
             RewardedAdClient client = IntPtrToRewardedAdClient(rewardedAdClient);
+            client._insightsEmitter.Emit(new Insight()
+            {
+                Name = Insight.CuiName.AdDismissedFullScreenContent,
+                Format = RewardedFormat,
+                AdUnitId = client._adUnitId,
+            });
             if (client.OnAdDidDismissFullScreenContent != null)
             {
                 client.OnAdDidDismissFullScreenContent();
@@ -331,6 +381,12 @@ namespace GoogleMobileAds.iOS
         private static void AdDidRecordImpressionCallback(IntPtr rewardedAdClient)
         {
             RewardedAdClient client = IntPtrToRewardedAdClient(rewardedAdClient);
+            client._insightsEmitter.Emit(new Insight()
+            {
+                Name = Insight.CuiName.AdShown,
+                Format = RewardedFormat,
+                AdUnitId = client._adUnitId,
+            });
             if (client.OnAdDidRecordImpression != null)
             {
                 client.OnAdDidRecordImpression();
@@ -341,6 +397,12 @@ namespace GoogleMobileAds.iOS
         private static void AdDidRecordClickCallback(IntPtr rewardedAdClient)
         {
             RewardedAdClient client = IntPtrToRewardedAdClient(rewardedAdClient);
+            client._insightsEmitter.Emit(new Insight()
+            {
+                Name = Insight.CuiName.AdClicked,
+                Format = RewardedFormat,
+                AdUnitId = client._adUnitId,
+            });
             if (client.OnAdClicked != null)
             {
                 client.OnAdClicked();

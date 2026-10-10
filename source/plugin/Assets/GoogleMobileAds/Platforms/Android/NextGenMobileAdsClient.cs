@@ -27,9 +27,10 @@ namespace GoogleMobileAds.Android
     {
         private static readonly NextGenMobileAdsClient _instance = new NextGenMobileAdsClient();
         private readonly AndroidJavaObject _mobileAdsClass;
-        // Ensures InsightsEmitter is initialized from the main thread to handle CUIs.
+        // Ensures `InsightsEmitter` is initialized from the main thread to handle CUIs.
         private readonly IInsightsEmitter _insightsEmitter = InsightsEmitter.Instance;
         private readonly ITracer _tracer;
+        private readonly AsyncTraceScope _asyncTraceScope;
         private Action<IInitializationStatusClient> _initCompleteAction;
 
         private NextGenMobileAdsClient()
@@ -37,7 +38,8 @@ namespace GoogleMobileAds.Android
         {
           _mobileAdsClass = new AndroidJavaClass(NextGenUtils.UnityMobileAdsClassName);
           _tracer = new Tracer(_insightsEmitter);
-          // Ensures GlobalExceptionHandler is initialized from the main thread to handle Android
+          _asyncTraceScope = new AsyncTraceScope(_tracer);
+          // Ensures `GlobalExceptionHandler` is initialized from the main thread to handle Android
           // untrapped exceptions.
           var _ = GlobalExceptionHandler.Instance;
         }
@@ -49,19 +51,17 @@ namespace GoogleMobileAds.Android
 
         public void Initialize(Action<IInitializationStatusClient> initCompleteAction)
         {
-            using (_tracer.StartTrace("NextGenMobileAdsClient.Initialize"))
+            if (!MobileAdsEventExecutor.IsOnMainThread())
             {
-                if (!MobileAdsEventExecutor.IsOnMainThread())
-                {
-                    UnityEngine.Debug.LogError(
-                        "MobileAds.Initialize() was called on a non-main thread! Please make sure that you are calling this method from the main thread.");
-                    return;
-                }
-                _initCompleteAction = initCompleteAction;
-                _mobileAdsClass.CallStatic("initialize",
-                                                 Utils.GetCurrentActivityAndroidJavaObject(),
-                                                 this);
+                UnityEngine.Debug.LogError(
+                    "MobileAds.Initialize() was called on a non-main thread! Please make sure that you are calling this method from the main thread.");
+                return;
             }
+            _asyncTraceScope.StartTraceIfInactive("NextGenMobileAdsClient.Initialize");
+            _initCompleteAction = initCompleteAction;
+            _mobileAdsClass.CallStatic("initialize",
+                                       Utils.GetCurrentActivityAndroidJavaObject(),
+                                       this);
         }
 
         public void DisableMediationInitialization()
@@ -150,14 +150,15 @@ namespace GoogleMobileAds.Android
         #region Callbacks from OnInitializationCompleteListener.
         public void onAdapterInitializationComplete(AndroidJavaObject initStatus)
         {
+            _asyncTraceScope.Complete();
+            _insightsEmitter.Emit(new Insight()
+            {
+                Name = Insight.CuiName.SdkInitialized
+            });
             if (_initCompleteAction != null)
             {
                 IInitializationStatusClient statusClient = new NextGenInitializationStatusClient(initStatus);
                 _initCompleteAction(statusClient);
-                _insightsEmitter.Emit(new Insight()
-                {
-                    Name = Insight.CuiName.SdkInitialized
-                });
             }
         }
 

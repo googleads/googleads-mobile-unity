@@ -28,7 +28,7 @@ namespace GoogleMobileAds.Android
         private readonly static MobileAdsClient _instance = new MobileAdsClient();
 
         private readonly AndroidJavaClass _mobileAdsClass;
-        // Ensures InsightsEmitter is initialized from the main thread to handle CUIs.
+        // Ensures `InsightsEmitter` is initialized from the main thread to handle CUIs.
         private readonly IInsightsEmitter _insightsEmitter = InsightsEmitter.Instance;
         private readonly ITracer _tracer;
         private readonly AsyncTraceScope _asyncTraceScope;
@@ -38,8 +38,8 @@ namespace GoogleMobileAds.Android
             _mobileAdsClass = new AndroidJavaClass(Utils.UnityMobileAdsClassName);
             _tracer = new Tracer(_insightsEmitter);
             _asyncTraceScope = new AsyncTraceScope(_tracer);
-            // Ensures GlobalExceptionHandler is initialized from the main thread to handle Android
-            // untrapped exceptions.
+            // Ensures `GlobalExceptionHandler` is initialized from the main thread to handle
+            // Android untrapped exceptions.
             var _ = GlobalExceptionHandler.Instance;
         }
 
