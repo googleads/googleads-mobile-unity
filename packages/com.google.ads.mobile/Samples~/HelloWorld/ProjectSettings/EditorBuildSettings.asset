@@ -29,4 +29,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/GooglePreloadAdsScene.unity
     guid: be5c45d20103a4bef8a93f9942cb4084
+  - enabled: 1
+    path: Assets/Scenes/GooglePictureInPictureAdScene.unity
+    guid: 2c92fed30e27444588802210cddeade4
   m_configObjects: {}
