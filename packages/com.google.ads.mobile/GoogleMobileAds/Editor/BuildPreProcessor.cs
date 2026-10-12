@@ -2,7 +2,6 @@ using System;
 using UnityEngine;
 using UnityEditor;
 using System.IO;
-using GooglePlayServices;
 using UnityEditor.Build;
 using UnityEditor.Build.Reporting;
 
@@ -17,15 +16,15 @@ namespace GoogleMobileAds.Editor
         // https://github.com/googlesamples/unity-jar-resolver/blob/master/source/AndroidResolver/src/PlayServicesPreBuild.cs#L39
         public int callbackOrder { get { return -1; } }
 
-        private readonly static string _linkXmlAssetsPath =
-                Path.Combine(Application.dataPath, "GoogleMobileAds", "link.xml");
+        private static readonly string _linkXmlAssetsPath =
+                Path.Combine("Assets", "GoogleMobileAds", "link.xml");
 
         public void OnPreprocessBuild(BuildReport report)
         {
             // Unity's managed code stripping process does not inherently process `link.xml` files
             // in UPM packages. This pre-processor copies the `link.xml` file from the UPM package
             // to the Unity project's `Assets/GoogleMobileAds` directory if it does not exist.
-            if (!File.Exists(_linkXmlAssetsPath))
+            if (!File.Exists(Path.Combine(Application.dataPath, "GoogleMobileAds", "link.xml")))
             {
                 CopyLinkXml();
             }
