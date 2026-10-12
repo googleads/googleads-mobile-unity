@@ -13,8 +13,10 @@
 // limitations under the License.
 
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
+using GoogleMobileAds.Api;
 
 namespace GoogleMobileAds.Snippets
 {
@@ -112,18 +114,39 @@ namespace GoogleMobileAds.Snippets
         }
 
         /// <summary>
+        /// Returns the string representation of an AdValue.PrecisionType.
+        /// </summary>
+        public static string GetAdValuePrecisionTypeName(AdValue adValue)
+        {
+            switch (adValue.Precision)
+            {
+                case AdValue.PrecisionType.Estimated:
+                    return "ESTIMATED";
+                case AdValue.PrecisionType.PublisherProvided:
+                    return "PUBLISHER_PROVIDED";
+                case AdValue.PrecisionType.Precise:
+                    return "PRECISE";
+                case AdValue.PrecisionType.Unknown:
+                default:
+                    return "UNKNOWN";
+            }
+        }
+
+        /// <summary>
         /// Records an auction event with the given parameters.
         /// </summary>
         public static void RecordAuctionEvent(string publisherId,
-                                              string responseId,
+                                              List<string> responseIds,
                                               string highestOtherBid)
         {
+            string responseIdParamKey = responseIds.Count > 1 ? "mpmrids" : "response_id";
+            string responseIdParamValue = string.Join(",", responseIds);
             string safePublisherId = UnityWebRequest.EscapeURL(publisherId);
-            string safeResponseId = UnityWebRequest.EscapeURL(responseId);
+            string safeResponseIds = UnityWebRequest.EscapeURL(responseIdParamValue);
             string safeHob = UnityWebRequest.EscapeURL(highestOtherBid);
 
             string url = "https://pagead2.googlesyndication.com/pagead/gen_204/"
-                + $"?id=ampm&type=auction&response_id={safeResponseId}"
+                + $"?id=ampm&type=auction&{responseIdParamKey}={safeResponseIds}"
                 + $"&wp={safePublisherId}&hob={safeHob}";
 
             SendRequest(url);
@@ -133,17 +156,19 @@ namespace GoogleMobileAds.Snippets
         /// Records an impression event with the given parameters.
         /// </summary>
         public static void RecordImpressionEvent(string publisherId,
-                                                 string responseId,
+                                                 List<string> responseIds,
                                                  string adValue,
                                                  string precision)
         {
+            string responseIdParamKey = responseIds.Count > 1 ? "mpmrids" : "response_id";
+            string responseIdParamValue = string.Join(",", responseIds);
             string safePublisherId = UnityWebRequest.EscapeURL(publisherId);
-            string safeResponseId = UnityWebRequest.EscapeURL(responseId);
+            string safeResponseIds = UnityWebRequest.EscapeURL(responseIdParamValue);
             string safeAdValue = UnityWebRequest.EscapeURL(adValue);
             string safePrecision = UnityWebRequest.EscapeURL(precision);
 
             string url = "https://pagead2.googlesyndication.com/pagead/gen_204/"
-                + $"?id=ampm&type=impression&response_id={safeResponseId}"
+                + $"?id=ampm&type=impression&{responseIdParamKey}={safeResponseIds}"
                 + $"&wp={safePublisherId}&piv={safeAdValue}&pip={safePrecision}";
 
             SendRequest(url);

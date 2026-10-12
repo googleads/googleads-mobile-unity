@@ -96,10 +96,10 @@ namespace GoogleMobileAds.Snippets
 
             // Arguments supply query parameters for the auction request:
             // - publisherId: Your AdMob publisher ID.
-            // - responseId: The response ID for the loaded ad.
+            // - responseIds: List of response IDs for loaded ads.
             // - highestOtherBid: The highest bid in USD from a non-AdMob source.
             MultiPlatformUtils.RecordAuctionEvent(
-                "PUBLISHER_ID", responseId, highestOtherBid);
+                "PUBLISHER_ID", new List<string> { responseId }, highestOtherBid);
         }
 
         public string GetMultiPlatformMediationHighestOtherBidUSD()
@@ -130,17 +130,21 @@ namespace GoogleMobileAds.Snippets
 
                 // Convert the impression value from micros to standard decimal USD
                 // (e.g., 7500 / 1000000m = 0.0075).
-                string value = (adValue.Value / 1000000m).ToString(
+                string valueDecimal = (adValue.Value / 1000000m).ToString(
                     System.Globalization.CultureInfo.InvariantCulture);
-                string precision = ((int)adValue.Precision).ToString();
+                string precision =
+                    MultiPlatformUtils.GetAdValuePrecisionTypeName(adValue);
 
                 // Arguments supply query parameters for the impression request:
                 // - publisherId: Your AdMob publisher ID.
-                // - responseId: The response ID for the loaded ad.
-                // - value: The impression value in USD.
+                // - responseIds: List of response IDs for loaded ads.
+                // - valueDecimal: The impression value in USD.
                 // - precision: The precision type of the impression value.
                 MultiPlatformUtils.RecordImpressionEvent(
-                    "PUBLISHER_ID", responseId, value, precision);
+                    "PUBLISHER_ID",
+                    new List<string> { responseId },
+                    valueDecimal,
+                    precision);
             };
         }
         // [END on_ad_paid]
