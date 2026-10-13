@@ -2,19 +2,8 @@
 #import <Foundation/Foundation.h>
 
 #import <GoogleMobileAds/GoogleMobileAds.h>
-
-#if GMA_PREVIEW_FEATURES
 #import <GoogleMobileAds/GoogleMobileAds_Beta.h>
-#else
-/// Options for the position of a Picture-in-Picture (PiP) ad.
-typedef NS_ENUM(NSInteger, GADPictureInPictureAdPosition) {
-  GADPictureInPictureAdPositionDefault = 0,
-  GADPictureInPictureAdPositionBottomRight = 1,
-  GADPictureInPictureAdPositionBottomLeft = 2,
-  GADPictureInPictureAdPositionTopLeft = 3,
-  GADPictureInPictureAdPositionTopRight = 4
-};
-#endif
+
 #import "GADUTypes.h"
 
 @interface GADUPictureInPictureAd : NSObject
@@ -23,11 +12,9 @@ typedef NS_ENUM(NSInteger, GADPictureInPictureAdPosition) {
 - (nonnull instancetype)initWithPictureInPictureAdClientReference:
     (_Nonnull GADUTypePictureInPictureAdClientRef *_Nonnull)pipAdClient;
 
-#if GMA_PREVIEW_FEATURES
 /// The underlying GADPictureInPictureAd.
 @property(nonatomic, strong, nullable)
     GADPictureInPictureAd *pictureInPictureAd;
-#endif
 
 /// A reference to the Unity PiP ad client.
 @property(nonatomic, assign)

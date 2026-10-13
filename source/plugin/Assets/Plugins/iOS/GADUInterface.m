@@ -1397,11 +1397,7 @@ NSInteger GADUGetPictureInPictureAdPosition(GADUTypePictureInPictureAdRef pipAd)
 /// Gets the Picture-in-Picture ad unit ID.
 const char *GADUGetPictureInPictureAdUnitID(GADUTypePictureInPictureAdRef pipAd) {
   GADUPictureInPictureAd *internalAd = (__bridge GADUPictureInPictureAd *)pipAd;
-#if GMA_PREVIEW_FEATURES
   return cStringCopy(internalAd.pictureInPictureAd.adUnitID.UTF8String);
-#else
-  return NULL;
-#endif
 }
 
 /// Sets the GADBannerView's hidden property to YES.

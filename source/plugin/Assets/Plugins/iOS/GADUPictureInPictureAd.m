@@ -8,10 +8,8 @@
 #import "GADUPluginUtil.h"
 #import "UnityInterface.h"
 
-#if GMA_PREVIEW_FEATURES
 @interface GADUPictureInPictureAd () <GADPictureInPictureAdDelegate>
 @end
-#endif
 
 @implementation GADUPictureInPictureAd {
   NSError *_lastLoadError;
@@ -38,16 +36,13 @@
 }
 
 - (void)handleDidBecomeActive:(NSNotification *)notification {
-#if GMA_PREVIEW_FEATURES
   if (_adDidDismissCallbackDeferred) {
     [self pictureInPictureAdDidDismissScreen:self.pictureInPictureAd];
   }
-#endif
 }
 
 - (void)loadWithAdUnitID:(nonnull NSString *)adUnitID
                  request:(nonnull GADRequest *)request {
-#if GMA_PREVIEW_FEATURES
   __weak GADUPictureInPictureAd *weakSelf = self;
   [GADPictureInPictureAd
       loadWithAdUnitID:adUnitID
@@ -73,24 +68,9 @@
          strongSelf.adLoadedCallback(strongSelf.pipAdClient);
        }
      }];
-#else
-  if (self.adFailedToLoadCallback) {
-    NSError *error =
-        [NSError errorWithDomain:@"com.google.admob.unity"
-                            code:1
-                        userInfo:@{
-                          NSLocalizedDescriptionKey :
-                              @"Picture-in-Picture ads require GMA_PREVIEW_FEATURES to be enabled."
-                        }];
-    _lastLoadError = error;
-    self.adFailedToLoadCallback(self.pipAdClient,
-                                (__bridge GADUTypeErrorRef)error);
-  }
-#endif
 }
 
 - (void)showWithPosition:(GADPictureInPictureAdPosition)position {
-#if GMA_PREVIEW_FEATURES
   if (!self.pictureInPictureAd) {
     return;
   }
@@ -98,53 +78,25 @@
       [[GADPictureInPictureAdOptions alloc] init];
   options.position = position;
   [self.pictureInPictureAd showWithOptions:options];
-#else
-  if (self.adDidFailToShowCallback) {
-    NSError *error =
-        [NSError errorWithDomain:@"com.google.admob.unity"
-                            code:1
-                        userInfo:@{
-                          NSLocalizedDescriptionKey :
-                              @"Picture-in-Picture ads require GMA_PREVIEW_FEATURES to be enabled."
-                        }];
-    _lastPresentError = error;
-    self.adDidFailToShowCallback(
-        self.pipAdClient, (__bridge GADUTypeErrorRef)error);
-  }
-#endif
 }
 
 - (void)hide {
-#if GMA_PREVIEW_FEATURES
   [self.pictureInPictureAd hide];
-#endif
 }
 
 - (void)destroy {
-#if GMA_PREVIEW_FEATURES
   [self.pictureInPictureAd hide];
   self.pictureInPictureAd = nil;
-#endif
 }
 
 - (GADPictureInPictureAdPosition)position {
-#if GMA_PREVIEW_FEATURES
   return self.pictureInPictureAd ?
       self.pictureInPictureAd.position : GADPictureInPictureAdPositionDefault;
-#else
-  return GADPictureInPictureAdPositionDefault;
-#endif
 }
 
 - (GADResponseInfo *)responseInfo {
-#if GMA_PREVIEW_FEATURES
   return self.pictureInPictureAd.responseInfo;
-#else
-  return nil;
-#endif
 }
-
-#if GMA_PREVIEW_FEATURES
 
 #pragma mark - GADPictureInPictureAdDelegate implementation
 
@@ -237,7 +189,5 @@
         }
       };
 }
-
-#endif  // GMA_PREVIEW_FEATURES
 
 @end
