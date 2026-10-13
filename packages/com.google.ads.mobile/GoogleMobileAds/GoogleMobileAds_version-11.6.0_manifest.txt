@@ -1,9 +1,12 @@
 Assets/GoogleMobileAds/CHANGELOG.md
 Assets/GoogleMobileAds/Editor/AndroidBuildPreProcessor.cs
+Assets/GoogleMobileAds/Editor/AssemblyInfo.cs
 Assets/GoogleMobileAds/Editor/BuildPreProcessor.cs
 Assets/GoogleMobileAds/Editor/EditorLocalization.cs
 Assets/GoogleMobileAds/Editor/EditorLocalizationData.cs
 Assets/GoogleMobileAds/Editor/EditorPathUtils.cs
+Assets/GoogleMobileAds/Editor/EdmDependencyInstaller.cs
+Assets/GoogleMobileAds/Editor/EdmInstallPolicy.cs
 Assets/GoogleMobileAds/Editor/GoogleMobileAds.Editor.asmdef
 Assets/GoogleMobileAds/Editor/GoogleMobileAdsDependencies.xml
 Assets/GoogleMobileAds/Editor/GoogleMobileAdsSKAdNetworkItems.xml
