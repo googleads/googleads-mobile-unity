@@ -4,14 +4,13 @@ Google Mobile Ads Unity Plugin Change Log
 Version 11.6.0
 **************
 
+- Breaking change: Updated the minimum supported Unity version to Unity 2022 LTS (2022.3).
 - Updated the GMA iOS SDK dependency version to ~> 13.11.
 - Updated the GMA Android SDK dependency version to 25.5.0.
 - Updated the GMA Android Next-Gen SDK dependency version to 1.5.0.
-- Added support for Picture-in-Picture ads.
 - Added support for Unity External Dependency Manager (`com.unity.external-dependency-manager@2.1.0`).
-- Migrated ad client events from EventHandler to Action delegates across all ad formats.
-- Fixed Editor Play Mode compatibility issues when Enter Play Mode Options has domain reload disabled.
-- Fixed Android manifest merger failure (`minSdkVersion 23 cannot be smaller than version 24`) by raising the minimum Android API level to 24.
+- Added support for Picture-in-Picture ads.
+- Updated the min Android API level to 24.
 
 **************
 Version 11.5.0
