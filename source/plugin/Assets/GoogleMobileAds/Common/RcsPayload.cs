@@ -14,6 +14,8 @@ namespace GoogleMobileAds.Common
         public string app_id;
         public string app_version_name;
         public string platform;
+        public Insight.AdSdk sdk;
+        public string sdk_version;
         public string unity_version;
         public string os_version;
         public string device_model;
@@ -51,12 +53,15 @@ namespace GoogleMobileAds.Common
             {
                 return;
             }
+            Insight.CacheBaseProperties();
             _staticMetadata = new StaticMetadata
             {
                 session_id = System.Guid.NewGuid().ToString(),
                 app_id = Application.identifier,
                 app_version_name = Application.version,
                 platform = Application.platform.ToString(),
+                sdk = Insight.CachedSdk,
+                sdk_version = Insight.CachedSdkVersion,
                 unity_version = Application.unityVersion,
                 os_version = SystemInfo.operatingSystem,
                 device_model = SystemInfo.deviceModel,
