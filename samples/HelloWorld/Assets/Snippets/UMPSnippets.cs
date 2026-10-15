@@ -129,5 +129,47 @@ namespace GoogleMobileAds.Snippets
             });
         }
         // [END show_privacy_options]
+
+        // [START present_consent_overlay]
+        [SerializeField, Tooltip("Canvas panel for the location consent overlay.")]
+        private GameObject _consentOverlay;
+
+        [SerializeField, Tooltip("Title text for the location consent overlay.")]
+        private Text _titleText;
+
+        [SerializeField, Tooltip("Message text for the location consent overlay.")]
+        private Text _messageText;
+
+        [SerializeField, Tooltip("OK button for the location consent overlay.")]
+        private Button _okButton;
+
+        [SerializeField, Tooltip("OK button text for the location consent overlay.")]
+        private Text _okButtonText;
+
+        /// <summary>
+        /// Presents the location consent overlay to the user.
+        /// </summary>
+        public void PresentConsentOverlay()
+        {
+            if (_consentOverlay == null)
+            {
+                return;
+            }
+
+            _titleText.text = "TITLE";
+            _messageText.text = "MESSAGE_TEXT";
+            _okButtonText.text = "BUTTON_TEXT";
+
+            _okButton.onClick.RemoveAllListeners();
+            _okButton.onClick.AddListener(() =>
+            {
+                _consentOverlay.SetActive(false);
+                // TODO: Add any consent gathering logic.
+                Debug.Log("CONSENT_RECEIVED_LOG_MESSAGE");
+            });
+
+            _consentOverlay.SetActive(true);
+        }
+        // [END present_consent_overlay]
     }
 }
