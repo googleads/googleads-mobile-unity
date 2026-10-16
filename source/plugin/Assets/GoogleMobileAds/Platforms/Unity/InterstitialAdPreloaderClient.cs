@@ -27,7 +27,6 @@ namespace GoogleMobileAds.Unity
     public class InterstitialAdPreloaderClient : IInterstitialAdPreloaderClient
     {
         private Action<string, IResponseInfoClient> _onAdPreloaded;
-        private Action<string, IAdErrorClient> _onAdFailedToPreload;
         private Action<string> _onAdsExhausted;
 
         private Dictionary<string, PreloadConfiguration> _preloadConfigurations =
@@ -40,7 +39,6 @@ namespace GoogleMobileAds.Unity
                             Action<string, IAdErrorClient> onAdFailedToPreload,
                             Action<string> onAdsExhausted)
         {
-            _onAdFailedToPreload = onAdFailedToPreload;
             _onAdPreloaded = onAdPreloaded;
             _onAdsExhausted = onAdsExhausted;
 
@@ -53,7 +51,9 @@ namespace GoogleMobileAds.Unity
                 throw new ArgumentException("preloadConfiguration cannot be null.");
             }
 
+#pragma warning disable 0612
             preloadConfiguration.Format = AdFormat.INTERSTITIAL;
+#pragma warning restore 0612
             if (preloadConfiguration.BufferSize <= 0)
             {
                 preloadConfiguration.BufferSize = 2;

@@ -22,6 +22,7 @@ namespace GoogleMobileAds.Unity
 {
     public class NativeOverlayAdClient : BaseAdClient, INativeOverlayAdClient
     {
+#pragma warning disable 0067
         public event Action OnAdLoaded;
         // Ad event fired when the rewarded ad has failed to load.
         public event Action<LoadAdErrorClientEventArgs> OnAdFailedToLoad;
@@ -34,6 +35,7 @@ namespace GoogleMobileAds.Unity
         // Ad event fired when an ad has been clicked.
         public event Action OnAdClicked;
         public event Action<AdValue> OnPaidEvent;
+#pragma warning restore 0067
 
         // A long integer provided by the AdMob UI for the configured placement.
         public long PlacementId { get; set; }

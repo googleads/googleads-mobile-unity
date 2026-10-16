@@ -216,7 +216,9 @@ namespace GoogleMobileAds.Android
             {
                 // Note: `GoogleMobileAds.Api.AdSize.Type.SmartBanner' has been deprecated in favor
                 // of `AnchoredAdaptive`.
+#pragma warning disable 0618
                 case AdSize.Type.SmartBanner:
+#pragma warning restore 0618
                     return adSizeClass.CallStatic<AndroidJavaObject>("getSmartBannerAdSize");
                 case AdSize.Type.AnchoredAdaptive:
 

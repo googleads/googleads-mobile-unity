@@ -135,7 +135,9 @@ namespace GoogleMobileAds.iOS
                         new PreloadConfigurationClient(preloadConfigRef)
                         {
                             AdUnitId = preloadConfig.AdUnitId,
+#pragma warning disable 0612
                             Format = preloadConfig.Format,
+#pragma warning restore 0612
                             BufferSize = preloadConfig.BufferSize
                         };
                 if (preloadConfig.Request != null)
@@ -167,7 +169,9 @@ namespace GoogleMobileAds.iOS
                 client.adAvailableAction(new PreloadConfiguration()
                 {
                     AdUnitId = preloadConfigClient.AdUnitId,
+#pragma warning disable 0612
                     Format = preloadConfigClient.Format,
+#pragma warning restore 0612
                     BufferSize = preloadConfigClient.BufferSize
                 });
             }
@@ -184,7 +188,9 @@ namespace GoogleMobileAds.iOS
                 client.adsExhaustedAction(new PreloadConfiguration()
                 {
                     AdUnitId = preloadConfigClient.AdUnitId,
+#pragma warning disable 0612
                     Format = preloadConfigClient.Format,
+#pragma warning restore 0612
                     BufferSize = preloadConfigClient.BufferSize
                 });
             }

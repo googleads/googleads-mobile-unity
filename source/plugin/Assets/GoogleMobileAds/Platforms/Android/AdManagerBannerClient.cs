@@ -61,8 +61,6 @@ namespace GoogleMobileAds.Android
 
         private List<AdSize> _validAdSizes;
 
-        private bool refreshValidAdSizes = true;
-
         public AdManagerBannerClient() : base(Utils.UnityAdManagerAdListenerClassName)
         {
             AndroidJavaClass playerClass = new AndroidJavaClass(Utils.UnityActivityClassName);

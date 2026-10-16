@@ -29,9 +29,11 @@ namespace GoogleMobileAds.Unity
 
         public event Action<LoadAdErrorClientEventArgs> OnAdFailedToLoad;
 
+#pragma warning disable 0067
         public event Action<AdValue> OnPaidEvent;
 
         public event Action<AdErrorClientEventArgs> OnAdFailedToPresentFullScreenContent;
+#pragma warning restore 0067
 
         public event Action OnAdDidPresentFullScreenContent;
 

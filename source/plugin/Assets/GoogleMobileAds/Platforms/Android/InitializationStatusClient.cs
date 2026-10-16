@@ -22,12 +22,10 @@ namespace GoogleMobileAds.Android
 {
     internal class InitializationStatusClient : IInitializationStatusClient
     {
-        private AndroidJavaObject status;
         private AndroidJavaObject statusMap;
 
         public InitializationStatusClient(AndroidJavaObject status)
         {
-            this.status = status;
             this.statusMap = status.Call<AndroidJavaObject>("getAdapterStatusMap");
         }
 

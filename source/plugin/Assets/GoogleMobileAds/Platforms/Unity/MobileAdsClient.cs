@@ -60,8 +60,6 @@ namespace GoogleMobileAds.Unity
 
         public event EventHandler<EventArgs> OnAdDidRecordImpression;
 
-        private ButtonBehaviour buttonBehaviour;
-
         private RequestConfiguration _requestConfiguration = new RequestConfiguration();
 
         private void AddClickBehavior(GameObject dummyAd)
@@ -80,7 +78,7 @@ namespace GoogleMobileAds.Unity
 
         private void CreateButtonBehavior()
         {
-            buttonBehaviour = base.dummyAd.AddComponent<ButtonBehaviour>();
+            base.dummyAd.AddComponent<ButtonBehaviour>();
         }
 
 #pragma warning restore 67
@@ -188,12 +186,12 @@ namespace GoogleMobileAds.Unity
 
         public void SetAdSize(AdSize adSize) {}
 
-        public string MediationAdapterClassName()
+        public new string MediationAdapterClassName()
         {
             return null;
         }
 
-        public IResponseInfoClient GetResponseInfoClient()
+        public new IResponseInfoClient GetResponseInfoClient()
         {
             return null;
         }

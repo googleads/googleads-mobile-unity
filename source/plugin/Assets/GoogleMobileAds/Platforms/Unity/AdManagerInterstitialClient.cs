@@ -22,7 +22,9 @@ namespace GoogleMobileAds.Unity
 {
     public class AdManagerInterstitialClient : InterstitialClient, IAdManagerInterstitialClient
     {
+#pragma warning disable 0067
         public event Action<AppEvent> OnAppEvent;
+#pragma warning restore 0067
 
 #if GMA_PREVIEW_FEATURES
 

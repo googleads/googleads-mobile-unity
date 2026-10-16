@@ -24,7 +24,9 @@ namespace GoogleMobileAds.Unity
 {
     public class AdManagerBannerClient : BannerClient, IAdManagerBannerClient
     {
+#pragma warning disable 0067
         public event Action<AppEvent> OnAppEvent;
+#pragma warning restore 0067
         private List<AdSize> _validAdSizes = new List<AdSize>();
         public List<AdSize> ValidAdSizes {
             get { return this._validAdSizes; }

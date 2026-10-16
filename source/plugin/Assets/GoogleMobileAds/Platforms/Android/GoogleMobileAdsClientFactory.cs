@@ -190,8 +190,10 @@ namespace GoogleMobileAds
             }
             try
             {
-                var _ =
-                    new AndroidJavaClass(GoogleMobileAds.Android.NextGenUtils.MobileAdsClassName);
+                using (new AndroidJavaClass(
+                    GoogleMobileAds.Android.NextGenUtils.MobileAdsClassName))
+                {
+                }
                 _nextGenEnabled = true;
             }
             catch (Exception)

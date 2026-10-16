@@ -105,7 +105,9 @@ namespace GoogleMobileAds.iOS
 
             switch (adSize.AdType)
             {
+#pragma warning disable 0618
                 case AdSize.Type.SmartBanner:
+#pragma warning restore 0618
                     this.BannerViewPtr = Externs.GADUCreateSmartBannerView(
                             this.bannerClientPtr, adUnitId, (int)position);
                     break;
@@ -152,7 +154,9 @@ namespace GoogleMobileAds.iOS
 
             switch (adSize.AdType)
             {
+#pragma warning disable 0618
                 case AdSize.Type.SmartBanner:
+#pragma warning restore 0618
                     this.BannerViewPtr = Externs.GADUCreateSmartBannerViewWithCustomPosition(
                     this.bannerClientPtr,
                     adUnitId,

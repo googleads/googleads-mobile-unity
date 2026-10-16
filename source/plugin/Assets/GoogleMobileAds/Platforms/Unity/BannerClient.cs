@@ -43,7 +43,9 @@ namespace GoogleMobileAds.Unity
         protected internal Dictionary<AdSize, string> _prefabAds = new Dictionary<AdSize, string>()
         {
             {AdSize.Banner, "PlaceholderAds/Banners/BANNER"},
+#pragma warning disable 0618
             {AdSize.SmartBanner, "PlaceholderAds/Banners/SMART_BANNER" },
+#pragma warning restore 0618
             {AdSize.MediumRectangle, "PlaceholderAds/Banners/MEDIUM_RECTANGLE" },
             {AdSize.IABBanner, "PlaceholderAds/Banners/FULL_BANNER" },
             {AdSize.Leaderboard, "PlaceholderAds/Banners/LEADERBOARD" },
@@ -56,7 +58,9 @@ namespace GoogleMobileAds.Unity
             {
                 _adUnitId = adUnitId;
 
+#pragma warning disable 0618
                 if (adSize == AdSize.SmartBanner || adSize.AdType == AdSize.Type.AnchoredAdaptive || adSize.AdType == AdSize.Type.LargeAnchoredAdaptive)
+#pragma warning restore 0618
                 {
                     SetAndStretchAd(position, adSize);
                 }
@@ -75,7 +79,9 @@ namespace GoogleMobileAds.Unity
             {
                 _adUnitId = adUnitId;
                 RectTransform rect = GetRectTransform();
+#pragma warning disable 0618
                 if (adSize == AdSize.SmartBanner || adSize.AdType == AdSize.Type.AnchoredAdaptive || adSize.AdType == AdSize.Type.LargeAnchoredAdaptive)
+#pragma warning restore 0618
                 {
                     SetAndStretchAd(0, adSize);
                     rect.anchoredPosition = new Vector3(0, y, 1);
@@ -93,7 +99,9 @@ namespace GoogleMobileAds.Unity
         {
             string prefabName;
 
+#pragma warning disable 0618
             if (adSize == AdSize.SmartBanner || adSize.AdType == AdSize.Type.AnchoredAdaptive || adSize.AdType == AdSize.Type.LargeAnchoredAdaptive)
+#pragma warning restore 0618
             {
                 if (position.HasValue && position.Value == AdPosition.Center)
                 {
@@ -307,7 +315,9 @@ namespace GoogleMobileAds.Unity
                     {
                         adText.text = "This is a Test Large Adaptive Banner";
                     }
+#pragma warning disable 0618
                     else if (adSize == AdSize.SmartBanner)
+#pragma warning restore 0618
                     {
                         adText.text = "This is a Test Smart Banner";
                     }
@@ -327,7 +337,9 @@ namespace GoogleMobileAds.Unity
                 {
                     if (adSize.AdType != AdSize.Type.AnchoredAdaptive &&
                         adSize.AdType != AdSize.Type.LargeAnchoredAdaptive &&
+#pragma warning disable 0618
                         adSize != AdSize.SmartBanner)
+#pragma warning restore 0618
                     {
                         rect.anchoredPosition = new Vector2(0, 0);
                     }
