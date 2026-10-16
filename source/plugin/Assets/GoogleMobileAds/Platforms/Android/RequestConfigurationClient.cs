@@ -176,9 +176,6 @@ namespace GoogleMobileAds.Android
             MaxAdContentRating maxAdContentRating = MaxAdContentRating.ToMaxAdContentRating(androidRequestConfiguration.Call<string>("getMaxAdContentRating"));
             List<string> testDeviceIds = Utils.GetCsTypeList(androidRequestConfiguration.Call<AndroidJavaObject>("getTestDeviceIds"));
 
-            // TODO(@vkini): We should ideally read this value from Unity Java Bridge code.
-            // Currently we expect the integer values to stay the same but this might not always be
-            // the case. Other option is to compare enums with returned value to get correct value.
             AndroidJavaObject publisherPrivacyPersonalizationStateEnum =
                 androidRequestConfiguration.Call<AndroidJavaObject>(
                     "getPublisherPrivacyPersonalizationState");

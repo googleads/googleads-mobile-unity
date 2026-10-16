@@ -66,7 +66,6 @@ namespace GoogleMobileAds.Android
 
         public void DisableMediationInitialization()
         {
-            // TODO(vkini): Add disable mediation initialization to NextGen SDK.
         }
 
         public void SetApplicationVolume(float volume)

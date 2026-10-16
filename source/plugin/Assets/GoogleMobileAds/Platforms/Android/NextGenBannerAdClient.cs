@@ -152,7 +152,6 @@ namespace GoogleMobileAds.Android
             }
             set
             {
-                // TODO(b/446378376): Implement PlacementId for NextGen.
             }
         }
 
