@@ -52,6 +52,9 @@ namespace GoogleMobileAds.Common
         // Destroys the picture in picture ad.
         void Destroy();
 
+        // Returns the ad unit ID.
+        string GetAdUnitID();
+
         // Returns the current or last known position of the picture in picture ad.
         PictureInPictureAdPosition GetAdPosition();
 
