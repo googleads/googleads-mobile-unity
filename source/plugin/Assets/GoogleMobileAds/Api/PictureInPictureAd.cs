@@ -142,6 +142,14 @@ namespace GoogleMobileAds.Api
         }
 
         /// <summary>
+        /// Returns the ad unit ID.
+        /// </summary>
+        public string GetAdUnitID()
+        {
+            return _client != null ? _client.GetAdUnitID() : null;
+        }
+
+        /// <summary>
         /// Returns the ResponseInfo for the loaded ad, or null if unavailable.
         /// </summary>
         public ResponseInfo GetResponseInfo()

@@ -69,6 +69,11 @@ namespace GoogleMobileAds.Android
             // No-op for unsupported client.
         }
 
+        public string GetAdUnitID()
+        {
+            return null;
+        }
+
         public PictureInPictureAdPosition GetAdPosition()
         {
             return PictureInPictureAdPosition.Default;
