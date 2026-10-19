@@ -63,6 +63,11 @@ namespace GoogleMobileAds.Android
             this.androidPictureInPictureAd.Call("destroy");
         }
 
+        public string GetAdUnitID()
+        {
+            return this.androidPictureInPictureAd.Call<string>("getAdUnitId");
+        }
+
         public PictureInPictureAdPosition GetAdPosition()
         {
             int ordinal = this.androidPictureInPictureAd.Call<int>("getAdPosition");
