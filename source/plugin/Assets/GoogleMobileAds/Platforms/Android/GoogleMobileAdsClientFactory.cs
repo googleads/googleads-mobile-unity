@@ -160,6 +160,11 @@ namespace GoogleMobileAds
             " on non-Android runtime");
         }
 
+        public ISqueezebackAdClient BuildSqueezebackAdClient()
+        {
+            return null;
+        }
+
         public IApplicationPreferencesClient ApplicationPreferencesInstance() {
           if (Application.platform == RuntimePlatform.Android) {
             return new GoogleMobileAds.Android.ApplicationPreferencesClient();
