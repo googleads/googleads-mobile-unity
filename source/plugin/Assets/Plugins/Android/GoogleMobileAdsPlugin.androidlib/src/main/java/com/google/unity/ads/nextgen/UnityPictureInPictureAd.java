@@ -242,4 +242,10 @@ public class UnityPictureInPictureAd {
   public ResponseInfo getResponseInfo() {
     return pipAd != null ? pipAd.getResponseInfo() : null;
   }
+
+  /** Returns the {@link PictureInPictureAd} ad unit ID. */
+  @Nullable
+  public String getAdUnitId() {
+    return pipAd != null ? pipAd.getAdUnitId() : null;
+  }
 }
