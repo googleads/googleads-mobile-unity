@@ -32,4 +32,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/GooglePictureInPictureAdScene.unity
     guid: 2c92fed30e27444588802210cddeade4
+  - enabled: 1
+    path: Assets/Scenes/GoogleSqueezebackAdScene.unity
+    guid: 3d92fed30e27444588802210cddeade5
   m_configObjects: {}
