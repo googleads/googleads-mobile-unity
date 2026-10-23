@@ -83,6 +83,11 @@ namespace GoogleMobileAds
             return new GoogleMobileAds.Unity.PictureInPictureAdClient();
         }
 
+        public ISqueezebackAdClient BuildSqueezebackAdClient()
+        {
+            return null;
+        }
+
 #if GMA_PREVIEW_FEATURES
 
         public IAppOpenAdPreloaderClient BuildAppOpenAdPreloaderClient() {

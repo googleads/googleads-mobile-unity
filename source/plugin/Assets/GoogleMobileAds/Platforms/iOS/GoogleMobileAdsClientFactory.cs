@@ -138,6 +138,10 @@ namespace GoogleMobileAds
                                           " on non-iOS runtime");
     }
 
+    public ISqueezebackAdClient BuildSqueezebackAdClient() {
+      return null;
+    }
+
 #if GMA_PREVIEW_FEATURES
 
     public IAppOpenAdPreloaderClient BuildAppOpenAdPreloaderClient() {
