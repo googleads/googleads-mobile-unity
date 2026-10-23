@@ -1,10 +1,17 @@
 package com.google.unity.ads;
 
 import static com.google.common.truth.Truth.assertThat;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import static org.robolectric.Shadows.shadowOf;
 
 import android.app.Activity;
+import android.graphics.Insets;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowInsets;
+import android.widget.FrameLayout;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.LoadAdError;
@@ -19,6 +26,7 @@ import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
+import org.robolectric.annotation.Config;
 
 /** Tests for {@link Banner} */
 @RunWith(RobolectricTestRunner.class)
@@ -182,5 +190,31 @@ public final class BannerTest {
     banner.adView = fakeAdView;
     banner.setPlacementId(placementId);
     assertThat(fakeAdView.getPlacementId()).isEqualTo(placementId);
+  }
+
+  @Test
+  @Config(sdk = 30)
+  public void getLayoutParams_sdkAtLeastR_includesSystemBarInsets() {
+    WindowInsets windowInsets =
+        new WindowInsets.Builder()
+            .setInsets(WindowInsets.Type.systemBars(), Insets.of(10, 20, 30, 40))
+            .build();
+    View decorView =
+        new View(activity) {
+          @Override
+          public WindowInsets getRootWindowInsets() {
+            return windowInsets;
+          }
+        };
+    Window mockWindow = mock(Window.class);
+    when(mockWindow.getDecorView()).thenReturn(decorView);
+    shadowOf(activity).setWindow(mockWindow);
+
+    FrameLayout.LayoutParams params = banner.getLayoutParams();
+
+    assertThat(params.leftMargin).isEqualTo(10);
+    assertThat(params.topMargin).isEqualTo(20);
+    assertThat(params.rightMargin).isEqualTo(30);
+    assertThat(params.bottomMargin).isEqualTo(40);
   }
 }

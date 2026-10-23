@@ -594,6 +594,16 @@ public class Banner {
     if (windowInsets == null) {
       return insets;
     }
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+      android.graphics.Insets safeInsets =
+          windowInsets.getInsets(
+              WindowInsets.Type.systemBars() | WindowInsets.Type.displayCutout());
+      insets.top = safeInsets.top;
+      insets.left = safeInsets.left;
+      insets.bottom = safeInsets.bottom;
+      insets.right = safeInsets.right;
+      return insets;
+    }
     DisplayCutout displayCutout = windowInsets.getDisplayCutout();
     if (displayCutout == null) {
       return insets;
