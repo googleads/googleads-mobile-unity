@@ -294,4 +294,22 @@ public final class UnityPictureInPictureAdTest {
     verify(mockPipAd).getResponseInfo();
     assertThat(actualResponseInfo).isEqualTo(responseInfo);
   }
+
+  @Test
+  public void testGetAdUnitId_whenAdNotLoaded_returnsNull() {
+    assertThat(unityPictureInPictureAd.getAdUnitId()).isNull();
+  }
+
+  @Test
+  public void testGetAdUnitId_whenAdLoaded_returnsAdUnitId() {
+    when(mockPipAd.getAdUnitId()).thenReturn(AD_UNIT_ID);
+
+    unityPictureInPictureAd.load(adRequest);
+    verify(mockAdWrapper).load(any(), adLoadCallbackCaptor.capture());
+    adLoadCallbackCaptor.getValue().onAdLoaded(mockPipAd);
+
+    String actualAdUnitId = unityPictureInPictureAd.getAdUnitId();
+    verify(mockPipAd).getAdUnitId();
+    assertThat(actualAdUnitId).isEqualTo(AD_UNIT_ID);
+  }
 }

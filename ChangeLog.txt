@@ -1,5 +1,11 @@
 Google Mobile Ads Unity Plugin Change Log
 
+************
+Version Next
+************
+
+- Added `GetAdUnitID` API to `PictureInPictureAd`.
+
 **************
 Version Next
 **************
