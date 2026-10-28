@@ -353,6 +353,68 @@ namespace GoogleMobileAds.iOS
 
 #endregion
 
+#region SqueezebackAd externs
+
+      [DllImport("__Internal")]
+      internal static extern IntPtr GADUCreateSqueezebackAd(IntPtr squeezebackAdClient);
+
+      [DllImport("__Internal")]
+      internal static extern void GADULoadSqueezebackAd(
+          IntPtr squeezebackAd, string adUnitID, IntPtr request);
+
+      [DllImport("__Internal")]
+      internal static extern void GADUShowSqueezebackAd(IntPtr squeezebackAd);
+
+      [DllImport("__Internal")]
+      internal static extern IntPtr GADUCreateSqueezebackAdOptions();
+
+      [DllImport("__Internal")]
+      internal static extern void GADUSqueezebackAdOptionsSetFallbackBackgroundColor(
+          IntPtr options, IntPtr fallbackBackgroundColor);
+
+      [DllImport("__Internal")]
+      internal static extern void GADUShowSqueezebackAdWithOptions(
+          IntPtr squeezebackAd, IntPtr options);
+
+      [DllImport("__Internal")]
+      internal static extern void GADUHideSqueezebackAd(IntPtr squeezebackAd);
+
+      [DllImport("__Internal")]
+      internal static extern void GADUDestroySqueezebackAd(IntPtr squeezebackAd);
+
+      [DllImport("__Internal")]
+      internal static extern string GADUGetSqueezebackAdUnitID(IntPtr squeezebackAd);
+
+      [DllImport("__Internal")]
+      internal static extern void GADUSetSqueezebackAdCallbacks(
+          IntPtr squeezebackAd,
+          SqueezebackAdClient.GADUSqueezebackAdLoadedCallback
+              adLoadedCallback,
+          SqueezebackAdClient.GADUSqueezebackAdFailToLoadCallback
+              adFailedToLoadCallback,
+          SqueezebackAdClient.GADUSqueezebackAdShownCallback
+              adShownCallback,
+          SqueezebackAdClient.GADUSqueezebackAdHiddenCallback
+              adHiddenCallback,
+          SqueezebackAdClient
+              .GADUSqueezebackAdDidRecordImpressionCallback
+                  adDidRecordImpressionCallback,
+          SqueezebackAdClient.GADUSqueezebackAdDidRecordClickCallback
+              adDidRecordClickCallback,
+          SqueezebackAdClient
+              .GADUSqueezebackAdDidFailToShowCallback
+                  adDidFailToShowCallback,
+          SqueezebackAdClient
+              .GADUSqueezebackAdWillPresentFullScreenContentCallback
+                  adWillPresentFullScreenContentCallback,
+          SqueezebackAdClient
+              .GADUSqueezebackAdDidDismissFullScreenContentCallback
+                  adDidDismissFullScreenContentCallback,
+          SqueezebackAdClient.GADUSqueezebackAdPaidEventCallback
+              paidEventCallback);
+
+#endregion
+
 #if GMA_PREVIEW_FEATURES
 
 #region AppOpenAdPreloader externs
