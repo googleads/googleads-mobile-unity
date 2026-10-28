@@ -40,6 +40,8 @@ namespace GoogleMobileAds
 
         IPictureInPictureAdClient BuildPictureInPictureAdClient();
 
+        ISqueezebackAdClient BuildSqueezebackAdClient();
+
         IApplicationPreferencesClient ApplicationPreferencesInstance();
 
         IMobileAdsClient MobileAdsInstance();
