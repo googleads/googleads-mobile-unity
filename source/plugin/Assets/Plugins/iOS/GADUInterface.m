@@ -15,6 +15,7 @@
 #import "GADUNativeTemplateTextStyle.h"
 #import "GADUObjectCache.h"
 #import "GADUPictureInPictureAd.h"
+#import "GADUSqueezebackAd.h"
 #import "GADUPluginUtil.h"
 #import "GADUPreloadConfiguration.h"
 #import "GADUPreloadConfigurationV2.h"
@@ -380,6 +381,16 @@ GADUTypePictureInPictureAdRef GADUCreatePictureInPictureAd(
   return (__bridge GADUTypePictureInPictureAdRef)pipAd;
 }
 
+/// Creates a GADUSqueezebackAd and returns its reference.
+GADUTypeSqueezebackAdRef GADUCreateSqueezebackAd(
+    GADUTypeSqueezebackAdClientRef *squeezebackAdClient) {
+  GADUSqueezebackAd *squeezebackAd =
+      [[GADUSqueezebackAd alloc] initWithSqueezebackAdClientReference:squeezebackAdClient];
+  GADUObjectCache *cache = GADUObjectCache.sharedInstance;
+  cache[squeezebackAd.gadu_referenceKey] = squeezebackAd;
+  return (__bridge GADUTypeSqueezebackAdRef)squeezebackAd;
+}
+
 /// Creates a GADBannerView with the specified width, height, and position. Returns a reference to
 /// the GADUBannerView.
 GADUTypeBannerRef GADUCreateBannerView(GADUTypeBannerClientRef *bannerClient, const char *adUnitID,
@@ -723,6 +734,36 @@ void GADUSetPictureInPictureAdCallbacks(
         adDidDismissFullScreenContentCallback,
     GADUPictureInPictureAdPaidEventCallback paidEventCallback) {
   GADUPictureInPictureAd *internalAd = (__bridge GADUPictureInPictureAd *)pipAd;
+  internalAd.adLoadedCallback = adLoadedCallback;
+  internalAd.adFailedToLoadCallback = adFailedToLoadCallback;
+  internalAd.adShownCallback = adShownCallback;
+  internalAd.adHiddenCallback = adHiddenCallback;
+  internalAd.adDidRecordImpressionCallback = adDidRecordImpressionCallback;
+  internalAd.adDidRecordClickCallback = adDidRecordClickCallback;
+  internalAd.adDidFailToShowCallback = adDidFailToShowCallback;
+  internalAd.adWillPresentFullScreenContentCallback =
+      adWillPresentFullScreenContentCallback;
+  internalAd.adDidDismissFullScreenContentCallback =
+      adDidDismissFullScreenContentCallback;
+  internalAd.paidEventCallback = paidEventCallback;
+}
+
+/// Sets the Squeezeback ad callback methods to be invoked during ad events.
+void GADUSetSqueezebackAdCallbacks(
+    GADUTypeSqueezebackAdRef squeezebackAd,
+    GADUSqueezebackAdLoadedCallback adLoadedCallback,
+    GADUSqueezebackAdFailedToLoadCallback adFailedToLoadCallback,
+    GADUSqueezebackAdShownCallback adShownCallback,
+    GADUSqueezebackAdHiddenCallback adHiddenCallback,
+    GADUSqueezebackAdDidRecordImpressionCallback adDidRecordImpressionCallback,
+    GADUSqueezebackAdDidRecordClickCallback adDidRecordClickCallback,
+    GADUSqueezebackAdDidFailToShowCallback adDidFailToShowCallback,
+    GADUSqueezebackAdWillPresentFullScreenContentCallback
+        adWillPresentFullScreenContentCallback,
+    GADUSqueezebackAdDidDismissFullScreenContentCallback
+        adDidDismissFullScreenContentCallback,
+    GADUSqueezebackAdPaidEventCallback paidEventCallback) {
+  GADUSqueezebackAd *internalAd = (__bridge GADUSqueezebackAd *)squeezebackAd;
   internalAd.adLoadedCallback = adLoadedCallback;
   internalAd.adFailedToLoadCallback = adFailedToLoadCallback;
   internalAd.adShownCallback = adShownCallback;
@@ -1398,6 +1439,30 @@ NSInteger GADUGetPictureInPictureAdPosition(GADUTypePictureInPictureAdRef pipAd)
 const char *GADUGetPictureInPictureAdUnitID(GADUTypePictureInPictureAdRef pipAd) {
   GADUPictureInPictureAd *internalAd = (__bridge GADUPictureInPictureAd *)pipAd;
   return cStringCopy(internalAd.pictureInPictureAd.adUnitID.UTF8String);
+}
+
+/// Shows the Squeezeback ad.
+void GADUShowSqueezebackAd(GADUTypeSqueezebackAdRef squeezebackAd) {
+  GADUSqueezebackAd *internalAd = (__bridge GADUSqueezebackAd *)squeezebackAd;
+  [internalAd show];
+}
+
+/// Hides the Squeezeback ad.
+void GADUHideSqueezebackAd(GADUTypeSqueezebackAdRef squeezebackAd) {
+  GADUSqueezebackAd *internalAd = (__bridge GADUSqueezebackAd *)squeezebackAd;
+  [internalAd hide];
+}
+
+/// Destroys the Squeezeback ad.
+void GADUDestroySqueezebackAd(GADUTypeSqueezebackAdRef squeezebackAd) {
+  GADUSqueezebackAd *internalAd = (__bridge GADUSqueezebackAd *)squeezebackAd;
+  [internalAd destroy];
+}
+
+/// Gets the Squeezeback ad unit ID.
+const char *GADUGetSqueezebackAdUnitID(GADUTypeSqueezebackAdRef squeezebackAd) {
+  GADUSqueezebackAd *internalAd = (__bridge GADUSqueezebackAd *)squeezebackAd;
+  return cStringCopy(internalAd.squeezebackAd.adUnitID.UTF8String);
 }
 
 /// Sets the GADBannerView's hidden property to YES.
@@ -2090,6 +2155,15 @@ void GADULoadAppOpenAdWithAdUnitID(GADUTypeAppOpenAdRef appOpenAd, const char *a
 void GADULoadPictureInPictureAd(GADUTypePictureInPictureAdRef pipAd, const char *adUnitID,
                                GADUTypeRequestRef request) {
   GADUPictureInPictureAd *internalAd = (__bridge GADUPictureInPictureAd *)pipAd;
+  GADURequest *internalRequest = (__bridge GADURequest *)request;
+  [internalAd loadWithAdUnitID:GADUStringFromUTF8String(adUnitID)
+                       request:[internalRequest request]];
+}
+
+/// Makes a Squeezeback ad request.
+void GADULoadSqueezebackAd(GADUTypeSqueezebackAdRef squeezebackAd, const char *adUnitID,
+                          GADUTypeRequestRef request) {
+  GADUSqueezebackAd *internalAd = (__bridge GADUSqueezebackAd *)squeezebackAd;
   GADURequest *internalRequest = (__bridge GADURequest *)request;
   [internalAd loadWithAdUnitID:GADUStringFromUTF8String(adUnitID)
                        request:[internalRequest request]];
