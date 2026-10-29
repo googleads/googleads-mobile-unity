@@ -21,7 +21,11 @@ namespace GoogleMobileAds.Android
 {
     public class PictureInPictureAdClient : AndroidJavaProxy, IPictureInPictureAdClient
     {
+        private readonly IInsightsEmitter _insightsEmitter = InsightsEmitter.Instance;
+        private const Insight.AdFormat PictureInPictureFormat = Insight.AdFormat.PictureInPicture;
+
         internal AndroidJavaObject androidPictureInPictureAd;
+        private string _adUnitId;
 
         public PictureInPictureAdClient() : base(NextGenUtils.UnityPictureInPictureAdCallbackClassName)
         {
@@ -44,6 +48,7 @@ namespace GoogleMobileAds.Android
 
         public void LoadAd(string adUnitId, AdRequest request)
         {
+            _adUnitId = adUnitId;
             this.androidPictureInPictureAd.Call(
                 "load", NextGenUtils.GetPictureInPictureAdRequestJavaObject(adUnitId, request));
         }
@@ -81,8 +86,21 @@ namespace GoogleMobileAds.Android
 
         #region Callback methods called from Java via AndroidJavaProxy
 
+        private void EmitInsight(Insight.CuiName name, bool success = true)
+        {
+            _insightsEmitter.Emit(new Insight()
+            {
+                Name = name,
+                Format = PictureInPictureFormat,
+                AdUnitId = _adUnitId,
+                Success = success,
+            });
+        }
+
         public void onAdLoaded()
         {
+            EmitInsight(Insight.CuiName.AdLoaded);
+
             if (this.OnAdLoaded != null)
             {
                 this.OnAdLoaded();
@@ -91,6 +109,8 @@ namespace GoogleMobileAds.Android
 
         public void onAdFailedToLoad(AndroidJavaObject error)
         {
+            EmitInsight(Insight.CuiName.AdLoaded, success: false);
+
             if (this.OnAdFailedToLoad != null)
             {
                 LoadAdErrorClientEventArgs args = new LoadAdErrorClientEventArgs
@@ -119,6 +139,8 @@ namespace GoogleMobileAds.Android
 
         public void onAdClicked()
         {
+            EmitInsight(Insight.CuiName.AdClicked);
+
             if (this.OnAdClicked != null)
             {
                 this.OnAdClicked();
@@ -127,6 +149,8 @@ namespace GoogleMobileAds.Android
 
         public void onAdImpression()
         {
+            EmitInsight(Insight.CuiName.AdShown);
+
             if (this.OnAdDidRecordImpression != null)
             {
                 this.OnAdDidRecordImpression();
@@ -135,6 +159,8 @@ namespace GoogleMobileAds.Android
 
         public void onAdFailedToShowFullScreenContent(AndroidJavaObject error)
         {
+            EmitInsight(Insight.CuiName.AdShowedFullScreenContent, success: false);
+
             if (this.OnAdFailedToPresentFullScreenContent != null)
             {
                 AdErrorClientEventArgs args = new AdErrorClientEventArgs
@@ -147,6 +173,8 @@ namespace GoogleMobileAds.Android
 
         public void onAdShowedFullScreenContent()
         {
+            EmitInsight(Insight.CuiName.AdShowedFullScreenContent);
+
             if (this.OnAdDidPresentFullScreenContent != null)
             {
                 this.OnAdDidPresentFullScreenContent();
@@ -155,6 +183,8 @@ namespace GoogleMobileAds.Android
 
         public void onAdDismissedFullScreenContent()
         {
+            EmitInsight(Insight.CuiName.AdDismissedFullScreenContent);
+
             if (this.OnAdDidDismissFullScreenContent != null)
             {
                 this.OnAdDidDismissFullScreenContent();
@@ -163,6 +193,8 @@ namespace GoogleMobileAds.Android
 
         public void onPaidEvent(int precision, long valueMicros, string currencyCode)
         {
+            EmitInsight(Insight.CuiName.AdPaid);
+
             if (this.OnPaidEvent != null)
             {
                 AdValue adValue = new AdValue

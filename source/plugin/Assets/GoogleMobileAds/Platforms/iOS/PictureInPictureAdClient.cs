@@ -23,8 +23,13 @@ namespace GoogleMobileAds.iOS
     public class PictureInPictureAdClient :
         IPictureInPictureAdClient, IDisposable
     {
+        private readonly IInsightsEmitter _insightsEmitter = InsightsEmitter.Instance;
+        private const Insight.AdFormat PictureInPictureFormat =
+            Insight.AdFormat.PictureInPicture;
+
         private IntPtr _pictureInPictureAdPtr;
         private IntPtr _pictureInPictureAdClientPtr;
+        private string _adUnitId;
 
         #region Picture-in-Picture callback types
 
@@ -122,6 +127,7 @@ namespace GoogleMobileAds.iOS
 
         public void LoadAd(string adUnitId, AdRequest request)
         {
+            _adUnitId = adUnitId;
             if (this.PictureInPictureAdPtr == IntPtr.Zero)
             {
                 CreatePictureInPictureAd();
@@ -186,13 +192,29 @@ namespace GoogleMobileAds.iOS
 
         #region Picture-in-Picture ad callback methods
 
+        private void EmitInsight(Insight.CuiName name, bool success = true)
+        {
+            _insightsEmitter.Emit(new Insight()
+            {
+                Name = name,
+                Format = PictureInPictureFormat,
+                AdUnitId = _adUnitId,
+                Success = success,
+            });
+        }
+
         [MonoPInvokeCallback(typeof(GADUPictureInPictureAdLoadedCallback))]
         private static void PictureInPictureAdLoadedCallback(
             IntPtr pipAdClient)
         {
             PictureInPictureAdClient client =
                 IntPtrToPictureInPictureAdClient(pipAdClient);
-            if (client != null && client.OnAdLoaded != null)
+            if (client == null)
+            {
+                return;
+            }
+            client.EmitInsight(Insight.CuiName.AdLoaded);
+            if (client.OnAdLoaded != null)
             {
                 client.OnAdLoaded.Invoke();
             }
@@ -204,7 +226,12 @@ namespace GoogleMobileAds.iOS
         {
             PictureInPictureAdClient client =
                 IntPtrToPictureInPictureAdClient(pipAdClient);
-            if (client != null && client.OnAdFailedToLoad != null)
+            if (client == null)
+            {
+                return;
+            }
+            client.EmitInsight(Insight.CuiName.AdLoaded, success: false);
+            if (client.OnAdFailedToLoad != null)
             {
                 LoadAdErrorClientEventArgs args =
                     new LoadAdErrorClientEventArgs()
@@ -246,7 +273,12 @@ namespace GoogleMobileAds.iOS
         {
             PictureInPictureAdClient client =
                 IntPtrToPictureInPictureAdClient(pipAdClient);
-            if (client != null && client.OnAdDidRecordImpression != null)
+            if (client == null)
+            {
+                return;
+            }
+            client.EmitInsight(Insight.CuiName.AdShown);
+            if (client.OnAdDidRecordImpression != null)
             {
                 client.OnAdDidRecordImpression.Invoke();
             }
@@ -259,7 +291,12 @@ namespace GoogleMobileAds.iOS
         {
             PictureInPictureAdClient client =
                 IntPtrToPictureInPictureAdClient(pipAdClient);
-            if (client != null && client.OnAdClicked != null)
+            if (client == null)
+            {
+                return;
+            }
+            client.EmitInsight(Insight.CuiName.AdClicked);
+            if (client.OnAdClicked != null)
             {
                 client.OnAdClicked.Invoke();
             }
@@ -273,8 +310,13 @@ namespace GoogleMobileAds.iOS
         {
             PictureInPictureAdClient client =
                 IntPtrToPictureInPictureAdClient(pipAdClient);
-            if (client != null &&
-                client.OnAdFailedToPresentFullScreenContent != null)
+            if (client == null)
+            {
+                return;
+            }
+            client.EmitInsight(
+                Insight.CuiName.AdShowedFullScreenContent, success: false);
+            if (client.OnAdFailedToPresentFullScreenContent != null)
             {
                 AdErrorClientEventArgs args = new AdErrorClientEventArgs()
                 {
@@ -292,8 +334,12 @@ namespace GoogleMobileAds.iOS
         {
             PictureInPictureAdClient client =
                 IntPtrToPictureInPictureAdClient(pipAdClient);
-            if (client != null &&
-                client.OnAdDidPresentFullScreenContent != null)
+            if (client == null)
+            {
+                return;
+            }
+            client.EmitInsight(Insight.CuiName.AdShowedFullScreenContent);
+            if (client.OnAdDidPresentFullScreenContent != null)
             {
                 client.OnAdDidPresentFullScreenContent.Invoke();
             }
@@ -307,8 +353,12 @@ namespace GoogleMobileAds.iOS
         {
             PictureInPictureAdClient client =
                 IntPtrToPictureInPictureAdClient(pipAdClient);
-            if (client != null &&
-                client.OnAdDidDismissFullScreenContent != null)
+            if (client == null)
+            {
+                return;
+            }
+            client.EmitInsight(Insight.CuiName.AdDismissedFullScreenContent);
+            if (client.OnAdDidDismissFullScreenContent != null)
             {
                 client.OnAdDidDismissFullScreenContent.Invoke();
             }
@@ -321,7 +371,12 @@ namespace GoogleMobileAds.iOS
         {
             PictureInPictureAdClient client =
                 IntPtrToPictureInPictureAdClient(pipAdClient);
-            if (client != null && client.OnPaidEvent != null)
+            if (client == null)
+            {
+                return;
+            }
+            client.EmitInsight(Insight.CuiName.AdPaid);
+            if (client.OnPaidEvent != null)
             {
                 AdValue adValue = new AdValue()
                 {
