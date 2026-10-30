@@ -116,6 +116,12 @@ typedef const void *GADUTypePictureInPictureAdRef;
 /// Type representing a Unity Picture-in-Picture client.
 typedef const void *GADUTypePictureInPictureAdClientRef;
 
+/// Type representing a GADUSqueezebackAd.
+typedef const void *GADUTypeSqueezebackAdRef;
+
+/// Type representing a Unity Squeezeback client.
+typedef const void *GADUTypeSqueezebackAdClientRef;
+
 /// Type representing a GADUBanner.
 typedef const void *GADUTypeBannerRef;
 
@@ -292,6 +298,49 @@ typedef void (*GADUPictureInPictureAdDidDismissFullScreenContentCallback)(
 /// Callback when a Picture-in-Picture ad is estimated to have earned money.
 typedef void (*GADUPictureInPictureAdPaidEventCallback)(
     GADUTypePictureInPictureAdClientRef *pipAdClient, int precision,
+    int64_t value, const char *currencyCode);
+
+// MARK: - GADUSqueezebackAd
+
+/// Callback for when a Squeezeback ad is loaded.
+typedef void (*GADUSqueezebackAdLoadedCallback)(
+    GADUTypeSqueezebackAdClientRef *squeezebackAdClient);
+
+/// Callback for when a Squeezeback ad request failed to load.
+typedef void (*GADUSqueezebackAdFailedToLoadCallback)(
+    GADUTypeSqueezebackAdClientRef *squeezebackAdClient, GADUTypeErrorRef error);
+
+/// Callback when a Squeezeback ad is shown.
+typedef void (*GADUSqueezebackAdShownCallback)(
+    GADUTypeSqueezebackAdClientRef *squeezebackAdClient);
+
+/// Callback when a Squeezeback ad is hidden.
+typedef void (*GADUSqueezebackAdHiddenCallback)(
+    GADUTypeSqueezebackAdClientRef *squeezebackAdClient);
+
+/// Callback when an impression has been recorded for the Squeezeback ad.
+typedef void (*GADUSqueezebackAdDidRecordImpressionCallback)(
+    GADUTypeSqueezebackAdClientRef *squeezebackAdClient);
+
+/// Callback when a click has been recorded for the Squeezeback ad.
+typedef void (*GADUSqueezebackAdDidRecordClickCallback)(
+    GADUTypeSqueezebackAdClientRef *squeezebackAdClient);
+
+/// Callback when a Squeezeback ad failed to show.
+typedef void (*GADUSqueezebackAdDidFailToShowCallback)(
+    GADUTypeSqueezebackAdClientRef *squeezebackAdClient, GADUTypeErrorRef error);
+
+/// Callback when a Squeezeback ad will present full screen content.
+typedef void (*GADUSqueezebackAdWillPresentFullScreenContentCallback)(
+    GADUTypeSqueezebackAdClientRef *squeezebackAdClient);
+
+/// Callback when a Squeezeback ad dismissed full screen content.
+typedef void (*GADUSqueezebackAdDidDismissFullScreenContentCallback)(
+    GADUTypeSqueezebackAdClientRef *squeezebackAdClient);
+
+/// Callback when a Squeezeback ad is estimated to have earned money.
+typedef void (*GADUSqueezebackAdPaidEventCallback)(
+    GADUTypeSqueezebackAdClientRef *squeezebackAdClient, int precision,
     int64_t value, const char *currencyCode);
 
 // MARK: - GADUAdView
