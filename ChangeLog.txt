@@ -11,6 +11,7 @@ Version Next
 **************
 
 - Unity External Dependency Manager 2.1.1.
+- Added support for Squeezeback ads.
 
 **************
 Version 11.6.0
