@@ -22,14 +22,8 @@
     </androidPackage>
   </androidPackages>
 
-  <remoteSwiftPackages>
-    <remoteSwiftPackage url="https://github.com/googleads/swift-package-manager-google-mobile-ads.git" version="13.12.0" upToNextMajor="true" >
-      <swiftPackage name="GoogleMobileAds" replacesPod="Google-Mobile-Ads-SDK"/>
-    </remoteSwiftPackage>
-  </remoteSwiftPackages>
-
   <iosPods>
-    <iosPod name="Google-Mobile-Ads-SDK" version="~> 13.12">
+    <iosPod name="Google-Mobile-Ads-SDK" version="~> 13.11">
       <sources>
         <source>https://github.com/CocoaPods/Specs</source>
       </sources>
