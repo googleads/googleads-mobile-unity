@@ -6,6 +6,12 @@
       </repositories>
     </androidPackage>
   </androidPackages>
+  <remoteSwiftPackages>
+    <remoteSwiftPackage url="https://github.com/googleads/swift-package-manager-google-user-messaging-platform.git" version="3.1.0">
+      <swiftPackage name="GoogleUserMessagingPlatform" replacesPod="GoogleUserMessagingPlatform"/>
+    </remoteSwiftPackage>
+  </remoteSwiftPackages>
+
   <iosPods>
     <iosPod name="GoogleUserMessagingPlatform" version="3.1.0">
       <sources>
