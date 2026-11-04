@@ -235,7 +235,7 @@ namespace GoogleMobileAds.iOS
                 nativePluginVersion = string.Format("{0}.{1}.{2}",
                         assemblyVersion.Major,
                         assemblyVersion.Minor,
-                        assemblyVersion.Revision);
+                        assemblyVersion.Build);
             }
             catch (Exception) {}
             string versionString = AdRequest.BuildVersionString(nativePluginVersion);

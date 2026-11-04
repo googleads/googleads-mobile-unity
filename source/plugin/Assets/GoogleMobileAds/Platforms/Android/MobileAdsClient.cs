@@ -182,7 +182,7 @@ namespace GoogleMobileAds.Android
               var assembly = Assembly.Load("GoogleMobileAdsNative.Common");
               var assemblyVersion = assembly.GetName().Version;
               nativePluginVersion = string.Format("{0}.{1}.{2}", assemblyVersion.Major,
-                                                  assemblyVersion.Minor, assemblyVersion.Revision);
+                                                  assemblyVersion.Minor, assemblyVersion.Build);
             } catch (Exception e) {
               if (GlobalExceptionHandler.Instance != null)
               {

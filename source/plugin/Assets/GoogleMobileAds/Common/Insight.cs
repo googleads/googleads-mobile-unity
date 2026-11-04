@@ -3,11 +3,14 @@ using System.Collections.Generic;
 using System.Reflection;
 using UnityEngine;
 
+using GoogleMobileAds.Api;
+
 namespace GoogleMobileAds.Common
 {
     [Serializable]
     public class Insight
     {
+        private const string NativePluginAssemblyName = "GoogleMobileAdsNative.Common";
         private const string AndroidNextGenMobileAdsClassName =
             "com.google.android.libraries.ads.mobile.sdk.MobileAds";
         private const string AndroidNextGenUnityMobileAdsClassName =
@@ -30,6 +33,28 @@ namespace GoogleMobileAds.Common
 
         internal static AdSdk CachedSdk { get; private set; }
         internal static string CachedSdkVersion { get; private set; }
+        internal static string CachedRequestAgent { get; private set; }
+
+        private static string ResolveRequestAgent()
+        {
+            string nativePluginVersion = null;
+
+            try
+            {
+                // Include the native plugin version only when its assembly is present at runtime.
+                Version version = Assembly.Load(NativePluginAssemblyName)?.GetName().Version;
+                if (version != null)
+                {
+                    nativePluginVersion =
+                        string.Format("{0}.{1}.{2}", version.Major, version.Minor, version.Build);
+                }
+            }
+            catch (Exception)
+            {
+            }
+
+            return AdRequest.BuildVersionString(nativePluginVersion);
+        }
 
         // Ensure it runs on the main thread before any scene is loaded.
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
@@ -37,6 +62,7 @@ namespace GoogleMobileAds.Common
         {
             CachedSdk = AdSdk.Unknown;
             CachedSdkVersion = null;
+            CachedRequestAgent = ResolveRequestAgent();
             switch (Application.platform)
             {
                 case RuntimePlatform.Android:
@@ -132,6 +158,7 @@ namespace GoogleMobileAds.Common
             Platform = _platform;
             Sdk = CachedSdk;
             SdkVersion = CachedSdkVersion;
+            RequestAgent = CachedRequestAgent;
             AppId = _appId;
             AppVersionName = _appVersionName;
             UnityVersion = _unityVersion;
@@ -233,6 +260,10 @@ namespace GoogleMobileAds.Common
         // The GMA SDK version.
         public string SdkVersion;
 
+        // The request agent identifying the Unity and optional native plugin versions, e.g.,
+        // 'unity-11.6.0' or 'unity-11.6.0-native-11.2.0'.
+        public string RequestAgent;
+
         // The application version.
         public string AppVersionName;
 
@@ -261,9 +292,10 @@ namespace GoogleMobileAds.Common
             return string.Format(
                 "Insight[Name={0}, Success={1}, StartTimeEpochMillis={2}, AppId='{3}', " +
                 "AdUnitId='{4}', Format={5}, Platform={6}, Sdk='{7}', SdkVersion='{8}', " +
-                "AppVersionName='{9}', UnityVersion='{10}', OSVersion='{11}', " +
-                "DeviceModel='{12}', Tags='{13}', Tracing[OperationName='{14}', Id='{15}', " +
-                "ParentId='{16}', DurationMillis={17}, HasEnded={18}], Details='{19}']",
+                "RequestAgent='{9}', AppVersionName='{10}', UnityVersion='{11}', " +
+                "OSVersion='{12}', DeviceModel='{13}', Tags='{14}', " +
+                "Tracing[OperationName='{15}', Id='{16}', ParentId='{17}', " +
+                "DurationMillis={18}, HasEnded={19}], Details='{20}']",
                 Name,
                 Success,
                 StartTimeEpochMillis,
@@ -273,6 +305,7 @@ namespace GoogleMobileAds.Common
                 Platform,
                 Sdk,
                 SdkVersion,
+                RequestAgent,
                 AppVersionName,
                 UnityVersion,
                 OSVersion,

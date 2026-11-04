@@ -16,6 +16,7 @@ namespace GoogleMobileAds.Common
         public string platform;
         public Insight.AdSdk sdk;
         public string sdk_version;
+        public string request_agent;
         public string unity_version;
         public string os_version;
         public string device_model;
@@ -62,6 +63,7 @@ namespace GoogleMobileAds.Common
                 platform = Application.platform.ToString(),
                 sdk = Insight.CachedSdk,
                 sdk_version = Insight.CachedSdkVersion,
+                request_agent = Insight.CachedRequestAgent,
                 unity_version = Application.unityVersion,
                 os_version = SystemInfo.operatingSystem,
                 device_model = SystemInfo.deviceModel,
