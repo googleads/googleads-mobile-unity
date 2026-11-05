@@ -187,16 +187,16 @@ namespace GoogleMobileAds.Sample
         /// <summary>
         /// Logs the ResponseInfo.
         /// </summary>
-        public void LogResponseInfo()
-        {
-            if (_nativeOverlayAd != null)
-            {
-                var responseInfo = _nativeOverlayAd.GetResponseInfo();
-                if (responseInfo != null)
-                {
-                    Debug.Log(responseInfo);
-                }
-            }
-        }
+        // public void LogResponseInfo()
+        // {
+        //     if (_nativeOverlayAd != null)
+        //     {
+        //         var responseInfo = _nativeOverlayAd.GetResponseInfo();
+        //         if (responseInfo != null)
+        //         {
+        //             Debug.Log(responseInfo);
+        //         }
+        //     }
+        // }
     }
 }
