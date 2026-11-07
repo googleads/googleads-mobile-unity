@@ -138,6 +138,15 @@ namespace GoogleMobileAds
                                           " on non-iOS runtime");
     }
 
+    public ISqueezebackAdClient BuildSqueezebackAdClient() {
+      if (Application.platform == RuntimePlatform.IPhonePlayer)
+      {
+        return new GoogleMobileAds.iOS.SqueezebackAdClient();
+      }
+      throw new InvalidOperationException(@"Called " + MethodBase.GetCurrentMethod().Name +
+                                          " on non-iOS runtime");
+    }
+
 #if GMA_PREVIEW_FEATURES
 
     public IAppOpenAdPreloaderClient BuildAppOpenAdPreloaderClient() {
