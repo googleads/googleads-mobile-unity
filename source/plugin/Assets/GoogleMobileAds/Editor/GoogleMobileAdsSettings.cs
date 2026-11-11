@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using UnityEditor;
 using UnityEngine;
@@ -94,6 +95,9 @@ namespace GoogleMobileAds.Editor
 
     [SerializeField]
     private int debugGeography = 0;
+
+    [SerializeField]
+    private List<string> testDeviceHashedIds = new List<string>();
 
     public string GoogleMobileAdsAndroidAppId
     {
@@ -191,6 +195,13 @@ namespace GoogleMobileAds.Editor
       get { return debugGeography; }
 
       set { debugGeography = value; }
+    }
+
+    public List<string> TestDeviceHashedIds
+    {
+      get { return testDeviceHashedIds ?? (testDeviceHashedIds = new List<string>()); }
+
+      set { testDeviceHashedIds = value ?? new List<string>(); }
     }
 
     /// <summary>
