@@ -1,0 +1,6 @@
+// Applied to unityLibrary/build.gradle by GradleProcessor when the Standard (Legacy) GMA
+// Android SDK is selected. Excludes the Next Gen GMA SDK from every configuration so that it
+// is not pulled in transitively and bundled alongside the Legacy GMA SDK.
+configurations.configureEach {
+    exclude group: "com.google.android.libraries.ads.mobile.sdk", module: "ads-mobile-sdk"
+}

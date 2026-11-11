@@ -14,6 +14,9 @@ namespace GoogleMobileAds.Editor {
 
     private const string PackagingOptionsGradle = "packaging_options.gradle";
     private const string NextGenExclusionsGradle = "next_gen_exclusions.gradle";
+    // Excludes the Next Gen GMA SDK (ads-mobile-sdk) so that it is not bundled alongside the
+    // Legacy GMA SDK (play-services-ads). Applied when the Standard (Legacy) SDK is selected.
+    private const string LegacyGmaExclusionsGradle = "legacy_gma_exclusions.gradle";
     private const string NextGenResolutionStrategyGradle = "next_gen_resolution_strategy.gradle";
     private const string GmaValidateDependenciesGradle = "validate_dependencies.gradle";
 
@@ -23,6 +26,8 @@ namespace GoogleMobileAds.Editor {
         ApplyFrom + "'" + GmaPluginPath + PackagingOptionsGradle + "'";
     private const string GmaNextGenExclusions =
         ApplyFrom + "'" + GmaPluginPath + NextGenExclusionsGradle + "'";
+    private const string GmaLegacyGmaExclusions =
+        ApplyFrom + "'" + GmaPluginPath + LegacyGmaExclusionsGradle + "'";
     private const string GmaNextGenResolutionStrategy =
         ApplyFrom + "'" + GmaPluginPath + NextGenResolutionStrategyGradle + "'";
     private const string GmaNextGenResolutionStrategyLauncher =
@@ -33,6 +38,21 @@ namespace GoogleMobileAds.Editor {
     private static readonly Version gmaAgpDowngradeVersion = new Version("8.1.0");
 
     public void OnPostGenerateGradleAndroidProject(string path) {
+      var settings = GoogleMobileAdsSettings.LoadInstance();
+      ProcessGradleProject(path, settings.EnableKotlinXCoroutinesPackagingOption,
+                           settings.EffectiveGmaAndroidSdk,
+                           GoogleMobileAds.Editor.Utils.AndroidGradlePluginVersion);
+    }
+
+    // Updates the unityLibrary and launcher build.gradle files in the exported Gradle project
+    // at `path` to apply the GMA plugin's Gradle scripts that match the given settings.
+    //
+    // The settings are passed in as parameters, rather than read from GoogleMobileAdsSettings,
+    // so that this method can be unit tested without the Unity Editor (loading the settings
+    // asset requires native Editor APIs such as AssetDatabase).
+    internal void ProcessGradleProject(string path, bool enableKotlinXCoroutinesPackagingOption,
+                                       GoogleMobileAdsSettings.GmaAndroidSdk gmaAndroidSdk,
+                                       Version agpVersion) {
       var rootDirinfo = new DirectoryInfo(path);
       var rootPath = rootDirinfo.Parent.FullName;
       var gradleList = Directory.GetFiles(rootPath, "build.gradle", SearchOption.AllDirectories);
@@ -40,6 +60,7 @@ namespace GoogleMobileAds.Editor {
       var packagingOptionsLauncher = GmaPackagingOptionsLauncher;
       var packagingOptionsUnityLibrary = GmaPackagingOptions;
       var nextGenExclusionsUnityLibrary = GmaNextGenExclusions;
+      var legacyGmaExclusionsUnityLibrary = GmaLegacyGmaExclusions;
       var nextGenResolutionStrategyLauncher = GmaNextGenResolutionStrategyLauncher;
       var nextGenResolutionStrategyUnityLibrary = GmaNextGenResolutionStrategy;
 
@@ -48,12 +69,12 @@ namespace GoogleMobileAds.Editor {
       packagingOptionsLauncher = packagingOptionsLauncher.Replace("/", "\\\\");
       packagingOptionsUnityLibrary = packagingOptionsUnityLibrary.Replace("/", "\\\\");
       nextGenExclusionsUnityLibrary = nextGenExclusionsUnityLibrary.Replace("/", "\\\\");
+      legacyGmaExclusionsUnityLibrary = legacyGmaExclusionsUnityLibrary.Replace("/", "\\\\");
       nextGenResolutionStrategyLauncher = nextGenResolutionStrategyLauncher.Replace("/", "\\\\");
       nextGenResolutionStrategyUnityLibrary =
           nextGenResolutionStrategyUnityLibrary.Replace("/", "\\\\");
 #endif
 
-      Version agpVersion = GoogleMobileAds.Editor.Utils.AndroidGradlePluginVersion;
       foreach (var gradlepath in gradleList) {
         if (!gradlepath.Contains("unityLibrary/build.gradle") &&
             !gradlepath.Contains("launcher/build.gradle") &&
@@ -62,6 +83,8 @@ namespace GoogleMobileAds.Editor {
           continue;
         }
 
+        var isUnityLibrary = gradlepath.Contains("unityLibrary/build.gradle") ||
+                             gradlepath.Contains("unityLibrary\\build.gradle");
         var contents = File.ReadAllText(gradlepath);
         bool modified = false;
 
@@ -74,6 +97,11 @@ namespace GoogleMobileAds.Editor {
 
         if (contents.Contains(NextGenExclusionsGradle)) {
           contents = DeleteLineContainingSubstring(contents, NextGenExclusionsGradle);
+          modified = true;
+        }
+
+        if (contents.Contains(LegacyGmaExclusionsGradle)) {
+          contents = DeleteLineContainingSubstring(contents, LegacyGmaExclusionsGradle);
           modified = true;
         }
 
@@ -91,9 +119,8 @@ namespace GoogleMobileAds.Editor {
         }
 
         // 3. Apply packaging options if enabled.
-        if (GoogleMobileAdsSettings.LoadInstance().EnableKotlinXCoroutinesPackagingOption) {
-          if (gradlepath.Contains("unityLibrary/build.gradle") ||
-              gradlepath.Contains("unityLibrary\\build.gradle")) {
+        if (enableKotlinXCoroutinesPackagingOption) {
+          if (isUnityLibrary) {
             contents += Environment.NewLine + packagingOptionsUnityLibrary;
           } else if (gradlepath.Contains("launcher/build.gradle") ||
                      gradlepath.Contains("launcher\\build.gradle")) {
@@ -104,17 +131,14 @@ namespace GoogleMobileAds.Editor {
 
         // 4. Apply Next-Gen resolution strategy if target is NextGen SDK and AGP version is
         // less than 8.1.0.
-        if (GoogleMobileAdsSettings.LoadInstance().EffectiveGmaAndroidSdk ==
-            GoogleMobileAdsSettings.GmaAndroidSdk.NextGen) {
-          if (gradlepath.Contains("unityLibrary/build.gradle") ||
-              gradlepath.Contains("unityLibrary\\build.gradle")) {
+        if (gmaAndroidSdk == GoogleMobileAdsSettings.GmaAndroidSdk.NextGen) {
+          if (isUnityLibrary) {
             contents += Environment.NewLine + nextGenExclusionsUnityLibrary;
             modified = true;
           }
 
           if (agpVersion < gmaAgpDowngradeVersion) {
-            if (gradlepath.Contains("unityLibrary/build.gradle") ||
-                gradlepath.Contains("unityLibrary\\build.gradle")) {
+            if (isUnityLibrary) {
               contents += Environment.NewLine + nextGenResolutionStrategyUnityLibrary;
               modified = true;
             } else if (gradlepath.Contains("launcher/build.gradle") ||
@@ -123,7 +147,17 @@ namespace GoogleMobileAds.Editor {
               modified = true;
             }
           }
+        } else {
+          // 5. Apply Legacy GMA exclusions to unityLibrary if target is the Standard (Legacy)
+          // SDK, so that the Next Gen GMA SDK is not bundled alongside the Legacy GMA SDK. This
+          // mirrors next_gen_exclusions.gradle, which excludes the Legacy GMA SDK for NextGen
+          // targets.
+          if (isUnityLibrary) {
+            contents += Environment.NewLine + legacyGmaExclusionsUnityLibrary;
+            modified = true;
+          }
         }
+
         if (modified) {
           File.WriteAllText(gradlepath, contents);
         }
