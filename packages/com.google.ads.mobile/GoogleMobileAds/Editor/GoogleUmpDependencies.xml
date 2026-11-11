@@ -9,7 +9,7 @@
   <iosPods>
     <iosPod name="GoogleUserMessagingPlatform" version="3.1.0">
       <sources>
-        <source>https://github.com/CocoaPods/Specs</source>
+        <source>https://cdn.cocoapods.org/</source>
       </sources>
     </iosPod>
   </iosPods>
