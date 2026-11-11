@@ -29,7 +29,7 @@
   </remoteSwiftPackages>
 
   <iosPods>
-    <iosPod name="Google-Mobile-Ads-SDK" version="~> 13.11">
+    <iosPod name="Google-Mobile-Ads-SDK" version="~> 13.12">
       <sources>
         <source>https://cdn.cocoapods.org/</source>
       </sources>
