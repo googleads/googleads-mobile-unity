@@ -108,6 +108,42 @@ public class UnityMobileAdsTest {
   }
 
   @Test
+  public void testInitialize_setsPlugin() throws Exception {
+    Activity activity = setupActivityWithAppId("ca-app-pub-3940256099942544~3347511713");
+    ArgumentCaptor<InitializationConfig> configCaptor =
+        ArgumentCaptor.forClass(InitializationConfig.class);
+
+    runOnBackgroundThread(() -> UnityMobileAds.initialize(activity, "unity-7.0.0", status -> {}));
+
+    verify(mockMobileAdsWrapper).initialize(any(), configCaptor.capture(), any());
+    assertThat(getInitializationConfigPlugin(configCaptor.getValue())).isEqualTo("unity-7.0.0");
+  }
+
+  @Test
+  public void testInitialize_withoutPlugin_leavesPluginNull() throws Exception {
+    Activity activity = setupActivityWithAppId("ca-app-pub-3940256099942544~3347511713");
+    ArgumentCaptor<InitializationConfig> configCaptor =
+        ArgumentCaptor.forClass(InitializationConfig.class);
+
+    runOnBackgroundThread(() -> UnityMobileAds.initialize(activity, status -> {}));
+
+    verify(mockMobileAdsWrapper).initialize(any(), configCaptor.capture(), any());
+    assertThat(getInitializationConfigPlugin(configCaptor.getValue())).isNull();
+  }
+
+  @Test
+  public void testInitialize_emptyPlugin_leavesPluginNull() throws Exception {
+    Activity activity = setupActivityWithAppId("ca-app-pub-3940256099942544~3347511713");
+    ArgumentCaptor<InitializationConfig> configCaptor =
+        ArgumentCaptor.forClass(InitializationConfig.class);
+
+    runOnBackgroundThread(() -> UnityMobileAds.initialize(activity, "", status -> {}));
+
+    verify(mockMobileAdsWrapper).initialize(any(), configCaptor.capture(), any());
+    assertThat(getInitializationConfigPlugin(configCaptor.getValue())).isNull();
+  }
+
+  @Test
   public void testInitialize_onUiThread_throwsException() throws Exception {
     Activity activity = setupActivityWithAppId("ca-app-pub-3940256099942544~3347511713");
     Assert.assertThrows(
@@ -470,6 +506,13 @@ public class UnityMobileAdsTest {
 
     Shadows.shadowOf(activity.getPackageManager()).installPackage(packageInfo);
     return activity;
+  }
+
+  @Nullable
+  private String getInitializationConfigPlugin(InitializationConfig config) throws Exception {
+    Field pluginField = InitializationConfig.class.getDeclaredField("plugin");
+    pluginField.setAccessible(true);
+    return (String) pluginField.get(config);
   }
 
   private String invokeGetApplicationMetaData(Activity activity, String key) throws Exception {

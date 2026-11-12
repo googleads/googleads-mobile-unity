@@ -61,6 +61,7 @@ namespace GoogleMobileAds.Android
             _initCompleteAction = initCompleteAction;
             _mobileAdsClass.CallStatic("initialize",
                                        Utils.GetCurrentActivityAndroidJavaObject(),
+                                       Utils.BuildPluginVersionString(),
                                        this);
         }
 

@@ -15,6 +15,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using UnityEngine;
 
 using GoogleMobileAds.Api;
@@ -554,6 +555,26 @@ namespace GoogleMobileAds.Android
             AndroidJavaObject currentActivity =
                     unityPlayer.GetStatic<AndroidJavaObject>("currentActivity");
             return currentActivity;
+        }
+
+        internal static string BuildPluginVersionString()
+        {
+            string nativePluginVersion = "";
+            try
+            {
+                var assembly = Assembly.Load("GoogleMobileAdsNative.Common");
+                var assemblyVersion = assembly.GetName().Version;
+                nativePluginVersion = string.Format("{0}.{1}.{2}", assemblyVersion.Major,
+                                                    assemblyVersion.Minor, assemblyVersion.Build);
+            }
+            catch (Exception e)
+            {
+                if (GlobalExceptionHandler.Instance != null)
+                {
+                    GlobalExceptionHandler.Instance.ReportTrappedException(e);
+                }
+            }
+            return AdRequest.BuildVersionString(nativePluginVersion);
         }
 
         #endregion

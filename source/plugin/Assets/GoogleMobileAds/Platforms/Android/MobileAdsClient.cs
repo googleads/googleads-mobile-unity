@@ -14,7 +14,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Reflection;
 using System.Threading.Tasks;
 using UnityEngine;
 
@@ -177,19 +176,7 @@ namespace GoogleMobileAds.Android
               IInitializationStatusClient statusClient = new InitializationStatusClient(initStatus);
               _initCompleteAction(statusClient);
             }
-            string nativePluginVersion = "";
-            try {
-              var assembly = Assembly.Load("GoogleMobileAdsNative.Common");
-              var assemblyVersion = assembly.GetName().Version;
-              nativePluginVersion = string.Format("{0}.{1}.{2}", assemblyVersion.Major,
-                                                  assemblyVersion.Minor, assemblyVersion.Build);
-            } catch (Exception e) {
-              if (GlobalExceptionHandler.Instance != null)
-              {
-                GlobalExceptionHandler.Instance.ReportTrappedException(e);
-              }
-            }
-            string versionString = AdRequest.BuildVersionString(nativePluginVersion);
+            string versionString = Utils.BuildPluginVersionString();
             _mobileAdsClass.CallStatic("setPlugin", versionString);
         }
 
