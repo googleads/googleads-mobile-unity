@@ -1,0 +1,12 @@
+fileFormatVersion: 2
+guid: 53ed91e6ea0d44929832c345dea70b0f
+labels:
+- gvh
+- gvh_version-11.7.0
+- gvhp_exportpath-Plugins/Android/GoogleMobileAdsPlugin.androidlib/legacy_gma_exclusions.gradle
+timeCreated: 1480838400
+DefaultImporter:
+  externalObjects: {}
+  userData:
+  assetBundleName:
+  assetBundleVariant:

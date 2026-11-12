@@ -37,7 +37,7 @@ namespace GoogleMobileAds.Editor
 
         // Update this when a plugin release requires a newer EDM. Projects that have not opted out
         // are set to this version on re-import.
-        internal const string EdmPackageVersion = "2.1.0";
+        internal const string EdmPackageVersion = "2.1.1";
 
         private const string ReinstallHint =
             "To reinstall it, enable \"Enable External Dependency Manager\" in " +

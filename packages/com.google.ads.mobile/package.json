@@ -1,6 +1,6 @@
 {
   "name": "com.google.ads.mobile",
-  "version": "11.6.0",
+  "version": "11.7.0",
   "displayName": "Google Mobile Ads for Unity",
   "keywords": [
     "Google",
@@ -24,7 +24,7 @@
     }
   ],
   "dependencies": {
-    "com.unity.external-dependency-manager": "2.1.0",
+    "com.unity.external-dependency-manager": "2.1.1",
     "com.unity.modules.androidjni": "1.0.0"
   }
 }
