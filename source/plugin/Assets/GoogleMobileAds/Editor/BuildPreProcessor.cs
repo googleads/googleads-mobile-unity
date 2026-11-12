@@ -28,6 +28,19 @@ namespace GoogleMobileAds.Editor
             {
                 CopyLinkXml();
             }
+
+            WriteRuntimeSettings();
+        }
+
+        // Writes to StreamingAssets settings that are needed at runtime.
+        private static void WriteRuntimeSettings()
+        {
+            GoogleMobileAdsSettings settings = GoogleMobileAdsSettings.LoadInstance();
+            if (settings != null)
+            {
+                RuntimeSettingsWriter.Write(settings);
+                AssetDatabase.Refresh();
+            }
         }
 
         private static void CopyLinkXml()
