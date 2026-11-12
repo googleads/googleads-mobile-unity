@@ -556,6 +556,39 @@ namespace GoogleMobileAds.Android
             return currentActivity;
         }
 
+        private static string _pluginVersionString;
+
+        internal static string BuildPluginVersionString()
+        {
+            if (_pluginVersionString != null)
+            {
+                return _pluginVersionString;
+            }
+
+            string nativePluginVersion = "";
+            try
+            {
+                Type nativeType = Type.GetType(
+                    "GoogleMobileAds.Common.NativeUtils,GoogleMobileAdsNative.Common");
+                if (nativeType != null)
+                {
+                    Version assemblyVersion = nativeType.Assembly.GetName().Version;
+                    nativePluginVersion = string.Format("{0}.{1}.{2}", assemblyVersion.Major,
+                                                        assemblyVersion.Minor,
+                                                        assemblyVersion.Build);
+                }
+            }
+            catch (Exception e)
+            {
+                if (GlobalExceptionHandler.Instance != null)
+                {
+                    GlobalExceptionHandler.Instance.ReportTrappedException(e);
+                }
+            }
+            _pluginVersionString = AdRequest.BuildVersionString(nativePluginVersion);
+            return _pluginVersionString;
+        }
+
         #endregion
     }
 }
