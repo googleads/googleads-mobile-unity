@@ -26,21 +26,13 @@ namespace GoogleMobileAds.Common
     /// </summary>
     public abstract class RcsClient<TReport> : MonoBehaviour where TReport : class
     {
-        private class BypassCertificateHandler : CertificateHandler
-        {
-            protected override bool ValidateCertificate(byte[] certificateData)
-            {
-                return true;
-            }
-        }
-
         // Batching triggers can be overridden by subclasses. We don't need to expose them in Unity
         // Editor. If any trigger fires, a batch of items will get sent.
         protected virtual int CountThreshold => 20;
         protected virtual float TimeThresholdInSeconds => 120.0f;
 
         // RCS endpoint for reporting. The `e=1` URL parameter defines JSPB encoding.
-        private const string ProdRcsUrl = "https://pagead2.googlesyndication.com/pagead/ping?e=1";
+        internal const string ProdRcsUrl = "https://pagead2.googlesyndication.com/pagead/ping?e=1";
 
         internal static readonly Queue<TReport> _queue = new Queue<TReport>();
         private static readonly object _queueLock = new object();
@@ -146,18 +138,25 @@ namespace GoogleMobileAds.Common
         }
 
         /// <summary>
+        /// Creates a POST request configured with a JSPB payload using default TLS validation.
+        /// </summary>
+        internal static UnityWebRequest CreatePostRequest(string url, string jspbPayload)
+        {
+            UnityWebRequest uwr = new UnityWebRequest(url, UnityWebRequest.kHttpVerbPOST);
+            byte[] bodyRaw = Encoding.UTF8.GetBytes(jspbPayload);
+            uwr.uploadHandler = new UploadHandlerRaw(bodyRaw);
+            uwr.downloadHandler = new DownloadHandlerBuffer();
+            uwr.SetRequestHeader("Content-Type", "application/json+protobuf");
+            return uwr;
+        }
+
+        /// <summary>
         /// Coroutine to send a JSPB payload via HTTP POST.
         /// </summary>
         private IEnumerator PostRequest(string url, string jspbPayload)
         {
-            using (UnityWebRequest uwr = new UnityWebRequest(url, "POST"))
+            using (UnityWebRequest uwr = CreatePostRequest(url, jspbPayload))
             {
-                byte[] bodyRaw = Encoding.UTF8.GetBytes(jspbPayload);
-                uwr.uploadHandler = new UploadHandlerRaw(bodyRaw);
-                uwr.certificateHandler = new BypassCertificateHandler();
-                uwr.downloadHandler = new DownloadHandlerBuffer();
-                uwr.SetRequestHeader("Content-Type", "application/json+protobuf");
-
                 yield return uwr.SendWebRequest();
 
                 if (Debug.isDebugBuild)
