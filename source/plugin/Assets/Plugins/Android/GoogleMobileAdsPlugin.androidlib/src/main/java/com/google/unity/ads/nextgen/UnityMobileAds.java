@@ -28,6 +28,7 @@ import com.google.android.libraries.ads.mobile.sdk.common.RequestConfiguration;
 import com.google.android.libraries.ads.mobile.sdk.initialization.InitializationConfig;
 import com.google.android.libraries.ads.mobile.sdk.initialization.OnAdapterInitializationCompleteListener;
 import com.google.errorprone.annotations.concurrent.GuardedBy;
+import java.lang.reflect.Method;
 
 /** Mobile Ads implementation for the Google Mobile Ads Unity plugin. */
 public final class UnityMobileAds {
@@ -71,6 +72,22 @@ public final class UnityMobileAds {
    */
   public static void initialize(
       Activity activity, OnAdapterInitializationCompleteListener callback) {
+    initialize(activity, /* plugin= */ null, callback);
+  }
+
+  /**
+   * Initializes the Google Mobile Ads SDK.
+   *
+   * @param activity The {@link Activity} to use for initializing Google Mobile Ads SDK.
+   * @param plugin The type and version of the plugin initializing the SDK (for example,
+   *     "unity-7.0.0"), or {@code null} if not specified.
+   * @param callback The {@link OnAdapterInitializationCompleteListener} to be called when Google
+   *     Mobile Ads SDK is initialized.
+   */
+  public static void initialize(
+      Activity activity,
+      @Nullable String plugin,
+      OnAdapterInitializationCompleteListener callback) {
     if (Looper.myLooper() == Looper.getMainLooper()) {
       throw new IllegalStateException("Initialize must not be called on the UI thread.");
     }
@@ -82,6 +99,9 @@ public final class UnityMobileAds {
     }
 
     InitializationConfig.Builder configBuilder = new InitializationConfig.Builder(appId);
+    if (plugin != null && !plugin.isEmpty()) {
+      setPlugin(configBuilder, plugin);
+    }
     synchronized (stateLock) {
       if (requestConfiguration != null) {
         configBuilder = configBuilder.setRequestConfiguration(requestConfiguration);
@@ -196,6 +216,24 @@ public final class UnityMobileAds {
    */
   public static String getSdkVersionString() {
     return mobileAdsWrapper.getVersionString();
+  }
+
+  /**
+   * Sets the plugin identifier on the {@link InitializationConfig.Builder} via reflection.
+   *
+   * @param configBuilder The builder to update.
+   * @param plugin The type and version of the plugin (for example, "unity-7.0.0").
+   */
+  private static void setPlugin(InitializationConfig.Builder configBuilder, String plugin) {
+    try {
+      Method setPluginMethod =
+          InitializationConfig.Builder.class.getDeclaredMethod("setPlugin", String.class);
+      setPluginMethod.setAccessible(true);
+      var unused = setPluginMethod.invoke(configBuilder, plugin);
+    } catch (ReflectiveOperationException | SecurityException e) {
+      // Ignore because setPlugin may not be available in all versions of the SDK.
+      Log.w(TAG, "Failed to set plugin on InitializationConfig.Builder.", e);
+    }
   }
 
   /**
