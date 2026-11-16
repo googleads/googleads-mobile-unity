@@ -128,6 +128,7 @@ namespace GoogleMobileAds.Android
                 Name = Insight.CuiName.AdLoaded,
                 Format = AppOpenFormat,
                 AdUnitId = _adUnitId,
+                ResponseInfoClientProvider = GetResponseInfoClient,
             });
 
             if (this.OnAdLoaded != null)
