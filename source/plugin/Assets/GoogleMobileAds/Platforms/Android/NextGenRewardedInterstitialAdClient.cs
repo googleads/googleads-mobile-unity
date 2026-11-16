@@ -161,6 +161,7 @@ namespace GoogleMobileAds.Android
                 Name = Insight.CuiName.AdLoaded,
                 Format = RewardedInterstitialFormat,
                 AdUnitId = _adUnitId,
+                ResponseInfoClientProvider = GetResponseInfoClient,
             });
 
             if (this.OnAdLoaded != null)

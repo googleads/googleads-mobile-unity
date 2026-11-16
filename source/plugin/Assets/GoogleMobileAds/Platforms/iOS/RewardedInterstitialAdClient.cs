@@ -212,6 +212,7 @@ namespace GoogleMobileAds.iOS
                 Name = Insight.CuiName.AdLoaded,
                 Format = RewardedInterstitialFormat,
                 AdUnitId = client._adUnitId,
+                ResponseInfoClientProvider = client.GetResponseInfoClient,
             });
             if (client.OnAdLoaded != null)
             {
