@@ -286,6 +286,14 @@ namespace GoogleMobileAds.Common
         // Any additional details about the insight.
         public string Details;
 
+        // The class name of the mediation adapter that served the ad, set on successful ad loads.
+        public string AdapterClassName;
+
+        // Gives access to the ad's response info only for emitters that record the adapter class
+        // name, so the others skip the native call.
+        [NonSerialized]
+        public Func<IResponseInfoClient> ResponseInfoClientProvider;
+
         // Returns a string representation of the insight.
         public override string ToString()
         {
@@ -295,7 +303,8 @@ namespace GoogleMobileAds.Common
                 "RequestAgent='{9}', AppVersionName='{10}', UnityVersion='{11}', " +
                 "OSVersion='{12}', DeviceModel='{13}', Tags='{14}', " +
                 "Tracing[OperationName='{15}', Id='{16}', ParentId='{17}', " +
-                "DurationMillis={18}, HasEnded={19}], Details='{20}']",
+                "DurationMillis={18}, HasEnded={19}], Details='{20}', " +
+                "AdapterClassName='{21}']",
                 Name,
                 Success,
                 StartTimeEpochMillis,
@@ -316,7 +325,8 @@ namespace GoogleMobileAds.Common
                 Tracing != null ? Tracing.ParentId : "",
                 Tracing != null ? Tracing.DurationMillis : 0,
                 Tracing != null ? Tracing.HasEnded : false,
-                Details);
+                Details,
+                AdapterClassName);
         }
 
         // Returns a JSON string representation of the insight.
