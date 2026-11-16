@@ -80,7 +80,6 @@ static NSString *_Nonnull const GADTBlue = @"#5C84F0";
                                                metrics:nil
                                                  views:NSDictionaryOfVariableBindings(_rootView)]];
     [self applyStyles];
-    [self styleAdBadge];
   }
   return self;
 }
@@ -113,20 +112,16 @@ static NSString *_Nonnull const GADTBlue = @"#5C84F0";
   }
 
   // Fonts
-  if ([self styleForKey:GADTNativeTemplateStyleKeyPrimaryFont]) {
-    ((UILabel *)self.headlineView).font =
-        (UIFont *)[self styleForKey:GADTNativeTemplateStyleKeyPrimaryFont];
-  }
+  UIFont *primaryFont = (UIFont *)[self styleForKey:GADTNativeTemplateStyleKeyPrimaryFont];
+  [self setFont:primaryFont forLabelView:self.headlineView];
 
-  if ([self styleForKey:GADTNativeTemplateStyleKeySecondaryFont]) {
-    ((UILabel *)self.bodyView).font =
-        (UIFont *)[self styleForKey:GADTNativeTemplateStyleKeySecondaryFont];
-  }
+  UIFont *secondaryFont = (UIFont *)[self styleForKey:GADTNativeTemplateStyleKeySecondaryFont];
+  [self setFont:secondaryFont forLabelView:self.bodyView];
+  [self setFont:secondaryFont forLabelView:self.starRatingView];
 
-  if ([self styleForKey:GADTNativeTemplateStyleKeyTertiaryFont]) {
-    ((UILabel *)self.advertiserView).font =
-        (UIFont *)[self styleForKey:GADTNativeTemplateStyleKeyTertiaryFont];
-  }
+  UIFont *tertiaryFont = (UIFont *)[self styleForKey:GADTNativeTemplateStyleKeyTertiaryFont];
+  [self setFont:tertiaryFont forLabelView:self.advertiserView];
+  [self setFont:tertiaryFont forLabelView:self.storeView];
 
   if ([self styleForKey:GADTNativeTemplateStyleKeyCallToActionFont]) {
     ((UIButton *)self.callToActionView).titleLabel.font =
@@ -134,19 +129,19 @@ static NSString *_Nonnull const GADTBlue = @"#5C84F0";
   }
 
   // Font colors
-  if ([self styleForKey:GADTNativeTemplateStyleKeyPrimaryFontColor])
-    ((UILabel *)self.headlineView).textColor =
-        (UIColor *)[self styleForKey:GADTNativeTemplateStyleKeyPrimaryFontColor];
+  UIColor *primaryFontColor =
+      (UIColor *)[self styleForKey:GADTNativeTemplateStyleKeyPrimaryFontColor];
+  [self setTextColor:primaryFontColor forLabelView:self.headlineView];
 
-  if ([self styleForKey:GADTNativeTemplateStyleKeySecondaryFontColor]) {
-    ((UILabel *)self.bodyView).textColor =
-        (UIColor *)[self styleForKey:GADTNativeTemplateStyleKeySecondaryFontColor];
-  }
+  UIColor *secondaryFontColor =
+      (UIColor *)[self styleForKey:GADTNativeTemplateStyleKeySecondaryFontColor];
+  [self setTextColor:secondaryFontColor forLabelView:self.bodyView];
+  [self setTextColor:secondaryFontColor forLabelView:self.starRatingView];
 
-  if ([self styleForKey:GADTNativeTemplateStyleKeyTertiaryFontColor]) {
-    ((UILabel *)self.advertiserView).textColor =
-        (UIColor *)[self styleForKey:GADTNativeTemplateStyleKeyTertiaryFontColor];
-  }
+  UIColor *tertiaryFontColor =
+      (UIColor *)[self styleForKey:GADTNativeTemplateStyleKeyTertiaryFontColor];
+  [self setTextColor:tertiaryFontColor forLabelView:self.advertiserView];
+  [self setTextColor:tertiaryFontColor forLabelView:self.storeView];
 
   if ([self styleForKey:GADTNativeTemplateStyleKeyCallToActionFontColor]) {
     [((UIButton *)self.callToActionView)
@@ -155,20 +150,19 @@ static NSString *_Nonnull const GADTBlue = @"#5C84F0";
   }
 
   // Background colors
-  if ([self styleForKey:GADTNativeTemplateStyleKeyPrimaryBackgroundColor]) {
-    ((UILabel *)self.headlineView).backgroundColor =
-        (UIColor *)[self styleForKey:GADTNativeTemplateStyleKeyPrimaryBackgroundColor];
-  }
+  UIColor *primaryBackgroundColor =
+      (UIColor *)[self styleForKey:GADTNativeTemplateStyleKeyPrimaryBackgroundColor];
+  [self setBackgroundColor:primaryBackgroundColor forLabelView:self.headlineView];
 
-  if ([self styleForKey:GADTNativeTemplateStyleKeySecondaryBackgroundColor]) {
-    ((UILabel *)self.bodyView).backgroundColor =
-        (UIColor *)[self styleForKey:GADTNativeTemplateStyleKeySecondaryBackgroundColor];
-  }
+  UIColor *secondaryBackgroundColor =
+      (UIColor *)[self styleForKey:GADTNativeTemplateStyleKeySecondaryBackgroundColor];
+  [self setBackgroundColor:secondaryBackgroundColor forLabelView:self.bodyView];
+  [self setBackgroundColor:secondaryBackgroundColor forLabelView:self.starRatingView];
 
-  if ([self styleForKey:GADTNativeTemplateStyleKeyTertiaryBackgroundColor]) {
-    ((UILabel *)self.advertiserView).backgroundColor =
-        (UIColor *)[self styleForKey:GADTNativeTemplateStyleKeyTertiaryBackgroundColor];
-  }
+  UIColor *tertiaryBackgroundColor =
+      (UIColor *)[self styleForKey:GADTNativeTemplateStyleKeyTertiaryBackgroundColor];
+  [self setBackgroundColor:tertiaryBackgroundColor forLabelView:self.advertiserView];
+  [self setBackgroundColor:tertiaryBackgroundColor forLabelView:self.storeView];
 
   if ([self styleForKey:GADTNativeTemplateStyleKeyCallToActionBackgroundColor]) {
     ((UIButton *)self.callToActionView).backgroundColor =
@@ -179,12 +173,38 @@ static NSString *_Nonnull const GADTBlue = @"#5C84F0";
     self.backgroundColor =
         (UIColor *)[self styleForKey:GADTNativeTemplateStyleKeyMainBackgroundColor];
   }
+
+  [self styleAdBadge];
 }
+
+- (void)setFont:(nullable UIFont *)font forLabelView:(nullable UIView *)view {
+  if ([font isKindOfClass:[UIFont class]] && [view isKindOfClass:[UILabel class]]) {
+    ((UILabel *)view).font = font;
+  }
+}
+
+- (void)setTextColor:(nullable UIColor *)textColor forLabelView:(nullable UIView *)view {
+  if ([textColor isKindOfClass:[UIColor class]] && [view isKindOfClass:[UILabel class]]) {
+    ((UILabel *)view).textColor = textColor;
+  }
+}
+
+- (void)setBackgroundColor:(nullable UIColor *)backgroundColor
+              forLabelView:(nullable UIView *)view {
+  if ([backgroundColor isKindOfClass:[UIColor class]] && [view isKindOfClass:[UILabel class]]) {
+    ((UILabel *)view).backgroundColor = backgroundColor;
+  }
+}
+
 - (void)styleAdBadge {
   UILabel *adBadge = self.adBadge;
+  if (!adBadge) {
+    return;
+  }
   adBadge.layer.borderColor = adBadge.textColor.CGColor;
   adBadge.layer.borderWidth = 1.0;
   adBadge.layer.cornerRadius = 3.0;
+  adBadge.layer.masksToBounds = YES;
 }
 
 - (void)setStyles:(nullable NSDictionary<GADTNativeTemplateStyleKey, NSObject *> *)styles {
