@@ -24,20 +24,20 @@
                                 <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </state>
                         </button>
-                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="JRU-6T-XIW">
+                        <view opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="JRU-6T-XIW">
                             <rect key="frame" x="0.0" y="0.0" width="335" height="51"/>
                             <subviews>
                                 <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dtV-H5-CUV">
                                     <rect key="frame" x="0.0" y="0.0" width="335" height="51"/>
                                     <subviews>
-                                        <view contentMode="scaleToFill" horizontalCompressionResistancePriority="1" verticalCompressionResistancePriority="1" translatesAutoresizingMaskIntoConstraints="NO" id="IDQ-dK-aNl">
+                                        <view opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="1" verticalCompressionResistancePriority="1" translatesAutoresizingMaskIntoConstraints="NO" id="IDQ-dK-aNl">
                                             <rect key="frame" x="0.0" y="0.0" width="51" height="51"/>
                                             <subviews>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1" verticalCompressionResistancePriority="1" translatesAutoresizingMaskIntoConstraints="NO" id="tcZ-gP-ynt">
                                                     <rect key="frame" x="0.0" y="0.0" width="51" height="51"/>
                                                 </imageView>
                                             </subviews>
-                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <constraints>
                                                 <constraint firstItem="tcZ-gP-ynt" firstAttribute="leading" secondItem="IDQ-dK-aNl" secondAttribute="leading" id="080-xf-xNS"/>
                                                 <constraint firstItem="tcZ-gP-ynt" firstAttribute="top" secondItem="IDQ-dK-aNl" secondAttribute="top" id="7ay-A1-lkK"/>
@@ -108,7 +108,7 @@
                                     </constraints>
                                 </stackView>
                             </subviews>
-                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>
                                 <constraint firstAttribute="bottom" secondItem="dtV-H5-CUV" secondAttribute="bottom" id="JTS-sy-ZIx"/>
                                 <constraint firstItem="dtV-H5-CUV" firstAttribute="leading" secondItem="JRU-6T-XIW" secondAttribute="leading" id="KnB-yd-LES"/>
@@ -128,7 +128,7 @@
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EEy-n8-ZT9">
                             <rect key="frame" x="0.0" y="61.000000000000021" width="335" height="82.333333333333314"/>
                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                            <nil key="textColor"/>
+                            <color key="textColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <nil key="highlightedColor"/>
                         </label>
                     </subviews>
