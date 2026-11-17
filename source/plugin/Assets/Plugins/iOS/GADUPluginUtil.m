@@ -71,8 +71,47 @@ static BOOL _pauseOnBackground = NO;
 }
 
 + (UIViewController *)unityGLViewController {
-  id<UIApplicationDelegate> appDelegate = [UIApplication sharedApplication].delegate;
-  return appDelegate.window.rootViewController;
+  UIViewController *fallbackViewController = nil;
+  for (UIScene *connectedScene in UIApplication.sharedApplication.connectedScenes) {
+    if (![connectedScene isKindOfClass:[UIWindowScene class]]) {
+      continue;
+    }
+    UIWindowScene *windowScene = (UIWindowScene *)connectedScene;
+    // Skip external-display and background scenes because key windows are per-scene.
+    if (windowScene.session.role &&
+        ![windowScene.session.role isEqualToString:UIWindowSceneSessionRoleApplication]) {
+      continue;
+    }
+    UISceneActivationState activationState = windowScene.activationState;
+    if (activationState != UISceneActivationStateForegroundActive &&
+        activationState != UISceneActivationStateForegroundInactive) {
+      continue;
+    }
+    BOOL isForegroundActive = activationState == UISceneActivationStateForegroundActive;
+    for (UIWindow *window in windowScene.windows) {
+      if (!window.rootViewController) {
+        continue;
+      }
+      if (isForegroundActive && window.keyWindow) {
+        // Return immediately for the key window of a foreground-active scene.
+        return window.rootViewController;
+      }
+      if (!fallbackViewController) {
+        // Record the first non-key or inactive foreground window as a fallback, then keep scanning
+        // other scenes and windows in case a foreground-active key window appears later.
+        fallbackViewController = window.rootViewController;
+      }
+    }
+  }
+  if (fallbackViewController) {
+    return fallbackViewController;
+  }
+
+  id<UIApplicationDelegate> appDelegate = UIApplication.sharedApplication.delegate;
+  if ([appDelegate respondsToSelector:@selector(window)]) {
+    return appDelegate.window.rootViewController;
+  }
+  return nil;
 }
 
 + (void)positionView:(UIView *)view
