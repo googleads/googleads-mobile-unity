@@ -26,21 +26,13 @@ namespace GoogleMobileAds.Common
     /// </summary>
     public abstract class RcsClient<TReport> : MonoBehaviour where TReport : class
     {
-        private class BypassCertificateHandler : CertificateHandler
-        {
-            protected override bool ValidateCertificate(byte[] certificateData)
-            {
-                return true;
-            }
-        }
-
         // Batching triggers can be overridden by subclasses. We don't need to expose them in Unity
         // Editor. If any trigger fires, a batch of items will get sent.
         protected virtual int CountThreshold => 20;
         protected virtual float TimeThresholdInSeconds => 120.0f;
 
         // RCS endpoint for reporting. The `e=1` URL parameter defines JSPB encoding.
-        private const string ProdRcsUrl = "https://pagead2.googlesyndication.com/pagead/ping?e=1";
+        internal const string ProdRcsUrl = "https://pagead2.googlesyndication.com/pagead/ping?e=1";
 
         internal static readonly Queue<TReport> _queue = new Queue<TReport>();
         private static readonly object _queueLock = new object();
@@ -146,17 +138,41 @@ namespace GoogleMobileAds.Common
         }
 
         /// <summary>
+        /// Creates a POST request configured with a JSPB payload using default TLS validation,
+        /// or returns null if request setup fails.
+        /// </summary>
+        internal static UnityWebRequest CreatePostRequest(string url, string jspbPayload)
+        {
+            UnityWebRequest uwr = null;
+
+            try
+            {
+                byte[] bodyRaw = Encoding.UTF8.GetBytes(jspbPayload);
+                uwr = new UnityWebRequest(url, UnityWebRequest.kHttpVerbPOST);
+                uwr.uploadHandler = new UploadHandlerRaw(bodyRaw);
+                uwr.downloadHandler = new DownloadHandlerBuffer();
+                uwr.SetRequestHeader("Content-Type", "application/json+protobuf");
+                return uwr;
+            }
+            catch
+            {
+                uwr?.Dispose();
+                // Swallowing is preferred so telemetry failures never crash the app.
+                return null;
+            }
+        }
+
+        /// <summary>
         /// Coroutine to send a JSPB payload via HTTP POST.
         /// </summary>
         private IEnumerator PostRequest(string url, string jspbPayload)
         {
-            using (UnityWebRequest uwr = new UnityWebRequest(url, "POST"))
+            using (UnityWebRequest uwr = CreatePostRequest(url, jspbPayload))
             {
-                byte[] bodyRaw = Encoding.UTF8.GetBytes(jspbPayload);
-                uwr.uploadHandler = new UploadHandlerRaw(bodyRaw);
-                uwr.certificateHandler = new BypassCertificateHandler();
-                uwr.downloadHandler = new DownloadHandlerBuffer();
-                uwr.SetRequestHeader("Content-Type", "application/json+protobuf");
+                if (uwr == null)
+                {
+                    yield break;
+                }
 
                 yield return uwr.SendWebRequest();
 
