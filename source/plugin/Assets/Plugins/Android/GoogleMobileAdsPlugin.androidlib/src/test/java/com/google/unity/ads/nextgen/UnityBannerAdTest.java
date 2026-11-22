@@ -430,6 +430,37 @@ public final class UnityBannerAdTest {
   }
 
   @Test
+  @Config(sdk = 30)
+  public void testGetSafeInsets_sdkAtLeastR_includesSystemBarInsets() {
+    android.view.WindowInsets windowInsets =
+        new android.view.WindowInsets.Builder()
+            .setInsets(
+                android.view.WindowInsets.Type.systemBars(),
+                android.graphics.Insets.of(10, 20, 30, 40))
+            .build();
+    View decorView =
+        new View(activity) {
+          @Override
+          public android.view.WindowInsets getRootWindowInsets() {
+            return windowInsets;
+          }
+        };
+    android.view.Window mockWindow = org.mockito.Mockito.mock(android.view.Window.class);
+    when(mockWindow.getDecorView()).thenReturn(decorView);
+    shadowOf(activity).setWindow(mockWindow);
+
+    UnityBannerAd ad = new UnityBannerAd(activity, mockCallback, mockAdWrapper, directExecutor());
+    ad.create(PluginUtils.POSITION_TOP);
+
+    FrameLayout.LayoutParams params = ad.getLayoutParams();
+
+    assertThat(params.leftMargin).isEqualTo(10);
+    assertThat(params.topMargin).isEqualTo(20);
+    assertThat(params.rightMargin).isEqualTo(30);
+    assertThat(params.bottomMargin).isEqualTo(40);
+  }
+
+  @Test
   public void testPublicConstructor_createsInstanceWithoutCrash() {
     UnityBannerAd ad = new UnityBannerAd(activity, mockCallback);
     assertThat(ad).isNotNull();
