@@ -34,6 +34,15 @@ namespace GoogleMobileAds.Snippets
             // [END create_banner_view]
         }
 
+        private void CreateSmartBannerView()
+        {
+            // [START create_smart_banner_view]
+            // Create a Smart Banner at the top of the screen.
+            bannerView =
+                new BannerView(AD_UNIT_ID, AdSize.SmartBanner, AdPosition.Top);
+            // [END create_smart_banner_view]
+        }
+
         private void CreateBannerViewWithCustomPostition()
         {
             // [START create_banner_view_position]
