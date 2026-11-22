@@ -26,6 +26,7 @@ namespace GoogleMobileAds.iOS
 {
     internal class Utils
     {
+
         /// <summary>
         /// Converts the plugin AdRequest object to a native ios proxy object for use by the sdk.
         /// </summary>
