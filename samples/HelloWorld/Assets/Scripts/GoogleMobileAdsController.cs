@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using GoogleMobileAds.Api;
 using GoogleMobileAds.Common;
+using GoogleMobileAds.Samples.Utility;
 using GoogleMobileAds.Ump.Api;
 
 namespace GoogleMobileAds.Samples
@@ -130,10 +131,12 @@ namespace GoogleMobileAds.Samples
 
                 Debug.Log("Google Mobile Ads initialization complete.");
                 _isInitialized = true;
+                AdMobTestBridge.RecordEvent("mobileAdsDidInitialize");
 
                 MobileAdsEventExecutor.ExecuteInUpdate(() =>
                 {
                     // Interact with UnityEngine objects on the main thread here.
+                    AdMobTestBridge.SyncButtons();
                 });
             });
             // [END initialize_sdk]
