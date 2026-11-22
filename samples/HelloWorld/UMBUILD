@@ -1,0 +1,25 @@
+# http://go/unity-devtool-umb#umbuild
+BuildTargetDescriptors = [
+  {
+    'id': 'helloworld',
+    'name': 'Sample project for building GMA SDK Unity on Kokoro',
+    'tags': ['unity_kokoro', 'gmasdk'],
+    'target_type': 'app',
+    'platforms': ['android'],
+    'unity_ver': '2020.3',
+    'unity_params': {
+      'AndroidTargetSdk': 34,
+      'AppFileName': 'helloworld',
+      'BundleId': 'com.google.unitykokoro.gmasdk.helloworld',
+      'Scenes': [
+        'Assets/Scenes/GoogleAppOpenAdScene.unity',
+        'Assets/Scenes/GoogleBannerViewScene.unity',
+        'Assets/Scenes/GoogleInterstitialAdScene.unity',
+        'Assets/Scenes/GoogleMobileAdsScene.unity',
+        'Assets/Scenes/GoogleNativeOverlayAdScene.unity',
+        'Assets/Scenes/GoogleRewardedAdScene.unity',
+        'Assets/Scenes/GoogleRewardedInterstitialAdScene.unity',
+      ],
+    },
+  },
+]
