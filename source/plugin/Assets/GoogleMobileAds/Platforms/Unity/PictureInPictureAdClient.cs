@@ -348,7 +348,10 @@ namespace GoogleMobileAds.Unity
                 return;
             }
 
-            GetCornerAnchorsAndPosition(position, _cardRect.sizeDelta, out Vector2 anchor, out Vector2 anchoredPosition);
+            Vector2 anchor;
+            Vector2 anchoredPosition;
+            GetCornerAnchorsAndPosition(
+                position, _cardRect.sizeDelta, out anchor, out anchoredPosition);
             _cardRect.pivot = new Vector2(0.5f, 0.5f);
             _cardRect.anchorMin = anchor;
             _cardRect.anchorMax = anchor;
@@ -683,11 +686,13 @@ namespace GoogleMobileAds.Unity
                 yield break;
             }
 
+            Vector2 targetAnchor;
+            Vector2 targetAnchoredPos;
             PictureInPictureAdClient.GetCornerAnchorsAndPosition(
                 targetPosition,
                 _rectTransform.sizeDelta,
-                out Vector2 targetAnchor,
-                out Vector2 targetAnchoredPos);
+                out targetAnchor,
+                out targetAnchoredPos);
 
             // Convert current world position to target anchor local coordinate.
             Vector3 worldPos = _rectTransform.position;
