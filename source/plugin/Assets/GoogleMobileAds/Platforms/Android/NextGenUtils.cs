@@ -164,13 +164,8 @@ namespace GoogleMobileAds.Android {
         adRequestBuilder.Call<AndroidJavaObject>("addKeyword", keyword);
       }
 
-      if (request.Extras != null) {
-        AndroidJavaObject bundle = new AndroidJavaObject(Utils.BundleClassName);
-        foreach (KeyValuePair<string, string> entry in request.Extras) {
-          bundle.Call("putString", entry.Key, entry.Value);
-        }
-        adRequestBuilder.Call<AndroidJavaObject>("setGoogleExtrasBundle", bundle);
-      }
+      adRequestBuilder.Call<AndroidJavaObject>(
+          "setGoogleExtrasBundle", CreateGoogleExtrasBundle(request));
 
       foreach (KeyValuePair<string, string> entry in request.CustomTargeting) {
         adRequestBuilder.Call<AndroidJavaObject>("putCustomTargeting", entry.Key, entry.Value);
@@ -208,13 +203,8 @@ namespace GoogleMobileAds.Android {
         bannerAdRequestBuilder.Call<AndroidJavaObject>("addKeyword", keyword);
       }
 
-      if (request.Extras != null) {
-        AndroidJavaObject bundle = new AndroidJavaObject(Utils.BundleClassName);
-        foreach (KeyValuePair<string, string> entry in request.Extras) {
-          bundle.Call("putString", entry.Key, entry.Value);
-        }
-        bannerAdRequestBuilder.Call<AndroidJavaObject>("setGoogleExtrasBundle", bundle);
-      }
+      bannerAdRequestBuilder.Call<AndroidJavaObject>(
+          "setGoogleExtrasBundle", CreateGoogleExtrasBundle(request));
 
       foreach (KeyValuePair<string, string> entry in request.CustomTargeting) {
         bannerAdRequestBuilder.Call<AndroidJavaObject>("putCustomTargeting", entry.Key,
@@ -241,13 +231,8 @@ namespace GoogleMobileAds.Android {
         pipAdRequestBuilder.Call<AndroidJavaObject>("addKeyword", keyword);
       }
 
-      if (request.Extras != null) {
-        AndroidJavaObject bundle = new AndroidJavaObject(Utils.BundleClassName);
-        foreach (KeyValuePair<string, string> entry in request.Extras) {
-          bundle.Call("putString", entry.Key, entry.Value);
-        }
-        pipAdRequestBuilder.Call<AndroidJavaObject>("setGoogleExtrasBundle", bundle);
-      }
+      pipAdRequestBuilder.Call<AndroidJavaObject>(
+          "setGoogleExtrasBundle", CreateGoogleExtrasBundle(request));
 
       foreach (KeyValuePair<string, string> entry in request.CustomTargeting) {
         pipAdRequestBuilder.Call<AndroidJavaObject>("putCustomTargeting", entry.Key, entry.Value);
@@ -353,15 +338,8 @@ namespace GoogleMobileAds.Android {
         nativeAdRequestBuilder.Call<AndroidJavaObject>("addKeyword", keyword);
       }
 
-      if (request.Extras != null)
-      {
-          AndroidJavaObject bundle = new AndroidJavaObject(Utils.BundleClassName);
-          foreach (KeyValuePair<string, string> entry in request.Extras)
-          {
-              bundle.Call("putString", entry.Key, entry.Value);
-          }
-          nativeAdRequestBuilder.Call<AndroidJavaObject>("setGoogleExtrasBundle", bundle);
-      }
+      nativeAdRequestBuilder.Call<AndroidJavaObject>(
+          "setGoogleExtrasBundle", CreateGoogleExtrasBundle(request));
 
       foreach (KeyValuePair<string, string> entry in request.CustomTargeting) {
         nativeAdRequestBuilder.Call<AndroidJavaObject>("putCustomTargeting", entry.Key,
@@ -452,6 +430,22 @@ namespace GoogleMobileAds.Android {
       return new AndroidJavaObject(NextGenUtils.ServerSideVerificationOptionsClassName,
                                      serverSideVerificationOptions.UserId ?? "",
                                      serverSideVerificationOptions.CustomData ?? "");
+    }
+
+    private static AndroidJavaObject CreateGoogleExtrasBundle(AdRequest request) {
+      AndroidJavaObject bundle = new AndroidJavaObject(Utils.BundleClassName);
+      if (request.Extras != null) {
+        foreach (KeyValuePair<string, string> entry in request.Extras) {
+          bundle.Call("putString", entry.Key, entry.Value);
+        }
+      }
+
+      bundle.Call("putString", "is_unity", "1");
+
+      // Makes ads that contain WebP ad assets ineligible.
+      bundle.Call("putString", "adw", "true");
+
+      return bundle;
     }
 
     private static void ApplyAdManagerFields(AndroidJavaObject builder, AdRequest request) {
