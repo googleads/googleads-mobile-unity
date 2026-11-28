@@ -1,5 +1,11 @@
 Google Mobile Ads Unity Plugin Change Log
 
+************
+Version Next
+************
+
+- Added `SqueezebackAdOptions` API for configuring Squeezeback ad presentation.
+
 **************
 Version 11.7.0
 **************
