@@ -58,6 +58,8 @@ namespace GoogleMobileAds.Android {
         "com.google.android.libraries.ads.mobile.sdk.nativead.NativeAdRequest$Builder";
     public const string PictureInPictureAdRequestBuilderClassName =
         "com.google.android.libraries.ads.mobile.sdk.pip.PictureInPictureAdRequest$Builder";
+    public const string SqueezebackAdRequestBuilderClassName =
+        "com.google.android.libraries.ads.mobile.sdk.squeezeback.SqueezebackAdRequest$Builder";
 #endregion
 
 #region AdSize
@@ -126,6 +128,11 @@ namespace GoogleMobileAds.Android {
         "com.google.unity.ads.nextgen.UnityPictureInPictureAd";
     public const string UnityPictureInPictureAdCallbackClassName =
         "com.google.unity.ads.nextgen.UnityPictureInPictureAdCallback";
+
+    public const string UnitySqueezebackAdClassName =
+        "com.google.unity.ads.nextgen.UnitySqueezebackAd";
+    public const string UnitySqueezebackAdCallbackClassName =
+        "com.google.unity.ads.nextgen.UnitySqueezebackAdCallback";
 
     public const string UnityInterstitialAdClassName =
         "com.google.unity.ads.nextgen.UnityInterstitialAd";
@@ -256,6 +263,43 @@ namespace GoogleMobileAds.Android {
       ApplyAdManagerFields(pipAdRequestBuilder, request);
 
       return pipAdRequestBuilder.Call<AndroidJavaObject>("build");
+    }
+
+    /// <summary>
+    /// Converts the plugin AdRequest object to a native java proxy object for use by the sdk.
+    /// </summary>
+    /// <param name="adUnitId">the ad unit ID.</param>
+    /// <param name="request">the AdRequest from the unity plugin.</param>
+    public static AndroidJavaObject GetSqueezebackAdRequestJavaObject(string adUnitId,
+                                                                      AdRequest request) {
+      request = request ?? new AdRequest();
+      AndroidJavaObject squeezebackAdRequestBuilder =
+          new AndroidJavaObject(SqueezebackAdRequestBuilderClassName, adUnitId);
+      if (request.Keywords != null) {
+        foreach (string keyword in request.Keywords) {
+          squeezebackAdRequestBuilder.Call<AndroidJavaObject>("addKeyword", keyword);
+        }
+      }
+
+      if (request.Extras != null) {
+        AndroidJavaObject bundle = new AndroidJavaObject(Utils.BundleClassName);
+        foreach (KeyValuePair<string, string> entry in request.Extras) {
+          bundle.Call("putString", entry.Key, entry.Value);
+        }
+        squeezebackAdRequestBuilder.Call<AndroidJavaObject>("setGoogleExtrasBundle", bundle);
+      }
+
+      if (request.CustomTargeting != null) {
+        foreach (KeyValuePair<string, string> entry in request.CustomTargeting) {
+          squeezebackAdRequestBuilder.Call<AndroidJavaObject>(
+              "putCustomTargeting", entry.Key, entry.Value);
+        }
+      }
+      squeezebackAdRequestBuilder.Call<AndroidJavaObject>(
+          "setRequestAgent", AdRequest.BuildVersionString());
+      ApplyAdManagerFields(squeezebackAdRequestBuilder, request);
+
+      return squeezebackAdRequestBuilder.Call<AndroidJavaObject>("build");
     }
 
     /// <summary>

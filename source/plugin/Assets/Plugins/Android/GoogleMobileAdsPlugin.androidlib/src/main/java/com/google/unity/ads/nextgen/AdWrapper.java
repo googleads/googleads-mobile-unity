@@ -10,6 +10,8 @@ import com.google.android.libraries.ads.mobile.sdk.pip.PictureInPictureAd;
 import com.google.android.libraries.ads.mobile.sdk.pip.PictureInPictureAdRequest;
 import com.google.android.libraries.ads.mobile.sdk.rewarded.RewardedAd;
 import com.google.android.libraries.ads.mobile.sdk.rewardedinterstitial.RewardedInterstitialAd;
+import com.google.android.libraries.ads.mobile.sdk.squeezeback.SqueezebackAd;
+import com.google.android.libraries.ads.mobile.sdk.squeezeback.SqueezebackAdRequest;
 
 /**
  * A generic wrapper for loading ads. This wrapper is used for enabling unit testing by being
@@ -81,6 +83,22 @@ class AdWrapper<T> {
             } else {
               throw new IllegalArgumentException(
                   "AdRequest must be of type PictureInPictureAdRequest for PiP Ads");
+            }
+          }
+        });
+  }
+
+  /** Creates a new AdWrapper for loading SqueezebackAds. */
+  public static AdWrapper<SqueezebackAd> forSqueezeback() {
+    return new AdWrapper<>(
+        new AdLoader<SqueezebackAd>() {
+          @Override
+          public void load(AdRequest adRequest, AdLoadCallback<SqueezebackAd> callback) {
+            if (adRequest instanceof SqueezebackAdRequest) {
+              SqueezebackAd.load((SqueezebackAdRequest) adRequest, callback);
+            } else {
+              throw new IllegalArgumentException(
+                  "AdRequest must be of type SqueezebackAdRequest for Squeezeback Ads");
             }
           }
         });
